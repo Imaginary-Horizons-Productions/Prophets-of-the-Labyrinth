@@ -1,0 +1,11 @@
+{
+	"scripts": {
+		"start": "node index.js prod",
+		"start:dev": "node source/scripts/uploadCommandsToTestGuild.js && node index.js",
+		"clearCommands": "node source/scripts/clearCommands.js",
+		"initialize": "npm ci && node source/scripts/initialize"
+	},
+	"dependencies": {
+		"discord.js": "^14.13.0"
+	}
+}

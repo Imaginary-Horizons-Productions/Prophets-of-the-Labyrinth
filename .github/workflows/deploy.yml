@@ -1,0 +1,44 @@
+name: On Update to Main
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3.5.2
+
+#       - name: Generate Sponsors 💖
+#         uses: JamesIves/github-sponsors-readme-action@1.0.5
+#         with:
+#           token: ${{ secrets.SECRET_WITH_SPONSORS_ACCESS }}
+#           file: 'README.md'
+#           # minimum: 2500
+
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: main
+          folder: '.'
+
+      - name: Setup npm
+        run: npm ci && node source/scripts/initialize.js
+
+      - name: Update Commands
+        run: node source/scripts/updateWiki.js
+
+      - name: Push Changes to Repo
+        run: git add .; git commit -m "updated commands page on wiki" && git push origin main || true
+
+#       - name: Push Wiki Changes
+#         uses: Andrew-Chen-Wang/github-wiki-action@v3
+#         env:
+#           # Make sure you have that / at the end. We use rsync
+#           # WIKI_DIR's default is wiki/
+#           WIKI_DIR: wiki/
+#           GH_TOKEN: ${{ secrets.SECRET_WITH_REPO_ACCESS }}
+#           GH_MAIL: ${{ secrets.WIKI_EMAIL }}
+#           GH_NAME: ${{ github.repository_owner }}
+#           EXCLUDED_FILES: "a/ b.md"

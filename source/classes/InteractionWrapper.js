@@ -1,0 +1,87 @@
+const { SlashCommandBuilder } = require("@discordjs/builders");
+const { MAX_SET_TIMEOUT } = require("../constants");
+const { CommandInteraction } = require("discord.js");
+
+class InteractionWrapper {
+	/** IHP wrapper for interaction responses
+	 * @param {string} customIdInput
+	 * @param {number} cooldownInMS
+	 * @param {(interaction: import("discord.js").Interaction, args: string[]) => void} executeFunction
+	*/
+	constructor(customIdInput, cooldownInMS, executeFunction) {
+		if (cooldownInMS > MAX_SET_TIMEOUT) {
+			throw new Error("InteractionWrapper recieved cooldown argument in excess of MAX_SET_TIMEOUT");
+		}
+		this.customId = customIdInput;
+		this.cooldown = cooldownInMS;
+		this.execute = executeFunction;
+	}
+};
+module.exports.InteractionWrapper = InteractionWrapper;
+
+class CommandWrapper extends module.exports.InteractionWrapper {
+	/** Additional wrapper properties for command parsing
+	 * @param {string} customIdInput
+	 * @param {string} descriptionInput
+	 * @param {import("discord.js").PermissionFlags | null} defaultMemberPermission
+	 * @param {boolean} isPremiumCommand
+	 * @param {boolean} allowInDMsInput
+	 * @param {number} cooldownInMS
+	 * @param {{type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: boolean, choices?: { name: string, value }[]}[]} optionsInput
+	 * @param {{name: string, description: string, optionsInput?: {type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: boolean, choices?: { name: string, value }[]}}[]} subcommandsInput
+	 * @param {(interaction: CommandInteraction) => void} executeFunction
+	 */
+	constructor(customIdInput, descriptionInput, defaultMemberPermission, isPremiumCommand, allowInDMsInput, cooldownInMS, optionsInput, subcommandsInput, executeFunction) {
+		super(customIdInput, cooldownInMS, executeFunction);
+		this.premiumCommand = isPremiumCommand;
+		this.data = new SlashCommandBuilder()
+			.setName(customIdInput)
+			.setDescription(descriptionInput)
+			.setDMPermission(allowInDMsInput);
+		if (defaultMemberPermission) {
+			this.data.setDefaultMemberPermissions(defaultMemberPermission);
+		}
+		optionsInput.forEach(option => {
+			this.data[`add${option.type}Option`](built => {
+				built.setName(option.name).setDescription(option.description).setRequired(option.required);
+				if (option.autocomplete) {
+					built.setAutocomplete(true);
+				} else if ("choices" in option) {
+					if (option.choices === null || option.choices === undefined) {
+						throw new Error(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);
+					}
+					if (option.choices.length) {
+						built.addChoices(...option.choices);
+					}
+				}
+				return built;
+			})
+		})
+		subcommandsInput.forEach(subcommand => {
+			this.data.addSubcommand(built => {
+				built.setName(subcommand.name).setDescription(subcommand.description);
+				if ("optionsInput" in subcommand) {
+					subcommand.optionsInput.forEach(option => {
+						built[`add${option.type}Option`](subBuilt => {
+							subBuilt.setName(option.name).setDescription(option.description).setRequired(option.required);
+							if (option.autocomplete) {
+								subBuilt.setAutocomplete(true);
+							} else if ("choices" in option) {
+								if (option.choices === null || option.choices === undefined) {
+									throw new Error(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);
+								}
+								let choiceEntries = Object.entries(option.choices);
+								if (choiceEntries.length) {
+									subBuilt.addChoices(...option.choices);
+								}
+							}
+							return subBuilt;
+						})
+					})
+				}
+				return built;
+			})
+		})
+	}
+};
+module.exports.CommandWrapper = CommandWrapper;
