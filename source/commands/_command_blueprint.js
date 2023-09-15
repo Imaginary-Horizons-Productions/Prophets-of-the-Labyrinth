@@ -2,10 +2,6 @@ const { PermissionFlagsBits } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 
 const customId = "";
-module.exports.autocomplete = {
-	// NOTE: "option-name" must match the name of the option it contains autocomplete data for
-	"option-name": [{ name: "", value: "" }]
-};
 const options = [
 	{
 		type: "",
@@ -38,3 +34,7 @@ module.exports = new CommandWrapper(customId, "description", PermissionFlagsBits
 
 	}
 );
+module.exports.autocomplete = {
+	// NOTE: "option-name" must match the name of the option it contains autocomplete data for
+	"option-name": [{ name: "", value: "" }]
+};

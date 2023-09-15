@@ -4,6 +4,7 @@ const { CommandWrapper } = require('../classes');
 exports.commandFiles = [
 	"data-policy.js",
 	"feedback.js",
+	"manual.js",
 	"version.js"
 ];
 /** @type {Record<string, CommandWrapper>} */
@@ -16,9 +17,7 @@ for (const file of exports.commandFiles) {
 	exports.slashData.push(command.data.toJSON());
 }
 
-/**
- * @param {string} commandName
- */
+/** @param {string} commandName */
 exports.getCommand = function (commandName) {
 	return commandDictionary[commandName];
 }
