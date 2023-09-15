@@ -26,6 +26,8 @@ the type of feedback you'd like to provide
 > Cooldown: 3 second(s)
 
 Get information about how to play or game entities
+#### /manual gear-info
+Look up details on a piece of gear
 #### /manual item-info
 Look up details on an item
 ### /version
