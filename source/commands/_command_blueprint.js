@@ -8,7 +8,7 @@ const options = [
 		name: "",
 		description: "",
 		required: false,
-		autocomplete: false, // optional
+		autocomplete: [{ name: "", value: "" }], // optional
 		choices: [{ name: "", value: "" }] // optional
 	}
 ];
@@ -22,7 +22,7 @@ const subcommands = [
 				name: "",
 				description: "",
 				required: false,
-				autocomplete: false, // optional
+				autocomplete: [{ name: "", value: "" }], // optional
 				choices: [{ name: "", value: "" }] // optional
 			}
 		]
@@ -34,7 +34,3 @@ module.exports = new CommandWrapper(customId, "description", PermissionFlagsBits
 
 	}
 );
-module.exports.autocomplete = {
-	// NOTE: "option-name" must match the name of the option it contains autocomplete data for
-	"option-name": [{ name: "", value: "" }]
-};
