@@ -1,3 +1,4 @@
+const { BuildError } = require("../classes/BuildError.js");
 const { GearTemplate } = require("../classes/Gear.js");
 // const { getEmoji } = require("../elementHelpers.js");
 
@@ -106,7 +107,7 @@ for (const file of [
 ]) {
 	const gear = require(`./${file}`);
 	if (gear.name in GEAR) {
-		console.error(`Gear overwritten due to same name: ${gear.name}`);
+		throw new BuildError(`Duplicate gear name (${gear.name})`);
 	}
 	GEAR[gear.name] = gear;
 };

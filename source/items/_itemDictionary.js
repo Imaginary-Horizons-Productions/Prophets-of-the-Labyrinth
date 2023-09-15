@@ -1,3 +1,4 @@
+const { BuildError } = require("../classes/BuildError.js");
 const { ItemTemplate } = require("../classes/Item.js");
 
 /** @type {Record<string, ItemTemplate>} */
@@ -20,8 +21,11 @@ for (const file of [
 	// "waterypotion.js",
 	// "windypotion.js"
 ]) {
-	const consumable = require(`./${file}`);
-	ITEMS[consumable.name] = consumable;
+	const item = require(`./${file}`);
+	if (item.name in ITEMS) {
+		throw new BuildError(`Duplicate item name (${item.name})`);
+	}
+	ITEMS[item.name] = item;
 }
 
 exports.itemNames = Object.keys(ITEMS);

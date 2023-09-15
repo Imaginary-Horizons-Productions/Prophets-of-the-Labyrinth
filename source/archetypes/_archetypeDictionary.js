@@ -1,7 +1,7 @@
-const { Archetype } = require("../classes");
+const { Archetype, BuildError } = require("../classes");
 
 /** @type {Record<string, Archetype>} */
-const archetypeDictionary = {};
+const ARCHETYPES = {};
 
 for (const file of [
 	// "assassin.js",
@@ -13,10 +13,13 @@ for (const file of [
 	// "ritualist.js"
 ]) {
 	const archetype = require(`./${file}`);
-	archetypeDictionary[archetype.name] = archetype;
+	if (archetype.name in ARCHETYPES) {
+		throw new BuildError(`Duplicate archetype name (${archetype.name})`);
+	}
+	ARCHETYPES[archetype.name] = archetype;
 }
 
 /** @param {string} archetypeName */
 exports.getArchetype = function (archetypeName) {
-	return archetypeDictionary[archetypeName];
+	return ARCHETYPES[archetypeName];
 }
