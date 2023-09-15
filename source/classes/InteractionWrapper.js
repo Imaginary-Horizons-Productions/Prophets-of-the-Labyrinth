@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MAX_SET_TIMEOUT } = require("../constants");
 const { CommandInteraction } = require("discord.js");
+const { BuildError } = require("./");
 
 class InteractionWrapper {
 	/** IHP wrapper for interaction responses
@@ -10,16 +11,15 @@ class InteractionWrapper {
 	*/
 	constructor(customIdInput, cooldownInMS, executeFunction) {
 		if (cooldownInMS > MAX_SET_TIMEOUT) {
-			throw new Error("InteractionWrapper recieved cooldown argument in excess of MAX_SET_TIMEOUT");
+			throw new BuildError("InteractionWrapper recieved cooldown argument in excess of MAX_SET_TIMEOUT");
 		}
 		this.customId = customIdInput;
 		this.cooldown = cooldownInMS;
 		this.execute = executeFunction;
 	}
 };
-module.exports.InteractionWrapper = InteractionWrapper;
 
-class CommandWrapper extends module.exports.InteractionWrapper {
+class CommandWrapper extends InteractionWrapper {
 	/** Additional wrapper properties for command parsing
 	 * @param {string} customIdInput
 	 * @param {string} descriptionInput
@@ -46,11 +46,14 @@ class CommandWrapper extends module.exports.InteractionWrapper {
 			this.data[`add${option.type}Option`](built => {
 				built.setName(option.name).setDescription(option.description).setRequired(option.required);
 				if (option.autocomplete?.length > 0) {
+					if (option.name in this.autocomplete) {
+						throw new BuildError(`duplicate autocomplete key (${option.name})`);
+					}
 					built.setAutocomplete(true);
 					this.autocomplete[option.name] = option.autocomplete;
 				} else if ("choices" in option) {
 					if (option.choices === null || option.choices === undefined) {
-						throw new Error(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);
+						throw new BuildError(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);
 					}
 					if (option.choices.length) {
 						built.addChoices(...option.choices);
@@ -67,11 +70,14 @@ class CommandWrapper extends module.exports.InteractionWrapper {
 						built[`add${option.type}Option`](subBuilt => {
 							subBuilt.setName(option.name).setDescription(option.description).setRequired(option.required);
 							if (option.autocomplete?.length > 0) {
+								if (option.name in this.autocomplete) {
+									throw new BuildError(`duplicate autocomplete key (${option.name})`);
+								}
 								subBuilt.setAutocomplete(true);
 								this.autocomplete[option.name] = option.autocomplete;
 							} else if ("choices" in option) {
 								if (option.choices === null || option.choices === undefined) {
-									throw new Error(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);
+									throw new BuildError(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);
 								}
 								let choiceEntries = Object.entries(option.choices);
 								if (choiceEntries.length) {
@@ -87,4 +93,8 @@ class CommandWrapper extends module.exports.InteractionWrapper {
 		})
 	}
 };
-module.exports.CommandWrapper = CommandWrapper;
+
+module.exports = {
+	InteractionWrapper,
+	CommandWrapper
+};
