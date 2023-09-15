@@ -3,6 +3,7 @@ const { BuildError } = require("./BuildError");
 const { Gear, GearTemplate } = require("./Gear");
 const { InteractionWrapper, CommandWrapper } = require("./InteractionWrapper");
 const { ItemTemplate } = require("./Item");
+const { ModifierTemplate } = require("./Modifier");
 
 module.exports = {
 	Archetype,
@@ -11,5 +12,6 @@ module.exports = {
 	GearTemplate,
 	CommandWrapper,
 	InteractionWrapper,
-	ItemTemplate
+	ItemTemplate,
+	ModifierTemplate
 };
