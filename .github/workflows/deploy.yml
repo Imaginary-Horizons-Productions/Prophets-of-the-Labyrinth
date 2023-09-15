@@ -32,13 +32,13 @@ jobs:
       - name: Push Changes to Repo
         run: git add .; git commit -m "updated commands page on wiki" && git push origin main || true
 
-#       - name: Push Wiki Changes
-#         uses: Andrew-Chen-Wang/github-wiki-action@v3
-#         env:
-#           # Make sure you have that / at the end. We use rsync
-#           # WIKI_DIR's default is wiki/
-#           WIKI_DIR: wiki/
-#           GH_TOKEN: ${{ secrets.SECRET_WITH_REPO_ACCESS }}
-#           GH_MAIL: ${{ secrets.WIKI_EMAIL }}
-#           GH_NAME: ${{ github.repository_owner }}
-#           EXCLUDED_FILES: "a/ b.md"
+      - name: Push Wiki Changes
+        uses: Andrew-Chen-Wang/github-wiki-action@v3
+        env:
+          # Make sure you have that / at the end. We use rsync
+          # WIKI_DIR's default is wiki/
+          WIKI_DIR: wiki/
+          GH_TOKEN: ${{ secrets.SECRET_WITH_REPO_ACCESS }}
+          GH_MAIL: ${{ secrets.WIKI_EMAIL }}
+          GH_NAME: ${{ github.repository_owner }}
+          EXCLUDED_FILES: "a/ b.md"
