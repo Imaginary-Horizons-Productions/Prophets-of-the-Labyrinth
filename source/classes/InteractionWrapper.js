@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MAX_SET_TIMEOUT } = require("../constants");
 const { CommandInteraction } = require("discord.js");
-const { BuildError } = require("./");
+const { BuildError } = require("./BuildError.js");
 
 class InteractionWrapper {
 	/** IHP wrapper for interaction responses
