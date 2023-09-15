@@ -18,6 +18,16 @@ Provide feedback on this bot to the developers
 > Choices: `bug report`, `feature request`
 
 the type of feedback you'd like to provide
+### /manual
+> Permission Level: ViewChannel
+
+> Usable in DMs: true
+
+> Cooldown: 3 second(s)
+
+Get information about how to play or game entities
+#### /manual item-info
+Look up details on an item
 ### /version
 
 > Usable in DMs: true
