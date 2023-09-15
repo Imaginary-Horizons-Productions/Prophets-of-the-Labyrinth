@@ -51,13 +51,8 @@ class CommandWrapper extends InteractionWrapper {
 					}
 					built.setAutocomplete(true);
 					this.autocomplete[option.name] = option.autocomplete;
-				} else if ("choices" in option) {
-					if (option.choices === null || option.choices === undefined) {
-						throw new BuildError(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);
-					}
-					if (option.choices.length) {
-						built.addChoices(...option.choices);
-					}
+				} else if (option.choices?.length > 0) {
+					built.addChoices(...option.choices);
 				}
 				return built;
 			})
@@ -75,14 +70,8 @@ class CommandWrapper extends InteractionWrapper {
 								}
 								subBuilt.setAutocomplete(true);
 								this.autocomplete[option.name] = option.autocomplete;
-							} else if ("choices" in option) {
-								if (option.choices === null || option.choices === undefined) {
-									throw new BuildError(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);
-								}
-								let choiceEntries = Object.entries(option.choices);
-								if (choiceEntries.length) {
-									subBuilt.addChoices(...option.choices);
-								}
+							} else if (option.choices?.length > 0) {
+								subBuilt.addChoices(...option.choices);
 							}
 							return subBuilt;
 						})
