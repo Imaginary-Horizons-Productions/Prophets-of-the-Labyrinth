@@ -27,13 +27,14 @@ class CommandWrapper extends module.exports.InteractionWrapper {
 	 * @param {boolean} isPremiumCommand
 	 * @param {boolean} allowInDMsInput
 	 * @param {number} cooldownInMS
-	 * @param {{type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: boolean, choices?: { name: string, value }[]}[]} optionsInput
-	 * @param {{name: string, description: string, optionsInput?: {type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: boolean, choices?: { name: string, value }[]}}[]} subcommandsInput
+	 * @param {{type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: {name: string, value: string}[], choices?: { name: string, value }[]}[]} optionsInput
+	 * @param {{name: string, description: string, optionsInput?: {type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: {name: string, value: string}[], choices?: { name: string, value }[]}}[]} subcommandsInput
 	 * @param {(interaction: CommandInteraction) => void} executeFunction
 	 */
 	constructor(customIdInput, descriptionInput, defaultMemberPermission, isPremiumCommand, allowInDMsInput, cooldownInMS, optionsInput, subcommandsInput, executeFunction) {
 		super(customIdInput, cooldownInMS, executeFunction);
 		this.premiumCommand = isPremiumCommand;
+		this.autocomplete = {};
 		this.data = new SlashCommandBuilder()
 			.setName(customIdInput)
 			.setDescription(descriptionInput)
@@ -44,8 +45,9 @@ class CommandWrapper extends module.exports.InteractionWrapper {
 		optionsInput.forEach(option => {
 			this.data[`add${option.type}Option`](built => {
 				built.setName(option.name).setDescription(option.description).setRequired(option.required);
-				if (option.autocomplete) {
+				if (option.autocomplete?.length > 0) {
 					built.setAutocomplete(true);
+					this.autocomplete[option.name] = option.autocomplete;
 				} else if ("choices" in option) {
 					if (option.choices === null || option.choices === undefined) {
 						throw new Error(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);
@@ -64,8 +66,9 @@ class CommandWrapper extends module.exports.InteractionWrapper {
 					subcommand.optionsInput.forEach(option => {
 						built[`add${option.type}Option`](subBuilt => {
 							subBuilt.setName(option.name).setDescription(option.description).setRequired(option.required);
-							if (option.autocomplete) {
+							if (option.autocomplete?.length > 0) {
 								subBuilt.setAutocomplete(true);
+								this.autocomplete[option.name] = option.autocomplete;
 							} else if ("choices" in option) {
 								if (option.choices === null || option.choices === undefined) {
 									throw new Error(`${this.customId} (${descriptionInput}) ${option.type} Option was nullish.`);

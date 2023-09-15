@@ -4,13 +4,13 @@ const { Archetype } = require("../classes");
 const archetypeDictionary = {};
 
 for (const file of [
-	"assassin.js",
-	"chemist.js",
-	"hemomancer.js",
+	// "assassin.js",
+	// "chemist.js",
+	// "hemomancer.js",
 	"knight.js",
-	"legionnaire.js",
-	"martialartist.js",
-	"ritualist.js"
+	// "legionnaire.js",
+	// "martialartist.js",
+	// "ritualist.js"
 ]) {
 	const archetype = require(`./${file}`);
 	archetypeDictionary[archetype.name] = archetype;

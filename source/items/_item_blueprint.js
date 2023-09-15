@@ -1,9 +1,7 @@
 const { ItemTemplate } = require("../classes/Item.js");
 
-module.exports = new ItemTemplate("name", "description", selectTargets, effect)
-	.setElement("Untyped")
-	.setTargetTags("self", "delver")
-	.setFlavorText([{ name: "", value: "" }]);
+module.exports = new ItemTemplate("name", "description", "Untyped", { description: "self", team: "any" }, 30, selectTargets, effect)
+	.setFlavorText({ name: "", value: "" });
 
 function selectTargets(userIndex, adventure) {
 	// specification

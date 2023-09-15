@@ -2,50 +2,28 @@ class ItemTemplate {
 	/**
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
+	 * @param {"Fire" | "Earth" | "Untyped" | "Water" | "Wind"} elementLabel
+	 * @param {{description: "single" | "all" | "random→x" | "self" | "none", team: "delver" | "enemy" | "any" | "none"}} targetTags Unlike the selector function which controls the game logic, these tags control UI/feedback logic
+	 * @param {number} costInput
 	 * @param {(userTeam: "delver" | "enemy" | "none", userIndex: number, adventure) => []} selectTargetsFunction
 	 * @param {(targets, user, isCrit: boolean, adventure) => string} effectFunction
 	 */
-	constructor(nameInput, descriptionInput, selectTargetsFunction, effectFunction) {
+	constructor(nameInput, descriptionInput, elementLabel, targetTags, costInput, selectTargetsFunction, effectFunction) {
 		this.name = nameInput;
 		this.description = descriptionInput;
+		this.element = elementLabel;
+		this.targetDescription = targetTags.description;
+		this.targetTeam = targetTags.team;
+		this.cost = costInput;
 		this.selectTargets = selectTargetsFunction;
 		this.effect = effectFunction;
 	}
-	/** @type {"Fire" | "Earth" | "Untyped" | "Water" | "Wind"} */
-	element = "";
-	/** @param {"single" | "all" | "random→x" | "self" | "none"} */
-	targetDescription = "";
-	targetTeam = "";
-	flavorText = [];
-	cost = 10;
+	/** @type {import("discord.js").EmbedField} */
+	flavorText;
 
-	/** @param {string} elementEnum	 */
-	setElement(elementEnum) {
-		this.element = elementEnum;
-		return this;
-	}
-
-	/** Unlike the selector function which controls the game logic, these tags control UI/feedback logic
-	 * @param {"single" | "all" | "random→x" | "self" | "none"} targetDescriptionEnum
-	 * @param {"delver" | "enemy" | "any" | "none"} targetTeamEnum
-	 */
-	setTargetTags(targetDescriptionEnum, targetTeamEnum) {
-		this.targetDescription = targetDescriptionEnum;
-		this.targetTeam = targetTeamEnum;
-		return this;
-	}
-
-	/** Sets the texts to display in the flavor text embed field
-	 * @param {{name: string, value: string}[]} fieldArray
-	 */
-	setFlavorText(fieldArray) {
-		this.flavorText = fieldArray;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setCost(integer) {
-		this.cost = integer;
+	/** @param {import("discord.js").EmbedField} fieldObject */
+	setFlavorText(fieldObject) {
+		this.flavorText = fieldObject;
 		return this;
 	}
 };

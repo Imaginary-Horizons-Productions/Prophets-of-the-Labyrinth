@@ -8,7 +8,7 @@ for (const file of [
 	// "earthenpotion.js",
 	"explosionpotion.js",
 	// "fierypotion.js",
-	// "healthpotion.js",
+	"healthpotion.js",
 	// "oblivionsalt.js",
 	// "quickpepper.js",
 	// "regenroot.js",
