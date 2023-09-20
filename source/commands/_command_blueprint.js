@@ -1,7 +1,7 @@
 const { PermissionFlagsBits } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 
-const customId = "";
+const mainId = "";
 const options = [
 	{
 		type: "",
@@ -28,7 +28,7 @@ const subcommands = [
 		]
 	}
 ];
-module.exports = new CommandWrapper(customId, "description", PermissionFlagsBits.ViewChannel, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.ViewChannel, false, true, 3000, options, subcommands,
 	/** Command specifications go here */
 	(interaction) => {
 

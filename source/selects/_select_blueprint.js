@@ -1,7 +1,7 @@
-const { InteractionWrapper } = require('../classes');
+const { SelectWrapper } = require('../classes');
 
-const customId = "";
-module.exports = new InteractionWrapper(customId, 3000,
+const mainId = "";
+module.exports = new SelectWrapper(mainId, 3000,
 	/** Specs */
 	(interaction, args) => {
 

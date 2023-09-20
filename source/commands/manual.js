@@ -1,9 +1,9 @@
-const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { itemExists, getItem, itemNames } = require('../items/_itemDictionary');
 const { gearExists, getGearProperty, buildGearDescription, gearNames } = require('../gear/_gearDictionary');
 
-const customId = "manual";
+const mainId = "manual";
 const options = [];
 const subcommands = [
 	{
@@ -33,7 +33,7 @@ const subcommands = [
 		]
 	}
 ];
-module.exports = new CommandWrapper(customId, "Get information about how to play or game entities", PermissionFlagsBits.ViewChannel, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Get information about how to play or game entities", null, false, true, 3000, options, subcommands,
 	(interaction) => {
 		switch (interaction.options.getSubcommand()) {
 			case subcommands[0].name: // gear-info

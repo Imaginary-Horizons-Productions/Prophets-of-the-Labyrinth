@@ -1,7 +1,7 @@
 const { CommandWrapper } = require('../classes');
 const { getVersionEmbed } = require('../helpers');
 
-const customId = "version";
+const mainId = "version";
 const options = [
 	{
 		type: "Boolean",
@@ -11,7 +11,7 @@ const options = [
 	}
 ];
 const subcommands = [];
-module.exports = new CommandWrapper(customId, "Get the most recent changes or the full change log", null, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Get the most recent changes or the full change log", null, false, true, 3000, options, subcommands,
 	/** Send the user the most recent set of patch notes or full change log */
 	(interaction) => {
 		if (interaction.options.getBoolean(options[0].name)) {

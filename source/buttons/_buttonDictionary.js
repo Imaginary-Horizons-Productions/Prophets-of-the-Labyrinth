@@ -1,17 +1,16 @@
-const { InteractionWrapper } = require("../classes");
+const { ButtonWrapper } = require("../classes");
 
-/** @type {Record<string, InteractionWrapper>} */
+/** @type {Record<string, ButtonWrapper>} */
 const buttonDictionary = {};
 
 for (const file of [
 ]) {
+	/** @type {ButtonWrapper} */
 	const button = require(`./${file}`);
-	buttonDictionary[button.customId] = button;
+	buttonDictionary[button.mainId] = button;
 }
 
-/**
- * @param {string} mainId
- */
+/** @param {string} mainId */
 exports.getButton = function (mainId) {
 	return buttonDictionary[mainId];
 }

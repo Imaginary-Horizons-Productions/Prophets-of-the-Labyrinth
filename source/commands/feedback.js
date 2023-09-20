@@ -1,9 +1,8 @@
-const { ModalBuilder, TextInputStyle, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, TextInputBuilder, ModalBuilder, TextInputStyle, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const { CommandWrapper } = require('../classes');
-const { ActionRowBuilder, TextInputBuilder } = require('@discordjs/builders');
 const { MAX_EMBED_TITLE_LENGTH, testGuildId, feedbackChannelId } = require('../constants');
 
-const customId = "feedback";
+const mainId = "feedback";
 const options = [
 	{
 		type: "String",
@@ -14,7 +13,7 @@ const options = [
 	}
 ];
 const subcommands = [];
-module.exports = new CommandWrapper(customId, "Provide feedback on this bot to the developers", PermissionFlagsBits.SendMessages, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Provide feedback on this bot to the developers", PermissionFlagsBits.SendMessages, false, true, 3000, options, subcommands,
 	/** Open the modal associated with the feedback type to prompt more specific information */
 	(interaction) => {
 		if (!testGuildId || !feedbackChannelId) {

@@ -2,7 +2,7 @@
 const { REST, Routes, Client, ActivityType, IntentsBitField, Events } = require("discord.js");
 const { readFile, writeFile } = require("fs").promises;
 
-const { InteractionWrapper } = require("./classes/InteractionWrapper.js");
+const { InteractionWrapper } = require("./classes");
 const { getCommand, slashData } = require("./commands/_commandDictionary.js");
 const { getButton } = require("./buttons/_buttonDictionary.js");
 const { getSelect } = require("./selects/_selectDictionary.js");
@@ -77,14 +77,14 @@ client.on(Events.ClientReady, () => {
  * @param {InteractionWrapper} interactionWrapper
  * @param {string} userId
  */
-function getInteractionCooldownTimestamp({ customId, cooldown }, userId) {
+function getInteractionCooldownTimestamp({ mainId, cooldown }, userId) {
 	const now = Date.now();
 
-	if (!cooldowns.has(customId)) {
-		cooldowns.set(customId, new Map());
+	if (!cooldowns.has(mainId)) {
+		cooldowns.set(mainId, new Map());
 	}
 
-	const timestamps = cooldowns.get(customId);
+	const timestamps = cooldowns.get(mainId);
 	if (timestamps.has(userId)) {
 		const expirationTime = timestamps.get(userId) + cooldown;
 

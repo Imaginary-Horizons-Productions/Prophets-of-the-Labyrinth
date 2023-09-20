@@ -8,11 +8,11 @@ let text = "";
 commandFiles.forEach(filename => {
 	/** @type {CommandWrapper} */
 	const command = require(`./../commands/${filename}`);
-	text += `### /${command.customId}\n${command.data.default_member_permissions ? `> Permission Level: ${new PermissionsBitField(command.data.default_member_permissions).toArray().join(", ")}\n` : ""}\n> Usable in DMs: ${command.data.dm_permission}\n\n> Cooldown: ${command.cooldown / 1000} second(s)\n\n${command.data.description}\n`;
-	for (const optionData of command.data.options) {
+	text += `### /${command.mainId}\n${command.builder.default_member_permissions ? `> Permission Level: ${new PermissionsBitField(command.builder.default_member_permissions).toArray().join(", ")}\n` : ""}\n> Usable in DMs: ${command.builder.dm_permission}\n\n> Cooldown: ${command.cooldown / 1000} second(s)\n\n${command.builder.description}\n`;
+	for (const optionData of command.builder.options) {
 		let optionName = "#### ";
 		if (optionData instanceof SlashCommandSubcommandBuilder) {
-			optionName += `/${command.customId} ${optionData.name}\n`;
+			optionName += `/${command.mainId} ${optionData.name}\n`;
 		} else {
 			optionName += `${optionData.name}${optionData.required ? "" : " (optional)"}\n`;
 		}
