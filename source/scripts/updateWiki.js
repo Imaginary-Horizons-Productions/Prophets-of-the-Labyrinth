@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { commandFiles } = require('../commands/_commandDictionary.js');
-const { CommandWrapper } = require('../classes/InteractionWrapper.js');
+const { CommandWrapper } = require('../classes');
 const { SlashCommandSubcommandBuilder, PermissionsBitField } = require('discord.js');
 
 let text = "";

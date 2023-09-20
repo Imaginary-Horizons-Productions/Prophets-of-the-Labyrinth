@@ -2,7 +2,6 @@
 const { REST, Routes, Client, ActivityType, IntentsBitField, Events } = require("discord.js");
 const { readFile, writeFile } = require("fs").promises;
 
-const { InteractionWrapper } = require("./classes");
 const { getCommand, slashData } = require("./commands/_commandDictionary.js");
 const { getButton } = require("./buttons/_buttonDictionary.js");
 const { getSelect } = require("./selects/_selectDictionary.js");
@@ -21,7 +20,8 @@ const client = new Client({
 	},
 	intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMembers]
 });
-const cooldowns = new Map();
+/** @type {Map<string, Map<string, number>>} */
+const interactionCooldowns = new Map();
 
 client.login(require(authPath).token)
 	.catch(console.error);
@@ -73,40 +73,13 @@ client.on(Events.ClientReady, () => {
 	}
 })
 
-/** returns Unix Timestamp when cooldown will expire or null in case of expired or missing cooldown
- * @param {InteractionWrapper} interactionWrapper
- * @param {string} userId
- */
-function getInteractionCooldownTimestamp({ mainId, cooldown }, userId) {
-	const now = Date.now();
-
-	if (!cooldowns.has(mainId)) {
-		cooldowns.set(mainId, new Map());
-	}
-
-	const timestamps = cooldowns.get(mainId);
-	if (timestamps.has(userId)) {
-		const expirationTime = timestamps.get(userId) + cooldown;
-
-		if (now < expirationTime) {
-			return Math.round(expirationTime / 1000);
-		} else {
-			timestamps.delete(userId);
-		}
-	} else {
-		timestamps.set(userId, now);
-		setTimeout(() => timestamps.delete(userId), cooldown);
-	}
-	return null;
-}
-
 client.on(Events.InteractionCreate, interaction => {
 	if (interaction.isModalSubmit()) {
 		// Modal Submissions are to be handled in the interactions that show them with awaitModalSubmission
 		return;
 	} else if (interaction.isCommand()) {
 		const command = getCommand(interaction.commandName);
-		const cooldownTimestamp = getInteractionCooldownTimestamp(command, interaction.user.id);
+		const cooldownTimestamp = command.getCooldownTimestamp(interaction.user.id, interactionCooldowns);
 		if (cooldownTimestamp) {
 			interaction.reply({ content: `Please wait, the \`/${interaction.commandName}\` command is on cooldown. It can be used again <t:${cooldownTimestamp}:R>.`, ephemeral: true });
 			return;
@@ -132,7 +105,7 @@ client.on(Events.InteractionCreate, interaction => {
 			getter = getSelect;
 		}
 		const interactionWrapper = getter(mainId);
-		const cooldownTimestamp = getInteractionCooldownTimestamp(interactionWrapper, interaction.user.id);
+		const cooldownTimestamp = interactionWrapper.getCooldownTimestamp(interaction.user.id, interactionCooldowns);
 
 		if (cooldownTimestamp) {
 			interaction.reply({ content: `Please wait, this interaction is on cooldown. It can be used again <t:${cooldownTimestamp}:R>.`, ephemeral: true });

@@ -16,6 +16,33 @@ class InteractionWrapper {
 		this.cooldown = cooldownInMS;
 		this.execute = executeFunction;
 	}
+
+	/** returns Unix Timestamp when cooldown will expire or null in case of expired or missing cooldown
+	 * @param {string} userId
+	 * @param {Map<string, Map<string, number>>} cooldownMap
+	 */
+	getCooldownTimestamp(userId, cooldownMap) {
+		const now = Date.now();
+
+		if (!cooldownMap.has(this.mainId)) {
+			cooldownMap.set(this.mainId, new Map());
+		}
+
+		const timestamps = cooldownMap.get(this.mainId);
+		if (timestamps.has(userId)) {
+			const expirationTime = timestamps.get(userId) + this.cooldown;
+
+			if (now < expirationTime) {
+				return Math.round(expirationTime / 1000);
+			} else {
+				timestamps.delete(userId);
+			}
+		} else {
+			timestamps.set(userId, now);
+			setTimeout(() => timestamps.delete(userId), this.cooldown);
+		}
+		return null;
+	}
 };
 
 class ButtonWrapper extends InteractionWrapper {
@@ -104,4 +131,4 @@ class SelectWrapper extends InteractionWrapper {
 	}
 };
 
-module.exports = { InteractionWrapper, ButtonWrapper, CommandWrapper, SelectWrapper };
+module.exports = { ButtonWrapper, CommandWrapper, SelectWrapper };
