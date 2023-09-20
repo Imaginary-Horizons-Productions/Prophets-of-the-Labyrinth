@@ -1,5 +1,4 @@
 ### /data-policy
-> Permission Level: ViewChannel
 
 > Usable in DMs: true
 
@@ -19,7 +18,6 @@ Provide feedback on this bot to the developers
 
 the type of feedback you'd like to provide
 ### /manual
-> Permission Level: ViewChannel
 
 > Usable in DMs: true
 
