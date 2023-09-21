@@ -1,5 +1,5 @@
 const { BuildError } = require("../classes/BuildError.js");
-const { GearTemplate } = require("../classes/Gear.js");
+const { GearTemplate } = require("../classes");
 // const { getEmoji } = require("../elementHelpers.js");
 
 /** @type {Record<string, GearTemplate>} */

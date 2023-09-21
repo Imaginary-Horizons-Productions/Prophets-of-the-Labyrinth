@@ -117,8 +117,6 @@ class GearTemplate {
 	}
 };
 
-module.exports.GearTemplate = GearTemplate;
-
 class Gear {
 	constructor(nameInput, durabilityInput) {
 		this.name = nameInput;
@@ -126,4 +124,7 @@ class Gear {
 	}
 };
 
-module.exports.Gear = Gear;
+module.exports = {
+	Gear,
+	GearTemplate
+};

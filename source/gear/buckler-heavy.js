@@ -1,4 +1,4 @@
-const { GearTemplate } = require('../classes/Gear.js');
+const { GearTemplate } = require('../classes');
 // const { addBlock, removeModifier, addModifier } = require('../combatantDAO.js');
 
 module.exports = new GearTemplate("Heavy Buckler",

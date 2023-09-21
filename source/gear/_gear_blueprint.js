@@ -1,4 +1,4 @@
-const { GearTemplate } = require('../classes/Gear.js');
+const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("name", "description", "element", effect, [])
 	.setCategory("")
