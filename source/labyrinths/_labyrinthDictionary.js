@@ -1,4 +1,4 @@
-const { LabyrinthTemplate } = require("../classes");
+const { Adventure, LabyrinthTemplate } = require("../classes");
 // const { generateRandomNumber } = require("../../helpers.js");
 // const { getRoom } = require("../Rooms/_roomDictionary.js");
 const { itemExists } = require("../items/_itemDictionary.js");

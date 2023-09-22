@@ -1,8 +1,7 @@
-// const Adventure = require("../../Classes/Adventure");
 // const Combatant = require("../../Classes/Combatant");
 // const { calculateTagContent } = require("../../helpers");
 
-const { ModifierTemplate, BuildError } = require("../classes");
+const { Adventure, ModifierTemplate, BuildError } = require("../classes");
 
 /** @type {Record<string, ModifierTemplate>} */
 const MODIFIERS = {};

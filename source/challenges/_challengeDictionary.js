@@ -1,4 +1,4 @@
-const { ChallengeTemplate } = require("../classes");
+const { ChallengeTemplate, Adventure } = require("../classes");
 // const { generateRandomNumber } = require("../../helpers");
 
 /** @type {Record<string, ChallengeTemplate>} */
@@ -22,7 +22,7 @@ exports.getChallenge = function (challengeName) {
 
 /**
  * @param {number} rolls
- * @param {*} adventure
+ * @param {Adventure} adventure
  */
 exports.rollChallenges = function (rolls, adventure) {
 	let challenges = [];

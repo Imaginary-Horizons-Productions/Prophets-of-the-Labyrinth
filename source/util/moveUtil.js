@@ -1,4 +1,4 @@
-const { CombatantReference/*, Adventure*/ } = require("../classes");
+const { CombatantReference, Adventure } = require("../classes");
 
 /** Selects all allies of the user (including themself)
  * @param {Combatant} self

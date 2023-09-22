@@ -1,3 +1,4 @@
+const { Adventure } = require("./Adventure");
 const { CombatantReference } = require("./Combatant");
 
 class ItemTemplate {
@@ -6,8 +7,8 @@ class ItemTemplate {
 	 * @param {string} descriptionInput
 	 * @param {"Fire" | "Earth" | "Untyped" | "Water" | "Wind"} elementLabel
 	 * @param {number} costInput
-	 * @param {(self, adventure) => CombatantReference[]} selectTargetsFunction
-	 * @param {(targets, user, isCrit: boolean, adventure) => string} effectFunction
+	 * @param {(self, adventure: Adventure) => CombatantReference[]} selectTargetsFunction
+	 * @param {(targets, user, isCrit: boolean, adventure: Adventure) => string} effectFunction
 	 */
 	constructor(nameInput, descriptionInput, elementLabel, costInput, selectTargetsFunction, effectFunction) {
 		this.name = nameInput;

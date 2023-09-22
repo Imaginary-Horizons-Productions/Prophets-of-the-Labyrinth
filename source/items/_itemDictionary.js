@@ -1,5 +1,4 @@
-const { BuildError } = require("../classes/BuildError.js");
-const { ItemTemplate } = require("../classes/Item.js");
+const { BuildError, ItemTemplate } = require("../classes");
 
 /** @type {Record<string, ItemTemplate>} */
 const ITEMS = {};

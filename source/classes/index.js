@@ -1,14 +1,16 @@
+const { Adventure, Challenge } = require("./Adventure");
 const { Archetype } = require("./Archetype");
 const { BuildError } = require("./BuildError");
-const { Challenge, ChallengeTemplate } = require("./Challenge");
-const { CombatantReference } = require("./Combatant");
-const { Gear, GearTemplate } = require("./Gear");
+const { ChallengeTemplate } = require("./ChallengeTemplate");
+const { CombatantReference, Gear } = require("./Combatant");
+const { GearTemplate } = require("./GearTemplate");
 const { ButtonWrapper, CommandWrapper, SelectWrapper } = require("./InteractionWrapper");
-const { ItemTemplate } = require("./Item");
-const { LabyrinthTemplate } = require("./Labyrinth");
-const { ModifierTemplate } = require("./Modifier");
+const { ItemTemplate } = require("./ItemTemplate");
+const { LabyrinthTemplate } = require("./LabyrinthTemplate");
+const { ModifierTemplate } = require("./ModifierTemplate");
 
 module.exports = {
+	Adventure,
 	Archetype,
 	BuildError,
 	Challenge,

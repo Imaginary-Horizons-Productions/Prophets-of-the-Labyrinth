@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const { Adventure } = require("./Adventure");
 
 class Archetype {
 	/**
@@ -6,7 +7,7 @@ class Archetype {
 	 * @param {string} description
 	 * @param {"Fire" | "Earth" | "Untyped" | "Water" | "Wind"} elementLabel
 	 * @param {string[]} startingGearNames
-	 * @param {(embed: EmbedBuilder, adventure ) => [isInfoForNextRound: boolean, embed: EmbedBuilder]} predictFunction
+	 * @param {(embed: EmbedBuilder, adventure: Adventure ) => [isInfoForNextRound: boolean, embed: EmbedBuilder]} predictFunction
 	 * @param {(combatant) => string} miniPredictFunction
 	 */
 	constructor(nameInput, descriptionInput, elementLabel, startingGearNames, predictFunction, miniPredictFunction) {

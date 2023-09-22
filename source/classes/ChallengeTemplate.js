@@ -1,8 +1,9 @@
-// const { calculateTagContent } = require("../helpers");
 
 const { ThreadChannel } = require("discord.js");
+const { Adventure } = require("./Adventure");
+// const { calculateTagContent } = require("../helpers");
 
-class ChallengeTemplate { //TODONOW finish
+class ChallengeTemplate {
 	/**
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
@@ -19,7 +20,7 @@ class ChallengeTemplate { //TODONOW finish
 	scoreMultiplier = 1;
 	/** @type {number} */
 	reward = 0;
-	/** @type {((adventure, thread: ThreadChannel) => void) | null} */
+	/** @type {((adventure: Adventure, thread: ThreadChannel) => void) | null} */
 	complete = null;
 
 	/** @param {number} durationInput integer - number of rooms */
@@ -40,7 +41,7 @@ class ChallengeTemplate { //TODONOW finish
 		return this;
 	}
 
-	/** @param {(adventure, thread: ThreadChannel) => void} completeFunction */
+	/** @param {(adventure: Adventure, thread: ThreadChannel) => void} completeFunction */
 	setCompleteEffect(completeFunction) {
 		this.complete = completeFunction;
 		return this;
@@ -60,20 +61,6 @@ class ChallengeTemplate { //TODONOW finish
 	}
 };
 
-class Challenge {
-	/**
-	 * @param {number} intensityInput
-	 * @param {number} rewardInput
-	 * @param {number | null} durationInput
-	 */
-	constructor(intensityInput, rewardInput, durationInput) {
-		this.intensity = intensityInput;
-		this.reward = rewardInput;
-		this.duration = durationInput;
-	}
-}
-
 module.exports = {
-	ChallengeTemplate,
-	Challenge
+	ChallengeTemplate
 }

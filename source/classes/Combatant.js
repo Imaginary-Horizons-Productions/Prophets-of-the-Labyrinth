@@ -9,7 +9,14 @@ class CombatantReference {
 	}
 };
 
+class Gear {
+	constructor(nameInput, durabilityInput) {
+		this.name = nameInput;
+		this.durability = durabilityInput;
+	}
+};
 
 module.exports = {
-	CombatantReference
+	CombatantReference,
+	Gear
 };

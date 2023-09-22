@@ -1,3 +1,5 @@
+const { Adventure } = require("./Adventure");
+
 class GearTemplate {
 	/** This read-only data class defines stats for a piece of equipment
 	 * @param {string} nameInput
@@ -6,7 +8,7 @@ class GearTemplate {
 	 * @param {"Weapon" | "Armor" | "Spell" | "Pact" | "Trinket" | "Technique"} categoryInput
 	 * @param {"Fire" | "Water" | "Earth" | "Wind" | "Untyped"} elementInput
 	 * @param {number} costInput
-	 * @param {(targets, user, isCrit: boolean, adventure) => string} effectInput
+	 * @param {(targets, user, isCrit: boolean, adventure: Adventure) => string} effectInput
 	 */
 	constructor(nameInput, descriptionInput, critDescriptionInput, categoryInput, elementInput, costInput, effectInput) {
 		this.name = nameInput;
@@ -117,14 +119,6 @@ class GearTemplate {
 	}
 };
 
-class Gear {
-	constructor(nameInput, durabilityInput) {
-		this.name = nameInput;
-		this.durability = durabilityInput;
-	}
-};
-
 module.exports = {
-	Gear,
 	GearTemplate
 };
