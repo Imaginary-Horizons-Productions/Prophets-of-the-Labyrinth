@@ -5,6 +5,7 @@ const { CombatantReference } = require("./Combatant");
 const { Gear, GearTemplate } = require("./Gear");
 const { ButtonWrapper, CommandWrapper, SelectWrapper } = require("./InteractionWrapper");
 const { ItemTemplate } = require("./Item");
+const { LabyrinthTemplate } = require("./Labyrinth");
 const { ModifierTemplate } = require("./Modifier");
 
 module.exports = {
@@ -19,5 +20,6 @@ module.exports = {
 	CommandWrapper,
 	SelectWrapper,
 	ItemTemplate,
+	LabyrinthTemplate,
 	ModifierTemplate
 };
