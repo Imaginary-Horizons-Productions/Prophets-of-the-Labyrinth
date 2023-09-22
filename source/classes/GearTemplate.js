@@ -1,4 +1,5 @@
 const { Adventure } = require("./Adventure");
+const { Combatant } = require("./Combatant");
 
 class GearTemplate {
 	/** This read-only data class defines stats for a piece of equipment
@@ -8,7 +9,7 @@ class GearTemplate {
 	 * @param {"Weapon" | "Armor" | "Spell" | "Pact" | "Trinket" | "Technique"} categoryInput
 	 * @param {"Fire" | "Water" | "Earth" | "Wind" | "Untyped"} elementInput
 	 * @param {number} costInput
-	 * @param {(targets, user, isCrit: boolean, adventure: Adventure) => string} effectInput
+	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} effectInput
 	 */
 	constructor(nameInput, descriptionInput, critDescriptionInput, categoryInput, elementInput, costInput, effectInput) {
 		this.name = nameInput;
@@ -41,6 +42,8 @@ class GearTemplate {
 	priority;
 	/** @type {{name: string, stacks: number}[]} */
 	modifiers;
+	/** @type {import("discord.js").EmbedField} */
+	flavorText;
 
 	/** @param {{target: "single" | "all" | "random→x" | "self" | "none", team: "delver" | "enemy" | "any" | "none"}} tagObject */
 	setTargetingTags(tagObject) {
@@ -115,6 +118,12 @@ class GearTemplate {
 	/** @param {{name: string, stacks: number}[]} modifiersArray */
 	setModifiers(modifiersArray) {
 		this.modifiers = modifiersArray;
+		return this;
+	}
+
+	/** @param {import("discord.js").EmbedField} fieldObject */
+	setFlavorText(fieldObject) {
+		this.flavorText = fieldObject;
 		return this;
 	}
 };

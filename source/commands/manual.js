@@ -58,6 +58,11 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 					fields.push({ name: "Can be Tinkered Into", value: sidegrades.join(", ") });
 				}
 
+				const extraField = getGearProperty(gearName, "flavorText");
+				if (extraField) {
+					fields.push(extraField);
+				}
+
 				interaction.reply({
 					embeds: [
 						//	embedTemplate(interaction.client.user.displayAvatarURL()).setColor(getColor(getEquipmentProperty(gearName, "element")))
