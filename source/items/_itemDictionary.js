@@ -5,21 +5,21 @@ const { ItemTemplate } = require("../classes/Item.js");
 const ITEMS = {};
 
 for (const file of [
-	// "blockpotion.js",
-	// "earthenpotion.js",
+	"blockpotion.js",
+	"earthenpotion.js",
 	"explosionpotion.js",
-	// "fierypotion.js",
+	"fierypotion.js",
 	"healthpotion.js",
-	// "oblivionsalt.js",
-	// "quickpepper.js",
-	// "regenroot.js",
-	// "repairkit.js",
-	// "smokebomb.js",
-	// "stasisquartz.js",
-	// "strengthspinach.js",
-	// "vitamins.js",
-	// "waterypotion.js",
-	// "windypotion.js"
+	"oblivionsalt.js",
+	"quickpepper.js",
+	"regenroot.js",
+	"repairkit.js",
+	"smokebomb.js",
+	"stasisquartz.js",
+	"strengthspinach.js",
+	"vitamins.js",
+	"waterypotion.js",
+	"windypotion.js"
 ]) {
 	const item = require(`./${file}`);
 	if (item.name in ITEMS) {
