@@ -101,8 +101,8 @@ class Adventure {
 		return this.challenges[challengeName]?.duration || 0;
 	}
 
-	getEquipmentCapacity() {
-		let count = 4 + this.getArtifactCount("Hammerspace Holster") - this.getChallengeIntensity("Can't Hold All this Value");
+	getGearCapacity() {
+		let count = 3 + this.getArtifactCount("Hammerspace Holster") - this.getChallengeIntensity("Can't Hold All this Value");
 		count = Math.min(MAX_MESSAGE_ACTION_ROWS, count);
 		count = Math.max(1, count);
 		return count;
