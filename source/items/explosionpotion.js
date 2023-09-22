@@ -1,5 +1,5 @@
 const { ItemTemplate } = require("../classes");
-const { selectAllFoes } = require("../util/moveUtil");
+const { selectAllFoes } = require("../util/actionComponents");
 // const { dealDamage } = require("../combatantDAO.js");
 
 module.exports = new ItemTemplate("Explosion Potion",

@@ -56,3 +56,6 @@ exports.getVersionEmbed = async function (avatarURL) {
 	}
 	return embed.addFields({ name: "Become a Sponsor", value: "Chip in for server costs or get premium features by sponsoring [{bot} on GitHub]( url goes here )" });
 }
+
+/** @param {string?} tag */
+exports.generateRuntimeTemplateStringRegExp = (tag) => new RegExp(`@{(${tag ?? "[a-zA-Z]+"})}`, "g");

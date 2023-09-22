@@ -1,10 +1,9 @@
 const crypto = require("crypto");
 const { MAX_MESSAGE_ACTION_ROWS } = require("../constants.js");
-const { CombatantReference } = require("./Combatant.js");
-// const Combatant = require("./Combatant.js");
+const { CombatantReference } = require("./Move.js");
+const { Combatant, Delver } = require("./Combatant.js");
+const { Room } = require("./Room.js");
 // const Resource = require("./Resource.js");
-// const { Room } = require("./Room.js");
-// const Delver = require("./Delver.js");
 
 class Adventure {
 	/** This read-write payload class describes an ongoing adventure
@@ -109,6 +108,30 @@ class Adventure {
 		return count;
 	}
 
+	/** Get a delver or enemy based on the team and index of the combatant
+	 * @param {CombatantReference} reference
+	 * @returns {Combatant | null}
+	 */
+	getCombatant({ team, index }) {
+		switch (team) {
+			case "delver":
+				return this.delvers[index];
+			case "enemy":
+				return this.room.enemies[index];
+			case "none":
+				return null;
+		}
+	}
+
+	/** @param {Combatant} combatant */
+	getCombatantIndex(combatant) {
+		if (combatant.team === "delver") {
+			return this.delvers.findIndex(delver => delver.id === combatant.id);
+		} else {
+			return this.room.enemies.findIndex(enemy => enemy.id === combatant.id && enemy.name === combatant.name);
+		}
+	}
+
 	/** @param {number} integer */
 	gainGold(integer) {
 		this.gold += integer;
@@ -175,21 +198,6 @@ class Adventure {
 			this.room.resources[resource.name].count += resource.count;
 		} else {
 			this.room.resources[resource.name] = resource;
-		}
-	}
-
-	/** Get a delver or enemy based on the team and index of the combatant
-	 * @param {CombatantReference} reference
-	 * @returns {Combatant | null}
-	 */
-	getCombatant({ team, index }) {
-		switch (team) {
-			case "delver":
-				return this.delvers[index];
-			case "enemy":
-				return this.room.enemies[index];
-			case "none":
-				return null;
 		}
 	}
 };

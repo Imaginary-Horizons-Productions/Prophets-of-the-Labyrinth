@@ -1,5 +1,5 @@
 const { ItemTemplate } = require("../classes");
-const { selectSelf } = require("../util/moveUtil");
+const { selectSelf } = require("../util/actionComponents");
 // const { addModifier } = require("../combatantDAO.js");
 
 module.exports = new ItemTemplate("Quick Pepper",

@@ -1,5 +1,5 @@
 const { ItemTemplate } = require("../classes");
-const { selectSelf } = require("../util/moveUtil.js");
+const { selectSelf } = require("../util/actionComponents.js");
 // const { addModifier } = require("../combatantDAO.js");
 // const { getEmoji } = require("../elementHelpers.js");
 
