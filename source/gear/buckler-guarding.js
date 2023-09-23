@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { needsLivingTargets } = require('../util/actionComponents');
 // const { addBlock, removeModifier, addModifier } = require('../combatantDAO.js');
 
 module.exports = new GearTemplate("Guarding Buckler",
@@ -7,7 +8,7 @@ module.exports = new GearTemplate("Guarding Buckler",
 	"Armor",
 	"Earth",
 	350,
-	([target], user, isCrit, adventure) => {
+	needsLivingTargets(([target], user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger, powerUp], block, critBonus } = module.exports;
 		if (user.element === element) {
 			removeModifier(user, elementStagger);
@@ -21,7 +22,7 @@ module.exports = new GearTemplate("Guarding Buckler",
 		addModifier(user, powerUp);
 		const userName = user.getName(adventure.room.enemyIdMap);
 		return `Damage will be Blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}. ${userName} is Powered Up.`;
-	}
+	})
 ).setTargetingTags({ target: "single", team: "delver" })
 	.setSidegrades("Devoted Buckler", "Heavy Buckler")
 	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }])

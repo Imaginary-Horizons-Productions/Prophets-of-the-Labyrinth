@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { needsLivingTargets } = require('../util/actionComponents');
 // const { dealDamage, addModifier } = require('../combatantDAO.js');
 
 module.exports = new GearTemplate("Lance",
@@ -7,11 +8,7 @@ module.exports = new GearTemplate("Lance",
 	"Weapon",
 	"Earth",
 	200,
-	([target], user, isCrit, adventure) => {
-		if (target.hp < 1) {
-			return ` ${target.getName(adventure.room.enemyIdMap)} was already dead!`;
-		}
-
+	needsLivingTargets(([target], user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger], damage, critBonus } = module.exports;
 		if (user.element === element) {
 			addModifier(target, elementStagger);
@@ -23,7 +20,7 @@ module.exports = new GearTemplate("Lance",
 			damage += powerUpStacks;
 		}
 		return dealDamage([target], user, damage, false, element, adventure);
-	}
+	})
 ).setUpgrades("Accelerating Lance", "Piercing Lance", "Vigilant Lance")
 	.setTargetingTags({ target: "single", team: "enemy" })
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
