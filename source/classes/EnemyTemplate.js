@@ -50,51 +50,7 @@ class EnemyTemplate {
 	}
 };
 
-class Enemy extends Combatant {
-	/** This read-only data class defines an enemy players can fight
-	 * @param {EnemyTemplate} enemyTemplate
-	 */
-	constructor(enemyTemplate) {
-		super(enemyTemplate.name, "enemy");
-		this.archetype = enemyTemplate.name;
-		/** @type {"Fire" | "Water" | "Wind" | "Earth" | "Untyped"} */
-		this.element = enemyTemplate.element;
-		this.speed = enemyTemplate.speed;
-		this.poise = enemyTemplate.poise;
-		this.critBonus = enemyTemplate.critBonus;
-		this.nextAction = enemyTemplate.firstAction;
-		this.modifiers = enemyTemplate.startingModifiers; //TODO check if shared modifiers bug still happens in this implementation
-	}
-
-	/** @param {number} integer */
-	setHP(integer) {
-		this.hp = integer;
-		this.maxHP = integer;
-		return this;
-	}
-
-	/** @param {Adventure} adventure */
-	setId(adventure) {
-		if (adventure.room.enemyIdMap[this.name]) {
-			adventure.room.enemyIdMap[this.name]++;
-			this.id = adventure.room.enemyIdMap[this.name];
-		} else {
-			adventure.room.enemyIdMap[this.name] = 1;
-			this.id = 1;
-		}
-	}
-
-	/** @param {{[enemyName: string]: number}} enemyIdMap */
-	getName(enemyIdMap) {
-		if (enemyIdMap[this.name] > 1) {
-			return `${this.name} ${this.id}`;
-		} else {
-			return this.name;
-		}
-	}
-}
 
 module.exports = {
-	EnemyTemplate,
-	Enemy
+	EnemyTemplate
 };

@@ -1,9 +1,7 @@
 const crypto = require("crypto");
 const { MAX_MESSAGE_ACTION_ROWS } = require("../constants.js");
-const { CombatantReference } = require("./Move.js");
+const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
-const { Room } = require("./Room.js");
-// const Resource = require("./Resource.js");
 
 class Adventure {
 	/** This read-write payload class describes an ongoing adventure
@@ -213,9 +211,116 @@ class Challenge {
 		this.reward = rewardInput;
 		this.duration = durationInput;
 	}
+};
+
+class Room {
+	/** This read-write payload class describes a room in an adventure
+	 * @param {string} titleInput
+	 * @param {"Fire" | "Water" | "Wind" | "Earth" | "Untyped"} elementEnum
+	 * @param {{[enemyName: string]: number}} enemyList
+	 */
+	constructor(titleInput, elementEnum, enemyList) {
+		this.title = titleInput;
+		this.element = elementEnum;
+		if (Object.keys(enemyList).length > 0) {
+			this.round = -1;
+			this.moves = [];
+			this.enemies = [];
+			this.enemyIdMap = {};
+		}
+	}
+	/** @type {number | null} */
+	round = null;
+	/** @type {Move[] | null} */
+	moves = null;
+	/** @type {Enemy[] | null} */
+	enemies = null;
+	/** @type {{[enemyName: string]: number} | null} */
+	enemyIdMap = null;
 }
+
+class Enemy extends Combatant {
+	/** This read-only data class defines an enemy players can fight
+	 * @param {string} nameInput
+	 * @param {"Fire" | "Water" | "Earth" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
+	 * @param {number} speedInput
+	 * @param {number} poiseInput
+	 * @param {number} critBonusInput
+	 * @param {string} firstActionName
+	 * @param {{[modifierName]: number}} startingModifiers
+	 */
+	constructor(nameInput, elementEnum, speedInput, poiseInput, critBonusInput, firstActionName, startingModifiers) {
+		super(nameInput, "enemy");
+		this.archetype = nameInput;
+		/** @type {"Fire" | "Water" | "Wind" | "Earth" | "Untyped"} */
+		this.element = elementEnum;
+		this.speed = speedInput;
+		this.poise = poiseInput;
+		this.critBonus = critBonusInput;
+		this.nextAction = firstActionName;
+		this.modifiers = startingModifiers; //TODO check if shared modifiers bug still happens in this implementation
+	}
+
+	/** @param {number} integer */
+	setHP(integer) {
+		this.hp = integer;
+		this.maxHP = integer;
+		return this;
+	}
+
+	/** @param {Adventure} adventure */
+	setId(adventure) {
+		if (adventure.room.enemyIdMap[this.name]) {
+			adventure.room.enemyIdMap[this.name]++;
+			this.id = adventure.room.enemyIdMap[this.name];
+		} else {
+			adventure.room.enemyIdMap[this.name] = 1;
+			this.id = 1;
+		}
+	}
+
+	/** @param {{[enemyName: string]: number}} enemyIdMap */
+	getName(enemyIdMap) {
+		if (enemyIdMap[this.name] > 1) {
+			return `${this.name} ${this.id}`;
+		} else {
+			return this.name;
+		}
+	}
+};
+
+class Resource {
+	/** This read-write payload class describes a single resource available in an adventure's room
+	 * @param {string} nameInput Note: all names in the combined pool of equipment, artifacts, consumables, and resources must be unique
+	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge"| "item"} resourceTypeInput
+	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
+	 * @param {number} countInput
+	 */
+	constructor(nameInput, resourceTypeInput, visibilityInput, countInput) {
+		this.name = nameInput;
+		this.resourceType = resourceTypeInput;
+		this.visibility = visibilityInput;
+		this.count = countInput;
+	}
+	cost = 0;
+
+	/** @param {number} integer */
+	setCost(integer) {
+		this.cost = integer;
+		return this;
+	}
+
+	/** @param {string} groupName Only necessary for UI with multiple generated selects (eg merchants) */
+	setUIGroup(groupName) {
+		this.uiGroup = groupName;
+		return this;
+	}
+};
 
 module.exports = {
 	Adventure,
-	Challenge
-};
+	Challenge,
+	Enemy,
+	Resource,
+	Room
+}

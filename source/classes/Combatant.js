@@ -56,7 +56,7 @@ class Delver extends Combatant {
 	 * @param {string} archetypeName
 	 * @param {"Fire" | "Water" | "Earth" | "Wind" | "Untyped"} elementEnum
 	 */
-	setArchetype(archetypeName, elementEnum) { //TODONOW destructure entire archetypeTemplate here
+	setArchetype(archetypeName, elementEnum) {
 		this.archetype = archetypeName;
 		this.element = elementEnum;
 		return this;
