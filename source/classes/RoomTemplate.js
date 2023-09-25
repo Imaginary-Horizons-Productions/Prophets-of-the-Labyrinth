@@ -3,7 +3,7 @@ const { Adventure } = require("./Adventure");
 
 class RoomTemplate {
 	/** This read-only data class defines stats for a room
-	 * @param {string} titleText room titles double as the id, so must be unique (likely to change for localization)
+	 * @param {string} titleText room titles double as the id, so must be unique
 	 * @param {"Fire" | "Water" | "Wind" | "Earth" | "Untyped" | "@{adventure}" | "@{adventureOpposite}"} elementEnum
 	 * @param {string} descriptionInput
 	 * @param {ResourceTemplate[]} resourceArray
@@ -15,12 +15,7 @@ class RoomTemplate {
 		this.resourceList = resourceArray;
 	}
 	enemyList = {};
-
-	/**
-	 * @param {Adventure} adventure
-	 * @returns {ActionRowBuilder[]}
-	 */
-	buildUI(adventure) { return [] };
+	buildUI = null;
 
 	/**
 	 * @param {string} enemyName
@@ -30,23 +25,31 @@ class RoomTemplate {
 		this.enemyList[enemyName] = countExpression;
 		return this;
 	}
+
+	/** @param {(adventure: Adventure) => ActionRowBuilder[]} buildUIFunction */
+	setBuildUI(buildUIFunction) {
+		this.buildUI = buildUIFunction;
+	}
 };
 
 class ResourceTemplate {
 	/** This read-only data class that defines resources available for placement in rooms
 	 * @param {string} countExpression
 	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
-	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge" | "item"} resourceTypeInput
+	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge" | "item" | string} resourceTypeInput categories (eg "item", "gear") are random rolls, specific names allowed
 	 */
 	constructor(countExpression, visibilityInput, resourceTypeInput) {
 		this.count = countExpression;
 		this.visibility = visibilityInput;
+		if (visibilityInput === "loot") {
+			this.costMultiplier = 0;
+		} else {
+			this.costMultiplier = 1;
+		}
 		this.resourceType = resourceTypeInput;
 	}
 	/** @type {"Cursed" | "Common" | "Rare" | "?"} */
 	tier = null;
-	/** @type {string} */
-	cost = null;
 	/** @type {string} */
 	uiGroup = null;
 
@@ -56,13 +59,13 @@ class ResourceTemplate {
 		return this;
 	}
 
-	/** @param {number} integer */
-	setCost(integer) {
-		this.cost = integer;
+	/** @param {number} costMultiplierInput */
+	setCostMultiplier(costMultiplierInput) {
+		this.costMultiplier = costMultiplierInput;
 		return this;
 	}
 
-	/** @param {string} groupName Only necessary for UI with multiple generated selects (eg merchants) */
+	/** @param {string} groupName for UI with multiple selects (eg merchants) */
 	setUIGroup(groupName) {
 		this.uiGroup = groupName;
 		return this;
