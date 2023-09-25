@@ -22,7 +22,6 @@ class Combatant {
 	block = 0;
 	crit = false;
 	roundSpeed = 0;
-	actionSpeed = 0;
 	/** @type {{[modifierName: string]: number}} */
 	modifiers = {};
 

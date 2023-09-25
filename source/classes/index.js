@@ -9,7 +9,7 @@ const { ButtonWrapper, CommandWrapper, SelectWrapper } = require("./InteractionW
 const { ItemTemplate } = require("./ItemTemplate");
 const { LabyrinthTemplate } = require("./LabyrinthTemplate");
 const { ModifierTemplate } = require("./ModifierTemplate");
-const { CombatantReference } = require("./Move");
+const { CombatantReference, Move } = require("./Move");
 const { Room } = require("./Room");
 
 module.exports = {
@@ -30,6 +30,7 @@ module.exports = {
 	ItemTemplate,
 	LabyrinthTemplate,
 	ModifierTemplate,
+	Move,
 	Room,
 	SelectWrapper
 };
