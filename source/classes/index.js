@@ -10,7 +10,7 @@ const { ItemTemplate } = require("./ItemTemplate");
 const { LabyrinthTemplate } = require("./LabyrinthTemplate");
 const { ModifierTemplate } = require("./ModifierTemplate");
 const { CombatantReference, Move } = require("./Move");
-const { ResourceTemplate } = require("./RoomTemplate");
+const { ResourceTemplate, RoomTemplate } = require("./RoomTemplate");
 
 module.exports = {
 	Adventure,
@@ -34,5 +34,6 @@ module.exports = {
 	Resource,
 	ResourceTemplate,
 	Room,
+	RoomTemplate,
 	SelectWrapper
 };
