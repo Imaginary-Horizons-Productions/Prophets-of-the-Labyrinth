@@ -1,7 +1,8 @@
-const { EmbedBuilder } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { itemExists, getItem, itemNames } = require('../items/_itemDictionary');
 const { gearExists, getGearProperty, buildGearDescription, gearNames } = require('../gear/_gearDictionary');
+const { getAllArtifactNames, getArtifact } = require('../artifacts/_artifactDictionary');
+const { generateArtifactEmbed, embedTemplate } = require('../util/embedUtil');
 
 const mainId = "manual";
 const options = [];
@@ -14,7 +15,7 @@ const subcommands = [
 				type: "String",
 				name: "gear-name",
 				description: "Input is case-sensitive",
-				required: false,
+				required: true,
 				autocomplete: gearNames.map(name => ({ name, value: name }))
 			}
 		]
@@ -27,8 +28,21 @@ const subcommands = [
 				type: "String",
 				name: "item-name",
 				description: "Input is case-sensitive",
-				required: false,
+				required: true,
 				autocomplete: itemNames.map(name => ({ name, value: name }))
+			}
+		]
+	},
+	{
+		name: "artifact-info",
+		description: "Look up details on an artifact",
+		optionsInput: [
+			{
+				type: "String",
+				name: "artifact-name",
+				description: "Input is case-sensitive",
+				required: true,
+				autocomplete: getAllArtifactNames().map(name => ({ name, value: name }))
 			}
 		]
 	}
@@ -65,8 +79,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 
 				interaction.reply({
 					embeds: [
-						//	embedTemplate(interaction.client.user.displayAvatarURL()).setColor(getColor(getEquipmentProperty(gearName, "element")))
-						new EmbedBuilder()
+						embedTemplate() //.setColor(getColor(getEquipmentProperty(gearName, "element")))
 							.setTitle(gearName)
 							.setDescription(buildGearDescription(gearName, true))
 							.addFields(fields)
@@ -83,8 +96,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 				}
 
 				const { element, description, flavorText } = getItem(itemName);
-				// const embed = embedTemplate(interaction.client.user.displayAvatarURL()).setColor(getColor(element))
-				const embed = new EmbedBuilder()
+				const embed = embedTemplate() //.setColor(getColor(element))
 					.setTitle(itemName)
 					.setDescription(description);
 				// const adventure = getAdventure(interaction.channelId);
@@ -96,6 +108,16 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 					embed.addFields(flavorText);
 				}
 				interaction.reply({ embeds: [embed], ephemeral: true });
+				break;
+			case subcommands[2].name: // artifact-info
+				const artifactName = interaction.options.getString(subcommands[2].optionsInput[0].name);
+				const artifactTemplate = getArtifact(artifactName);
+				if (!artifactTemplate) {
+					interaction.reply({ content: `Could not find an artifact named ${artifactName}.`, ephemeral: true });
+					return;
+				}
+
+				interaction.reply({ embeds: [generateArtifactEmbed(artifactTemplate, 1, null)], ephemeral: true });
 				break;
 		}
 	}
