@@ -1,5 +1,5 @@
 const { Adventure, ModifierTemplate, BuildError, Combatant } = require("../classes");
-// const { calculateTagContent } = require("../../helpers");
+const { calculateTagContent } = require("../util/textUtil");
 
 /** @type {Record<string, ModifierTemplate>} */
 const MODIFIERS = {};

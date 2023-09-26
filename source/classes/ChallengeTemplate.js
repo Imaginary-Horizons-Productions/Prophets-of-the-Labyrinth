@@ -1,7 +1,7 @@
 
 const { ThreadChannel } = require("discord.js");
 const { Adventure } = require("./Adventure");
-// const { calculateTagContent } = require("../helpers");
+const { calculateTagContent } = require("../util/textUtil");
 
 class ChallengeTemplate {
 	/**

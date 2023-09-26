@@ -71,6 +71,29 @@ class Adventure {
 		return this;
 	}
 
+	/** Generate an integer between 0 and the given `exclusiveMax`
+	 * @param {number} exclusiveMax the integer after the max roll
+	 * @param {"general" | "battle"} branch which rnTable branch to roll on
+	 */
+	generateRandomNumber(exclusiveMax, branch) {
+		if (typeof exclusiveMax !== 'number' || isNaN(exclusiveMax)) {
+			throw new Error(`generateRandomNumber recieved invalid exclusiveMax: ${exclusiveMax}`);
+		}
+
+		if (exclusiveMax === 1) {
+			return 0;
+		} else {
+			const digits = Math.ceil(Math.log2(exclusiveMax) / Math.log2(12));
+			const start = this.rnIndices[branch];
+			const end = start + digits;
+			this.rnIndices[branch] = end % this.rnTable.length;
+			const max = 12 ** digits;
+			const sectionLength = max / exclusiveMax;
+			const roll = parseInt(this.rnTable.slice(start, end), 12);
+			return Math.floor(roll / sectionLength);
+		}
+	}
+
 	/** Get an array with Untyped and all elements in the party
 	 * @returns {string[]}
 	 */

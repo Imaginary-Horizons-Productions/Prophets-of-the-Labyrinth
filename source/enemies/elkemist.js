@@ -1,5 +1,4 @@
 const { EnemyTemplate } = require("../classes");
-const { generateRandomNumber } = require("../../helpers.js");
 const { isBuff } = require("../modifiers/_modifierDictionary.js");
 // const { addBlock, dealDamage, addModifier, removeModifier } = require("../combatantDAO.js");
 const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../util/actionComponents.js");
@@ -20,9 +19,9 @@ module.exports = new EnemyTemplate("Elkemist",
 		// Gain block and medium progress
 		removeModifier(user, { name: "Stagger", stacks: 1 });
 		if (isCrit) {
-			addModifier(user, { name: "Progress", stacks: 60 + generateRandomNumber(adventure, 46, "battle") });
+			addModifier(user, { name: "Progress", stacks: 60 + adventure.generateRandomNumber(46, "battle") });
 		} else {
-			addModifier(user, { name: "Progress", stacks: 45 + generateRandomNumber(adventure, 31, "battle") });
+			addModifier(user, { name: "Progress", stacks: 45 + adventure.generateRandomNumber(31, "battle") });
 		}
 		addBlock(user, 200);
 		return "It gathers some materials, fortifying its laboratory to Block incoming damage.";
@@ -39,7 +38,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		if (isCrit) {
 			damage *= 2;
 		}
-		addModifier(user, { name: "Progress", stacks: 15 + generateRandomNumber(adventure, 16, "battle") });
+		addModifier(user, { name: "Progress", stacks: 15 + adventure.generateRandomNumber(16, "battle") });
 		addModifier(target, { name: "Stagger", stacks: 1 });
 		return dealDamage([target], user, damage, false, user.element, adventure).then(damageText => {
 			return `An obstacle to potion progress is identified and mitigated; ${damageText}`;
@@ -67,7 +66,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		// Remove buffs from all foes and gain progress per removed
-		let progressGained = generateRandomNumber(adventure, 16, "battle");
+		let progressGained = adventure.generateRandomNumber(16, "battle");
 		const affectedDelvers = new Set();
 		if (isCrit) {
 			progressGained += 10;

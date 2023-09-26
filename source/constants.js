@@ -11,6 +11,7 @@ exports.feedbackChannelId = feedbackChannelId;
 const { announcementsChannelId, lastPostedVersion } = require("../config/versionData.json");
 exports.announcementsChannelId = announcementsChannelId;
 exports.lastPostedVersion = lastPostedVersion;
+exports.DISCORD_ICON_URL = "https://cdn.discordapp.com/attachments/618523876187570187/1110265047516721333/discord-mark-blue.png";
 
 exports.SAFE_DELIMITER = "→";
 exports.ZERO_WIDTH_WHITESPACE = "\u200B";

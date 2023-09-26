@@ -1,7 +1,6 @@
 const { Enemy, EnemyTemplate, Adventure } = require("../classes");
-const { generateRuntimeTemplateStringRegExp } = require("../helpers");
 const { getOpposite } = require("./elementUtil");
-// const { generateRandomNumber } = require("../helpers.js");
+const { generateRuntimeTemplateStringRegExp } = require("./textUtil");
 
 const anyTagRegex = generateRuntimeTemplateStringRegExp(null);
 
@@ -13,7 +12,7 @@ module.exports.spawnEnemy = function (enemyTemplate, adventure) {
 	const enemy = new Enemy(enemyTemplate);
 	let hpPercent = 85 + 15 * adventure.delvers.length;
 	if (enemyTemplate.shouldRandomizeHP) {
-		hpPercent += 10 * (2 - generateRandomNumber(adventure, 5, "battle"));
+		hpPercent += 10 * (2 - adventure.generateRandomNumber(5, "battle"));
 	}
 	const pendingHP = Math.ceil(enemy.maxHp * hpPercent / 100);
 	enemy.setHP(pendingHP);

@@ -1,5 +1,5 @@
 const { Archetype } = require("../classes");
-// const { generateTextBar } = require("../../helpers.js");
+const { generateTextBar } = require("../util/textUtil");
 // const { calculateTotalSpeed } = require("../combatantDAO.js");
 
 module.exports = new Archetype("Martial Artist",

@@ -1,5 +1,4 @@
 const { ChallengeTemplate, Adventure } = require("../classes");
-// const { generateRandomNumber } = require("../../helpers");
 
 /** @type {Record<string, ChallengeTemplate>} */
 const CHALLENGES = {};
@@ -28,7 +27,7 @@ exports.rollChallenges = function (rolls, adventure) {
 	let challenges = [];
 	let challengeNames = Object.keys(CHALLENGES);
 	for (let i = 0; i < rolls; i++) {
-		let rolledChallenge = challengeNames[generateRandomNumber(adventure, challengeNames.length, "general")];
+		let rolledChallenge = challengeNames[adventure.generateRandomNumber(challengeNames.length, "general")];
 		if (!challenges.includes(rolledChallenge)) {
 			challenges.push(rolledChallenge);
 		}

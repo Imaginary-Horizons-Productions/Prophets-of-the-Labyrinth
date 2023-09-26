@@ -6,7 +6,7 @@ const { getCommand, slashData } = require("./commands/_commandDictionary.js");
 const { getButton } = require("./buttons/_buttonDictionary.js");
 const { getSelect } = require("./selects/_selectDictionary.js");
 const { SAFE_DELIMITER, authPath, testGuildId, announcementsChannelId, lastPostedVersion } = require("./constants.js");
-const { getVersionEmbed } = require("./helpers.js");
+const { generateVersionEmbed } = require("./util/embedUtil.js");
 //#endregion
 
 //#region Executing Code
@@ -56,7 +56,7 @@ client.on(Events.ClientReady, () => {
 				}
 			}
 
-			getVersionEmbed(client.user.displayAvatarURL()).then(embed => {
+			generateVersionEmbed(client.user.displayAvatarURL()).then(embed => {
 				client.guilds.fetch(testGuildId).then(guild => {
 					guild.channels.fetch(announcementsChannelId).then(announcementsChannel => {
 						announcementsChannel.send({ embeds: [embed] }).then(message => {

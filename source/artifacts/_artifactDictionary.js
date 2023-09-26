@@ -1,5 +1,4 @@
 const { ArtifactTemplate, Adventure } = require("../classes");
-// const { generateRandomNumber } = require("../../helpers.js");
 
 /** @type {Record<string, ArtifactTemplate>} */
 const ARTIFACTS = {};
@@ -47,7 +46,7 @@ exports.getArtifactCounts = function () {
 exports.rollArtifact = function (adventure) {
 	/** @type {ArtifactTemplate[]} */
 	const artifactPool = adventure.getElementPool().reduce((artifacts, element) => artifacts.concat(ROLL_TABLE[element]), []);
-	return artifactPool[generateRandomNumber(adventure, artifactPool.length, "general")];
+	return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 }
 
 exports.getAllArtifactNames = function () {

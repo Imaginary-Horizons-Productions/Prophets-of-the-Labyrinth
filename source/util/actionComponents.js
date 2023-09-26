@@ -1,5 +1,4 @@
 const { CombatantReference, Adventure, Combatant } = require("../classes");
-//TODO import generateRandomNumber
 
 /** Wraps standardized move effect in validation for living targets
  * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => Promise<string>} next
@@ -59,7 +58,7 @@ module.exports.selectRandomOtherAlly = function (self, adventure) {
 	if (selfIndex === -1 || otherLivingAllyIndicies.length === 0) {
 		return [new CombatantReference("none", -1)];
 	}
-	const index = otherLivingAllyIndicies[generateRandomNumber(adventure, otherLivingAllyIndicies.length, "battle")];
+	const index = otherLivingAllyIndicies[adventure.generateRandomNumber(otherLivingAllyIndicies.length, "battle")];
 	return [new CombatantReference(self.team, index)];
 }
 
@@ -81,9 +80,9 @@ module.exports.selectAllFoes = function (self, adventure) {
  */
 module.exports.selectRandomFoe = function (self, adventure) {
 	if (self.team === "delver") {
-		return [new CombatantReference("enemy", generateRandomNumber(adventure, adventure.room.enemies.length, "battle"))];
+		return [new CombatantReference("enemy", adventure.generateRandomNumber(adventure.room.enemies.length, "battle"))];
 	} else {
-		return [new CombatantReference("delver", generateRandomNumber(adventure, adventure.delvers.length, "battle"))];
+		return [new CombatantReference("delver", adventure.generateRandomNumber(adventure.delvers.length, "battle"))];
 	}
 }
 

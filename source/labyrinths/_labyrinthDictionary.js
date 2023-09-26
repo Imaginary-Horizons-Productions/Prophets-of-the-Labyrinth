@@ -1,5 +1,4 @@
 const { Adventure, LabyrinthTemplate } = require("../classes");
-// const { generateRandomNumber } = require("../../helpers.js");
 const { gearExists } = require("../gear/_gearDictionary.js");
 const { itemExists } = require("../items/_itemDictionary.js");
 const { getRoom } = require("../rooms/_roomDictionary");
@@ -65,7 +64,7 @@ exports.getLabyrinthProperty = function (labyrinthName, propertyName) {
 exports.rollItem = function (adventure) {
 	const itemPool = adventure.getElementPool().flatMap((element) => LABYRINTHS[adventure.labyrinth].availableConsumables[element]);
 
-	return itemPool[generateRandomNumber(adventure, itemPool.length, "general")];
+	return itemPool[adventure.generateRandomNumber(itemPool.length, "general")];
 }
 
 /** Filters by party element pool and given tier, then rolls a random equipment's name
@@ -75,7 +74,7 @@ exports.rollItem = function (adventure) {
  */
 exports.rollGear = function (tier, adventure) {
 	const pool = adventure.getElementPool().flatMap(element => LABYRINTHS[adventure.labyrinth].availableEquipment[element][tier]);
-	return pool[generateRandomNumber(adventure, pool.length, "general")];
+	return pool[adventure.generateRandomNumber(pool.length, "general")];
 }
 
 /** Internally decide the next boss of the given type, so scouting can provide that information
@@ -84,7 +83,7 @@ exports.rollGear = function (tier, adventure) {
  */
 exports.prerollBoss = function (type, adventure) {
 	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];
-	const roomTitle = roomPool[generateRandomNumber(adventure, roomPool.length, "general")];
+	const roomTitle = roomPool[adventure.generateRandomNumber(roomPool.length, "general")];
 	if (type === "Artifact Guardian") {
 		adventure.artifactGuardians.push(roomTitle);
 	} else {
@@ -113,5 +112,5 @@ exports.rollRoom = function (type, adventure) {
 		return LABYRINTHS["Debug Dungeon"].availableRooms["Empty"][0];
 	}
 	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];
-	return getRoom(roomPool[generateRandomNumber(adventure, roomPool.length, "general")]);
+	return getRoom(roomPool[adventure.generateRandomNumber(roomPool.length, "general")]);
 }

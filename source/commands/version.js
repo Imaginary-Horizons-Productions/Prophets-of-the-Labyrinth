@@ -1,5 +1,5 @@
 const { CommandWrapper } = require('../classes');
-const { getVersionEmbed } = require('../helpers');
+const { generateVersionEmbed } = require('../util/embedUtil');
 
 const mainId = "version";
 const options = [
@@ -15,7 +15,7 @@ module.exports = new CommandWrapper(mainId, "Get the most recent changes or the 
 	/** Send the user the most recent set of patch notes or full change log */
 	(interaction) => {
 		if (interaction.options.getBoolean(options[0].name)) {
-			getVersionEmbed(interaction.client.user.displayAvatarURL()).then(embed => {
+			generateVersionEmbed(interaction.client.user.displayAvatarURL()).then(embed => {
 				interaction.reply({ embeds: [embed], ephemeral: true });
 			}).catch(console.error);
 		} else {

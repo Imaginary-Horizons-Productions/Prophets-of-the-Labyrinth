@@ -1,4 +1,4 @@
-// const { calculateTagContent } = require("../helpers.js");
+const { calculateTagContent } = require("../util/textUtil");
 
 class ArtifactTemplate {
 	/**

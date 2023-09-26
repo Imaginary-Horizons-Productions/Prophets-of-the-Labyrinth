@@ -1,7 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { nextRandom, selectSelf, selectAllFoes } = require("../util/actionComponents.js");
 const { elementsList } = require("../util/elementUtil");
-// const { generateRandomNumber } = require("../../helpers.js");
 // const { addModifier, dealDamage, removeModifier } = require("../combatantDAO.js");
 
 module.exports = new EnemyTemplate("Royal Slime",
@@ -18,7 +17,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		const elementPool = elementsList(["Untyped", user.element]);
-		user.element = elementPool[generateRandomNumber(adventure, elementPool.length, "battle")];
+		user.element = elementPool[adventure.generateRandomNumber(elementPool.length, "battle")];
 		if (isCrit) {
 			addModifier(user, { name: `${user.element} Absorb`, stacks: 5 });
 			removeModifier(user, { name: "Stagger", stacks: 1 });
