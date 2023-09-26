@@ -1,6 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
-// const { getArtifact } = require("../Artifacts/_artifactDictionary.js");
+const { getArtifact } = require("../artifacts/_artifactDictionary");
 
 module.exports = new RoomTemplate("Twin Pedestals",
 	"@{adventure}",

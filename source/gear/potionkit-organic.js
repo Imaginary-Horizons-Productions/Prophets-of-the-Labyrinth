@@ -1,5 +1,4 @@
-const { GearTemplate } = require('../classes/GearTemplate.js');
-// const Resource = require('../../Classes/Resource.js');
+const { GearTemplate, Resource } = require('../classes');
 // const { generateRandomNumber } = require('../../helpers.js');
 // const { removeModifier } = require('../combatantDAO.js');
 
@@ -26,10 +25,10 @@ module.exports = new GearTemplate("Organic Potion Kit",
 		}
 		const randomPotion = rollablePotions[generateRandomNumber(adventure, rollablePotions.length, "battle")];
 		if (isCrit) {
-			adventure.addResource(new Resource(randomPotion, "consumable", critBonus, "loot", 0));
+			adventure.addResource(new Resource(randomPotion, "item", "loot", critBonus));
 			return `${user.getName(adventure.room.enemyIdMap)} sets a double-batch of ${randomPotion} simmering.`;
 		} else {
-			adventure.addResource(new Resource(randomPotion, "consumable", 1, "loot", 0));
+			adventure.addResource(new Resource(randomPotion, "item", "loot", 1));
 			return `${user.getName(adventure.room.enemyIdMap)} sets a batch of ${randomPotion} simmering.`;
 		}
 	}

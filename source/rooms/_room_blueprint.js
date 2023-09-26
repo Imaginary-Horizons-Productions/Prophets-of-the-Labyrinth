@@ -1,4 +1,4 @@
-const { RoomTemplate, ResourceTemplate } = require("../classes/RoomTemplate.js");
+const { RoomTemplate, ResourceTemplate } = require("../classes");
 
 module.exports = new RoomTemplate("name",
 	"element",

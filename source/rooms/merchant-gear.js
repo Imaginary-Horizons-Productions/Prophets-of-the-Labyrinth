@@ -1,4 +1,4 @@
-const { RoomTemplate, ResourceTemplate } = require("../classes/RoomTemplate.js");
+const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER } = require("../../constants.js");
 
 module.exports = new RoomTemplate("Gear Merchant",

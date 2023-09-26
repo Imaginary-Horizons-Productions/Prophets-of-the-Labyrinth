@@ -1,4 +1,4 @@
-const { EnemyTemplate } = require("../classes/EnemyTemplate.js");
+const { EnemyTemplate } = require("../classes");
 // const { addBlock, addModifier, removeModifier, dealDamage } = require("../combatantDAO.js");
 const { selectRandomFoe, selectSelf, nextRandom } = require("../util/actionComponents.js");
 

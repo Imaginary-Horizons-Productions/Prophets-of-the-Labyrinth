@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { RoomTemplate } = require("../classes/RoomTemplate.js");
+const { RoomTemplate } = require("../classes");
 
 module.exports = new RoomTemplate("Elemental Research",
 	"@{adventureOpposite}",

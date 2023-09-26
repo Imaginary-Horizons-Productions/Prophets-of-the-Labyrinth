@@ -1,4 +1,4 @@
-const { EnemyTemplate } = require("../classes/EnemyTemplate.js");
+const { EnemyTemplate } = require("../classes");
 
 module.exports = new EnemyTemplate("@{clone}",
 	"@{clone}",
