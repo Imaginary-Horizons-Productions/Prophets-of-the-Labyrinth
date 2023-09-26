@@ -5,7 +5,7 @@ const { CombatantReference } = require("./Move");
 class EnemyTemplate {
 	/**
 	 * @param {string} nameInput
-	 * @param {"Fire" | "Water" | "Earth" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
 	 * @param {number} maxHPInput
 	 * @param {number} speedInput
 	 * @param {number} poiseInput number of Stagger to Stun
@@ -38,7 +38,7 @@ class EnemyTemplate {
 	/** Set the name, effect, target selector, and move selector of an enemy attack
 	 * @param {object} actionsInput
 	 * @param {string} actionsInput.name
-	 * @param {"Fire" | "Water" | "Wind" | "Earth" | "Untyped" | "@{adventure}" | "@{adventureOpposite}"} actionsInput.element
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}"} actionsInput.element
 	 * @param {number} actionsInput.priority
 	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} actionsInput.effect
 	 * @param {(self: Combatant, adventure: Adventure) => CombatantReference[]} actionsInput.selector

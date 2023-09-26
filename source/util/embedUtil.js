@@ -1,6 +1,7 @@
 const { EmbedBuilder, Colors } = require("discord.js");
 const { Adventure, ArtifactTemplate } = require("../classes");
 const { POTL_ICON_URL } = require("../constants");
+const { getEmoji } = require("./elementUtil");
 
 /** Create a message embed with common settings */
 function embedTemplate() {
@@ -17,7 +18,7 @@ function embedTemplate() {
  */
 function generateArtifactEmbed(artifactTemplate, count, adventure) {
 	const embed = embedTemplate()
-		.setTitle(`${/*getEmoji(artifactTemplate.element)*/ ""} ${artifactTemplate.name} x ${count}`)
+		.setTitle(`${getEmoji(artifactTemplate.element)} ${artifactTemplate.name} x ${count}`)
 		.setDescription(artifactTemplate.dynamicDescription(count))
 		.addFields({ name: "Scaling", value: artifactTemplate.scalingDescription });
 	if (artifactTemplate.flavorText) {

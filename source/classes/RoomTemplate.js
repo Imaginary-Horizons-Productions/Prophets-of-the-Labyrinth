@@ -4,7 +4,7 @@ const { Adventure } = require("./Adventure");
 class RoomTemplate {
 	/** This read-only data class defines stats for a room
 	 * @param {string} titleText room titles double as the id, so must be unique
-	 * @param {"Fire" | "Water" | "Wind" | "Earth" | "Untyped" | "@{adventure}" | "@{adventureOpposite}"} elementEnum
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}"} elementEnum
 	 * @param {string} descriptionInput
 	 * @param {ResourceTemplate[]} resourceArray
 	 */

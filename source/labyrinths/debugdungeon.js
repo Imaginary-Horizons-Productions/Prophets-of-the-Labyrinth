@@ -5,8 +5,10 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 	10,
 	[10],
 	{
+		Darkness: [],
 		Earth: [],
 		Fire: [],
+		Light: [],
 		Water: [],
 		Wind: [],
 		Untyped: [
@@ -28,6 +30,14 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		]
 	},
 	{
+		Darkness: {
+			Cursed: [
+			],
+			Common: [
+			],
+			Rare: [
+			]
+		},
 		Earth: {
 			Cursed: [
 			],
@@ -55,69 +65,6 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Guarding Vigilance Charm",
 				"Piercing Warhammer",
 				"Slowing Warhammer"
-			]
-		},
-		Wind: {
-			Cursed: [
-			],
-			Common: [
-				"Bow",
-				"Cloak",
-				"Daggers",
-				"Inspiration",
-				"Scythe",
-				"Spear",
-				"Sun Flare"
-			],
-			Rare: [
-				"Evasive Bow",
-				"Hunter's Bow",
-				"Mercurial Bow",
-				"Accelerating Cloak",
-				"Long Cloak",
-				"Thick Cloak",
-				"Sharpened Daggers",
-				"Slowing Daggers",
-				"Sweeping Daggers",
-				"Reinforcing Inspiration",
-				"Soothing Inspiration",
-				"Sweeping Inspiration",
-				"Lethal Scythe",
-				"Piercing Scythe",
-				"Toxic Scythe",
-				"Lethal Spear",
-				"Reactive Spear",
-				"Sweeping Spear",
-				"Evasive Sun Flare",
-				"Accelerating Sun Flare",
-				"Tormenting Sun Flare"
-			]
-		},
-		Water: {
-			Cursed: [
-			],
-			Common: [
-				"Blood Aegis",
-				"Life Drain",
-				"Midas Staff",
-				"Potion Kit",
-				"Sickle"
-			],
-			Rare: [
-				"Charging Blood Aegis",
-				"Heavy Blood Aegis",
-				"Sweeping Blood Aegis",
-				"Flanking Life Drain",
-				"Reactive Life Drain",
-				"Urgent Life Drain",
-				"Soothing Midas Staff",
-				"Accelerating Midas Staff",
-				"Guarding Potion Kit",
-				"Organic Potion Kit",
-				"Urgent Potion Kit",
-				"Hunter's Sickle",
-				"Sharpened Sickle",
-				"Toxic Sickle"
 			]
 		},
 		Fire: {
@@ -155,6 +102,77 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Charging War Cry",
 				"Slowing War Cry",
 				"Tormenting War Cry"
+			]
+		},
+		Light: {
+			Cursed: [
+			],
+			Common: [
+			],
+			Rare: [
+			]
+		},
+		Water: {
+			Cursed: [
+			],
+			Common: [
+				"Blood Aegis",
+				"Life Drain",
+				"Midas Staff",
+				"Potion Kit",
+				"Sickle"
+			],
+			Rare: [
+				"Charging Blood Aegis",
+				"Heavy Blood Aegis",
+				"Sweeping Blood Aegis",
+				"Flanking Life Drain",
+				"Reactive Life Drain",
+				"Urgent Life Drain",
+				"Soothing Midas Staff",
+				"Accelerating Midas Staff",
+				"Guarding Potion Kit",
+				"Organic Potion Kit",
+				"Urgent Potion Kit",
+				"Hunter's Sickle",
+				"Sharpened Sickle",
+				"Toxic Sickle"
+			]
+		},
+		Wind: {
+			Cursed: [
+			],
+			Common: [
+				"Bow",
+				"Cloak",
+				"Daggers",
+				"Inspiration",
+				"Scythe",
+				"Spear",
+				"Sun Flare"
+			],
+			Rare: [
+				"Evasive Bow",
+				"Hunter's Bow",
+				"Mercurial Bow",
+				"Accelerating Cloak",
+				"Long Cloak",
+				"Thick Cloak",
+				"Sharpened Daggers",
+				"Slowing Daggers",
+				"Sweeping Daggers",
+				"Reinforcing Inspiration",
+				"Soothing Inspiration",
+				"Sweeping Inspiration",
+				"Lethal Scythe",
+				"Piercing Scythe",
+				"Toxic Scythe",
+				"Lethal Spear",
+				"Reactive Spear",
+				"Sweeping Spear",
+				"Evasive Sun Flare",
+				"Accelerating Sun Flare",
+				"Tormenting Sun Flare"
 			]
 		},
 		Untyped: {

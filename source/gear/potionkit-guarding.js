@@ -4,13 +4,17 @@ const { GearTemplate, Resource } = require('../classes');
 
 const rollablePotions = [
 	"Block Potion",
+	"Clear Potion",
 	"Earthen Potion",
 	"Explosive Potion",
 	"Fiery Potion",
+	"Glowing Potion",
 	"Health Potion",
+	"Inky Potion",
 	"Watery Potion",
 	"Windy Potion"
 ];
+
 
 module.exports = new GearTemplate("Guarding Potion Kit",
 	"Gain @{block} block and add 1 random potion to loot",

@@ -3,7 +3,7 @@ const { Colors } = require("discord.js");
 const ELEMENTS = {
 	"Darkness": {
 		color: Colors.DarkPurple,
-		emoji: "☠",
+		emoji: "💀",
 		opposite: "Light",
 		weaknesses: ["Fire", "Water"],
 		resistances: ["Earth", "Wind"]
@@ -53,7 +53,7 @@ const ELEMENTS = {
 }
 
 /** Get a list of all elements sans provided exclusions
- * @param {string[]} exclusions
+ * @param {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")[]} exclusions
  */
 function elementsList(exclusions = []) {
 	return Object.keys(ELEMENTS).filter(element => !exclusions.includes(element));
@@ -61,22 +61,22 @@ function elementsList(exclusions = []) {
 
 
 /** Get the elements that deals increased damage to the given element
- * @param {string} element
- * @returns {string[]}
+ * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} element
+ * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")[]}
  */
 function getWeaknesses(element) {
 	return ELEMENTS[element]?.weaknesses ?? [];
 }
 
 /** Get the elements that deals reduced damage to the given element
- * @param {string} element
- * @returns {string[]}
+ * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} element
+ * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")[]}
  */
 function getResistances(element) {
 	return ELEMENTS[element]?.resistances ?? [];
 }
 /** Each element has an assigned Discord parseable color
- * @param {string} element
+ * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} element
  * @returns {Colors}
  */
 function getColor(element) {
@@ -84,15 +84,15 @@ function getColor(element) {
 }
 
 /** Each element has an associated emoji
- * @param {string} element
+ * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} element
  */
 function getEmoji(element) {
 	return ELEMENTS[element]?.emoji || "❓";
 }
 
 /** Used in "opposite of adventure" element
- * @param {string} element
- * @returns {string}
+ * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} element
+ * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")}
  */
 function getOpposite(element) {
 	return ELEMENTS[element]?.opposite || "Untyped";

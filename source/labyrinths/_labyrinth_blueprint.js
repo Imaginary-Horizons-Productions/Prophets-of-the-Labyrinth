@@ -5,19 +5,31 @@ module.exports = new LabyrinthTemplate("name",
 	10,
 	[10],
 	{
+		Darkness: [],
 		Earth: [],
 		Fire: [],
+		Light: [],
 		Water: [],
 		Wind: [],
 		Untyped: []
 	},
 	{
+		Darkness: {
+			Cursed: [],
+			Common: [],
+			Rare: []
+		},
 		Earth: {
 			Cursed: [],
 			Common: [],
 			Rare: []
 		},
-		Wind: {
+		Fire: {
+			Cursed: [],
+			Common: [],
+			Rare: []
+		},
+		Light: {
 			Cursed: [],
 			Common: [],
 			Rare: []
@@ -27,7 +39,7 @@ module.exports = new LabyrinthTemplate("name",
 			Common: [],
 			Rare: []
 		},
-		Fire: {
+		Wind: {
 			Cursed: [],
 			Common: [],
 			Rare: []

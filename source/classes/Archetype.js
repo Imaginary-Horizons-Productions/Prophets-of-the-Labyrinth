@@ -5,7 +5,7 @@ class Archetype {
 	/**
 	 * @param {string} nameInput
 	 * @param {string} description
-	 * @param {"Fire" | "Earth" | "Untyped" | "Water" | "Wind"} elementLabel
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementLabel
 	 * @param {string[]} startingGearNames
 	 * @param {(embed: EmbedBuilder, adventure: Adventure ) => [isInfoForNextRound: boolean, embed: EmbedBuilder]} predictFunction
 	 * @param {(combatant) => string} miniPredictFunction

@@ -5,8 +5,11 @@ const { Adventure, ModifierTemplate, BuildError, Combatant } = require("../class
 const MODIFIERS = {};
 
 for (const file of [
+	"absorb-darkness.js",
 	"absorb-earth.js",
 	"absorb-fire.js",
+	"absorb-light.js",
+	"absorb-untyped.js",
 	"absorb-water.js",
 	"absorb-wind.js",
 	"curse-of-midas.js",

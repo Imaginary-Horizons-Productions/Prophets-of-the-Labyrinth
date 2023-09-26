@@ -5,10 +5,13 @@ const ITEMS = {};
 
 for (const file of [
 	"blockpotion.js",
+	"clearpotion.js",
 	"earthenpotion.js",
 	"explosionpotion.js",
 	"fierypotion.js",
+	"glowingpotion.js",
 	"healthpotion.js",
+	"inkypotion.js",
 	"oblivionsalt.js",
 	"quickpepper.js",
 	"regenroot.js",

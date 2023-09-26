@@ -1,0 +1,9 @@
+const { ModifierTemplate } = require("../classes");
+
+module.exports = new ModifierTemplate("Untyped Absorb",
+	"Convert Untyped damage to health for @{stackCount} rounds.",
+	true,
+	false,
+	false,
+	1
+);

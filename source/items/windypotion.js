@@ -1,7 +1,7 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../util/actionComponents.js");
+const { getEmoji } = require("../util/elementUtil");
 // const { addModifier } = require("../combatantDAO.js");
-// const { getEmoji } = require("../elementHelpers.js");
 
 module.exports = new ItemTemplate("Windy Potion",
 	"Grants the user 1 Wind Absorb",

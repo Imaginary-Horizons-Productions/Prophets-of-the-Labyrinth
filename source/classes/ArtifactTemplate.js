@@ -5,7 +5,7 @@ class ArtifactTemplate {
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
 	 * @param {string} scalingDescriptionInput
-	 * @param {"Fire" | "Earth" | "Untyped" | "Water" | "Wind"} elementEnum
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementEnum
 	 */
 	constructor(nameInput, descriptionInput, scalingDescriptionInput, elementEnum) {
 		this.name = nameInput;

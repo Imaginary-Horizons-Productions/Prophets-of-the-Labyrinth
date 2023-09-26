@@ -4,10 +4,13 @@ const { GearTemplate, Resource } = require('../classes');
 
 const rollablePotions = [
 	"Block Potion",
+	"Clear Potion",
 	"Earthen Potion",
 	"Explosive Potion",
 	"Fiery Potion",
+	"Glowing Potion",
 	"Health Potion",
+	"Inky Potion",
 	"Watery Potion",
 	"Windy Potion"
 ];

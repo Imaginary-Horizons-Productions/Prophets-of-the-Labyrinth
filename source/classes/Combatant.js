@@ -11,7 +11,7 @@ class Combatant {
 	id;
 	/** @type {string} archetype for delvers; lookup name for enemies */
 	archetype;
-	/** @type {"Fire" | "Earth" | "Untyped" | "Water" | "Wind"} */
+	/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
 	element;
 	maxHP = 300;
 	speed = 100;
@@ -54,7 +54,7 @@ class Delver extends Combatant {
 
 	/**
 	 * @param {string} archetypeName
-	 * @param {"Fire" | "Water" | "Earth" | "Wind" | "Untyped"} elementEnum
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementEnum
 	 */
 	setArchetype(archetypeName, elementEnum) {
 		this.archetype = archetypeName;

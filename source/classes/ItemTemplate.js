@@ -4,7 +4,7 @@ class ItemTemplate {
 	/**
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
-	 * @param {"Fire" | "Earth" | "Untyped" | "Water" | "Wind"} elementLabel
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementLabel
 	 * @param {number} costInput
 	 * @param {(self, adventure: Adventure) => CombatantReference[]} selectTargetsFunction
 	 * @param {(targets, user, isCrit: boolean, adventure: Adventure) => string} effectFunction

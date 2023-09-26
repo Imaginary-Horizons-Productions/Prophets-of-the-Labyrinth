@@ -8,7 +8,7 @@ class Adventure {
 	 * @param {string} seedInput
 	 * @param {string} guildIdInput
 	 * @param {string} threadId the id of the thread created for the adventure
-	 * @param {"Fire" | "Earth" | "Untyped" | "Water" | "Wind"} elementInput
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementInput
 	 * @param {string} leaderIdInput
 	 */
 	constructor(seedInput, guildIdInput, threadId, nameInput, labyrinthInput, elementInput, leaderIdInput) {
@@ -216,7 +216,7 @@ class Challenge {
 class Room {
 	/** This read-write payload class describes a room in an adventure
 	 * @param {string} titleInput
-	 * @param {"Fire" | "Water" | "Wind" | "Earth" | "Untyped"} elementEnum
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementEnum
 	 * @param {{[enemyName: string]: number}} enemyList
 	 */
 	constructor(titleInput, elementEnum, enemyList) {
@@ -242,7 +242,7 @@ class Room {
 class Enemy extends Combatant {
 	/** This read-only data class defines an enemy players can fight
 	 * @param {string} nameInput
-	 * @param {"Fire" | "Water" | "Earth" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
 	 * @param {number} speedInput
 	 * @param {number} poiseInput
 	 * @param {number} critBonusInput
@@ -252,7 +252,7 @@ class Enemy extends Combatant {
 	constructor(nameInput, elementEnum, speedInput, poiseInput, critBonusInput, firstActionName, startingModifiers) {
 		super(nameInput, "enemy");
 		this.archetype = nameInput;
-		/** @type {"Fire" | "Water" | "Wind" | "Earth" | "Untyped"} */
+		/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
 		this.element = elementEnum;
 		this.speed = speedInput;
 		this.poise = poiseInput;

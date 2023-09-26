@@ -6,10 +6,12 @@ const ARTIFACTS = {};
 
 /** @type {{"Earth": ArtifactTemplate[], "Wind": ArtifactTemplate[], "Water": ArtifactTemplate[], "Fire": ArtifactTemplate[], "Untyped": ArtifactTemplate[]}} */
 const ROLL_TABLE = {
+	Darkness: [],
 	Earth: [],
+	Fire: [],
+	Light: [],
 	Wind: [],
 	Water: [],
-	Fire: [],
 	Untyped: []
 }
 
