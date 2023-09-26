@@ -28,6 +28,8 @@ Get information about how to play or game entities
 Look up details on a piece of gear
 #### /manual item-info
 Look up details on an item
+#### /manual artifact-info
+Look up details on an artifact
 ### /version
 
 > Usable in DMs: true
