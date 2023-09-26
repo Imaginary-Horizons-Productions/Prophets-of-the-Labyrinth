@@ -11,6 +11,7 @@ const { ItemTemplate } = require("./ItemTemplate");
 const { LabyrinthTemplate } = require("./LabyrinthTemplate");
 const { ModifierTemplate } = require("./ModifierTemplate");
 const { CombatantReference, Move } = require("./Move");
+const { Player } = require("./Player");
 const { ResourceTemplate, RoomTemplate } = require("./RoomTemplate");
 
 module.exports = {
@@ -33,6 +34,7 @@ module.exports = {
 	LabyrinthTemplate,
 	ModifierTemplate,
 	Move,
+	Player,
 	Resource,
 	ResourceTemplate,
 	Room,
