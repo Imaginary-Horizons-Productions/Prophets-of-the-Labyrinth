@@ -4,6 +4,7 @@ const { ArtifactTemplate } = require("./ArtifactTemplate");
 const { BuildError } = require("./BuildError");
 const { ChallengeTemplate } = require("./ChallengeTemplate");
 const { Combatant, Delver, Gear } = require("./Combatant");
+const { Company } = require("./Company");
 const { EnemyTemplate } = require("./EnemyTemplate");
 const { GearTemplate } = require("./GearTemplate");
 const { ButtonWrapper, CommandWrapper, SelectWrapper } = require("./InteractionWrapper");
@@ -25,6 +26,7 @@ module.exports = {
 	Combatant,
 	CombatantReference,
 	CommandWrapper,
+	Company,
 	Delver,
 	Enemy,
 	EnemyTemplate,
