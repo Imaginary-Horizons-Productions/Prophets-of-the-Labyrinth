@@ -1,8 +1,8 @@
 const { Adventure, LabyrinthTemplate } = require("../classes");
 // const { generateRandomNumber } = require("../../helpers.js");
-// const { getRoom } = require("../Rooms/_roomDictionary.js");
-const { itemExists } = require("../items/_itemDictionary.js");
 const { gearExists } = require("../gear/_gearDictionary.js");
+const { itemExists } = require("../items/_itemDictionary.js");
+const { getRoom } = require("../rooms/_roomDictionary");
 
 /** @type {Record<string, LabyrinthTemplate>} */
 const LABYRINTHS = {};

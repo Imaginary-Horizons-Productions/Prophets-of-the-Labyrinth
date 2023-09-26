@@ -9,7 +9,7 @@ for (const file of [
 	// "hemomancer.js",
 	"knight.js",
 	// "legionnaire.js",
-	// "martialartist.js",
+	"martialartist.js",
 	// "ritualist.js"
 ]) {
 	const archetype = require(`./${file}`);

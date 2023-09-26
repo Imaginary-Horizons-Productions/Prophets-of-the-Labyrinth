@@ -5,7 +5,7 @@ const { getEmoji } = require("../util/elementUtil");
 const GEAR = {};
 
 for (const file of [
-	// "-punch.js",
+	"_punch.js",
 	// "barrier-base.js",
 	// "barrier-purifying.js",
 	// "barrier-thick.js",
@@ -48,12 +48,16 @@ for (const file of [
 	// "firecracker-double.js",
 	// "firecracker-mercurial.js",
 	// "firecracker-toxic.js",
+	"floatingmiststance-base.js",
+	"floatingmiststance-soothing.js",
 	// "infiniteregeneration-base.js",
 	// "infiniteregeneration-fatesealing.js",
 	// "inspiration-base.js",
 	// "inspiration-reinforcing.js",
 	// "inspiration-soothing.js",
 	// "inspiration-sweeping.js",
+	"ironfiststance-base.js",
+	"ironfiststance-organic.js",
 	"lance-accelerating.js",
 	"lance-base.js",
 	"lance-piercing.js",

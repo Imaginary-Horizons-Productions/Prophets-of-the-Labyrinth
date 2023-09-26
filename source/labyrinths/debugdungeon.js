@@ -13,10 +13,13 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		Wind: [],
 		Untyped: [
 			"Block Potion",
+			"Clear Potion",
 			"Earthen Potion",
 			"Explosion Potion",
 			"Fiery Potion",
+			"Glowing Potion",
 			"Health Potion",
+			"Inky Potion",
 			"Salt of Oblivion",
 			"Quick Pepper",
 			"Regen Root",
@@ -108,8 +111,12 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Floating Mist Stance",
+				"Iron Fist Stance"
 			],
 			Rare: [
+				"Soothing Floating Mist Stance",
+				"Organic Iron Fist Stance"
 			]
 		},
 		Water: {
