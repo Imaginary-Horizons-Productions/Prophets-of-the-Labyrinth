@@ -1,7 +1,7 @@
 const { Enemy, EnemyTemplate, Adventure } = require("../classes");
 const { generateRuntimeTemplateStringRegExp } = require("../helpers");
+const { getOpposite } = require("./elementUtil");
 // const { generateRandomNumber } = require("../helpers.js");
-// const { getOpposite } = require("./elementHelpers.js");
 
 const anyTagRegex = generateRuntimeTemplateStringRegExp(null);
 

@@ -1,5 +1,5 @@
 const { BuildError, GearTemplate } = require("../classes");
-// const { getEmoji } = require("../elementHelpers.js");
+const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
 const GEAR = {};
@@ -149,7 +149,7 @@ exports.buildGearDescription = function (gearName, buildFullDescription) {
 			description = exports.getGearProperty(gearName, "description");
 		}
 
-		description = description.replace(/@{element}/g, "*"/*getEmoji(exports.getGearProperty(gearName, "element"))*/)
+		description = description.replace(/@{element}/g, getEmoji(exports.getGearProperty(gearName, "element")))
 			.replace(/@{critBonus}/g, exports.getGearProperty(gearName, "critBonus"))
 			.replace(/@{damage}/g, exports.getGearProperty(gearName, "damage"))
 			.replace(/@{bonus}/g, exports.getGearProperty(gearName, "bonus"))

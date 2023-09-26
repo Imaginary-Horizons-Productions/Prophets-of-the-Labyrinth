@@ -3,6 +3,7 @@ const { itemExists, getItem, itemNames } = require('../items/_itemDictionary');
 const { gearExists, getGearProperty, buildGearDescription, gearNames } = require('../gear/_gearDictionary');
 const { getAllArtifactNames, getArtifact } = require('../artifacts/_artifactDictionary');
 const { generateArtifactEmbed, embedTemplate } = require('../util/embedUtil');
+const { getColor } = require('../util/elementUtil');
 
 const mainId = "manual";
 const options = [];
@@ -79,7 +80,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 
 				interaction.reply({
 					embeds: [
-						embedTemplate() //.setColor(getColor(getEquipmentProperty(gearName, "element")))
+						embedTemplate().setColor(getColor(getEquipmentProperty(gearName, "element")))
 							.setTitle(gearName)
 							.setDescription(buildGearDescription(gearName, true))
 							.addFields(fields)
@@ -96,7 +97,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 				}
 
 				const { element, description, flavorText } = getItem(itemName);
-				const embed = embedTemplate() //.setColor(getColor(element))
+				const embed = embedTemplate().setColor(getColor(element))
 					.setTitle(itemName)
 					.setDescription(description);
 				// const adventure = getAdventure(interaction.channelId);
