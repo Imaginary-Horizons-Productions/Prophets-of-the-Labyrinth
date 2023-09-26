@@ -1,5 +1,6 @@
 const { Adventure, Challenge, Room, Enemy, Resource } = require("./Adventure");
 const { Archetype } = require("./Archetype");
+const { ArtifactTemplate } = require("./ArtifactTemplate");
 const { BuildError } = require("./BuildError");
 const { ChallengeTemplate } = require("./ChallengeTemplate");
 const { Combatant, Delver, Gear } = require("./Combatant");
@@ -15,6 +16,7 @@ const { ResourceTemplate, RoomTemplate } = require("./RoomTemplate");
 module.exports = {
 	Adventure,
 	Archetype,
+	ArtifactTemplate,
 	BuildError,
 	ButtonWrapper,
 	Challenge,
