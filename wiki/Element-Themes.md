@@ -14,12 +14,12 @@ Weak to: 🔥 Fire, 💦 Water
 Archetypes: Hemomancer
 
 ### Common Variants
-Toxic
-Evasive
-Furious
-Sweeping
-Piercing
-Slowing
+- Toxic
+- Evasive
+- Furious
+- Sweeping
+- Piercing
+- Slowing
 
 ### Uncommon Variants
 
@@ -35,11 +35,11 @@ Weak to: 💀 Darkness, 🔥 Fire
 Archetypes: Knight, Detective
 
 ### Common Variants
-Corroding
-Reckless
-Furious
-Sweeping
-Flanking
+- Corroding
+- Reckless
+- Furious
+- Sweeping
+- Flanking
 
 ### Uncommon Variants
 
@@ -55,12 +55,12 @@ Weak to: ✨ Light, 💨 Wind
 Archetypes: Ritualist, Legionnaire
 
 ### Common Variants
-Staggering
-Charging
-Guarding
-Hunter's
-Flanking
-Organic
+- Staggering
+- Charging
+- Guarding
+- Hunter's
+- Flanking
+- Organic
 
 ### Uncommon Variants
 
@@ -76,11 +76,11 @@ Weak to: 🌿 Earth, 💨 Wind
 Archetypes: Martial Artist
 
 ### Common Variants
-Staggering
-Slowing
-Piercing
-Soothing
-Organic
+- Staggering
+- Slowing
+- Piercing
+- Soothing
+- Organic
 
 ### Uncommon Variants
 
@@ -96,14 +96,14 @@ Weak to: 🌿 Earth, ✨ Light
 Archetypes: Chemist
 
 ### Common Variants
-Toxic
-Hunter's
-Accelerating
-Sweeping
-Thirsting
-Soothing
-Slowing
-Piercing
+- Toxic
+- Hunter's
+- Accelerating
+- Sweeping
+- Thirsting
+- Soothing
+- Slowing
+- Piercing
 
 ### Uncommon Variants
 
@@ -119,11 +119,11 @@ Weak to: 💀 Darkness, 💦 Water
 Archetypes: Assassin
 
 ### Common Variants
-Reaper's
-Evasive
-Accelerating
-Urgent
-Thirsting
+- Reaper's
+- Evasive
+- Accelerating
+- Urgent
+- Thirsting
 
 ### Uncommon Variants
 
