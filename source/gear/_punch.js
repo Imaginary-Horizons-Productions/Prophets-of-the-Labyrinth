@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes/GearTemplate.js');
-// const { dealDamage, addModifier } = require('../combatantDAO.js');
 const { needsLivingTargets } = require('../util/actionComponents.js');
+const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Punch",
 	"Strike a foe for @{damage} @{element} damage",

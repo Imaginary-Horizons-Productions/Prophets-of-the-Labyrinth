@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 
 module.exports = new RoomTemplate("Elemental Research",
-	"@{adventureOpposite}",
+	"@{adventureWeakness}",
 	"An imp wearing glasses approaches you with a contract. If you allow your element to be changed to @{roomElement}, you'll be compensated.",
 	[]
 ).setBuildUI(

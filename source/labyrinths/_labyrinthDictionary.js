@@ -44,7 +44,7 @@ for (const file of [
  * @param {string} propertyName
  * @returns {unknown}
  */
-exports.getLabyrinthProperty = function (labyrinthName, propertyName) {
+function getLabyrinthProperty(labyrinthName, propertyName) {
 	if (labyrinthName in LABYRINTHS) {
 		const template = LABYRINTHS[labyrinthName];
 		if (propertyName in template) {
@@ -61,7 +61,7 @@ exports.getLabyrinthProperty = function (labyrinthName, propertyName) {
  * @param {Adventure} adventure
  * @returns {string}
  */
-exports.rollItem = function (adventure) {
+function rollItem(adventure) {
 	const itemPool = adventure.getElementPool().flatMap((element) => LABYRINTHS[adventure.labyrinth].availableConsumables[element]);
 
 	return itemPool[adventure.generateRandomNumber(itemPool.length, "general")];
@@ -72,7 +72,7 @@ exports.rollItem = function (adventure) {
  * @param {Adventure} adventure
  * @returns {string} the name of the dropped equipment
  */
-exports.rollGear = function (tier, adventure) {
+function rollGear(tier, adventure) {
 	const pool = adventure.getElementPool().flatMap(element => LABYRINTHS[adventure.labyrinth].availableEquipment[element][tier]);
 	return pool[adventure.generateRandomNumber(pool.length, "general")];
 }
@@ -81,7 +81,7 @@ exports.rollGear = function (tier, adventure) {
  * @param {"Final Battle" | "Artifact Guardian"} type
  * @param {Adventure} adventure
  */
-exports.prerollBoss = function (type, adventure) {
+function prerollBoss(type, adventure) {
 	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];
 	const roomTitle = roomPool[adventure.generateRandomNumber(roomPool.length, "general")];
 	if (type === "Artifact Guardian") {
@@ -96,7 +96,7 @@ exports.prerollBoss = function (type, adventure) {
  * @param {Adventure} adventure
  * @returns {RoomTemplate}
  */
-exports.rollRoom = function (type, adventure) {
+function rollRoom(type, adventure) {
 	if (type === "Artifact Guardian") {
 		return getRoom(adventure.artifactGuardians[adventure.scouting.artifactGuardiansEncountered]);
 	}
@@ -114,3 +114,11 @@ exports.rollRoom = function (type, adventure) {
 	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];
 	return getRoom(roomPool[adventure.generateRandomNumber(roomPool.length, "general")]);
 }
+
+module.exports = {
+	getLabyrinthProperty,
+	rollItem,
+	rollGear,
+	prerollBoss,
+	rollRoom
+};

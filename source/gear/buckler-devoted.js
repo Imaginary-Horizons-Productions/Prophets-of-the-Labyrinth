@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../util/actionComponents');
-// const { addBlock, removeModifier, addModifier } = require('../combatantDAO.js');
+const { addBlock, removeModifier, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Devoted Buckler",
 	"Grant an ally @{block} block and @{mod1Stacks} @{mod1}",

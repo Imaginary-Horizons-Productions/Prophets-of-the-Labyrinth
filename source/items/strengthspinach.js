@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../util/actionComponents");
-// const { addModifier } = require("../combatantDAO.js");
+const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Strength Spinach",
 	"Grants the user 50 Power Up",

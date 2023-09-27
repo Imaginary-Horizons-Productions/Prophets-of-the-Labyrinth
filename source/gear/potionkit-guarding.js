@@ -1,5 +1,5 @@
 const { GearTemplate, Resource } = require('../classes');
-// const { removeModifier, addBlock } = require('../combatantDAO.js');
+const { removeModifier, addBlock } = require('../util/combatantUtil');
 
 const rollablePotions = [
 	"Block Potion",

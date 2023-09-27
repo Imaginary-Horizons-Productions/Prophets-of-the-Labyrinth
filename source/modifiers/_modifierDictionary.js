@@ -28,6 +28,7 @@ for (const file of [
 	"vigilance.js",
 	"stun.js"
 ]) {
+	/** @type {ModifierTemplate} */
 	const modifier = require(`./${file}`);
 	if (modifier.name in MODIFIERS) {
 		throw new BuildError(`Duplicate modifier name (${modifier.name})`);
@@ -40,36 +41,45 @@ for (const file of [
  * @param {Combatant} bearer
  * @param {Adventure} adventure
  */
-exports.getModifierDescription = function (modifierName, bearer, adventure) {
+function getModifierDescription(modifierName, bearer, adventure) {
 	return calculateTagContent(MODIFIERS[modifierName].description, [
 		{ tag: 'stackCount', count: bearer.modifiers[modifierName] },
 		{ tag: 'poise', count: bearer.staggerThreshold },
 		{ tag: 'funnelCount', count: adventure.getArtifactCount("Spiral Funnel") },
-		{ tag: 'roundDecrement', count: exports.getTurnDecrement(modifierName) }
+		{ tag: 'roundDecrement', count: getTurnDecrement(modifierName) }
 	]);
 }
 
 /** @param {string} modifierName */
-exports.getTurnDecrement = (modifierName) => {
+function getTurnDecrement(modifierName) {
 	return MODIFIERS[modifierName].turnDecrement;
 }
 
 /** @param {string} modifierName */
-exports.isBuff = (modifierName) => {
+function isBuff(modifierName) {
 	return MODIFIERS[modifierName].isBuff;
 }
 
 /** @param {string} modifierName */
-exports.isDebuff = (modifierName) => {
+function isDebuff(modifierName) {
 	return MODIFIERS[modifierName].isDebuff;
 }
 
 /** @param {string} modifierName */
-exports.isNonStacking = (modifierName) => {
+function isNonStacking(modifierName) {
 	return MODIFIERS[modifierName].isNonStacking;
 }
 
 /** @param {string} modifierName */
-exports.getInverse = (modifierName) => {
+function getInverse(modifierName) {
 	return MODIFIERS[modifierName].inverse;
 }
+
+module.exports = {
+	getModifierDescription,
+	getTurnDecrement,
+	isBuff,
+	isDebuff,
+	isNonStacking,
+	getInverse
+};

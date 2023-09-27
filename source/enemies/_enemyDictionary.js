@@ -25,6 +25,10 @@ for (const file of [
 }
 
 /** @param {string} enemyName */
-exports.getEnemy = function (enemyName) {
+function getEnemy(enemyName) {
 	return ENEMIES[enemyName];
+}
+
+module.exports = {
+	getEnemy
 }

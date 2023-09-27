@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-// const { addModifier, removeModifier } = require('../combatantDAO.js');
+const { addModifier, removeModifier } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Soothing Floating Mist Stance",
 	"Enter a stance that increases Punch stagger by @{bonus} and grants @{mod1Stacks} @{mod1} each round (exit other stances), gain @{mod2Stacks} @{mod2} now",

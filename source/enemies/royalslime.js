@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { nextRandom, selectSelf, selectAllFoes } = require("../util/actionComponents.js");
+const { addModifier, dealDamage, removeModifier } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
-// const { addModifier, dealDamage, removeModifier } = require("../combatantDAO.js");
 
 module.exports = new EnemyTemplate("Royal Slime",
 	"@{adventure}",

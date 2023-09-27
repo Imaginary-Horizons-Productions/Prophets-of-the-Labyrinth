@@ -11,6 +11,10 @@ for (const file of [
 }
 
 /** @param {string} mainId */
-exports.getButton = function (mainId) {
+function getButton(mainId) {
 	return buttonDictionary[mainId];
 }
+
+module.exports = {
+	getButton
+};

@@ -34,6 +34,20 @@ class Combatant {
 	getModifierStacks(modifierName) {
 		return this.modifiers[modifierName] ?? 0
 	}
+
+	/** Speed is affected by `roundSpeed` and modifiers */
+	getTotalSpeed() {
+		let totalSpeed = this.speed + this.roundSpeed;
+		if ("Slow" in this.modifiers) {
+			const slowStacks = this.getModifierStacks("Slow");
+			totalSpeed -= slowStacks * 5;
+		}
+		if ("Quicken" in this.modifiers) {
+			const quickenStacks = this.getModifierStacks("Quicken");
+			totalSpeed += quickenStacks * 5;
+		}
+		return Math.ceil(totalSpeed);
+	}
 }
 
 class Delver extends Combatant {

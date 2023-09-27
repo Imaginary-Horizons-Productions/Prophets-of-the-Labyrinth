@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectSelf, selectNone, selectAllFoes, selectRandomFoe } = require("../util/actionComponents.js");
-// const { addModifier, addBlock, removeModifier, dealDamage } = require("../combatantDAO.js");
+const { addModifier, addBlock, removeModifier, dealDamage } = require("../util/combatantUtil");
 
 const PATTERN = {
 	"Guarding Slam": "Burrow",

@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectAllAllies } = require("../util/actionComponents");
-// const { addBlock } = require("../combatantDAO.js");
+const { addBlock } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Block Potion",
 	"Adds 50 block to all allies",

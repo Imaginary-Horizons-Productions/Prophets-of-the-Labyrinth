@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../util/actionComponents');
-// const { dealDamage, addModifier } = require('../combatantDAO.js');
+const { dealDamage, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Accelerating Lance",
 	"Strike a foe for @{damage} @{element} damage (double increase from Power Up), then gain @{mod1Stacks} @{mod1}",

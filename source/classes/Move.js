@@ -20,6 +20,23 @@ class Move {
 	/** @type {CombatantReference[]} */
 	targets = [];
 
+	/** compare function for sorting Moves to descending speed
+	 * @param {Move} first
+	 * @param {Move} second
+	 * @returns positive if second before first, negative if first before second
+	 */
+	static compareMoveSpeed(first, second) {
+		if (second.priority == first.priority) {
+			if (second.speed == first.speed) {
+				return second.randomOrder - first.randomOrder;
+			} else {
+				return second.speed - first.speed;
+			}
+		} else {
+			return second.priority - first.priority;
+		}
+	}
+
 	/** @param {string} moveName */
 	setName(moveName) {
 		this.name = moveName;

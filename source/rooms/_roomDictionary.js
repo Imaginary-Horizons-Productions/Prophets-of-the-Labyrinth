@@ -41,6 +41,10 @@ for (const file of [
 /** Room titles double as identifier for now, so must be unique
  * @param {string} roomTitle
  */
-exports.getRoom = function (roomTitle) {
+function getRoom(roomTitle) {
 	return ROOMS[roomTitle];
 }
+
+module.exports = {
+	getRoom
+};

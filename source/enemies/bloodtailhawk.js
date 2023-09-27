@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe, nextRepeat } = require("../util/actionComponents");
-// const { dealDamage, addModifier } = require("../combatantDAO.js");
+const { dealDamage, addModifier } = require("../util/combatantUtil");
 
 module.exports = new EnemyTemplate("Bloodtail Hawk",
 	"Wind",

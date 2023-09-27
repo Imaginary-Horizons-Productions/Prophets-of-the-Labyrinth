@@ -11,6 +11,10 @@ for (const file of [
 }
 
 /** @param {string} mainId */
-exports.getSelect = function (mainId) {
+function getSelect(mainId) {
 	return selectDictionary[mainId];
 }
+
+module.exports = {
+	getSelect
+};

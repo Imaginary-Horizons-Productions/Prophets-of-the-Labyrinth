@@ -1,8 +1,7 @@
 const { EnemyTemplate } = require("../classes");
-// const { dealDamage, addModifier, removeModifier } = require("../combatantDAO.js");
+const { dealDamage, addModifier, removeModifier } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../util/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
-
 
 const PATTERN = {
 	"Sting": "Barrel Roll",

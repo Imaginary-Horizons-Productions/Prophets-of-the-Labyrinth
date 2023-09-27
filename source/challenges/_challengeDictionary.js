@@ -15,7 +15,7 @@ for (const file of [
 }
 
 /** @param {string} challengeName */
-exports.getChallenge = function (challengeName) {
+function getChallenge(challengeName) {
 	return CHALLENGES[challengeName];
 }
 
@@ -23,7 +23,7 @@ exports.getChallenge = function (challengeName) {
  * @param {number} rolls
  * @param {Adventure} adventure
  */
-exports.rollChallenges = function (rolls, adventure) {
+function rollChallenges(rolls, adventure) {
 	let challenges = [];
 	let challengeNames = Object.keys(CHALLENGES);
 	for (let i = 0; i < rolls; i++) {
@@ -34,3 +34,8 @@ exports.rollChallenges = function (rolls, adventure) {
 	}
 	return challenges;
 }
+
+module.exports = {
+	getChallenge,
+	rollChallenges
+};

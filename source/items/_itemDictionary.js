@@ -30,16 +30,20 @@ for (const file of [
 	ITEMS[item.name] = item;
 }
 
-exports.itemNames = Object.keys(ITEMS);
-
 /** @param {string} itemName */
-exports.itemExists = function (itemName) {
+function itemExists(itemName) {
 	return itemName in ITEMS;
 }
 
 /** Template should not be mutated
  * @param {string} itemName
  */
-exports.getItem = function (itemName) {
+function getItem(itemName) {
 	return ITEMS[itemName];
+}
+
+module.exports = {
+	itemNames: Object.keys(ITEMS),
+	itemExists,
+	getItem
 }

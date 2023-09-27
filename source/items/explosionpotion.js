@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectAllFoes } = require("../util/actionComponents");
-// const { dealDamage } = require("../combatantDAO.js");
+const { dealDamage } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Explosion Potion",
 	"Deal 75 damage to all enemies",

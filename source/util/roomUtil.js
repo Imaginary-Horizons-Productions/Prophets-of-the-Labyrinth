@@ -8,7 +8,7 @@ const anyTagRegex = generateRuntimeTemplateStringRegExp(null);
  * @param {EnemyTemplate} enemyTemplate can't do fetch inline due to circular dependency in enemies spawning enemies as moves
  * @param {Adventure} adventure
  */
-module.exports.spawnEnemy = function (enemyTemplate, adventure) {
+function spawnEnemy(enemyTemplate, adventure) {
 	const enemy = new Enemy(enemyTemplate);
 	let hpPercent = 85 + 15 * adventure.delvers.length;
 	if (enemyTemplate.shouldRandomizeHP) {
@@ -42,3 +42,7 @@ module.exports.spawnEnemy = function (enemyTemplate, adventure) {
 	enemy.setId(adventure);
 	adventure.room.enemies.push(enemy);
 }
+
+module.exports = {
+	spawnEnemy
+};

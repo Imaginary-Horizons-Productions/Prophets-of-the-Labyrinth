@@ -34,21 +34,28 @@ for (const file of [
 }
 
 /** @param {string} artifactName */
-exports.getArtifact = function (artifactName) {
+function getArtifact(artifactName) {
 	return ARTIFACTS[artifactName];
 }
 
-exports.getArtifactCounts = function () {
+function getArtifactCounts() {
 	return Object.values(ARTIFACTS).length; //TODO #225 separate artifact counts by element
 }
 
 /** @param {Adventure} adventure */
-exports.rollArtifact = function (adventure) {
+function rollArtifact(adventure) {
 	/** @type {ArtifactTemplate[]} */
 	const artifactPool = adventure.getElementPool().reduce((artifacts, element) => artifacts.concat(ROLL_TABLE[element]), []);
 	return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 }
 
-exports.getAllArtifactNames = function () {
+function getAllArtifactNames() {
 	return Object.keys(ARTIFACTS);
 }
+
+module.exports = {
+	getArtifact,
+	getArtifactCounts,
+	rollArtifact,
+	getAllArtifactNames
+};

@@ -1,49 +1,49 @@
 const { Colors } = require("discord.js");
 
 const ELEMENTS = {
-	"Darkness": {
+	Darkness: {
 		color: Colors.DarkPurple,
 		emoji: "💀",
 		opposite: "Light",
 		weaknesses: ["Fire", "Water"],
 		resistances: ["Earth", "Wind"]
 	},
-	"Earth": {
+	Earth: {
 		color: Colors.DarkGreen,
 		emoji: "🌿",
 		opposite: "Wind",
 		weaknesses: ["Darkness", "Fire"],
 		resistances: ["Light", "Water"]
 	},
-	"Fire": {
+	Fire: {
 		color: Colors.Orange,
 		emoji: "🔥",
 		opposite: "Water",
 		weaknesses: ["Light", "Wind"],
 		resistances: ["Darkness", "Earth"]
 	},
-	"Light": {
+	Light: {
 		color: Colors.Yellow,
 		emoji: "✨",
 		opposite: "Darkness",
 		weaknesses: ["Earth", "Wind"],
 		resistances: ["Fire", "Water"]
 	},
-	"Water": {
+	Water: {
 		color: Colors.Blue,
 		emoji: "💦",
 		opposite: "Fire",
 		weaknesses: ["Earth", "Light"],
 		resistances: ["Darkness", "Wind"]
 	},
-	"Wind": {
+	Wind: {
 		color: Colors.Aqua,
 		emoji: "💨",
 		opposite: "Earth",
 		weaknesses: ["Darkness", "Water"],
 		resistances: ["Fire", "Light"]
 	},
-	"Untyped": {
+	Untyped: {
 		color: Colors.Greyple,
 		emoji: "🌐",
 		opposite: "Untyped",

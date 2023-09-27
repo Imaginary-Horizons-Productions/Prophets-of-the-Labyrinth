@@ -115,12 +115,10 @@ for (const file of [
 	GEAR[gear.name] = gear;
 };
 
-exports.gearNames = Object.keys(GEAR);
-
 /** Checks if a type of equipment with the given name exists
  * @param {string} gearName
  */
-exports.gearExists = function (gearName) {
+function gearExists(gearName) {
 	return gearName in GEAR;
 }
 
@@ -129,8 +127,8 @@ exports.gearExists = function (gearName) {
  * @param {string} propertyName
  * @returns {unknown}
  */
-exports.getGearProperty = function (gearName, propertyName) {
-	if (exports.gearExists(gearName)) {
+function getGearProperty(gearName, propertyName) {
+	if (gearExists(gearName)) {
 		const template = GEAR[gearName];
 		if (propertyName in template) {
 			return template[propertyName];
@@ -142,28 +140,35 @@ exports.getGearProperty = function (gearName, propertyName) {
 	}
 }
 
-exports.buildGearDescription = function (gearName, buildFullDescription) {
-	if (exports.gearExists(gearName)) {
+function buildGearDescription(gearName, buildFullDescription) {
+	if (gearExists(gearName)) {
 		let description;
 		if (buildFullDescription) {
 			// return the base and crit effects of the equipment with the base italicized
-			description = `*Effect:* ${exports.getGearProperty(gearName, "description")}\n*Critical💥:* ${exports.getGearProperty(gearName, "critDescription")}`;
+			description = `*Effect:* ${getGearProperty(gearName, "description")}\n*Critical💥:* ${exports.getGearProperty(gearName, "critDescription")}`;
 		} else {
 			// return the base effect of the equipment unitalicized
-			description = exports.getGearProperty(gearName, "description");
+			description = getGearProperty(gearName, "description");
 		}
 
-		description = description.replace(/@{element}/g, getEmoji(exports.getGearProperty(gearName, "element")))
-			.replace(/@{critBonus}/g, exports.getGearProperty(gearName, "critBonus"))
-			.replace(/@{damage}/g, exports.getGearProperty(gearName, "damage"))
-			.replace(/@{bonus}/g, exports.getGearProperty(gearName, "bonus"))
-			.replace(/@{block}/g, exports.getGearProperty(gearName, "block"))
-			.replace(/@{hpCost}/g, exports.getGearProperty(gearName, "hpCost"))
-			.replace(/@{healing}/g, exports.getGearProperty(gearName, "healing"));
-		exports.getGearProperty(gearName, "modifiers").forEach((modifier, index) => {
+		description = description.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
+			.replace(/@{critBonus}/g, getGearProperty(gearName, "critBonus"))
+			.replace(/@{damage}/g, getGearProperty(gearName, "damage"))
+			.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
+			.replace(/@{block}/g, getGearProperty(gearName, "block"))
+			.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
+			.replace(/@{healing}/g, getGearProperty(gearName, "healing"));
+		getGearProperty(gearName, "modifiers").forEach((modifier, index) => {
 			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifier.name)
 				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		})
 		return description;
 	}
 }
+
+module.exports = {
+	gearNames: Object.keys(GEAR),
+	gearExists,
+	getGearProperty,
+	buildGearDescription
+};

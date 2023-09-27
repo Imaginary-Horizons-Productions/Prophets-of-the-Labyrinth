@@ -21,6 +21,10 @@ for (const file of exports.commandFiles) {
 }
 
 /** @param {string} commandName */
-exports.getCommand = function (commandName) {
+function getCommand(commandName) {
 	return commandDictionary[commandName];
 }
+
+module.exports = {
+	getCommand
+};

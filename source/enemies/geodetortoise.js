@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-// const { addBlock, addModifier, removeModifier, dealDamage } = require("../combatantDAO.js");
+const { addBlock, addModifier, removeModifier, dealDamage } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf, nextRandom } = require("../util/actionComponents.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",

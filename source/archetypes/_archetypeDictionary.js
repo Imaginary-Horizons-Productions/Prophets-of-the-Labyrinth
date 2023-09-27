@@ -20,6 +20,10 @@ for (const file of [
 }
 
 /** @param {string} archetypeName */
-exports.getArchetype = function (archetypeName) {
+function getArchetype(archetypeName) {
 	return ARCHETYPES[archetypeName];
 }
+
+module.exports = {
+	getArchetype
+};

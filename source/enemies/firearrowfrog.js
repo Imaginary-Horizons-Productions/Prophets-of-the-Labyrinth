@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe, selectSelf } = require("../util/actionComponents.js");
-// const { addModifier, removeModifier, dealDamage } = require("../combatantDAO.js");
+const { addModifier, removeModifier, dealDamage } = require("../util/combatantUtil");
 
 const PATTERN = {
 	"Venom Cannon": "random",

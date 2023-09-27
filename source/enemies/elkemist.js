@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { isBuff } = require("../modifiers/_modifierDictionary.js");
-// const { addBlock, dealDamage, addModifier, removeModifier } = require("../combatantDAO.js");
+const { addBlock, dealDamage, addModifier, removeModifier } = require("../util/combatantUtil");
 const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../util/actionComponents.js");
 
 module.exports = new EnemyTemplate("Elkemist",

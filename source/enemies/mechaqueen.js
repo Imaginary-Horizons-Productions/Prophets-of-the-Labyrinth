@@ -1,7 +1,7 @@
 const { EnemyTemplate, CombatantReference } = require("../classes");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly } = require("../util/actionComponents");
+const { addBlock, addModifier } = require("../util/combatantUtil");
 const { spawnEnemy } = require("../util/roomUtil");
-// const { addBlock, addModifier } = require("../combatantDAO.js");
 
 const mechabee = require("./mechabee.js")
 

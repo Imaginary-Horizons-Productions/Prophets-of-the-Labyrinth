@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../util/actionComponents");
-// const { addModifier } = require("../combatantDAO.js");
+const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Quick Pepper",
 	"Grants the user 3 Quicken",

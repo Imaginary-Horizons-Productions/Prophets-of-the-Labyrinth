@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../util/actionComponents");
-// const { gainHealth } = require("../combatantDAO.js");
+const { gainHealth } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Vitamins",
 	"Increases the user's max HP by 50",
