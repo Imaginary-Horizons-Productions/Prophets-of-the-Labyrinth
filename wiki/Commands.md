@@ -1,10 +1,17 @@
+### /commands
+
+> Usable in DMs: true
+
+> Cooldown: 3 second(s)
+
+Get a link to a list of the Prophets of the Labyrinth commands
 ### /data-policy
 
 > Usable in DMs: true
 
 > Cooldown: 3 second(s)
 
-Get a link to this bot's Data Policy page
+Get a link to the Prophets of the Labyrinth Data Policy page
 ### /feedback
 > Permission Level: SendMessages
 
