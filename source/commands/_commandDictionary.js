@@ -1,30 +1,30 @@
 const { CommandWrapper } = require('../classes');
 
-/** @type {string[]} */
-exports.commandFiles = [
-	"commands.js",
-	"data-policy.js",
-	"feedback.js",
-	"manual.js",
-	"version.js"
-];
 /** @type {Record<string, CommandWrapper>} */
 const commandDictionary = {};
-/** @type {import('discord.js').RESTPostAPIChatInputApplicationCommandsJSONBody[]} */
-exports.slashData = [];
 
-for (const file of exports.commandFiles) {
+module.exports = {
+	/** @type {string[]} */
+	commandFiles: [
+		"commands.js",
+		"data-policy.js",
+		"feedback.js",
+		"manual.js",
+		"version.js"
+	],
+	/** @type {import('discord.js').RESTPostAPIChatInputApplicationCommandsJSONBody[]} */
+	slashData: [],
+	getCommand
+};
+
+for (const file of module.exports.commandFiles) {
 	/** @type {CommandWrapper} */
 	const command = require(`./${file}`);
 	commandDictionary[command.mainId] = command;
-	exports.slashData.push(command.builder.toJSON());
+	module.exports.slashData.push(command.builder.toJSON());
 }
 
 /** @param {string} commandName */
 function getCommand(commandName) {
 	return commandDictionary[commandName];
 }
-
-module.exports = {
-	getCommand
-};
