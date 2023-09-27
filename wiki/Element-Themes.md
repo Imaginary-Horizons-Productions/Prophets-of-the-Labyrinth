@@ -28,8 +28,6 @@ Color: ![Colors.DarkGreen](https://placehold.co/15x15/1F8B4C/1F8B4C.png) `Colors
 
 Opposite: 💨 Wind
 
-Trumps: ✨ Light, 💦 Water
-
 Resists: ✨ Light, 💦 Water
 
 Weak to: 💀 Darkness, 🔥 Fire
@@ -49,8 +47,6 @@ Flanking
 Color: ![Colors.Orange](https://placehold.co/15x15/E67E22/E67E22.png) `Colors.Orange`
 
 Opposite: 💦 Water
-
-Trumps: 💀 Darkness, 🌿 Earth
 
 Resists: 💀 Darkness, 🌿 Earth
 
@@ -73,8 +69,6 @@ Color: ![Colors.Yellow](https://placehold.co/15x15/FEE75C/FEE75C.png) `Colors.Ye
 
 Opposite: 💀 Darkness
 
-Trumps: 🔥 Fire, 💦 Water
-
 Resists: 🔥 Fire, 💦 Water
 
 Weak to: 🌿 Earth, 💨 Wind
@@ -94,8 +88,6 @@ Organic
 Color: ![Colors.Blue](https://placehold.co/15x15/3498DB/3498DB.png) `Colors.Blue`
 
 Opposite: 🔥 Fire
-
-Trumps: 💀 Darkness, 💨 Wind
 
 Resists: 💀 Darkness, 💨 Wind
 
@@ -120,8 +112,6 @@ Color: ![Colors.Aqua](https://placehold.co/15x15/1ABC9C/1ABC9C.png) `Colors.Aqua
 
 Opposite: 🌿 Earth
 
-Trumps: 🔥 Fire, ✨ Light
-
 Resists: 🔥 Fire, ✨ Light
 
 Weak to: 💀 Darkness, 💦 Water
@@ -141,8 +131,6 @@ Thirsting
 Color: ![Colors.Greyple](https://placehold.co/15x15/99AAB5/99AAB5.png) `Colors.Greyple`
 
 Opposite: 🌐 Untyped
-
-Trumps: (none)
 
 Resists: (none)
 
