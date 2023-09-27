@@ -14,14 +14,14 @@ Weak to: 🔥 Fire, 💦 Water
 Archetypes: Hemomancer
 
 ### Common Variants
-- Toxic
 - Evasive
 - Furious
-- Sweeping
 - Piercing
 - Slowing
+- Sweeping
 
 ### Uncommon Variants
+- Toxic
 
 ## 🌿 Earth
 Color: ![Colors.DarkGreen](https://placehold.co/15x15/1F8B4C/1F8B4C.png) `Colors.DarkGreen`
@@ -35,11 +35,12 @@ Weak to: 💀 Darkness, 🔥 Fire
 Archetypes: Knight, Detective
 
 ### Common Variants
-- Corroding
-- Reckless
-- Furious
-- Sweeping
+- Charging
 - Flanking
+- Guarding
+- Hunter's
+- Organic
+- Staggering
 
 ### Uncommon Variants
 
@@ -55,12 +56,11 @@ Weak to: ✨ Light, 💨 Wind
 Archetypes: Ritualist, Legionnaire
 
 ### Common Variants
-- Staggering
-- Charging
-- Guarding
-- Hunter's
+- Corroding
 - Flanking
-- Organic
+- Furious
+- Reckless
+- Sweeping
 
 ### Uncommon Variants
 
@@ -76,11 +76,11 @@ Weak to: 🌿 Earth, 💨 Wind
 Archetypes: Martial Artist
 
 ### Common Variants
-- Staggering
-- Slowing
-- Piercing
-- Soothing
 - Organic
+- Piercing
+- Slowing
+- Soothing
+- Staggering
 
 ### Uncommon Variants
 
@@ -96,16 +96,16 @@ Weak to: 🌿 Earth, ✨ Light
 Archetypes: Chemist
 
 ### Common Variants
-- Toxic
 - Hunter's
-- Accelerating
+- Slowing
+- Soothing
 - Sweeping
 - Thirsting
-- Soothing
-- Slowing
-- Piercing
+- Toxic
 
 ### Uncommon Variants
+- Accelerating
+- Piercing
 
 ## 💨 Wind
 Color: ![Colors.Aqua](https://placehold.co/15x15/1ABC9C/1ABC9C.png) `Colors.Aqua`
@@ -119,11 +119,11 @@ Weak to: 💀 Darkness, 💦 Water
 Archetypes: Assassin
 
 ### Common Variants
-- Reaper's
-- Evasive
 - Accelerating
-- Urgent
+- Evasive
+- Reaper's
 - Thirsting
+- Urgent
 
 ### Uncommon Variants
 
