@@ -1,8 +1,10 @@
 Here is a list of reserved emoji and their meanings:
 
 ## Elements
-* 🌿 Earth
+* 💀 Darkness
 * 🔥 Fire
+* 🌿 Earth
+* ✨ Light
 * 💦 Water
 * 💨 Wind
 * 🌐 Untyped

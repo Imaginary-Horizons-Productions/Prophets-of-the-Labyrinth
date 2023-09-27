@@ -2,6 +2,7 @@ const { CommandWrapper } = require('../classes');
 
 /** @type {string[]} */
 exports.commandFiles = [
+	"commands.js",
 	"data-policy.js",
 	"feedback.js",
 	"manual.js",
