@@ -1,10 +1,12 @@
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageCreateOptions, EmbedFooterData, EmbedField, MessagePayload } = require("discord.js");
 const fs = require("fs");
 const { Adventure, ArtifactTemplate } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL } = require("../constants");
-const { getEmoji } = require("./elementUtil");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW } = require("../constants");
+const { getEmoji, getColor } = require("./elementUtil");
+const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
+const { ordinalSuffixEN, generateTextBar } = require("./textUtil");
 
-/** @type {import("discord.js").EmbedFooterData[]} */
+/** @type {EmbedFooterData[]} */
 const discordTips = [
 	{ text: "Message starting with @silent don't send notifications; good for when everyone's asleep.", iconURL: DISCORD_ICON_URL },
 	{ text: "Surround your message with || to mark it a spoiler (not shown until reader clicks on it).", iconURL: DISCORD_ICON_URL },
@@ -13,7 +15,7 @@ const discordTips = [
 	{ text: "Some slash commands can be used in DMs, others can't.", iconURL: DISCORD_ICON_URL },
 	{ text: "Server subscriptions cost more on mobile because the mobile app stores take a cut.", iconURL: DISCORD_ICON_URL }
 ];
-/** @type {import("discord.js").EmbedFooterData[]} */
+/** @type {EmbedFooterData[]} */
 const applicationSpecificTips = [];
 const tipPool = applicationSpecificTips.concat(applicationSpecificTips, discordTips);
 
@@ -90,9 +92,76 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 	return embed;
 }
 
+/** Seen in target selection embeds and /inspect-self equipment fields contain nearly all information about the equipment they represent
+ * @param {string} gearName
+ * @param {number} uses
+ * @returns {EmbedField} contents for a message embed field
+ */
+function gearToEmbedField(gearName, uses) {
+	const maxUses = getGearProperty(gearName, "maxUses");
+	const usesText = uses === Infinity ? "∞ uses" : `${generateTextBar(uses, maxUses, maxUses)} ${uses}/${maxUses} uses`;
+	return {
+		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))} (${usesText})`,
+		value: buildGearDescription(gearName, true)
+	};
+}
+
+/** Generates an object to Discord.js's specification that corresponds with a delver's in-adventure stats
+ * @param {Delver} delver
+ * @param {number} equipmentCapacity
+ * @returns {MessagePayload}
+ */
+function inspectSelfPayload(delver, equipmentCapacity) {
+	const embed = new EmbedBuilder().setColor(getColor(delver.element))
+		.setTitle(`${delver.getName()} the ${delver.archetype}`)
+		.setDescription(`HP: ${generateTextBar(delver.hp, delver.maxHp, 11)} ${delver.hp}/${delver.maxHp}\nYour ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.`)
+		.setFooter({ text: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png" });
+	if (delver.block > 0) {
+		embed.addFields({ name: "Block", value: delver.block.toString() })
+	}
+	for (let index = 0; index < equipmentCapacity; index++) {
+		if (delver.equipment[index]) {
+			embed.addFields(gearToEmbedField(delver.equipment[index].name, delver.equipment[index].uses));
+		} else {
+			embed.addFields({ name: `${ordinalSuffixEN(index + 1)} Equipment Slot`, value: "No equipment yet..." })
+		}
+	}
+	const components = [];
+	if (Object.keys(delver.modifiers).length) {
+		const actionRow = [];
+		const modifiers = Object.keys(delver.modifiers);
+		let buttonCount = Math.min(modifiers.length, MAX_BUTTONS_PER_ROW - 1); // save spot for "and X more..." button
+		for (let i = 0; i < buttonCount; i++) {
+			const modifierName = modifiers[i];
+			let style;
+			if (isBuff(modifierName)) {
+				style = ButtonStyle.Primary;
+			} else if (isDebuff(modifierName)) {
+				style = ButtonStyle.Danger;
+			} else {
+				style = ButtonStyle.Secondary;
+			}
+			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
+				.setLabel(`${modifierName}${isNonStacking(modifierName) ? "" : ` x ${delver.modifiers[modifierName]}`}`)
+				.setStyle(style))
+		}
+		if (modifiers.length > 4) {
+			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}MORE`)
+				.setLabel(`${modifiers.length - 4} more...`)
+				.setStyle(ButtonStyle.Secondary)
+				.setDisabled(!["Chemist", "Ritualist"].includes(delver.archetype)))
+		}
+		components.push(new ActionRowBuilder().addComponents(...actionRow));
+	}
+	return { embeds: [embed], components, ephemeral: true };
+}
+
+
 module.exports = {
 	randomFooterTip,
 	embedTemplate,
 	generateVersionEmbed,
-	generateArtifactEmbed
+	generateArtifactEmbed,
+	gearToEmbedField,
+	inspectSelfPayload
 };
