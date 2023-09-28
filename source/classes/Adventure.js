@@ -260,6 +260,8 @@ class Room {
 	enemies = null;
 	/** @type {{[enemyName: string]: number} | null} */
 	enemyIdMap = null;
+	/** @type {Record<string, Resource>} */
+	resources = {};
 }
 
 class Enemy extends Combatant {

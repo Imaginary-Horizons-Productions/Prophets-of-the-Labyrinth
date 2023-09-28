@@ -36,7 +36,7 @@ class ResourceTemplate {
 	/** This read-only data class that defines resources available for placement in rooms
 	 * @param {string} countExpression
 	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
-	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge" | "item" | string} resourceTypeInput categories (eg "item", "gear") are random rolls, specific names allowed
+	 * @param {"gear" | "artifact" | "gold" | "roomAction" | "challenge" | "item" | string} resourceTypeInput categories (eg "item", "gear") are random rolls, specific names allowed
 	 */
 	constructor(countExpression, visibilityInput, resourceTypeInput) {
 		this.count = countExpression;
