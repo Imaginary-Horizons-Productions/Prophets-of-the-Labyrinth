@@ -53,7 +53,7 @@ async function dealDamage(targets, user, damage, isUnblockable, element, adventu
 				}
 				if (target.hp <= 0) {
 					if (target.team === "delver") {
-						target.hp = target.maxHp;
+						target.hp = target.maxHP;
 						adventure.lives = Math.max(adventure.lives - 1, 0);
 						damageText += ` *${targetName} has died*${adventure.lives > 0 ? " and been revived" : ""}.`;
 					} else {
@@ -91,7 +91,7 @@ function payHP(user, damage, adventure) {
 	let resultText = ` **${userName}** pays ${damage} hp.`;
 	if (user.hp <= 0) {
 		if (user.team === "delver") {
-			user.hp = user.maxHp;
+			user.hp = user.maxHP;
 			adventure.lives -= 1;
 			if (adventure.lives === 1) {
 				resultText += ` *${userName} has died* and been revived. ***${adventure.lives} life remains.***`;
@@ -116,9 +116,9 @@ function gainHealth(combatant, healing, adventure, inCombat = true) {
 	combatant.hp += healing;
 	let excessHealing = 0;
 	const bloodshieldSwordCount = adventure.getArtifactCount("Bloodshield Sword");
-	if (combatant.hp > combatant.maxHp) {
-		excessHealing = combatant.hp - combatant.maxHp;
-		combatant.hp = combatant.maxHp;
+	if (combatant.hp > combatant.maxHP) {
+		excessHealing = combatant.hp - combatant.maxHP;
+		combatant.hp = combatant.maxHP;
 		if (combatant.team === "delver" && bloodshieldSwordCount > 0 && inCombat) {
 			let convertedBlock = excessHealing * bloodshieldSwordCount;
 			addBlock(combatant, convertedBlock);
@@ -126,7 +126,7 @@ function gainHealth(combatant, healing, adventure, inCombat = true) {
 		}
 	}
 
-	if (combatant.hp === combatant.maxHp) {
+	if (combatant.hp === combatant.maxHP) {
 		return `${combatant.getName(adventure.room.enemyIdMap)} was fully healed${excessHealing && inCombat && bloodshieldSwordCount > 0 ? ` (and gained block)` : ""}!`;
 	} else {
 		return `${combatant.getName(adventure.room.enemyIdMap)} *gained ${healing} hp*.`

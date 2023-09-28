@@ -17,12 +17,11 @@ const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
 const { clearBlock, removeModifier, addModifier } = require("../util/combatantUtil");
 const { getWeaknesses } = require("../util/elementUtil");
+const { renderRoom, updateRoomHeader } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression } = require("../util/textUtil");
-
-// const { renderRoom, updateRoomHeader } = require("./roomDAO.js");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();

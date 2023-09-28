@@ -9,7 +9,7 @@ module.exports = new ItemTemplate("Vitamins",
 	selectSelf,
 	(targets, user, isCrit, adventure) => {
 		const gains = 50;
-		user.maxHp += gains;
+		user.maxHP += gains;
 		gainHealth(user, gains, adventure);
 		return "How healthy!";
 	}

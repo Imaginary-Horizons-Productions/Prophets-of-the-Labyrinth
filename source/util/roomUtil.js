@@ -14,7 +14,7 @@ function spawnEnemy(enemyTemplate, adventure) {
 	if (enemyTemplate.shouldRandomizeHP) {
 		hpPercent += 10 * (2 - adventure.generateRandomNumber(5, "battle"));
 	}
-	const pendingHP = Math.ceil(enemy.maxHp * hpPercent / 100);
+	const pendingHP = Math.ceil(enemy.maxHP * hpPercent / 100);
 	enemy.setHP(pendingHP);
 	switch (enemyTemplate.name.match(anyTagRegex)?.[1]) { // this prevents all replaces from running; which is problematic because @{clone} assumes player and enemy counts match
 		case "adventure":

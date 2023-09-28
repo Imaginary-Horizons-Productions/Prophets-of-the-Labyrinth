@@ -20,7 +20,9 @@ class RoomTemplate {
 		this.description = descriptionInput;
 		this.resourceList = resourceArray;
 	}
+	/** @type {Record<string, string>} */
 	enemyList = {};
+	/** @type {((adventure: Adventure) => ActionRowBuilder[]) | null} */
 	buildUI = null;
 
 	/**
