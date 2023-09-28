@@ -1,4 +1,5 @@
 const { Adventure } = require("./Adventure");
+const { BuildError } = require("./BuildError");
 const { Combatant } = require("./Combatant");
 
 class GearTemplate {
@@ -12,6 +13,14 @@ class GearTemplate {
 	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} effectInput
 	 */
 	constructor(nameInput, descriptionInput, critDescriptionInput, categoryInput, elementInput, costInput, effectInput) {
+		if (!nameInput) throw new BuildError("Falsy nameInput");
+		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
+		if (!critDescriptionInput) throw new BuildError("Falsy critDescriptionInput");
+		if (!categoryInput) throw new BuildError("Falsy categoryInput");
+		if (!elementInput) throw new BuildError("Falsy elementInput");
+		if (!costInput && costInput !== 0) throw new BuildError("Nonzero falsy costInput");
+		if (!effectInput) throw new BuildError("Falsy effectInput");
+
 		this.name = nameInput;
 		this.description = descriptionInput;
 		this.critDescription = critDescriptionInput;

@@ -2,6 +2,7 @@
 const { ThreadChannel } = require("discord.js");
 const { Adventure } = require("./Adventure");
 const { calculateTagContent } = require("../util/textUtil");
+const { BuildError } = require("./BuildError");
 
 class ChallengeTemplate {
 	/**
@@ -10,6 +11,10 @@ class ChallengeTemplate {
 	 * @param {number} intensityInput
 	 */
 	constructor(nameInput, descriptionInput, intensityInput) {
+		if (!nameInput) throw new BuildError("Falsy nameInput");
+		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
+		if (!intensityInput) throw new BuildError("Falsy intensityInput");
+
 		this.name = nameInput;
 		this.description = descriptionInput;
 		this.intensity = intensityInput;

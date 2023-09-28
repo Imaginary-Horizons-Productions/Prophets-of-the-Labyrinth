@@ -1,4 +1,5 @@
 const { Adventure } = require("./Adventure");
+const { BuildError } = require("./BuildError");
 const { Combatant } = require("./Combatant");
 const { CombatantReference } = require("./Move");
 
@@ -14,12 +15,22 @@ class EnemyTemplate {
 	 * @param {boolean} isBoss sets enemy to not randomize HP and adds 15 critBonus
 	 */
 	constructor(nameInput, elementEnum, maxHPInput, speedInput, poiseInput, critBonusPercent, firstActionName, isBoss) {
+		if (!nameInput) throw new BuildError("Falsy nameInput");
+		if (!elementEnum) throw new BuildError("Falsy elementEnum");
+		if (!maxHPInput) throw new BuildError("Falsy maxHPInput");
+		if (!speedInput) throw new BuildError("Falsy speedInput");
+		if (!poiseInput) throw new BuildError("Falsy poiseInput");
+		if (!isBoss && isBoss !== false) throw new BuildError("Nonfalse falsy isBoss");
+		const pendingCritBonus = critBonusPercent + (isBoss ? 15 : 0);
+		if (!pendingCritBonus && pendingCritBonus !== 0) throw new BuildError("Nonzero falsy critBonus");
+		if (!firstActionName) throw new BuildError("Falsy firstActionName");
+
 		this.name = nameInput;
 		this.element = elementEnum;
 		this.maxHP = maxHPInput;
 		this.speed = speedInput;
 		this.poise = poiseInput;
-		this.critBonus = critBonusPercent + (isBoss ? 15 : 0);
+		this.critBonus = pendingCritBonus;
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
 	}

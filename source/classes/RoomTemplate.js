@@ -1,5 +1,6 @@
 const { ActionRowBuilder } = require("discord.js");
 const { Adventure } = require("./Adventure");
+const { BuildError } = require("./BuildError");
 
 class RoomTemplate {
 	/** This read-only data class defines stats for a room
@@ -9,6 +10,11 @@ class RoomTemplate {
 	 * @param {ResourceTemplate[]} resourceArray
 	 */
 	constructor(titleText, elementEnum, descriptionInput, resourceArray) {
+		if (!titleText) throw new BuildError("Falsy titleText");
+		if (!elementEnum) throw new BuildError("Falsy elementEnum");
+		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
+		if (!resourceArray) throw new BuildError("Falsy resourceArray");
+
 		this.title = titleText;
 		this.element = elementEnum;
 		this.description = descriptionInput;
@@ -39,6 +45,10 @@ class ResourceTemplate {
 	 * @param {"gear" | "artifact" | "gold" | "roomAction" | "challenge" | "item" | string} resourceTypeInput categories (eg "item", "gear") are random rolls, specific names allowed
 	 */
 	constructor(countExpression, visibilityInput, resourceTypeInput) {
+		if (!countExpression) throw new BuildError("Falsy countExpression");
+		if (!visibilityInput) throw new BuildError("Falsy visibilityInput");
+		if (!resourceTypeInput) throw new BuildError("Falsy resourceTypeInput");
+
 		this.count = countExpression;
 		this.visibility = visibilityInput;
 		if (visibilityInput === "loot") {

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const { Adventure } = require("./Adventure");
+const { BuildError } = require("./BuildError");
 
 class ArchetypeTemplate {
 	/**
@@ -11,6 +12,13 @@ class ArchetypeTemplate {
 	 * @param {(combatant) => string} miniPredictFunction
 	 */
 	constructor(nameInput, descriptionInput, elementLabel, startingGearNames, predictFunction, miniPredictFunction) {
+		if (!nameInput) throw new BuildError("Falsy nameInput");
+		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
+		if (!elementLabel) throw new BuildError("Falsy elementLabel");
+		if (!startingGearNames) throw new BuildError("Falsy startingGearNames");
+		if (!predictFunction) throw new BuildError("Falsy predictFunction");
+		if (!miniPredictFunction) throw new BuildError("Falsy miniPredictFunction");
+
 		this.name = nameInput;
 		this.description = descriptionInput;
 		this.element = elementLabel;

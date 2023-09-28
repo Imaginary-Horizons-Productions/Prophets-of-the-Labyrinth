@@ -1,3 +1,5 @@
+const { BuildError } = require("./BuildError");
+
 class ModifierTemplate {
 	/** Template for combatant buffs and debuffs
 	 * @param {string} nameInput
@@ -8,6 +10,12 @@ class ModifierTemplate {
 	 * @param {number} turnDecrementInput
 	 */
 	constructor(nameInput, descriptionInput, isBuffInput, isDebuffInput, isNonStackingInput, turnDecrementInput) {
+		if (!nameInput) throw new BuildError("Falsy nameInput");
+		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
+		if (!isBuffInput && isBuffInput !== false) throw new BuildError("Nonfalse falsy isBuffInput");
+		if (!isDebuffInput && isDebuffInput !== false) throw new BuildError("Nonfalse falsy isDebuffInput");
+		if (!turnDecrementInput && turnDecrementInput !== 0) throw new BuildError("Nonzero falsy turnDecrementInput");
+
 		this.name = nameInput;
 		this.description = descriptionInput;
 		this.isBuff = isBuffInput;

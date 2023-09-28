@@ -1,3 +1,5 @@
+const { BuildError } = require("./BuildError");
+
 class LabyrinthTemplate {
 	/** This read-only data class defines the contents and properties of a specific labyrinth
 	 * @param {string} nameInput
@@ -9,6 +11,14 @@ class LabyrinthTemplate {
 	 * @param {Record<"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Forge" | "Artifact Guardian" | "Treasure" | "Empty" |, string[]>} roomMap
 	 */
 	constructor(nameInput, elementInput, maxDepthInput, bossRoomDepthsInput, itemMap, gearMap, roomMap) {
+		if (!nameInput) throw new BuildError("Falsy nameInput");
+		if (!elementInput) throw new BuildError("Falsy elementInput");
+		if (!maxDepthInput && maxDepthInput !== 0) throw new BuildError("Nonzero falsy maxDepthInput");
+		if (!bossRoomDepthsInput) throw new BuildError("Falsy bossRoomDepthsInput");
+		if (!itemMap) throw new BuildError("Falsy itemMap");
+		if (!gearMap) throw new BuildError("Falsy gearMap");
+		if (!roomMap) throw new BuildError("Falsy roomMap");
+
 		this.name = nameInput;
 		this.element = elementInput;
 		this.maxDepth = maxDepthInput;
