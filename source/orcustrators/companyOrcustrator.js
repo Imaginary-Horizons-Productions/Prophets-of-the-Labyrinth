@@ -23,21 +23,21 @@ async function loadCompanies() {
 	}
 }
 
-function getCompany(guildId) {
-	if (!guildId) {
+function getCompany(companyId) {
+	if (!companyId) {
 		throw new Error("Attempted to get company with falsey id");
 	}
 
-	const company = companyDictionary.get(guildId);
+	const company = companyDictionary.get(companyId);
 	if (!company) {
-		company = new Company(guildId);
+		company = new Company(companyId);
 		setCompany(company);
 	}
 	return company;
 }
 
-function setCompany(guildProfile) {
-	companyDictionary.set(guildProfile.id, guildProfile);
+function setCompany(company) {
+	companyDictionary.set(company.id, company);
 	ensuredPathSave("./saves", "companies.json", JSON.stringify(Array.from((companyDictionary.values())).map(company => {
 		company.adventurerIds = Array.from(company.adventuring.values());
 		return company;

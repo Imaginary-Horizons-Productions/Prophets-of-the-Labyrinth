@@ -34,6 +34,8 @@ class EnemyTemplate {
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
 	}
+	/** @type {Record<string, {name: string, element: "Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}", priority: number, effect: (targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string, selector: (self: Combatant, adventure: Adventure) => CombatantReference[], next: (actionName: string) => string}>} */
+	actions = {};
 	/** @type {[modifierName: string]: number} */
 	startingModifiers = {};
 
@@ -53,7 +55,7 @@ class EnemyTemplate {
 	 * @param {number} actionsInput.priority
 	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} actionsInput.effect
 	 * @param {(self: Combatant, adventure: Adventure) => CombatantReference[]} actionsInput.selector
-	 * @param {function} actionsInput.next
+	 * @param {(actionName: string) => string} actionsInput.next
 	 */
 	addAction(actionsInput) {
 		this.actions[actionsInput.name] = actionsInput;
