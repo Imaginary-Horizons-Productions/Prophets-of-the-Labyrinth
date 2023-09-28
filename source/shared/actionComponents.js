@@ -3,7 +3,7 @@ const { CombatantReference, Adventure, Combatant } = require("../classes");
 /** Wraps standardized move effect in validation for living targets
  * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => Promise<string>} next
  */
-module.exports.needsLivingTargets = function (next) {
+function needsLivingTargets(next) {
 	return (targets, user, isCrit, adventure) => {
 		const livingTargets = [];
 		const deadTargets = [];
@@ -34,7 +34,7 @@ module.exports.needsLivingTargets = function (next) {
  * @param {Combatant} self
  * @param {Adventure} adventure
  */
-module.exports.selectAllAllies = function (self, adventure) {
+function selectAllAllies(self, adventure) {
 	if (self.team === "delver") {
 		return adventure.delvers.map((delver, index) => new CombatantReference("delver", index));
 	} else {
@@ -46,7 +46,7 @@ module.exports.selectAllAllies = function (self, adventure) {
  * @param {Combatant} self
  * @param {Adventure} adventure
  */
-module.exports.selectRandomOtherAlly = function (self, adventure) {
+function selectRandomOtherAlly(self, adventure) {
 	const selfIndex = adventure.getCombatantIndex(self);
 	const otherLivingAllyIndicies = [];
 	const combatantPool = self.team === "delver" ? adventure.delvers : adventure.room.enemies;
@@ -66,7 +66,7 @@ module.exports.selectRandomOtherAlly = function (self, adventure) {
  * @param {Combatant} self
  * @param {Adventure} adventure
  */
-module.exports.selectAllFoes = function (self, adventure) {
+function selectAllFoes(self, adventure) {
 	if (self.team === "delver") {
 		return adventure.room.enemies.map((enemy, index) => new CombatantReference("enemy", index));
 	} else {
@@ -78,7 +78,7 @@ module.exports.selectAllFoes = function (self, adventure) {
  * @param {Combatant} self
  * @param {Adventure} adventure
  */
-module.exports.selectRandomFoe = function (self, adventure) {
+function selectRandomFoe(self, adventure) {
 	if (self.team === "delver") {
 		return [new CombatantReference("enemy", adventure.generateRandomNumber(adventure.room.enemies.length, "battle"))];
 	} else {
@@ -90,7 +90,7 @@ module.exports.selectRandomFoe = function (self, adventure) {
  * @param {Combatant} self
  * @param {Adventure} adventure
  */
-module.exports.selectSelf = function (self, adventure) {
+function selectSelf(self, adventure) {
 	return [new CombatantReference(self.team, adventure.getCombatantIndex(self))];
 }
 
@@ -98,16 +98,28 @@ module.exports.selectSelf = function (self, adventure) {
  * @param {Combatant} self
  * @param {Adventure} adventure
  */
-module.exports.selectNone = function (self, adventure) {
+function selectNone(self, adventure) {
 	return [new CombatantReference("none", -1)];
 }
 
 /** @param {string} actionName */
-module.exports.nextRepeat = function (actionName) {
+function nextRepeat(actionName) {
 	return actionName;
 }
 
 /** @param {string} actionName */
-module.exports.nextRandom = function (actionName) {
+function nextRandom(actionName) {
 	return "random";
 }
+
+module.exports = {
+	needsLivingTargets,
+	selectAllAllies,
+	selectRandomOtherAlly,
+	selectAllFoes,
+	selectRandomFoe,
+	selectSelf,
+	selectNone,
+	nextRepeat,
+	nextRandom
+};

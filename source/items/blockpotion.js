@@ -1,5 +1,5 @@
 const { ItemTemplate } = require("../classes");
-const { selectAllAllies } = require("../util/actionComponents");
+const { selectAllAllies } = require("../shared/actionComponents");
 const { addBlock } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Block Potion",

@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { selectRandomFoe, nextRepeat } = require("../util/actionComponents");
+const { selectRandomFoe, nextRepeat } = require("../shared/actionComponents");
 const { dealDamage, addModifier } = require("../util/combatantUtil");
 
 module.exports = new EnemyTemplate("Bloodtail Hawk",

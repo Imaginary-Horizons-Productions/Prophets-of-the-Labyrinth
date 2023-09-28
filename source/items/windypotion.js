@@ -1,5 +1,5 @@
 const { ItemTemplate } = require("../classes");
-const { selectSelf } = require("../util/actionComponents.js");
+const { selectSelf } = require("../shared/actionComponents.js");
 const { addModifier } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 

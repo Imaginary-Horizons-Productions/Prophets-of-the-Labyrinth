@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../util/actionComponents');
+const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage, addModifier, addBlock } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vigilant Lance",

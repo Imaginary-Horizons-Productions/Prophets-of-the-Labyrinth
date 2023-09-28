@@ -1,5 +1,5 @@
 const { EnemyTemplate, CombatantReference } = require("../classes");
-const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly } = require("../util/actionComponents");
+const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly } = require("../shared/actionComponents");
 const { addBlock, addModifier } = require("../util/combatantUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 

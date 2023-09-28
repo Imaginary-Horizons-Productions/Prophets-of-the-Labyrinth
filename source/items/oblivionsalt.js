@@ -1,5 +1,5 @@
 const { ItemTemplate } = require("../classes");
-const { selectSelf } = require("../util/actionComponents");
+const { selectSelf } = require("../shared/actionComponents");
 const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Salt of Oblivion",

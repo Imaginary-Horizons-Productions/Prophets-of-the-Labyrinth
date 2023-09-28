@@ -1,5 +1,5 @@
 const { ItemTemplate } = require("../classes");
-const { selectAllFoes } = require("../util/actionComponents");
+const { selectAllFoes } = require("../shared/actionComponents");
 const { dealDamage } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Explosion Potion",

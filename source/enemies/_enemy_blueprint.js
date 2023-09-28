@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("name",
 	effect: ([target], user, isCrit, adventure) => {
 		return "";
 	},
-	selector: (self, adventure) => { // check util/actionComponents for reusable selctors and next functions
+	selector: (self, adventure) => { // check shared/actionComponents for reusable selctors and next functions
 		return [];
 	},
 	next: (actionName) => {

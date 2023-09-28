@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { selectRandomFoe, nextRandom } = require("../util/actionComponents.js");
+const { selectRandomFoe, nextRandom } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage } = require("../util/combatantUtil");
 
 module.exports = new EnemyTemplate("@{adventure} Slime",

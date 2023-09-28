@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { selectSelf, selectNone, selectAllFoes, selectRandomFoe } = require("../util/actionComponents.js");
+const { selectSelf, selectNone, selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, addBlock, removeModifier, dealDamage } = require("../util/combatantUtil");
 
 const PATTERN = {

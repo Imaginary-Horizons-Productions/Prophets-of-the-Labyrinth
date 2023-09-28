@@ -1,5 +1,5 @@
 const { ItemTemplate } = require("../classes");
-const { selectSelf } = require("../util/actionComponents");
+const { selectSelf } = require("../shared/actionComponents");
 // const { getEquipmentProperty } = require("../equipment/_equipmentDictionary.js");
 
 module.exports = new ItemTemplate("Repair Kit",
