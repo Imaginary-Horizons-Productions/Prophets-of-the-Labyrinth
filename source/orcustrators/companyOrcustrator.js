@@ -3,9 +3,9 @@ const { Company } = require("../classes");
 const { ensuredPathSave } = require("../util/fileUtil");
 
 const dirPath = "./saves";
-const fileName = "guilds.json";
+const fileName = "companies.json";
 const filePath = `${dirPath}/${fileName}`;
-const requirePath = "./../saves/guilds.json";
+const requirePath = "./../saves/companies.json";
 const companyDictionary = new Map();
 
 async function loadCompanies() {
@@ -24,7 +24,7 @@ async function loadCompanies() {
 
 function getCompany(guildId) {
 	if (!guildId) {
-		throw new Error("Attempted to get guild with falsey id");
+		throw new Error("Attempted to get company with falsey id");
 	}
 
 	const company = companyDictionary.get(guildId);
@@ -37,7 +37,7 @@ function getCompany(guildId) {
 
 function setCompany(guildProfile) {
 	companyDictionary.set(guildProfile.id, guildProfile);
-	ensuredPathSave("./Saves", "guilds.json", JSON.stringify(Array.from((companyDictionary.values())).map(guild => {
+	ensuredPathSave("./saves", "companies.json", JSON.stringify(Array.from((companyDictionary.values())).map(guild => {
 		guild.adventurerIds = Array.from(guild.adventuring.values());
 		return guild;
 	})));
