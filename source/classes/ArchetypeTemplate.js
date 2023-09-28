@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require("discord.js");
 const { Adventure } = require("./Adventure");
 
-class Archetype {
+class ArchetypeTemplate {
 	/**
 	 * @param {string} nameInput
 	 * @param {string} description
@@ -34,4 +34,6 @@ class Archetype {
 	}
 };
 
-module.exports.Archetype = Archetype;
+module.exports = {
+	ArchetypeTemplate
+};

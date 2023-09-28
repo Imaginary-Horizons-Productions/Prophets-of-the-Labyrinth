@@ -1,6 +1,6 @@
-const { Archetype, BuildError } = require("../classes");
+const { ArchetypeTemplate, BuildError } = require("../classes");
 
-/** @type {Record<string, Archetype>} */
+/** @type {Record<string, ArchetypeTemplate>} */
 const ARCHETYPES = {};
 
 for (const file of [
@@ -12,6 +12,7 @@ for (const file of [
 	"martialartist.js",
 	// "ritualist.js"
 ]) {
+	/** @type {ArchetypeTemplate} */
 	const archetype = require(`./${file}`);
 	if (archetype.name in ARCHETYPES) {
 		throw new BuildError(`Duplicate archetype name (${archetype.name})`);

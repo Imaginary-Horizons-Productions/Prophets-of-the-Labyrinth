@@ -1,6 +1,6 @@
-const { Archetype } = require("../classes");
+const { ArchetypeTemplate } = require("../classes");
 
-module.exports = new Archetype("name",
+module.exports = new ArchetypeTemplate("name",
 	"description",
 	"Untyped",
 	[],

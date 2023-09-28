@@ -1,8 +1,8 @@
-const { Archetype } = require("../classes");
+const { ArchetypeTemplate } = require("../classes");
 const { generateTextBar } = require("../util/textUtil");
 // const { calculateTotalSpeed } = require("../combatantDAO.js");
 
-module.exports = new Archetype("Martial Artist",
+module.exports = new ArchetypeTemplate("Martial Artist",
 	"Able to assess combatant Stun thresholds and speed, the Martial Artist excels at stunning foes.",
 	"Light",
 	["Iron Fist Stance", "Floating Mist Stance"],

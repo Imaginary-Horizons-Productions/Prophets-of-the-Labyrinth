@@ -1,7 +1,7 @@
-const { Archetype } = require("../classes");
+const { ArchetypeTemplate } = require("../classes");
 // const { getTargetList } = require("../moveDAO.js");
 
-module.exports = new Archetype("Knight",
+module.exports = new ArchetypeTemplate("Knight",
 	"Able to predict which allies enemies are targeting with which moves, the Knight excels at efficiently mitigating damage.",
 	"Earth",
 	["Lance", "Buckler"],
