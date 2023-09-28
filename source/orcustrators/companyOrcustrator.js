@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { Company } = require("../classes");
+
 const { ensuredPathSave } = require("../util/fileUtil");
 
 const dirPath = "./saves";
@@ -37,9 +38,9 @@ function getCompany(guildId) {
 
 function setCompany(guildProfile) {
 	companyDictionary.set(guildProfile.id, guildProfile);
-	ensuredPathSave("./saves", "companies.json", JSON.stringify(Array.from((companyDictionary.values())).map(guild => {
-		guild.adventurerIds = Array.from(guild.adventuring.values());
-		return guild;
+	ensuredPathSave("./saves", "companies.json", JSON.stringify(Array.from((companyDictionary.values())).map(company => {
+		company.adventurerIds = Array.from(company.adventuring.values());
+		return company;
 	})));
 }
 

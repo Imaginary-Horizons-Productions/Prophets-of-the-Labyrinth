@@ -5,6 +5,8 @@ const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = 
 
 const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, MAX_MESSAGE_ACTION_ROWS } = require("../constants.js");
 
+const { getCompany, setCompany } = require("./companyOrcustrator");
+
 const { rollArtifact } = require("../artifacts/_artifactDictionary");
 const { rollChallenges, getChallenge } = require("../challenges/_challengeDictionary");
 const { getEnemy } = require("../enemies/_enemyDictionary");
@@ -20,7 +22,6 @@ const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression } = require("../util/textUtil");
 
-const { getCompany, setCompany } = require("./companyOrcustrator");
 // const { renderRoom, updateRoomHeader } = require("./roomDAO.js");
 
 /** @type {Map<string, Adventure>} */
