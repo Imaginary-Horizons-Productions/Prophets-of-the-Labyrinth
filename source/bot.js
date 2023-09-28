@@ -2,10 +2,17 @@
 const { REST, Routes, Client, ActivityType, IntentsBitField, Events } = require("discord.js");
 const { readFile, writeFile } = require("fs").promises;
 
+const { Company } = require("./classes");
+const { SAFE_DELIMITER, authPath, testGuildId, announcementsChannelId, lastPostedVersion } = require("./constants.js");
+
+const { loadCompanies, setCompany } = require("./orcustrators/companyOrcustrator.js");
+const { loadAdventures } = require("./orcustrators/adventureOrcustrator.js");
+const { loadPlayers } = require("./orcustrators/playerOrcustrator.js");
+
 const { getCommand, slashData } = require("./commands/_commandDictionary.js");
 const { getButton } = require("./buttons/_buttonDictionary.js");
 const { getSelect } = require("./selects/_selectDictionary.js");
-const { SAFE_DELIMITER, authPath, testGuildId, announcementsChannelId, lastPostedVersion } = require("./constants.js");
+
 const { generateVersionEmbed } = require("./util/embedUtil.js");
 //#endregion
 
@@ -25,6 +32,17 @@ const interactionCooldowns = new Map();
 
 client.login(require(authPath).token)
 	.catch(console.error);
+
+(async () => {
+	try {
+		console.log(await loadCompanies());
+		console.log(await loadAdventures());
+		console.log(await loadPlayers());
+		client.login(require("./Config/auth.json").token);
+	} catch (rejectMessage) {
+		console.error(rejectMessage);
+	}
+})()
 //#endregion
 
 //#region Event Handlers
@@ -114,5 +132,9 @@ client.on(Events.InteractionCreate, interaction => {
 
 		interactionWrapper.execute(interaction, args);
 	}
+})
+
+client.on(Events.GuildCreate, guild => {
+	setCompany(new Company(guild.id));
 })
 //#endregion

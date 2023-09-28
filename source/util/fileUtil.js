@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 /** @type {{paid: string[], gift: string[]}} */
-const sponsors = require("./config/sponsors.json");
+const sponsors = require("../../config/sponsors.json");
 
 /** Check if the given `id` belongs to a sponsor of the project
  * @param {string} id
