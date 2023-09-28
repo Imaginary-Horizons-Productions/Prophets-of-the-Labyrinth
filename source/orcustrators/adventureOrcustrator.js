@@ -20,7 +20,7 @@ const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression } = require("../util/textUtil");
 
-// const { getGuild, setGuild } = require("./guildDAO.js");
+const { getCompany, setCompany } = require("./companyOrcustrator");
 // const { renderRoom, updateRoomHeader } = require("./roomDAO.js");
 
 /** @type {Map<string, Adventure>} */
@@ -587,9 +587,9 @@ function completeAdventure(adventure, thread, endState, descriptionOverride) {
 
 	adventure.state = endState;
 	setAdventure(adventure);
-	const guildProfile = getGuild(thread.guild.id);
-	adventure.delvers.forEach(delver => guildProfile.adventuring.delete(delver.id));
-	setGuild(guildProfile);
+	const company = getCompany(thread.guild.id);
+	adventure.delvers.forEach(delver => company.adventuring.delete(delver.id));
+	setCompany(company);
 	return renderRoom(adventure, thread, descriptionOverride);
 }
 
