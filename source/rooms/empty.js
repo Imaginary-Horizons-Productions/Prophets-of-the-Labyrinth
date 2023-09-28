@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
-const { SAFE_DELIMITER } = require("../../constants.js");
+const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new RoomTemplate("Empty Room",
 	"Untyped",
