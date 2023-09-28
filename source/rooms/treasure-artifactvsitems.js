@@ -6,6 +6,6 @@ module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 	[
 		new ResourceTemplate("1", "internal", "roomAction"),
 		new ResourceTemplate("1", "always", "artifact").setCostMultiplier(0),
-		new ResourceTemplate("2", "always", "item").costMultiplier(0)
+		new ResourceTemplate("2", "always", "item").setCostMultiplier(0)
 	]
 );

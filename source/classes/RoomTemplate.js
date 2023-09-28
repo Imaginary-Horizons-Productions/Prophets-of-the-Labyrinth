@@ -35,6 +35,7 @@ class RoomTemplate {
 	/** @param {(adventure: Adventure) => ActionRowBuilder[]} buildUIFunction */
 	setBuildUI(buildUIFunction) {
 		this.buildUI = buildUIFunction;
+		return this;
 	}
 };
 
