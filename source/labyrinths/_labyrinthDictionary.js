@@ -1,4 +1,4 @@
-const { Adventure, LabyrinthTemplate } = require("../classes");
+const { Adventure, LabyrinthTemplate, RoomTemplate } = require("../classes");
 const { gearExists } = require("../gear/_gearDictionary.js");
 const { itemExists } = require("../items/_itemDictionary.js");
 const { getRoom } = require("../rooms/_roomDictionary");

@@ -1,4 +1,4 @@
-const { Adventure, Challenge, Room, Enemy, Resource } = require("./Adventure");
+const { Adventure, Challenge, Room, Enemy } = require("./Adventure");
 const { ArchetypeTemplate } = require("./ArchetypeTemplate");
 const { ArtifactTemplate } = require("./ArtifactTemplate");
 const { BuildError } = require("./BuildError");
@@ -37,7 +37,6 @@ module.exports = {
 	ModifierTemplate,
 	Move,
 	Player,
-	Resource,
 	ResourceTemplate,
 	Room,
 	RoomTemplate,

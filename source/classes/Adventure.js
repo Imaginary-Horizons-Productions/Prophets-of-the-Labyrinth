@@ -212,13 +212,32 @@ class Adventure {
 	}
 
 	/** Initializes a resource in the room's resources if it's not already present
-	 * @param {Resource} resource
+	 * @param {string} nameInput Note: all names in the combined pool of equipment, artifacts, consumables, and resources must be unique
+	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge"| "item"} resourceTypeInput
+	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
+	 * @param {number} countInput
+	 * @param {string?} uiGroupInput
+	 * @param {number?} costInput
 	 */
-	addResource(resource) {
-		if (resource.name in this.room.resources) {
-			this.room.resources[resource.name].count += resource.count;
+	addResource(nameInput, resourceTypeInput, visibilityInput, countInput, uiGroupInput, costInput) {
+		if (nameInput in this.room.resources) {
+			this.room.resources[nameInput].count += countInput;
 		} else {
-			this.room.resources[resource.name] = resource;
+			const resource = {
+				name: nameInput,
+				resourceType: resourceTypeInput,
+				visibility: visibilityInput,
+				count: countInput
+			};
+			if (costInput) {
+				resource.cost = costInput;
+			} else {
+				resource.cost = 0;
+			}
+			if (uiGroupInput) {
+				resource.uiGroup = uiGroupInput;
+			}
+			this.room.resources[nameInput] = resource;
 		}
 	}
 };
@@ -314,38 +333,9 @@ class Enemy extends Combatant {
 	}
 };
 
-class Resource {
-	/** This read-write payload class describes a single resource available in an adventure's room
-	 * @param {string} nameInput Note: all names in the combined pool of equipment, artifacts, consumables, and resources must be unique
-	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge"| "item"} resourceTypeInput
-	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
-	 * @param {number} countInput
-	 */
-	constructor(nameInput, resourceTypeInput, visibilityInput, countInput) {
-		this.name = nameInput;
-		this.resourceType = resourceTypeInput;
-		this.visibility = visibilityInput;
-		this.count = countInput;
-	}
-	cost = 0;
-
-	/** @param {number} integer */
-	setCost(integer) {
-		this.cost = integer;
-		return this;
-	}
-
-	/** @param {string} groupName Only necessary for UI with multiple generated selects (eg merchants) */
-	setUIGroup(groupName) {
-		this.uiGroup = groupName;
-		return this;
-	}
-};
-
 module.exports = {
 	Adventure,
 	Challenge,
 	Enemy,
-	Resource,
 	Room
 }

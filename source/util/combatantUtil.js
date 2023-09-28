@@ -10,7 +10,7 @@ const { getWeaknesses, getResistances } = require("./elementUtil.js");
  * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "Poison"} element
  * @param {Adventure} adventure
  */
-async function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
+async function dealDamage(targets, user, damage, isUnblockable, element, adventure) { //TODO investigate if this still needs to be async (no awaits)
 	const previousLifeCount = adventure.lives;
 	const resultTexts = [];
 	for (const target of targets) {
