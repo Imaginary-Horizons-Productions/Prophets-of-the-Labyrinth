@@ -38,7 +38,7 @@ client.login(require(authPath).token)
 		console.log(await loadCompanies());
 		console.log(await loadAdventures());
 		console.log(await loadPlayers());
-		client.login(require("./Config/auth.json").token);
+		client.login(require("../config/auth.json").token);
 	} catch (rejectMessage) {
 		console.error(rejectMessage);
 	}

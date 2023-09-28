@@ -6,7 +6,7 @@ const { ensuredPathSave } = require("../util/fileUtil");
 const dirPath = "./saves";
 const fileName = "companies.json";
 const filePath = `${dirPath}/${fileName}`;
-const requirePath = "./../saves/companies.json";
+const requirePath = "../../saves/companies.json";
 const companyDictionary = new Map();
 
 async function loadCompanies() {

@@ -9,7 +9,7 @@ const dirPath = "./saves"
 const fileName = "players.json";
 const filePath = `${dirPath}/${fileName}`;
 
-const requirePath = "./../saves/players.json";
+const requirePath = "../../saves/players.json";
 const playerDictionary = new Map();
 
 async function loadPlayers() {

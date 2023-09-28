@@ -31,7 +31,7 @@ async function loadAdventures() {
 	const dirPath = "./saves";
 	const fileName = "adventures.json";
 	const filePath = `${dirPath}/${fileName}`;
-	const requirePath = "./../saves/adventures.json";
+	const requirePath = "../../saves/adventures.json";
 
 	if (fs.existsSync(filePath)) {
 		const adventures = require(requirePath);
