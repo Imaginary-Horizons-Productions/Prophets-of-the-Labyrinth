@@ -4,7 +4,7 @@ const { ArchetypeTemplate, BuildError } = require("../classes");
 const ARCHETYPES = {};
 
 for (const file of [
-	// "assassin.js",
+	"assassin.js",
 	// "chemist.js",
 	// "hemomancer.js",
 	"knight.js",
