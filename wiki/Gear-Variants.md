@@ -41,6 +41,12 @@ Increased Block
 **Available on**
 - Buckler (Earth)
 
+### Hunter's
+Gain gold on kill
+
+**Available on**
+- Sickle (Water)
+
 ### Lethal
 Increased crit damage
 
@@ -71,6 +77,7 @@ Increased damage
 
 **Available on**
 - Daggers (Wind)
+- Sickle (Water)
 
 ### Slowing
 Adds Slow to target
@@ -96,6 +103,12 @@ Increased durability
 **Available on**
 - Cloak (Wind)
 
+### Toxic
+Adds Poison to target
+
+**Available on**
+- Sickle (Water)
+
 ### Urgent
 Increased priority
 
@@ -112,5 +125,6 @@ Adds Vigilance to user
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
 - Adds Iron Fist Stance to user (all Iron Fist Stances)
 - Double benefits from Power Up (all Lances)
+- Percent max hp damage (all Sickles)
 
 ## Planned Variants
