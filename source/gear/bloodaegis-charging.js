@@ -33,5 +33,5 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 	.setSidegrades("Heavy Blood Aegis", "Sweeping Blood Aegis")
 	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }])
 	.setDurability(15)
-	.setHpCost(25)
+	.setHPCost(25)
 	.setBlock(125);

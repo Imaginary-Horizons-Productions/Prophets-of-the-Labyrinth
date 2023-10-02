@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes/GearTemplate.js');
-const { removeModifier, addBlock, payHP } = require('../combatantDAO.js');
-const { needsLivingTargets } = require('../enemyDAO.js');
+const { needsLivingTargets } = require('../shared/actionComponents.js');
+const { removeModifier, addBlock, payHP } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Heavy Blood Aegis",
 	"Pay @{hpCost} hp; gain @{block} block and intercept a later single target move",
@@ -32,5 +32,5 @@ module.exports = new GearTemplate("Heavy Blood Aegis",
 	.setSidegrades("Charging Blood Aegis", "Sweeping Blood Aegis")
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
 	.setDurability(15)
-	.setHpCost(25)
+	.setHPCost(25)
 	.setBlock(250);
