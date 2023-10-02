@@ -1,4 +1,4 @@
-const { GearTemplate } = require('../classes/GearTemplate.js');
+const { GearTemplate } = require('../classes');
 const { addModifier, removeModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Cloak",

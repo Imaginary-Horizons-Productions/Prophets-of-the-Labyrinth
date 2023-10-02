@@ -1,5 +1,4 @@
 const { Combatant } = require("./Combatant");
-// const { calculateTotalSpeed } = require("../Source/combatantDAO");
 
 class Move {
 	/**
@@ -46,7 +45,7 @@ class Move {
 	/** @param {Combatant} combatant */
 	setSpeed(combatant) {
 		// DESIGN SPACE: if enemy.archetype has static speed, or is always faster than a delver, etc, put that logic here
-		this.speed = calculateTotalSpeed(combatant);
+		this.speed = combatant.getTotalSpeed();
 		return this;
 	}
 

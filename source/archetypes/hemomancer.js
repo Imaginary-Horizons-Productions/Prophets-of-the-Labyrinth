@@ -1,10 +1,10 @@
 const { ArchetypeTemplate } = require("../classes");
 const { generateTextBar } = require("../util/textUtil");
 
-module.exports = new ArchetypeTemplate("Martial Artist",
-	"Able to assess combatant Stun thresholds and speed, the Martial Artist excels at stunning foes.",
-	"Light",
-	["Iron Fist Stance", "Floating Mist Stance"],
+module.exports = new ArchetypeTemplate("Hemomancer",
+	"Able to predict the order combatants will act and their Stun thresholds, the Hemomancer excels at getting the last word.",
+	"Darkness",
+	["Life Drain", "Blood Aegis"],
 	(embed, adventure) => {
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
 			.concat(adventure.delvers)

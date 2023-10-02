@@ -1,4 +1,4 @@
-const { ArchetypeTemplate } = require("../classes/ArchetypeTemplate.js");
+const { ArchetypeTemplate } = require("../classes");
 const { modifiersToString } = require("../util/combatantUtil.js");
 const { generateTextBar } = require("../util/textUtil.js");
 

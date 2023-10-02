@@ -37,8 +37,16 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Blood Aegis",
+				"Life Drain",
 			],
 			Rare: [
+				"Charging Blood Aegis",
+				"Heavy Blood Aegis",
+				"Sweeping Blood Aegis",
+				"Flanking Life Drain",
+				"Reactive Life Drain",
+				"Urgent Life Drain",
 			]
 		},
 		Earth: {
@@ -123,19 +131,11 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Blood Aegis",
-				"Life Drain",
 				"Midas Staff",
 				"Potion Kit",
 				"Sickle"
 			],
 			Rare: [
-				"Charging Blood Aegis",
-				"Heavy Blood Aegis",
-				"Sweeping Blood Aegis",
-				"Flanking Life Drain",
-				"Reactive Life Drain",
-				"Urgent Life Drain",
 				"Soothing Midas Staff",
 				"Accelerating Midas Staff",
 				"Guarding Potion Kit",

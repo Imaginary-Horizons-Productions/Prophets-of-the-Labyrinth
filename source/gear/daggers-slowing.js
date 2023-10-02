@@ -1,4 +1,4 @@
-const { GearTemplate } = require('../classes/GearTemplate.js');
+const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
