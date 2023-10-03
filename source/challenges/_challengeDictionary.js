@@ -6,8 +6,8 @@ const CHALLENGES = {};
 for (const file of [
 	"blindavarice.js",
 	"cantholdallthisvalue.js",
-	// "restless.js",
-	// "rushing.js"
+	"restless.js",
+	"rushing.js"
 ]) {
 	/** @type {ChallengeTemplate} */
 	const challenge = require(`./${file}`);

@@ -3,8 +3,7 @@ const { ChallengeTemplate } = require("../classes");
 module.exports = new ChallengeTemplate("Blind Avarice",
 	"Predicting costs @{intensity} gold for @{duration} rooms. Afterwards, gain @{reward} gold.",
 	4
-)
-	.setDuration(3)
+).setDuration(3)
 	.setScoreMultiplier(1.1)
 	.setReward(500)
 	.setCompleteEffect(

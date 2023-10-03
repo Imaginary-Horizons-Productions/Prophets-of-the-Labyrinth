@@ -3,8 +3,7 @@ const { ChallengeTemplate } = require("../classes");
 module.exports = new ChallengeTemplate("name",
 	"description",
 	1
-)
-	.setDuration(1)
+).setDuration(1)
 	.setScoreMultiplier(1)
 	.setReward(1)
 	.setCompleteEffect(
