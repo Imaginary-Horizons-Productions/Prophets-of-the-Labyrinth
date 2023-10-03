@@ -7,6 +7,7 @@ const dirPath = "./saves";
 const fileName = "companies.json";
 const filePath = `${dirPath}/${fileName}`;
 const requirePath = "../../saves/companies.json";
+/** @type {Map<string, Company>} */
 const companyDictionary = new Map();
 
 async function loadCompanies() {
@@ -23,6 +24,7 @@ async function loadCompanies() {
 	}
 }
 
+/** @param {string} companyId */
 function getCompany(companyId) {
 	if (!companyId) {
 		throw new Error("Attempted to get company with falsey id");
@@ -36,6 +38,7 @@ function getCompany(companyId) {
 	return company;
 }
 
+/** @param {Company} company */
 function setCompany(company) {
 	companyDictionary.set(company.id, company);
 	ensuredPathSave("./saves", "companies.json", JSON.stringify(Array.from((companyDictionary.values())).map(company => {

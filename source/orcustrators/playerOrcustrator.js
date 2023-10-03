@@ -10,6 +10,7 @@ const fileName = "players.json";
 const filePath = `${dirPath}/${fileName}`;
 
 const requirePath = "../../saves/players.json";
+/** @type {Map<string, Player>} */
 const playerDictionary = new Map();
 
 async function loadPlayers() {
@@ -25,6 +26,10 @@ async function loadPlayers() {
 	}
 }
 
+/**
+ * @param {string} playerId
+ * @param {string} guildId
+ */
 function getPlayer(playerId, guildId) {
 	if (!playerDictionary.has(playerId)) {
 		setPlayer(new Player(playerId));
@@ -35,14 +40,19 @@ function getPlayer(playerId, guildId) {
 	return playerDictionary.get(playerId);
 }
 
+/** @param {Player} player */
 function setPlayer(player) {
 	playerDictionary.set(player.id, player);
 	ensuredPathSave("./Saves", "players.json", JSON.stringify(Array.from((playerDictionary.values()))));
 }
 
+/**
+ * @param {string[]} userIds
+ * @param {string} guildId
+ */
 function resetScores(userIds, guildId) {
 	userIds.forEach(id => {
-		let player = playerDictionary.get(id);
+		const player = playerDictionary.get(id);
 		player.scores[guildId] = { total: 0, high: 0 };
 		setPlayer(player);
 	})
