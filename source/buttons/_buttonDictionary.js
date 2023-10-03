@@ -4,6 +4,11 @@ const { ButtonWrapper } = require("../classes");
 const buttonDictionary = {};
 
 for (const file of [
+	"buylife.js",
+	"buyscouting.js",
+	"confirmmove.js",
+	"deploy.js",
+	"elementresearch.js"
 ]) {
 	/** @type {ButtonWrapper} */
 	const button = require(`./${file}`);
