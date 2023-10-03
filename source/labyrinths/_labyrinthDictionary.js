@@ -12,18 +12,18 @@ for (const file of [
 	/** @type {LabyrinthTemplate} */
 	const labyrinth = require(`./${file}`);
 	for (const element in labyrinth.availableItems) {
-		for (const consumable of labyrinth.availableItems[element]) {
-			if (!itemExists(consumable)) {
-				console.error(`Unregistered consumable name in ${labyrinth.name}: ${consumable}`);
+		for (const item of labyrinth.availableItems[element]) {
+			if (!itemExists(item)) {
+				console.error(`Unregistered item name in ${labyrinth.name}: ${item}`);
 			}
 		}
 	}
 
 	for (const element in labyrinth.availableGear) {
 		for (const rarity in labyrinth.availableGear[element]) {
-			for (const equipment of labyrinth.availableGear[element][rarity]) {
-				if (!gearExists(equipment)) {
-					console.error(`Unregistered equipment name in ${labyrinth.name}: ${equipment}`);
+			for (const gear of labyrinth.availableGear[element][rarity]) {
+				if (!gearExists(gear)) {
+					console.error(`Unregistered gear name in ${labyrinth.name}: ${gear}`);
 				}
 			}
 		}
@@ -62,23 +62,23 @@ function getLabyrinthProperty(labyrinthName, propertyName) {
 	}
 }
 
-/** Rolls a consumable's name from droppable consumables
+/** Rolls a item's name from droppable items
  * @param {Adventure} adventure
  * @returns {string}
  */
 function rollItem(adventure) {
-	const itemPool = adventure.getElementPool().flatMap((element) => LABYRINTHS[adventure.labyrinth].availableConsumables[element]);
+	const itemPool = adventure.getElementPool().flatMap((element) => LABYRINTHS[adventure.labyrinth].availableItems[element]);
 
 	return itemPool[adventure.generateRandomNumber(itemPool.length, "general")];
 }
 
-/** Filters by party element pool and given tier, then rolls a random equipment's name
+/** Filters by party element pool and given tier, then rolls a random gear's name
  * @param {"Cursed" | "Common" | "Rare"} tier
  * @param {Adventure} adventure
- * @returns {string} the name of the dropped equipment
+ * @returns {string} the name of the dropped gear
  */
 function rollGear(tier, adventure) {
-	const pool = adventure.getElementPool().flatMap(element => LABYRINTHS[adventure.labyrinth].availableEquipment[element][tier]);
+	const pool = adventure.getElementPool().flatMap(element => LABYRINTHS[adventure.labyrinth].availableGear[element][tier]);
 	return pool[adventure.generateRandomNumber(pool.length, "general")];
 }
 

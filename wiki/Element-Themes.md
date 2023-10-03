@@ -19,6 +19,7 @@ Archetypes: Hemomancer
 - Piercing
 - Slowing
 - Sweeping
+- Reaper's
 
 ### Uncommon Variants
 - Toxic

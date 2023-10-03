@@ -19,12 +19,12 @@ module.exports = new SelectWrapper(mainId, 3000,
 		/** @type {string[]} */
 		const upgradePool = getGearProperty(gearName, "upgrades").concat(getGearProperty(gearName, "sidegrades"));
 		const upgradeName = upgradePool[adventure.generateRandomNumber(upgradePool.length, "general")];
-		const upgradeUses = getGearProperty(upgradeName, "maxDurability");
-		const usesDifference = upgradeUses - getGearProperty(gearName, "maxDurability");
-		if (usesDifference > 0) {
-			user.gear[index].uses += usesDifference;
+		const upgradeDurability = getGearProperty(upgradeName, "maxDurability");
+		const durabilityDifference = upgradeDurability - getGearProperty(gearName, "maxDurability");
+		if (durabilityDifference > 0) {
+			user.gear[index].durability += durabilityDifference;
 		}
-		user.gear.splice(index, 1, { name: upgradeName, uses: Math.min(upgradeUses, user.gear[index].uses) });
+		user.gear.splice(index, 1, { name: upgradeName, durability: Math.min(upgradeDurability, user.gear[index].durability) });
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 			const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);
 			let components = roomMessage.components;

@@ -6,22 +6,22 @@ const GEAR = {};
 
 for (const file of [
 	"_punch.js",
-	// "barrier-base.js",
-	// "barrier-purifying.js",
-	// "barrier-thick.js",
-	// "barrier-urgent.js",
-	// "battleaxe-base.js",
-	// "battleaxe-prideful.js",
-	// "battleaxe-thick.js",
-	// "battleaxe-thirsting.js",
+	"barrier-base.js",
+	"barrier-purifying.js",
+	"barrier-thick.js",
+	"barrier-urgent.js",
+	"battleaxe-base.js",
+	"battleaxe-prideful.js",
+	"battleaxe-thick.js",
+	"battleaxe-thirsting.js",
 	"bloodaegis-base.js",
 	"bloodaegis-charging.js",
 	"bloodaegis-heavy.js",
 	"bloodaegis-sweeping.js",
-	// "bow-base.js",
-	// "bow-evasive.js",
-	// "bow-hunters.js",
-	// "bow-mercurial.js",
+	"bow-base.js",
+	"bow-evasive.js",
+	"bow-hunters.js",
+	"bow-mercurial.js",
 	"buckler-base.js",
 	"buckler-devoted.js",
 	"buckler-guarding.js",
@@ -30,10 +30,10 @@ for (const file of [
 	"censer-fatesealing.js",
 	"censer-thick.js",
 	"censer-tormenting.js",
-	// "certainvictory-base.js",
-	// "certainvictory-hunters.js",
-	// "certainvictory-lethal.js",
-	// "certainvictory-reckless.js",
+	"certainvictory-base.js",
+	"certainvictory-hunters.js",
+	"certainvictory-lethal.js",
+	"certainvictory-reckless.js",
 	"cloak-base.js",
 	"cloak-long.js",
 	"cloak-accelerating.js",
@@ -44,18 +44,18 @@ for (const file of [
 	"daggers-sharpened.js",
 	"daggers-slowing.js",
 	"daggers-sweeping.js",
-	// "firecracker-base.js",
-	// "firecracker-double.js",
-	// "firecracker-mercurial.js",
-	// "firecracker-toxic.js",
+	"firecracker-base.js",
+	"firecracker-double.js",
+	"firecracker-mercurial.js",
+	"firecracker-toxic.js",
 	"floatingmiststance-base.js",
 	"floatingmiststance-soothing.js",
-	// "infiniteregeneration-base.js",
-	// "infiniteregeneration-fatesealing.js",
-	// "inspiration-base.js",
-	// "inspiration-reinforcing.js",
-	// "inspiration-soothing.js",
-	// "inspiration-sweeping.js",
+	"infiniteregeneration-base.js",
+	"infiniteregeneration-fatesealing.js",
+	"inspiration-base.js",
+	"inspiration-reinforcing.js",
+	"inspiration-soothing.js",
+	"inspiration-sweeping.js",
 	"ironfiststance-base.js",
 	"ironfiststance-organic.js",
 	"lance-accelerating.js",
@@ -66,9 +66,9 @@ for (const file of [
 	"lifedrain-flanking.js",
 	"lifedrain-reactive.js",
 	"lifedrain-urgent.js",
-	// "midasstaff-base.js",
-	// "midasstaff-soothing.js",
-	// "midasstaff-accelerating.js",
+	"midasstaff-base.js",
+	"midasstaff-soothing.js",
+	"midasstaff-accelerating.js",
 	"potionkit-base.js",
 	"potionkit-guarding.js",
 	"potionkit-organic.js",
@@ -77,10 +77,10 @@ for (const file of [
 	"scutum-heavy.js",
 	"scutum-sweeping.js",
 	"scutum-vigilant.js",
-	// "scythe-base.js",
-	// "scythe-lethal.js",
-	// "scythe-piercing.js",
-	// "scythe-toxic.js",
+	"scythe-base.js",
+	"scythe-lethal.js",
+	"scythe-piercing.js",
+	"scythe-toxic.js",
 	"shortsword-accelerating.js",
 	"shortsword-base.js",
 	"shortsword-toxic.js",
@@ -88,25 +88,25 @@ for (const file of [
 	"sickle-hunters.js",
 	"sickle-sharpened.js",
 	"sickle-toxic.js",
-	// "spear-base.js",
-	// "spear-lethal.js",
-	// "spear-reactive.js",
-	// "spear-sweeping.js",
-	// "sunflare-base.js",
-	// "sunflare-evasive.js",
-	// "sunflare-accelerating.js",
-	// "sunflare-tormenting.js",
-	// "vigilancecharm-base.js",
-	// "vigilancecharm-devoted.js",
-	// "vigilancecharm-long.js",
-	// "vigilancecharm-guarding.js",
-	// "warcry-base.js",
-	// "warcry-charging.js",
-	// "warcry-slowing.js",
-	// "warcry-tormenting.js",
-	// "warhammer-base.js",
-	// "warhammer-piercing.js",
-	// "warhammer-slowing.js"
+	"spear-base.js",
+	"spear-lethal.js",
+	"spear-reactive.js",
+	"spear-sweeping.js",
+	"sunflare-base.js",
+	"sunflare-evasive.js",
+	"sunflare-accelerating.js",
+	"sunflare-tormenting.js",
+	"vigilancecharm-base.js",
+	"vigilancecharm-devoted.js",
+	"vigilancecharm-long.js",
+	"vigilancecharm-guarding.js",
+	"warcry-base.js",
+	"warcry-charging.js",
+	"warcry-slowing.js",
+	"warcry-tormenting.js",
+	"warhammer-base.js",
+	"warhammer-piercing.js",
+	"warhammer-slowing.js"
 ]) {
 	const gear = require(`./${file}`);
 	if (gear.name in GEAR) {
@@ -115,14 +115,14 @@ for (const file of [
 	GEAR[gear.name] = gear;
 };
 
-/** Checks if a type of equipment with the given name exists
+/** Checks if a type of gear with the given name exists
  * @param {string} gearName
  */
 function gearExists(gearName) {
 	return gearName in GEAR;
 }
 
-/** Lookup a static property for a type of equipment
+/** Lookup a static property for a type of gear
  * @param {string} gearName
  * @param {string} propertyName
  * @returns {unknown}
@@ -136,7 +136,7 @@ function getGearProperty(gearName, propertyName) {
 			console.error(`Property ${propertyName} not found on ${gearName}`);
 		}
 	} else {
-		console.error(`Equipment name ${gearName} not recognized`);
+		console.error(`Gear name ${gearName} not recognized`);
 	}
 }
 
@@ -144,10 +144,10 @@ function buildGearDescription(gearName, buildFullDescription) {
 	if (gearExists(gearName)) {
 		let description;
 		if (buildFullDescription) {
-			// return the base and crit effects of the equipment with the base italicized
+			// return the base and crit effects of the gear with the base italicized
 			description = `*Effect:* ${getGearProperty(gearName, "description")}\n*Critical💥:* ${exports.getGearProperty(gearName, "critDescription")}`;
 		} else {
-			// return the base effect of the equipment unitalicized
+			// return the base effect of the gear unitalicized
 			description = getGearProperty(gearName, "description");
 		}
 

@@ -39,6 +39,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Common: [
 				"Blood Aegis",
 				"Life Drain",
+				"Scythe",
 			],
 			Rare: [
 				"Charging Blood Aegis",
@@ -47,6 +48,9 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Flanking Life Drain",
 				"Reactive Life Drain",
 				"Urgent Life Drain",
+				"Lethal Scythe",
+				"Piercing Scythe",
+				"Toxic Scythe",
 			]
 		},
 		Earth: {
@@ -55,7 +59,6 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Common: [
 				"Buckler",
 				"Certain Victory",
-				"Infinite Regeneration",
 				"Lance",
 				"Vigilance Charm",
 				"Warhammer"
@@ -67,7 +70,6 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Hunter's Certain Victory",
 				"Lethal Certain Victory",
 				"Reckless Certain Victory",
-				"Fate Sealing Infinite Regeneration",
 				"Accelerating Lance",
 				"Piercing Lance",
 				"Vigilant Lance",
@@ -82,7 +84,6 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Barrier",
 				"Battleaxe",
 				"Censer",
 				"Corrosion",
@@ -92,13 +93,10 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"War Cry"
 			],
 			Rare: [
-				"Purifying Barrier",
-				"Thick Barrier",
-				"Urgent Barrier",
 				"Prideful Battleaxe",
 				"Thick Battleaxe",
 				"Thirsting Battleaxe",
-				"Fate Sealing Censer",
+				"Fate-Sealing Censer",
 				"Thick Censer",
 				"Tormenting Censer",
 				"Flanking Corrosion",
@@ -119,12 +117,22 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Barrier",
 				"Floating Mist Stance",
-				"Iron Fist Stance"
+				"Infinite Regeneration",
+				"Iron Fist Stance",
+				"Sun Flare"
 			],
 			Rare: [
+				"Purifying Barrier",
+				"Thick Barrier",
+				"Urgent Barrier",
 				"Soothing Floating Mist Stance",
-				"Organic Iron Fist Stance"
+				"Fate-Sealing Infinite Regeneration",
+				"Organic Iron Fist Stance",
+				"Evasive Sun Flare",
+				"Accelerating Sun Flare",
+				"Tormenting Sun Flare"
 			]
 		},
 		Water: {
@@ -154,9 +162,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Cloak",
 				"Daggers",
 				"Inspiration",
-				"Scythe",
 				"Spear",
-				"Sun Flare"
 			],
 			Rare: [
 				"Evasive Bow",
@@ -171,15 +177,9 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Reinforcing Inspiration",
 				"Soothing Inspiration",
 				"Sweeping Inspiration",
-				"Lethal Scythe",
-				"Piercing Scythe",
-				"Toxic Scythe",
 				"Lethal Spear",
 				"Reactive Spear",
 				"Sweeping Spear",
-				"Evasive Sun Flare",
-				"Accelerating Sun Flare",
-				"Tormenting Sun Flare"
 			]
 		},
 		Untyped: {

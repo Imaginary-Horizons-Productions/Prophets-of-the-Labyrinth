@@ -4,6 +4,7 @@ const { gearExists, getGearProperty, buildGearDescription, gearNames } = require
 const { getAllArtifactNames, getArtifact } = require('../artifacts/_artifactDictionary');
 const { generateArtifactEmbed, embedTemplate } = require('../util/embedUtil');
 const { getColor } = require('../util/elementUtil');
+const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 
 const mainId = "manual";
 const options = [];
@@ -80,7 +81,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 
 				interaction.reply({
 					embeds: [
-						embedTemplate().setColor(getColor(getEquipmentProperty(gearName, "element")))
+						embedTemplate().setColor(getColor(getGearProperty(gearName, "element")))
 							.setTitle(gearName)
 							.setDescription(buildGearDescription(gearName, true))
 							.addFields(fields)
@@ -89,7 +90,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 				});
 				break;
 			case subcommands[1].name: // item-info
-				// Returns a message containing the given consumable's game info
+				// Returns a message containing the given item's game info
 				const itemName = interaction.options.getString(subcommands[1].optionsInput[0].name);
 				if (!itemExists(itemName)) {
 					interaction.reply({ content: `Stats on **${itemName}** could not be found. Check for typos!`, ephemeral: true });
@@ -100,11 +101,11 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 				const embed = embedTemplate().setColor(getColor(element))
 					.setTitle(itemName)
 					.setDescription(description);
-				// const adventure = getAdventure(interaction.channelId);
-				// if (adventure) {
-				// 	const numberHeld = adventure?.consumables[itemName] || 0;
-				// 	embed.addFields({ name: "Number Held", value: numberHeld.toString() });
-				// }
+				const adventure = getAdventure(interaction.channelId);
+				if (adventure) {
+					const numberHeld = adventure?.items[itemName] || 0;
+					embed.addFields({ name: "Number Held", value: numberHeld.toString() });
+				}
 				if (flavorText) {
 					embed.addFields(flavorText);
 				}

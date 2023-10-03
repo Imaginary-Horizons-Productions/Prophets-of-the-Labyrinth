@@ -6,7 +6,7 @@ const { getGearProperty } = require('../gear/_gearDictionary');
 
 const mainId = "viewrepairs";
 module.exports = new ButtonWrapper(mainId, 3000,
-	/** Allow the user to select a piece of gear to regain uses on */
+	/** Allow the user to select a piece of gear to regain durability on */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
@@ -18,8 +18,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const options = [];
 		delver.gear.forEach((gear, index) => {
 			const maxDurability = getGearProperty(gear.name, "maxDurability");
-			if (maxDurability > 0 && gear.uses < maxDurability) {
-				const value = Math.min(Math.ceil(maxDurability / 2), maxDurability - gear.uses);
+			if (maxDurability > 0 && gear.durability < maxDurability) {
+				const value = Math.min(Math.ceil(maxDurability / 2), maxDurability - gear.durability);
 				options.push({
 					label: gear.name,
 					description: `Regain ${value} uses`,
@@ -34,7 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setPlaceholder("Pick a piece of gear to repair...")
 						.setOptions(options)
 				)
-				interaction.reply({ content: "You can use 1 room action to repair a piece of gear. That piece of gear will regain half its max uses.", components: [upgradeSelect], ephemeral: true });
+				interaction.reply({ content: "You can use 1 room action to repair a piece of gear. That piece of gear will regain half its max durability.", components: [upgradeSelect], ephemeral: true });
 			} else {
 				interaction.reply({ content: "None of your gear needs repair.", ephemeral: true });
 			}

@@ -9,14 +9,30 @@ Adds Quicken to the user
 **Available on**
 - Cloak (Wind)
 - Lance (Earth)
+- Midas Staff (Water)
 - Shortsword (Fire)
+- Sun Flare (Light)
+
+### Awesome
+Bonus damage if target is Stunned
+
+**Available on**
+- all Warhammers (Earth)
+
+### Bouncing
+Hits 3 random targets (from a beneficial team)
+
+**Available on**
+- all Firecrackers (Fire)
 
 ### Charging
 Adds Power Up to the user
 
 **Available on**
 - all Bucklers (Earth)
+- all Certain Victory (Earth)
 - Blood Aegis (Darkness)
+- War Cry (Fire)
 
 ### Corrosive
 Adds Power Down to target
@@ -29,18 +45,35 @@ Can apply to allies
 
 **Available on**
 - Bucker (Earth)
+- Vigilance Charm (Earth)
+
+### Discounted
+Reduced base price
+
+**Available on**
+- Infinite Regeneration (Light)
+- Midas Staff (Water)
+
+### Double
+Doubles number of targets
+
+**Available on**
+- Firecracker (Fire)
 
 ### Evasive
 Adds Evade to the user
 
 **Available on**
 - all Cloaks (Wind)
+- Bow (Wind)
+- Sun Flare (Light)
 
 ### Fate-Sealing
 Adds Stasis to target on crit
 
 **Available on**
 - Censer (Fire)
+- Infinite Regeneration (Light)
 
 ### Flanking
 Adds Exposed to target
@@ -55,6 +88,7 @@ Adds Block to the user
 **Available on**
 - Buckler (Earth)
 - Potion Kit (Water)
+- Vigilance Charm (Earth)
 
 ### Healing
 Heal the user
@@ -66,6 +100,7 @@ Heal the user
 Increased Block
 
 **Available on**
+- all Barriers (Light)
 - Buckler (Earth)
 - Blood Aegis (Darkness)
 - Scutum (Fire)
@@ -74,6 +109,8 @@ Increased Block
 Gain gold on kill
 
 **Available on**
+- Bow (Wind)
+- Certain Victory (Earth)
 - Sickle (Water)
 
 ### Lethal
@@ -81,12 +118,29 @@ Increased crit damage
 
 **Available on**
 - all Daggers (Wind)
+- Certain Victory (Earth)
+- Scythe (Darkness)
+- Spear (Wind)
 
 ### Long
 Increased modifier stacks
 
 **Available on**
 - Cloak (Wind)
+- Vigilance Charm (Earth)
+
+### Mercurial
+Damage element matches user
+
+**Available on**
+- Bow (Wind)
+- Firecracker (Fire)
+
+### Midas's
+Adds Curse of Midas to target
+
+**Available on**
+- all Midas Staves (Water)
 
 ### Organic
 Regains durability when entering new rooms
@@ -100,17 +154,46 @@ Deals Unblockable damage
 
 **Available on**
 - Lance (Earth)
+- Scythe (Darkness)
+- Warhammer (Earth)
+
+### Prideful
+Increased damage and change element to Untyped
+
+**Available on**
+- Battleaxe (Fire)
+
+### Purifying
+Cures all debuffs on target
+
+**Available on**
+- Barrier (Light)
 
 ### Reactive
 Bonus damage if user moves after target
 
 **Available on**
 - Life Drain (Darkness)
+- Spear (Wind)
+
+### Reaper's
+Kills target at or below hp threshold
+
+**Available on**
+- all Scythes (Darkness)
+
+### Reckless
+Increased damage, but adds Exposed to user
+
+**Available on**
+- all Battleaxes (Fire)
+- Certain Victory (Earth)
 
 ### Sharpened
 Increased damage
 
 **Available on**
+- all Spears (Wind)
 - Daggers (Wind)
 - Sickle (Water)
 
@@ -119,20 +202,26 @@ Adds Slow to target
 
 **Available on**
 - Daggers (Wind)
+- War Cry (Fire)
+- Warhammer (Earth)
 
 ### Soothing
 Adds Regen to target
 
 **Available on**
+- all Infinite Regenerations (Light)
 - Floating Mist Stance (Light)
+- Midas Staff (Water)
 
 ### Sweeping
 Targets whole team
 
 **Available on**
-- Daggers (Wind)
 - Blood Aegis (Darkness)
+- Daggers (Wind)
+- Inspiration (Wind)
 - Scutum (Fire)
+- Spear (Wind)
 
 ### Taunting
 Change target's move's target to user
@@ -144,19 +233,30 @@ Change target's move's target to user
 Increased durability
 
 **Available on**
+- Barrier (Light)
+- Battleaxe (Fire)
 - Cloak (Wind)
 - Censer (Fire)
+
+### Thirsting
+Heal user's HP on kill
+
+**Available on**
+- Battleaxe (Fire)
 
 ### Tormenting
 Increment a stack on all target's debuffs
 
 **Available on**
 - Censer (Fire)
+- Sun Flare (Light)
+- War Cry (Fire)
 
 ### Toxic
 Adds Poison to target
 
 **Available on**
+- Firecracker (Fire)
 - Sickle (Water)
 - Shortsword (Fire)
 
@@ -164,6 +264,9 @@ Adds Poison to target
 Increased priority
 
 **Available on**
+- all Bows (Wind)
+- all Sun Flares (Light)
+- Barrier (Light)
 - Potion Kit (Water)
 - Life Drain (Darkness)
 
@@ -177,6 +280,7 @@ Bonus damage if target has debuffs
 Adds Vigilance to user
 
 **Available on**
+- Vigilance Charm (Earth)
 - Lance (Earth)
 - Scutum (Fire)
 
@@ -185,5 +289,12 @@ Adds Vigilance to user
 - Adds Iron Fist Stance to user (all Iron Fist Stances)
 - Double benefits from Power Up (all Lances)
 - Percent max hp damage (all Sickles)
+- Adds Power Up to target (all Inspiration)
+- Also hits targets with Exposed (all War Cries)
 
 ## Planned Variants
+### Furious
+Increases damage proprotional to user's missing HP
+
+**Available on**
+- (none)

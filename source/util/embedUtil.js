@@ -291,13 +291,13 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 
 /** Seen in target selection embeds and /inspect-self gear fields contain nearly all information about the gear they represent
  * @param {string} gearName
- * @param {number} uses
+ * @param {number} durability
  * @returns {EmbedField} contents for a message embed field
  */
-function gearToEmbedField(gearName, uses) {
+function gearToEmbedField(gearName, durability) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = uses === Infinity ? "∞ uses" : `${generateTextBar(uses, maxDurability, maxDurability)} ${uses}/${maxDurability} uses`;
+	const durabilityText = durability === Infinity ? "∞ uses" : `${generateTextBar(durability, maxDurability, maxDurability)} ${durability}/${maxDurability} durability`;
 	return {
 		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))} (${durabilityText})`,
 		value: buildGearDescription(gearName, true)
@@ -319,7 +319,7 @@ function inspectSelfPayload(delver, gearCapacity) {
 	}
 	for (let index = 0; index < gearCapacity; index++) {
 		if (delver.gear[index]) {
-			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].uses));
+			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability));
 		} else {
 			embed.addFields({ name: `${ordinalSuffixEN(index + 1)} Gear Slot`, value: "No gear yet..." })
 		}

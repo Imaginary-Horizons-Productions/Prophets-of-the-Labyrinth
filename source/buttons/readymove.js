@@ -45,13 +45,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		});
 		const components = [];
-		const usableMoves = delver.gear.filter(gear => gear.uses > 0);
+		const usableMoves = delver.gear.filter(gear => gear.durability > 0);
 		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
-			usableMoves.unshift({ name: "Punch", uses: Infinity });
+			usableMoves.unshift({ name: "Punch", durability: Infinity });
 		}
 		for (let i = 0; i < usableMoves.length; i++) {
-			const { name: gearName, uses } = usableMoves[i];
-			embed.addFields(gearToEmbedField(gearName, uses));
+			const { name: gearName, durability } = usableMoves[i];
+			embed.addFields(gearToEmbedField(gearName, durability));
 			const { target, team } = getGearProperty(gearName, "targetingTags");
 			const elementEmoji = getEmoji(getGearProperty(gearName, "element"));
 			if (target === "single") {

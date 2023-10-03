@@ -19,4 +19,4 @@ module.exports = new GearTemplate("name",
 	[])
 	.setTargetingTags({ target: "", team: "" })
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
-	.setUses();
+	.setDurability();

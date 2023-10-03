@@ -8,7 +8,7 @@ const uiGroups = [`gear${SAFE_DELIMITER}?`, `gear${SAFE_DELIMITER}Rare`];
 
 module.exports = new RoomTemplate("Gear Merchant",
 	"@{adventure}",
-	"A masked figure sits in front of a rack of weapons and other equipment. \"Care to trade?\"",
+	"A masked figure sits in front of a rack of weapons and other gear. \"Care to trade?\"",
 	[
 		new ResourceTemplate("n", "always", "gear").setTier("?").setUIGroup(uiGroups[0]),
 		new ResourceTemplate("1", "always", "gear").setTier("Rare").setUIGroup(uiGroups[1])

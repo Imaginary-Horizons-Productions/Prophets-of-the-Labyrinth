@@ -4,7 +4,7 @@ const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
 
 class Adventure {
-	/** This read-write payload class describes an ongoing adventure
+	/** NOTE: The setters in this class are require for a well formed entity. Currently procrastinating on refactoring /delve to fix that.
 	 * @param {string} seedInput
 	 * @param {string} guildIdInput
 	 * @param {string} labyrinthInput
@@ -194,7 +194,7 @@ class Adventure {
 			this.lives += count;
 			this.updateArtifactStat(artifact, "Lives Gained", count);
 		} else if (artifact === "Hammerspace Holster") {
-			this.updateArtifactStat(artifact, "Extra Equipment Capacity", count);
+			this.updateArtifactStat(artifact, "Extra Gear Capacity", count);
 		}
 		if (artifact in this.artifacts) {
 			this.artifacts[artifact].count += count;
@@ -232,7 +232,7 @@ class Adventure {
 	}
 
 	/** Initializes a resource in the room's resources if it's not already present
-	 * @param {string} nameInput Note: all names in the combined pool of equipment, artifacts, consumables, and resources must be unique
+	 * @param {string} nameInput Note: all names in the combined pool of gear, artifacts, items, and resources must be unique
 	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge"| "item"} resourceTypeInput
 	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
 	 * @param {number} countInput

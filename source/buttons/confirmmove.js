@@ -9,7 +9,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	async (interaction, [moveName, round, index]) => {
 		const adventure = getAdventure(interaction.channel.id);
 		const user = adventure?.delvers.find(delver => delver.id === interaction.user.id);
-		if (!(user?.gear.some(equip => equip.name === moveName && equip.uses > 0))) {
+		if (!(user?.gear.some(gear => gear.name === moveName && gear.durability > 0))) {
 			interaction.update({ content: `You don't have a ${moveName} with remaining durability.`, embeds: [], components: [] })
 				.catch(console.error);
 			return;

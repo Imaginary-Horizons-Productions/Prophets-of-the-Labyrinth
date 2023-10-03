@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Thick Censer",
 		});
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
-	.setSidegrades("Fate Sealing Censer", "Tormenting Censor")
+	.setSidegrades("Fate-Sealing Censer", "Tormenting Censor")
 	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 2 }])
 	.setDamage(50)
 	.setBonus(75) // damage

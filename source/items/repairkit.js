@@ -8,11 +8,11 @@ module.exports = new ItemTemplate("Repair Kit",
 	30,
 	selectSelf,
 	(targets, user, isCrit, adventure) => {
-		user.equipment.forEach((equip) => {
+		user.gear.forEach((gear) => {
 			/** @type {number} */
-			const maxDurability = getGearProperty(equip.name, "maxDurability");
-			if (maxDurability > 0 && equip.uses < maxDurability) {
-				equip.uses = Math.min(equip.uses + Math.ceil(maxDurability / 4), maxDurability);
+			const maxDurability = getGearProperty(gear.name, "maxDurability");
+			if (maxDurability > 0 && gear.durability < maxDurability) {
+				gear.durability = Math.min(gear.durability + Math.ceil(maxDurability / 4), maxDurability);
 			}
 		})
 

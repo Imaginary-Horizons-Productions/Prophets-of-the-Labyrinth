@@ -12,10 +12,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		if (adventure.room.resources["Repair Kit"].count > 0) {
-			if ("Repair Kit" in adventure.consumables) {
-				adventure.consumables["Repair Kit"]++;
+			if ("Repair Kit" in adventure.items) {
+				adventure.items["Repair Kit"]++;
 			} else {
-				adventure.consumables["Repair Kit"] = 1;
+				adventure.items["Repair Kit"] = 1;
 			}
 			adventure.room.resources["Repair Kit"].count = 0;
 		}

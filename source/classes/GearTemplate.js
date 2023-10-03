@@ -3,7 +3,7 @@ const { BuildError } = require("./BuildError");
 const { Combatant } = require("./Combatant");
 
 class GearTemplate {
-	/** This read-only data class defines stats for a piece of equipment
+	/** This read-only data class defines stats for a piece of gear
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
 	 * @param {string} critDescriptionInput
