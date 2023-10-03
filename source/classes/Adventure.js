@@ -7,21 +7,21 @@ class Adventure {
 	/** This read-write payload class describes an ongoing adventure
 	 * @param {string} seedInput
 	 * @param {string} guildIdInput
-	 * @param {string} threadId the id of the thread created for the adventure
-	 * @param {string} nameInput
 	 * @param {string} labyrinthInput
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementInput
 	 * @param {string} leaderIdInput
 	 */
-	constructor(seedInput, guildIdInput, threadId, nameInput, labyrinthInput, elementInput, leaderIdInput) {
+	constructor(seedInput, guildIdInput, labyrinthInput, leaderIdInput) {
 		this.initialSeed = seedInput || Date.now().toString();
 		this.guildId = guildIdInput;
-		this.id = threadId;
-		this.name = nameInput;
 		this.labyrinth = labyrinthInput;
-		this.element = elementInput;
 		this.leaderId = leaderIdInput;
 	}
+	/** @type {string} should match the id of the adventure's thread */
+	id;
+	/** @type {string} */
+	name;
+	/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
+	element;
 	/** @type {"config" | "ongoing" | "success" | "defeat" | "giveup"} */
 	state = "config";
 	static endStates = ["success", "defeat", "giveup"];
@@ -62,6 +62,24 @@ class Adventure {
 		battle: 0
 	};
 	rnTable = "";
+
+	/** @param {string} threadId */
+	setId(threadId) {
+		this.id = threadId;
+		return this;
+	}
+
+	/** @param {string} adventureName */
+	setName(adventureName) {
+		this.name = adventureName;
+		return this;
+	}
+
+	/** @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
+	setElement(elementEnum) {
+		this.element = elementEnum;
+		return this;
+	}
 
 	generateRNTable() {
 		let hash = crypto.createHash("sha256").update(this.initialSeed).digest("hex");

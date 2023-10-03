@@ -39,6 +39,11 @@ for (const file of [
 	LABYRINTHS[labyrinth.name] = labyrinth;
 }
 
+/** @param {string} labyrinthName */
+function labyrinthExists(labyrinthName) {
+	return labyrinthName in LABYRINTHS
+};
+
 /** Lookup static property of a labyrinth by labyrinth name
  * @param {string} labyrinthName
  * @param {string} propertyName
@@ -116,6 +121,9 @@ function rollRoom(type, adventure) {
 }
 
 module.exports = {
+	labyrinthExists,
+	/** This array determines which labyrinths show up in the `/delve labyrinth` autocomplete. It is desync'd from the list of all labyrinths to allow for easter eggs (ie remove Debug Dungeon after "real" labyrinths are made) */
+	defaultLabyrinths: ["Debug Dungeon"],
 	getLabyrinthProperty,
 	rollItem,
 	rollGear,

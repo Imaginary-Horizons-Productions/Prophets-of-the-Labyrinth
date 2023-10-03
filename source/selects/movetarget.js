@@ -9,7 +9,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 	async (interaction, [moveName, round, index]) => {
 		const adventure = getAdventure(interaction.channelId);
 		const user = adventure?.delvers.find(delver => delver.id === interaction.user.id);
-		if (!(moveName === "Punch" || user?.gear.some(gear => gear.name === moveName && gear.uses > 0))) {
+		if (moveName !== "Punch" && !(user?.gear.some(gear => gear.name === moveName && gear.uses > 0))) {
 			// Needed to prevent crashes in case users keep ephemeral messages around and uses one with broken gear
 			interaction.update({ content: `You don't have a ${moveName} with uses remaining.`, components: [], embeds: [] });
 			return;

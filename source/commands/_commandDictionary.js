@@ -6,10 +6,19 @@ const commandDictionary = {};
 module.exports = {
 	/** @type {string[]} */
 	commandFiles: [
+		"adventure.js",
 		"commands.js",
 		"data-policy.js",
+		"delve.js",
 		"feedback.js",
+		"give-up.js",
+		"invite.js",
 		"manual.js",
+		"ping.js",
+		"player-stats.js",
+		"regenerate.js",
+		"reset.js",
+		"support.js",
 		"version.js"
 	],
 	/** @type {import('discord.js').RESTPostAPIChatInputApplicationCommandsJSONBody[]} */
