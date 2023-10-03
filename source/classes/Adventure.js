@@ -8,6 +8,8 @@ class Adventure {
 	 * @param {string} seedInput
 	 * @param {string} guildIdInput
 	 * @param {string} threadId the id of the thread created for the adventure
+	 * @param {string} nameInput
+	 * @param {string} labyrinthInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementInput
 	 * @param {string} leaderIdInput
 	 */
