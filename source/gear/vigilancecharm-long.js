@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, removeModifier } = require('../combatantDAO.js');
+const { addModifier, removeModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Long Vigilance Charm",
 	"Gain @{mod1Stacks} @{mod1}",

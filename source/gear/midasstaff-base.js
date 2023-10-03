@@ -7,6 +7,7 @@ module.exports = new GearTemplate("Midas Staff",
 	"@{mod1} +@{bonus}",
 	"Trinket",
 	"Water",
+	200,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger, curse], bonus } = module.exports;
 		const pendingCurse = { ...curse, stacks: curse.stacks + (isCrit ? bonus : 0) };
