@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
+const { getGearProperty } = require("../gear/_gearDictionary");
 const { selectSelf } = require("../shared/actionComponents");
-// const { getEquipmentProperty } = require("../equipment/_equipmentDictionary.js");
 
 module.exports = new ItemTemplate("Repair Kit",
 	"Repairs all the user's gear by 25% of its max durability",
@@ -9,9 +9,10 @@ module.exports = new ItemTemplate("Repair Kit",
 	selectSelf,
 	(targets, user, isCrit, adventure) => {
 		user.equipment.forEach((equip) => {
-			const maxUses = getEquipmentProperty(equip.name, "maxUses");
-			if (maxUses > 0 && equip.uses < maxUses) {
-				equip.uses = Math.min(equip.uses + Math.ceil(maxUses / 4), maxUses);
+			/** @type {number} */
+			const maxDurability = getGearProperty(equip.name, "maxDurability");
+			if (maxDurability > 0 && equip.uses < maxDurability) {
+				equip.uses = Math.min(equip.uses + Math.ceil(maxDurability / 4), maxDurability);
 			}
 		})
 

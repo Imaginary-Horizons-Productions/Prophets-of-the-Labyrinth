@@ -12,7 +12,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		if (count > 0) {
 			const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 			const discardedName = delver.gear[index].name;
-			delver.gear.splice(index, 1, { name, uses: getGearProperty(name, "maxUses") });
+			delver.gear.splice(index, 1, { name, durability: getGearProperty(name, "maxDurability") });
 			interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 				adventure.room.resources[name].count--;
 				adventure.gold -= cost;

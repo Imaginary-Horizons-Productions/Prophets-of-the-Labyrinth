@@ -4,6 +4,21 @@ const { SelectWrapper } = require("../classes");
 const selectDictionary = {};
 
 for (const file of [
+	"archetype.js",
+	"artifact.js",
+	"artifactdupe.js",
+	"buygear.js",
+	"buyitem.js",
+	"challenge.js",
+	"collectartifact.js",
+	"item.js",
+	"loot.js",
+	"movetarget.js",
+	"randomupgrade.js",
+	"repair.js",
+	"startingartifact.js",
+	"startingchallenges.js",
+	"treasure.js"
 ]) {
 	/** @type {SelectWrapper} */
 	const select = require(`./${file}`);

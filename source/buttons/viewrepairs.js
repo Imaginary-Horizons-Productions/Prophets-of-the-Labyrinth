@@ -17,9 +17,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const options = [];
 		delver.gear.forEach((gear, index) => {
-			let maxUses = getGearProperty(gear.name, "maxUses");
-			if (maxUses > 0 && gear.uses < maxUses) {
-				let value = Math.min(Math.ceil(maxUses / 2), maxUses - gear.uses);
+			const maxDurability = getGearProperty(gear.name, "maxDurability");
+			if (maxDurability > 0 && gear.uses < maxDurability) {
+				const value = Math.min(Math.ceil(maxDurability / 2), maxDurability - gear.uses);
 				options.push({
 					label: gear.name,
 					description: `Regain ${value} uses`,
