@@ -141,3 +141,10 @@ Archetypes:
 ### Common Variants
 
 ### Uncommon Variants
+
+## Uncategorized Variants
+- Healing
+- Vexing
+- Corrosive
+- Fate-Sealing
+- Tormenting
