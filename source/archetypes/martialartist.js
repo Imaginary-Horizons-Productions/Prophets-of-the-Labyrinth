@@ -21,4 +21,5 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 	(combatant) => {
 		const staggerCount = combatant.getModifierStacks("Stagger");
 		return `Stagger: ${generateTextBar(staggerCount, combatant.staggerThreshold, combatant.staggerThreshold)}`;
-	});
+	}
+);

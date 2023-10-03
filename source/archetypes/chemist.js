@@ -15,4 +15,5 @@ module.exports = new ArchetypeTemplate("Chemist",
 	},
 	(combatant) => {
 		return `HP: ${combatant.hp}/${combatant.maxHp}`;
-	});
+	}
+);

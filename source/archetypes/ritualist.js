@@ -16,4 +16,5 @@ module.exports = new ArchetypeTemplate("Ritualist",
 	},
 	(combatant) => {
 		return `Has Debuffs: ${Object.keys(combatant.modifiers).some(modifier => isDebuff(modifier)) ? "✅" : "🚫"}`;
-	});
+	}
+);

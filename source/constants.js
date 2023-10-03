@@ -26,5 +26,5 @@ module.exports = {
 	POTL_ICON_URL: "https://images-ext-1.discordapp.net/external/wclKLsXO0RRUYVqULk4xBWnqyeepTl4MPdQAvwmYA4w/https/cdn.discordapp.com/avatars/950469509628702740/97f4ae84c14c2b88fbf569de061bac88.webp",
 
 	// Game Values
-	maxDelverCount: Math.floor(module.exports.MAX_SELECT_OPTIONS / 3),
+	MAX_DELVER_COUNT: Math.floor(module.exports.MAX_SELECT_OPTIONS / 3),
 };

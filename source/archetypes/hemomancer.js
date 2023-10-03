@@ -21,4 +21,5 @@ module.exports = new ArchetypeTemplate("Hemomancer",
 	(combatant) => {
 		const staggerCount = combatant.getModifierStacks("Stagger");
 		return `Stagger: ${generateTextBar(staggerCount, combatant.staggerThreshold, combatant.staggerThreshold)}`;
-	});
+	}
+);

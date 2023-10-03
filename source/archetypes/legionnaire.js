@@ -26,4 +26,5 @@ module.exports = new ArchetypeTemplate("Legionnaire",
 		} else {
 			return `Move in 2 rounds: ${combatant.nextAction}`;
 		}
-	});
+	}
+);
