@@ -1,7 +1,7 @@
 const { CombatantReference, Adventure, Combatant } = require("../classes");
 
 /** Wraps standardized move effect in validation for living targets
- * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => Promise<string>} next
+ * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} next
  */
 function needsLivingTargets(next) {
 	return (targets, user, isCrit, adventure) => {
