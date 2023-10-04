@@ -72,7 +72,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			embeds.push(new EmbedBuilder(recruitEmbed).spliceFields(0, 1, { name: `${adventure.delvers.length} Party Member${adventure.delvers.length == 1 ? "" : "s"}`, value: partyList }));
 		}
 		let components = recruitMessage.components;
-		if (adventure.delvers.length === maxDelverCount) {
+		if (adventure.delvers.length === MAX_DELVER_COUNT) {
 			components = [];
 		}
 		recruitMessage.edit({ embeds, components });
