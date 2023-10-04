@@ -175,8 +175,8 @@ function addModifier(combatant, { name: modifier, stacks: pendingStacks, force =
 		}
 
 		// Trigger threshold: Stagger to Stun
-		if (combatant.getModifierStacks("Stagger") >= combatant.staggerThreshold) {
-			combatant.modifiers.Stagger -= combatant.staggerThreshold;
+		if (combatant.getModifierStacks("Stagger") >= combatant.poise) {
+			combatant.modifiers.Stagger -= combatant.poise;
 			combatant.modifiers.Stun = 1;
 			if ("Progress" in combatant.modifiers) {
 				combatant.modifiers.Progress = Math.ceil(combatant.getModifierStacks("Progress") * 0.8);

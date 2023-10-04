@@ -13,13 +13,13 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 			});
 		for (const combatant of activeCombatants) {
 			const staggerCount = combatant.getModifierStacks("Stagger");
-			embed.addFields({ name: combatant.getName(adventure.room.enemyIdMap), value: `Stagger: ${generateTextBar(staggerCount, combatant.staggerThreshold, combatant.staggerThreshold)}\nSpeed: ${combatant.getTotalSpeed()}` });
+			embed.addFields({ name: combatant.getName(adventure.room.enemyIdMap), value: `Stagger: ${generateTextBar(staggerCount, combatant.poise, combatant.poise)}\nSpeed: ${combatant.getTotalSpeed()}` });
 		}
 		embed.setDescription("Combatants may act out of order if they have priority or they are tied in speed.");
 		return [true, embed];
 	},
 	(combatant) => {
 		const staggerCount = combatant.getModifierStacks("Stagger");
-		return `Stagger: ${generateTextBar(staggerCount, combatant.staggerThreshold, combatant.staggerThreshold)}`;
+		return `Stagger: ${generateTextBar(staggerCount, combatant.poise, combatant.poise)}`;
 	}
 );

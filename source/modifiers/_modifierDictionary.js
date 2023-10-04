@@ -44,7 +44,7 @@ for (const file of [
 function getModifierDescription(modifierName, bearer, adventure) {
 	return calculateTagContent(MODIFIERS[modifierName].description, [
 		{ tag: 'stackCount', count: bearer.modifiers[modifierName] },
-		{ tag: 'poise', count: bearer.staggerThreshold },
+		{ tag: 'poise', count: bearer.poise },
 		{ tag: 'funnelCount', count: adventure.getArtifactCount("Spiral Funnel") },
 		{ tag: 'roundDecrement', count: getTurnDecrement(modifierName) }
 	]);
