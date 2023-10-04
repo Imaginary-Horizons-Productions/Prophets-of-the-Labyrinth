@@ -9,11 +9,15 @@ const options = [
 		name: "feedback-type",
 		description: "the type of feedback you'd like to provide",
 		required: true,
-		choices: [{ name: "bug report", value: "bug" }, { name: "feature request", value: "feature" }]
+		choices: [
+			{ name: "Bug Report", value: "bug" },
+			{ name: "Feature Request", value: "feature" },
+			{ name: "Balance Suggestion", value: "balance" }
+		]
 	}
 ];
 const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Provide feedback on this bot to the developers", PermissionFlagsBits.SendMessages, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an invite to the test server", PermissionFlagsBits.SendMessages, false, true, 3000, options, subcommands,
 	/** Open the modal associated with the feedback type to prompt more specific information */
 	(interaction) => {
 		if (!testGuildId || !feedbackChannelId) {
@@ -21,16 +25,18 @@ module.exports = new CommandWrapper(mainId, "Provide feedback on this bot to the
 			return;
 		}
 
+		let titlePrefix;
 		const feedbackType = interaction.options.getString("feedback-type");
 		switch (feedbackType) {
 			case "bug":
+				titlePrefix = "Bug Report: ";
 				interaction.showModal(new ModalBuilder().setCustomId(feedbackType)
 					.setTitle("Bug Report")
 					.addComponents(
 						new ActionRowBuilder().addComponents(
 							new TextInputBuilder().setCustomId("title")
 								.setLabel("Title")
-								.setMaxLength(MAX_EMBED_TITLE_LENGTH - 12)
+								.setMaxLength(MAX_EMBED_TITLE_LENGTH - titlePrefix.length)
 								.setStyle(TextInputStyle.Short)
 						),
 						new ActionRowBuilder().addComponents(
@@ -59,7 +65,7 @@ module.exports = new CommandWrapper(mainId, "Provide feedback on this bot to the
 				interaction.awaitModalSubmit({ filter: (interaction) => interaction.customId === feedbackType, time: 300000 }).then(modalSubmission => {
 					const errors = [];
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
-						.setTitle(`Bug Report: ${modalSubmission.fields.getTextInputValue("title")}`)
+						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue("title")}`)
 						.addFields(
 							{ name: "Reporter", value: `<@${modalSubmission.user.id}>` },
 							{ name: "Steps to Reproduce", value: modalSubmission.fields.getTextInputValue("steps") },
@@ -92,13 +98,14 @@ module.exports = new CommandWrapper(mainId, "Provide feedback on this bot to the
 				})
 				break;
 			case "feature":
+				titlePrefix = "Feature Request: ";
 				interaction.showModal(new ModalBuilder().setCustomId(feedbackType)
 					.setTitle("Feature Request")
 					.addComponents(
 						new ActionRowBuilder().addComponents(
 							new TextInputBuilder().setCustomId("title")
 								.setLabel("Title")
-								.setMaxLength(MAX_EMBED_TITLE_LENGTH - 17)
+								.setMaxLength(MAX_EMBED_TITLE_LENGTH - titlePrefix.length)
 								.setStyle(TextInputStyle.Short)
 						),
 						new ActionRowBuilder().addComponents(
@@ -130,7 +137,7 @@ module.exports = new CommandWrapper(mainId, "Provide feedback on this bot to the
 				interaction.awaitModalSubmit({ filter: (interaction) => interaction.customId === feedbackType, time: 300000 }).then(modalSubmission => {
 					const errors = [];
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
-						.setTitle(`Feature Request: ${modalSubmission.fields.getTextInputValue("title")}`)
+						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue("title")}`)
 						.addFields(
 							{ name: "Reporter", value: `<@${modalSubmission.user.id}>` },
 							{ name: "User Demographic", value: modalSubmission.fields.getTextInputValue("user") },
@@ -158,6 +165,56 @@ module.exports = new CommandWrapper(mainId, "Provide feedback on this bot to the
 						feedbackChannel.createInvite({ maxAge: 0 }).then(invite => {
 							feedbackChannel.send({ embeds: [embed] });
 							modalSubmission.reply({ content: `Your feature request has been recorded${errors.length > 0 ? `, but the following errors were encountered: ${errors.join(", ")}` : ""}. You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
+						})
+					})
+				})
+				break;
+			case "balance":
+				titlePrefix = "Balance Suggestion";
+				interaction.showModal(new ModalBuilder().setCustomId(feedbackType)
+					.setTitle("Balance Suggestion")
+					.addComponents(
+						new ActionRowBuilder().addComponents(
+							new TextInputBuilder().setCustomId("entity")
+								.setLabel("What aspect of the game?")
+								.setPlaceholder("Eg gear/monster/item/etc.")
+								.setStyle(TextInputStyle.Short)
+						),
+						new ActionRowBuilder().addComponents(
+							new TextInputBuilder().setCustomId("direction")
+								.setLabel("Is it overpowered or underpowered?")
+								.setPlaceholder("Compared to what?")
+								.setStyle(TextInputStyle.Short)
+						),
+						new ActionRowBuilder().addComponents(
+							new TextInputBuilder().setCustomId("change")
+								.setLabel("What is your suggested change?")
+								.setPlaceholder("What problem is this attempting to solve?")
+								.setStyle(TextInputStyle.Paragraph)
+						)
+					)
+				);
+				interaction.awaitModalSubmit({ filter: (interaction) => interaction.customId === feedbackType, time: 300000 }).then(modalSubmission => {
+					const errors = [];
+					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
+						.setTitle(titlePrefix)
+						.addFields(
+							{ name: "Game Entity", value: modalSubmission.fields.getTextInputValue("entity") },
+							{ name: "Direction", value: modalSubmission.fields.getTextInputValue("direction") },
+							{ name: "Suggested Change", value: modalSubmission.fields.getTextInputValue("change") },
+							{ name: "Reporter", value: `<@${modalSubmission.user.id}>` }
+						);
+
+					if (modalSubmission.user.hexAccentColor) {
+						embed.setColor(modalSubmission.user.hexAccentColor);
+					}
+
+					modalSubmission.client.guilds.fetch(testGuildId).then(testGuild => {
+						return testGuild.channels.fetch(feedbackChannelId);
+					}).then(feedbackChannel => {
+						feedbackChannel.createInvite({ maxAge: 0 }).then(invite => {
+							feedbackChannel.send({ embeds: [embed] });
+							modalSubmission.reply({ content: `Your balance suggestion has been recorded${errors.length > 0 ? `, but the following errors were encountered: ${errors.join(", ")}` : ""}. You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
 						})
 					})
 				})
