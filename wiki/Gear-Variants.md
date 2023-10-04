@@ -82,6 +82,12 @@ Adds Exposed to target
 - Life Drain (Darkness)
 - Corrosion (Fire)
 
+### Furious
+Increases damage proprotional to user's missing HP
+
+**Available on**
+- all Power from Wrath (Darkness)
+
 ### Guarding
 Adds Block to the target
 
@@ -296,8 +302,3 @@ Adds Vigilance to user
 - Also hits targets with Exposed (all War Cries)
 
 ## Planned Variants
-### Furious
-Increases damage proprotional to user's missing HP
-
-**Available on**
-- (none)

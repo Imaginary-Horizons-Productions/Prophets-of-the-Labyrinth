@@ -17,9 +17,7 @@ module.exports = new GearTemplate("Power from Wrath",
 		if (isCrit) {
 			pendingDamage *= 2;
 		}
-		return dealDamage([target], user, pendingDamage, false, element, adventure).then(damageText => {
-			return `${payHP(user, hpCost, adventure)}${damageText}`;
-		});
+		return `${payHP(user, hpCost, adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)}`;
 	}
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setModifiers([{ name: "Stagger", stacks: 1 }])

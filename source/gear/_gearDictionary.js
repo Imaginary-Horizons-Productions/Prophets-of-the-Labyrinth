@@ -74,6 +74,7 @@ for (const file of [
 	"potionkit-reinforced.js",
 	"potionkit-organic.js",
 	"potionkit-urgent.js",
+	"powerfromwrath-base.js",
 	"scutum-base.js",
 	"scutum-guarding.js",
 	"scutum-sweeping.js",

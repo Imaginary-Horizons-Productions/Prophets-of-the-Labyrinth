@@ -39,6 +39,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Common: [
 				"Blood Aegis",
 				"Life Drain",
+				"Power from Wrath",
 				"Scythe",
 			],
 			Rare: [
