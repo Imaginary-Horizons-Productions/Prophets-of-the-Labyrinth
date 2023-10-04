@@ -211,7 +211,7 @@ function nextRoom(roomType, thread) {
 		}
 	}
 
-	if (adventure.room.hasEnemies) {
+	if (Object.keys(roomTemplate.enemyList).length > 0) {
 		if (roomType === "Artifact Guardian") {
 			adventure.scouting.artifactGuardiansEncountered++;
 			while (adventure.artifactGuardians.length <= adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians) {
