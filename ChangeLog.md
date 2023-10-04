@@ -9,7 +9,7 @@
    - Consumables to Items
    - Stagger Threshold to Poise
    - \[Equipment's\] Uses to Durability
-- Added Gear Variants: Reactive Warhammer, Discounted Infinite Regneration, Discounted Midas Staff, Poison Torrent, Power from Wrath
+- Added Gear: Reactive Warhammer, Discounted Infinite Regneration, Discounted Midas Staff, Poison Torrent, Power from Wrath
 - Fixed combat bugs caused by a target dying mid-round (particularly with Clones)
 - Fix many incorrect price bugs (and similar "typo'd when entering data" bugs)
 - Added `/regenerate` command, which resends the current room's message and UI
@@ -25,6 +25,8 @@
    - Heavy - decomposed into the following
    - Guarding - adds Block to its target
    - Reinforced - adds Block to the user
+- Combined `/armory` and `/conumable-info` into `/manual` using subcommands
+- Combinde `/inspect-self` and `/party-stats` into `/adventure` using subcommands
 
 ## Example Version 0.0.0:
 - Unordered item 1
