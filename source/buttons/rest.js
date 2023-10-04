@@ -28,7 +28,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			});
 		}
 		interaction.update({ embeds, components }).then(() => {
-			interaction.followUp(gainHealth(delver, Math.ceil(delver.maxHp * (parseInt(healPercent) / 100.0)), adventure, 0));
+			interaction.followUp(gainHealth(delver, Math.ceil(delver.maxHP * (parseInt(healPercent) / 100.0)), adventure, 0));
 			setAdventure(adventure);
 		});
 	}

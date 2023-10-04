@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Hunter's Sickle",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger], damage, critBonus, bonus: bonusBounty } = module.exports;
-		damage += (0.05 * target.maxHp);
+		damage += (0.05 * target.maxHP);
 		if (user.element === element) {
 			addModifier(target, elementStagger);
 		}

@@ -14,14 +14,14 @@ function spawnEnemy(enemyTemplate, adventure) {
 	if (enemyTemplate.shouldRandomizeHP) {
 		hpPercent += 10 * (2 - adventure.generateRandomNumber(5, "battle"));
 	}
-	const pendingHP = Math.ceil(enemy.maxHP * hpPercent / 100);
+	const pendingHP = Math.ceil(enemyTemplate.maxHP * hpPercent / 100);
 	enemy.setHP(pendingHP);
 	switch (enemyTemplate.name.match(anyTagRegex)?.[1]) { // this prevents all replaces from running; which is problematic because @{clone} assumes player and enemy counts match
 		case "adventure":
-			enemy.name = enemy.name.replace("@{adventure}", adventure.element);
+			enemy.name = enemyTemplate.name.replace("@{adventure}", adventure.element);
 			break;
 		case "adventureOpposite":
-			enemy.name = enemy.name.replace("@{adventureOpposite}", getOpposite(adventure.element));
+			enemy.name = enemyTemplate.name.replace("@{adventureOpposite}", getOpposite(adventure.element));
 			break;
 		case "clone":
 			enemy.name = `Mirror ${adventure.delvers[adventure.room.enemies.length].archetype}`;
