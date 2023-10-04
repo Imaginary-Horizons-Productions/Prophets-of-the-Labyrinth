@@ -16,6 +16,7 @@ const { getEmoji, getColor } = require("./elementUtil");
 const { generateRoutingRow, generateLootRow } = require("./messageComponentUtil");
 const { ordinalSuffixEN, generateTextBar } = require("./textUtil");
 
+/** @type {EmbedFooterData[]} */
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
 	"Surround your message with || to mark it a spoiler (not shown until reader clicks on it).",
@@ -23,16 +24,17 @@ const discordTips = [
 	"Don't forget to check slash commands for optional arguments.",
 	"Some slash commands can be used in DMs, others can't.",
 	"Server subscriptions cost more on mobile because the mobile app stores take a cut.",
-];
+].map(text => ({ text, iconURL: DISCORD_ICON_URL }));
+/** @type {EmbedFooterData[]} */
 const potlTips = [
 	"When a combatant's Stagger reaches their Poise, they'll be Stunned and lose their next turn.",
 	"Using items has priority.",
 	"When you use a piece of gear that matches your element on an ally, it will remove 1 Stagger.",
 	"When you use a piece of gear that matches your element on a foe, it will add 1 Stagger.",
 	"Combatants experience variation in their speed every round, which may change move order."
-];
+].map(text => ({ text, iconURL: POTL_ICON_URL }));
 /** @type {EmbedFooterData[]} */
-const tipPool = potlTips.map(text => ({ text, iconURL: POTL_ICON_URL })).concat(potlTips.map(text => ({ text, iconURL: POTL_ICON_URL })), discordTips.map(text => ({ text, iconURL: DISCORD_ICON_URL })));
+const tipPool = potlTips.concat(potlTips, discordTips);
 
 /** twice as likely to roll an application specific tip as a discord tip */
 function randomFooterTip() {
