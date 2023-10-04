@@ -15,8 +15,8 @@ const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
-const { clearBlock, removeModifier, addModifier } = require("../util/combatantUtil");
-const { getWeaknesses } = require("../util/elementUtil");
+const { clearBlock, removeModifier, addModifier, dealDamage } = require("../util/combatantUtil");
+const { getWeaknesses, getEmoji } = require("../util/elementUtil");
 const { renderRoom, updateRoomHeader } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
 const { clearComponents } = require("../util/messageComponentUtil");
