@@ -15,7 +15,7 @@ const rollablePotions = [
 ];
 
 
-module.exports = new GearTemplate("Guarding Potion Kit",
+module.exports = new GearTemplate("Reinforced Potion Kit",
 	"Gain @{block} block and add 1 random potion to loot",
 	"Instead add @{critBonus} potions",
 	"Trinket",

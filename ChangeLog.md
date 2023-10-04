@@ -21,6 +21,10 @@
    - 1 of 2 pieces of gear
    - a large sum of gold
    - a pair of items
+- Reworked Block variants
+   - Heavy - decomposed into the following
+   - Guarding - adds Block to its target
+   - Reinforced - adds Block to the user
 
 ## Example Version 0.0.0:
 - Unordered item 1

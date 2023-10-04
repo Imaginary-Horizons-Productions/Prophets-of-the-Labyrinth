@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Buckler",
 		return `Damage will be Blocked for ${target.getName(adventure.room.enemyIdMap)}. ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
-	.setUpgrades("Devoted Buckler", "Guarding Buckler", "Heavy Buckler")
+	.setUpgrades("Devoted Buckler", "Guarding Buckler", "Reinforced Buckler")
 	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }])
 	.setDurability(15)
 	.setBlock(75);

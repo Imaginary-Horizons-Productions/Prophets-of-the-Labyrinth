@@ -160,6 +160,7 @@ Archetypes:
 - Prideful
 - Purifying
 - Reactive
+- Reinforced
 - Sharpened
 - Taunting
 - Thick

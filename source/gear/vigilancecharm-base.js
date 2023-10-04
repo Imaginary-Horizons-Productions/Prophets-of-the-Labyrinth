@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Vigilance Charm",
 		return `${user.getName(adventure.room.enemyIdMap)} gains Vigilance.`;
 	}
 ).setTargetingTags({ target: "self", team: "self" })
-	.setUpgrades("Long Vigilance Charm", "Devoted Vigilance Charm", "Guarding Vigilance Charm")
+	.setUpgrades("Devoted Vigilance Charm", "Long Vigilance Charm", "Reinforced Vigilance Charm")
 	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Vigilance", stacks: 3 }])
 	.setBonus(2) // Vigilance stacks
 	.setDurability(15);

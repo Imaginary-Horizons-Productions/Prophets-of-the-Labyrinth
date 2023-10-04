@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, removeModifier, addBlock } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Guarding Vigilance Charm",
+module.exports = new GearTemplate("Reinforced Vigilance Charm",
 	"Gain @{mod1Stacks} @{mod1} and @{block} block",
 	"@{mod1} +@{bonus} and block x@{critBonus}",
 	"Trinket",

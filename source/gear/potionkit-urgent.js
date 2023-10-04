@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Urgent Potion Kit",
 		}
 	}
 ).setTargetingTags({ target: "none", team: "none" })
-	.setSidegrades("Guarding Potion Kit", "Organic Potion Kit")
+	.setSidegrades("Organic Potion Kit", "Reinforced Potion Kit")
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
 	.setDurability(15)
 	.setPriority(1)

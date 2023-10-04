@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { removeModifier, addBlock, payHP } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Heavy Blood Aegis",
+module.exports = new GearTemplate("Reinforced Blood Aegis",
 	"Pay @{hpCost} hp; gain @{block} block and intercept a later single target move",
 	"Block x@{critBonus}",
 	"Pact",

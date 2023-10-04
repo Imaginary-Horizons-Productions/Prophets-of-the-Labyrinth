@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Sweeping Scutum",
 		return "Damage will be blocked for everyone.";
 	})
 ).setTargetingTags({ target: "all", team: "delver" })
-	.setSidegrades("Heavy Scutum", "Vigilant Scutum")
+	.setSidegrades("Guarding Scutum", "Vigilant Scutum")
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
 	.setDurability(15)
 	.setBlock(75);

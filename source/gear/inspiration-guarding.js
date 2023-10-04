@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents');
 const { addModifier, removeModifier, addBlock } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Reinforcing Inspiration",
+module.exports = new GearTemplate("Guarding Inspiration",
 	"Apply @{mod1Stacks} @{mod1} and @{block} block to an ally",
 	"@{mod1} +@{bonus}",
 	"Spell",

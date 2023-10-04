@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Inspiration",
 		return `${target.getName(adventure.room.enemyIdMap)} is Powered Up.`;
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
-	.setUpgrades("Reinforcing Inspiration", "Soothing Inspiration", "Sweeping Inspiration")
+	.setUpgrades("Guarding Inspiration", "Soothing Inspiration", "Sweeping Inspiration")
 	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }])
 	.setBonus(25) // Power Up stacks
 	.setDurability(10);

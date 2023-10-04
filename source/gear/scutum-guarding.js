@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { addBlock, removeModifier } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Heavy Scutum",
+module.exports = new GearTemplate("Guarding Scutum",
 	"Grant @{block} block to an ally and yourself",
 	"Block x@{critBonus}",
 	"Armor",

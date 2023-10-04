@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Soothing Inspiration",
 		return `${target.getName(adventure.room.enemyIdMap)} is Powered Up and gains Regen.`;
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
-	.setSidegrades("Reinforcing Inspiration", "Sweeping Inspiration")
+	.setSidegrades("Guarding Inspiration", "Sweeping Inspiration")
 	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }, { name: "Regen", stacks: 2 }])
 	.setBonus(25) // Power Up stacks
 	.setDurability(10);

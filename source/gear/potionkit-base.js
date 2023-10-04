@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Potion Kit",
 		}
 	}
 ).setTargetingTags({ target: "none", team: "none" })
-	.setUpgrades("Guarding Potion Kit", "Organic Potion Kit", "Urgent Potion Kit")
+	.setUpgrades("Organic Potion Kit", "Reinforced Potion Kit", "Urgent Potion Kit")
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
 	.setDurability(15)
 	.setFlavorText({ name: "Possible Potions", value: rollablePotions.join(", ") });

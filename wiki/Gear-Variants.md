@@ -83,27 +83,18 @@ Adds Exposed to target
 - Corrosion (Fire)
 
 ### Guarding
-Adds Block to the user
+Adds Block to the target
 
 **Available on**
 - Buckler (Earth)
-- Potion Kit (Water)
-- Vigilance Charm (Earth)
+- Inspiration (Wind)
+- Scutum (Fire)
 
 ### Healing
 Heal the user
 
 **Available on**
 - all Life Drains (Darkness)
-
-### Heavy
-Increased Block
-
-**Available on**
-- all Barriers (Light)
-- Buckler (Earth)
-- Blood Aegis (Darkness)
-- Scutum (Fire)
 
 ### Hunter's
 Gain gold on kill
@@ -189,6 +180,16 @@ Increased damage, but adds Exposed to user
 **Available on**
 - all Battleaxes (Fire)
 - Certain Victory (Earth)
+
+### Reinforced
+Adds Block to the user
+
+**Available on**
+- all Barriers (Light)
+- Blood Aegis (Darkness)
+- Buckler (Earth)
+- Potion Kit (Water)
+- Vigilance Charm (Earth)
 
 ### Sharpened
 Increased damage

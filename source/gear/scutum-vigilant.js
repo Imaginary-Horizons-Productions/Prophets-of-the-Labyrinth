@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Vigilant Scutum",
 		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}. ${userName} gains Vigilance.`;
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
-	.setSidegrades("Heavy Scutum", "Sweeping Scutum")
+	.setSidegrades("Guarding Scutum", "Sweeping Scutum")
 	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Vigilance", stacks: 1 }])
 	.setDurability(15)
 	.setBlock(75);

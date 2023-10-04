@@ -30,7 +30,7 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		}
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
-	.setSidegrades("Heavy Blood Aegis", "Sweeping Blood Aegis")
+	.setSidegrades("Reinforced Blood Aegis", "Sweeping Blood Aegis")
 	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }])
 	.setDurability(15)
 	.setHPCost(25)

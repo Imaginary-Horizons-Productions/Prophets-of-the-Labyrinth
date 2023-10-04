@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Scutum",
 		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${user.getName(adventure.room.enemyIdMap)}.`;
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
-	.setUpgrades("Heavy Scutum", "Sweeping Scutum", "Vigilant Scutum")
+	.setUpgrades("Guarding Scutum", "Sweeping Scutum", "Vigilant Scutum")
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
 	.setDurability(15)
 	.setBlock(75);
