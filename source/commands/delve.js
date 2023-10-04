@@ -43,8 +43,8 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 		prerollBoss("Artifact Guardian", adventure);
 
 		const elementPool = elementsList();
-		const pickedElement = elementPool[generateRandomNumber(adventure, elementPool.length, "general")];
-		adventure.setName(`${DESCRIPTORS[generateRandomNumber(adventure, DESCRIPTORS.length, "general")]} ${labyrinthName} of ${pickedElement}`)
+		const pickedElement = elementPool[adventure.generateRandomNumber(elementPool.length, "general")];
+		adventure.setName(`${DESCRIPTORS[adventure.generateRandomNumber(DESCRIPTORS.length, "general")]} ${labyrinthName} of ${pickedElement}`)
 			.setElement(pickedElement);
 
 		const embed = new EmbedBuilder().setColor(getColor(pickedElement))
