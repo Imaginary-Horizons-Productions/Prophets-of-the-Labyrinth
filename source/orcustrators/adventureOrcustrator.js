@@ -320,7 +320,7 @@ function newRound(adventure, thread, lastRoundText) {
 							}
 							move.setName(actionName);
 							move.setPriority(enemyTemplate.actions[move.name].priority)
-							enemyTemplate.actions[actionName].selector(adventure, combatant).forEach(({ team, index }) => {
+							enemyTemplate.actions[actionName].selector(combatant, adventure).forEach(({ team, index }) => {
 								move.addTarget(new CombatantReference(team, index));
 							})
 							combatant.nextAction = enemyTemplate.actions[actionName].next(actionName);
