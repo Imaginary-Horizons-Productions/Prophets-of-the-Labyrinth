@@ -3,7 +3,7 @@ const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Spear",
-	"Strike a foe for @{damage} (+@{bonus} if foe went first) @{element} damage",
+	"Strike a foe for @{damage} (+@{bonus} if after foe) @{element} damage",
 	"Also inflict @{mod1Stacks} @{mod1}",
 	"Weapon",
 	"Wind",

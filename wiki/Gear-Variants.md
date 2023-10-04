@@ -175,6 +175,7 @@ Bonus damage if user moves after target
 **Available on**
 - Life Drain (Darkness)
 - Spear (Wind)
+- Warhammer (Earth)
 
 ### Reaper's
 Kills target at or below hp threshold

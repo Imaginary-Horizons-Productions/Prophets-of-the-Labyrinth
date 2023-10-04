@@ -106,6 +106,7 @@ for (const file of [
 	"warcry-tormenting.js",
 	"warhammer-base.js",
 	"warhammer-piercing.js",
+	"warhammer-reactive.js",
 	"warhammer-slowing.js"
 ]) {
 	const gear = require(`./${file}`);
