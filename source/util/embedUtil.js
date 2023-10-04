@@ -16,7 +16,6 @@ const { getEmoji, getColor } = require("./elementUtil");
 const { generateRoutingRow, generateLootRow } = require("./messageComponentUtil");
 const { ordinalSuffixEN, generateTextBar } = require("./textUtil");
 
-/** @type {string[]} */
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
 	"Surround your message with || to mark it a spoiler (not shown until reader clicks on it).",
@@ -25,7 +24,6 @@ const discordTips = [
 	"Some slash commands can be used in DMs, others can't.",
 	"Server subscriptions cost more on mobile because the mobile app stores take a cut.",
 ];
-/** @type {string[]} */
 const potlTips = [
 	"When a combatant's Stagger reaches their Poise, they'll be Stunned and lose their next turn.",
 	"Using items has priority.",
