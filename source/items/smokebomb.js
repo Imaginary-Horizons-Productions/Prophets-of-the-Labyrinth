@@ -11,4 +11,4 @@ module.exports = new ItemTemplate("Smoke Bomb",
 		addModifier(user, { name: "Evade", stacks: 2 });
 		return `${user.getName(adventure.room.enemyIdMap)} prepares to Evade.`;
 	}
-).setFlavorText(["___'s Commentary", "Take advantage of an enemy being blinded to run away? Who would do that?"]);
+).setFlavorText(["*Additional Notes*", "*While the foe suspects you're fleeing is the best time to strike.*"]);
