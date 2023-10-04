@@ -59,7 +59,7 @@ async function loadAdventures() {
 					if (adventure.room.moves) {
 						let castMoves = [];
 						for (let move of adventure.room.moves) {
-							castMoves.push(Object.assign(new Move(), move));
+							castMoves.push(Object.assign(new Move({ getTotalSpeed: () => move.speed }), move));
 						}
 						adventure.room.moves = castMoves;
 					}
