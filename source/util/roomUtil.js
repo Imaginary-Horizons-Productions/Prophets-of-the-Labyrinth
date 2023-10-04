@@ -9,7 +9,7 @@ const anyTagRegex = generateRuntimeTemplateStringRegExp(null);
  * @param {Adventure} adventure
  */
 function spawnEnemy(enemyTemplate, adventure) {
-	const enemy = new Enemy(enemyTemplate);
+	const enemy = new Enemy(enemyTemplate.name, enemyTemplate.element, enemyTemplate.speed, enemyTemplate.poise, enemyTemplate.critBonus, enemyTemplate.firstAction, enemyTemplate.startingModifiers);
 	let hpPercent = 85 + 15 * adventure.delvers.length;
 	if (enemyTemplate.shouldRandomizeHP) {
 		hpPercent += 10 * (2 - adventure.generateRandomNumber(5, "battle"));
@@ -40,7 +40,11 @@ function spawnEnemy(enemyTemplate, adventure) {
 			break;
 	}
 	enemy.setId(adventure);
-	adventure.room.enemies.push(enemy);
+	if (adventure.room.enemies) {
+		adventure.room.enemies.push(enemy);
+	} else {
+		adventure.room.enemies = [enemy];
+	}
 }
 
 module.exports = {
