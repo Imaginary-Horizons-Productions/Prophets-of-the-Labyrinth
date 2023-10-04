@@ -75,7 +75,7 @@ function calculateTagContent(text, tags) {
 		for (const match of text.matchAll(taggedGlobal)) {
 			const countExpression = match?.[1].replace(untagged, "n");
 			if (countExpression) {
-				let parsedExpression = exports.parseExpression(countExpression, count);
+				let parsedExpression = parseExpression(countExpression, count);
 				if (typeof parsedExpression === "number") {
 					parsedExpression = parsedExpression.toFixed(2);
 				}
