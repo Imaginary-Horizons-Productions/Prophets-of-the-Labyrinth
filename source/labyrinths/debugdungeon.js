@@ -140,6 +140,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Common: [
 				"Midas Staff",
+				"Poison Torrent",
 				"Potion Kit",
 				"Sickle"
 			],

@@ -219,6 +219,7 @@ Adds Regen to target
 Targets whole team
 
 **Available on**
+- all Poison Torrents (Water)
 - Blood Aegis (Darkness)
 - Daggers (Wind)
 - Inspiration (Wind)

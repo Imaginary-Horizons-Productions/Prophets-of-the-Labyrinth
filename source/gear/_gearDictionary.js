@@ -69,6 +69,7 @@ for (const file of [
 	"midasstaff-base.js",
 	"midasstaff-soothing.js",
 	"midasstaff-accelerating.js",
+	"poisontorrent-base.js",
 	"potionkit-base.js",
 	"potionkit-reinforced.js",
 	"potionkit-organic.js",
@@ -146,7 +147,7 @@ function buildGearDescription(gearName, buildFullDescription) {
 		let description;
 		if (buildFullDescription) {
 			// return the base and crit effects of the gear with the base italicized
-			description = `*Effect:* ${getGearProperty(gearName, "description")}\n*Critical💥:* ${exports.getGearProperty(gearName, "critDescription")}`;
+			description = `*Effect:* ${getGearProperty(gearName, "description")}\n*Critical💥:* ${getGearProperty(gearName, "critDescription")}`;
 		} else {
 			// return the base effect of the gear unitalicized
 			description = getGearProperty(gearName, "description");
@@ -159,7 +160,7 @@ function buildGearDescription(gearName, buildFullDescription) {
 			.replace(/@{block}/g, getGearProperty(gearName, "block"))
 			.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
 			.replace(/@{healing}/g, getGearProperty(gearName, "healing"));
-		getGearProperty(gearName, "modifiers").forEach((modifier, index) => {
+		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifier.name)
 				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		})
