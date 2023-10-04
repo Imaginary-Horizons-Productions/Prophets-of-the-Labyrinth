@@ -76,7 +76,8 @@ class Delver extends Combatant {
 		return this;
 	}
 
-	getName() {
+	/** @param {{[enemyName: string]: number}} enemyIdMap */
+	getName(enemyIdMap) {
 		return this.name;
 	}
 }
