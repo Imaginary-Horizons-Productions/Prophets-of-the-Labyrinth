@@ -166,6 +166,9 @@ class Adventure {
 
 	/** @param {Combatant} combatant */
 	getCombatantIndex(combatant) {
+		if (!combatant) {
+			return;
+		}
 		if (combatant.team === "delver") {
 			return this.delvers.findIndex(delver => delver.id === combatant.id);
 		} else {

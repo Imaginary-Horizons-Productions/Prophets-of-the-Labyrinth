@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Sweeping Blood Aegis",
 
 		const provokedTargets = [];
 		const targetTeam = user.team === "delver" ? "enemy" : "delver";
-		const userIndex = user.findMyIndex(adventure);
+		const userIndex = adventure.getCombatantIndex(user);
 		adventure.moves.forEach(move => {
 			if (move.userReference.team === targetTeam && move.targets.length === 1) {
 				const target = adventure.getCombatant(move.userReference);

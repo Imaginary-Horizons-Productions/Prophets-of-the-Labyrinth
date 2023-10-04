@@ -10,8 +10,8 @@ module.exports = new GearTemplate("Reactive Spear",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger, critStagger], damage, bonus } = module.exports;
-		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === user.findMyIndex(adventure));
-		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === target.findMyIndex(adventure));
+		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
+		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === adventure.getCombatantIndex(target));
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
 			damage += bonus;

@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Blood Aegis",
 			return moveUser.name === target.name && moveUser.title === target.title;
 		});
 		if (targetMove.targets.length === 1) {
-			targetMove.targets = [{ team: user.team, index: user.findMyIndex(adventure) }];
+			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${target.getName(adventure.room.enemyIdMap)} falls for the provocation.`;
 		} else {
 			return `Preparing to Block, ${payHP(user, hpCost, adventure)}`;

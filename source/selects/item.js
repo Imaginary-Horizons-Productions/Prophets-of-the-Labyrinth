@@ -10,7 +10,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const [itemName] = interaction.values;
 		const user = adventure?.delvers.find(delver => delver.id === interaction.user.id);
-		const userIndex = user?.findMyIndex(adventure);
+		const userIndex = adventure.getCombatantIndex(user);
 		// Filter out: item uses by self and enemy (only count own team)
 		const committedCount = adventure?.room.moves.filter(move => move.name === itemName && move.userReference.team === user.team && move.userReference.index !== userIndex).length;
 		if (!(itemName in adventure?.items && adventure?.items[itemName] > committedCount)) {

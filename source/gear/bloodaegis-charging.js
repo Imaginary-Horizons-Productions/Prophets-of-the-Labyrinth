@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 			return moveUser.name === target.name && moveUser.title === target.title;
 		});
 		if (targetMove.targets.length === 1) {
-			targetMove.targets = [{ team: user.team, index: user.findMyIndex(adventure) }];
+			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up. ${target.getName(adventure.room.enemyIdMap)} falls for the provocation.`;
 		} else {
 			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
