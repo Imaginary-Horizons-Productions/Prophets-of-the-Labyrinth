@@ -42,7 +42,6 @@ module.exports = new SelectWrapper(mainId, 3000,
 
 		// Send confirmation text
 		const target = adventure.getCombatant({ team: targetTeam, index: targetIndex });
-		interaction.update({ components: [] });
 		interaction.channel.send(`${interaction.user} ${overwritten ? "switches to ready" : "readies"} **${moveName}** to use on **${target.getName(adventure.room.enemyIdMap)}**.`).then(() => {
 			setAdventure(adventure);
 			if (checkNextRound(adventure)) {
