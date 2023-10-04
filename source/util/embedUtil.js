@@ -16,18 +16,25 @@ const { getEmoji, getColor } = require("./elementUtil");
 const { generateRoutingRow, generateLootRow } = require("./messageComponentUtil");
 const { ordinalSuffixEN, generateTextBar } = require("./textUtil");
 
-/** @type {EmbedFooterData[]} */
+/** @type {string[]} */
 const discordTips = [
-	{ text: "Message starting with @silent don't send notifications; good for when everyone's asleep.", iconURL: DISCORD_ICON_URL },
-	{ text: "Surround your message with || to mark it a spoiler (not shown until reader clicks on it).", iconURL: DISCORD_ICON_URL },
-	{ text: "Surround a part of your messag with ~~ to add strikethrough styling.", iconURL: DISCORD_ICON_URL },
-	{ text: "Don't forget to check slash commands for optional arguments.", iconURL: DISCORD_ICON_URL },
-	{ text: "Some slash commands can be used in DMs, others can't.", iconURL: DISCORD_ICON_URL },
-	{ text: "Server subscriptions cost more on mobile because the mobile app stores take a cut.", iconURL: DISCORD_ICON_URL }
+	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
+	"Surround your message with || to mark it a spoiler (not shown until reader clicks on it).",
+	"Surround a part of your messag with ~~ to add strikethrough styling.",
+	"Don't forget to check slash commands for optional arguments.",
+	"Some slash commands can be used in DMs, others can't.",
+	"Server subscriptions cost more on mobile because the mobile app stores take a cut.",
+];
+/** @type {string[]} */
+const potlTips = [
+	"When a combatant's Stagger reaches their Poise, they'll be Stunned and lose their next turn.",
+	"Using items has priority.",
+	"When you use a piece of gear that matches your element on an ally, it will remove 1 Stagger.",
+	"When you use a piece of gear that matches your element on a foe, it will add 1 Stagger.",
+	"Combatants experience variation in their speed every round, which may change move order."
 ];
 /** @type {EmbedFooterData[]} */
-const applicationSpecificTips = [];
-const tipPool = applicationSpecificTips.concat(applicationSpecificTips, discordTips);
+const tipPool = potlTips.map(text => ({ text, iconURL: POTL_ICON_URL })).concat(potlTips.map(text => ({ text, iconURL: POTL_ICON_URL })), discordTips.map(text => ({ text, iconURL: DISCORD_ICON_URL })));
 
 /** twice as likely to roll an application specific tip as a discord tip */
 function randomFooterTip() {

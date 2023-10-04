@@ -11,4 +11,4 @@ module.exports = new ItemTemplate("Smoke Bomb",
 		addModifier(user, { name: "Evade", stacks: 2 });
 		return `${user.getName(adventure.room.enemyIdMap)} prepares to Evade.`;
 	}
-).setFlavorText(["*Additional Notes*", "*While the foe suspects you're fleeing is the best time to strike.*"]);
+).setFlavorText(["*Additional Notes*", "*\"While the foe suspects you're fleeing\" is the third best time to strike, beat only by \"when they least expect it\" and \"first\".*"]);
