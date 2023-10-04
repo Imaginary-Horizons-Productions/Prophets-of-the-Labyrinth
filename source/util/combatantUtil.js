@@ -15,8 +15,8 @@ async function dealDamage(targets, user, damage, isUnblockable, element, adventu
 	const resultTexts = [];
 	for (const target of targets) {
 		const targetName = target.getName(adventure.room.enemyIdMap);
-		if (!`${element} Absorb` in target.modifiers) {
-			if (!"Evade" in target.modifiers || isUnblockable) {
+		if (!(`${element} Absorb` in target.modifiers)) {
+			if (!("Evade" in target.modifiers) || isUnblockable) {
 				const limitBreak = user?.modifiers["Power Up"] || 0;
 				let pendingDamage = damage + limitBreak;
 				if ("Exposed" in target.modifiers) {
