@@ -33,7 +33,6 @@ const potlTips = [
 	"When you use a piece of gear that matches your element on a foe, it will add 1 Stagger.",
 	"Combatants experience variation in their speed every round, which may change move order."
 ].map(text => ({ text, iconURL: POTL_ICON_URL }));
-/** @type {EmbedFooterData[]} */
 const tipPool = potlTips.concat(potlTips, discordTips);
 
 /** twice as likely to roll an application specific tip as a discord tip */
@@ -56,7 +55,7 @@ function embedTemplate() {
  */
 function renderRoom(adventure, thread, descriptionOverride) {
 	const roomTemplate = getRoom(adventure.room.title);
-	const hasEnemies = Object.keys(adventure.room.enemies).length > 0;
+	const hasEnemies = adventure.room.enemies;
 	const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0);
 
 	const roomEmbed = new EmbedBuilder().setColor(getColor(adventure.room.element))

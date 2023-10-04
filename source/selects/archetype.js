@@ -13,7 +13,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			// Add delver to list (or overwrite)
 			const delver = adventure.delvers.find(delver => delver.id == interaction.user.id);
 			const archetype = interaction.values[0];
-			const isSwitching = delver.archetype !== "";
+			const isSwitching = Boolean(delver.archetype);
 			const archetypeTemplate = getArchetype(archetype);
 			delver.gear = archetypeTemplate.startingGear.map(gearName => {
 				return { name: gearName, durability: getGearProperty(gearName, "maxDurability") }
