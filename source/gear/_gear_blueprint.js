@@ -6,7 +6,7 @@ module.exports = new GearTemplate("name",
 	"category",
 	"element",
 	200,
-	(target, user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger] } = module.exports;
 		if (user.element === element) {
 
@@ -15,8 +15,7 @@ module.exports = new GearTemplate("name",
 
 		}
 		return ""; // see style guide for conventions on result texts
-	},
-	[])
-	.setTargetingTags({ target: "", team: "" })
+	}
+).setTargetingTags({ target: "", team: "" })
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
 	.setDurability();
