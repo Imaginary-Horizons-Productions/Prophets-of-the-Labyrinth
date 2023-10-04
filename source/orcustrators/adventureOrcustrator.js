@@ -222,7 +222,7 @@ function nextRoom(roomType, thread) {
 
 		for (const enemyName in roomTemplate.enemyList) {
 			for (let i = 0; i < Math.ceil(parseExpression(roomTemplate.enemyList[enemyName], adventure.delvers.length)); i++) {
-				spawnEnemy(adventure, getEnemy(enemyName));
+				spawnEnemy(getEnemy(enemyName), adventure);
 			}
 		}
 		newRound(adventure, thread);

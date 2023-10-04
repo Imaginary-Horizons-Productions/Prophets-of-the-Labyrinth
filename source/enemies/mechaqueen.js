@@ -80,7 +80,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	element: "Untyped",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		spawnEnemy(adventure, mechabee);
+		spawnEnemy(mechabee, adventure);
 		return "Another mechabee arrives.";
 	},
 	selector: selectNone,
