@@ -18,10 +18,10 @@ Archetypes: Hemomancer
 - Furious
 - Piercing
 - Slowing
-- Sweeping
 - Reaper's
 
 ### Uncommon Variants
+- Sweeping
 - Toxic
 
 ## 🌿 Earth
@@ -37,13 +37,13 @@ Archetypes: Knight, Detective
 
 ### Common Variants
 - Charging
-- Flanking
 - Guarding
 - Hunter's
 - Organic
 - Staggering
 
 ### Uncommon Variants
+- Flanking
 
 ## 🔥 Fire
 Color: ![Colors.Orange](https://placehold.co/15x15/E67E22/E67E22.png) `Colors.Orange`
@@ -59,11 +59,11 @@ Archetypes: Ritualist, Legionnaire
 ### Common Variants
 - Corroding
 - Flanking
-- Furious
 - Reckless
 - Sweeping
 
 ### Uncommon Variants
+- Furious
 
 ## ✨ Light
 Color: ![Colors.Yellow](https://placehold.co/15x15/FEE75C/FEE75C.png) `Colors.Yellow`
@@ -77,13 +77,13 @@ Weak to: 🌿 Earth, 💨 Wind
 Archetypes: Martial Artist
 
 ### Common Variants
-- Organic
 - Piercing
-- Slowing
 - Soothing
 - Staggering
+- Urgent
 
 ### Uncommon Variants
+- Organic
 
 ## 💦 Water
 Color: ![Colors.Blue](https://placehold.co/15x15/3498DB/3498DB.png) `Colors.Blue`
@@ -101,12 +101,12 @@ Archetypes: Chemist
 - Slowing
 - Soothing
 - Sweeping
-- Thirsting
 - Toxic
 
 ### Uncommon Variants
 - Accelerating
 - Piercing
+- Thirsting
 
 ## 💨 Wind
 Color: ![Colors.Aqua](https://placehold.co/15x15/1ABC9C/1ABC9C.png) `Colors.Aqua`
@@ -122,11 +122,13 @@ Archetypes: Assassin
 ### Common Variants
 - Accelerating
 - Evasive
-- Reaper's
-- Thirsting
+- Lethal
 - Urgent
 
 ### Uncommon Variants
+- Staggering
+- Sweeping
+- Thirsting
 
 ## 🌐 Untyped
 Color: ![Colors.Greyple](https://placehold.co/15x15/99AAB5/99AAB5.png) `Colors.Greyple`
@@ -144,8 +146,23 @@ Archetypes:
 ### Uncommon Variants
 
 ## Uncategorized Variants
-- Healing
-- Vexing
+- Awesome
+- Bouncing
 - Corrosive
+- Devoted
+- Discounted
+- Double
 - Fate-Sealing
+- Healing
+- Long
+- Mercurial
+- Midas's
+- Prideful
+- Purifying
+- Reactive
+- Sharpened
+- Taunting
+- Thick
 - Tormenting
+- Vexing
+- Vigilant
