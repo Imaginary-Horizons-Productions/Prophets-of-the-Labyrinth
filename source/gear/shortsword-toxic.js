@@ -18,10 +18,8 @@ module.exports = new GearTemplate("Toxic Shortsword",
 		}
 		addModifier(user, exposed);
 		addModifier(target, poison);
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			addModifier(target, exposed);
-			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Poisoned. ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
-		});
+		addModifier(target, exposed);
+		return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Poisoned. ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Accelerating Shortsword")

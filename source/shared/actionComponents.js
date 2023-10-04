@@ -19,9 +19,7 @@ function needsLivingTargets(next) {
 			if (deadTargets.length > 0) {
 				deadTargetText += ` ${deadTargets.map(target => target.getName(adventure.room.enemyIdMap)).join(", ")} ${deadTargets === 1 ? "was" : "were"} already dead!`
 			}
-			return next(livingTargets, user, isCrit, adventure).then(resultText => {
-				return `${resultText}${deadTargetText}`;
-			})
+			return `${next(livingTargets, user, isCrit, adventure)}${deadTargetText}`;
 		} else if (targets.length === 1) {
 			return ` But ${targets[0].getName(adventure.room.enemyIdMap)} was already dead!`;
 		} else {

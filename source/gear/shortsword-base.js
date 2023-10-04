@@ -17,10 +17,8 @@ module.exports = new GearTemplate("Shortsword",
 			damage *= critBonus;
 		}
 		addModifier(user, exposed);
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			addModifier(target, exposed);
-			return `${damageText} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
-		});
+		addModifier(target, exposed);
+		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Accelerating Shortsword", "Toxic Shortsword")

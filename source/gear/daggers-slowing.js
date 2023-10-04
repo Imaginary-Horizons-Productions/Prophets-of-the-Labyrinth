@@ -16,9 +16,7 @@ module.exports = new GearTemplate("Slowing Daggers",
 			damage *= critBonus;
 		}
 		addModifier(target, slow);
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
-		});
+		return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")

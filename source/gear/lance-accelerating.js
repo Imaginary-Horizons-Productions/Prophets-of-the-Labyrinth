@@ -20,9 +20,7 @@ module.exports = new GearTemplate("Accelerating Lance",
 			damage += powerUpStacks;
 		}
 		addModifier(user, quicken);
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			return `${damageText} ${user.getName(adventure.room.enemyIdMap)} is Quickened.`;
-		});
+		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Quickened.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Piercing Lance", "Vigilant Lance")

@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Reactive Life Drain",
 	"Spell",
 	"Darkness",
 	350,
-	needsLivingTargets(async ([target], user, isCrit, adventure) => {
+	needsLivingTargets(([target], user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger], damage, bonus, healing, critBonus } = module.exports;
 		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
 		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === adventure.getCombatantIndex(target));
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Reactive Life Drain",
 		if (isCrit) {
 			healing *= critBonus;
 		}
-		return `${await dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, healing, adventure)}`;
+		return `${dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, healing, adventure)}`;
 	}
 	)
 ).setTargetingTags({ target: "single", team: "enemy" })

@@ -17,12 +17,11 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 			damage *= critBonus;
 		}
 		addModifier(user, exposed);
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			if (target.hp < 1) {
-				damageText += gainHealth(user, healing, adventure);
-			}
-			return `${damageText} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
-		});
+		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		if (target.hp < 1) {
+			damageText += gainHealth(user, healing, adventure);
+		}
+		return `${damageText} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Prideful Battleaxe", "Thick Battleaxe")

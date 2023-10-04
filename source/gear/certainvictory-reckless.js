@@ -18,9 +18,7 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 		}
 		addModifier(user, powerUp);
 		addModifier(user, exposed);
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText} ${user.getName(adventure.room.enemyIdMap)} is Powered Up and Exposed.`;
-		});
+		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up and Exposed.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Hunter's Certain Victory", "Lethal Certain Victory")

@@ -21,14 +21,13 @@ module.exports = new GearTemplate("Tormenting Censer",
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			damage += bonus;
 		}
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			if (isCrit && target.hp > 0) {
-				addModifier(target, slow);
-				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed and their other debuffs are duplicated.`;
-			} else {
-				return `${damageText} ${target.getName(adventure.room.enemyIdMap)}'s debuffs are duplicated.`;
-			}
-		});
+		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		if (isCrit && target.hp > 0) {
+			addModifier(target, slow);
+			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed and their other debuffs are duplicated.`;
+		} else {
+			return `${damageText} ${target.getName(adventure.room.enemyIdMap)}'s debuffs are duplicated.`;
+		}
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Fate-Sealing Censer", "Thick Censer")

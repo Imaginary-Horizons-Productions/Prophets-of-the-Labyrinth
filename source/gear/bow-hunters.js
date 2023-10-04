@@ -16,13 +16,12 @@ module.exports = new GearTemplate("Hunter's Bow",
 		if (isCrit) {
 			damage *= critBonus;
 		}
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			if (target.hp < 1) {
-				adventure.gainGold(bonusBounty);
-				damageText += ` ${user.getName(adventure.room.enemyIdMap)} forages ${bonusBounty}g of hunting trophies.`;
-			}
-			return damageText;
-		});
+		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		if (target.hp < 1) {
+			adventure.gainGold(bonusBounty);
+			damageText += ` ${user.getName(adventure.room.enemyIdMap)} forages ${bonusBounty}g of hunting trophies.`;
+		}
+		return damageText;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Evasive Bow", "Mercurial Bow")

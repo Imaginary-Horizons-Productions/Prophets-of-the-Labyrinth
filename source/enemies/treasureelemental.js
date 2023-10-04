@@ -33,9 +33,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			}
 			addBlock(user, block);
 			removeModifier(user, { name: "Stagger", stacks: 1 });
-			return dealDamage([target], user, 100, false, user.element, adventure).then(damageText => {
-				return `It prepares to Block and ${damageText}`;
-			});
+			return `It prepares to Block and ${dealDamage([target], user, 100, false, user.element, adventure)}`;
 		},
 		selector: selectRandomFoe,
 		next: treasureElementalPattern

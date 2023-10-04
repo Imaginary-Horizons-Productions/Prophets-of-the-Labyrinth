@@ -17,9 +17,7 @@ module.exports = new GearTemplate("Certain Victory",
 			damage *= critBonus;
 		}
 		addModifier(user, powerUp);
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
-		});
+		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Hunter's Certain Victory", "Lethal Certain Victory", "Reckless Certain Victory")

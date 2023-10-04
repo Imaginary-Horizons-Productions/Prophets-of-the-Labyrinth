@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Life Drain",
 	"Spell",
 	"Darkness",
 	200,
-	needsLivingTargets(async ([target], user, isCrit, adventure) => {
+	needsLivingTargets(([target], user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger], damage, healing, critBonus } = module.exports;
 		if (user.element === element) {
 			addModifier(target, elementStagger);
@@ -16,7 +16,7 @@ module.exports = new GearTemplate("Life Drain",
 		if (isCrit) {
 			healing *= critBonus;
 		}
-		return `${await dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, healing, adventure)}`;
+		return `${dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, healing, adventure)}`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Flanking Life Drain", "Reactive Life Drain", "Urgent Life Drain")

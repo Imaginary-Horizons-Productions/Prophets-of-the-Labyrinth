@@ -17,15 +17,14 @@ module.exports = new GearTemplate("Fate-Sealing Censer",
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			damage += bonus;
 		}
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			if (isCrit && target.hp > 0) {
-				addModifier(target, slow);
-				addModifier(target, stasis);
-				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed and enters Stasis.`;
-			} else {
-				return damageText;
-			}
-		});
+		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		if (isCrit && target.hp > 0) {
+			addModifier(target, slow);
+			addModifier(target, stasis);
+			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed and enters Stasis.`;
+		} else {
+			return damageText;
+		}
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Thick Censer", "Tormenting Censor")

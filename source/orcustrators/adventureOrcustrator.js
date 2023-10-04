@@ -363,7 +363,7 @@ function newRound(adventure, thread, lastRoundText) {
  * @param {Adventure} adventure
  * @returns {Promise<string>} result text
  */
-async function resolveMove(move, adventure) {
+function resolveMove(move, adventure) {
 	const user = adventure.getCombatant(move.userReference);
 	if (!user || user.hp < 1) {
 		return "";
@@ -432,7 +432,7 @@ async function resolveMove(move, adventure) {
 		}
 
 		const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
-		const resultText = await effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
+		const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
 
 		moveText += `used ${move.name}. ${resultText}${breakText}`;
 	} else {
@@ -451,7 +451,7 @@ async function resolveMove(move, adventure) {
 
 	const regenStacks = user.getModifierStacks("Regen");
 	if (poisonDamage) {
-		moveText += ` ${await dealDamage([user], null, poisonDamage, true, "Poison", adventure)}`;
+		moveText += ` ${dealDamage([user], null, poisonDamage, true, "Poison", adventure)}`;
 	} else if (regenStacks) {
 		moveText += ` ${gainHealth(user, regenStacks * 10, adventure)}`;
 	}
@@ -462,7 +462,7 @@ async function resolveMove(move, adventure) {
  * @param {Adventure} adventure
  * @param {ThreadChannel} thread
  */
-async function endRound(adventure, thread) {
+function endRound(adventure, thread) {
 	clearComponents(adventure.messageIds.battleRound, thread.messages);
 
 	// Generate Reactive Moves by Enemies
@@ -498,7 +498,7 @@ async function endRound(adventure, thread) {
 	// Resolve moves
 	let lastRoundText = "";
 	for (const move of adventure.room.moves) {
-		lastRoundText += await resolveMove(move, adventure);
+		lastRoundText += resolveMove(move, adventure);
 
 		// Check for end of combat
 		if (adventure.lives <= 0) {

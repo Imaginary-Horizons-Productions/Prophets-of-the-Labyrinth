@@ -40,9 +40,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		}
 		addModifier(user, { name: "Progress", stacks: 15 + adventure.generateRandomNumber(16, "battle") });
 		addModifier(target, { name: "Stagger", stacks: 1 });
-		return dealDamage([target], user, damage, false, user.element, adventure).then(damageText => {
-			return `An obstacle to potion progress is identified and mitigated; ${damageText}`;
-		})
+		return `An obstacle to potion progress is identified and mitigated; ${dealDamage([target], user, damage, false, user.element, adventure)}`;
 	},
 	selector: selectRandomFoe,
 	next: nextRandom

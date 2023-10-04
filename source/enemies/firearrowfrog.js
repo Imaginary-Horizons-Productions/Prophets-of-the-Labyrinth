@@ -30,9 +30,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		} else {
 			addModifier(target, { name: "Poison", stacks: 3 });
 		}
-		return dealDamage([target], user, damage, false, user.element, adventure).then(damageText => {
-			return `${target.getName(adventure.room.enemyIdMap)} is Poisoned. ${damageText}`;
-		});
+		return `${target.getName(adventure.room.enemyIdMap)} is Poisoned. ${dealDamage([target], user, damage, false, user.element, adventure)}`;
 	},
 	selector: selectRandomFoe,
 	next: firearrowFrogPattern

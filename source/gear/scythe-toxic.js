@@ -18,9 +18,7 @@ module.exports = new GearTemplate("Toxic Scythe",
 		}
 		if (target.hp > hpThreshold) {
 			addModifier(target, poison);
-			return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
-			});
+			return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
 		} else {
 			target.hp = 0;
 			return `${target.getName(adventure.room.enemyIdMap)} meets the reaper.`;

@@ -17,13 +17,12 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 			damage *= critBonus;
 		}
 		addModifier(user, powerUp);
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			if (target.hp < 1) {
-				adventure.gainGold(bounty);
-				damageText += ` ${user.getName(adventure.room.enemyIdMap)} gains ${bounty}g of victory spoils.`;
-			}
-			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
-		});
+		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		if (target.hp < 1) {
+			adventure.gainGold(bounty);
+			damageText += ` ${user.getName(adventure.room.enemyIdMap)} gains ${bounty}g of victory spoils.`;
+		}
+		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")

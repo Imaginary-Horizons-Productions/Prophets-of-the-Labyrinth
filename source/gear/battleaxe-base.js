@@ -17,9 +17,7 @@ module.exports = new GearTemplate("Battleaxe",
 			damage *= critBonus;
 		}
 		addModifier(user, exposed);
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			return `${damageText} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`
-		});
+		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Prideful Battleaxe", "Thick Battleaxe", "Thirsting Battleaxe")

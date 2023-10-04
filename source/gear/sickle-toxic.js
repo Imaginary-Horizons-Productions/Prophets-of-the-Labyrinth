@@ -17,14 +17,13 @@ module.exports = new GearTemplate("Toxic Sickle",
 		if (isCrit) {
 			damage *= critBonus;
 		}
-		return dealDamage([target], user, damage, false, element, adventure).then(damageText => {
-			if (target.hp > 0) {
-				addModifier(target, poison);
-				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
-			} else {
-				return damageText;
-			}
-		});
+		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		if (target.hp > 0) {
+			addModifier(target, poison);
+			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
+		} else {
+			return damageText;
+		}
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Hunter's Sickle", "Sharpened Sickle")

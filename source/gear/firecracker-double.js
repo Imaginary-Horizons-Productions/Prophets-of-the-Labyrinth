@@ -11,17 +11,16 @@ module.exports = new GearTemplate("Double Firecracker",
 	350,
 	needsLivingTargets((targets, user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger], damage, critBonus } = module.exports;
+		let pendingDamage = damage;
 		if (isCrit) {
-			damage *= critBonus;
+			pendingDamage *= critBonus;
 		}
-		return Promise.all(
-			targets.map(target => {
-				if (user.element === element) {
-					addModifier(target, elementStagger);
-				}
-				return dealDamage([target], user, damage, false, element, adventure);
-			})
-		).then(results => results.filter(result => Boolean(result)).join(" "));
+		targets.map(target => {
+			if (user.element === element) {
+				addModifier(target, elementStagger);
+			}
+		})
+		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	})
 ).setTargetingTags({ target: `random${SAFE_DELIMITER}6`, team: "enemy" })
 	.setSidegrades("Mercurial Firecracker", "Toxic Firecracker")

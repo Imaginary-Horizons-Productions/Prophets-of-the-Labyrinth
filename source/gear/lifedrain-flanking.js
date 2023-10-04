@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Flanking Life Drain",
 	"Spell",
 	"Darkness",
 	350,
-	needsLivingTargets(async ([target], user, isCrit, adventure) => {
+	needsLivingTargets(([target], user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger, exposed], damage, healing, critBonus } = module.exports;
 		if (user.element === element) {
 			addModifier(target, elementStagger);
@@ -16,7 +16,7 @@ module.exports = new GearTemplate("Flanking Life Drain",
 		if (isCrit) {
 			healing *= critBonus;
 		}
-		let damageText = await dealDamage([target], user, damage, false, element, adventure);
+		let damageText = dealDamage([target], user, damage, false, element, adventure);
 		addModifier(target, exposed);
 		return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Exposed. ${gainHealth(user, healing, adventure)}`;
 	})
