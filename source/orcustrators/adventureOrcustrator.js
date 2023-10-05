@@ -16,7 +16,7 @@ const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = requ
 const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
 const { clearBlock, removeModifier, addModifier, dealDamage } = require("../util/combatantUtil");
-const { getWeaknesses, getEmoji } = require("../util/elementUtil");
+const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
 const { renderRoom, updateRoomHeader } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
 const { clearComponents } = require("../util/messageComponentUtil");
@@ -187,7 +187,7 @@ function nextRoom(roomType, thread) {
 						tier = rollGearTier(adventure);
 					}
 					const gearName = rollGear(tier, adventure);
-					adventure.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCost, getGearProperty(gearName, "cost", resourceType))));
+					adventure.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCost ?? "0", getGearProperty(gearName, "cost", resourceType))));
 				}
 				break;
 			case "artifact":

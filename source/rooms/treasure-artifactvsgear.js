@@ -3,6 +3,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { buildGearDescription } = require("../gear/_gearDictionary");
+const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 	"@{adventure}",
@@ -31,10 +32,10 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 		}
 	}
 	const hasOptions = options.length > 0;
-	return new ActionRowBuilder().addComponents(
+	return [new ActionRowBuilder().addComponents(
 		new StringSelectMenuBuilder().setCustomId("treasure")
 			.setPlaceholder(hasOptions ? "Pick 1 treasure to take..." : "No treasure")
 			.setOptions(hasOptions ? options : [{ label: "If the menu is stuck, switch channels and come back.", description: "This usually happens when two players try to take the last thing at the same time.", value: "placeholder" }])
 			.setDisabled(!hasOptions)
-	)
+	)];
 });

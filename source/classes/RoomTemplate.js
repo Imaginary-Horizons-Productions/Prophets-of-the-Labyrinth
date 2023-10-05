@@ -68,7 +68,7 @@ class ResourceTemplate {
 
 	/** @param {"Cursed" | "Common" | "Rare" | "?"} tierEnum */
 	setTier(tierEnum) {
-		this.tear = tierEnum;
+		this.tier = tierEnum;
 		return this;
 	}
 

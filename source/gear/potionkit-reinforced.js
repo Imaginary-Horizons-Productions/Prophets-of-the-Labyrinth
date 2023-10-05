@@ -29,10 +29,10 @@ module.exports = new GearTemplate("Reinforced Potion Kit",
 		const randomPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 		addBlock(user, block);
 		if (isCrit) {
-			adventure.addResource(new Resource(randomPotion, "item", "loot", critBonus));
+			adventure.addResource(randomPotion, "item", "loot", critBonus);
 			return `${user.getName(adventure.room.enemyIdMap)} prepares to Block and sets a double-batch of ${randomPotion} simmering.`;
 		} else {
-			adventure.addResource(new Resource(randomPotion, "item", "loot", 1));
+			adventure.addResource(randomPotion, "item", "loot", 1);
 			return `${user.getName(adventure.room.enemyIdMap)} prepares to Block and sets a batch of ${randomPotion} simmering.`;
 		}
 	}

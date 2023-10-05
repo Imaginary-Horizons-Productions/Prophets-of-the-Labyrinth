@@ -28,10 +28,10 @@ module.exports = new GearTemplate("Organic Potion Kit",
 		}
 		const randomPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 		if (isCrit) {
-			adventure.addResource(new Resource(randomPotion, "item", "loot", critBonus));
+			adventure.addResource(randomPotion, "item", "loot", critBonus);
 			return `${user.getName(adventure.room.enemyIdMap)} sets a double-batch of ${randomPotion} simmering.`;
 		} else {
-			adventure.addResource(new Resource(randomPotion, "item", "loot", 1));
+			adventure.addResource(randomPotion, "item", "loot", 1);
 			return `${user.getName(adventure.room.enemyIdMap)} sets a batch of ${randomPotion} simmering.`;
 		}
 	}

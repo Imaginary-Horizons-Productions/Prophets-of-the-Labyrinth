@@ -30,7 +30,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			.setPriority(1)
 			.setName(itemName);
 
-		item.selectTargets(user.team, userIndex, adventure).forEach(target => {
+		item.selectTargets(user, adventure).forEach(target => {
 			newMove.addTarget(target);
 		})
 		let overwritten = false;

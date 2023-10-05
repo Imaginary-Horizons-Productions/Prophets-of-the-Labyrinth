@@ -24,7 +24,8 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.S
 			return;
 		}
 
-		if (!adventure.delvers.some(delver => delver.id === interaction.user.id)) {
+		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
+		if (!delver) {
 			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
 			return;
 		}
