@@ -27,6 +27,8 @@
    - Reinforced - adds Block to the user
 - Combined `/armory` and `/conumable-info` into `/manual` using subcommands
 - Combinde `/inspect-self` and `/party-stats` into `/adventure` using subcommands
+- Added Detective archetype
+- new players will now start with 3 random archetypes, if you'd like to test another archetype, contact a developer!
 
 ## Example Version 0.0.0:
 - Unordered item 1
