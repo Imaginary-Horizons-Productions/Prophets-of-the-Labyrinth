@@ -4,12 +4,12 @@ const { addModifier } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new ItemTemplate("Earthen Potion",
-	"Grants the user 1 Earth Absorb",
+	"Grants the user 3 Earth Absorb",
 	"Untyped",
 	30,
 	selectSelf,
 	(targets, user, isCrit, adventure) => {
-		addModifier(user, { name: "Earth Absorb", stacks: 1 });
+		addModifier(user, { name: "Earth Absorb", stacks: 3 });
 		return `${user.getName(adventure.room.enemyIdMap)} now absorbs ${getEmoji("Earth")} damage.`;
 	}
 );

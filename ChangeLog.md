@@ -28,7 +28,8 @@
 - Combined `/armory` and `/conumable-info` into `/manual` using subcommands
 - Combinde `/inspect-self` and `/party-stats` into `/adventure` using subcommands
 - Added Detective archetype
-- new players will now start with 3 random archetypes, if you'd like to test another archetype, contact a developer!
+- New players will now start with 3 random archetypes, if you'd like to test another archetype, contact a developer!
+- Buffed Absorb potions to 3 stacks from 1
 
 ## Example Version 0.0.0:
 - Unordered item 1
