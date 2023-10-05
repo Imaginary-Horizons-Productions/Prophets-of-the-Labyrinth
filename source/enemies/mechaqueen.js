@@ -17,7 +17,7 @@ function mechaQueenPattern(actionName) {
 }
 
 module.exports = new EnemyTemplate("Mecha Queen",
-	"Earth",
+	"Darkness",
 	500,
 	100,
 	4,
@@ -87,7 +87,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	next: mechaQueenPattern
 }).addAction({
 	name: "V.E.N.O.Missile",
-	element: "Earth",
+	element: "Darkness",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		addModifier(target, { name: "Stagger", stacks: 1 });
