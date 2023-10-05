@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Punch",
 		let { damage, critBonus, element } = module.exports;
 		const ironFistStacks = user.getModifierStacks("Iron Fist Stance");
 		const pendingElement = ironFistStacks > 0 ? user.element : element;
-		const floatingMistStacks = user.getModifierStacks("Floating Mist Stacks");
+		const floatingMistStacks = user.getModifierStacks("Floating Mist Stance");
 		let totalStagger = floatingMistStacks * 2;
 		let pendingDamage = damage + (ironFistStacks * 45);
 		if (user.element === pendingElement) {
