@@ -41,7 +41,7 @@ function generateTextBar(numerator, denominator, barLength) {
 
 /** @param {string?} tag */
 function generateRuntimeTemplateStringRegExp(tag) {
-	return new RegExp(`@{(${tag ?? "[a-zA-Z]+"})}`, "g")
+	return new RegExp(`@{${tag ?? "[a-zA-Z]+"}}`, "g");
 };
 
 const operationMap = {

@@ -16,26 +16,26 @@ function spawnEnemy(enemyTemplate, adventure) {
 	}
 	const pendingHP = Math.ceil(enemyTemplate.maxHP * hpPercent / 100);
 	enemy.setHP(pendingHP);
-	switch (enemyTemplate.name.match(anyTagRegex)?.[1]) { // this prevents all replaces from running; which is problematic because @{clone} assumes player and enemy counts match
-		case "adventure":
+	switch (enemyTemplate.name.match(anyTagRegex)?.[0]) { // this prevents all replaces from running; which is problematic because @{clone} assumes player and enemy counts match
+		case "@{adventure}":
 			enemy.name = enemyTemplate.name.replace("@{adventure}", adventure.element);
 			break;
-		case "adventureOpposite":
+		case "@{adventureOpposite}":
 			enemy.name = enemyTemplate.name.replace("@{adventureOpposite}", getOpposite(adventure.element));
 			break;
-		case "clone":
+		case "@{clone}":
 			enemy.name = `Mirror ${adventure.delvers[adventure.room.enemies.length].archetype}`;
 			break;
 	}
 
-	switch (enemyTemplate.element.match(anyTagRegex)?.[1]) { // this prevents all replaces from running; which is problematic because @{clone} assumes player and enemy counts match
-		case "adventure":
+	switch (enemyTemplate.element.match(anyTagRegex)?.[0]) { // this prevents all replaces from running; which is problematic because @{clone} assumes player and enemy counts match
+		case "@{adventure}":
 			enemy.element = adventure.element;
 			break;
-		case "adventureOpposite":
+		case "@adventureOpposite}":
 			enemy.element = getOpposite(adventure.element);
 			break;
-		case "clone":
+		case "@{clone}":
 			enemy.element = adventure.delvers[adventure.room.enemies.length].element;
 			break;
 	}
