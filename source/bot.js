@@ -93,7 +93,7 @@ client.on(Events.ClientReady, () => {
 
 client.on(Events.InteractionCreate, interaction => {
 	if (interaction.isModalSubmit()) {
-		// Modal Submissions are to be handled in the interactions that show them with awaitModalSubmission
+		// Modal Submissions are to be handled in the interactions that show them with awaitModalSubmit
 		return;
 	} else if (interaction.isCommand()) {
 		const command = getCommand(interaction.commandName);

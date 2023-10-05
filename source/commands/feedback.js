@@ -95,7 +95,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 							modalSubmission.reply({ content: `Your bug report has been recorded${errors.length > 0 ? `, but the following errors were encountered: ${errors.join(", ")}` : ""}.You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
 						})
 					})
-				})
+				}).catch(console.error);
 				break;
 			case "feature":
 				titlePrefix = "Feature Request: ";
@@ -167,7 +167,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 							modalSubmission.reply({ content: `Your feature request has been recorded${errors.length > 0 ? `, but the following errors were encountered: ${errors.join(", ")}` : ""}. You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
 						})
 					})
-				})
+				}).catch(console.error);
 				break;
 			case "balance":
 				titlePrefix = "Balance Suggestion";
@@ -217,7 +217,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 							modalSubmission.reply({ content: `Your balance suggestion has been recorded${errors.length > 0 ? `, but the following errors were encountered: ${errors.join(", ")}` : ""}. You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
 						})
 					})
-				})
+				}).catch(console.error);
 				break;
 		}
 	}
