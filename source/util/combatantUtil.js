@@ -239,7 +239,7 @@ function modifiersToString(combatant, includeStagger, adventure) {
  * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")[]}
  */
 function getCombatantWeaknesses(combatant) {
-	const weaknesses = getWeaknesses(combatant.element);
+	const weaknesses = [...getWeaknesses(combatant.element)]; // avoid closure by making new array
 	elementsList().forEach(element => {
 		if (!weaknesses.includes(element) && `${element} Weakness` in combatant.modifiers) {
 			weaknesses.push(element);

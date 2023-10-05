@@ -314,9 +314,9 @@ class Enemy extends Combatant {
 	 * @param {number} poiseInput
 	 * @param {number} critBonusInput
 	 * @param {string} firstActionName
-	 * @param {{[modifierName]: number}} startingModifiers
+	 * @param {{[modifierName]: number}} startingModifiersShallowCopy
 	 */
-	constructor(nameInput, elementEnum, speedInput, poiseInput, critBonusInput, firstActionName, startingModifiers) {
+	constructor(nameInput, elementEnum, speedInput, poiseInput, critBonusInput, firstActionName, startingModifiersShallowCopy) {
 		super(nameInput, "enemy");
 		this.archetype = nameInput;
 		/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
@@ -325,7 +325,7 @@ class Enemy extends Combatant {
 		this.poise = poiseInput;
 		this.critBonus = critBonusInput;
 		this.nextAction = firstActionName;
-		this.modifiers = startingModifiers; //TODO check if shared modifiers bug still happens in this implementation
+		this.modifiers = startingModifiersShallowCopy;
 	}
 
 	/** @param {number} integer */
