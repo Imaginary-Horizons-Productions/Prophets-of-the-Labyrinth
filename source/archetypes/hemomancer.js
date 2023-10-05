@@ -13,7 +13,8 @@ module.exports = new ArchetypeTemplate("Hemomancer",
 			});
 		for (const combatant of activeCombatants) {
 			const staggerCount = combatant.getModifierStacks("Stagger");
-			embed.addFields({ name: combatant.getName(adventure.room.enemyIdMap), value: `Stagger: ${generateTextBar(staggerCount, combatant.poise, combatant.poise)}\nSpeed: ${combatant.getTotalSpeed()}` });
+			const isStunned = combatant.getModifierStacks("Stun") > 0;
+			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)}${isStunned ? " 💫" : ""}`, value: `Stagger: ${generateTextBar(staggerCount, combatant.poise, combatant.poise)}\nSpeed: ${combatant.getTotalSpeed()}` });
 		}
 		embed.setDescription("Combatants may act out of order if they have priority or they are tied in speed.");
 		return [true, embed];
