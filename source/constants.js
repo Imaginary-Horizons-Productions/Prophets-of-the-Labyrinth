@@ -27,4 +27,5 @@ module.exports = {
 
 	// Game Values
 	MAX_DELVER_COUNT: Math.floor(module.exports.MAX_SELECT_OPTIONS / 3),
+	EMPTY_SELECT_OPTION_SET: [{ label: "If the menu is stuck, switch channels and come back.", description: "This usually happens when two players use the same select at the same time.", value: "empty" }]
 };

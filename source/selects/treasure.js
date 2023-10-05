@@ -36,7 +36,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 					break;
 				case "artifact":
 					adventure.gainArtifact(name, count);
-					adventure.room.resources[name] = 0;
+					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${name} x ${count}.`
 					}

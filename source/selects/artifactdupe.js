@@ -1,6 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { SelectWrapper } = require('../classes');
-const { ZERO_WIDTH_WHITESPACE } = require('../constants');
+const { ZERO_WIDTH_WHITESPACE, EMPTY_SELECT_OPTION_SET } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { updateRoomHeader } = require('../util/embedUtil');
 const { consumeRoomActions } = require('../util/messageComponentUtil');
@@ -25,7 +25,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				new StringSelectMenuBuilder().setCustomId("artifactdupe")
 					.setPlaceholder(`✔️ Duplicated ${artifactName}`)
 					.setDisabled(true)
-					.setOptions([{ label: "If the menu is stuck, switch channels and come back.", description: "This usually happens when two players try to duplicate an artifact at the same time.", value: "placeholder" }])
+					.setOptions(EMPTY_SELECT_OPTION_SET)
 			))
 			interaction.update({ embeds, components });
 			setAdventure(adventure);
