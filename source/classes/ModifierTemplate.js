@@ -25,6 +25,7 @@ class ModifierTemplate {
 	}
 	inverse = "";
 
+	/** @param {string} modifierName */
 	setInverse(modifierName) {
 		this.inverse = modifierName;
 		return this;

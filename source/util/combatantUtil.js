@@ -1,6 +1,6 @@
 const { Combatant, Adventure } = require("../classes");
 const { getInverse, isNonStacking, getModifierDescription, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
-const { getWeaknesses, getResistances } = require("./elementUtil.js");
+const { getWeaknesses, getResistances, elementsList } = require("./elementUtil.js");
 
 /**
  * @param {Combatant[]} targets
@@ -10,7 +10,7 @@ const { getWeaknesses, getResistances } = require("./elementUtil.js");
  * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "Poison"} element
  * @param {Adventure} adventure
  */
-function dealDamage(targets, user, damage, isUnblockable, element, adventure) { //TODO investigate if this still needs to be async (no awaits)
+function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 	const previousLifeCount = adventure.lives;
 	const resultTexts = [];
 	for (const target of targets) {
@@ -22,7 +22,7 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) { 
 				if ("Exposed" in target.modifiers) {
 					pendingDamage *= 1.5;
 				}
-				const isWeakness = getWeaknesses(target.element).includes(element);
+				const isWeakness = getCombatantWeaknesses(target).includes(element);
 				if (isWeakness) {
 					pendingDamage *= 2;
 				}
@@ -234,6 +234,20 @@ function modifiersToString(combatant, includeStagger, adventure) {
 	return modifiersText;
 }
 
+/** Assembles an array of the combatant's elemental weaknesses and modifier-induced weaknesses
+ * @param {Combatant} combatant
+ * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")[]}
+ */
+function getCombatantWeaknesses(combatant) {
+	const weaknesses = getWeaknesses(combatant.element);
+	elementsList().forEach(element => {
+		if (!weaknesses.includes(element) && `${element} Weakness` in combatant.modifiers) {
+			weaknesses.push(element);
+		}
+	})
+	return weaknesses;
+}
+
 module.exports = {
 	dealDamage,
 	payHP,
@@ -242,5 +256,6 @@ module.exports = {
 	clearBlock,
 	addModifier,
 	removeModifier,
-	modifiersToString
+	modifiersToString,
+	getCombatantWeaknesses
 };

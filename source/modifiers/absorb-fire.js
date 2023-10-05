@@ -6,4 +6,4 @@ module.exports = new ModifierTemplate("Fire Absorb",
 	false,
 	false,
 	1
-).setInverse("Water Absorb");
+).setInverse("Fire Weakness");

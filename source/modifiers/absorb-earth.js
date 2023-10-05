@@ -6,4 +6,4 @@ module.exports = new ModifierTemplate("Earth Absorb",
 	false,
 	false,
 	1
-).setInverse("Wind Absorb");
+).setInverse("Earth Weakness");

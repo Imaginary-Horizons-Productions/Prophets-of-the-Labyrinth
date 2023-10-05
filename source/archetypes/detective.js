@@ -2,10 +2,10 @@ const { ArchetypeTemplate } = require("../classes");
 const { getCombatantWeaknesses } = require("../util/combatantUtil");
 const { getEmoji, getResistances } = require("../util/elementUtil");
 
-module.exports = new ArchetypeTemplate("Assassin",
-	"Able to predict which combatants will critically hit and assess combatant elemental affinities, the Assassin excels at dealing great amounts of damage.",
-	"Wind",
-	["Daggers", "Cloak"],
+module.exports = new ArchetypeTemplate("Detective",
+	"Adept at analyzing then seizing upon elementary weaknesses of foes, the Detective can even induce weaknesses on foes with their Sabotage Kit.",
+	"Earth",
+	["Pistol", "Sabotage Kit"],
 	(embed, adventure) => {
 		adventure.room.enemies.filter(combatant => combatant.hp > 0).concat(adventure.delvers).forEach(combatant => {
 			const weaknesses = getCombatantWeaknesses(combatant);

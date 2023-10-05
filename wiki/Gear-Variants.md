@@ -59,6 +59,13 @@ Doubles number of targets
 
 **Available on**
 - Firecracker (Fire)
+- Pistol (Earth)
+
+### Duelist's
+Bonus damage if only one attacking target
+
+**Available on**
+- Pistol (Earth)
 
 ### Evasive
 Adds Evade to the user
@@ -124,6 +131,7 @@ Increased modifier stacks
 
 **Available on**
 - Cloak (Wind)
+- Sabotage Kit (Earth)
 - Vigilance Charm (Earth)
 
 ### Mercurial
@@ -196,6 +204,12 @@ Adds Block to the user
 - Buckler (Earth)
 - Potion Kit (Water)
 - Vigilance Charm (Earth)
+
+### Sabotaging
+Adds a random modifier that converts one of target's neutral elements to a weakness
+
+**Available on**
+- all Sabotage Kits (Earth)
 
 ### Sharpened
 Increased damage
@@ -300,5 +314,6 @@ Adds Vigilance to user
 - Percent max hp damage (all Sickles)
 - Adds Power Up to target (all Inspiration)
 - Also hits targets with Exposed (all War Cries)
+- Adds Power Up to random ally if hitting weakness (all Pistols)
 
 ## Planned Variants

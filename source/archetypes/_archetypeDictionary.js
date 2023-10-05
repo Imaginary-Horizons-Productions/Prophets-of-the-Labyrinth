@@ -6,6 +6,7 @@ const ARCHETYPES = {};
 for (const file of [
 	"assassin.js",
 	"chemist.js",
+	"detective.js",
 	"hemomancer.js",
 	"knight.js",
 	"legionnaire.js",

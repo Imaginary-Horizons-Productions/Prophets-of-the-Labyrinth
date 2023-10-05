@@ -6,4 +6,4 @@ module.exports = new ModifierTemplate("Darkness Absorb",
 	false,
 	false,
 	1
-).setInverse("Light Absorb");
+).setInverse("Darkness Weakness");

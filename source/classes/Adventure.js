@@ -115,16 +115,16 @@ class Adventure {
 	}
 
 	/** Get an array with Untyped and all elements in the party
-	 * @returns {string[]}
+	 * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")[]}
 	 */
 	getElementPool() {
-		return this.delvers.reduce((elements, delver) => {
-			if (!elements.includes(delver.element)) {
-				return [...elements, delver.element];
-			} else {
-				return elements;
+		const pool = ["Untyped"];
+		this.delvers.forEach(delver => {
+			if (!pool.includes(delver.element)) {
+				return pool.push(delver.element);
 			}
-		}, ["Untyped"]);
+		})
+		return pool;
 	}
 
 	/** @param {string} artifactName */

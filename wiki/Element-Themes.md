@@ -152,6 +152,7 @@ Archetypes:
 - Devoted
 - Discounted
 - Double
+- Duelist's
 - Fate-Sealing
 - Healing
 - Long

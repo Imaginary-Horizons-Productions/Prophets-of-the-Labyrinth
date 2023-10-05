@@ -28,6 +28,13 @@ for (const file of [
 	"stance-iron-fist.js",
 	"stasis.js",
 	"vigilance.js",
+	"weakness-darkness.js",
+	"weakness-earth.js",
+	"weakness-fire.js",
+	"weakness-light.js",
+	"weakness-untyped.js",
+	"weakness-water.js",
+	"weakness-wind.js",
 	"stun.js"
 ]) {
 	/** @type {ModifierTemplate} */

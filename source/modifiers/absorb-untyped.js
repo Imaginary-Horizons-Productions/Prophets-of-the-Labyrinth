@@ -6,4 +6,4 @@ module.exports = new ModifierTemplate("Untyped Absorb",
 	false,
 	false,
 	1
-);
+).setInverse("Untyped Weakness");

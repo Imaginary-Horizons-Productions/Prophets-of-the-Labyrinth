@@ -6,5 +6,4 @@ module.exports = new ModifierTemplate("name",
 	false,
 	false,
 	1
-)
-	.setInverse("name");
+).setInverse("name");
