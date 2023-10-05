@@ -5,7 +5,7 @@ const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SAFE_DELIMITER, MAX_SELECT_OPTIONS } = require('../constants');
 const { getItem } = require('../items/_itemDictionary');
 
-const mainId = "";
+const mainId = "readyitem";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Show the delver stats of the user and provide components to ready a move */
 	(interaction, args) => {
