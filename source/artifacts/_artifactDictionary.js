@@ -44,7 +44,7 @@ function getArtifactCounts() {
 
 /** @param {Adventure} adventure */
 function rollArtifact(adventure) {
-	/** @type {ArtifactTemplate[]} */
+	/** @type {string[]} */
 	const artifactPool = adventure.getElementPool().reduce((artifacts, element) => artifacts.concat(ROLL_TABLE[element]), []);
 	return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 }
