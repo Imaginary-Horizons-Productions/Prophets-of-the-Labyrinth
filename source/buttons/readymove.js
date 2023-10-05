@@ -28,7 +28,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const enemyOptions = [];
 		const miniPredictBuilder = getArchetype(delver.archetype).miniPredict;
 		for (let i = 0; i < adventure.room.enemies.length; i++) {
-			let enemy = adventure.room.enemies[i];
+			const enemy = adventure.room.enemies[i];
 			if (enemy.hp > 0) {
 				enemyOptions.push({
 					label: enemy.getName(adventure.room.enemyIdMap),
