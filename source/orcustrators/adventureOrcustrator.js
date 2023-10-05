@@ -123,7 +123,7 @@ function nextRoom(roomType, thread) {
 	})
 
 	const piggyBankCount = adventure.getArtifactCount("Piggy Bank");
-	const interest = adventure.gold * piggyBankCount * 0.05;
+	const interest = Math.floor(adventure.gold * piggyBankCount * 0.05);
 	if (piggyBankCount > 0) {
 		adventure.gainGold(interest);
 		adventure.updateArtifactStat("Piggy Bank", "Interest Accrued", interest);
