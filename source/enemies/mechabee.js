@@ -14,7 +14,7 @@ function mechabeePattern(actionName) {
 }
 
 module.exports = new EnemyTemplate("Mechabee",
-	"Earth",
+	"Darkness",
 	200,
 	100,
 	3,
@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Mechabee",
 	false
 ).addAction({
 	name: "Sting",
-	element: "Earth",
+	element: "Darkness",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		addModifier(target, { name: "Stagger", stacks: 1 });
@@ -63,7 +63,7 @@ module.exports = new EnemyTemplate("Mechabee",
 	next: mechabeePattern
 }).addAction({
 	name: "Self-Destruct",
-	element: "Earth",
+	element: "Darkness",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = 125;
