@@ -24,6 +24,8 @@ for (const file of [
 	"regen.js",
 	"slow.js",
 	"stagger.js",
+	"stance-floating-mist.js",
+	"stance-iron-fist.js",
 	"stasis.js",
 	"vigilance.js",
 	"stun.js"
