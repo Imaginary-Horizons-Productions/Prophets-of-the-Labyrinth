@@ -26,7 +26,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		const [targetTeam, targetIndex] = interaction.values[0].split(SAFE_DELIMITER);
 		const newMove = new Move(user, userIndex, "gear", user.crit)
 			.setName(moveName)
-			.setPriority(getGearProperty(moveName, "priority"))
+			.setPriority(getGearProperty(moveName, "priority") ?? 0)
 			.addTarget(new CombatantReference(targetTeam, targetIndex));
 
 		let overwritten = false;

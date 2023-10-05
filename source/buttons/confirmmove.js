@@ -25,7 +25,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const userIndex = adventure.getCombatantIndex(user);
 		const newMove = new Move(user, userIndex, "gear", user.crit)
 			.setName(moveName)
-			.setPriority(getGearProperty(moveName, "priority"));
+			.setPriority(getGearProperty(moveName, "priority") ?? 0);
 
 		let targetText = "";
 		const { target, team } = getGearProperty(moveName, "targetingTags");
