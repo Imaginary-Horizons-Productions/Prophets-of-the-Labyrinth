@@ -4,6 +4,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { getItem } = require("../items/_itemDictionary");
+const { EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 	"@{adventure}",
@@ -14,28 +15,38 @@ module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 		new ResourceTemplate("2", "always", "item").setCostMultiplier(0)
 	]
 ).setBuildUI(function (adventure) {
-	const options = [];
-	for (const { name, resourceType, count, visibility } of Object.values(adventure.room.resources)) {
-		if (visibility === "always" && count > 0) {
-			const option = { value: `${name}${SAFE_DELIMITER}${options.length}` };
+	if (adventure.room.resources.roomAction.count > 0) {
+		const options = [];
+		for (const { name, resourceType, count, visibility } of Object.values(adventure.room.resources)) {
+			if (visibility === "always" && count > 0) {
+				const option = { value: `${name}${SAFE_DELIMITER}${options.length}` };
 
-			option.label = `${name} x ${count}`;
-			switch (resourceType) {
-				case "artifact":
-					option.description = getArtifact(name).dynamicDescription(count);
-					break;
-				case "item":
-					option.description = getItem(name).description;
-					break;
+				option.label = `${name} x ${count}`;
+				switch (resourceType) {
+					case "artifact":
+						option.description = getArtifact(name).dynamicDescription(count);
+						break;
+					case "item":
+						option.description = getItem(name).description;
+						break;
+				}
+				options.push(option)
 			}
-			options.push(option)
 		}
+		const hasOptions = options.length > 0;
+		return [new ActionRowBuilder().addComponents(
+			new StringSelectMenuBuilder().setCustomId("treasure")
+				.setPlaceholder(hasOptions ? "Pick 1 treasure to take..." : "No treasure")
+				.setOptions(hasOptions ? options : EMPTY_SELECT_OPTION_SET)
+				.setDisabled(!hasOptions)
+		)];
+	} else {
+		const pickedResource = Object.values(adventure.room.resources).find(resource => resource.count === 0 && resource.name !== "roomAction");
+		return [new ActionRowBuilder().addComponents(
+			new StringSelectMenuBuilder().setCustomId("treasure")
+				.setPlaceholder(`Picked: ${pickedResource.name}`)
+				.setOptions(EMPTY_SELECT_OPTION_SET)
+				.setDisabled(true)
+		)]
 	}
-	const hasOptions = options.length > 0;
-	return [new ActionRowBuilder().addComponents(
-		new StringSelectMenuBuilder().setCustomId("treasure")
-			.setPlaceholder(hasOptions ? "Pick 1 treasure to take..." : "No treasure")
-			.setOptions(hasOptions ? options : [{ label: "If the menu is stuck, switch channels and come back.", description: "This usually happens when two players try to take the last thing at the same time.", value: "placeholder" }])
-			.setDisabled(!hasOptions)
-	)];
 });

@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure } = require("../classes");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { buildGearDescription } = require("../gear/_gearDictionary");
@@ -105,7 +105,7 @@ function generateLootRow(adventure) {
 		return new ActionRowBuilder().addComponents(
 			new StringSelectMenuBuilder().setCustomId("loot")
 				.setPlaceholder("No loot")
-				.setOptions([{ label: "If the menu is stuck, switch channels and come back.", description: "This usually happens when two players try to take the last thing at the same time.", value: "placeholder" }])
+				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)
 		)
 	}

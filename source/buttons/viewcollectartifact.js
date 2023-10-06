@@ -3,6 +3,7 @@ const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getArtifact } = require('../artifacts/_artifactDictionary');
+const { EMPTY_SELECT_OPTION_SET } = require('../constants');
 
 const mainId = "viewcollectartifact";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -46,10 +47,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						new StringSelectMenuBuilder()
 							.setCustomId("collectartifact")
 							.setPlaceholder("Select an artifact...")
-							.addOptions([{
-								label: "If the menu is stuck, switch channels and come back.",
-								value: "placeholder"
-							}])
+							.addOptions(EMPTY_SELECT_OPTION_SET)
 							.setDisabled(true)
 					)],
 					ephemeral: true

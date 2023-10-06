@@ -1,6 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { generateMerchantScoutingRow } = require("../util/messageComponentUtil");
@@ -15,7 +15,6 @@ module.exports = new RoomTemplate("Item Merchant",
 		new ResourceTemplate("n", "always", "item").setUIGroup(uiGroups[1])
 	]
 ).setBuildUI(function (adventure) {
-	const soldOutOptions = [{ label: "If the menu is stuck, switch channels and come back.", description: "This usually happens when two players try to buy the last item at the same time.", value: "placeholder" }];
 	const gearOptions = [];
 	const itemOptions = [];
 
@@ -54,13 +53,13 @@ module.exports = new RoomTemplate("Item Merchant",
 		new ActionRowBuilder().addComponents(
 			new StringSelectMenuBuilder().setCustomId(`buy${uiGroups[0]}`)
 				.setPlaceholder(hasGearOptions ? `Check a piece of gear...` : "SOLD OUT")
-				.setOptions(hasGearOptions ? gearOptions : soldOutOptions)
+				.setOptions(hasGearOptions ? gearOptions : EMPTY_SELECT_OPTION_SET)
 				.setDisabled(!hasGearOptions)
 		),
 		new ActionRowBuilder().addComponents(
 			new StringSelectMenuBuilder().setCustomId(`buy${uiGroups[1]}`)
 				.setPlaceholder(hasItemOptions ? "Check an item..." : "SOLD OUT")
-				.setOptions(hasItemOptions ? itemOptions : soldOutOptions)
+				.setOptions(hasItemOptions ? itemOptions : EMPTY_SELECT_OPTION_SET)
 				.setDisabled(!hasItemOptions)
 		),
 		generateMerchantScoutingRow(adventure)
