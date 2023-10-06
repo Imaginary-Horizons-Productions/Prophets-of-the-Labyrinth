@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Bloodtail Hawk",
 	element: "Wind",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
-		let damage = 50;
+		let damage = 45;
 		if (isCrit) {
 			damage *= 2;
 		}
