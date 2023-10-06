@@ -32,7 +32,8 @@ const potlTips = [
 	"Using items has priority.",
 	"When you use a piece of gear that matches your element on an ally, it will remove 1 Stagger.",
 	"When you use a piece of gear that matches your element on a foe, it will add 1 Stagger.",
-	"Combatants experience variation in their speed every round, which may change move order."
+	"Combatants experience variation in their speed every round, which may change move order.",
+	"The maximum damage that can be dealt in one attack is 500. Get Power Up to raise the cap."
 ].map(text => ({ text, iconURL: POTL_ICON_URL }));
 const tipPool = potlTips.concat(potlTips, discordTips);
 
