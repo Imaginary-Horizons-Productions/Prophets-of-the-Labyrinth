@@ -6,6 +6,7 @@ const commandDictionary = {};
 module.exports = {
 	/** @type {string[]} */
 	commandFiles: [
+		"about.js",
 		"adventure.js",
 		"commands.js",
 		"data-policy.js",
