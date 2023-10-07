@@ -3,7 +3,7 @@ const { selectSelf, selectNone, selectAllFoes, selectRandomFoe } = require("../s
 const { addModifier, addBlock, removeModifier, dealDamage } = require("../util/combatantUtil");
 
 const PATTERN = {
-	"Guarding Slam": "Burrow",
+	"Reinforcing Slam": "Burrow",
 	"Burrow": "Eyes of Greed",
 	"Eyes of Greed": "Heavy Pockets",
 	"Heavy Pockets": "Escape",
@@ -19,11 +19,11 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	100,
 	3,
 	0,
-	"Guarding Slam",
+	"Reinforcing Slam",
 	true
 ).addStartingModifier("Curse of Midas", 1)
 	.addAction({
-		name: "Guarding Slam",
+		name: "Reinforcing Slam",
 		element: "Earth",
 		priority: 0,
 		effect: ([target], user, isCrit, adventure) => {
