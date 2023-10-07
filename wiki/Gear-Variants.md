@@ -38,6 +38,7 @@ Adds Power Up to the user
 Cures a random debuff on target
 
 **Available on**
+- all Refreshing Breezes (Wind)
 - Barrier (Earth)
 
 ### Corrosive

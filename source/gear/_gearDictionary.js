@@ -79,6 +79,7 @@ for (const file of [
 	"potionkit-organic.js",
 	"potionkit-urgent.js",
 	"powerfromwrath-base.js",
+	"refreshingbreeze-base.js",
 	"sabotagekit-base.js",
 	"sabotagekit-long.js",
 	"scutum-base.js",

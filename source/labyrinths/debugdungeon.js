@@ -162,6 +162,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Daggers",
 				"Inspiration",
 				"Spear",
+				"Refreshing Breeze"
 			],
 			Rare: [
 				"Evasive Bow",

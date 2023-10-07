@@ -1,5 +1,6 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth Version 0.13.0:
+- New Gear: Refreshing Breeze
 - Combined Barrier and Vigilance Charm
 ## Prophets of the Labyrinth Version 0.12.0:
 - Reintroduced Light and Darkness elements

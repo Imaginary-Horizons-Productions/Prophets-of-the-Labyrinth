@@ -20,11 +20,11 @@ module.exports = new GearTemplate("Cleansing Barrier",
 		}
 		addBlock(user, block);
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
-		const debuffWasRemoved = userDebuffs.length > 0 && !("Stasis" in user.modifiers);
+		let debuffWasRemoved = false;
 		let rolledDebuff;
 		if (userDebuffs.length > 0) {
 			rolledDebuff = userDebuffs[adventure.generateRandomNumber(userDebuffs.length, "battle")];
-			removeModifier(user, { name: rolledDebuff, stacks: "all" });
+			debuffWasRemoved = removeModifier(user, { name: rolledDebuff, stacks: "all" });
 		}
 		return `${user.getName(adventure.room.enemyIdMap)} Vigilantly prepares to Block${debuffWasRemoved ? ` and shrugs off ${rolledDebuff}` : ""}.`;
 	}
