@@ -148,6 +148,7 @@ Archetypes:
 ## Uncategorized Variants
 - Awesome
 - Bouncing
+- Cleansing
 - Corrosive
 - Devoted
 - Discounted

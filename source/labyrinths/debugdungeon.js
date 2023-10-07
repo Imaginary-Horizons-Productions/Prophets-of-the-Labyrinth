@@ -58,13 +58,16 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Barrier",
 				"Buckler",
 				"Certain Victory",
 				"Lance",
-				"Vigilance Charm",
 				"Warhammer"
 			],
 			Rare: [
+				"Devoted Barrier",
+				"Long Barrier",
+				"Cleansing Barrier",
 				"Devoted Buckler",
 				"Guarding Buckler",
 				"Reinforced Buckler",
@@ -74,9 +77,6 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Accelerating Lance",
 				"Piercing Lance",
 				"Vigilant Lance",
-				"Devoted Vigilance Charm",
-				"Long Vigilance Charm",
-				"Reinforced Vigilance Charm",
 				"Piercing Warhammer",
 				"Slowing Warhammer"
 			]
@@ -118,16 +118,12 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Barrier",
 				"Floating Mist Stance",
 				"Infinite Regeneration",
 				"Iron Fist Stance",
 				"Sun Flare"
 			],
 			Rare: [
-				"Purifying Barrier",
-				"Thick Barrier",
-				"Urgent Barrier",
 				"Soothing Floating Mist Stance",
 				"Fate-Sealing Infinite Regeneration",
 				"Organic Iron Fist Stance",
