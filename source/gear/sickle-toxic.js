@@ -3,7 +3,7 @@ const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { addModifier, dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Sickle",
-	"Strike a foe applying @{mod1Stacks} @{mod1} and @{damage} (+5% foe max hp) @{element} damage and apply",
+	"Strike a foe applying @{mod1Stacks} @{mod1} and @{damage} (+5% foe max hp) @{element} damage",
 	"Damage x@{critBonus}",
 	"Weapon",
 	"Water",
