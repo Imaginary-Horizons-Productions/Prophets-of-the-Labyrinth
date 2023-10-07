@@ -235,6 +235,12 @@ Adds Regen to target
 - Floating Mist Stance (Light)
 - Midas Staff (Water)
 
+### Staggering
+Add Stagger to target
+
+**Available on**
+- all Morning Stars (Light)
+
 ### Sweeping
 Targets whole team
 
