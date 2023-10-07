@@ -121,6 +121,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Floating Mist Stance",
 				"Infinite Regeneration",
 				"Iron Fist Stance",
+				"Morning Star",
 				"Sun Flare"
 			],
 			Rare: [

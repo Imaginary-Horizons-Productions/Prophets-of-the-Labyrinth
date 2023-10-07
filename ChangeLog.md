@@ -11,7 +11,7 @@
    - Consumables to Items
    - Stagger Threshold to Poise
    - \[Equipment's\] Uses to Durability
-- Added Gear: Reactive Warhammer, Discounted Infinite Regneration, Discounted Midas Staff, Poison Torrent, Power from Wrath
+- New Gear: Iron Fist Stance, Organic Iron Fist Stance, Floating Mist Stance, Soothing Floating Mist Stance, Reactive Warhammer, Discounted Infinite Regneration, Discounted Midas Staff, Poison Torrent, Power from Wrath, Morning Star
 - Fixed combat bugs caused by a target dying mid-round (particularly with Clones)
 - Fix many incorrect price bugs (and similar "typo'd when entering data" bugs)
 - Added `/regenerate` command, which resends the current room's message and UI

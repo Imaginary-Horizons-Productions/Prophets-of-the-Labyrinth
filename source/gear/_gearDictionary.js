@@ -69,6 +69,7 @@ for (const file of [
 	"midasstaff-base.js",
 	"midasstaff-soothing.js",
 	"midasstaff-accelerating.js",
+	"morningstar-base.js",
 	"pistol-base.js",
 	"pistol-double.js",
 	"pistol-duelists.js",
