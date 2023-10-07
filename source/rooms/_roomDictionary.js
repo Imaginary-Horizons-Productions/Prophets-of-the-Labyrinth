@@ -46,5 +46,6 @@ function getRoom(roomTitle) {
 }
 
 module.exports = {
-	getRoom
+	getRoom,
+	ROOM_CATEGORIES: ["Event", "Battle", "Merchant", "Rest Site", "Final Battle", "Forge", "Artifact Guardian", "Treasure", "Empty"]
 };

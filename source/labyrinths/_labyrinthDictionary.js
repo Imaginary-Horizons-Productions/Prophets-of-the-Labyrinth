@@ -1,7 +1,7 @@
 const { Adventure, LabyrinthTemplate, RoomTemplate } = require("../classes");
 const { gearExists } = require("../gear/_gearDictionary.js");
 const { itemExists } = require("../items/_itemDictionary.js");
-const { getRoom } = require("../rooms/_roomDictionary");
+const { getRoom, ROOM_CATEGORIES } = require("../rooms/_roomDictionary");
 
 /** @type {Record<string, LabyrinthTemplate>} */
 const LABYRINTHS = {};
@@ -31,7 +31,7 @@ for (const file of [
 
 	for (const tag in labyrinth.availableRooms) {
 		for (const roomTitle of labyrinth.availableRooms[tag]) {
-			if (!getRoom(roomTitle)) {
+			if (!(ROOM_CATEGORIES.includes(roomTitle) || getRoom(roomTitle))) {
 				console.error(`Unregistered room title in ${labyrinth.name}: ${roomTitle}`);
 			}
 		}
@@ -117,7 +117,12 @@ function rollRoom(type, adventure) {
 		return LABYRINTHS["Debug Dungeon"].availableRooms["Empty"][0];
 	}
 	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];
-	return getRoom(roomPool[adventure.generateRandomNumber(roomPool.length, "general")]);
+	const roomName = roomPool[adventure.generateRandomNumber(roomPool.length, "general")];
+	if (ROOM_CATEGORIES.includes(roomName)) {
+		return rollRoom(roomName, adventure);
+	} else {
+		return getRoom(roomName);
+	}
 }
 
 module.exports = {
