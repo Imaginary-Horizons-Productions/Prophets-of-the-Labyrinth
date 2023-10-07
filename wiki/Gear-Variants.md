@@ -34,6 +34,12 @@ Adds Power Up to the user
 - Blood Aegis (Darkness)
 - War Cry (Fire)
 
+### Cleansing
+Cures a random debuff on target
+
+**Available on**
+- Barrier (Earth)
+
 ### Corrosive
 Adds Power Down to target
 
@@ -45,7 +51,7 @@ Can apply to allies
 
 **Available on**
 - Bucker (Earth)
-- Vigilance Charm (Earth)
+- Barrier (Earth)
 
 ### Discounted
 Reduced base price
@@ -132,7 +138,7 @@ Increased modifier stacks
 **Available on**
 - Cloak (Wind)
 - Sabotage Kit (Earth)
-- Vigilance Charm (Earth)
+- Barrier (Earth)
 
 ### Mercurial
 Damage element matches user
@@ -168,12 +174,6 @@ Increased damage and change element to Untyped
 **Available on**
 - Battleaxe (Fire)
 
-### Purifying
-Cures all debuffs on target
-
-**Available on**
-- Barrier (Light)
-
 ### Reactive
 Bonus damage if user moves after target
 
@@ -203,7 +203,6 @@ Adds Block to the user
 - Blood Aegis (Darkness)
 - Buckler (Earth)
 - Potion Kit (Water)
-- Vigilance Charm (Earth)
 
 ### Sabotaging
 Adds a random modifier that converts one of target's neutral elements to a weakness
@@ -256,7 +255,7 @@ Change target's move's target to user
 Increased durability
 
 **Available on**
-- Barrier (Light)
+- Barrier (Earth)
 - Battleaxe (Fire)
 - Cloak (Wind)
 - Censer (Fire)
@@ -289,7 +288,7 @@ Increased priority
 **Available on**
 - all Bows (Wind)
 - all Sun Flares (Light)
-- Barrier (Light)
+- Barrier (Earth)
 - Potion Kit (Water)
 - Life Drain (Darkness)
 
@@ -317,3 +316,8 @@ Adds Vigilance to user
 - Adds Power Up to random ally if hitting weakness (all Pistols)
 
 ## Planned Variants
+### Purifying
+Cures all debuffs on target
+
+**Available on**
+- (none)
