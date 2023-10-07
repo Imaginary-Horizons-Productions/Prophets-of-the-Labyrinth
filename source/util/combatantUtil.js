@@ -47,7 +47,7 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 				pendingDamage = Math.min(pendingDamage, damageCap);
 				target.hp -= pendingDamage;
 				let damageText = ` **${targetName}** takes ${pendingDamage} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${element === "Poison" ? " from Poison" : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}`;
-				if (element !== "Poison" && "Curse of Midas" in target.modifiers) {
+				if (element !== "Poison" && pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
 					adventure.gainGold(Math.floor(pendingDamage / 10));
 					damageText += ` Gold scatters about the room.`;
 				}
