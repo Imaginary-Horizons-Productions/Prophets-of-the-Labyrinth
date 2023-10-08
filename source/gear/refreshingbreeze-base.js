@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { needsLivingTargets } = require('../shared/actionComponents');
 const { removeModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Refreshing Breeze",
@@ -8,7 +9,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 	"Spell",
 	"Wind",
 	200,
-	(targets, user, isCrit, adventure) => {
+	needsLivingTargets((targets, user, isCrit, adventure) => {
 		let { element, modifiers: [elementStagger] } = module.exports;
 		const resultTexts = [];
 		targets.forEach(target => {
@@ -41,7 +42,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 			}
 		})
 		return resultTexts.join(" ");
-	}
+	})
 ).setTargetingTags({ target: "all", team: "delver" })
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
 	.setDurability(15);
