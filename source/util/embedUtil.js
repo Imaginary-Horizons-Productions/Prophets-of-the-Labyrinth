@@ -30,10 +30,10 @@ const discordTips = [
 const potlTips = [
 	"When a combatant's Stagger reaches their Poise, they'll be Stunned and lose their next turn.",
 	"Using items has priority.",
-	"When you use a piece of gear that matches your element on an ally, it will remove 1 Stagger.",
-	"When you use a piece of gear that matches your element on a foe, it will add 1 Stagger.",
+	"When you use gear that matches your element on an ally, it will remove 1 Stagger.",
+	"When you use gear that matches your element on a foe, it will add 1 Stagger.",
 	"Combatants experience variation in their speed every round, which may change move order.",
-	"The maximum damage that can be dealt in one attack is 500. Get Power Up to raise the cap."
+	"The max damage that can be dealt in one attack is 500. Get Power Up to raise the cap."
 ].map(text => ({ text, iconURL: POTL_ICON_URL }));
 const tipPool = potlTips.concat(potlTips, discordTips);
 
@@ -42,12 +42,15 @@ function randomFooterTip() {
 	return tipPool[Math.floor(Math.random() * tipPool.length)];
 }
 
-/** Create a message embed with common settings */
+/** Create a message embed with Blurple color, IHP as author, and a random footer tip */
 function embedTemplate() {
 	return new EmbedBuilder().setColor(Colors.Blurple)
-		.setAuthor({ name: "Click here to vist the PotL GitHub", iconURL: POTL_ICON_URL, url: "https://github.com/Imaginary-Horizons-Productions/prophets-of-the-labyrinth" })
-		.setURL("https://discord.com/api/oauth2/authorize?client_id=950469509628702740&permissions=397284665360&scope=applications.commands%20bot")
-		.setFooter({ text: "Click the title link to add PotL to your server", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png" })
+		.setAuthor({
+			name: "Imaginary Horizons Productions",
+			iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png",
+			url: "https://github.com/Imaginary-Horizons-Productions"
+		})
+		.setFooter(randomFooterTip())
 }
 
 /** Derive the embeds and components that correspond with the adventure's state
@@ -364,7 +367,6 @@ function inspectSelfPayload(delver, gearCapacity) {
 
 
 module.exports = {
-	randomFooterTip,
 	embedTemplate,
 	renderRoom,
 	updateRoomHeader,

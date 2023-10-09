@@ -1,5 +1,5 @@
-const { EmbedBuilder, Colors } = require('discord.js');
 const { CommandWrapper } = require('../classes');
+const { embedTemplate } = require('../util/embedUtil');
 
 const mainId = "support";
 const options = [];
@@ -8,13 +8,7 @@ module.exports = new CommandWrapper(mainId, "List ways to support PotL", null, f
 	(interaction) => {
 		interaction.reply({
 			embeds: [
-				new EmbedBuilder().setColor(Colors.Blurple)
-					.setAuthor({
-						name: "Imaginary Horizons Productions",
-						iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png",
-						url: "https://github.com/Imaginary-Horizons-Productions"
-					})
-					.setTitle("Supporting *Prophets of the Labyrinth*")
+				embedTemplate().setTitle("Supporting *Prophets of the Labyrinth*")
 					.setThumbnail(`https://cdn.discordapp.com/attachments/545684759276421120/734202424960745545/love-mystery.png`)
 					.setDescription("Thanks for playing! Here are a few ways to support development:")
 					.addFields(
