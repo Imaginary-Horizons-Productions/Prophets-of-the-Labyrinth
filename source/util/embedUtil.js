@@ -20,8 +20,6 @@ const { ordinalSuffixEN, generateTextBar } = require("./textUtil");
 /** @type {EmbedFooterData[]} */
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
-	"Surround your message with || to mark it a spoiler (not shown until reader clicks on it).",
-	"Surround a part of your messag with ~~ to add strikethrough styling.",
 	"Don't forget to check slash commands for optional arguments.",
 	"Some slash commands can be used in DMs, others can't.",
 	"Server subscriptions cost more on mobile because the mobile app stores take a cut.",
@@ -308,7 +306,7 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 function gearToEmbedField(gearName, durability) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = durability === Infinity ? "∞ uses" : `${generateTextBar(durability, maxDurability, maxDurability)} ${durability}/${maxDurability} durability`;
+	const durabilityText = durability === Infinity ? "∞ uses" : `${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability`;
 	return {
 		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))} (${durabilityText})`,
 		value: buildGearDescription(gearName, true)
@@ -323,8 +321,8 @@ function gearToEmbedField(gearName, durability) {
 function inspectSelfPayload(delver, gearCapacity) {
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setTitle(`${delver.getName()} the ${delver.archetype}`)
-		.setDescription(`HP: ${generateTextBar(delver.hp, delver.maxHP, 11)} ${delver.hp}/${delver.maxHP}\nYour ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.`)
-		.setFooter({ text: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png" });
+		.setDescription(`${generateTextBar(delver.hp, delver.maxHP, 11)} ${delver.hp}/${delver.maxHP} HP\nYour ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.`)
+		.setFooter(randomFooterTip());
 	if (delver.block > 0) {
 		embed.addFields({ name: "Block", value: delver.block.toString() })
 	}
@@ -367,6 +365,7 @@ function inspectSelfPayload(delver, gearCapacity) {
 
 
 module.exports = {
+	randomFooterTip,
 	embedTemplate,
 	renderRoom,
 	updateRoomHeader,
