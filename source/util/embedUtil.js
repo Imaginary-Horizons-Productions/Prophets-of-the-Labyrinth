@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedFooterData, EmbedField, MessagePayload, Message } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_MESSAGE_ACTION_ROWS } = require("../constants");
@@ -17,27 +17,33 @@ const { getEmoji, getColor } = require("./elementUtil");
 const { generateRoutingRow, generateLootRow } = require("./messageComponentUtil");
 const { ordinalSuffixEN, generateTextBar } = require("./textUtil");
 
-/** @type {EmbedFooterData[]} */
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
 	"Don't forget to check slash commands for optional arguments.",
 	"Some slash commands can be used in DMs, others can't.",
 	"Server subscriptions cost more on mobile because the mobile app stores take a cut.",
-].map(text => ({ text, iconURL: DISCORD_ICON_URL }));
-/** @type {EmbedFooterData[]} */
+];
 const potlTips = [
-	"When a combatant's Stagger reaches their Poise, they'll be Stunned and lose their next turn.",
+	"Combatants are Stunned when their Stagger reaches their Poise, they'll lose their next turn.",
 	"Using items has priority.",
-	"When you use gear that matches your element on an ally, it will remove 1 Stagger.",
-	"When you use gear that matches your element on a foe, it will add 1 Stagger.",
-	"Combatants experience variation in their speed every round, which may change move order.",
-	"The max damage that can be dealt in one attack is 500. Get Power Up to raise the cap."
-].map(text => ({ text, iconURL: POTL_ICON_URL }));
-const tipPool = potlTips.concat(potlTips, discordTips);
+	"When you use gear that matches your element, it removes 1 Stagger on allies.",
+	"When you use gear that matches your element, it adds 1 Stagger on foes.",
+	"Combatant speed varies every round, which may change move order.",
+	"Damage is capped to 500 in one attack. Get Power Up to raise the cap."
+];
+/** @type {EmbedAuthorData} */
+const authorTipPool = potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })).concat(potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })), discordTips.map(text => ({ name: text, iconURL: DISCORD_ICON_URL })));
+/** @type {EmbedFooterData[]} */
+const footerTipPool = potlTips.map(text => ({ text, iconURL: POTL_ICON_URL })).concat(potlTips.map(text => ({ text, iconURL: POTL_ICON_URL })), discordTips.map(text => ({ text, iconURL: DISCORD_ICON_URL })));
+
+/** twice as likely to roll an application specific tip as a discord tip */
+function randomAuthorTip() {
+	return authorTipPool[Math.floor(Math.random() * authorTipPool.length)];
+}
 
 /** twice as likely to roll an application specific tip as a discord tip */
 function randomFooterTip() {
-	return tipPool[Math.floor(Math.random() * tipPool.length)];
+	return footerTipPool[Math.floor(Math.random() * footerTipPool.length)];
 }
 
 /** Create a message embed with Blurple color, IHP as author, and a random footer tip */
@@ -320,9 +326,9 @@ function gearToEmbedField(gearName, durability) {
  */
 function inspectSelfPayload(delver, gearCapacity) {
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
+		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.getName()} the ${delver.archetype}`)
-		.setDescription(`${generateTextBar(delver.hp, delver.maxHP, 11)} ${delver.hp}/${delver.maxHP} HP\nYour ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.`)
-		.setFooter(randomFooterTip());
+		.setDescription(`${generateTextBar(delver.hp, delver.maxHP, 11)} ${delver.hp}/${delver.maxHP} HP\nYour ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.`);
 	if (delver.block > 0) {
 		embed.addFields({ name: "Block", value: delver.block.toString() })
 	}
@@ -365,6 +371,7 @@ function inspectSelfPayload(delver, gearCapacity) {
 
 
 module.exports = {
+	randomAuthorTip,
 	randomFooterTip,
 	embedTemplate,
 	renderRoom,

@@ -2,7 +2,7 @@ const { EmbedBuilder, Colors } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { modifiersToString } = require('../util/combatantUtil');
-const { randomFooterTip } = require('../util/embedUtil');
+const { randomAuthorTip } = require('../util/embedUtil');
 const { isBuff, isDebuff, getModifierDescription, isNonStacking } = require('../modifiers/_modifierDictionary');
 
 const mainId = "modifier";
@@ -30,19 +30,19 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.reply({
 				embeds: [
 					new EmbedBuilder().setColor(styleColor)
+						.setAuthor(randomAuthorTip())
 						.setTitle(`${modifierName}${isNonStacking(modifierName) ? "" : ` x ${delver.modifiers[modifierName]}`}`)
 						.setDescription(getModifierDescription(modifierName, delver, adventure))
 						.addFields({ name: "Category", value: `${buff ? "Buff" : debuff ? "Debuff" : "Modifier"}` })
-						.setFooter(randomFooterTip())
 				], ephemeral: true
 			});
 		} else {
 			interaction.reply({
 				embeds: [
 					new EmbedBuilder().setColor(Colors.LightGrey)
+						.setAuthor(randomAuthorTip())
 						.setTitle("All Modifiers")
 						.setDescription(modifiersToString(delver, true, adventure))
-						.setFooter(randomFooterTip())
 				],
 				ephemeral: true
 			});
