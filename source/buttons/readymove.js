@@ -1,11 +1,11 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS } = require('../constants');
-const { getEmoji, getColor } = require('../util/elementUtil');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
-const { getGearProperty } = require('../gear/_gearDictionary');
-const { gearToEmbedField } = require('../util/embedUtil');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
+const { getGearProperty } = require('../gear/_gearDictionary');
+const { getEmoji, getColor } = require('../util/elementUtil');
+const { gearToEmbedField, randomAuthorTip } = require('../util/embedUtil');
 
 const mainId = "readymove";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -22,9 +22,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 		const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
+			.setAuthor(randomAuthorTip())
 			.setTitle("Readying a Move")
-			.setDescription(`Your ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.\n\nPick one option from below as your move for this round:`)
-			.setFooter({ text: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png" });
+			.setDescription(`Your ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.\n\nPick one option from below as your move for this round:`);
 		const enemyOptions = [];
 		const miniPredictBuilder = getArchetype(delver.archetype).miniPredict;
 		for (let i = 0; i < adventure.room.enemies.length; i++) {
