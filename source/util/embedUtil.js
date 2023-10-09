@@ -24,12 +24,12 @@ const discordTips = [
 	"Server subscriptions cost more on mobile because the mobile app stores take a cut.",
 ];
 const potlTips = [
-	"Combatants are Stunned when their Stagger reaches their Poise, they'll lose their next turn.",
+	"Combatants lose their next turn (Stun) when their Stagger reaches their Poise.",
 	"Using items has priority.",
-	"When you use gear that matches your element, it removes 1 Stagger on allies.",
-	"When you use gear that matches your element, it adds 1 Stagger on foes.",
-	"Combatant speed varies every round, which may change move order.",
-	"Damage is capped to 500 in one attack. Get Power Up to raise the cap."
+	"Gear that matches your element removes 1 Stagger on allies.",
+	"Gear that matches your element adds 1 Stagger on foes.",
+	"Combatant speed varies every round.",
+	"Damage is capped to 500 in one attack without any Power Up."
 ];
 /** @type {EmbedAuthorData} */
 const authorTipPool = potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })).concat(potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })), discordTips.map(text => ({ name: text, iconURL: DISCORD_ICON_URL })));
