@@ -41,7 +41,11 @@ module.exports = new GearTemplate("Refreshing Breeze",
 				resultTexts.push(`${target.getName(adventure.room.enemyIdMap)} is cured of ${removedDebuffs[0]}.`)
 			}
 		})
-		return resultTexts.join(" ");
+		if (resultTexts.length > 0) {
+			return resultTexts.join(" ");
+		} else {
+			return "The party had no debuffs to cure.";
+		}
 	})
 ).setTargetingTags({ target: "all", team: "delver" })
 	.setModifiers([{ name: "Stagger", stacks: 1 }])
