@@ -8,7 +8,7 @@ class LabyrinthTemplate {
 	 * @param {number[]} bossRoomDepthsInput
 	 * @param {Record<"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped", string[]} itemMap
 	 * @param {Record<"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped", Record<"Cursed" | "Common" | "Rare", string[]>>} gearMap
-	 * @param {Record<"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Forge" | "Artifact Guardian" | "Treasure" | "Empty", (string | "Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Forge" | "Artifact Guardian" | "Treasure" | "Empty")[]>} roomMap if a room category is rolled, it rolls again on that category
+	 * @param {Record<"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Forge" | "Artifact Guardian" | "Treasure" | "Empty", string[]>} roomMap if a room category is rolled, it rolls again on that category
 	 */
 	constructor(nameInput, elementInput, maxDepthInput, bossRoomDepthsInput, itemMap, gearMap, roomMap) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
