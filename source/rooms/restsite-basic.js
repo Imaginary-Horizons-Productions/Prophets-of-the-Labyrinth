@@ -2,9 +2,9 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER } = require("../constants");
 
-module.exports = new RoomTemplate("Rest Site",
+module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 	"@{adventure}",
-	"The room contains a rest site... and a mysterious challenger hanging out in the corner.",
+	"The room contains a campfire... and a mysterious challenger hanging out in the corner.",
 	[
 		new ResourceTemplate("n", "internal", "roomAction"),
 		new ResourceTemplate("2", "internal", "challenge")
