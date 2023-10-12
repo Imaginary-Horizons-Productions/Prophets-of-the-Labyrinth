@@ -2,21 +2,19 @@ const { Combatant } = require("./Combatant");
 
 class Move {
 	/**
-	 * @param {Combatant} combatant
-	 * @param {number} combatantIndex
+	 * @param {CombatantReference} userReferenceInput
 	 * @param {"gear" | "item" | "action"} typeInput
 	 * @param {boolean} isCritInput
 	 */
-	constructor(combatant, combatantIndex, typeInput, isCritInput) {
+	constructor(userReferenceInput, typeInput, isCritInput) {
+		this.userReference = userReferenceInput;
 		this.type = typeInput;
-		// DESIGN SPACE: if enemy.archetype has static speed, or is always faster than a delver, etc, put that logic here
-		this.speed = combatant.getTotalSpeed();
 		this.isCrit = isCritInput;
-		this.userReference = new CombatantReference(combatant.team, combatantIndex);
 	}
 	/** @type {string} */
 	name = null;
 	priority = 0;
+	speed = 0;
 	randomOrder = 0;
 	/** @type {CombatantReference[]} */
 	targets = [];
@@ -53,6 +51,18 @@ class Move {
 	/** @param {CombatantReference} reference */
 	addTarget(reference) {
 		this.targets.push(reference);
+		return this;
+	}
+
+	/** @param {Combatant} combatant */
+	setSpeedByCombatant(combatant) {
+		this.speed = combatant.getTotalSpeed();
+		return this;
+	}
+
+	/** @param {number} integer */
+	setSpeedByValue(integer) {
+		this.speed = integer;
 		return this;
 	}
 };
