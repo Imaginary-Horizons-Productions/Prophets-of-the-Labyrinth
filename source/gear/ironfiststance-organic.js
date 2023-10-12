@@ -20,6 +20,6 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 		return `${user.getName(adventure.room.enemyIdMap)} enters Iron Fist Stance${isCrit ? " and is Powered Up" : ""}.`;
 	}
 ).setTargetingTags({ target: "self", team: "self" })
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Iron Fist Stance", stacks: 1 }, { name: "Power Up", stacks: 25 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Iron Fist Stance", stacks: 1 }, { name: "Power Up", stacks: 25 })
 	.setBonus(45) // Punch damage boost
 	.setDurability(10);

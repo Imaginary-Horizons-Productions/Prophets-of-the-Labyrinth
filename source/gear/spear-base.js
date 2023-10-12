@@ -20,6 +20,6 @@ module.exports = new GearTemplate("Spear",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Lethal Spear", "Reactive Spear", "Sweeping Spear")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(100);

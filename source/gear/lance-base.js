@@ -23,6 +23,6 @@ module.exports = new GearTemplate("Lance",
 	})
 ).setUpgrades("Accelerating Lance", "Piercing Lance", "Vigilant Lance")
 	.setTargetingTags({ target: "single", team: "enemy" })
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75);

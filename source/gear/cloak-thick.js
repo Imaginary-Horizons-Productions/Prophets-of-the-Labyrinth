@@ -18,6 +18,6 @@ module.exports = new GearTemplate("Thick Cloak",
 	}
 ).setTargetingTags({ target: "self", team: "self" })
 	.setSidegrades("Accelerating Cloak", "Long Cloak")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Evade", stacks: 2 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Evade", stacks: 2 })
 	.setBonus(1) // Evade stacks
 	.setDurability(30);

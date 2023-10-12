@@ -23,6 +23,6 @@ module.exports = new GearTemplate("Scutum",
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
 	.setUpgrades("Guarding Scutum", "Sweeping Scutum", "Vigilant Scutum")
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setBlock(75);

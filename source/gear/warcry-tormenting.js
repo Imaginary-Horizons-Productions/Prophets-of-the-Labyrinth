@@ -38,7 +38,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 	}
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
 	.setBonus(1) // Stagger stacks
 	.setDurability(15)
 	.setPriority(1);

@@ -21,6 +21,6 @@ module.exports = new GearTemplate("Thick Barrier",
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
 	.setSidegrades("Purifiying Barrier", "Urgent Barrier")
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(10)
 	.setBlock(1000);

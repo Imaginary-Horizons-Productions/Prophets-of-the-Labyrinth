@@ -25,6 +25,6 @@ module.exports = new GearTemplate("Vigilant Scutum",
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Vigilance", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Vigilance", stacks: 1 })
 	.setDurability(15)
 	.setBlock(75);

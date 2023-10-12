@@ -18,6 +18,6 @@ module.exports = new GearTemplate("Long Vigilance Charm",
 	}
 ).setTargetingTags({ target: "self", team: "self" })
 	.setSidegrades("Devoted Vigilance Charm", "Reinforced Vigilance Charm")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Vigilance", stacks: 4 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Vigilance", stacks: 4 })
 	.setBonus(2) // Vigilance stacks
 	.setDurability(15);

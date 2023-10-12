@@ -21,6 +21,6 @@ module.exports = new GearTemplate("Soothing Floating Mist Stance",
 		return `${user.getName(adventure.room.enemyIdMap)} enters Floating Mist Stance${isCrit ? " and prepares to Evade" : ""}.`;
 	}
 ).setTargetingTags({ target: "self", team: "self" })
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Evade", stacks: 2 }, { name: "Floating Mist Stance", stacks: 1 }, { name: "Regen", stacks: 2 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Evade", stacks: 2 }, { name: "Floating Mist Stance", stacks: 1 }, { name: "Regen", stacks: 2 })
 	.setBonus(2) // Punch stagger boost
 	.setDurability(10);

@@ -21,5 +21,5 @@ module.exports = new GearTemplate("Flanking Corrosion",
 		return `${target.getName(adventure.room.enemyIdMap)} is Powered Down and Exposed.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Down", stacks: 40 }, { name: "Exposed", stacks: 2 }, { name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Down", stacks: 40 }, { name: "Exposed", stacks: 2 }, { name: "Stagger", stacks: 1 })
 	.setDurability(15);

@@ -21,6 +21,6 @@ module.exports = new GearTemplate("Floating Mist Stance",
 	}
 ).setUpgrades("Soothing Floating Mist Stance")
 	.setTargetingTags({ target: "self", team: "self" })
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Evade", stacks: 2 }, { name: "Floating Mist Stance", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Evade", stacks: 2 }, { name: "Floating Mist Stance", stacks: 1 })
 	.setBonus(2) // Punch stagger boost
 	.setDurability(10);
