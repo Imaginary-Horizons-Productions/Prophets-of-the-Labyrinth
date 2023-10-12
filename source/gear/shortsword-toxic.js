@@ -16,10 +16,11 @@ module.exports = new GearTemplate("Toxic Shortsword",
 		if (isCrit) {
 			damage *= critBonus;
 		}
+		const damageText = dealDamage([target], user, damage, false, element, adventure);
 		addModifier(user, exposed);
 		addModifier(target, poison);
 		addModifier(target, exposed);
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Poisoned. ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
+		return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Poisoned and Exposed. ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Accelerating Shortsword")
