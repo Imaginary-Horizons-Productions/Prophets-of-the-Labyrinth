@@ -29,15 +29,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		}
 		const predictFunction = getArchetype(delver.archetype).predict;
-		const [infoForNextRound, embed] = predictFunction(new EmbedBuilder().setAuthor({ name: `Room #${adventure.depth} - Round ${adventure.room.round}` }).setColor(getColor(adventure.room.element)).setFooter(randomFooterTip()), adventure);
-		let title;
-		if (infoForNextRound) {
-			title = `Predictions for Round ${adventure.room.round + 1}`;
-		} else {
-			title = `State of Round ${adventure.room.round}`;
-		}
-		embed.setTitle(title);
-		interaction.reply({ embeds: [embed], ephemeral: true })
-			.catch(console.error);
+		interaction.reply({
+			embeds: [
+				predictFunction(new EmbedBuilder().setAuthor({ name: `Room #${adventure.depth} - Round ${adventure.room.round}` }).setColor(getColor(adventure.room.element)).setFooter(randomFooterTip()), adventure)
+			],
+			ephemeral: true
+		}).catch(console.error);
 	}
 );

@@ -8,7 +8,7 @@ class ArchetypeTemplate {
 	 * @param {string} descriptionInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementLabel
 	 * @param {string[]} startingGearNames
-	 * @param {(embed: EmbedBuilder, adventure: Adventure ) => [isInfoForNextRound: boolean, embed: EmbedBuilder]} predictFunction
+	 * @param {(embed: EmbedBuilder, adventure: Adventure ) => EmbedBuilder} predictFunction
 	 * @param {(combatant) => string} miniPredictFunction
 	 */
 	constructor(nameInput, descriptionInput, elementLabel, startingGearNames, predictFunction, miniPredictFunction) {
