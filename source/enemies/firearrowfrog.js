@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	"Fire",
 	250,
 	100,
-	2,
+	"2",
 	0,
 	"random",
 	false

@@ -17,7 +17,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	"Earth",
 	99999,
 	100,
-	3,
+	"n*1.5",
 	0,
 	"Reinforcing Slam",
 	true

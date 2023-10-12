@@ -7,7 +7,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	"@{adventure}",
 	600,
 	90,
-	5,
+	"n+2",
 	0,
 	"Element Shift",
 	true

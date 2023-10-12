@@ -6,7 +6,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	"@{adventure}",
 	200,
 	90,
-	5,
+	"n+2",
 	0,
 	"Tackle",
 	false
