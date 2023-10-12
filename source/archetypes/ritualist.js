@@ -12,7 +12,7 @@ module.exports = new ArchetypeTemplate("Ritualist",
 			const modifiersText = modifiersToString(combatant, false, adventure);
 			embed.addFields({ name: combatant.getName(adventure.room.enemyIdMap), value: `${generateTextBar(combatant.hp, combatant.maxHP, 16)} ${combatant.hp}/${combatant.maxHP} HP${combatant.block ? `, ${combatant.block} Block` : ""}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
 		})
-		return [false, embed];
+		return embed.setTitle(`Ritualist Predictions for Round ${adventure.room.round}`);
 	},
 	(combatant) => {
 		return `Has Debuffs: ${Object.keys(combatant.modifiers).some(modifier => isDebuff(modifier)) ? "✅" : "🚫"}`;

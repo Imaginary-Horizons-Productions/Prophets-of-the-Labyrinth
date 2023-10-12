@@ -1,4 +1,5 @@
 const { ButtonWrapper } = require('../classes');
+const { EMPTY_MESSAGE_PAYLOAD } = require('../constants');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { renderRoom } = require('../util/embedUtil');
@@ -16,12 +17,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 				adventure.room.resources[name].count--;
 				adventure.gold -= cost;
-				if (Boolean(atTreasure)) {
+				if (atTreasure === "true") {
 					adventure.room.resources.roomAction.count--;
 				}
 				return roomMessage.edit(renderRoom(adventure, interaction.channel));
 			}).then(() => {
-				interaction.update({ components: [] });
+				interaction.update(EMPTY_MESSAGE_PAYLOAD);
 				let resultText = `${interaction.user}`;
 				if (cost > 0) {
 					resultText += ` buys a ${name} for ${cost}g`;

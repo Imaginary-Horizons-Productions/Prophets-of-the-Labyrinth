@@ -13,6 +13,7 @@ module.exports = {
 	MAX_SELECT_OPTIONS: 25,
 	MAX_EMBED_TITLE_LENGTH: 256,
 	DISCORD_ICON_URL: "https://cdn.discordapp.com/attachments/618523876187570187/1110265047516721333/discord-mark-blue.png",
+	EMPTY_MESSAGE_PAYLOAD: { content: "\u200B", embeds: [], components: [] },
 
 	// Discord Instance Constants
 	testGuildId,
