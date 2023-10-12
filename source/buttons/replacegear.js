@@ -16,7 +16,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 				adventure.room.resources[name].count--;
 				adventure.gold -= cost;
-				if (Boolean(atTreasure)) {
+				if (atTreasure === "true") {
 					adventure.room.resources.roomAction.count--;
 				}
 				return roomMessage.edit(renderRoom(adventure, interaction.channel));
