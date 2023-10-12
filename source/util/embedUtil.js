@@ -80,9 +80,8 @@ function renderRoom(adventure, thread, descriptionOverride) {
 	if (adventure.depth <= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
 		if (!Adventure.endStates.includes(adventure.state)) {
 			// Continue
-			const roomActionCount = adventure.room.resources.roomAction?.count;
 			if ("roomAction" in adventure.room.resources) {
-				roomEmbed.addFields({ name: "Room Actions", value: roomActionCount.toString() });
+				roomEmbed.addFields({ name: "Room Actions", value: adventure.room.resources.roomAction.count.toString() });
 			}
 
 			if (roomTemplate?.buildUI) {

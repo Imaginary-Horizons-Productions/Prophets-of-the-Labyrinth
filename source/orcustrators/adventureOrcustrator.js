@@ -172,7 +172,7 @@ function nextRoom(roomType, thread) {
 	}
 
 	// Initialize Resources
-	for (const { resourceType, count: unparsedCount, tier: unparsedTier, visibility, cost: unparsedCost, uiGroup } of roomTemplate.resourceList) {
+	for (const { resourceType, count: unparsedCount, tier: unparsedTier, visibility, costExpression: unparsedCostExpression, uiGroup } of roomTemplate.resourceList) {
 		const count = Math.ceil(parseExpression(unparsedCount, adventure.delvers.length));
 		switch (resourceType) {
 			case "challenge":
@@ -187,7 +187,7 @@ function nextRoom(roomType, thread) {
 						tier = rollGearTier(adventure);
 					}
 					const gearName = rollGear(tier, adventure);
-					adventure.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCost ?? "0", getGearProperty(gearName, "cost", resourceType))));
+					adventure.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCostExpression ?? "0", getGearProperty(gearName, "cost", resourceType))));
 				}
 				break;
 			case "artifact":
@@ -196,7 +196,7 @@ function nextRoom(roomType, thread) {
 				break;
 			case "item":
 				const item = rollItem(adventure);
-				adventure.addResource(item, resourceType, visibility, count, uiGroup, Math.ceil(parseExpression(unparsedCost, getItem(item).cost)));
+				adventure.addResource(item, resourceType, visibility, count, uiGroup, Math.ceil(parseExpression(unparsedCostExpression, getItem(item).cost)));
 				break;
 			case "gold":
 				// Randomize loot gold
