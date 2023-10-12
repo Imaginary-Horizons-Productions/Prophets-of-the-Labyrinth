@@ -22,6 +22,7 @@ const { ensuredPathSave } = require("../util/fileUtil");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression } = require("../util/textUtil");
+const { sumGeometricSeries } = require("../util/mathUtil");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();
@@ -99,9 +100,8 @@ const roomTypesByRarity = {
 function rollGearTier(adventure) {
 	const cloverCount = adventure.getArtifactCount("Negative-One Leaf Clover");
 	const baseUpgradeChance = 1 / 8;
-	const cloverUpgradeChance = cloverCount > 0 ? 1 - 0.80 ** cloverCount : 1;
 	const max = 144;
-	const threshold = max * baseUpgradeChance / cloverUpgradeChance;
+	const threshold = max * sumGeometricSeries(baseUpgradeChance, 1 - baseUpgradeChance, 1 + cloverCount);
 	adventure.updateArtifactStat("Negative-One Leaf Clover", "Expected Extra Rare Gear", (threshold / max) - baseUpgradeChance);
 	return adventure.generateRandomNumber(max, "general") < threshold ? "Rare" : "Common";
 }
@@ -172,7 +172,7 @@ function nextRoom(roomType, thread) {
 	}
 
 	// Initialize Resources
-	for (const { resourceType, count: unparsedCount, tier: unparsedTier, visibility, cost: unparsedCost, uiGroup } of roomTemplate.resourceList) {
+	for (const { resourceType, count: unparsedCount, tier: unparsedTier, visibility, costExpression: unparsedCostExpression, uiGroup } of roomTemplate.resourceList) {
 		const count = Math.ceil(parseExpression(unparsedCount, adventure.delvers.length));
 		switch (resourceType) {
 			case "challenge":
@@ -187,7 +187,7 @@ function nextRoom(roomType, thread) {
 						tier = rollGearTier(adventure);
 					}
 					const gearName = rollGear(tier, adventure);
-					adventure.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCost ?? "0", getGearProperty(gearName, "cost", resourceType))));
+					adventure.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCostExpression ?? "0", getGearProperty(gearName, "cost", resourceType))));
 				}
 				break;
 			case "artifact":
@@ -196,7 +196,7 @@ function nextRoom(roomType, thread) {
 				break;
 			case "item":
 				const item = rollItem(adventure);
-				adventure.addResource(item, resourceType, visibility, count, uiGroup, Math.ceil(parseExpression(unparsedCost, getItem(item).cost)));
+				adventure.addResource(item, resourceType, visibility, count, uiGroup, Math.ceil(parseExpression(unparsedCostExpression, getItem(item).cost)));
 				break;
 			case "gold":
 				// Randomize loot gold
@@ -288,14 +288,15 @@ function newRound(adventure, thread, lastRoundText) {
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
 
 				// Roll Critical Hit
-				const baseCritChance = (1 + (combatant.critBonus / 100)) * (1 / 4);
+				const baseCritChance = (1 + (combatant.critBonus / 100)) * (1 / 5);
 				const max = 144;
-				let threshold = max * baseCritChance;
-				const featherCount = adventure.getArtifactCount("Hawk Tailfeather");
-				if (featherCount > 0 && combatant.team === "delver") {
-					const featherCritChance = 1 - 0.85 ** featherCount;
-					threshold /= featherCritChance;
+				let threshold;
+				if (combatant.team === "delver") {
+					const featherCount = adventure.getArtifactCount("Hawk Tailfeather");
+					threshold = max * sumGeometricSeries(baseCritChance, 1 - baseCritChance, 1 + featherCount);
 					adventure.updateArtifactStat("Hawk Tailfeather", "Expected Extra Critical Hits", (threshold / max) - baseCritChance);
+				} else {
+					threshold = max * baseCritChance;
 				}
 				const critRoll = adventure.generateRandomNumber(max, "battle");
 				combatant.crit = critRoll < threshold;

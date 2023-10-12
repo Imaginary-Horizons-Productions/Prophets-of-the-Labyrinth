@@ -55,9 +55,9 @@ class ResourceTemplate {
 		this.count = countExpression;
 		this.visibility = visibilityInput;
 		if (visibilityInput === "loot") {
-			this.costMultiplier = 0;
+			this.costExpression = "0";
 		} else {
-			this.costMultiplier = 1;
+			this.costExpression = "n";
 		}
 		this.resourceType = resourceTypeInput;
 	}
@@ -72,9 +72,9 @@ class ResourceTemplate {
 		return this;
 	}
 
-	/** @param {number} costMultiplierInput */
-	setCostMultiplier(costMultiplierInput) {
-		this.costMultiplier = costMultiplierInput;
+	/** @param {string} costExpressionInput */
+	setCostExpression(costExpressionInput) {
+		this.costExpression = costExpressionInput;
 		return this;
 	}
 

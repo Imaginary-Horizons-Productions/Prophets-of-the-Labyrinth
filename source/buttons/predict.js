@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getColor } = require('../util/elementUtil');
-const { updateRoomHeader } = require('../util/embedUtil');
+const { updateRoomHeader, randomFooterTip } = require('../util/embedUtil');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 
 const mainId = "predict";
@@ -29,7 +29,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		}
 		const predictFunction = getArchetype(delver.archetype).predict;
-		const [infoForNextRound, embed] = predictFunction(new EmbedBuilder().setColor(getColor(adventure.room.element)).setFooter({ text: `Room #${adventure.depth} - Round ${adventure.room.round}` }), adventure);
+		const [infoForNextRound, embed] = predictFunction(new EmbedBuilder().setAuthor({ name: `Room #${adventure.depth} - Round ${adventure.room.round}` }).setColor(getColor(adventure.room.element)).setFooter(randomFooterTip()), adventure);
 		let title;
 		if (infoForNextRound) {
 			title = `Predictions for Round ${adventure.room.round + 1}`;

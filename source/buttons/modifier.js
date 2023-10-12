@@ -1,7 +1,8 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, Colors } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { modifiersToString } = require('../util/combatantUtil');
+const { randomAuthorTip } = require('../util/embedUtil');
 const { isBuff, isDebuff, getModifierDescription, isNonStacking } = require('../modifiers/_modifierDictionary');
 
 const mainId = "modifier";
@@ -20,22 +21,31 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			const debuff = isDebuff(modifierName);
 			let styleColor;
 			if (buff) {
-				styleColor = "5865f2";
+				styleColor = Colors.Blurple;
 			} else if (debuff) {
-				styleColor = "ed4245";
+				styleColor = Colors.Red;
 			} else {
-				styleColor = "4f545c";
+				styleColor = Colors.LightGrey;
 			}
-			const embed = new EmbedBuilder().setColor(styleColor)
-				.setTitle(`${modifierName}${isNonStacking(modifierName) ? "" : ` x ${delver.modifiers[modifierName]}`}`)
-				.setDescription(getModifierDescription(modifierName, delver, adventure))
-				.addFields({ name: "Category", value: `${buff ? "Buff" : debuff ? "Debuff" : "Modifier"}` });
-			interaction.reply({ embeds: [embed], ephemeral: true });
+			interaction.reply({
+				embeds: [
+					new EmbedBuilder().setColor(styleColor)
+						.setAuthor(randomAuthorTip())
+						.setTitle(`${modifierName}${isNonStacking(modifierName) ? "" : ` x ${delver.modifiers[modifierName]}`}`)
+						.setDescription(getModifierDescription(modifierName, delver, adventure))
+						.addFields({ name: "Category", value: `${buff ? "Buff" : debuff ? "Debuff" : "Modifier"}` })
+				], ephemeral: true
+			});
 		} else {
-			const embed = new EmbedBuilder().setColor("4f545c")
-				.setTitle("All Modifiers")
-				.setDescription(modifiersToString(delver, true, adventure))
-			interaction.reply({ embeds: [embed], ephemeral: true });
+			interaction.reply({
+				embeds: [
+					new EmbedBuilder().setColor(Colors.LightGrey)
+						.setAuthor(randomAuthorTip())
+						.setTitle("All Modifiers")
+						.setDescription(modifiersToString(delver, true, adventure))
+				],
+				ephemeral: true
+			});
 		}
 	}
 );
