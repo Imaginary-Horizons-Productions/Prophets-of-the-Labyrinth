@@ -11,7 +11,7 @@ module.exports = new ArchetypeTemplate("Chemist",
 			const modifiersText = modifiersToString(combatant, false, adventure);
 			embed.addFields({ name: combatant.getName(adventure.room.enemyIdMap), value: `${generateTextBar(combatant.hp, combatant.maxHP, 16)} ${combatant.hp}/${combatant.maxHP} HP${combatant.block ? `, ${combatant.block} Block` : ""}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
 		})
-		return [false, embed];
+		return embed.setTitle(`Chemist Predictions for Round ${adventure.room.round}`);
 	},
 	(combatant) => {
 		return `HP: ${combatant.hp}/${combatant.maxHP}`;

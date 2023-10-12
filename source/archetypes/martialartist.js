@@ -17,7 +17,7 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)}${isStunned ? " 💫" : ""}`, value: `Stagger: ${generateTextBar(staggerCount, combatant.poise, combatant.poise)}\nSpeed: ${combatant.getTotalSpeed()}` });
 		}
 		embed.setDescription("Combatants may act out of order if they have priority or they are tied in speed.");
-		return [true, embed];
+		return embed.setTitle(`Martial Artist Predictions for Round ${adventure.room.round + 1}`);
 	},
 	(combatant) => {
 		const staggerCount = combatant.getModifierStacks("Stagger");
