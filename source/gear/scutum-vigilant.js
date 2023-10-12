@@ -12,6 +12,7 @@ module.exports = new GearTemplate("Vigilant Scutum",
 		let { element, modifiers: [elementStagger, vigilance], block, critBonus } = module.exports;
 		if (user.element === element) {
 			removeModifier(target, elementStagger);
+			removeModifier(user, elementStagger);
 		}
 		if (isCrit) {
 			block *= critBonus;

@@ -14,6 +14,9 @@ module.exports = new GearTemplate("Sweeping Scutum",
 			block *= critBonus;
 		}
 		addBlock(user, block);
+		if (user.element === element) {
+			removeModifier(user, elementStagger);
+		}
 		targets.forEach(target => {
 			if (user.element === element) {
 				removeModifier(target, elementStagger);
