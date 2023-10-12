@@ -24,8 +24,9 @@ module.exports = new SelectWrapper(mainId, 3000,
 		// Add move to round list (overwrite exisiting readied move)
 		const userIndex = adventure.getCombatantIndex(user);
 		const [targetTeam, targetIndex] = interaction.values[0].split(SAFE_DELIMITER);
-		const newMove = new Move(user, userIndex, "gear", user.crit)
+		const newMove = new Move(new CombatantReference(user, userIndex), "gear", user.crit)
 			.setName(moveName)
+			.setSpeedByCombatant(user)
 			.setPriority(getGearProperty(moveName, "priority") ?? 0)
 			.addTarget(new CombatantReference(targetTeam, targetIndex));
 

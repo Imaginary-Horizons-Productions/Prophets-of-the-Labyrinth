@@ -1,4 +1,4 @@
-const { SelectWrapper, Move } = require('../classes');
+const { SelectWrapper, Move, CombatantReference } = require('../classes');
 const { ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { getItem } = require('../items/_itemDictionary');
 const { getAdventure, checkNextRound, endRound, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -26,7 +26,8 @@ module.exports = new SelectWrapper(mainId, 3000,
 
 		// Add move to round list (overwrite exisiting readied move)
 		const item = getItem(itemName);
-		const newMove = new Move(user, userIndex, "item", false)
+		const newMove = new Move(new CombatantReference(user, userIndex), "item", false)
+			.setSpeedByCombatant(user)
 			.setPriority(1)
 			.setName(itemName);
 
