@@ -34,7 +34,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 				}
 			}
 		})
-		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} staggered by the fierce war cry and their debuffs are duplicated.`;
+		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry and their debuffs are duplicated.`;
 	}
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")

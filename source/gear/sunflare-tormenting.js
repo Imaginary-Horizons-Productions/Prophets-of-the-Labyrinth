@@ -4,7 +4,7 @@ const { needsLivingTargets } = require('../shared/actionComponents');
 const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Tormenting Sun Flare",
-	"Inflict @{mod1Stacks} @{mod1} and duplicate its debuffs with priority",
+	"Inflict @{mod1Stacks} @{mod1} on a foe and duplicate its debuffs with priority",
 	"Also inflict @{mod2Stacks} @{mod2}",
 	"Technique",
 	"Light",
@@ -19,11 +19,13 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 		if (user.element === element) {
 			addModifier(target, elementStagger);
 		}
+		addModifier(target, stagger);
 		if (isCrit) {
 			addModifier(target, slow);
+			return `${target.getName(adventure.room.enemyIdMap)} is Staggered, their debuffs are duplicated, and they're slowed.`;
+		} else {
+			return `${target.getName(adventure.room.enemyIdMap)} is Staggered and their debuffs are duplicated.`;
 		}
-		addModifier(target, stagger);
-		return `${target.getName(adventure.room.enemyIdMap)}'s debuffs are duplicated${isCrit ? ` and is Slowed` : ""}.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Accelerating Sun Flare", "Evasive Sun Flare")

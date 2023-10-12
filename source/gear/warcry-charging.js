@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Charging War Cry",
 			}
 		});
 		addModifier(user, powerup);
-		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} staggered by the fierce war cry. ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry. ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
 	}
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Slowing War Cry", "Tormenting War Cry")
