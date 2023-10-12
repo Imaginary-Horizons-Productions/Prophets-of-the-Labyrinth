@@ -7,7 +7,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	"Water",
 	2000,
 	100,
-	4,
+	"n*2",
 	0,
 	"random",
 	true

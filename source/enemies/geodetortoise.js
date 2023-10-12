@@ -6,7 +6,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	"Earth",
 	350,
 	85,
-	5,
+	"3+n*0.5",
 	0,
 	"random",
 	false

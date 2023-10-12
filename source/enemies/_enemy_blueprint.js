@@ -4,7 +4,7 @@ module.exports = new EnemyTemplate("name",
 	"element",
 	300,
 	100,
-	3,
+	"3",
 	0,
 	"name",
 	false

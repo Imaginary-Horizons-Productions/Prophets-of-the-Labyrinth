@@ -9,17 +9,17 @@ class EnemyTemplate {
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
 	 * @param {number} maxHPInput
 	 * @param {number} speedInput
-	 * @param {number} poiseInput number of Stagger to Stun
+	 * @param {string} poiseExpressionInput expression, where n = delver count, that parses to number of Stagger to Stun
 	 * @param {number} critBonusPercent multiplicative increase to base 1/4 crit chance
 	 * @param {string} firstActionName use "random" for random move in enemy's move pool
 	 * @param {boolean} isBoss sets enemy to not randomize HP and adds 15 critBonus
 	 */
-	constructor(nameInput, elementEnum, maxHPInput, speedInput, poiseInput, critBonusPercent, firstActionName, isBoss) {
+	constructor(nameInput, elementEnum, maxHPInput, speedInput, poiseExpressionInput, critBonusPercent, firstActionName, isBoss) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!elementEnum) throw new BuildError("Falsy elementEnum");
 		if (!maxHPInput) throw new BuildError("Falsy maxHPInput");
 		if (!speedInput) throw new BuildError("Falsy speedInput");
-		if (!poiseInput) throw new BuildError("Falsy poiseInput");
+		if (!poiseExpressionInput) throw new BuildError("Falsy poiseExpression");
 		if (!isBoss && isBoss !== false) throw new BuildError("Nonfalse falsy isBoss");
 		const pendingCritBonus = critBonusPercent + (isBoss ? 15 : 0);
 		if (!pendingCritBonus && pendingCritBonus !== 0) throw new BuildError("Nonzero falsy critBonus");
@@ -29,7 +29,8 @@ class EnemyTemplate {
 		this.element = elementEnum;
 		this.maxHP = maxHPInput;
 		this.speed = speedInput;
-		this.poise = poiseInput;
+		/** @type {string} expression, where n = delver count */
+		this.poiseExpression = poiseExpressionInput;
 		this.critBonus = pendingCritBonus;
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
