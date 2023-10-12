@@ -302,7 +302,7 @@ function newRound(adventure, thread, lastRoundText) {
 				combatant.crit = critRoll < threshold;
 
 				// Roll Enemy Moves and Generate Dummy Moves
-				const move = new Move(new CombatantReference(combatant, i), "action", combatant.crit)
+				const move = new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
 					.setSpeedByCombatant(combatant);
 				if (combatant.getModifierStacks("Stun") > 0) {
 					// Dummy move for Stunned combatants

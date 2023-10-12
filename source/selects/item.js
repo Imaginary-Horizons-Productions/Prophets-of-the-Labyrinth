@@ -26,7 +26,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 
 		// Add move to round list (overwrite exisiting readied move)
 		const item = getItem(itemName);
-		const newMove = new Move(new CombatantReference(user, userIndex), "item", false)
+		const newMove = new Move(new CombatantReference(user.team, userIndex), "item", false)
 			.setSpeedByCombatant(user)
 			.setPriority(1)
 			.setName(itemName);

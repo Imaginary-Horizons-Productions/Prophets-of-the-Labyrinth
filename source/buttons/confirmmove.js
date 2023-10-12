@@ -23,7 +23,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		// Add move to round list (overwrite exisiting readied move)
 		const userIndex = adventure.getCombatantIndex(user);
-		const newMove = new Move(new CombatantReference(user, userIndex), "gear", user.crit)
+		const newMove = new Move(new CombatantReference(user.team, userIndex), "gear", user.crit)
 			.setName(moveName)
 			.setSpeedByCombatant(user)
 			.setPriority(getGearProperty(moveName, "priority") ?? 0);
