@@ -1,5 +1,5 @@
 const { SelectWrapper, Move } = require('../classes');
-const { ZERO_WIDTH_WHITESPACE } = require('../constants');
+const { EMPTY_MESSAGE_PAYLOAD } = require('../constants');
 const { getItem } = require('../items/_itemDictionary');
 const { getAdventure, checkNextRound, endRound, setAdventure } = require('../orcustrators/adventureOrcustrator');
 
@@ -17,7 +17,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			interaction.update({ content: `The party doesn't have any more ${itemName}(s) to use.`, embeds: [], components: [] });
 			return;
 		} else {
-			interaction.update({ content: ZERO_WIDTH_WHITESPACE, embeds: [], components: [] });
+			interaction.update(EMPTY_MESSAGE_PAYLOAD);
 		}
 
 		if (adventure?.room.round !== Number(round)) {
