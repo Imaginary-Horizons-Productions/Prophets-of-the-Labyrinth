@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Slowing War Cry",
 				addModifier(target, slow);
 			}
 		})
-		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} staggered and Slowed by the fierce war cry.`;
+		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered and Slowed by the fierce war cry.`;
 	}
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Charging War Cry", "Tormenting War Cry")
