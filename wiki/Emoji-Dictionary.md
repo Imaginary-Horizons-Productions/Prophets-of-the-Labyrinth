@@ -16,3 +16,6 @@ Here is a list of reserved emoji and their meanings:
 * 💎 Premium
 * 💫 Stun
 * 💥 Critical Hit
+* 🔎 Inspect Self
+* ⚔ Ready a Move
+* 🧪 Read an Item
