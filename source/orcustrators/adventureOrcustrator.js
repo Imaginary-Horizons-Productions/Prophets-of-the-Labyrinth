@@ -528,7 +528,9 @@ function endRound(adventure, thread) {
 				adventure.addResource(rollItem(adventure), "item", "loot", 1);
 			}
 
-			return thread.send(renderRoom(adventure, thread, lastRoundText));
+			return thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
+				adventure.messageIds.battleRound = message.id;
+			});
 		}
 
 		// remove Slow and Quicken

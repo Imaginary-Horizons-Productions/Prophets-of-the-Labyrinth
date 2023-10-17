@@ -21,7 +21,11 @@ module.exports = new CommandWrapper(mainId, "Regenerate the current room message
 		})
 
 		interaction.reply({ ...renderRoom(adventure, interaction.channel), fetchReply: true }).then(message => {
-			adventure.messageIds.room = message.id;
+			if (adventure.room.enemies) {
+				adventure.messageIds.battleRound = message.id;
+			} else {
+				adventure.messageIds.room = message.id;
+			}
 			setAdventure(adventure);
 		});
 	}
