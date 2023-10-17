@@ -172,7 +172,7 @@ function nextRoom(roomType, thread) {
 	}
 
 	// Initialize Resources
-	for (const { resourceType, count: unparsedCount, tier: unparsedTier, visibility, costExpression: unparsedCostExpression, uiGroup } of roomTemplate.resourceList) {
+	for (const { type: resourceType, count: unparsedCount, tier: unparsedTier, visibility, costExpression: unparsedCostExpression, uiGroup } of roomTemplate.resourceList) {
 		const count = Math.ceil(parseExpression(unparsedCount, adventure.delvers.length));
 		switch (resourceType) {
 			case "challenge":

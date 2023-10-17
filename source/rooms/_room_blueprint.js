@@ -4,6 +4,6 @@ module.exports = new RoomTemplate("name",
 	"element",
 	"description",
 	[
-		new ResourceTemplate("countExpression", "visibility", "resourceType")
+		new ResourceTemplate("countExpression", "visibility", "type")
 	]
 ).addEnemy("name", "countExpression");

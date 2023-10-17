@@ -17,12 +17,12 @@ module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 ).setBuildUI(function (adventure) {
 	if (adventure.room.resources.roomAction.count > 0) {
 		const options = [];
-		for (const { name, resourceType, count, visibility } of Object.values(adventure.room.resources)) {
+		for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 			if (visibility === "always" && count > 0) {
 				const option = { value: `${name}${SAFE_DELIMITER}${options.length}` };
 
 				option.label = `${name} x ${count}`;
-				switch (resourceType) {
+				switch (type) {
 					case "artifact":
 						option.description = getArtifact(name).dynamicDescription(count);
 						break;

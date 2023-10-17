@@ -24,7 +24,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 
 		const [name, index] = interaction.values[0].split(SAFE_DELIMITER);
 		let result;
-		const { resourceType: type, count } = adventure.room.resources[name];
+		const { type, count } = adventure.room.resources[name];
 		if (count && count > 0) { // Prevents double message if multiple players take near same time
 			switch (type) {
 				case "gold":

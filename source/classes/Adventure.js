@@ -236,19 +236,19 @@ class Adventure {
 
 	/** Initializes a resource in the room's resources if it's not already present
 	 * @param {string} nameInput Note: all names in the combined pool of gear, artifacts, items, and resources must be unique
-	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge"| "item"} resourceTypeInput
+	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge"| "item"} typeInput
 	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
 	 * @param {number} countInput
 	 * @param {string?} uiGroupInput
 	 * @param {number?} costInput
 	 */
-	addResource(nameInput, resourceTypeInput, visibilityInput, countInput, uiGroupInput, costInput) {
+	addResource(nameInput, typeInput, visibilityInput, countInput, uiGroupInput, costInput) {
 		if (nameInput in this.room.resources) {
 			this.room.resources[nameInput].count += countInput;
 		} else {
 			const resource = {
 				name: nameInput,
-				resourceType: resourceTypeInput,
+				type: typeInput,
 				visibility: visibilityInput,
 				count: countInput
 			};

@@ -16,12 +16,12 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 ).setBuildUI(function (adventure) {
 	if (adventure.room.resources.roomAction.count > 0) {
 		const options = [];
-		for (const { name, resourceType, count, visibility } of Object.values(adventure.room.resources)) {
+		for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 			if (visibility === "always" && count > 0) {
 				const option = { value: `${name}${SAFE_DELIMITER}${options.length}` };
 
 				option.label = `${name} x ${count}`;
-				switch (resourceType) {
+				switch (type) {
 					case "gear":
 						option.description = buildGearDescription(name, false);
 						break;
@@ -40,10 +40,9 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 				.setDisabled(!hasOptions)
 		)];
 	} else {
-		const pickedResource = Object.values(adventure.room.resources).find(resource => resource.count === 0 && resource.name !== "roomAction");
 		return [new ActionRowBuilder().addComponents(
 			new StringSelectMenuBuilder().setCustomId("treasure")
-				.setPlaceholder(`Picked: ${pickedResource.name}`)
+				.setPlaceholder(`Picked: ${adventure.room.state.pickedTreasure.names.join(", ")}`)
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)
 		)]

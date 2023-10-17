@@ -76,7 +76,7 @@ function clearComponents(messageId, messageManager) {
 /** @param {Adventure} adventure */
 function generateLootRow(adventure) {
 	let options = [];
-	for (const { name, resourceType: type, count, visibility } of Object.values(adventure.room.resources)) {
+	for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 		if (visibility === "loot") {
 			if (count > 0) {
 				let option = { value: `${name}${SAFE_DELIMITER}${options.length}` };

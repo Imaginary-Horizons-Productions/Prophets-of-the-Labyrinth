@@ -16,7 +16,7 @@ module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 ).setBuildUI(function (adventure) {
 	if (adventure.room.resources.roomAction.count > 0) {
 		const options = [];
-		for (const { name, resourceType, count, visibility } of Object.values(adventure.room.resources)) {
+		for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 			if (visibility === "always" && count > 0) {
 				const option = { value: `${name}${SAFE_DELIMITER}${options.length}` };
 
@@ -26,7 +26,7 @@ module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 					option.label = `${name} x ${count}`;
 				}
 
-				if (resourceType === "gear") {
+				if (type === "gear") {
 					option.description = buildGearDescription(name, false);
 				}
 				options.push(option)
