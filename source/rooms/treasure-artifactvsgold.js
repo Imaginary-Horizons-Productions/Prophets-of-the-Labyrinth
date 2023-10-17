@@ -40,12 +40,11 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gold?",
 				.setDisabled(!hasOptions)
 		)];
 	} else {
-		const pickedResource = Object.values(adventure.room.resources).find(resource => resource.count === 0 && resource.name !== "roomAction");
 		return [new ActionRowBuilder().addComponents(
 			new StringSelectMenuBuilder().setCustomId("treasure")
-				.setPlaceholder(`Picked: ${pickedResource.name}`)
+				.setPlaceholder(`Picked: ${adventure.room.state.pickedTreasure.names.join(", ")}`)
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)
-		)]
+		)];
 	}
 });

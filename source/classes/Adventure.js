@@ -304,6 +304,8 @@ class Room {
 	enemyIdMap = null;
 	/** @type {Record<string, {name: string, type: "gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge"| "item", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
 	resources = {};
+	/** @type {Record<string, object>} */
+	state = {};
 }
 
 class Enemy extends Combatant {

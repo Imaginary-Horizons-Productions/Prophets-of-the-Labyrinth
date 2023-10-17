@@ -45,6 +45,6 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 				.setPlaceholder(`Picked: ${adventure.room.state.pickedTreasure.names.join(", ")}`)
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)
-		)]
+		)];
 	}
 });
