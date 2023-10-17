@@ -309,9 +309,9 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 function gearToEmbedField(gearName, durability) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = durability === Infinity ? "∞ uses" : `${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability`;
+	const durabilityText = durability === Infinity ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability)`;
 	return {
-		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))} (${durabilityText})`,
+		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))}${durabilityText}`,
 		value: buildGearDescription(gearName, true)
 	};
 }
