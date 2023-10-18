@@ -466,8 +466,13 @@ function resolveMove(move, adventure) {
 function endRound(adventure, thread) {
 	clearComponents(adventure.messageIds.battleRound, thread.messages);
 
-	// Generate Reactive Moves by Enemies
+	const randomOrderBag = Array(adventure.room.moves.length).fill().map((_, idx) => idx) // ensure that unique values are available for each move
 	for (const move of adventure.room.moves) {
+		// Randomize speed ties
+		const rIdx = adventure.generateRandomNumber(randomOrderBag.length, "battle");
+		move.randomOrder = randomOrderBag.splice(rIdx, 1)[0]; // pull a remaining randomOrder out of the bag and assign it to a move
+
+		// Generate Reactive Moves by Enemies
 		const user = adventure.getCombatant(move.userReference);
 		if (user.archetype === "@{clone}") {
 			const counterpartMove = adventure.room.moves.find(searchedMove => searchedMove.userReference.team === "delver" && searchedMove.userReference.index == move.userReference.index);
@@ -480,12 +485,6 @@ function endRound(adventure, thread) {
 		}
 	}
 
-	// Randomize speed ties
-	const randomOrderBag = Array(adventure.room.moves.length).fill().map((_, idx) => idx) // ensure that unique values are available for each move
-	adventure.room.moves.forEach(move => {
-		const rIdx = adventure.generateRandomNumber(randomOrderBag.length, "battle");
-		move.randomOrder = randomOrderBag.splice(rIdx, 1)[0]; // pull a remaining randomOrder out of the bag and assign it to a move
-	})
 	adventure.room.moves.sort(Move.compareMoveSpeed)
 
 	// Resolve moves
