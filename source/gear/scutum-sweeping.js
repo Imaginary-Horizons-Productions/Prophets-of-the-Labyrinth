@@ -14,6 +14,9 @@ module.exports = new GearTemplate("Sweeping Scutum",
 			block *= critBonus;
 		}
 		addBlock(user, block);
+		if (user.element === element) {
+			removeModifier(user, elementStagger);
+		}
 		targets.forEach(target => {
 			if (user.element === element) {
 				removeModifier(target, elementStagger);
@@ -24,6 +27,6 @@ module.exports = new GearTemplate("Sweeping Scutum",
 	})
 ).setTargetingTags({ target: "all", team: "delver" })
 	.setSidegrades("Guarding Scutum", "Vigilant Scutum")
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setBlock(75);

@@ -11,18 +11,18 @@ module.exports = new RoomTemplate("Treasure! Gear or Items?",
 	"Two treasure boxes sit on opposite ends of a seesaw suspended above pits of molten rock. They are labled 'Gear' and 'Item Bundle' respectively, and it looks as if taking one will surely cause the other to plummet into the pit below.",
 	[
 		new ResourceTemplate("1", "internal", "roomAction"),
-		new ResourceTemplate("2", "always", "gear").setTier("?").setCostMultiplier(0),
-		new ResourceTemplate("2", "always", "item").setCostMultiplier(0)
+		new ResourceTemplate("2", "always", "gear").setTier("?").setCostExpression("0"),
+		new ResourceTemplate("2", "always", "item").setCostExpression("0")
 	]
 ).setBuildUI(function (adventure) {
 	if (adventure.room.resources.roomAction.count > 0) {
 		const options = [];
-		for (const { name, resourceType, count, visibility } of Object.values(adventure.room.resources)) {
+		for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 			if (visibility === "always" && count > 0) {
 				const option = { value: `${name}${SAFE_DELIMITER}${options.length}` };
 
 				option.label = `${name} x ${count}`;
-				switch (resourceType) {
+				switch (type) {
 					case "gear":
 						option.description = buildGearDescription(name, false);
 						break;
@@ -41,12 +41,11 @@ module.exports = new RoomTemplate("Treasure! Gear or Items?",
 				.setDisabled(!hasOptions)
 		)];
 	} else {
-		const pickedResource = Object.values(adventure.room.resources).find(resource => resource.count === 0 && resource.name !== "roomAction");
 		return [new ActionRowBuilder().addComponents(
 			new StringSelectMenuBuilder().setCustomId("treasure")
-				.setPlaceholder(`Picked: ${pickedResource.name}`)
+				.setPlaceholder(`Picked: ${adventure.room.state.pickedTreasure.names.join(", ")}`)
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)
-		)]
+		)];
 	}
 });

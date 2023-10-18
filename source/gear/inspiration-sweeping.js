@@ -21,6 +21,6 @@ module.exports = new GearTemplate("Sweeping Inspiration",
 	})
 ).setTargetingTags({ target: "all", team: "delver" })
 	.setSidegrades("Guarding Inspiration", "Soothing Inspiration")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 })
 	.setBonus(25) // Power Up stacks
 	.setDurability(10);

@@ -32,6 +32,6 @@ module.exports = new GearTemplate("Sabotage Kit",
 	})
 ).setUpgrades("Long Sabotage Kit")
 	.setTargetingTags({ target: "single", team: "enemy" })
-	.setModifiers([{ name: "Slow", stacks: 2 }, { name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 4 }])
+	.setModifiers({ name: "Slow", stacks: 2 }, { name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 4 })
 	.setDurability(15)
 	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" });

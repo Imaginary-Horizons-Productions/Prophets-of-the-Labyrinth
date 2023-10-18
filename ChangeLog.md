@@ -34,6 +34,8 @@
 - New players will now start with 3 random archetypes, if you'd like to test another archetype, contact a developer!
 - Buffed Absorb potions to 3 stacks from 1
 - Reduced Bloodtail Hawk's Rake damage from 50 to 45
+- Reduced base crit chance to 1/5
+- Hawk Tailfeather and Negative-One Leaf Clover now offer rerolls on fails
 
 ## Example Version 0.0.0:
 - Unordered item 1

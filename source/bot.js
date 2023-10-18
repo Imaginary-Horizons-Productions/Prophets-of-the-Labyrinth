@@ -74,7 +74,7 @@ client.on(Events.ClientReady, () => {
 				}
 			}
 
-			generateVersionEmbed(client.user.displayAvatarURL()).then(embed => {
+			generateVersionEmbed().then(embed => {
 				client.guilds.fetch(testGuildId).then(guild => {
 					guild.channels.fetch(announcementsChannelId).then(announcementsChannel => {
 						announcementsChannel.send({ embeds: [embed] }).then(message => {

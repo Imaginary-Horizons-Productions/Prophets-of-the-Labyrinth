@@ -15,15 +15,12 @@ module.exports = new GearTemplate("Sun Flare",
 		}
 		if (isCrit) {
 			addModifier(target, slow);
-			addModifier(target, stagger);
-			return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
-		} else {
-			addModifier(target, stagger);
-			return "";
 		}
+		addModifier(target, stagger);
+		return `${target.getName(adventure.room.enemyIdMap)} is Staggered${isCrit ? " and Slowed" : ""}.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Accelerating Sun Flare", "Evasive Sun Flare", "Tormenting Sun Flare")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 2 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 2 })
 	.setDurability(15)
 	.setPriority(1);

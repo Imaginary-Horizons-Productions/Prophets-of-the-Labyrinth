@@ -21,6 +21,6 @@ module.exports = new GearTemplate("Morning Star",
 		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75);

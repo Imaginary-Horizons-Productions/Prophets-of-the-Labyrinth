@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Reactive Warhammer",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Piercing Warhammer", "Slowing Warhammer")
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75)
 	.setBonus(75); // damage

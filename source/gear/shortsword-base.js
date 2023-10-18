@@ -16,12 +16,13 @@ module.exports = new GearTemplate("Shortsword",
 		if (isCrit) {
 			damage *= critBonus;
 		}
+		const damageText = dealDamage([target], user, damage, false, element, adventure);
 		addModifier(user, exposed);
 		addModifier(target, exposed);
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
+		return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Exposed. ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Accelerating Shortsword", "Toxic Shortsword")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Exposed", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Exposed", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75);

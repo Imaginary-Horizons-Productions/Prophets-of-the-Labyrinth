@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Bow",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Evasive Bow", "Hunter's Bow", "Mercurial Bow")
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75)
 	.setPriority(1);

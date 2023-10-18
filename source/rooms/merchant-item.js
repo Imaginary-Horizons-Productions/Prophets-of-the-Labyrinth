@@ -22,25 +22,25 @@ module.exports = new RoomTemplate("Item Merchant",
 		if (adventure.room.resources[name].count > 0) {
 			switch (uiGroup) {
 				case uiGroups[0]: // gear
-					const cost = adventure.room.resources[gearName].cost;
+					const cost = adventure.room.resources[name].cost;
 					/** @type {number} */
-					const maxDurability = getGearProperty(gearName, "maxDurability");
-					let description = buildGearDescription(gearName, false);
+					const maxDurability = getGearProperty(name, "maxDurability");
+					let description = buildGearDescription(name, false);
 					if (description.length > 100) {
 						description = description.slice(0, 99) + "…"; // Single character elipsis
 					}
 					gearOptions.push({
-						label: `${cost}g: ${gearName} (${maxDurability} uses)`,
+						label: `${cost}g: ${name} (${maxDurability} uses)`,
 						description,
-						value: `${gearName}${SAFE_DELIMITER}${i}`
+						value: `${name}${SAFE_DELIMITER}${i}`
 					});
 					break;
 				case uiGroups[1]: // items
-					const item = getItem(itemName);
+					const item = getItem(name);
 					itemOptions.push({
-						label: `${item.cost}g: ${itemName}`,
+						label: `${item.cost}g: ${name}`,
 						description: item.description,
-						value: `${itemName}${SAFE_DELIMITER}${i}`
+						value: `${name}${SAFE_DELIMITER}${i}`
 					})
 					break;
 			}

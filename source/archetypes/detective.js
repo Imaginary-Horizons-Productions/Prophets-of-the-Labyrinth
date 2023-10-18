@@ -12,7 +12,7 @@ module.exports = new ArchetypeTemplate("Detective",
 			const resistances = getResistances(combatant.element);
 			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)} ${getEmoji(combatant.element)}`, value: `Critical Hit: ${combatant.crit ? "💥" : "🚫"}\nWeaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}` });
 		});
-		return [false, embed]
+		return embed.setTitle(`Detective Predictions for Round ${adventure.room.round}`);
 	},
 	(combatant) => {
 		const weaknesses = getCombatantWeaknesses(combatant);

@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, removeModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Soothing Midas Staff",
 	"Apply @{mod1Stacks} @{mod1} and @{mod2Stacks} @{mod2} to a combatant",
@@ -12,7 +12,11 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 		let { element, modifiers: [elementStagger, curse, regen], bonus } = module.exports;
 		const pendingCurse = { ...curse, stacks: curse.stacks + (isCrit ? bonus : 0) };
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			if (target.team === user.team) {
+				removeModifier(target, elementStagger);
+			} else {
+				addModifier(target, elementStagger);
+			}
 		}
 		addModifier(target, pendingCurse);
 		addModifier(target, regen);
@@ -20,6 +24,6 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 	})
 ).setTargetingTags({ target: "single", team: "any" })
 	.setSidegrades("Accelerating Midas Staff", "Discounted Midas Staff")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Curse of Midas", stacks: 1 }, { name: "Regen", stacks: 2 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Curse of Midas", stacks: 1 }, { name: "Regen", stacks: 2 })
 	.setBonus(1) // Curse of Midas stacks
 	.setDurability(10);

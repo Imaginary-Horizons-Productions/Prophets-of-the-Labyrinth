@@ -124,8 +124,8 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {{name: string, stacks: number}[]} modifiersArray */
-	setModifiers(modifiersArray) {
+	/** @param {...{name: string, stacks: number}} modifiersArray */
+	setModifiers(...modifiersArray) {
 		this.modifiers = modifiersArray;
 		return this;
 	}

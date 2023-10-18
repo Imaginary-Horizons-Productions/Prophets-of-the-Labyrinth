@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Daggers",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Sharpened Daggers", "Sweeping Daggers", "Slowing Daggers")
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75)
 	.setCritBonus(3);

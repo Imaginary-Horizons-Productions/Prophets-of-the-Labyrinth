@@ -10,8 +10,8 @@ module.exports = new RoomTemplate("Overpriced Merchant",
 	"@{adventure}",
 	"A masked figure sits in front of a packed rack of weapons and other gear. \"Best selction around! Looking for something particular?\"",
 	[
-		new ResourceTemplate("2*n", "always", "gear").setTier("?").setCostMultiplier(1.5).setUIGroup(uiGroups[0]),
-		new ResourceTemplate("2", "always", "gear").setTier("Rare").setCostMultiplier(1.5).setUIGroup(uiGroups[1])
+		new ResourceTemplate("2*n", "always", "gear").setTier("?").setCostExpression("1.5*n").setUIGroup(uiGroups[0]),
+		new ResourceTemplate("2", "always", "gear").setTier("Rare").setCostExpression("1.5*n").setUIGroup(uiGroups[1])
 	]
 ).setBuildUI(function (adventure) {
 	const mixedGearOptions = [];

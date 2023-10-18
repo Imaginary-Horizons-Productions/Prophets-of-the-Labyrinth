@@ -1,5 +1,5 @@
 const { SelectWrapper, Move, CombatantReference } = require('../classes');
-const { SAFE_DELIMITER, ZERO_WIDTH_WHITESPACE } = require('../constants');
+const { SAFE_DELIMITER, EMPTY_MESSAGE_PAYLOAD } = require('../constants');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure, checkNextRound, endRound, setAdventure } = require('../orcustrators/adventureOrcustrator');
 
@@ -14,7 +14,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			interaction.update({ content: `You don't have a ${moveName} with durability remaining.`, components: [], embeds: [] });
 			return;
 		} else {
-			interaction.update({ content: ZERO_WIDTH_WHITESPACE, embeds: [], components: [] });
+			interaction.update(EMPTY_MESSAGE_PAYLOAD);
 		}
 
 		if (adventure?.room.round !== Number(round)) {

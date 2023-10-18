@@ -34,7 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 			})
 
-			interaction.reply({ content: `The adventure has begun (and closed to new delvers joining)! You can use \`/delver-stats\`, or \`/party-stats\` to check adventure status.`, fetchReply: true }).then(message => {
+			interaction.reply({ content: `The adventure has begun (and closed to new delvers joining)! You can use the \`/adventure\` commands to check adventure status.`, fetchReply: true }).then(message => {
 				message.pin();
 				adventure.state = "ongoing";
 				adventure.messageIds.utility = message.id;

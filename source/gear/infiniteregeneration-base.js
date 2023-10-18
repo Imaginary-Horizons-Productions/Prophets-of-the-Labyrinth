@@ -21,6 +21,6 @@ module.exports = new GearTemplate("Infinite Regeneration",
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
 	.setUpgrades("Discounted Infinite Regeneration", "Fate-Sealing Infinite Regeneration")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Regen", stacks: 3 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Regen", stacks: 3 })
 	.setHPCost(50)
 	.setDurability(10);

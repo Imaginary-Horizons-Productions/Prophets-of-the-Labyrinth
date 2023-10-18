@@ -17,5 +17,5 @@ module.exports = new GearTemplate("name",
 		return ""; // see style guide for conventions on result texts
 	}
 ).setTargetingTags({ target: "", team: "" })
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability();

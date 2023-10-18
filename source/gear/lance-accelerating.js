@@ -24,6 +24,6 @@ module.exports = new GearTemplate("Accelerating Lance",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Piercing Lance", "Vigilant Lance")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Quicken", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Quicken", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75);

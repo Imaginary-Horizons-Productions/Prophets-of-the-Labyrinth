@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Hunter's Certain Victory", "Reckless Certain Victory")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 })
 	.setDurability(15)
 	.setDamage(75)
 	.setCritBonus(3);

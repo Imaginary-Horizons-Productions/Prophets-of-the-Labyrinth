@@ -22,6 +22,6 @@ module.exports = new GearTemplate("Buckler",
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
 	.setUpgrades("Devoted Buckler", "Guarding Buckler", "Reinforced Buckler")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 })
 	.setDurability(15)
 	.setBlock(75);
