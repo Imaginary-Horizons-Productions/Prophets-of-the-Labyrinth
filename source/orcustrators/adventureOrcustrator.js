@@ -467,26 +467,18 @@ function endRound(adventure, thread) {
 	clearComponents(adventure.messageIds.battleRound, thread.messages);
 
 	// Generate Reactive Moves by Enemies
-	adventure.room.enemies.forEach((enemy, enemyIndex) => {
-		if (enemy.archetype === "@{clone}") {
-			const counterpartMove = adventure.room.moves.find(move => move.userReference.team === "delver" && move.userReference.index == enemyIndex);
-			for (const currentMove of adventure.room.moves) {
-				if (currentMove.team === "enemy" && currentMove.userReference.index === enemyIndex) {
-					currentMove.type = counterpartMove.type;
-					currentMove.setName(counterpartMove.name);
-					currentMove.targets.forEach(target => {
-						if (target.team === "enemy") {
-							target.team = "delver";
-						} else {
-							target.team = "enemy";
-						}
-					})
-				}
-				break;
-			}
+	for (const move of adventure.room.moves) {
+		const user = adventure.getCombatant(move.userReference);
+		if (user.archetype === "@{clone}") {
+			const counterpartMove = adventure.room.moves.find(searchedMove => searchedMove.userReference.team === "delver" && searchedMove.userReference.index == move.userReference.index);
+			move.type = counterpartMove.type;
+			move.setName(counterpartMove.name);
+			move.setPriority(counterpartMove.priority);
+			move.targets = counterpartMove.targets.map(target => {
+				return { team: target.team === "enemy" ? "delver" : "enemy", index: target.index };
+			})
 		}
-	});
-
+	}
 
 	// Randomize speed ties
 	const randomOrderBag = Array(adventure.room.moves.length).fill().map((_, idx) => idx) // ensure that unique values are available for each move
