@@ -21,6 +21,6 @@ module.exports = new GearTemplate("Sharpened Sickle",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Hunter's Sickle", "Toxic Sickle")
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(125);

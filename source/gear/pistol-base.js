@@ -24,6 +24,6 @@ module.exports = new GearTemplate("Pistol",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Double Pistol", "Duelist's Pistol")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 30 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 30 })
 	.setDurability(15)
 	.setDamage(75);

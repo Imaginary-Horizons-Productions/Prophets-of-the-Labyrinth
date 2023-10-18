@@ -29,6 +29,6 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Accelerating Sun Flare", "Evasive Sun Flare")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 2 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 2 })
 	.setDurability(15)
 	.setPriority(1);

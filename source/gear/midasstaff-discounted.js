@@ -23,6 +23,6 @@ module.exports = new GearTemplate("Discounted Midas Staff",
 	})
 ).setTargetingTags({ target: "single", team: "any" })
 	.setSidegrades("Accelerating Midas Staff", "Soothing Midas Staff")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Curse of Midas", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Curse of Midas", stacks: 1 })
 	.setBonus(1) // Curse of Midas stacks
 	.setDurability(10);

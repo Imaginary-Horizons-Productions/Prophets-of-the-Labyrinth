@@ -15,7 +15,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const options = [];
 		Object.values(adventure.room.resources).forEach(resource => {
-			if (resource.resourceType === "challenge") {
+			if (resource.type === "challenge") {
 				const challengeName = resource.name;
 				const challenge = getChallenge(challengeName);
 				options.push({ label: challengeName, description: challenge.dynamicDescription(challenge.intensity, challenge.duration, challenge.reward), value: challengeName });

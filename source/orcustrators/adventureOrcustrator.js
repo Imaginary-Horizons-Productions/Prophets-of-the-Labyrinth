@@ -172,7 +172,7 @@ function nextRoom(roomType, thread) {
 	}
 
 	// Initialize Resources
-	for (const { resourceType, count: unparsedCount, tier: unparsedTier, visibility, costExpression: unparsedCostExpression, uiGroup } of roomTemplate.resourceList) {
+	for (const { type: resourceType, count: unparsedCount, tier: unparsedTier, visibility, costExpression: unparsedCostExpression, uiGroup } of roomTemplate.resourceList) {
 		const count = Math.ceil(parseExpression(unparsedCount, adventure.delvers.length));
 		switch (resourceType) {
 			case "challenge":
@@ -467,34 +467,25 @@ function resolveMove(move, adventure) {
 function endRound(adventure, thread) {
 	clearComponents(adventure.messageIds.battleRound, thread.messages);
 
-	// Generate Reactive Moves by Enemies
-	adventure.room.enemies.forEach((enemy, enemyIndex) => {
-		if (enemy.archetype === "@{clone}") {
-			const counterpartMove = adventure.room.moves.find(move => move.userReference.team === "delver" && move.userReference.index == enemyIndex);
-			for (const currentMove of adventure.room.moves) {
-				if (currentMove.team === "enemy" && currentMove.userReference.index === enemyIndex) {
-					currentMove.type = counterpartMove.type;
-					currentMove.setName(counterpartMove.name);
-					currentMove.targets.forEach(target => {
-						if (target.team === "enemy") {
-							target.team = "delver";
-						} else {
-							target.team = "enemy";
-						}
-					})
-				}
-				break;
-			}
-		}
-	});
-
-
-	// Randomize speed ties
 	const randomOrderBag = Array(adventure.room.moves.length).fill().map((_, idx) => idx) // ensure that unique values are available for each move
-	adventure.room.moves.forEach(move => {
+	for (const move of adventure.room.moves) {
+		// Randomize speed ties
 		const rIdx = adventure.generateRandomNumber(randomOrderBag.length, "battle");
 		move.randomOrder = randomOrderBag.splice(rIdx, 1)[0]; // pull a remaining randomOrder out of the bag and assign it to a move
-	})
+
+		// Generate Reactive Moves by Enemies
+		const user = adventure.getCombatant(move.userReference);
+		if (user.archetype === "@{clone}") {
+			const counterpartMove = adventure.room.moves.find(searchedMove => searchedMove.userReference.team === "delver" && searchedMove.userReference.index == move.userReference.index);
+			move.type = counterpartMove.type;
+			move.setName(counterpartMove.name);
+			move.setPriority(counterpartMove.priority);
+			move.targets = counterpartMove.targets.map(target => {
+				return { team: target.team === "enemy" ? "delver" : "enemy", index: target.index };
+			})
+		}
+	}
+
 	adventure.room.moves.sort(Move.compareMoveSpeed)
 
 	// Resolve moves
@@ -529,7 +520,9 @@ function endRound(adventure, thread) {
 				adventure.addResource(rollItem(adventure), "item", "loot", 1);
 			}
 
-			return thread.send(renderRoom(adventure, thread, lastRoundText));
+			return thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
+				adventure.messageIds.battleRound = message.id;
+			});
 		}
 
 		// remove Slow and Quicken

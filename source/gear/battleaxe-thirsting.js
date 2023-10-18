@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Prideful Battleaxe", "Thick Battleaxe")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Exposed", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Exposed", stacks: 1 })
 	.setDurability(15)
 	.setDamage(125)
 	.setHealing(60);

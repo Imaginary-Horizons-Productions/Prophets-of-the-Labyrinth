@@ -92,6 +92,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
 			if (hasEnemies && !isCombatVictory) {
 				components.push(new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId("inspectself")
+						.setEmoji("🔎")
 						.setLabel("Inspect Self")
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder().setCustomId("predict")
@@ -99,9 +100,11 @@ function renderRoom(adventure, thread, descriptionOverride) {
 						.setLabel("Predict")
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder().setCustomId("readymove")
+						.setEmoji("⚔")
 						.setLabel("Ready a Move")
 						.setStyle(ButtonStyle.Primary),
 					new ButtonBuilder().setCustomId("readyitem")
+						.setEmoji("🧪")
 						.setLabel("Ready an Item")
 						.setStyle(ButtonStyle.Primary)
 						.setDisabled(!Object.values(adventure.items).some(quantity => quantity > 0))
@@ -306,9 +309,9 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 function gearToEmbedField(gearName, durability) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = durability === Infinity ? "∞ uses" : `${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability`;
+	const durabilityText = durability === Infinity ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability)`;
 	return {
-		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))} (${durabilityText})`,
+		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))}${durabilityText}`,
 		value: buildGearDescription(gearName, true)
 	};
 }

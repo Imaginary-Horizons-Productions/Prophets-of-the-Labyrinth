@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Flanking Life Drain",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Reactive Life Drain", "Urgent Life Drain")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Exposed", stacks: 2 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Exposed", stacks: 2 })
 	.setDurability(15)
 	.setDamage(75)
 	.setHealing(25);

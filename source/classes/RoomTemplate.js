@@ -45,12 +45,12 @@ class ResourceTemplate {
 	/** This read-only data class that defines resources available for placement in rooms
 	 * @param {string} countExpression
 	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
-	 * @param {"gear" | "artifact" | "gold" | "roomAction" | "challenge" | "item" | string} resourceTypeInput categories (eg "item", "gear") are random rolls, specific names allowed
+	 * @param {"gear" | "artifact" | "gold" | "roomAction" | "challenge" | "item" | string} typeInput categories (eg "item", "gear") are random rolls, specific names allowed
 	 */
-	constructor(countExpression, visibilityInput, resourceTypeInput) {
+	constructor(countExpression, visibilityInput, typeInput) {
 		if (!countExpression) throw new BuildError("Falsy countExpression");
 		if (!visibilityInput) throw new BuildError("Falsy visibilityInput");
-		if (!resourceTypeInput) throw new BuildError("Falsy resourceTypeInput");
+		if (!typeInput) throw new BuildError("Falsy typeInput");
 
 		this.count = countExpression;
 		this.visibility = visibilityInput;
@@ -59,7 +59,7 @@ class ResourceTemplate {
 		} else {
 			this.costExpression = "n";
 		}
-		this.resourceType = resourceTypeInput;
+		this.type = typeInput;
 	}
 	/** @type {"Cursed" | "Common" | "Rare" | "?"} */
 	tier = null;

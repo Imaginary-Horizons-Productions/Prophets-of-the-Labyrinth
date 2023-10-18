@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Hunter's Sickle",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Sharpened Sickle", "Toxic Sickle")
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75)
 	.setBonus(15); // gold

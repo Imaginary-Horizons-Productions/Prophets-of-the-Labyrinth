@@ -21,5 +21,5 @@ module.exports = new GearTemplate("Corrosion",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Flanking Corrosion")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Power Down", stacks: 40 }, { name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Down", stacks: 40 }, { name: "Stagger", stacks: 1 })
 	.setDurability(15);

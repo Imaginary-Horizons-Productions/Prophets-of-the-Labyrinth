@@ -1,4 +1,4 @@
-const { GearTemplate, Resource } = require('../classes');
+const { GearTemplate } = require('../classes');
 const { removeModifier } = require('../util/combatantUtil');
 
 const rollablePotions = [
@@ -36,7 +36,7 @@ module.exports = new GearTemplate("Urgent Potion Kit",
 	}
 ).setTargetingTags({ target: "none", team: "none" })
 	.setSidegrades("Organic Potion Kit", "Reinforced Potion Kit")
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
+	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setPriority(1)
 	.setFlavorText({ name: "Possible Potions", value: rollablePotions.join(", ") });

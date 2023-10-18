@@ -14,7 +14,7 @@ const subcommands = [
 	},
 	{
 		name: "inspect-self",
-		description: "Get your adventure-specific stats"
+		description: "🔎 Get your adventure-specific stats"
 	}
 ];
 module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000, options, subcommands,

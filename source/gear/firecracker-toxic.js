@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Toxic Firecracker",
 	})
 ).setTargetingTags({ target: `random${SAFE_DELIMITER}3`, team: "enemy" })
 	.setSidegrades("Double Firecracker", "Mercurial Firecracker")
-	.setModifiers([{ name: "Stagger", stacks: 1 }, { name: "Poison", stacks: 3 }])
+	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Poison", stacks: 3 })
 	.setDurability(15)
 	.setCritBonus(2)
 	.setDamage(50);
