@@ -6,7 +6,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	"@{adventureOpposite}",
 	200,
 	90,
-	5,
+	"n+2",
 	0,
 	"Goop Spray",
 	false

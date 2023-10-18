@@ -192,10 +192,10 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		}
 	},
 	{
-		"Event": ["Twin Pedestals", "Elemental Research", "Free Gold?", "Health Redistribution", "The Score Beggar", "Repair Kit, just hanging out", "Abandoned Forge", "Gear Merchant", "Item Merchant", "Overpriced Merchant", "Rest Site", "Treasure! Artifact or Gear?"],
+		"Event": ["Twin Pedestals", "Elemental Research", "Free Gold?", "Health Redistribution", "The Score Beggar", "Repair Kit, just hanging out", "Forge", "Merchant", "Rest Site", "Treasure"],
 		"Battle": ["Hawk Fight", "Frog Fight", "Mechabee Fight", "Slime Fight", "Tortoise Fight"],
 		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
-		"Rest Site": ["Rest Site"],
+		"Rest Site": ["Rest Site: Mysterious Challenger"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors", "The Hexagon"],
 		"Forge": ["Abandoned Forge"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],

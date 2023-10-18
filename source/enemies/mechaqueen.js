@@ -20,7 +20,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	"Darkness",
 	500,
 	100,
-	4,
+	"n+1",
 	0,
 	"a random protocol",
 	true

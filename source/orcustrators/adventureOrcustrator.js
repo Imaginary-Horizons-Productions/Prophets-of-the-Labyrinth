@@ -60,7 +60,7 @@ async function loadAdventures() {
 					if (adventure.room.moves) {
 						let castMoves = [];
 						for (let move of adventure.room.moves) {
-							castMoves.push(Object.assign(new Move({ getTotalSpeed: () => move.speed }), move));
+							castMoves.push(Object.assign(new Move(), move));
 						}
 						adventure.room.moves = castMoves;
 					}
@@ -302,7 +302,8 @@ function newRound(adventure, thread, lastRoundText) {
 				combatant.crit = critRoll < threshold;
 
 				// Roll Enemy Moves and Generate Dummy Moves
-				const move = new Move(combatant, i, "action", combatant.crit)
+				const move = new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
+					.setSpeedByCombatant(combatant);
 				if (combatant.getModifierStacks("Stun") > 0) {
 					// Dummy move for Stunned combatants
 					move.setName("Stun");

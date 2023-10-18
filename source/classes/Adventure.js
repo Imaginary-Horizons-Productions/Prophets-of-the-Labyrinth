@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const { MAX_MESSAGE_ACTION_ROWS } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
+const { parseExpression } = require("../util/textUtil.js");
 
 class Adventure {
 	/** NOTE: The setters in this class are require for a well formed entity. Currently procrastinating on refactoring /delve to fix that.
@@ -313,18 +314,21 @@ class Enemy extends Combatant {
 	 * @param {string} nameInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
 	 * @param {number} speedInput
-	 * @param {number} poiseInput
+	 * @param {number} poiseExpression
 	 * @param {number} critBonusInput
 	 * @param {string} firstActionName
 	 * @param {{[modifierName]: number}} startingModifiersShallowCopy
+	 * @param {number} delverCount
 	 */
-	constructor(nameInput, elementEnum, speedInput, poiseInput, critBonusInput, firstActionName, startingModifiersShallowCopy) {
+	constructor(nameInput, elementEnum, speedInput, poiseExpression, critBonusInput, firstActionName, startingModifiersShallowCopy, delverCount) {
 		super(nameInput, "enemy");
 		this.archetype = nameInput;
 		/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
 		this.element = elementEnum;
 		this.speed = speedInput;
-		this.poise = poiseInput;
+		if (poiseExpression && delverCount) { // allows parameterless class casting on load without crashing
+			this.poise = parseExpression(poiseExpression, delverCount);
+		}
 		this.critBonus = critBonusInput;
 		this.nextAction = firstActionName;
 		this.modifiers = startingModifiersShallowCopy;
