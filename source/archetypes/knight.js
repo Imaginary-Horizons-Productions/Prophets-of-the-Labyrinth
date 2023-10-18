@@ -1,7 +1,7 @@
 const { ArchetypeTemplate } = require("../classes");
 
 module.exports = new ArchetypeTemplate("Knight",
-	"Able to predict which allies enemies are targeting with which moves, the Knight excels at efficiently mitigating damage.",
+	"They'll be able to predict who enemies are targeting with which moves. They'll gain Power Up for protecting allies with their Buckler too.",
 	"Earth",
 	["Lance", "Buckler"],
 	(embed, adventure) => {

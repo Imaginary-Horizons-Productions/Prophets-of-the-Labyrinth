@@ -1,5 +1,5 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { SelectWrapper } = require('../classes');
+const { EMPTY_MESSAGE_PAYLOAD } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
@@ -22,13 +22,8 @@ module.exports = new SelectWrapper(mainId, 3000,
 			setAdventure(adventure);
 
 			// Send confirmation text
-			interaction.update({
-				content: archetypeTemplate.description,
-				components: [new ActionRowBuilder().addComponents(
-					new StringSelectMenuBuilder(interaction.component.data).setPlaceholder("Pick a different archetype...")
-				)]
-			});
-			interaction.channel.send(`${interaction.user} ${isSwitching ? "has switched to" : "will be playing as"} ${archetype}.`);
+			interaction.update(EMPTY_MESSAGE_PAYLOAD);
+			interaction.channel.send(`**${interaction.user.displayName}** ${isSwitching ? "has switched to" : "will be playing as"} **${archetype}**. ${archetypeTemplate.description}`);
 		} else {
 			interaction.reply({ content: "A valid adventure could not be found.", ephemeral: true });
 		}

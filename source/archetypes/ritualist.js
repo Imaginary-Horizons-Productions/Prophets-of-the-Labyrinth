@@ -4,7 +4,7 @@ const { modifiersToString } = require("../util/combatantUtil");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Ritualist",
-	"Able to divine the health and state of all combatants, the Ritualist punishes foes that dare play against destiny.",
+	"They'll be able to assess combatant modifiers and hp levels. They'll also be able to inflict great harm on foes suffering debuffs with their Censer.",
 	"Fire",
 	["Censer", "Corrosion"],
 	(embed, adventure) => {

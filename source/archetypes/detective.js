@@ -3,7 +3,7 @@ const { getCombatantWeaknesses } = require("../util/combatantUtil");
 const { getEmoji, getResistances } = require("../util/elementUtil");
 
 module.exports = new ArchetypeTemplate("Detective",
-	"Adept at analyzing then seizing upon elementary weaknesses of foes, the Detective can even induce weaknesses on foes with their Sabotage Kit.",
+	"They'll be able to predict which combatants will critically hit and assess combatant elemental affinities and even induce weaknesses on foes with their Sabotage Kit.",
 	"Earth",
 	["Pistol", "Sabotage Kit"],
 	(embed, adventure) => {
