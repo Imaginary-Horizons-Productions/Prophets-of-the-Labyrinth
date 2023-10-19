@@ -14,7 +14,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		adventure.lives++;
-		adventure.accumulatedScore -= 50;
+		adventure.score -= 50;
 		updateRoomHeader(adventure, interaction.message);
 		const updatedUI = editButtons(interaction.message.components, { [interaction.customId]: { preventUse: true, label: "-50 score, +1 life", emoji: "✔️" } });
 		interaction.update({ components: updatedUI }).then(() => {
