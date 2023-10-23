@@ -1,7 +1,7 @@
 const { ArchetypeTemplate } = require("../classes");
 
 module.exports = new ArchetypeTemplate("Legionnaire",
-	"Able to predict the moves and targets of enemies, the Legionnaire excels at controlling the flow of combat.",
+	"They'll be able to predict who enemies are targeting with which moves. They'll be able to coodinate for big damage by inflicting Exposed on foes with their Shortsword.",
 	"Fire",
 	["Shortsword", "Scutum"],
 	(embed, adventure) => {

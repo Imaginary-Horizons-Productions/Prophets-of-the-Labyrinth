@@ -45,7 +45,7 @@ class Adventure {
 	finalBoss = "";
 	/** @type {string[]} */
 	artifactGuardians = [];
-	accumulatedScore = 0;
+	score = 0;
 	depth = 1;
 	/** @type {Room} */
 	room = {};
@@ -113,6 +113,17 @@ class Adventure {
 			const roll = parseInt(this.rnTable.slice(start, end), 12);
 			return Math.floor(roll / sectionLength);
 		}
+	}
+
+	/** Calculates the adventure's score without end of run multipliers */
+	getBaseScore() {
+		const livesScore = this.lives * 10;
+		const goldScore = Math.floor(Math.log10(this.peakGold)) * 5;
+		return {
+			livesScore,
+			goldScore,
+			total: this.score + this.depth + livesScore + goldScore
+		};
 	}
 
 	/** Get an array with Untyped and all elements in the party

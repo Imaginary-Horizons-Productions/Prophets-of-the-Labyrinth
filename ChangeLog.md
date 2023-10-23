@@ -36,6 +36,7 @@
 - Reduced Bloodtail Hawk's Rake damage from 50 to 45
 - Reduced base crit chance to 1/5
 - Hawk Tailfeather and Negative-One Leaf Clover now offer rerolls on fails
+- Score for gold, lives, depth, and bonus update live; added score to `/adventure party-stats`
 
 ## Example Version 0.0.0:
 - Unordered item 1
