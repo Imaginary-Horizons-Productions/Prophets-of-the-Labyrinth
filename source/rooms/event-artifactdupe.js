@@ -6,7 +6,7 @@ module.exports = new RoomTemplate("Twin Pedestals",
 	"@{adventure}",
 	"There are two identical pedestals in this room. If you place an artifact on one, it'll duplicate onto the other.",
 	[
-		new ResourceTemplate("roomAction", "1", "internal")
+		new ResourceTemplate("1", "internal", "roomAction")
 	]
 ).setBuildUI(
 	function (adventure) {
