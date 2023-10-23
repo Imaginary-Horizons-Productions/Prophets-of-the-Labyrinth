@@ -143,7 +143,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
  * @param {string} guildId
  */
 function addScoreField(embed, adventure, guildId) {
-	let finalScore = adventure.getBaseScore();
+	let { livesScore, goldScore, total: finalScore } = adventure.getBaseScore();
 	let challengeMultiplier = 1;
 	Object.keys(adventure.challenges).forEach(challengeName => {
 		const challenge = getChallenge(challengeName);
@@ -233,7 +233,7 @@ function generateScoreline(stackType, label, value) {
  * @returns {string} text to put in the author name field of a room embed
  */
 function roomHeaderString(adventure) {
-	return `Lives: ${adventure.lives} - Party Gold: ${adventure.gold} - Score: ${adventure.getBaseScore()}`;
+	return `Lives: ${adventure.lives} - Party Gold: ${adventure.gold} - Score: ${adventure.getBaseScore().total}`;
 }
 
 /** The room header goes in the embed's author field and should contain information about the party's commonly used or important resources

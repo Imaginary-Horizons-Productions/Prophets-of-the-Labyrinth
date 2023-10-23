@@ -118,7 +118,11 @@ class Adventure {
 	getBaseScore() {
 		const livesScore = this.lives * 10;
 		const goldScore = Math.floor(Math.log10(this.peakGold)) * 5;
-		return this.score + this.depth + livesScore + goldScore;
+		return {
+			livesScore,
+			goldScore,
+			total: this.score + this.depth + livesScore + goldScore
+		};
 	}
 
 	/** Get an array with Untyped and all elements in the party

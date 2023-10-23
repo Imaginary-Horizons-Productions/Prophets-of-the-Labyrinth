@@ -37,7 +37,7 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.S
 				const embed = new EmbedBuilder().setColor(getColor(adventure.element))
 					.setAuthor(randomAuthorTip())
 					.setTitle(`Party Stats - ${adventure.name}`)
-					.setDescription(`Depth: ${adventure.depth}\nScore: ${adventure.getBaseScore()}`)
+					.setDescription(`Depth: ${adventure.depth}\nScore: ${adventure.getBaseScore().total}`)
 					.addFields([
 						{ name: `${adventure.lives} Lives Remaining`, value: "When a player runs out of HP, a life will be lost and they'll be returned to max HP. When all lives are lost, the adventure will end." },
 						{ name: `${adventure.gold} Gold`, value: "Gold is exchanged for goods and services within adventures. Gold *will be lost when an adventure ends*." },
