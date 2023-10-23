@@ -91,9 +91,8 @@ function setAdventure(adventure) {
 /** @type {Record<number, string[]>} key = weight, value = roomTag[] */
 const roomTypesByRarity = {
 	1: ["Treasure"],
-	3: ["Artifact Guardian"],
-	5: ["Forge", "Rest Site", "Merchant"],
-	10: ["Battle", "Event"]
+	5: ["Forge", "Rest Site", "Merchant", "Artifact Guardian"],
+	13: ["Battle", "Event"]
 };
 
 /** @param {Adventure} adventure */

@@ -2,6 +2,7 @@
 ## Prophets of the Labyrinth Version 0.13.0:
 - Combined Barrier and Vigilance Charm
 - Some enemies's poise now scales with party size
+- Tweaked room rarities, largely to make Battles and Events more common
 ## Prophets of the Labyrinth Version 0.12.0:
 - Reintroduced Light and Darkness elements
 - Reworked Martial Artist starting gear
