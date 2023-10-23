@@ -9,7 +9,6 @@ const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
 const { isBuff, isDebuff, isNonStacking } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
