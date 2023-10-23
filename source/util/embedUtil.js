@@ -77,9 +77,21 @@ function renderRoom(adventure, thread, descriptionOverride) {
 	}
 	let components = [];
 
-	if (adventure.depth <= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
-		if (!Adventure.endStates.includes(adventure.state)) {
-			// Continue
+	switch (adventure.state) {
+		case "defeat":
+		case "giveup":
+			addScoreField(roomEmbed, adventure, thread.guildId);
+			components = [];
+			break;
+		case "success":
+			addScoreField(roomEmbed, adventure, thread.guildId);
+			components = [new ActionRowBuilder().addComponents(
+				new ButtonBuilder().setCustomId("viewcollectartifact")
+					.setLabel("Collect Artifact")
+					.setStyle(ButtonStyle.Success)
+			)];
+			break;
+		default:
 			if ("roomAction" in adventure.room.resources) {
 				roomEmbed.addFields({ name: "Room Actions", value: adventure.room.resources.roomAction.count.toString() });
 			}
@@ -116,20 +128,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
 				roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
 				components.push(generateRoutingRow(adventure));
 			}
-		} else {
-			// Defeat
-			addScoreField(roomEmbed, adventure, thread.guildId);
-			components = [];
-
-		}
-	} else {
-		// Victory
-		addScoreField(roomEmbed, adventure, thread.guildId);
-		components = [new ActionRowBuilder().addComponents(
-			new ButtonBuilder().setCustomId("viewcollectartifact")
-				.setLabel("Collect Artifact")
-				.setStyle(ButtonStyle.Success)
-		)];
+			break;
 	}
 	return {
 		embeds: [roomEmbed],
