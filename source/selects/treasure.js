@@ -9,7 +9,7 @@ const mainId = "treasure";
 module.exports = new SelectWrapper(mainId, 2000,
 	/** End of combat loot or treasure room picks; decrement a room action in treasure rooms */
 	(interaction, [source]) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
 			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });

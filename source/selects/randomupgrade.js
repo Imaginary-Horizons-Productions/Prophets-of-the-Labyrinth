@@ -8,7 +8,7 @@ const mainId = "randomupgrade";
 module.exports = new SelectWrapper(mainId, 3000,
 	/** Randomly select an upgrade for a given piece of gear */
 	(interaction, args) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		if (adventure.room.resources.roomAction.count < 1) {
 			interaction.reply({ content: "The forge's supplies have been exhausted.", ephemeral: true });
 			return;

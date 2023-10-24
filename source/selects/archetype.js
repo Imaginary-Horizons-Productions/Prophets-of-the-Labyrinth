@@ -8,7 +8,7 @@ const mainId = "archetype";
 module.exports = new SelectWrapper(mainId, 3000,
 	/** Add the player's delver object to the adventure */
 	(interaction, args) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		if (adventure?.state === "config") {
 			// Add delver to list (or overwrite)
 			const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);

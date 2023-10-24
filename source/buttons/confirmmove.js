@@ -7,7 +7,7 @@ const mainId = "confirmmove";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Add move object to adventure */
 	async (interaction, [moveName, round, index]) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		const user = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!(user?.gear.some(gear => gear.name === moveName && gear.durability > 0))) {
 			interaction.update({ content: `You don't have a ${moveName} with remaining durability.`, embeds: [], components: [] })

@@ -9,7 +9,7 @@ const mainId = "modifier";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Provide details about the given modifier */
 	(interaction, [modifierName]) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		if (!adventure) {
 			interaction.reply({ content: "This adventure is no longer active.", ephemeral: true });
 			return;

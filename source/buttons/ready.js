@@ -5,7 +5,7 @@ const mainId = "ready";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** check if the delver is ready to start the adventure */
 	(interaction, args) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
 			interaction.reply({ content: "You can join this adventure with the button outside the thread.", ephemeral: true });

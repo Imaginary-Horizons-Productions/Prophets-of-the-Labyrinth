@@ -7,7 +7,7 @@ const mainId = "rest";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Restore healPercent max hp to the user */
 	(interaction, [healPercent]) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id == interaction.user.id);
 		if (!delver) {
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });

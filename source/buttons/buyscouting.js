@@ -9,7 +9,7 @@ const mainId = "buyscouting";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Set flags for party scouting and remove gold from party inventory */
 	(interaction, [type]) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		if (!adventure?.delvers.some(delver => delver.id == interaction.user.id)) {
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;

@@ -8,7 +8,7 @@ const mainId = "replacegear";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Replace the delver's gear at the given index with the given gear */
 	(interaction, [name, index, source]) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		const { count, cost } = adventure.room.resources[name];
 		if (count > 0) {
 			const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
