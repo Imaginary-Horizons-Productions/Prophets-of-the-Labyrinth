@@ -19,18 +19,18 @@ module.exports = new SelectWrapper(mainId, 3000,
 		const [name, index] = interaction.values[0].split(SAFE_DELIMITER);
 		let result;
 		const { type, count } = adventure.room.resources[name];
-		if (count && count > 0) { // Prevents double message if multiple players take near same time
+		if (count > 0) { // Prevents double message if multiple players take near same time
 			switch (type) {
 				case "gold":
 					adventure.gainGold(count);
-					adventure.room.resources.gold = 0;
+					adventure.room.resources.gold.count = 0;
 					result = {
 						content: `The party acquires ${count} gold.`
 					}
 					break;
 				case "artifact":
 					adventure.gainArtifact(name, count);
-					adventure.room.resources[name] = 0;
+					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${name} x ${count}.`
 					}
@@ -60,7 +60,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 					} else {
 						adventure.items[name] = count;
 					}
-					adventure.room.resources[name] = 0;
+					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${name} x ${count}.`
 					}
