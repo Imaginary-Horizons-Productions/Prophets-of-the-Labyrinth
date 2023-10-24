@@ -30,7 +30,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				} else {
 					let replaceUI = [new ActionRowBuilder().addComponents(
 						delver.gear.map((gear, index) => {
-							return new ButtonBuilder().setCustomId(`replacegear${SAFE_DELIMITER}${name}${SAFE_DELIMITER}${index}${SAFE_DELIMITER}false`)
+							return new ButtonBuilder().setCustomId(`replacegear${SAFE_DELIMITER}${name}${SAFE_DELIMITER}${index}${SAFE_DELIMITER}merchant`)
 								.setLabel(`Discard ${gear.name}`)
 								.setStyle(ButtonStyle.Secondary)
 						})

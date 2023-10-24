@@ -7,7 +7,7 @@ const { renderRoom } = require('../util/embedUtil');
 const mainId = "replacegear";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Replace the delver's gear at the given index with the given gear */
-	(interaction, [name, index, atTreasure]) => {
+	(interaction, [name, index, source]) => {
 		const adventure = getAdventure(interaction.channel.id);
 		const { count, cost } = adventure.room.resources[name];
 		if (count > 0) {
@@ -17,7 +17,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 				adventure.room.resources[name].count--;
 				adventure.gold -= cost;
-				if (atTreasure === "true") {
+				if (source === "treasure") {
 					adventure.room.resources.roomAction.count--;
 				}
 				return roomMessage.edit(renderRoom(adventure, interaction.channel));

@@ -98,12 +98,12 @@ function generateLootRow(adventure) {
 	}
 	if (options.length > 0) {
 		return new ActionRowBuilder().addComponents(
-			new StringSelectMenuBuilder().setCustomId("loot")
+			new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}loot`)
 				.setPlaceholder("Take some of the spoils of combat...")
 				.setOptions(options))
 	} else {
 		return new ActionRowBuilder().addComponents(
-			new StringSelectMenuBuilder().setCustomId("loot")
+			new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}loot`)
 				.setPlaceholder("No loot")
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)
