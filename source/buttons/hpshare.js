@@ -8,7 +8,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	/** Take hp from user, give to party members */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
-		const delver = adventure?.delvers.find(delver => delver.id == interaction.user.id);
+		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;

@@ -475,7 +475,7 @@ function endRound(adventure, thread) {
 		// Generate Reactive Moves by Enemies
 		const user = adventure.getCombatant(move.userReference);
 		if (user.archetype === "@{clone}") {
-			const counterpartMove = adventure.room.moves.find(searchedMove => searchedMove.userReference.team === "delver" && searchedMove.userReference.index == move.userReference.index);
+			const counterpartMove = adventure.room.moves.find(searchedMove => searchedMove.userReference.team === "delver" && searchedMove.userReference.index === move.userReference.index);
 			move.type = counterpartMove.type;
 			move.setName(counterpartMove.name);
 			move.setPriority(counterpartMove.priority);

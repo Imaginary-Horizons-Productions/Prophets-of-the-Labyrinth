@@ -81,7 +81,7 @@ function generateLootRow(adventure) {
 			if (count > 0) {
 				let option = { value: `${name}${SAFE_DELIMITER}${options.length}` };
 
-				if (name == "gold") {
+				if (name === "gold") {
 					option.label = `${count} Gold`;
 				} else {
 					option.label = `${name} x ${count}`;

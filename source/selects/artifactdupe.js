@@ -10,7 +10,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 	/** Give the party 1 copy of the specified artifact */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
-		if (!adventure.delvers.some(delver => delver.id == interaction.user.id)) {
+		if (!adventure.delvers.some(delver => delver.id === interaction.user.id)) {
 			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
 			return;
 		}

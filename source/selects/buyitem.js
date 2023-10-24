@@ -8,7 +8,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 	/** Allow the party to buy an item at a merchant */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
-		if (!adventure.delvers.some(delver => delver.id == interaction.user.id)) {
+		if (!adventure.delvers.some(delver => delver.id === interaction.user.id)) {
 			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
 			return;
 		}

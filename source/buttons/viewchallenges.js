@@ -8,7 +8,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	/** Roll challenge options for party to select */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
-		if (!adventure?.delvers.some(delver => delver.id == interaction.user.id)) {
+		if (!adventure?.delvers.some(delver => delver.id === interaction.user.id)) {
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;
 		}
