@@ -31,17 +31,16 @@ module.exports = new SelectWrapper(mainId, 3000,
 			} else {
 				adventure.room.state.pickedTreasure = { names: [name] };
 			}
+			adventure.room.resources[name].count = Math.max(count - 1, 0);
 			switch (type) {
 				case "gold":
 					adventure.gainGold(count);
-					adventure.room.resources.gold = 0;
 					result = {
 						content: `The party acquires ${count} gold.`
 					}
 					break;
 				case "artifact":
 					adventure.gainArtifact(name, count);
-					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${name} x ${count}.`
 					}
@@ -49,7 +48,6 @@ module.exports = new SelectWrapper(mainId, 3000,
 				case "gear":
 					if (delver.gear.length < adventure.getGearCapacity()) {
 						delver.gear.push({ name, durability: getGearProperty(name, "maxDurability") });
-						adventure.room.resources[name].count = Math.max(count - 1, 0);
 						result = {
 							content: `${interaction.member.displayName} takes a ${name}. There are ${count - 1} remaining.`
 						}
@@ -71,7 +69,6 @@ module.exports = new SelectWrapper(mainId, 3000,
 					} else {
 						adventure.items[name] = count;
 					}
-					adventure.room.resources[name] = 0;
 					result = {
 						content: `The party acquires ${name} x ${count}.`
 					}
@@ -79,11 +76,15 @@ module.exports = new SelectWrapper(mainId, 3000,
 			}
 		}
 		if (result) {
-			const { embeds } = consumeRoomActions(adventure, interaction.message.embeds, 1);
-			const updatedMessage = { ...renderRoom(adventure, interaction.channel), embeds };
+			setAdventure(adventure);
 			interaction.reply(result).then(() => {
-				interaction.message.edit(updatedMessage);
-				setAdventure(adventure);
+				const updatedMessage = renderRoom(adventure, interaction.channel);
+				interaction.message.edit(
+					{
+						...updatedMessage,
+						embeds: consumeRoomActions(adventure, updatedMessage.embeds, 1).embeds
+					}
+				);
 			});
 		} else {
 			interaction.update({ content: ZERO_WIDTH_WHITESPACE });
