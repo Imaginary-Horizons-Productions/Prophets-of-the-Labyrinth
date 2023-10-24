@@ -31,16 +31,17 @@ module.exports = new SelectWrapper(mainId, 3000,
 			} else {
 				adventure.room.state.pickedTreasure = { names: [name] };
 			}
-			adventure.room.resources[name].count = Math.max(count - 1, 0);
 			switch (type) {
 				case "gold":
 					adventure.gainGold(count);
+					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${count} gold.`
 					}
 					break;
 				case "artifact":
 					adventure.gainArtifact(name, count);
+					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${name} x ${count}.`
 					}
@@ -48,6 +49,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				case "gear":
 					if (delver.gear.length < adventure.getGearCapacity()) {
 						delver.gear.push({ name, durability: getGearProperty(name, "maxDurability") });
+						adventure.room.resources[name].count = Math.max(count - 1, 0);
 						result = {
 							content: `${interaction.member.displayName} takes a ${name}. There are ${count - 1} remaining.`
 						}
@@ -69,6 +71,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 					} else {
 						adventure.items[name] = count;
 					}
+					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${name} x ${count}.`
 					}
