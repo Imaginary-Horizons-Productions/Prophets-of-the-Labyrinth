@@ -2,7 +2,6 @@ const { ActionRowBuilder, ButtonBuilder, ComponentType, StringSelectMenuBuilder 
 const { ButtonWrapper } = require('../classes');
 const { SAFE_DELIMITER, ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { getAdventure, endRoom } = require('../orcustrators/adventureOrcustrator');
-const { clearComponents } = require('../util/messageComponentUtil');
 
 const mainId = "routevote";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -28,8 +27,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.reply(`${interaction.user} ${changeVote ? "changed their vote to" : "voted for"} ${adventure.roomCandidates[candidateTag].isHidden ? "???" : candidate}.`).then(_message => {
 				// Decide by unanimous vote
 				if (adventure.roomCandidates[candidateTag].voterIds?.length === adventure.delvers.length) {
-					clearComponents(adventure.messageIds.battleRound, interaction.channel.messages);
-					let uiRows = [...interaction.message.components.map(row => {
+					const uiRows = [...interaction.message.components.map(row => {
 						return new ActionRowBuilder().addComponents(row.components.map(({ data: component }) => {
 							switch (component.type) {
 								case ComponentType.Button:
