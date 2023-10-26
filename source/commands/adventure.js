@@ -40,7 +40,7 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.S
 					.setDescription(`Depth: ${adventure.depth}\nScore: ${adventure.getBaseScore().total}`)
 					.addFields([
 						{ name: `${adventure.lives} Lives Remaining`, value: "When a player runs out of HP, a life will be lost and they'll be returned to max HP. When all lives are lost, the adventure will end." },
-						{ name: `${adventure.gold} Gold`, value: "Gold is exchanged for goods and services within adventures. Gold *will be lost when an adventure ends*." },
+						{ name: `${adventure.gold} Gold`, value: `Gold is exchanged for goods and services within adventures. *Gold will be lost when an adventure ends.*\nPeak Gold: ${adventure.peakGold}` },
 						{ name: "Items", value: Object.keys(adventure.items).map(item => `${item} x ${adventure.items[item]}`).join("\n") || "None" },
 						{
 							name: "Scouting",

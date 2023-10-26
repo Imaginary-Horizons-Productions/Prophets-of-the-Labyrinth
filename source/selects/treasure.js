@@ -3,21 +3,20 @@ const { SelectWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { SAFE_DELIMITER, ZERO_WIDTH_WHITESPACE } = require('../constants');
-const { consumeRoomActions } = require('../util/messageComponentUtil');
 const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "treasure";
-module.exports = new SelectWrapper(mainId, 3000,
-	/** Move the selected loot into party/delver's inventory, then decrement a roomAction */
-	(interaction, args) => {
-		const adventure = getAdventure(interaction.channel.id);
+module.exports = new SelectWrapper(mainId, 2000,
+	/** End of combat loot or treasure room picks; decrement a room action in treasure rooms */
+	(interaction, [source]) => {
+		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
 			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
 			return;
 		}
 
-		if (adventure.room.resources.roomAction.count < 1) {
+		if (source === "treasure" && adventure.room.resources.roomAction.count < 1) {
 			interaction.reply({ content: "There aren't any more treasure picks to use.", ephemeral: true });
 			return;
 		}
@@ -34,7 +33,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			switch (type) {
 				case "gold":
 					adventure.gainGold(count);
-					adventure.room.resources.gold = 0;
+					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${count} gold.`
 					}
@@ -57,7 +56,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 						result = {
 							content: `You can only carry ${adventure.getGearCapacity()} pieces of gear at a time. Pick one to replace with the ${name}:`,
 							components: [new ActionRowBuilder().addComponents(delver.gear.map((gear, index) => {
-								return new ButtonBuilder().setCustomId(`replacegear${SAFE_DELIMITER}${name}${SAFE_DELIMITER}${index}${SAFE_DELIMITER}true`)
+								return new ButtonBuilder().setCustomId(`replacegear${SAFE_DELIMITER}${name}${SAFE_DELIMITER}${index}${SAFE_DELIMITER}${source}`)
 									.setLabel(`Discard ${gear.name}`)
 									.setStyle(ButtonStyle.Secondary)
 							}))],
@@ -71,7 +70,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 					} else {
 						adventure.items[name] = count;
 					}
-					adventure.room.resources[name] = 0;
+					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${name} x ${count}.`
 					}
@@ -79,11 +78,12 @@ module.exports = new SelectWrapper(mainId, 3000,
 			}
 		}
 		if (result) {
-			const { embeds } = consumeRoomActions(adventure, interaction.message.embeds, 1);
-			const updatedMessage = { ...renderRoom(adventure, interaction.channel), embeds };
+			setAdventure(adventure);
 			interaction.reply(result).then(() => {
-				interaction.message.edit(updatedMessage);
-				setAdventure(adventure);
+				if (source === "treasure") {
+					adventure.room.resources.roomAction.count -= 1;
+				}
+				interaction.message.edit(renderRoom(adventure, interaction.channel, interaction.message.embeds[0].description));
 			});
 		} else {
 			interaction.update({ content: ZERO_WIDTH_WHITESPACE });

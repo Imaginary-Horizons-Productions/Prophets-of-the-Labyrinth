@@ -9,7 +9,7 @@ const mainId = "buygear";
 module.exports = new SelectWrapper(mainId, 3000,
 	/** Create the gear details embed so player can decide whether to make the purchase */
 	(interaction, [tier]) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
 			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
@@ -30,7 +30,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				} else {
 					let replaceUI = [new ActionRowBuilder().addComponents(
 						delver.gear.map((gear, index) => {
-							return new ButtonBuilder().setCustomId(`replacegear${SAFE_DELIMITER}${name}${SAFE_DELIMITER}${index}${SAFE_DELIMITER}false`)
+							return new ButtonBuilder().setCustomId(`replacegear${SAFE_DELIMITER}${name}${SAFE_DELIMITER}${index}${SAFE_DELIMITER}merchant`)
 								.setLabel(`Discard ${gear.name}`)
 								.setStyle(ButtonStyle.Secondary)
 						})

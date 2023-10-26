@@ -7,7 +7,7 @@ const mainId = "startingartifact";
 module.exports = new SelectWrapper(mainId, 3000,
 	/** Set the player's starting artifact */
 	(interaction, args) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		if (adventure?.state !== "config") {
 			interaction.reply({ content: "A valid adventure could not be found.", ephemeral: true });
 			return;

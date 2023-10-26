@@ -9,8 +9,8 @@ const mainId = "predict";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Based on type, show the user information on the next battle round in an ephemeral message */
 	(interaction, args) => {
-		const adventure = getAdventure(interaction.channel.id);
-		const delver = adventure?.delvers.find(delver => delver.id == interaction.user.id);
+		const adventure = getAdventure(interaction.channelId);
+		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;

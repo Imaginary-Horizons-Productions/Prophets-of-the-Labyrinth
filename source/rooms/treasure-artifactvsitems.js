@@ -4,7 +4,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { getItem } = require("../items/_itemDictionary");
-const { EMPTY_SELECT_OPTION_SET } = require("../constants");
+const { EMPTY_SELECT_OPTION_SET, SAFE_DELIMITER } = require("../constants");
 
 module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 	"@{adventure}",
@@ -35,14 +35,14 @@ module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 		}
 		const hasOptions = options.length > 0;
 		return [new ActionRowBuilder().addComponents(
-			new StringSelectMenuBuilder().setCustomId("treasure")
+			new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}treasure`)
 				.setPlaceholder(hasOptions ? "Pick 1 treasure to take..." : "No treasure")
 				.setOptions(hasOptions ? options : EMPTY_SELECT_OPTION_SET)
 				.setDisabled(!hasOptions)
 		)];
 	} else {
 		return [new ActionRowBuilder().addComponents(
-			new StringSelectMenuBuilder().setCustomId("treasure")
+			new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}treasure`)
 				.setPlaceholder(`Picked: ${adventure.room.state.pickedTreasure.names.join(", ")}`)
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)

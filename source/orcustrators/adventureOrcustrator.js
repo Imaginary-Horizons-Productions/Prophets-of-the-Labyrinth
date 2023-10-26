@@ -135,9 +135,11 @@ function nextRoom(roomType, thread) {
 			adventure.updateArtifactStat("Enchanted Map", "Extra Rooms Rolled", mapCount);
 		}
 		const numCandidates = 2 + mapCount;
+		const max = 144;
+		const rushingChance = adventure.getChallengeIntensity("Rushing") / 100;
+		const roomWeights = Object.keys(roomTypesByRarity);
+		const totalWeight = roomWeights.reduce((total, weight) => total + parseInt(weight), 0);
 		for (let i = 0; i < numCandidates; i++) {
-			const roomWeights = Object.keys(roomTypesByRarity);
-			const totalWeight = roomWeights.reduce((total, weight) => total + parseInt(weight), 0);
 			let rn = adventure.generateRandomNumber(totalWeight, 'general');
 			let tagPool = [];
 			for (const weight of roomWeights.sort((a, b) => a - b)) {
@@ -150,14 +152,14 @@ function nextRoom(roomType, thread) {
 			}
 			const candidateTag = `${tagPool[adventure.generateRandomNumber(tagPool.length, "general")]}${SAFE_DELIMITER}${adventure.depth}`;
 			if (!(candidateTag in adventure.roomCandidates)) {
-				adventure.roomCandidates[candidateTag] = [];
+				adventure.roomCandidates[candidateTag] = { voterIds: [], isHidden: adventure.generateRandomNumber(max, "general") < max * rushingChance };
 				if (Object.keys(adventure.roomCandidates).length === MAX_MESSAGE_ACTION_ROWS) {
 					break;
 				}
 			}
 		}
 	} else {
-		adventure.roomCandidates[`Final Battle${SAFE_DELIMITER}${adventure.depth}`] = [];
+		adventure.roomCandidates[`Final Battle${SAFE_DELIMITER}${adventure.depth}`] = { voterIds: [], isHidden: false };
 	}
 
 	// Generate current room
@@ -475,7 +477,7 @@ function endRound(adventure, thread) {
 		// Generate Reactive Moves by Enemies
 		const user = adventure.getCombatant(move.userReference);
 		if (user.archetype === "@{clone}") {
-			const counterpartMove = adventure.room.moves.find(searchedMove => searchedMove.userReference.team === "delver" && searchedMove.userReference.index == move.userReference.index);
+			const counterpartMove = adventure.room.moves.find(searchedMove => searchedMove.userReference.team === "delver" && searchedMove.userReference.index === move.userReference.index);
 			move.type = counterpartMove.type;
 			move.setName(counterpartMove.name);
 			move.setPriority(counterpartMove.priority);

@@ -7,7 +7,7 @@ const mainId = "repair";
 module.exports = new SelectWrapper(mainId, 3000,
 	/** Grant half the selected gear's max durability */
 	(interaction, args) => {
-		const adventure = getAdventure(interaction.channel.id);
+		const adventure = getAdventure(interaction.channelId);
 		if (adventure.room.resources.roomAction.count < 1) {
 			interaction.reply({ content: "The forge's supplies have been exhausted.", ephemeral: true });
 			return;

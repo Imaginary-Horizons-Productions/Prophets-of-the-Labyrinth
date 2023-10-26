@@ -12,7 +12,6 @@ for (const file of [
 	"challenge.js",
 	"collectartifact.js",
 	"item.js",
-	"loot.js",
 	"movetarget.js",
 	"randomupgrade.js",
 	"repair.js",
