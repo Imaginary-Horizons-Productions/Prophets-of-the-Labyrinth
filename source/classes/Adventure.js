@@ -48,7 +48,7 @@ class Adventure {
 	depth = 1;
 	/** @type {Room} */
 	room = {};
-	/** @type {{[candidate: string]: string[]}} */
+	/** @type {{[candidate: string]: {voterIds: string[], isHidden: boolean}}} */
 	roomCandidates = {};
 	lives = 2;
 	gold = 100;

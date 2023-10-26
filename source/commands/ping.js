@@ -31,8 +31,8 @@ module.exports = new CommandWrapper(mainId, "Remind delvers to input their vote 
 				}
 			})
 		} else {
-			Object.values(adventure.roomCandidates).forEach(voteArray => {
-				voteArray.forEach(id => {
+			Object.values(adventure.roomCandidates).forEach(candidate => {
+				candidate.voterIds.forEach(id => {
 					if (mentions.has(id)) {
 						mentions.delete(id);
 					}

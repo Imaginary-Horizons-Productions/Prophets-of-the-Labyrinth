@@ -18,16 +18,16 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		if (adventure.roomCandidates[candidateTag]) {
 			let changeVote = false;
 			for (const candidate in adventure.roomCandidates) {
-				if (adventure.roomCandidates[candidate].includes(interaction.user.id)) {
+				if (adventure.roomCandidates[candidate].voterIds.includes(interaction.user.id)) {
 					changeVote = true;
-					adventure.roomCandidates[candidate] = adventure.roomCandidates[candidate].filter(id => id !== interaction.user.id);
+					adventure.roomCandidates[candidate].voterIds = adventure.roomCandidates[candidate].voterIds.filter(id => id !== interaction.user.id);
 				}
 			}
-			adventure.roomCandidates[candidateTag].push(interaction.user.id);
+			adventure.roomCandidates[candidateTag].voterIds.push(interaction.user.id);
 
-			interaction.reply(`${interaction.user} ${changeVote ? "changed their vote to" : "voted for"} ${candidate}.`).then(_message => {
+			interaction.reply(`${interaction.user} ${changeVote ? "changed their vote to" : "voted for"} ${adventure.roomCandidates[candidateTag].isHidden ? "???" : candidate}.`).then(_message => {
 				// Decide by unanimous vote
-				if (adventure.roomCandidates[candidateTag]?.length === adventure.delvers.length) {
+				if (adventure.roomCandidates[candidateTag].voterIds?.length === adventure.delvers.length) {
 					clearComponents(adventure.messageIds.battleRound, interaction.channel.messages);
 					let uiRows = [...interaction.message.components.map(row => {
 						return new ActionRowBuilder().addComponents(row.components.map(({ data: component }) => {

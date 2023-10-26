@@ -113,14 +113,11 @@ function generateLootRow(adventure) {
 
 /** @param {Adventure} adventure */
 function generateRoutingRow(adventure) {
-	const candidateKeys = Object.keys(adventure.roomCandidates);
-	const max = 144;
-	const rushingChance = adventure.getChallengeIntensity("Rushing") / 100;
 	return new ActionRowBuilder().addComponents(
-		...candidateKeys.map(candidateTag => {
+		...Object.keys(adventure.roomCandidates).map(candidateTag => {
 			const [roomType, depth] = candidateTag.split(SAFE_DELIMITER);
 			return new ButtonBuilder().setCustomId(`routevote${SAFE_DELIMITER}${candidateTag}`)
-				.setLabel(`Next room: ${adventure.generateRandomNumber(max, "general") < max * rushingChance ? "???" : roomType}`)
+				.setLabel(`Next room: ${adventure.roomCandidates[candidateTag].isHidden ? "???" : roomType}`)
 				.setStyle(ButtonStyle.Secondary)
 		}));
 }
