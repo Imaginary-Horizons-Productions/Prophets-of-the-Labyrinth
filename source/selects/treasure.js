@@ -83,7 +83,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				if (source === "treasure") {
 					adventure.room.resources.roomAction.count -= 1;
 				}
-				interaction.message.edit(renderRoom(adventure, interaction.channel));
+				interaction.message.edit(renderRoom(adventure, interaction.channel, interaction.message.embeds[0].description));
 			});
 		} else {
 			interaction.update({ content: ZERO_WIDTH_WHITESPACE });
