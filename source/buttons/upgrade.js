@@ -9,7 +9,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	/** Present the user with an opportunity to upgrade a piece of gear */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
-		const delver = adventure?.delvers.find(delver => delver.id == interaction.user.id);
+		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;

@@ -27,7 +27,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.delvers.some(delver => delver.id == interaction.user.id)) {
+		if (adventure.delvers.some(delver => delver.id === interaction.user.id)) {
 			interaction.reply({ content: "You are already part of this adventure!", ephemeral: true });
 			return;
 		}
@@ -69,7 +69,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const embeds = [];
 		const [{ data: recruitEmbed }] = recruitMessage.embeds;
 		if (recruitEmbed) {
-			embeds.push(new EmbedBuilder(recruitEmbed).spliceFields(0, 1, { name: `${adventure.delvers.length} Party Member${adventure.delvers.length == 1 ? "" : "s"}`, value: partyList }));
+			embeds.push(new EmbedBuilder(recruitEmbed).spliceFields(0, 1, { name: `${adventure.delvers.length} Party Member${adventure.delvers.length === 1 ? "" : "s"}`, value: partyList }));
 		}
 		let components = recruitMessage.components;
 		if (adventure.delvers.length === MAX_DELVER_COUNT) {

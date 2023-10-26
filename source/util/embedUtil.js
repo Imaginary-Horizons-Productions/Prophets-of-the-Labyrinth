@@ -9,7 +9,6 @@ const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
 const { isBuff, isDebuff, isNonStacking } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
@@ -77,9 +76,21 @@ function renderRoom(adventure, thread, descriptionOverride) {
 	}
 	let components = [];
 
-	if (adventure.depth <= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
-		if (!Adventure.endStates.includes(adventure.state)) {
-			// Continue
+	switch (adventure.state) {
+		case "defeat":
+		case "giveup":
+			addScoreField(roomEmbed, adventure, thread.guildId);
+			components = [];
+			break;
+		case "success":
+			addScoreField(roomEmbed, adventure, thread.guildId);
+			components = [new ActionRowBuilder().addComponents(
+				new ButtonBuilder().setCustomId("viewcollectartifact")
+					.setLabel("Collect Artifact")
+					.setStyle(ButtonStyle.Success)
+			)];
+			break;
+		default:
 			if ("roomAction" in adventure.room.resources) {
 				roomEmbed.addFields({ name: "Room Actions", value: adventure.room.resources.roomAction.count.toString() });
 			}
@@ -116,20 +127,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
 				roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
 				components.push(generateRoutingRow(adventure));
 			}
-		} else {
-			// Defeat
-			addScoreField(roomEmbed, adventure, thread.guildId);
-			components = [];
-
-		}
-	} else {
-		// Victory
-		addScoreField(roomEmbed, adventure, thread.guildId);
-		components = [new ActionRowBuilder().addComponents(
-			new ButtonBuilder().setCustomId("viewcollectartifact")
-				.setLabel("Collect Artifact")
-				.setStyle(ButtonStyle.Success)
-		)];
+			break;
 	}
 	return {
 		embeds: [roomEmbed],
@@ -143,45 +141,43 @@ function renderRoom(adventure, thread, descriptionOverride) {
  * @param {string} guildId
  */
 function addScoreField(embed, adventure, guildId) {
-	const livesScore = adventure.lives * 10;
-	const goldScore = Math.floor(Math.log10(adventure.peakGold)) * 5;
-	let score = adventure.accumulatedScore + livesScore + goldScore + adventure.depth;
+	let { livesScore, goldScore, total: finalScore } = adventure.getBaseScore();
 	let challengeMultiplier = 1;
 	Object.keys(adventure.challenges).forEach(challengeName => {
 		const challenge = getChallenge(challengeName);
 		challengeMultiplier *= challenge.scoreMultiplier;
 	})
-	score *= challengeMultiplier;
+	finalScore *= challengeMultiplier;
 	const skippedArtifactsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.startingArtifact ? count : count + 1, 0) / adventure.delvers.length);
-	score = Math.max(1, score * skippedArtifactsMultiplier);
+	finalScore = Math.max(1, finalScore * skippedArtifactsMultiplier);
 	switch (adventure.state) {
 		case "success":
 			embed.setTitle(`Success in ${adventure.labyrinth}`);
 			break;
 		case "defeat":
 			embed.setTitle(`Defeated${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
-			score = Math.floor(score / 2);
+			finalScore = Math.floor(finalScore / 2);
 			break;
 		case "giveup":
 			embed.setTitle(`Gave up${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
-			score = 0;
+			finalScore = 0;
 			break;
 	}
 	const depthScoreLine = generateScoreline("additive", "Depth", adventure.depth);
 	const livesScoreLine = generateScoreline("additive", "Lives", livesScore);
 	const goldScoreline = generateScoreline("additive", "Gold", goldScore);
-	const bonusScoreline = generateScoreline("additive", "Bonus", adventure.accumulatedScore);
+	const bonusScoreline = generateScoreline("additive", "Bonus", adventure.score);
 	const challengesScoreline = generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
 	const skippedArtifactScoreline = generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
 	const defeatScoreline = generateScoreline("multiplicative", "Defeat", adventure.state === "defeat" ? 0.5 : 1);
 	const giveupScoreline = generateScoreline("multiplicative", "Give Up", adventure.state === "giveup" ? 0 : 1);
-	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${score}` });
-	adventure.accumulatedScore = score;
+	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
+	adventure.score = finalScore;
 
 	const company = getCompany(guildId);
-	if (adventure.accumulatedScore > company.highScore.score) {
+	if (finalScore > company.highScore.score) {
 		company.highScore = {
-			score: adventure.accumulatedScore,
+			score: finalScore,
 			playerIds: adventure.delvers.map(delver => delver.id),
 			adventure: adventure.name
 		};
@@ -191,15 +187,15 @@ function addScoreField(embed, adventure, guildId) {
 		if (adventure.state !== "giveup") {
 			const player = getPlayer(delver.id, guildId);
 			if (player.scores[guildId]) {
-				player.scores[guildId].total += adventure.accumulatedScore;
-				if (adventure.accumulatedScore > player.scores[guildId].high) {
-					player.scores[guildId].high = adventure.accumulatedScore;
+				player.scores[guildId].total += finalScore;
+				if (finalScore > player.scores[guildId].high) {
+					player.scores[guildId].high = finalScore;
 				}
 			} else {
-				player.scores[guildId] = { total: adventure.accumulatedScore, high: adventure.accumulatedScore };
+				player.scores[guildId] = { total: finalScore, high: finalScore };
 			}
-			if (adventure.accumulatedScore > player.archetypes[delver.archetype]) {
-				player.archetypes[delver.archetype] = adventure.accumulatedScore;
+			if (finalScore > player.archetypes[delver.archetype]) {
+				player.archetypes[delver.archetype] = finalScore;
 			}
 			setPlayer(player);
 		}
@@ -234,8 +230,8 @@ function generateScoreline(stackType, label, value) {
  * @param {Adventure} adventure
  * @returns {string} text to put in the author name field of a room embed
  */
-function roomHeaderString({ lives, gold, accumulatedScore }) {
-	return `Lives: ${lives} - Party Gold: ${gold} - Score: ${accumulatedScore}`;
+function roomHeaderString(adventure) {
+	return `Lives: ${adventure.lives} - Party Gold: ${adventure.gold} - Score: ${adventure.getBaseScore().total}`;
 }
 
 /** The room header goes in the embed's author field and should contain information about the party's commonly used or important resources

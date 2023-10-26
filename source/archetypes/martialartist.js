@@ -2,7 +2,7 @@ const { ArchetypeTemplate } = require("../classes");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Martial Artist",
-	"Able to assess combatant Stun thresholds and speed, the Martial Artist excels at stunning foes.",
+	"They'll be able to predict the order combatants will act in and their how much Stagger to Stun them. They'll also be able enhance their Punches with various stances.",
 	"Light",
 	["Iron Fist Stance", "Floating Mist Stance"],
 	(embed, adventure) => {

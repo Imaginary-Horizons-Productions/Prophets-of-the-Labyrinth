@@ -2,6 +2,7 @@ const { SelectWrapper } = require('../classes');
 const { getChallenge } = require('../challenges/_challengeDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { editButtons, consumeRoomActions } = require('../util/messageComponentUtil');
+const { SAFE_DELIMITER } = require('../constants');
 
 const mainId = "challenge";
 module.exports = new SelectWrapper(mainId, 3000,
@@ -16,6 +17,8 @@ module.exports = new SelectWrapper(mainId, 3000,
 		if (adventure?.room.resources.roomAction.count > 0) {
 			const [challengeName] = interaction.values;
 			const { intensity, duration, reward } = getChallenge(challengeName);
+			// Calcluate healPercent before updating challenges in case Restless is selected
+			const healPercent = Math.trunc(30 * (1 - (adventure.getChallengeIntensity("Restless") / 100)));
 			if (adventure.challenges[challengeName]) {
 				adventure.challenges[challengeName].intensity += intensity;
 				adventure.challenges[challengeName].duration += duration;
@@ -29,7 +32,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				if (remainingActions < 1) {
 					components = editButtons(components, {
 						"viewchallenges": { preventUse: true, label: challengeName, emoji: "✔️" },
-						"rest": { preventUse: true, label: "The fire has burned out", emoji: "✖️" }
+						[`rest${SAFE_DELIMITER}${healPercent}`]: { preventUse: true, label: "The fire has burned out", emoji: "✖️" }
 					})
 				}
 				return roomMessage.edit({ embeds, components });

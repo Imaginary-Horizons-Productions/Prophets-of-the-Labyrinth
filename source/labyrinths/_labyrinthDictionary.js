@@ -112,8 +112,7 @@ function rollRoom(type, adventure) {
 
 	if (!(type in LABYRINTHS[adventure.labyrinth].availableRooms)) {
 		console.error("Attempt to create room of unidentified type: " + type);
-		adventure.roomCandidates = {};
-		adventure.roomCandidates[`Battle${SAFE_DELIMITER}${adventure.depth}`] = true;
+		adventure.roomCandidates = { [`Battle${SAFE_DELIMITER}${adventure.depth}`]: { voterIds: [], isHidden: false } };
 		return LABYRINTHS["Debug Dungeon"].availableRooms["Empty"][0];
 	}
 	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];

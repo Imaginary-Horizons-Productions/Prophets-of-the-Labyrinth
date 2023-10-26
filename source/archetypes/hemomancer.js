@@ -2,7 +2,7 @@ const { ArchetypeTemplate } = require("../classes");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Hemomancer",
-	"Able to predict the order combatants will act and their Stun thresholds, the Hemomancer excels at getting the last word.",
+	"They'll be able to predict the order combatants will act in and their how much Stagger to Stun them. They'll also be able to redirect enemy attacks with Blood Aegis.",
 	"Darkness",
 	["Life Drain", "Blood Aegis"],
 	(embed, adventure) => {

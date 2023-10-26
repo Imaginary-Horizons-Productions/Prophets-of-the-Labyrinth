@@ -3,7 +3,7 @@ const { modifiersToString } = require("../util/combatantUtil.js");
 const { generateTextBar } = require("../util/textUtil.js");
 
 module.exports = new ArchetypeTemplate("Chemist",
-	"Able to and assess combatant modifiers and hp levels, the Chemist excels at managing party and enemy health.",
+	"They'll be able to assess combatant modifiers and hp levels. They'll also be able to make items with their Potion Kit.",
 	"Water",
 	["Sickle", "Potion Kit"],
 	(embed, adventure) => {

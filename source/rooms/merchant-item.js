@@ -5,7 +5,7 @@ const { getGearProperty, buildGearDescription } = require("../gear/_gearDictiona
 const { getItem } = require("../items/_itemDictionary");
 const { generateMerchantScoutingRow } = require("../util/messageComponentUtil");
 
-const uiGroups = [`gear${SAFE_DELIMITER}?`, "items"];
+const uiGroups = [`gear${SAFE_DELIMITER}?`, "item"];
 
 module.exports = new RoomTemplate("Item Merchant",
 	"@{adventure}",
