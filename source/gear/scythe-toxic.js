@@ -3,15 +3,15 @@ const { needsLivingTargets } = require('../shared/actionComponents');
 const { addModifier, dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Scythe",
-	"Strike a foe applying @{mod1Stacks} @{mod1} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
+	"Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
 	"Instant death threshold x@{critBonus}",
 	"Weapon",
 	"Darkness",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, poison], damage, bonus: hpThreshold, critBonus } = module.exports;
+		let { element, modifiers: [poison], damage, bonus: hpThreshold, critBonus } = module.exports;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			hpThreshold *= critBonus;
@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Toxic Scythe",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Lethal Scythe", "Piercing Scythe")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Poison", stacks: 3 })
+	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)
 	.setDamage(75)
 	.setBonus(99); // execute threshold

@@ -1,16 +1,16 @@
 const { GearTemplate } = require('../classes');
-const { addBlock, removeModifier, addModifier } = require('../util/combatantUtil.js');
+const { addBlock, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Long Barrier",
-	"Gain @{block} block and @{mod1Stacks} @{mod1}",
-	"@{mod1} x@{critBonus}",
+	"Gain @{block} block and @{mod0Stacks} @{mod0}",
+	"@{mod0} x@{critBonus}",
 	"Spell",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, vigilance, critVigilance], block } = module.exports;
+		let { element, modifiers: [vigilance, critVigilance], block } = module.exports;
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
 			addModifier(user, vigilance);
@@ -22,6 +22,6 @@ module.exports = new GearTemplate("Long Barrier",
 	}
 ).setTargetingTags({ target: "self", team: "any" })
 	.setSidegrades("Cleansing Barrier", "Devoted Barrier")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Vigilance", stacks: 2 }, { name: "Vigilance", stacks: 4 })
+	.setModifiers({ name: "Vigilance", stacks: 2 }, { name: "Vigilance", stacks: 4 })
 	.setDurability(5)
 	.setBlock(999);

@@ -3,23 +3,24 @@ const { needsLivingTargets } = require("../shared/actionComponents");
 const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Corrosion",
-	"Inflict @{mod1Stacks} @{mod1} on a foe",
-	"Also inflict @{mod2Stacks} @{mod2}",
+	"Inflict @{mod0Stacks} @{mod0} on a foe",
+	"Also inflict @{stagger}",
 	"Spell",
 	"Fire",
 	200,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, powerDown, critStagger] } = module.exports;
+		let { element, modifiers: [powerDown], stagger } = module.exports;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			addModifier(target, critStagger);
+			target.addStagger(stagger);
 		}
 		addModifier(target, powerDown);
 		return `${target.getName(adventure.room.enemyIdMap)} is Powered Down.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Flanking Corrosion")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Down", stacks: 40 }, { name: "Stagger", stacks: 1 })
+	.setModifiers({ name: "Power Down", stacks: 40 })
+	.setStagger(2)
 	.setDurability(15);

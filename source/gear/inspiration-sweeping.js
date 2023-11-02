@@ -1,19 +1,19 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents');
-const { addModifier, removeModifier } = require('../util/combatantUtil.js');
+const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sweeping Inspiration",
-	"Apply @{mod1Stacks} @{mod1} to all allies",
-	"@{mod1} +@{bonus}",
+	"Apply @{mod0Stacks} @{mod0} to all allies",
+	"@{mod0} +@{bonus}",
 	"Spell",
 	"Wind",
 	350,
 	needsLivingTargets((targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, powerUp], bonus } = module.exports;
+		let { element, modifiers: [powerUp], bonus } = module.exports;
 		const pendingPowerUp = { ...powerUp, stacks: powerUp.stacks + (isCrit ? bonus : 0) };
 		targets.forEach(target => {
 			if (user.element === element) {
-				removeModifier(target, elementStagger);
+				target.addStagger("elementMatchAlly");
 			}
 			addModifier(target, pendingPowerUp);
 		})
@@ -21,6 +21,6 @@ module.exports = new GearTemplate("Sweeping Inspiration",
 	})
 ).setTargetingTags({ target: "all", team: "delver" })
 	.setSidegrades("Guarding Inspiration", "Soothing Inspiration")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 })
+	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setBonus(25) // Power Up stacks
 	.setDurability(10);

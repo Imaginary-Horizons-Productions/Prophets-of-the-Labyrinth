@@ -5,14 +5,14 @@ const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Fate-Sealing Censer",
 	"Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage",
-	"Also apply @{mod1Stacks} @{mod1} and @{mod2Stacks} @{mod2}",
+	"Also apply @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}",
 	"Trinket",
 	"Fire",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, slow, stasis], damage, bonus } = module.exports;
+		let { element, modifiers: [slow, stasis], damage, bonus } = module.exports;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			damage += bonus;
@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Fate-Sealing Censer",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Thick Censer", "Tormenting Censor")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 2 }, { name: "Stasis", stacks: 1 })
+	.setModifiers({ name: "Slow", stacks: 2 }, { name: "Stasis", stacks: 1 })
 	.setDamage(50)
 	.setBonus(75) // damage
 	.setDurability(15);

@@ -49,6 +49,8 @@ class GearTemplate {
 	healing;
 	/** @type {number} */
 	priority;
+	/** @type {number} */
+	stagger;
 	/** @type {{name: string, stacks: number}[]} */
 	modifiers;
 	/** @type {import("discord.js").EmbedField} */
@@ -121,6 +123,12 @@ class GearTemplate {
 	/** @param {number} integer */
 	setPriority(integer) {
 		this.priority = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setStagger(integer) {
+		this.stagger = integer;
 		return this;
 	}
 

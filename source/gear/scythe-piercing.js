@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents');
-const { addModifier, dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Piercing Scythe",
 	"Strike a foe for @{damage} @{element} unblockable damage; instant death if foe is at or below @{bonus} hp",
@@ -9,9 +9,9 @@ module.exports = new GearTemplate("Piercing Scythe",
 	"Darkness",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], damage, bonus: hpThreshold, critBonus } = module.exports;
+		let { element, damage, bonus: hpThreshold, critBonus } = module.exports;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			hpThreshold *= critBonus;
@@ -25,7 +25,6 @@ module.exports = new GearTemplate("Piercing Scythe",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Lethal Scythe", "Toxic Scythe")
-	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75)
 	.setBonus(99); // execute threshold

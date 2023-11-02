@@ -2,8 +2,8 @@ const { GearTemplate } = require('../classes');
 const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Charging War Cry",
-	"Inflict @{mod1Stacks} @{mod1} on a foe and all foes with Exposed then gain @{mod2Stacks} @{mod2}",
-	"@{mod1} +@{bonus}",
+	"Inflict @{stagger} on a foe and all foes with Exposed then gain @{mod0Stacks} @{mod0}",
+	"Stagger +@{bonus}",
 	"Technique",
 	"Fire",
 	350,
@@ -17,17 +17,17 @@ module.exports = new GearTemplate("Charging War Cry",
 			}
 		})
 
-		let { element, modifiers: [elementStagger, stagger, powerup], bonus } = module.exports;
-		let pendingStaggerStacks = stagger.stacks;
+		let { element, modifiers: [powerup], stagger, bonus } = module.exports;
+		let pendingStaggerStacks = stagger;
 		if (user.element === element) {
-			pendingStaggerStacks += elementStagger.stacks;
+			pendingStaggerStacks += 2;
 		}
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
 		targetArray.forEach(target => {
 			if (target.hp > 0) {
-				addModifier(target, { name: "Stagger", stacks: pendingStaggerStacks });
+				target.addStagger(pendingStaggerStacks);
 			}
 		});
 		addModifier(user, powerup);
@@ -35,7 +35,8 @@ module.exports = new GearTemplate("Charging War Cry",
 	}
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Slowing War Cry", "Tormenting War Cry")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 })
-	.setBonus(1) // Stagger stacks
+	.setModifiers({ name: "Power Up", stacks: 25 })
+	.setStagger(2)
+	.setBonus(2) // Stagger stacks
 	.setDurability(15)
 	.setPriority(1);

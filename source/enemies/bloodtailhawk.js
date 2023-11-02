@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe, nextRepeat } = require("../shared/actionComponents");
-const { dealDamage, addModifier } = require("../util/combatantUtil");
+const { dealDamage } = require("../util/combatantUtil");
 
 module.exports = new EnemyTemplate("Bloodtail Hawk",
 	"Wind",
@@ -19,7 +19,7 @@ module.exports = new EnemyTemplate("Bloodtail Hawk",
 		if (isCrit) {
 			damage *= 2;
 		}
-		addModifier(target, { name: "Stagger", stacks: 1 });
+		target.addStagger("elementMatchFoe");
 		return dealDamage([target], user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,

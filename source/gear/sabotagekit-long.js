@@ -10,12 +10,12 @@ module.exports = new GearTemplate("Long Sabotage Kit",
 	"Earth",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [slow, elementStagger, critSlow] } = module.exports;
+		let { element, modifiers: [slow, critSlow] } = module.exports;
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 		const weaknessPool = elementsList(ineligibleWeaknesses);
 		const rolledWeakness = `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			addModifier(target, critSlow);
@@ -31,6 +31,6 @@ module.exports = new GearTemplate("Long Sabotage Kit",
 		return `${target.getName(adventure.room.enemyIdMap)} is Slowed${weaknessPool.length > 0 ? `, and gains ${rolledWeakness}` : ""}.`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
-	.setModifiers({ name: "Slow", stacks: 3 }, { name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 5 })
+	.setModifiers({ name: "Slow", stacks: 3 }, { name: "Slow", stacks: 5 })
 	.setDurability(15)
 	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" });

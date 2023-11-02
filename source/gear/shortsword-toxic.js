@@ -3,15 +3,15 @@ const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Shortsword",
-	"Strike a foe for @{damage} @{element} damage, then apply @{mod1Stacks} @{mod1} and @{mod2Stacks} @{mod2} to the foe and @{mod1Stacks} @{mod1} to yourself",
+	"Strike a foe for @{damage} @{element} damage, then apply @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to the foe and @{mod0Stacks} @{mod0} to yourself",
 	"Damage x@{critBonus}",
 	"Weapon",
 	"Fire",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, exposed, poison], damage, critBonus } = module.exports;
+		let { element, modifiers: [exposed, poison], damage, critBonus } = module.exports;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			damage *= critBonus;
@@ -24,6 +24,6 @@ module.exports = new GearTemplate("Toxic Shortsword",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Accelerating Shortsword")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Exposed", stacks: 1 }, { name: "Poison", stacks: 3 })
+	.setModifiers({ name: "Exposed", stacks: 1 }, { name: "Poison", stacks: 3 })
 	.setDurability(15)
 	.setDamage(75);

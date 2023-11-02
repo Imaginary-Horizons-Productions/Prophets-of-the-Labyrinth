@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectSelf, selectNone, selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
-const { addModifier, addBlock, removeModifier, dealDamage } = require("../util/combatantUtil");
+const { addModifier, addBlock, dealDamage } = require("../util/combatantUtil");
 
 const PATTERN = {
 	"Reinforcing Slam": "Burrow",
@@ -17,7 +17,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	"Earth",
 	99999,
 	100,
-	"n*1.5",
+	"n*3",
 	0,
 	"Reinforcing Slam",
 	true
@@ -32,7 +32,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 				block *= 2;
 			}
 			addBlock(user, block);
-			removeModifier(user, { name: "Stagger", stacks: 1 });
+			user.addStagger("elementMatchAlly");
 			return `It prepares to Block and ${dealDamage([target], user, 100, false, user.element, adventure)}`;
 		},
 		selector: selectRandomFoe,
@@ -47,7 +47,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 				stacks *= 3;
 			}
 			addModifier(user, { name: "Evade", stacks });
-			removeModifier(user, { name: "Stagger", stacks: 1 });
+			user.addStagger("elementMatchAlly");
 			return "It scatters among the other treasure in the room to Evade.";
 		},
 		selector: selectSelf,
@@ -65,7 +65,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			addModifier(user, { name: "Curse of Midas", stacks: 1 });
 			targets.forEach(target => {
 				addModifier(target, { name: "Power Down", stacks });
-				addModifier(target, { name: "Stagger", stacks: 1 });
+				target.addStagger("elementMatchFoe");
 			});
 			return "Everyone is Powered Down, due to being distracted by a treasure that catches their eyes.";
 		},

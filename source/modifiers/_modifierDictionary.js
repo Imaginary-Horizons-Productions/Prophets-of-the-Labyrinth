@@ -15,6 +15,7 @@ for (const file of [
 	"curse-of-midas.js",
 	"evade.js",
 	"exposed.js",
+	"frail.js",
 	"oblivious.js",
 	"poison.js",
 	"power-down.js",
@@ -23,7 +24,6 @@ for (const file of [
 	"quicken.js",
 	"regen.js",
 	"slow.js",
-	"stagger.js",
 	"stance-floating-mist.js",
 	"stance-iron-fist.js",
 	"stasis.js",
@@ -34,8 +34,7 @@ for (const file of [
 	"weakness-light.js",
 	"weakness-untyped.js",
 	"weakness-water.js",
-	"weakness-wind.js",
-	"stun.js"
+	"weakness-wind.js"
 ]) {
 	/** @type {ModifierTemplate} */
 	const modifier = require(`./${file}`);

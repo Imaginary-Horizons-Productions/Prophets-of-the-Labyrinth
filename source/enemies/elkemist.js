@@ -1,13 +1,13 @@
 const { EnemyTemplate } = require("../classes");
 const { isBuff } = require("../modifiers/_modifierDictionary.js");
-const { addBlock, dealDamage, addModifier, removeModifier } = require("../util/combatantUtil");
+const { addBlock, dealDamage, addModifier } = require("../util/combatantUtil");
 const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 
 module.exports = new EnemyTemplate("Elkemist",
 	"Water",
 	2000,
 	100,
-	"n*2",
+	"n*4",
 	0,
 	"random",
 	true
@@ -17,7 +17,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		// Gain block and medium progress
-		removeModifier(user, { name: "Stagger", stacks: 1 });
+		user.addStagger("elementMatchAlly");
 		if (isCrit) {
 			addModifier(user, { name: "Progress", stacks: 60 + adventure.generateRandomNumber(46, "battle") });
 		} else {
@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Elkemist",
 			damage *= 2;
 		}
 		addModifier(user, { name: "Progress", stacks: 15 + adventure.generateRandomNumber(16, "battle") });
-		addModifier(target, { name: "Stagger", stacks: 1 });
+		target.addStagger("elementMatchFoe");
 		return `An obstacle to potion progress is identified and mitigated; ${dealDamage([target], user, damage, false, user.element, adventure)}`;
 	},
 	selector: selectRandomFoe,
