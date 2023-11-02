@@ -7,6 +7,7 @@
 - New Debuff: Frail - Deals damage when the bearer is Stunned
 - Iron Fist Stance crits now apply Frail to all enemies instead of granting the user Power Up
 - Some enemies's poise now scales with party size
+- New Challenge: Placebos - Items have a chance to do nothing
 - Tweaked room rarities, largely to make Battles and Events more common
 ## Prophets of the Labyrinth Version 0.12.0:
 - Reintroduced Light and Darkness elements
