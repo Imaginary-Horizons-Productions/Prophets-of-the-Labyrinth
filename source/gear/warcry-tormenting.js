@@ -2,8 +2,8 @@ const { GearTemplate } = require('../classes');
 const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
-	"Inflict @{mod1Stacks} @{mod1} and duplicate debuffs on a foe and all foes with Exposed",
-	"@{mod1} +@{bonus}",
+	"Inflict @{stagger} and duplicate debuffs on a foe and all foes with Exposed",
+	"Stagger +@{bonus}",
 	"Technique",
 	"Fire", 350,
 	([initialTarget], user, isCrit, adventure) => {
@@ -16,17 +16,17 @@ module.exports = new GearTemplate("Tormenting War Cry",
 			}
 		})
 
-		let { element, modifiers: [elementStagger, stagger], bonus } = module.exports;
-		let pendingStaggerStacks = stagger.stacks;
+		let { element, stagger, bonus } = module.exports;
+		let pendingStaggerStacks = stagger;
 		if (user.element === element) {
-			pendingStaggerStacks += elementStagger.stacks;
+			pendingStaggerStacks += 2;
 		}
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
 		targetArray.forEach(target => {
 			if (target.hp > 0) {
-				addModifier(target, { name: "Stagger", stacks: pendingStaggerStacks });
+				target.addStagger(pendingStaggerStacks);
 				for (const modifier in target.modifiers) {
 					if (isDebuff(modifier)) {
 						addModifier(target, { name: modifier, stacks: 1 });
@@ -38,7 +38,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 	}
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
-	.setBonus(1) // Stagger stacks
+	.setStagger(2)
+	.setBonus(2) // Stagger stacks
 	.setDurability(15)
 	.setPriority(1);

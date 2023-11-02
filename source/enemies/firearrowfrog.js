@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
-const { addModifier, removeModifier, dealDamage } = require("../util/combatantUtil");
+const { addModifier, dealDamage } = require("../util/combatantUtil");
 
 const PATTERN = {
 	"Venom Cannon": "random",
@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	"Fire",
 	250,
 	100,
-	"2",
+	"4",
 	0,
 	"random",
 	false
@@ -44,7 +44,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 			stacks *= 3;
 		}
 		addModifier(user, { name: "Evade", stacks });
-		removeModifier(user, { name: "Stagger", stacks: 1 });
+		user.addStagger("elementMatchAlly");
 		return "It's prepared to Evade.";
 	},
 	selector: selectSelf,
@@ -56,7 +56,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	effect: ([target], user, isCrit, adventure) => {
 		if (isCrit) {
 			addModifier(target, { name: "Slow", stacks: 3 });
-			addModifier(target, { name: "Stagger", stacks: 1 });
+			target.addStagger("elementMatchFoe");
 		} else {
 			addModifier(target, { name: "Slow", stacks: 2 });
 		}

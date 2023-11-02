@@ -1,26 +1,26 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Lethal Spear",
 	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critBonus}, also inflict @{mod1Stacks} @{mod1}",
+	"Damage x@{critBonus}, also inflict @{stagger}",
 	"Weapon",
 	"Wind",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, critStagger], damage, critBonus } = module.exports;
+		let { element, stagger, damage, critBonus } = module.exports;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			damage *= critBonus;
-			addModifier(target, critStagger);
+			target.addStagger(stagger);
 		}
 		return dealDamage([target], user, damage, false, element, adventure);
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Reactive Spear", "Sweeping Spear")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
+	.setStagger(2)
 	.setDurability(15)
 	.setDamage(100);

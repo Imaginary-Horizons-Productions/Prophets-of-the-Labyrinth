@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { removeModifier } = require('../util/combatantUtil');
 
 const rollablePotions = [
 	"Block Potion",
@@ -21,9 +20,9 @@ module.exports = new GearTemplate("Urgent Potion Kit",
 	"Water",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], critBonus } = module.exports;
+		let { element, critBonus } = module.exports;
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
 		const randomPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 		if (isCrit) {
@@ -36,7 +35,6 @@ module.exports = new GearTemplate("Urgent Potion Kit",
 	}
 ).setTargetingTags({ target: "none", team: "none" })
 	.setSidegrades("Organic Potion Kit", "Reinforced Potion Kit")
-	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setPriority(1)
 	.setFlavorText({ name: "Possible Potions", value: rollablePotions.join(", ") });

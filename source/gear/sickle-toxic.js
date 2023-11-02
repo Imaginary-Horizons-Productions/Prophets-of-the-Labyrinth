@@ -3,16 +3,16 @@ const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { addModifier, dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Sickle",
-	"Strike a foe applying @{mod1Stacks} @{mod1} and @{damage} (+5% foe max hp) @{element} damage",
+	"Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} (+5% foe max hp) @{element} damage",
 	"Damage x@{critBonus}",
 	"Weapon",
 	"Water",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, poison], damage, critBonus } = module.exports;
+		let { element, modifiers: [poison], damage, critBonus } = module.exports;
 		damage += (0.05 * target.maxHP);
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			damage *= critBonus;
@@ -27,6 +27,6 @@ module.exports = new GearTemplate("Toxic Sickle",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Hunter's Sickle", "Sharpened Sickle")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Poison", stacks: 3 })
+	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)
 	.setDamage(75);

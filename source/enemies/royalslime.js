@@ -1,13 +1,13 @@
 const { EnemyTemplate } = require("../classes");
 const { nextRandom, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, removeModifier } = require("../util/combatantUtil");
+const { addModifier, dealDamage } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
 
 module.exports = new EnemyTemplate("Royal Slime",
 	"@{adventure}",
 	600,
 	90,
-	"n+2",
+	"n*2+4",
 	0,
 	"Element Shift",
 	true
@@ -20,7 +20,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		user.element = elementPool[adventure.generateRandomNumber(elementPool.length, "battle")];
 		if (isCrit) {
 			addModifier(user, { name: `${user.element} Absorb`, stacks: 5 });
-			removeModifier(user, { name: "Stagger", stacks: 1 });
+			user.addStagger("elementMatchAlly");
 		} else {
 			addModifier(user, { name: `${user.element} Absorb`, stacks: 3 });
 		}
@@ -38,7 +38,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 			damage *= 2;
 		}
 		targets.map(target => {
-			addModifier(target, { name: "Stagger", stacks: 1 });
+			target.addStagger("elementMatchFoe");
 		})
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
@@ -54,7 +54,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 			damage *= 2;
 		}
 		targets.map(target => {
-			addModifier(target, { name: "Stagger", stacks: 1 });
+			target.addStagger("elementMatchFoe");
 		})
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
@@ -68,7 +68,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		targets.forEach(target => {
 			if (isCrit) {
 				addModifier(target, { name: "Slow", stacks: 3 });
-				addModifier(target, { name: "Stagger", stacks: 1 });
+				target.addStagger("elementMatchFoe");
 			} else {
 				addModifier(target, { name: "Slow", stacks: 2 });
 			}

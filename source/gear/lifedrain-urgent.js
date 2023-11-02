@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents.js');
-const { addModifier, dealDamage, gainHealth } = require('../util/combatantUtil.js');
+const { dealDamage, gainHealth } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Urgent Life Drain",
 	"Strike a foe for @{damage} @{element} damage, then gain @{healing} hp with priority",
@@ -9,9 +9,9 @@ module.exports = new GearTemplate("Urgent Life Drain",
 	"Darkness",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], damage, healing, critBonus } = module.exports;
+		let { element, damage, healing, critBonus } = module.exports;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			healing *= critBonus;
@@ -20,7 +20,6 @@ module.exports = new GearTemplate("Urgent Life Drain",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Flanking Life Drain", "Reactive Life Drain")
-	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75)
 	.setHealing(25)

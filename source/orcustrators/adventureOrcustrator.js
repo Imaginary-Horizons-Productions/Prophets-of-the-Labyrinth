@@ -15,7 +15,7 @@ const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
-const { clearBlock, removeModifier, addModifier, dealDamage } = require("../util/combatantUtil");
+const { clearBlock, removeModifier, addModifier, dealModifierDamage } = require("../util/combatantUtil");
 const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
 const { renderRoom, updateRoomHeader } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
@@ -91,9 +91,8 @@ function setAdventure(adventure) {
 /** @type {Record<number, string[]>} key = weight, value = roomTag[] */
 const roomTypesByRarity = {
 	1: ["Treasure"],
-	3: ["Artifact Guardian"],
-	5: ["Forge", "Rest Site", "Merchant"],
-	10: ["Battle", "Event"]
+	5: ["Forge", "Rest Site", "Merchant", "Artifact Guardian"],
+	13: ["Battle", "Event"]
 };
 
 /** @param {Adventure} adventure */
@@ -303,38 +302,35 @@ function newRound(adventure, thread, lastRoundText) {
 				const critRoll = adventure.generateRandomNumber(max, "battle");
 				combatant.crit = critRoll < threshold;
 
-				// Roll Enemy Moves and Generate Dummy Moves
-				const move = new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
-					.setSpeedByCombatant(combatant);
-				if (combatant.getModifierStacks("Stun") > 0) {
-					// Dummy move for Stunned combatants
-					move.setName("Stun");
-				} else {
-					if (teamName === "enemy") {
-						if (combatant.archetype !== "@{clone}") {
-							const enemyTemplate = getEnemy(combatant.archetype);
-							let actionName = combatant.nextAction;
-							if (actionName === "random") {
-								const actionPool = Object.keys(enemyTemplate.actions);
-								actionName = actionPool[adventure.generateRandomNumber(actionPool.length, "battle")];
-							}
-							if (actionName === "a random protocol") {
-								const actionPool = Object.keys(enemyTemplate.actions).filter(actionName => actionName.includes("Protocol"));
-								actionName = actionPool[adventure.generateRandomNumber(actionPool.length, "battle")];
-							}
-							move.setName(actionName);
-							move.setPriority(enemyTemplate.actions[move.name].priority)
-							enemyTemplate.actions[actionName].selector(combatant, adventure).forEach(({ team, index }) => {
-								move.addTarget(new CombatantReference(team, index));
-							})
-							combatant.nextAction = enemyTemplate.actions[actionName].next(actionName);
-						} else {
-							move.setName("@{clone}");
+				// Roll Enemy Moves
+				if (teamName === "enemy") {
+					if (combatant.archetype !== "@{clone}") {
+						const enemyTemplate = getEnemy(combatant.archetype);
+						let actionName = combatant.nextAction;
+						if (actionName === "random") {
+							const actionPool = Object.keys(enemyTemplate.actions);
+							actionName = actionPool[adventure.generateRandomNumber(actionPool.length, "battle")];
 						}
+						if (actionName === "a random protocol") {
+							const actionPool = Object.keys(enemyTemplate.actions).filter(actionName => actionName.includes("Protocol"));
+							actionName = actionPool[adventure.generateRandomNumber(actionPool.length, "battle")];
+						}
+						const move = new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
+							.setName(actionName)
+							.setSpeedByCombatant(combatant)
+							.setPriority(enemyTemplate.actions[move.name].priority);
+						enemyTemplate.actions[actionName].selector(combatant, adventure).forEach(({ team, index }) => {
+							move.addTarget(new CombatantReference(team, index));
+						});
+						adventure.room.moves.push(move);
+						combatant.nextAction = enemyTemplate.actions[actionName].next(actionName);
+					} else {
+						adventure.room.moves.push(
+							new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
+								.setName("@{clone}")
+								.setSpeedByCombatant(combatant)
+						);
 					}
-				}
-				if (move.name) {
-					adventure.room.moves.push(move);
 				}
 
 				// Decrement Modifiers
@@ -374,7 +370,7 @@ function resolveMove(move, adventure) {
 	}
 
 	let moveText = `**${user.getName(adventure.room.enemyIdMap)}** `;
-	if (move.name !== "Stun" && user.getModifierStacks("Stun") < 1) {
+	if (!user.isStunned) {
 		if (move.isCrit) {
 			moveText = `💥${moveText}`;
 		}
@@ -440,7 +436,6 @@ function resolveMove(move, adventure) {
 
 		moveText += `used ${move.name}. ${resultText}${breakText}`;
 	} else {
-		removeModifier(user, { name: "Stun", stacks: "all" });
 		moveText = `💫 ${moveText} is Stunned!`;
 	}
 
@@ -455,7 +450,7 @@ function resolveMove(move, adventure) {
 
 	const regenStacks = user.getModifierStacks("Regen");
 	if (poisonDamage) {
-		moveText += ` ${dealDamage([user], null, poisonDamage, true, "Poison", adventure)}`;
+		moveText += ` ${dealModifierDamage([user], poisonDamage, "Poison", adventure)}`;
 	} else if (regenStacks) {
 		moveText += ` ${gainHealth(user, regenStacks * 10, adventure)}`;
 	}
@@ -495,36 +490,14 @@ function endRound(adventure, thread) {
 	for (const move of adventure.room.moves) {
 		lastRoundText += resolveMove(move, adventure);
 
-		// Check for end of combat
-		if (adventure.lives <= 0) {
-			adventure.room.round++;
-			return thread.send(completeAdventure(adventure, thread, "defeat", lastRoundText));
-		}
-
-		if (adventure.room.enemies.every(enemy => enemy.hp === 0)) {
-			if (adventure.depth === getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
-				return thread.send(completeAdventure(adventure, thread, "success", lastRoundText));
-			}
-
-			// Gear drops
-			const gearThreshold = 1;
-			const gearMax = 16;
-			if (adventure.generateRandomNumber(gearMax, "general") < gearThreshold) {
-				const tier = rollGearTier(adventure);
-				const droppedGear = rollGear(tier, adventure);
-				adventure.addResource(droppedGear, "gear", "loot", 1);
-			}
-
-			// Item drops
-			const itemThreshold = 1;
-			const itemMax = 8;
-			if (adventure.generateRandomNumber(itemMax, "general") < itemThreshold) {
-				adventure.addResource(rollItem(adventure), "item", "loot", 1);
-			}
-
-			return thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
-				adventure.messageIds.battleRound = message.id;
-			});
+		const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);
+		if (payload) {
+			thread.send(payload).then(message => {
+				if (type === "endCombat") {
+					adventure.messageIds.battleRound = message.id;
+				}
+			})
+			return;
 		}
 
 		// remove Slow and Quicken
@@ -533,7 +506,77 @@ function endRound(adventure, thread) {
 		removeModifier(moveUser, { name: "Quicken", stacks: 1, force: true });
 	}
 	adventure.room.moves = [];
+
+	/** @type {Combatant[]} */
+	const combatants = adventure.delvers.concat(adventure.room.enemies);
+	for (const combatant of combatants) {
+		if (combatant.isStunned) {
+			combatant.isStunned = false;
+			combatant.stagger = 0;
+		} else if (combatant.stagger >= combatant.poise) {
+			combatant.isStunned = true;
+
+			if ("Progress" in combatant.modifiers) {
+				combatant.modifiers.Progress = Math.ceil(combatant.getModifierStacks("Progress") * 0.8);
+			}
+
+			if ("Frail" in combatant.modifiers) {
+				lastRoundText += dealModifierDamage([combatant], combatant.modifiers.Frail * 25, "Frail", adventure);
+				removeModifier(combatant, { name: "Frail", stacks: "all" });
+
+				const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);
+				if (payload) {
+					thread.send(payload).then(message => {
+						if (type === "endCombat") {
+							adventure.messageIds.battleRound = message.id;
+						}
+					})
+					return;
+				}
+			}
+		} else {
+			combatant.addStagger(-1);
+		}
+	}
+
 	newRound(adventure, thread, lastRoundText);
+}
+
+/**
+ * @param {Adventure} adventure
+ * @param {ThreadChannel} thread
+ * @param {string} lastRoundText
+ */
+function checkEndCombat(adventure, thread, lastRoundText) {
+	if (adventure.lives <= 0) {
+		adventure.room.round++;
+		return { payload: completeAdventure(adventure, thread, "defeat", lastRoundText), type: "adventureDefeat" };
+	}
+
+	if (adventure.room.enemies.every(enemy => enemy.hp === 0)) {
+		if (adventure.depth === getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
+			return { payload: completeAdventure(adventure, thread, "success", lastRoundText), type: "adventureSuccess" };
+		}
+
+		// Gear drops
+		const gearThreshold = 1;
+		const gearMax = 16;
+		if (adventure.generateRandomNumber(gearMax, "general") < gearThreshold) {
+			const tier = rollGearTier(adventure);
+			const droppedGear = rollGear(tier, adventure);
+			adventure.addResource(droppedGear, "gear", "loot", 1);
+		}
+
+		// Item drops
+		const itemThreshold = 1;
+		const itemMax = 8;
+		if (adventure.generateRandomNumber(itemMax, "general") < itemThreshold) {
+			adventure.addResource(rollItem(adventure), "item", "loot", 1);
+		}
+
+		return { payload: renderRoom(adventure, thread, lastRoundText), type: "endCombat" };
+	}
+	return { type: "continueCombat" };
 }
 
 /** The round ends when all combatants have readied all their moves

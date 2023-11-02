@@ -10,11 +10,11 @@ module.exports = new GearTemplate("Refreshing Breeze",
 	"Wind",
 	200,
 	needsLivingTargets((targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger] } = module.exports;
+		let { element } = module.exports;
 		const resultTexts = [];
 		targets.forEach(target => {
 			if (user.element === element) {
-				removeModifier(target, elementStagger);
+				target.addStagger("elementMatchFoe");
 			}
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			const removedDebuffs = [];
@@ -48,5 +48,4 @@ module.exports = new GearTemplate("Refreshing Breeze",
 		}
 	})
 ).setTargetingTags({ target: "all", team: "delver" })
-	.setModifiers([{ name: "Stagger", stacks: 1 }])
 	.setDurability(15);

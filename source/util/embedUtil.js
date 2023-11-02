@@ -26,7 +26,7 @@ const potlTips = [
 	"Combatants lose their next turn (Stun) when their Stagger reaches their Poise.",
 	"Using items has priority.",
 	"Gear that matches your element removes 1 Stagger on allies.",
-	"Gear that matches your element adds 1 Stagger on foes.",
+	"Gear that matches your element adds 2 Stagger on foes.",
 	"Combatant speed varies every round.",
 	"Damage is capped to 500 in one attack without any Power Up."
 ];
@@ -321,7 +321,7 @@ function inspectSelfPayload(delver, gearCapacity) {
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.getName()} the ${delver.archetype}`)
-		.setDescription(`${generateTextBar(delver.hp, delver.maxHP, 11)} ${delver.hp}/${delver.maxHP} HP\nYour ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.`);
+		.setDescription(`${generateTextBar(delver.hp, delver.maxHP, 11)} ${delver.hp}/${delver.maxHP} HP\nStagger: ${generateTextBar(delver.stagger, delver.stagger, delver.stagger)}\nYour ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.`);
 	if (delver.block > 0) {
 		embed.addFields({ name: "Block", value: delver.block.toString() })
 	}

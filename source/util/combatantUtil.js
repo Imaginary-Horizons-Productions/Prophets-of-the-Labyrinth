@@ -7,7 +7,7 @@ const { getWeaknesses, getResistances, elementsList } = require("./elementUtil.j
  * @param {Combatant} user
  * @param {number} damage
  * @param {boolean} isUnblockable
- * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "Poison"} element
+ * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} element
  * @param {Adventure} adventure
  */
 function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
@@ -17,8 +17,8 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 		const targetName = target.getName(adventure.room.enemyIdMap);
 		if (!(`${element} Absorb` in target.modifiers)) {
 			if (!("Evade" in target.modifiers) || isUnblockable) {
-				const limitBreak = user?.modifiers["Power Up"] || 0;
-				let pendingDamage = damage + limitBreak;
+				const powerUp = user?.modifiers["Power Up"] || 0;
+				let pendingDamage = damage + powerUp;
 				if ("Exposed" in target.modifiers) {
 					pendingDamage *= 1.5;
 				}
@@ -43,11 +43,11 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 						pendingDamage = 0;
 					}
 				}
-				const damageCap = 500 + limitBreak;
+				const damageCap = 500 + powerUp;
 				pendingDamage = Math.min(pendingDamage, damageCap);
 				target.hp -= pendingDamage;
-				let damageText = ` **${targetName}** takes ${pendingDamage} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${element === "Poison" ? " from Poison" : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}`;
-				if (element !== "Poison" && pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
+				let damageText = ` **${targetName}** takes ${pendingDamage} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}`;
+				if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
 					adventure.gainGold(Math.floor(pendingDamage / 10));
 					damageText += ` Gold scatters about the room.`;
 				}
@@ -70,7 +70,44 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 			resultTexts.push(` ${gainHealth(target, damage, adventure)}`);
 		}
 	}
-	if (adventure.lives < previousLifeCount) { //TODO move this logic into move resolution
+	if (adventure.lives < previousLifeCount) {
+		if (adventure.lives === 1) {
+			resultTexts.push(`***${adventure.lives} life remains.***`);
+		} else {
+			resultTexts.push(`***${adventure.lives} lives remain.***`);
+		}
+	}
+	return resultTexts.join(" ");
+}
+
+/** modifier damage is unblockable, doesn't have an element, and doesn't interact with other modifiers (eg Exposed & Curse of Midas)
+ * @param {Combatant[]} targets
+ * @param {number} damage
+ * @param {"Poison" | "Frail"} modifier
+ * @param {Adventure} adventure
+ */
+function dealModifierDamage(targets, damage, modifier, adventure) {
+	const previousLifeCount = adventure.lives;
+	const resultTexts = [];
+	for (const target of targets) {
+		const targetName = target.getName(adventure.room.enemyIdMap);
+		const pendingDamage = Math.min(damage, 500);
+		target.hp -= pendingDamage;
+		let damageText = ` **${targetName}** takes ${pendingDamage} damage from ${modifier}!`;
+		if (target.hp <= 0) {
+			if (target.team === "delver") {
+				target.hp = target.maxHP;
+				adventure.lives = Math.max(adventure.lives - 1, 0);
+				damageText += ` *${targetName} has died*${adventure.lives > 0 ? " and been revived" : ""}.`;
+			} else {
+				target.hp = 0;
+				damageText += ` *${targetName} has died*.`;
+			}
+		}
+		resultTexts.push(damageText);
+	}
+
+	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives === 1) {
 			resultTexts.push(`***${adventure.lives} life remains.***`);
 		} else {
@@ -174,15 +211,6 @@ function addModifier(combatant, { name: modifier, stacks: pendingStacks, force =
 			}
 		}
 
-		// Trigger threshold: Stagger to Stun
-		if (combatant.getModifierStacks("Stagger") >= combatant.poise) {
-			combatant.modifiers.Stagger -= combatant.poise;
-			combatant.modifiers.Stun = 1;
-			if ("Progress" in combatant.modifiers) {
-				combatant.modifiers.Progress = Math.ceil(combatant.getModifierStacks("Progress") * 0.8);
-			}
-		}
-
 		// Trigger threshold: Progress
 		if (combatant.getModifierStacks("Progress") >= 100) {
 			combatant.modifiers.Progress = 0;
@@ -221,15 +249,12 @@ function removeModifier(combatant, { name: modifier, stacks, force = false }) {
 
 /** Create a string containing the combatant's current modifiers
  * @param {Combatant} combatant
- * @param {boolean} includeStagger
  * @param {Adventure} adventure
  */
-function modifiersToString(combatant, includeStagger, adventure) {
+function modifiersToString(combatant, adventure) {
 	let modifiersText = "";
 	for (const modifier in combatant.modifiers) {
-		if (includeStagger || modifier !== "Stagger") {
-			modifiersText += `*${modifier}${isNonStacking(modifier) ? "" : ` x ${combatant.modifiers[modifier]}`}* - ${getModifierDescription(modifier, combatant, adventure)}\n`;
-		}
+		modifiersText += `*${modifier}${isNonStacking(modifier) ? "" : ` x ${combatant.modifiers[modifier]}`}* - ${getModifierDescription(modifier, combatant, adventure)}\n`;
 	}
 	return modifiersText;
 }
@@ -250,6 +275,7 @@ function getCombatantWeaknesses(combatant) {
 
 module.exports = {
 	dealDamage,
+	dealModifierDamage,
 	payHP,
 	gainHealth,
 	addBlock,

@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { dealDamage, addModifier, removeModifier } = require("../util/combatantUtil");
+const { dealDamage, addModifier } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 
@@ -17,7 +17,7 @@ module.exports = new EnemyTemplate("Mechabee",
 	"Darkness",
 	200,
 	100,
-	"3",
+	"6",
 	0,
 	"Sting",
 	false
@@ -26,7 +26,7 @@ module.exports = new EnemyTemplate("Mechabee",
 	element: "Darkness",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
-		addModifier(target, { name: "Stagger", stacks: 1 });
+		target.addStagger("elementMatchFoe");
 		if (isCrit) {
 			addModifier(target, { name: "Poison", stacks: 4 });
 		} else {
@@ -46,7 +46,7 @@ module.exports = new EnemyTemplate("Mechabee",
 			stacks *= 3;
 		}
 		addModifier(user, { name: "Evade", stacks });
-		removeModifier(user, { name: "Stagger", stacks: 1 });
+		user.addStagger("elementMatchAlly");
 		return "It's prepared to Evade.";
 	},
 	selector: selectSelf,
@@ -72,7 +72,7 @@ module.exports = new EnemyTemplate("Mechabee",
 		}
 		user.hp = 0;
 		targets.map(target => {
-			addModifier(target, { name: "Stagger", stacks: 1 });
+			target.addStagger("elementMatchFoe");
 		})
 
 		return dealDamage(targets, user, damage, false, user.element, adventure);

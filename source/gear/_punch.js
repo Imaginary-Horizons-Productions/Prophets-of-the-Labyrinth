@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents.js');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Punch",
 	"Strike a foe for @{damage} @{element} damage",
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Punch",
 			pendingDamage *= critBonus;
 		}
 		if (totalStagger > 0) {
-			addModifier(target, { name: "Stagger", stacks: totalStagger });
+			target.addStagger(totalStagger);
 		}
 		return dealDamage([target], user, pendingDamage, false, pendingElement, adventure);
 	})

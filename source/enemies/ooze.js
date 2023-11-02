@@ -6,7 +6,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	"@{adventureOpposite}",
 	200,
 	90,
-	"n+2",
+	"n*2+4",
 	0,
 	"Goop Spray",
 	false
@@ -17,7 +17,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	effect: ([target], user, isCrit, adventure) => {
 		if (isCrit) {
 			addModifier(target, { name: "Slow", stacks: 3 });
-			addModifier(target, { name: "Stagger", stacks: 1 });
+			target.addStagger("elementMatchFoe");
 		} else {
 			addModifier(target, { name: "Slow", stacks: 2 });
 		}
@@ -34,7 +34,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 		if (isCrit) {
 			damage *= 2;
 		}
-		addModifier(target, { name: "Stagger", stacks: 1 });
+		target.addStagger("elementMatchFoe");
 		return dealDamage([target], user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,

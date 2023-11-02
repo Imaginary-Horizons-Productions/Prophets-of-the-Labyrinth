@@ -6,7 +6,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	"@{adventure}",
 	200,
 	90,
-	"n+2",
+	"n*2+4",
 	0,
 	"Tackle",
 	false
@@ -19,7 +19,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 		if (isCrit) {
 			damage *= 2;
 		}
-		addModifier(target, { name: "Stagger", stacks: 1 });
+		target.addStagger("elementMatchFoe");
 		return dealDamage([target], user, damage, false, adventure.element, adventure);
 	},
 	selector: selectRandomFoe,
@@ -31,7 +31,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	effect: ([target], user, isCrit, adventure) => {
 		if (isCrit) {
 			addModifier(target, { name: "Slow", stacks: 3 });
-			addModifier(target, { name: "Stagger", stacks: 1 });
+			target.addStagger("elementMatchFoe");
 		} else {
 			addModifier(target, { name: "Slow", stacks: 2 });
 		}

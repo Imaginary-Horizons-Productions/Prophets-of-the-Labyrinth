@@ -1,18 +1,18 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents');
-const { addBlock, removeModifier, addModifier } = require('../util/combatantUtil');
+const { addBlock, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Reinforced Buckler",
-	"Grant @{block} block to an ally and yourself and gain @{mod1Stacks} @{mod1}",
+	"Grant @{block} block to an ally and yourself and gain @{mod0Stacks} @{mod0}",
 	"Block x@{critBonus}",
 	"Armor",
 	"Earth",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, powerUp], block, critBonus } = module.exports;
+		let { element, modifiers: [powerUp], block, critBonus } = module.exports;
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
-			removeModifier(target, elementStagger);
+			user.addStagger("elementMatchAlly");
+			target.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
 			block *= critBonus;
@@ -25,6 +25,6 @@ module.exports = new GearTemplate("Reinforced Buckler",
 	})
 ).setTargetingTags({ target: "single", team: "delver" })
 	.setSidegrades("Devoted Buckler", "Guarding Buckler")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 })
+	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)
 	.setBlock(75);

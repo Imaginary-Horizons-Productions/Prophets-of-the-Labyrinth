@@ -16,10 +16,12 @@ class Combatant {
 	maxHP = 300;
 	speed = 100;
 	critBonus = 0;
-	poise = 3;
+	poise = 6;
 
 	hp = 300;
 	block = 0;
+	stagger = 0;
+	isStunned = false;
 	crit = false;
 	roundSpeed = 0;
 	/** @type {{[modifierName: string]: number}} */
@@ -47,6 +49,21 @@ class Combatant {
 			totalSpeed += quickenStacks * 5;
 		}
 		return Math.ceil(totalSpeed);
+	}
+
+	/** add Stagger, negative values allowed
+	 * @param {number | "elementMatchAlly" | "elementMatchFoe"} value
+	 */
+	addStagger(value) {
+		if (!this.isStunned) {
+			let pendingStagger = value;
+			if (value === "elementMatchAlly") {
+				pendingStagger = -1;
+			} else if (value === "elementMatchFoe") {
+				pendingStagger = 2;
+			}
+			this.stagger = Math.min(Math.max(this.stagger + pendingStagger, 0), this.poise);
+		}
 	}
 }
 
