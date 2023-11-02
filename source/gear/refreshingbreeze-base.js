@@ -14,7 +14,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 		const resultTexts = [];
 		targets.forEach(target => {
 			if (user.element === element) {
-				target.addStagger("elementMatchFoe");
+				target.addStagger("elementMatchAlly");
 			}
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			const removedDebuffs = [];
