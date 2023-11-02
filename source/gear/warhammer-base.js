@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Warhammer",
 	"Strike a foe for @{damage} (+@{bonus} if foe is currently stunned) @{element} damage",
@@ -9,12 +9,12 @@ module.exports = new GearTemplate("Warhammer",
 	"Earth",
 	200,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], damage, bonus, critBonus } = module.exports;
-		if (target.getModifierStacks("Stun") > 0) {
+		let { element, damage, bonus, critBonus } = module.exports;
+		if (target.isStunned) {
 			damage += bonus;
 		}
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			damage *= critBonus;
@@ -23,7 +23,6 @@ module.exports = new GearTemplate("Warhammer",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setUpgrades("Piercing Warhammer", "Reactive Warhammer", "Slowing Warhammer")
-	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setDamage(75)
 	.setBonus(75); // damage

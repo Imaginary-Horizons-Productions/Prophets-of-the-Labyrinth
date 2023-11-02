@@ -3,24 +3,28 @@ const { addModifier, removeModifier } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Iron Fist Stance",
 	"Increase Punch damage by @{bonus} and change its type to yours (exit other stances)",
-	"Gain @{mod2Stacks} @{mod2}",
+	"Inflict @{mod1Stacks} @{mod1} on all enemies",
 	"Technique",
 	"Light",
 	200,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, ironFistStance, powerUp] } = module.exports;
+		let { element, modifiers: [ironFistStance, frail] } = module.exports;
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			addModifier(user, powerUp);
+			adventure.room.enemies.forEach(enemy => {
+				if (enemy.hp > 0) {
+					addModifier(enemy, frail);
+				}
+			})
 		}
 		removeModifier(user, { name: "Floating Mist Stance", stacks: "all", force: true });
 		addModifier(user, ironFistStance);
-		return `${user.getName(adventure.room.enemyIdMap)} enters Iron Fist Stance${isCrit ? " and is Powered Up" : ""}.`;
+		return `${user.getName(adventure.room.enemyIdMap)} enters Iron Fist Stance${isCrit ? " and enemies become Frail" : ""}.`;
 	}
 ).setTargetingTags({ target: "self", team: "any" })
 	.setUpgrades("Organic Iron Fist Stance")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Iron Fist Stance", stacks: 1 }, { name: "Power Up", stacks: 25 })
+	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
 	.setBonus(45) // Punch damage boost
 	.setDurability(10);

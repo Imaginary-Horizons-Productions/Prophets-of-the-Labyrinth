@@ -1,6 +1,10 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth Version 0.13.0:
 - Combined Barrier and Vigilance Charm
+- Doubled poise and added stagger, left per round fall-off and matching element stagger cure at 1
+- Combatant stagger can no longer be modified while the combatant is stunned
+- New Debuff: Frail - Deals damage when the bearer is Stunned
+- Iron Fist Stance crits now apply Frail to all enemies instead of granting the user Power Up
 - Some enemies's poise now scales with party size
 - Tweaked room rarities, largely to make Battles and Events more common
 ## Prophets of the Labyrinth Version 0.12.0:

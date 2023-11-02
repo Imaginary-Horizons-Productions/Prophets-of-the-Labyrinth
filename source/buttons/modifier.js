@@ -42,7 +42,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					new EmbedBuilder().setColor(Colors.LightGrey)
 						.setAuthor(randomAuthorTip())
 						.setTitle("All Modifiers")
-						.setDescription(modifiersToString(delver, true, adventure))
+						.setDescription(modifiersToString(delver, adventure))
 				],
 				ephemeral: true
 			});

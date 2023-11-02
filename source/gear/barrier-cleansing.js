@@ -3,15 +3,15 @@ const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { addBlock, removeModifier, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Cleansing Barrier",
-	"Gain @{block} block and @{mod1Stacks} @{mod1} and cure a random debuff",
-	"@{mod1} x@{critBonus}",
+	"Gain @{block} block and @{mod0Stacks} @{mod0} and cure a random debuff",
+	"@{mod0} x@{critBonus}",
 	"Spell",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, vigilance, critVigilance], block } = module.exports;
+		let { element, modifiers: [vigilance, critVigilance], block } = module.exports;
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
 			addModifier(user, vigilance);
@@ -30,6 +30,6 @@ module.exports = new GearTemplate("Cleansing Barrier",
 	}
 ).setTargetingTags({ target: "self", team: "any" })
 	.setSidegrades("Devoted Barrier", "Long Barrier")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Vigilance", stacks: 1 }, { name: "Vigilance", stacks: 2 })
+	.setModifiers({ name: "Vigilance", stacks: 1 }, { name: "Vigilance", stacks: 2 })
 	.setDurability(5)
 	.setBlock(999);

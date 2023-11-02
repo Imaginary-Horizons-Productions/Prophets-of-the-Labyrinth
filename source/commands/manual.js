@@ -67,6 +67,9 @@ const subcommands = [
 		]
 	}
 ];
+
+const matchingElementStaggerField = { name: "Matching Element Stagger", value: "When a combatant makes a move that matches their element, their target gets a bonus effect. If the target is an ally, they are relieved of 1 Stagger. If the target is an enemy, they suffer 2 additional Stagger. Check the page on Stagger to learn more about Stagger and Stun." };
+
 module.exports = new CommandWrapper(mainId, "Get information about how to play or game entities", null, false, true, 3000, options, subcommands,
 	(interaction) => {
 		switch (interaction.options.getSubcommand()) {
@@ -97,7 +100,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 											const weaknesses = getWeaknesses(element);
 											const resistances = getResistances(element);
 											return { name: `${getEmoji(element)} ${element}`, value: `Opposite: ${getEmoji(getOpposite(element))}\nWeaknesses: ${weaknesses.length > 0 ? weaknesses.map(weakness => getEmoji(weakness)).join(" ") : "(none)"}\nResistances: ${resistances.length > 0 ? resistances.map(resistance => getEmoji(resistance)).join(" ") : "(none)"}` }
-										}).concat({ name: "Matching Element Stagger", value: "When a combatant makes a move that matches their element, their target gets a bonus effect. If the target is an ally, they are relieved of 1 Stagger. If the target is an enemy, they suffer 1 additional Stagger. Check the page on Stagger to learn more about Stagger and Stun." })
+										}).concat(matchingElementStaggerField)
 									)
 							],
 							ephemeral: true
@@ -107,8 +110,8 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 						interaction.reply({
 							embeds: [
 								embedTemplate().setTitle("Stagger")
-									.setDescription("Stagger is a modifier (that is neither a buff nor debuff) that stacks up on a combatant eventually leading to the combatant getting Stunned (also not a buff or debuff). A stunned combatant misses their next turn, even if they had readied a move for that turn. Stagger promotes to Stun when a combatant's number of stacks exceeds their poise (default 3 for delvers, varies for enemies).")
-									.addFields({ name: "Matching Element Stagger", value: "When a combatant makes a move that matches their element, their target gets a bonus effect. If the target is an ally, they are relieved of 1 Stagger. If the target is an enemy, they suffer 1 additional Stagger. Check the page on Elements to learn more about move and combatant elements." })
+									.setDescription("Stagger stacks up on combatants when moves are used against them, leading to the combatant getting Stunned. Stagger promotes to Stun between rounds when a combatant's Stagger reaches their Poise (default 6 for delvers, varies for enemies). A stunned combatant misses their turn next round.")
+									.addFields(matchingElementStaggerField)
 							],
 							ephemeral: true
 						});

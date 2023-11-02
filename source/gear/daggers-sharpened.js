@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents.js');
-const { addModifier, dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sharpened Daggers",
 	"Strike a foe for @{damage} @{element} damage",
@@ -9,9 +9,9 @@ module.exports = new GearTemplate("Sharpened Daggers",
 	"Wind",
 	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], damage, critBonus } = module.exports;
+		let { element, damage, critBonus } = module.exports;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			damage *= critBonus;
@@ -20,7 +20,6 @@ module.exports = new GearTemplate("Sharpened Daggers",
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
 	.setSidegrades("Sweeping Daggers", "Slowing Daggers")
-	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setCritBonus(3)
 	.setDamage(100);

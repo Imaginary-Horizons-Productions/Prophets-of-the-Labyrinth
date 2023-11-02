@@ -1,12 +1,12 @@
 const { EnemyTemplate } = require("../classes");
-const { addBlock, addModifier, removeModifier, dealDamage } = require("../util/combatantUtil");
+const { addBlock, addModifier, dealDamage } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf, nextRandom } = require("../shared/actionComponents.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",
 	"Earth",
 	350,
 	85,
-	"3+n*0.5",
+	"6+n",
 	0,
 	"random",
 	false
@@ -19,7 +19,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		if (isCrit) {
 			damage *= 2;
 		}
-		addModifier(target, { name: "Stagger", stacks: 1 });
+		target.addStagger("elementMatchFoe");
 		return dealDamage([target], user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
@@ -32,7 +32,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		addBlock(user, 150);
 		if (isCrit) {
 			addModifier(user, { name: "Power Up", stacks: 50 });
-			removeModifier(user, { name: "Stagger", stacks: 1 });
+			user.addStagger("elementMatchAlly");
 		} else {
 			addModifier(user, { name: "Power Up", stacks: 25 });
 		}

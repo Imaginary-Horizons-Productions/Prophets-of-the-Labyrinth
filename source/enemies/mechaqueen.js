@@ -20,7 +20,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	"Darkness",
 	500,
 	100,
-	"n+1",
+	"n*2+2",
 	0,
 	"a random protocol",
 	true
@@ -90,7 +90,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	element: "Darkness",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
-		addModifier(target, { name: "Stagger", stacks: 1 });
+		target.addStagger("elementMatchFoe");
 		if (isCrit) {
 			addModifier(target, { name: "Poison", stacks: 5 });
 		} else {
