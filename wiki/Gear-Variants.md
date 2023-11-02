@@ -219,6 +219,12 @@ Increased damage
 - Daggers (Wind)
 - Sickle (Water)
 
+### Shattering
+Adds Frail to target
+
+**Available on**
+- Sabotage Kit (Earth)
+
 ### Slowing
 Adds Slow to target
 

@@ -82,6 +82,7 @@ for (const file of [
 	"refreshingbreeze-base.js",
 	"sabotagekit-base.js",
 	"sabotagekit-long.js",
+	"sabotagekit-shattering.js",
 	"scutum-base.js",
 	"scutum-guarding.js",
 	"scutum-sweeping.js",

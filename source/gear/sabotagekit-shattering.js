@@ -1,16 +1,16 @@
-const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
+const { GearTemplate } = require('../classes/index.js');
+const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { addModifier, getCombatantWeaknesses } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 
-module.exports = new GearTemplate("Sabotage Kit",
-	"Afflict a foe with @{mod0Stacks} @{mod0} and a random weakness",
+module.exports = new GearTemplate("Shattering Sabotage Kit",
+	"Afflict a foe with @{mod0Stacks} @{mod0}, @{mod2Stacks} @{@mod2} and a random weakness",
 	"Slow and Weakness +@{critBonus}",
 	"Weapon",
 	"Earth",
 	200,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [slow, critSlow] } = module.exports;
+		let { element, modifiers: [slow, critSlow, frail] } = module.exports;
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 		const weaknessPool = elementsList(ineligibleWeaknesses);
 		const rolledWeakness = `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`;
@@ -28,10 +28,11 @@ module.exports = new GearTemplate("Sabotage Kit",
 				addModifier(target, { name: rolledWeakness, stacks: 2 });
 			}
 		}
-		return `${target.getName(adventure.room.enemyIdMap)} is Slowed${weaknessPool.length > 0 ? `, and gains ${rolledWeakness}` : ""}.`;
+		addModifier(target, frail);
+		return `${target.getName(adventure.room.enemyIdMap)} is Slowed${weaknessPool.length > 0 ? `, becomes Frail, and gains ${rolledWeakness}` : " and becomes Frail"}.`;
 	})
-).setUpgrades("Long Sabotage Kit", "Shattering Sabotage Kit")
+).setSidegrades("Long Sabotage Kit")
 	.setTargetingTags({ target: "single", team: "enemy" })
-	.setModifiers({ name: "Slow", stacks: 2 }, { name: "Slow", stacks: 4 })
+	.setModifiers({ name: "Slow", stacks: 2 }, { name: "Slow", stacks: 4 }, { name: "Frail", stacks: 4 })
 	.setDurability(15)
 	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" });

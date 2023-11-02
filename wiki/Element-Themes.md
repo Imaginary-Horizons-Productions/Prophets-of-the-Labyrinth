@@ -164,6 +164,7 @@ Archetypes:
 - Reactive
 - Reinforced
 - Sharpened
+- Shattering
 - Taunting
 - Thick
 - Tormenting
