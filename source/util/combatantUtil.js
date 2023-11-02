@@ -3,6 +3,26 @@ const { getInverse, isNonStacking, getModifierDescription, isBuff, isDebuff } = 
 const { getWeaknesses, getResistances, elementsList } = require("./elementUtil.js");
 
 /**
+ * @param {Combatant} target
+ * @param {Adventure} adventure
+ */
+function downedCheck(target, adventure) {
+	if (target.hp <= 0) {
+		const targetName = target.getName(adventure.room.enemyIdMap);
+		if (target.team === "delver") {
+			target.hp = target.maxHP;
+			adventure.lives = Math.max(adventure.lives - 1, 0);
+			return ` *${targetName} was downed*${adventure.lives > 0 ? " and been revived" : ""}.`;
+		} else {
+			target.hp = 0;
+			return ` *${targetName} was downed*.`;
+		}
+	} else {
+		return "";
+	}
+}
+
+/**
  * @param {Combatant[]} targets
  * @param {Combatant} user
  * @param {number} damage
@@ -51,16 +71,7 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 					adventure.gainGold(Math.floor(pendingDamage / 10));
 					damageText += ` Gold scatters about the room.`;
 				}
-				if (target.hp <= 0) {
-					if (target.team === "delver") {
-						target.hp = target.maxHP;
-						adventure.lives = Math.max(adventure.lives - 1, 0);
-						damageText += ` *${targetName} has died*${adventure.lives > 0 ? " and been revived" : ""}.`;
-					} else {
-						target.hp = 0;
-						damageText += ` *${targetName} has died*.`;
-					}
-				}
+				damageText += downedCheck(target, adventure);
 				resultTexts.push(damageText);
 			} else {
 				removeModifier(target, { name: "Evade", stacks: 1, force: true });
@@ -71,10 +82,12 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 		}
 	}
 	if (adventure.lives < previousLifeCount) {
-		if (adventure.lives === 1) {
+		if (adventure.lives > 1) {
+			resultTexts.push(`***${adventure.lives} lives remain.***`);
+		} else if (adventure.lives === 1) {
 			resultTexts.push(`***${adventure.lives} life remains.***`);
 		} else {
-			resultTexts.push(`***${adventure.lives} lives remain.***`);
+			resultTexts.push(`***GAME OVER***`);
 		}
 	}
 	return resultTexts.join(" ");
@@ -93,25 +106,16 @@ function dealModifierDamage(targets, damage, modifier, adventure) {
 		const targetName = target.getName(adventure.room.enemyIdMap);
 		const pendingDamage = Math.min(damage, 500);
 		target.hp -= pendingDamage;
-		let damageText = ` **${targetName}** takes ${pendingDamage} damage from ${modifier}!`;
-		if (target.hp <= 0) {
-			if (target.team === "delver") {
-				target.hp = target.maxHP;
-				adventure.lives = Math.max(adventure.lives - 1, 0);
-				damageText += ` *${targetName} has died*${adventure.lives > 0 ? " and been revived" : ""}.`;
-			} else {
-				target.hp = 0;
-				damageText += ` *${targetName} has died*.`;
-			}
-		}
-		resultTexts.push(damageText);
+		resultTexts.push(` **${targetName}** takes ${pendingDamage} damage from ${modifier}!${downedCheck(target, adventure)}`);
 	}
 
 	if (adventure.lives < previousLifeCount) {
-		if (adventure.lives === 1) {
+		if (adventure.lives > 1) {
+			resultTexts.push(`***${adventure.lives} lives remain.***`);
+		} else if (adventure.lives === 1) {
 			resultTexts.push(`***${adventure.lives} life remains.***`);
 		} else {
-			resultTexts.push(`***${adventure.lives} lives remain.***`);
+			resultTexts.push(`***GAME OVER***`);
 		}
 	}
 	return resultTexts.join(" ");
@@ -123,21 +127,17 @@ function dealModifierDamage(targets, damage, modifier, adventure) {
  * @param {Adventure} adventure
  */
 function payHP(user, damage, adventure) {
+	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
 	const userName = user.getName(adventure.room.enemyIdMap);
-	let resultText = ` **${userName}** pays ${damage} hp.`;
-	if (user.hp <= 0) {
-		if (user.team === "delver") {
-			user.hp = user.maxHP;
-			adventure.lives -= 1;
-			if (adventure.lives === 1) {
-				resultText += ` *${userName} has died* and been revived. ***${adventure.lives} life remains.***`;
-			} else {
-				resultText += ` *${userName} has died* and been revived. ***${adventure.lives} lives remain.***`;
-			}
+	let resultText = ` **${userName}** pays ${damage} hp.${downedCheck(user, adventure)}`;
+	if (adventure.lives < previousLifeCount) {
+		if (adventure.lives > 1) {
+			resultText += `***${adventure.lives} lives remain.***`;
+		} else if (adventure.lives === 1) {
+			resultText += `***${adventure.lives} life remains.***`;
 		} else {
-			user.hp = 0;
-			resultText += ` *${userName} has died*.`;
+			resultText += `***GAME OVER***`;
 		}
 	}
 	return resultText;
