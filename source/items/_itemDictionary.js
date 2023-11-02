@@ -13,6 +13,7 @@ for (const file of [
 	"healthpotion.js",
 	"inkypotion.js",
 	"oblivionsalt.js",
+	"placebo.js",
 	"quickpepper.js",
 	"regenroot.js",
 	"repairkit.js",

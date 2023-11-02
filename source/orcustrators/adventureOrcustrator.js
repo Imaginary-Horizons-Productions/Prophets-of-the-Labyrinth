@@ -419,7 +419,14 @@ function resolveMove(move, adventure) {
 				moveText = `${getEmoji(getGearProperty(move.name, "element"))} ${moveText}`;
 				break;
 			case "item":
-				const { effect: itemEffect, element } = getItem(move.name);
+				let isPlacebo = false;
+				if (move.userReference.team === "delver") {
+					const placeboDillution = adventure.getChallengeIntensity("Unlabelled Placebos");
+					if (placeboDillution > 0) {
+						isPlacebo = (placeboDillution - 1) === adventure.generateRandomNumber(placeboDillution, "battle");
+					}
+				}
+				const { effect: itemEffect, element } = getItem(isPlacebo ? "Placebo" : move.name);
 				effect = itemEffect;
 				if (move.userReference.team !== "enemy") {
 					adventure.items[move.name]--;
