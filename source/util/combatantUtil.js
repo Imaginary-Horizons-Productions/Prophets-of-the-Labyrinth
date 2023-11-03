@@ -93,32 +93,40 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 	return resultTexts.join(" ");
 }
 
+const MODIFIER_DAMAGE_PER_STACK = {
+	Poison: 10,
+	Frail: 20
+};
+
 /** modifier damage is unblockable, doesn't have an element, and doesn't interact with other modifiers (eg Exposed & Curse of Midas)
- * @param {Combatant[]} targets
- * @param {number} damage
+ * @param {Combatant} target
  * @param {"Poison" | "Frail"} modifier
  * @param {Adventure} adventure
  */
-function dealModifierDamage(targets, damage, modifier, adventure) {
+function dealModifierDamage(target, modifier, adventure) {
 	const previousLifeCount = adventure.lives;
-	const resultTexts = [];
-	for (const target of targets) {
-		const targetName = target.getName(adventure.room.enemyIdMap);
-		const pendingDamage = Math.min(damage, 500);
-		target.hp -= pendingDamage;
-		resultTexts.push(` **${targetName}** takes ${pendingDamage} damage from ${modifier}!${downedCheck(target, adventure)}`);
+	const stacks = target.getModifierStacks(modifier);
+	let pendingDamage = stacks * MODIFIER_DAMAGE_PER_STACK[modifier];
+	const funnelCount = adventure.getArtifactCount("Spiral Funnel");
+	if (target.team === "enemy" && funnelCount > 0) {
+		const funnelDamage = funnelCount * 5 * stacks;
+		pendingDamage += funnelDamage;
+		adventure.updateArtifactStat("Spiral Funnel", `Extra ${modifier} Damage`, funnelDamage);
 	}
+
+	target.hp -= pendingDamage;
+	let resultText = ` **${target.getName(adventure.room.enemyIdMap)}** takes ${pendingDamage} damage from ${modifier}!${downedCheck(target, adventure)}`;
 
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
-			resultTexts.push(`***${adventure.lives} lives remain.***`);
+			resultText += `***${adventure.lives} lives remain.***`;
 		} else if (adventure.lives === 1) {
-			resultTexts.push(`***${adventure.lives} life remains.***`);
+			resultText += `***${adventure.lives} life remains.***`;
 		} else {
-			resultTexts.push(`***GAME OVER***`);
+			resultText += `***GAME OVER***`;
 		}
 	}
-	return resultTexts.join(" ");
+	return resultText;
 }
 
 /**
