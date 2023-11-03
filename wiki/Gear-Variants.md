@@ -223,6 +223,7 @@ Increased damage
 Adds Frail to target
 
 **Available on**
+- Corrosion (Fire)
 - Sabotage Kit (Earth)
 
 ### Slowing

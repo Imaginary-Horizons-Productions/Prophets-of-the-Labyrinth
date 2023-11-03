@@ -528,7 +528,7 @@ function endRound(adventure, thread) {
 			}
 
 			if ("Frail" in combatant.modifiers) {
-				lastRoundText += dealModifierDamage([combatant], combatant.modifiers.Frail * 25, "Frail", adventure);
+				lastRoundText += dealModifierDamage([combatant], combatant.modifiers.Frail * 10, "Frail", adventure);
 				removeModifier(combatant, { name: "Frail", stacks: "all" });
 
 				const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);

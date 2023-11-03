@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 	"Slow and Weakness +@{critBonus}",
 	"Weapon",
 	"Earth",
-	200,
+	350,
 	needsLivingTargets(([target], user, isCrit, adventure) => {
 		let { element, modifiers: [slow, critSlow, frail] } = module.exports;
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
