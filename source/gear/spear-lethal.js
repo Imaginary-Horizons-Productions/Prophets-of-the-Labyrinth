@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Lethal Spear",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Lethal Spear",
 	"Weapon",
 	"Wind",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, stagger, damage, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -18,8 +17,8 @@ module.exports = new GearTemplate("Lethal Spear",
 			target.addStagger(stagger);
 		}
 		return dealDamage([target], user, damage, false, element, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Spear", "Sweeping Spear")
 	.setStagger(2)
 	.setDurability(15)

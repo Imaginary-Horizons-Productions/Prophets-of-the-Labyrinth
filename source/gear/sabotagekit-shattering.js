@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes/index.js');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { addModifier, getCombatantWeaknesses } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 
@@ -9,7 +8,7 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 	"Weapon",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [slow, critSlow, frail] } = module.exports;
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 		const weaknessPool = elementsList(ineligibleWeaknesses);
@@ -30,9 +29,9 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 		}
 		addModifier(target, frail);
 		return `${target.getName(adventure.room.enemyIdMap)} is Slowed${weaknessPool.length > 0 ? `, becomes Frail, and gains ${rolledWeakness}` : " and becomes Frail"}.`;
-	})
+	}
 ).setSidegrades("Long Sabotage Kit")
-	.setTargetingTags({ target: "single", team: "enemy" })
+	.setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setModifiers({ name: "Slow", stacks: 2 }, { name: "Slow", stacks: 4 }, { name: "Frail", stacks: 4 })
 	.setDurability(15)
 	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" });

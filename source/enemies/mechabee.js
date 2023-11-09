@@ -35,6 +35,7 @@ module.exports = new EnemyTemplate("Mechabee",
 		return dealDamage([target], user, 10, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: mechabeePattern
 }).addAction({
 	name: "Barrel Roll",
@@ -50,6 +51,7 @@ module.exports = new EnemyTemplate("Mechabee",
 		return "It's prepared to Evade.";
 	},
 	selector: selectSelf,
+	needsLivingTargets: false,
 	next: mechabeePattern
 }).addAction({
 	name: "Call for Help",
@@ -60,6 +62,7 @@ module.exports = new EnemyTemplate("Mechabee",
 		return "Another mechabee arrives.";
 	},
 	selector: selectNone,
+	needsLivingTargets: false,
 	next: mechabeePattern
 }).addAction({
 	name: "Self-Destruct",
@@ -78,5 +81,6 @@ module.exports = new EnemyTemplate("Mechabee",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
+	needsLivingTargets: false,
 	next: mechabeePattern
 });

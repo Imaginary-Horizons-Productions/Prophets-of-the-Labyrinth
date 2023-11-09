@@ -7,6 +7,7 @@ module.exports = new ItemTemplate("Salt of Oblivion",
 	"Untyped",
 	30,
 	selectSelf,
+	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier(user, { name: "Oblivious", stacks: 1 });
 		return `${user.getName(adventure.room.enemyIdMap)} gains Oblivious.`;

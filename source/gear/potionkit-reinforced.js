@@ -36,7 +36,7 @@ module.exports = new GearTemplate("Reinforced Potion Kit",
 			return `${user.getName(adventure.room.enemyIdMap)} prepares to Block and sets a batch of ${randomPotion} simmering.`;
 		}
 	}
-).setTargetingTags({ target: "none", team: "none" })
+).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })
 	.setSidegrades("Organic Potion Kit", "Urgent Potion Kit")
 	.setDurability(15)
 	.setBlock(75)

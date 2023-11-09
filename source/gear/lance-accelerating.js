@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Accelerating Lance",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Accelerating Lance",
 	"Weapon",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [quicken], damage, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -21,8 +20,8 @@ module.exports = new GearTemplate("Accelerating Lance",
 		}
 		addModifier(user, quicken);
 		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Quickened.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Unstoppable Lance", "Vigilant Lance")
 	.setModifiers({ name: "Quicken", stacks: 1 })
 	.setDurability(15)

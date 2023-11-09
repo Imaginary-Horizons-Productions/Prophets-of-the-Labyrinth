@@ -23,6 +23,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 		return dealDamage([target], user, damage, false, adventure.element, adventure);
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Goop Spray",
@@ -38,5 +39,6 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 		return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: nextRandom
 });

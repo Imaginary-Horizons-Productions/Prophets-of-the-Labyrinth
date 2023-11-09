@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { removeModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Refreshing Breeze",
@@ -9,7 +8,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 	"Spell",
 	"Wind",
 	200,
-	needsLivingTargets((targets, user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		let { element } = module.exports;
 		const resultTexts = [];
 		targets.forEach(target => {
@@ -46,6 +45,6 @@ module.exports = new GearTemplate("Refreshing Breeze",
 		} else {
 			return "No debuffs were cured on the party.";
 		}
-	})
-).setTargetingTags({ target: "all", team: "delver" })
+	}
+).setTargetingTags({ target: "all", team: "ally", needsLivingTargets: true })
 	.setDurability(15);

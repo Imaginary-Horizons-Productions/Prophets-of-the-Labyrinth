@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage, addModifier, getCombatantWeaknesses } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Pistol",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Pistol",
 	"Weapon",
 	"Earth",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { damage, critBonus, element, modifiers: [powerUp] } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -21,8 +20,8 @@ module.exports = new GearTemplate("Pistol",
 		} else {
 			return dealDamage([target], user, damage * (isCrit ? critBonus : 1), false, element, adventure);
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Double Pistol", "Duelist's Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)

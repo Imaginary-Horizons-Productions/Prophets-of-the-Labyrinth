@@ -27,8 +27,11 @@ class Combatant {
 	/** @type {{[modifierName: string]: number}} */
 	modifiers = {};
 
-	/** @returns {string} */
-	getName() { }
+	/**
+	 * @param {{[enemyName: string]: number}} enemyIdMap
+	 * @returns {string}
+	 */
+	getName(enemyIdMap) { }
 
 	/** Get the number of stacks of the given modifier the combatant has
 	 * @param {string} modifierName

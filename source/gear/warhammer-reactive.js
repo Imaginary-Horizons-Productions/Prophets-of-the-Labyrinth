@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Warhammer",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Reactive Warhammer",
 	"Weapon",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		const { element, damage, bonus, critBonus } = module.exports;
 		let pendingDamage = damage;
 		if (target.isStunned) {
@@ -28,8 +27,8 @@ module.exports = new GearTemplate("Reactive Warhammer",
 			pendingDamage *= critBonus;
 		}
 		return dealDamage([target], user, pendingDamage, false, element, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Slowing Warhammer", "Unstoppable Warhammer")
 	.setDurability(15)
 	.setDamage(75)

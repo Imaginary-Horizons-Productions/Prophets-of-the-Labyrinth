@@ -379,6 +379,7 @@ function resolveMove(move, adventure) {
 
 		let effect;
 		let breakText = "";
+		let needsLivingTargets = false;
 		switch (move.type) {
 			case "action":
 				if (move.userReference.team !== "delver") {
@@ -390,6 +391,7 @@ function resolveMove(move, adventure) {
 						parsedElement = getOpposite(adventure.element);
 					}
 					effect = action.effect;
+					needsLivingTargets = action.needsLivingTargets;
 					moveText = `${getEmoji(parsedElement)} ${moveText}`;
 				}
 				break;
@@ -418,6 +420,7 @@ function resolveMove(move, adventure) {
 						}
 					}
 				}
+				needsLivingTargets = getGearProperty(move.name, "targetingTags").needsLivingTargets;
 				moveText = `${getEmoji(getGearProperty(move.name, "element"))} ${moveText}`;
 				break;
 			case "item":
@@ -428,7 +431,7 @@ function resolveMove(move, adventure) {
 						isPlacebo = (placeboDillution - 1) === adventure.generateRandomNumber(placeboDillution, "battle");
 					}
 				}
-				const { effect: itemEffect, element } = getItem(isPlacebo ? "Placebo" : move.name);
+				const { effect: itemEffect, element, needsLivingTargets: needsLivingTargetsInput } = getItem(isPlacebo ? "Placebo" : move.name);
 				effect = itemEffect;
 				if (move.userReference.team !== "enemy") {
 					adventure.items[move.name]--;
@@ -436,14 +439,41 @@ function resolveMove(move, adventure) {
 						delete adventure.items[move.name];
 					}
 				}
+				needsLivingTargets = needsLivingTargetsInput;
 				moveText = `${getEmoji(element)} ${moveText}`;
 				break;
 		}
 
-		const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
-		const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
+		moveText += `used ${move.name}`;
+		if (needsLivingTargets) {
+			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
+			const livingTargets = [];
+			const deadTargets = [];
+			for (const target of targets) {
+				if (target.hp > 0) {
+					livingTargets.push(target);
+				} else {
+					deadTargets.push(target);
+				}
+			}
+			if (livingTargets.length > 0) {
+				const deadTargetText = "";
+				if (deadTargets.length > 0) {
+					deadTargetText += ` ${deadTargets.map(target => target.getName(adventure.room.enemyIdMap)).join(", ")} ${deadTargets === 1 ? "was" : "were"} already dead!`
+				}
 
-		moveText += `used ${move.name}. ${resultText}${breakText}`;
+				const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
+				moveText += `. ${resultText}${deadTargetText}${breakText}`;
+			} else if (targets.length === 1) {
+				moveText += `, but ${targets[0].getName(adventure.room.enemyIdMap)} was already dead!`;
+			} else {
+				moveText += `, but all targets were already dead!`;
+			}
+		} else {
+			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
+			const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
+			moveText += `. ${resultText}${breakText}`;
+		}
 	} else {
 		moveText = `💫 ${moveText} is Stunned!`;
 	}

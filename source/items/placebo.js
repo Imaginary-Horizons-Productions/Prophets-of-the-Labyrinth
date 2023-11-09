@@ -6,6 +6,7 @@ module.exports = new ItemTemplate("Placebo",
 	"Untyped",
 	30,
 	selectNone,
+	false,
 	(targets, user, isCrit, adventure) => {
 		return "But nothing happened!";
 	}

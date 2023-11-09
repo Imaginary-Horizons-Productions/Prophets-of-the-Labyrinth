@@ -7,10 +7,14 @@ module.exports = new GearTemplate("War Cry",
 	"Fire",
 	200,
 	([initialTarget], user, isCrit, adventure) => {
-		const targetSet = new Set().add(initialTarget.getName(adventure.room.enemyIdMap));
-		const targetArray = [initialTarget];
+		const targetSet = new Set();
+		const targetArray = [];
+		if (initialTarget.hp > 0) {
+			targetSet.add(initialTarget.getName(adventure.room.enemyIdMap));
+			targetArray.push(initialTarget);
+		}
 		adventure.room.enemies.forEach(enemy => {
-			if (enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
 				targetSet.add(enemy.getName(adventure.room.enemyIdMap));
 				targetArray.push(enemy);
 			}
@@ -25,13 +29,11 @@ module.exports = new GearTemplate("War Cry",
 			pendingStaggerStacks += bonus;
 		}
 		targetArray.forEach(target => {
-			if (target.hp > 0) {
-				target.addStagger(pendingStaggerStacks);
-			}
+			target.addStagger(pendingStaggerStacks);
 		})
 		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
 	}
-).setTargetingTags({ target: "single", team: "enemy" })
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: false })
 	.setUpgrades("Charging War Cry", "Slowing War Cry", "Tormenting War Cry")
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks

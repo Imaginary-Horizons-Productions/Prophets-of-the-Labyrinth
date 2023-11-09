@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Punch",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Punch",
 	"Technique",
 	"Untyped",
 	0,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { damage, critBonus, element } = module.exports;
 		const ironFistStacks = user.getModifierStacks("Iron Fist Stance");
 		const pendingElement = ironFistStacks > 0 ? user.element : element;
@@ -25,7 +24,7 @@ module.exports = new GearTemplate("Punch",
 			target.addStagger(totalStagger);
 		}
 		return dealDamage([target], user, pendingDamage, false, pendingElement, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setDurability(Infinity)
 	.setDamage(35);

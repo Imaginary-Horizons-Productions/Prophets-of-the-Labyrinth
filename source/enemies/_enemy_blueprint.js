@@ -18,6 +18,7 @@ module.exports = new EnemyTemplate("name",
 	selector: (self, adventure) => { // check shared/actionComponents for reusable selctors and next functions
 		return [];
 	},
+	needsLivingTargets: false,
 	next: (actionName) => {
 		return "";
 	}

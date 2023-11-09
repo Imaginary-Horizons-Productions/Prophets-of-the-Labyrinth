@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Long Barrier",
 		addBlock(user, block);
 		return `${user.getName(adventure.room.enemyIdMap)} Vigilantly prepares to Block.`;
 	}
-).setTargetingTags({ target: "self", team: "any" })
+).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
 	.setSidegrades("Cleansing Barrier", "Devoted Barrier")
 	.setModifiers({ name: "Vigilance", stacks: 2 }, { name: "Vigilance", stacks: 4 })
 	.setDurability(5)

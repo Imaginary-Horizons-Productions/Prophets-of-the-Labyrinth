@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Morning Star",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Morning Star",
 	"Weapon",
 	"Light",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, stagger, damage, critBonus } = module.exports;
 		let pendingDamage = damage;
 		if (user.element === element) {
@@ -19,8 +18,8 @@ module.exports = new GearTemplate("Morning Star",
 		}
 		target.addStagger(stagger);
 		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setStagger(2)
 	.setDurability(15)
 	.setDamage(75);

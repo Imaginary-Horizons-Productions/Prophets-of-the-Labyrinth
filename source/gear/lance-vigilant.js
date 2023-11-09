@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vigilant Lance",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Vigilant Lance",
 	"Weapon",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [vigilance], damage, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -21,8 +20,8 @@ module.exports = new GearTemplate("Vigilant Lance",
 		}
 		addModifier(user, vigilance);
 		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} gains Vigilance`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Lance", "Unstoppable Lance")
 	.setModifiers({ name: "Vigilance", stacks: 2 })
 	.setDurability(15)

@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { addBlock } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Guarding Scutum",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Guarding Scutum",
 	"Armor",
 	"Fire",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, block, bonus, critBonus } = module.exports;
 		let selfBlock = bonus;
 		let targetBlock = block;
@@ -23,8 +22,8 @@ module.exports = new GearTemplate("Guarding Scutum",
 		addBlock(target, targetBlock);
 		addBlock(user, selfBlock);
 		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${user.getName(adventure.room.enemyIdMap)}.`;
-	})
-).setTargetingTags({ target: "single", team: "delver" })
+	}
+).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Sweeping Scutum", "Vigilant Scutum")
 	.setDurability(15)
 	.setBlock(100)

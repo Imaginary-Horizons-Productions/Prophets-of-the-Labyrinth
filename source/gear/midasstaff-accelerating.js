@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Midas Staff",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 	"Trinket",
 	"Water",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [curse, quicken], bonus } = module.exports;
 		const pendingCurse = { ...curse, stacks: curse.stacks + (isCrit ? bonus : 0) };
 		if (user.element === element) {
@@ -21,8 +20,8 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 		addModifier(target, pendingCurse);
 		addModifier(user, quicken);
 		return `${target.getName(adventure.room.enemyIdMap)} gains Curse of Midas. ${user.getName(adventure.room.enemyIdMap)} is Quickened.`;
-	})
-).setTargetingTags({ target: "single", team: "any" })
+	}
+).setTargetingTags({ target: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Discounted Midas Staff", "Soothing Midas Staff")
 	.setModifiers({ name: "Curse of Midas", stacks: 1 }, { name: "Quicken", stacks: 1 })
 	.setBonus(1) // Curse of Midas stacks

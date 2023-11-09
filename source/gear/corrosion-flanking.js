@@ -1,5 +1,4 @@
 const { GearTemplate } = require("../classes");
-const { needsLivingTargets } = require("../shared/actionComponents");
 const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Flanking Corrosion",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Flanking Corrosion",
 	"Spell",
 	"Fire",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [powerDown, exposed], stagger } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -19,8 +18,8 @@ module.exports = new GearTemplate("Flanking Corrosion",
 		addModifier(target, powerDown);
 		addModifier(target, exposed);
 		return `${target.getName(adventure.room.enemyIdMap)} is Powered Down and Exposed.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Shattering Corrosion")
 	.setModifiers({ name: "Power Down", stacks: 40 }, { name: "Exposed", stacks: 2 })
 	.setStagger(2)

@@ -7,6 +7,7 @@ module.exports = new ItemTemplate("Regen Root",
 	"Untyped",
 	30,
 	selectSelf,
+	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier(user, { name: "Regen", stacks: 5 });
 		return `${user.getName(adventure.room.enemyIdMap)} gains Regen.`;

@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { addBlock, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Devoted Barrier",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Devoted Barrier",
 	"Spell",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [vigilance, critVigilance], block } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
@@ -20,8 +19,8 @@ module.exports = new GearTemplate("Devoted Barrier",
 		}
 		addBlock(target, block);
 		return `Damage will be Blocked for ${target.getName(adventure.room.enemyIdMap)} and they gain Vigilance.`;
-	})
-).setTargetingTags({ target: "single", team: "delver" })
+	}
+).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Cleansing Barrier", "Long Barrier")
 	.setModifiers({ name: "Vigilance", stacks: 1 }, { name: "Vigilance", stacks: 2 })
 	.setDurability(5)

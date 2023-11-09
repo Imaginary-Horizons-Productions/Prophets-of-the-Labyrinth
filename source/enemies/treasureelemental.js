@@ -36,6 +36,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			return `It prepares to Block and ${dealDamage([target], user, 100, false, user.element, adventure)}`;
 		},
 		selector: selectRandomFoe,
+		needsLivingTargets: false,
 		next: treasureElementalPattern
 	}).addAction({
 		name: "Burrow",
@@ -51,6 +52,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			return "It scatters among the other treasure in the room to Evade.";
 		},
 		selector: selectSelf,
+		needsLivingTargets: false,
 		next: treasureElementalPattern
 	})
 	.addAction({
@@ -70,6 +72,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			return "Everyone is Powered Down, due to being distracted by a treasure that catches their eyes.";
 		},
 		selector: selectAllFoes,
+		needsLivingTargets: false,
 		next: treasureElementalPattern
 	}).addAction({
 		name: "Heavy Pockets",
@@ -86,6 +89,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			return "Everyone is Slowed trying to grab at some treasure.";
 		},
 		selector: selectAllFoes,
+		needsLivingTargets: false,
 		next: treasureElementalPattern
 	}).addAction({
 		name: "Escape",
@@ -96,5 +100,6 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			return "The treasure elemental makes its escape!";
 		},
 		selector: selectNone,
+		needsLivingTargets: false,
 		next: treasureElementalPattern
 	});

@@ -16,5 +16,5 @@ module.exports = new GearTemplate("name",
 		}
 		return ""; // see style guide for conventions on result texts
 	}
-).setTargetingTags({ target: "", team: "" })
+).setTargetingTags({ target: "", team: "", needsLivingTargets: true })
 	.setDurability();

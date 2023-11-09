@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 		addModifier(user, ironFistStance);
 		return `${user.getName(adventure.room.enemyIdMap)} enters Iron Fist Stance${isCrit ? " and enemies become Frail" : ""}.`;
 	}
-).setTargetingTags({ target: "self", team: "any" })
+).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
 	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
 	.setBonus(45) // Punch damage boost
 	.setDurability(10);
