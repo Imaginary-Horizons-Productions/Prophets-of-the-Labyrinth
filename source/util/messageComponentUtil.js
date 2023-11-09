@@ -114,10 +114,10 @@ function generateLootRow(adventure) {
 /** @param {Adventure} adventure */
 function generateRoutingRow(adventure) {
 	return new ActionRowBuilder().addComponents(
-		...Object.keys(adventure.roomCandidates).map(candidateTag => {
+		...Object.keys(adventure.roomCandidates).map((candidateTag, index) => {
 			const [roomType, depth] = candidateTag.split(SAFE_DELIMITER);
 			return new ButtonBuilder().setCustomId(`routevote${SAFE_DELIMITER}${candidateTag}`)
-				.setLabel(`Next room: ${adventure.roomCandidates[candidateTag].isHidden ? "???" : roomType}`)
+				.setLabel(`Next room: ${adventure.roomCandidates[candidateTag].isHidden ? `Unknown ${index + 1}` : roomType}`)
 				.setStyle(ButtonStyle.Secondary)
 		}));
 }
