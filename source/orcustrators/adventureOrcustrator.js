@@ -318,7 +318,7 @@ function newRound(adventure, thread, lastRoundText) {
 						const move = new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
 							.setName(actionName)
 							.setSpeedByCombatant(combatant)
-							.setPriority(enemyTemplate.actions[move.name].priority);
+							.setPriority(enemyTemplate.actions[actionName].priority);
 						enemyTemplate.actions[actionName].selector(combatant, adventure).forEach(({ team, index }) => {
 							move.addTarget(new CombatantReference(team, index));
 						});
