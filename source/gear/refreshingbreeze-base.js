@@ -16,22 +16,15 @@ module.exports = new GearTemplate("Refreshing Breeze",
 				target.addStagger("elementMatchAlly");
 			}
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
+			const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
 			const removedDebuffs = [];
-			if (isCrit && targetDebuffs.length > 1) {
-				for (let i = 0; i < 2; i++) {
-					const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
-					const rolledDebuff = targetDebuffs[debuffIndex];
-					const wasRemoved = removeModifier(target, { name: rolledDebuff, stacks: "all" });
-					if (wasRemoved) {
-						removedDebuffs.push(rolledDebuff);
-						targetDebuffs.splice(debuffIndex, 1);
-					}
-				}
-			} else if (targetDebuffs.length > 0) {
-				const rolledDebuff = targetDebuffs[adventure.generateRandomNumber(targetDebuffs.length, "battle")];
+			for (let i = 0; i < debuffsToRemove; i++) {
+				const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
+				const rolledDebuff = targetDebuffs[debuffIndex];
 				const wasRemoved = removeModifier(target, { name: rolledDebuff, stacks: "all" });
 				if (wasRemoved) {
 					removedDebuffs.push(rolledDebuff);
+					targetDebuffs.splice(debuffIndex, 1);
 				}
 			}
 			if (removedDebuffs.length > 1) {
