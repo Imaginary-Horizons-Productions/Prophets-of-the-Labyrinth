@@ -24,6 +24,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 		return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Tackle",
@@ -38,5 +39,6 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 		return dealDamage([target], user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: nextRandom
 });

@@ -33,7 +33,7 @@ module.exports = new GearTemplate("Urgent Potion Kit",
 			return `${user.getName(adventure.room.enemyIdMap)} sets a batch of ${randomPotion} simmering.`;
 		}
 	}
-).setTargetingTags({ target: "none", team: "none" })
+).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })
 	.setSidegrades("Organic Potion Kit", "Reinforced Potion Kit")
 	.setDurability(15)
 	.setPriority(1)

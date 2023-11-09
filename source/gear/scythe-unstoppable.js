@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes/index.js');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Unstoppable Scythe",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Unstoppable Scythe",
 	"Weapon",
 	"Darkness",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, damage, bonus: hpThreshold, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -22,8 +21,8 @@ module.exports = new GearTemplate("Unstoppable Scythe",
 			target.hp = 0;
 			return `${target.getName(adventure.room.enemyIdMap)} meets the reaper.`;
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Scythe", "Toxic Scythe")
 	.setDurability(15)
 	.setDamage(75)

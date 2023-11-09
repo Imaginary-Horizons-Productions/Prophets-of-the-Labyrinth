@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Sun Flare",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Accelerating Sun Flare",
 	"Technique",
 	"Light",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [quicken, slow], stagger } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -19,8 +18,8 @@ module.exports = new GearTemplate("Accelerating Sun Flare",
 		target.addStagger(stagger);
 		addModifier(user, quicken);
 		return `${user.getName(adventure.room.enemyIdMap)} is Quickened. ${target.getName(adventure.room.enemyIdMap)} is Staggered${isCrit ? ` and Slowed` : ""}.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Sun Flare", "Tormenting Sun Flare")
 	.setModifiers({ name: "Quicken", stacks: 1 }, { name: "Slow", stacks: 2 })
 	.setStagger(2)

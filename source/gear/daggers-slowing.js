@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Slowing Daggers",
@@ -7,7 +6,8 @@ module.exports = new GearTemplate("Slowing Daggers",
 	"Damage x@{critBonus}",
 	"Weapon",
 	"Wind",
-	350, needsLivingTargets(([target], user, isCrit, adventure) => {
+	350,
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [slow], damage, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -17,8 +17,8 @@ module.exports = new GearTemplate("Slowing Daggers",
 		}
 		addModifier(target, slow);
 		return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")
 	.setModifiers({ name: "Slow", stacks: 1 })
 	.setDurability(15)

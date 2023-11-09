@@ -7,6 +7,7 @@ module.exports = new ItemTemplate("Quick Pepper",
 	"Untyped",
 	30,
 	selectSelf,
+	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier(user, { name: "Quicken", stacks: 3 });
 		return `${user.getName(adventure.room.enemyIdMap)} gains Quicken.`;

@@ -8,6 +8,7 @@ module.exports = new ItemTemplate("Fiery Potion",
 	"Untyped",
 	30,
 	selectSelf,
+	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier(user, { name: "Fire Absorb", stacks: 3 });
 		return `${user.getName(adventure.room.enemyIdMap)} now absorbs ${getEmoji("Fire")} damage.`;

@@ -1,5 +1,4 @@
 const { GearTemplate, Move } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Spear",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Reactive Spear",
 	"Weapon",
 	"Wind",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, stagger, damage, bonus } = module.exports;
 		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
 		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === adventure.getCombatantIndex(target));
@@ -23,8 +22,8 @@ module.exports = new GearTemplate("Reactive Spear",
 			target.addStagger(stagger);
 		}
 		return dealDamage([target], user, damage, false, element, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Spear", "Sweeping Spear")
 	.setStagger(2)
 	.setDurability(15)

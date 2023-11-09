@@ -33,6 +33,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		return `${target.getName(adventure.room.enemyIdMap)} is Poisoned. ${dealDamage([target], user, damage, false, user.element, adventure)}`;
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: firearrowFrogPattern
 }).addAction({
 	name: "Burrow",
@@ -48,6 +49,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		return "It's prepared to Evade.";
 	},
 	selector: selectSelf,
+	needsLivingTargets: false,
 	next: firearrowFrogPattern
 }).addAction({
 	name: "Goop Spray",
@@ -63,5 +65,6 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: firearrowFrogPattern
 });

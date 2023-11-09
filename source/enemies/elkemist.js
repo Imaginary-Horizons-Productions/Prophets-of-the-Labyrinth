@@ -27,6 +27,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		return "It gathers some materials, fortifying its laboratory to Block incoming damage.";
 	},
 	selector: selectSelf,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Trouble",
@@ -43,6 +44,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		return `An obstacle to potion progress is identified and mitigated; ${dealDamage([target], user, damage, false, user.element, adventure)}`;
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Boil",
@@ -57,6 +59,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		return dealDamage(targets, user, damage, false, "Fire", adventure);
 	},
 	selector: selectAllFoes,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Bubble",
@@ -89,5 +92,6 @@ module.exports = new EnemyTemplate("Elkemist",
 		}
 	},
 	selector: selectAllFoes,
+	needsLivingTargets: false,
 	next: nextRandom
 });

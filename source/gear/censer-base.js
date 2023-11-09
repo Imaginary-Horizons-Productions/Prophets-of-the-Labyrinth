@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Censer",
@@ -9,7 +8,7 @@ module.exports = new GearTemplate("Censer",
 	"Trinket",
 	"Fire",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [slow], damage, bonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -24,8 +23,8 @@ module.exports = new GearTemplate("Censer",
 		} else {
 			return damageText;
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Fate-Sealing Censer", "Thick Censer", "Tormenting Censor")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDamage(50)

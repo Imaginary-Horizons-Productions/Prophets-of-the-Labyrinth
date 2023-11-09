@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Mercurial Bow",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Mercurial Bow",
 	"Weapon",
 	"Wind",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, damage, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -17,8 +16,8 @@ module.exports = new GearTemplate("Mercurial Bow",
 			damage *= critBonus;
 		}
 		return dealDamage([target], user, damage, false, element, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Bow", "Hunter's Bow")
 	.setDurability(15)
 	.setDamage(75)

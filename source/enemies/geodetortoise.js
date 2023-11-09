@@ -23,6 +23,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		return dealDamage([target], user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Crystallize",
@@ -39,5 +40,6 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		return "It prepares to Block and is Powered Up.";
 	},
 	selector: selectSelf,
+	needsLivingTargets: false,
 	next: nextRandom
 });

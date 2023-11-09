@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { addBlock, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Devoted Buckler",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Devoted Buckler",
 	"Armor",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [powerUp], block, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
@@ -20,8 +19,8 @@ module.exports = new GearTemplate("Devoted Buckler",
 		addModifier(target, powerUp);
 		const targetName = target.getName(adventure.room.enemyIdMap);
 		return `Damage will be Blocked for ${targetName}. ${user.getName(adventure.room.enemyIdMap)} and ${targetName} are Powered Up.`;
-	})
-).setTargetingTags({ target: "single", team: "delver" })
+	}
+).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Buckler", "Reinforced Buckler")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)

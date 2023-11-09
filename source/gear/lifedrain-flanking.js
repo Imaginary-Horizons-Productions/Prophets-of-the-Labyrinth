@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { addModifier, dealDamage, gainHealth } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Flanking Life Drain",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Flanking Life Drain",
 	"Spell",
 	"Darkness",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [exposed], damage, healing, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -19,8 +18,8 @@ module.exports = new GearTemplate("Flanking Life Drain",
 		let damageText = dealDamage([target], user, damage, false, element, adventure);
 		addModifier(target, exposed);
 		return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Exposed. ${gainHealth(user, healing, adventure)}`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Life Drain", "Urgent Life Drain")
 	.setModifiers({ name: "Exposed", stacks: 2 })
 	.setDurability(15)

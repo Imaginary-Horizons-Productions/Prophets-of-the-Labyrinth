@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Bow",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Hunter's Bow",
 	"Weapon",
 	"Wind",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, damage, bonus: bonusBounty, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -22,8 +21,8 @@ module.exports = new GearTemplate("Hunter's Bow",
 			damageText += ` ${user.getName(adventure.room.enemyIdMap)} forages ${bonusBounty}g of hunting trophies.`;
 		}
 		return damageText;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Bow", "Mercurial Bow")
 	.setDurability(15)
 	.setDamage(75)

@@ -27,6 +27,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		return "Its elemental alignment has changed.";
 	},
 	selector: selectSelf,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Rolling Tackle",
@@ -43,6 +44,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Opposite Rolling Tackle",
@@ -59,6 +61,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Goop Deluge",
@@ -76,5 +79,6 @@ module.exports = new EnemyTemplate("Royal Slime",
 		return "Everyone is Slowed by the sticky ooze.";
 	},
 	selector: selectAllFoes,
+	needsLivingTargets: false,
 	next: nextRandom
 });

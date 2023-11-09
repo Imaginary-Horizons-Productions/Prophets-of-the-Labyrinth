@@ -1,33 +1,5 @@
 const { CombatantReference, Adventure, Combatant } = require("../classes");
 
-/** Wraps standardized move effect in validation for living targets
- * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} next
- */
-function needsLivingTargets(next) {
-	return (targets, user, isCrit, adventure) => {
-		const livingTargets = [];
-		const deadTargets = [];
-		for (const target of targets) {
-			if (target.hp > 0) {
-				livingTargets.push(target);
-			} else {
-				deadTargets.push(target);
-			}
-		}
-		if (livingTargets.length > 0) {
-			const deadTargetText = "";
-			if (deadTargets.length > 0) {
-				deadTargetText += ` ${deadTargets.map(target => target.getName(adventure.room.enemyIdMap)).join(", ")} ${deadTargets === 1 ? "was" : "were"} already dead!`
-			}
-			return `${next(livingTargets, user, isCrit, adventure)}${deadTargetText}`;
-		} else if (targets.length === 1) {
-			return ` But ${targets[0].getName(adventure.room.enemyIdMap)} was already dead!`;
-		} else {
-			return ` But all targets were already dead!`;
-		}
-	}
-}
-
 /** Selects all allies of the user (including themself)
  * @param {Combatant} self
  * @param {Adventure} adventure
@@ -111,7 +83,6 @@ function nextRandom(actionName) {
 }
 
 module.exports = {
-	needsLivingTargets,
 	selectAllAllies,
 	selectRandomOtherAlly,
 	selectAllFoes,

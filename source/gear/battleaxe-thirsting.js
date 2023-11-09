@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { addModifier, dealDamage, gainHealth } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thirsting Battleaxe",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 	"Weapon",
 	"Fire",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [exposed], damage, critBonus, healing } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -22,8 +21,8 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 			damageText += gainHealth(user, healing, adventure);
 		}
 		return `${damageText} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Prideful Battleaxe", "Thick Battleaxe")
 	.setModifiers({ name: "Exposed", stacks: 1 })
 	.setDurability(15)

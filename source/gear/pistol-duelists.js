@@ -1,5 +1,4 @@
 const { GearTemplate } = require("../classes");
-const { needsLivingTargets } = require("../shared/actionComponents");
 const { dealDamage, addModifier, getCombatantWeaknesses } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Duelist's Pistol",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Duelist's Pistol",
 	"Weapon",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { damage, bonus, critBonus, element, modifiers: [powerUp] } = module.exports;
 		const targetIndex = adventure.getCombatantIndex(target);
 		const userIndex = adventure.getCombatantIndex(user);
@@ -25,8 +24,8 @@ module.exports = new GearTemplate("Duelist's Pistol",
 		} else {
 			return dealDamage([target], user, pendingDamage * (isCrit ? critBonus : 1), false, element, adventure);
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)

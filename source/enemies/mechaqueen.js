@@ -40,6 +40,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 		return "She prepares to Block and demands reinforcements!";
 	},
 	selector: selectNone,
+	needsLivingTargets: false,
 	next: mechaQueenPattern
 }).addAction({
 	name: "Assault Protocol",
@@ -58,6 +59,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 		return "She prepares to Block and orders a full-on attack!";
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: mechaQueenPattern
 }).addAction({
 	name: "Sacrifice Protocol",
@@ -74,6 +76,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 		return "She prepares to Block."
 	},
 	selector: selectRandomOtherAlly,
+	needsLivingTargets: true,
 	next: mechaQueenPattern
 }).addAction({
 	name: "Deploy Drone",
@@ -84,6 +87,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 		return "Another mechabee arrives.";
 	},
 	selector: selectNone,
+	needsLivingTargets: false,
 	next: mechaQueenPattern
 }).addAction({
 	name: "V.E.N.O.Missile",
@@ -99,5 +103,6 @@ module.exports = new EnemyTemplate("Mecha Queen",
 		return `${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: mechaQueenPattern
 });

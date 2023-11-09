@@ -1,5 +1,4 @@
 const { GearTemplate, Move } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage, gainHealth } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Life Drain",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Reactive Life Drain",
 	"Spell",
 	"Darkness",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, damage, bonus, healing, critBonus } = module.exports;
 		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
 		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === adventure.getCombatantIndex(target));
@@ -24,8 +23,7 @@ module.exports = new GearTemplate("Reactive Life Drain",
 		}
 		return `${dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, healing, adventure)}`;
 	}
-	)
-).setTargetingTags({ target: "single", team: "enemy" })
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Life Drain", "Urgent Life Drain")
 	.setDurability(15)
 	.setDamage(75)

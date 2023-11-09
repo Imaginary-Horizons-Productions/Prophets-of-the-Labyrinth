@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants.js');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Mercurial Firecracker",
@@ -9,7 +8,7 @@ module.exports = new GearTemplate("Mercurial Firecracker",
 	"Weapon",
 	"Fire",
 	350,
-	needsLivingTargets((targets, user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		let { element, damage, critBonus } = module.exports;
 		let pendingDamage = damage;
 		if (isCrit) {
@@ -21,8 +20,8 @@ module.exports = new GearTemplate("Mercurial Firecracker",
 			}
 		})
 		return dealDamage(targets, user, pendingDamage, false, user.element, adventure);
-	})
-).setTargetingTags({ target: `random${SAFE_DELIMITER}3`, team: "enemy" })
+	}
+).setTargetingTags({ target: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Firecracker", "Toxic Firecracker")
 	.setDurability(15)
 	.setCritBonus(2)

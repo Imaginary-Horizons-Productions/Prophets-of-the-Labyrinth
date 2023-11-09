@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { addBlock } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Vigilant Scutum",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Vigilant Scutum",
 	"Armor",
 	"Fire",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [vigilance], block, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
@@ -22,8 +21,8 @@ module.exports = new GearTemplate("Vigilant Scutum",
 		addModifier(user, vigilance);
 		const userName = user.getName(adventure.room.enemyIdMap);
 		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}. ${userName} gains Vigilance.`;
-	})
-).setTargetingTags({ target: "single", team: "delver" })
+	}
+).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")
 	.setModifiers({ name: "Vigilance", stacks: 1 })
 	.setDurability(15)

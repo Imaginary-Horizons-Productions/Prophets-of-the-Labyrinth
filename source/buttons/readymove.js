@@ -53,11 +53,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			if (target === "single") {
 				// Select Menu
 				let targetOptions = [];
-				if (team === "enemy" || team === "any") {
+				if (team === "foe" || team === "any") {
 					targetOptions = targetOptions.concat(enemyOptions);
 				}
 
-				if (team === "delver" || team === "any") {
+				if (team === "ally" || team === "any") {
 					targetOptions = targetOptions.concat(delverOptions);
 				}
 				components.push(new ActionRowBuilder().addComponents(

@@ -7,6 +7,7 @@ module.exports = new ItemTemplate("Smoke Bomb",
 	"Untyped",
 	30,
 	selectSelf,
+	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier(user, { name: "Evade", stacks: 2 });
 		return `${user.getName(adventure.room.enemyIdMap)} prepares to Evade.`;

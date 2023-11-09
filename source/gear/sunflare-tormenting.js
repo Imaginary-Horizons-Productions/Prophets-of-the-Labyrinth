@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Tormenting Sun Flare",
@@ -9,7 +8,7 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 	"Technique",
 	"Light",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [slow], stagger } = module.exports;
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
@@ -26,8 +25,8 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 		} else {
 			return `${target.getName(adventure.room.enemyIdMap)} is Staggered and their debuffs are duplicated.`;
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Sun Flare", "Evasive Sun Flare")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setStagger(2)

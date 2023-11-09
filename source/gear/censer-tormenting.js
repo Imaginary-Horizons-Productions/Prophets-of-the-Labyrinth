@@ -1,5 +1,4 @@
 const { GearTemplate } = require("../classes");
-const { needsLivingTargets } = require("../shared/actionComponents");
 const { dealDamage, addModifier } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Tormenting Censer",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 	"Trinket",
 	"Fire",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [slow], damage, bonus } = module.exports;
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
@@ -28,8 +27,8 @@ module.exports = new GearTemplate("Tormenting Censer",
 		} else {
 			return `${damageText} ${target.getName(adventure.room.enemyIdMap)}'s debuffs are duplicated.`;
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Censer", "Thick Censer")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDamage(50)

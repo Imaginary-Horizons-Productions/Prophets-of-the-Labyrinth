@@ -7,6 +7,7 @@ module.exports = new ItemTemplate("Block Potion",
 	"Untyped",
 	30,
 	selectAllAllies,
+	false,
 	([target], user, isCrit, adventure) => {
 		addBlock(target, 50);
 		return `${user.getName(adventure.room.enemyIdMap)} prepares to Block.`;

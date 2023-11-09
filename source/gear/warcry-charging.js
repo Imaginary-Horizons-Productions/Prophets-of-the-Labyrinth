@@ -8,10 +8,14 @@ module.exports = new GearTemplate("Charging War Cry",
 	"Fire",
 	350,
 	([initialTarget], user, isCrit, adventure) => {
-		const targetSet = new Set().add(initialTarget.getName(adventure.room.enemyIdMap));
-		const targetArray = [initialTarget];
+		const targetSet = new Set();
+		const targetArray = [];
+		if (initialTarget.hp > 0) {
+			targetSet.add(initialTarget.getName(adventure.room.enemyIdMap));
+			targetArray.push(initialTarget);
+		}
 		adventure.room.enemies.forEach(enemy => {
-			if (enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
 				targetSet.add(enemy.getName(adventure.room.enemyIdMap));
 				targetArray.push(enemy);
 			}
@@ -26,14 +30,12 @@ module.exports = new GearTemplate("Charging War Cry",
 			pendingStaggerStacks += bonus;
 		}
 		targetArray.forEach(target => {
-			if (target.hp > 0) {
-				target.addStagger(pendingStaggerStacks);
-			}
+			target.addStagger(pendingStaggerStacks);
 		});
 		addModifier(user, powerup);
 		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry. ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
 	}
-).setTargetingTags({ target: "single", team: "enemy" })
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Slowing War Cry", "Tormenting War Cry")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setStagger(2)

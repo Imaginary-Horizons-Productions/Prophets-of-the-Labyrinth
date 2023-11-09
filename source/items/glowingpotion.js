@@ -8,6 +8,7 @@ module.exports = new ItemTemplate("Glowing Potion",
 	"Untyped",
 	30,
 	selectSelf,
+	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier(user, { name: "Light Absorb", stacks: 3 });
 		return `${user.getName(adventure.room.enemyIdMap)} now absorbs ${getEmoji("Light")} damage.`;

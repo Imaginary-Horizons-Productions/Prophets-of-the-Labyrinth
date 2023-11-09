@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage, addModifier, payHP } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Certain Victory",
@@ -8,7 +7,7 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 	"Pact",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
+	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [powerUp], damage, bonus: bounty, critBonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -23,8 +22,8 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 			damageText += ` ${user.getName(adventure.room.enemyIdMap)} gains ${bounty}g of victory spoils.`;
 		}
 		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)

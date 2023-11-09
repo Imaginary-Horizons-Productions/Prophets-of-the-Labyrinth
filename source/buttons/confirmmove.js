@@ -32,10 +32,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const { target, team } = getGearProperty(moveName, "targetingTags");
 		if (target === "all") {
 			let targetCount = 0;
-			if (team === "delver") {
+			if (team === "ally") {
 				targetCount = adventure.delvers.length;
 				targetText = "all allies";
-			} else if (team === "enemy") {
+			} else if (team === "foe") {
 				targetCount = adventure.room.enemies.length;
 				targetText = "all enemies";
 			}
@@ -45,10 +45,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		} else if (target.startsWith("random")) {
 			const targetCount = Number(target.split(SAFE_DELIMITER)[1]);
 			let poolSize = 0;
-			if (team === "delver") {
+			if (team === "ally") {
 				poolSize = adventure.delvers.length;
 				targetText = `${targetCount} random all${targetCount === 1 ? "y" : "ies"}`;
-			} else if (team === "enemy") {
+			} else if (team === "foe") {
 				poolSize = adventure.room.enemies.length;
 				targetText = `${targetCount} random enem${targetCount === 1 ? "y" : "ies"}`;
 			}
