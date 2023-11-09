@@ -27,7 +27,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			const end = (start + digits) % adventure.rnTable.length;
 			const max = 12 ** digits;
 			const sectionLength = max / artifactPool.length;
-			const roll = parseInt(adventure.rnTable.slice(start, end), 12);
+			let tableSegment = adventure.rnTable.slice(start, end);
+			if (start > end) {
+				tableSegment = `${adventure.rnTable.slice(start)}${adventure.rnTable.slice(0, end)}`;
+			}
+			const roll = parseInt(tableSegment, 12);
 			const rolledArtifact = artifactPool[Math.floor(roll / sectionLength)];
 			if (!artifactsRolledSoFar.has(rolledArtifact)) {
 				artifactBulletList += `\n- ${rolledArtifact}`;
@@ -40,7 +44,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					})
 				}
 			}
-			start++;
+			start = (start + 1) % adventure.rnTable.length;
 		}
 
 		interaction.reply({
