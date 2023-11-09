@@ -16,9 +16,9 @@ Archetypes: Hemomancer
 ### Common Variants
 - Evasive
 - Furious
-- Piercing
 - Slowing
 - Reaper's
+- Unstoppable
 
 ### Uncommon Variants
 - Sweeping
@@ -77,9 +77,9 @@ Weak to: 🌿 Earth, 💨 Wind
 Archetypes: Martial Artist
 
 ### Common Variants
-- Piercing
 - Soothing
 - Staggering
+- Unstoppable
 - Urgent
 
 ### Uncommon Variants
@@ -105,8 +105,8 @@ Archetypes: Chemist
 
 ### Uncommon Variants
 - Accelerating
-- Piercing
 - Thirsting
+- Unstoppable
 
 ## 💨 Wind
 Color: ![Colors.Aqua](https://placehold.co/15x15/1ABC9C/1ABC9C.png) `Colors.Aqua`

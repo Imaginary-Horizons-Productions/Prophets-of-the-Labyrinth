@@ -30,7 +30,7 @@ module.exports = new GearTemplate("Reactive Warhammer",
 		return dealDamage([target], user, pendingDamage, false, element, adventure);
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
-	.setSidegrades("Piercing Warhammer", "Slowing Warhammer")
+	.setSidegrades("Slowing Warhammer", "Unstoppable Warhammer")
 	.setDurability(15)
 	.setDamage(75)
 	.setBonus(75); // damage

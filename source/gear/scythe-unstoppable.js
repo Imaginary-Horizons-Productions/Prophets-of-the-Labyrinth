@@ -1,9 +1,9 @@
-const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
+const { GearTemplate } = require('../classes/index.js');
+const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Piercing Scythe",
-	"Strike a foe for @{damage} @{element} unblockable damage; instant death if foe is at or below @{bonus} hp",
+module.exports = new GearTemplate("Unstoppable Scythe",
+	"Strike a foe for @{damage} @{element} unblockable damage, even while Stunned; instant death if foe is at or below @{bonus} hp",
 	"Instant death threshold x@{critBonus}",
 	"Weapon",
 	"Darkness",

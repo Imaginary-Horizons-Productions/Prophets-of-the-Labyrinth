@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Vigilant Lance",
 		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} gains Vigilance`;
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
-	.setSidegrades("Accelerating Lance", "Piercing Lance")
+	.setSidegrades("Accelerating Lance", "Unstoppable Lance")
 	.setModifiers({ name: "Vigilance", stacks: 2 })
 	.setDurability(15)
 	.setDamage(75);

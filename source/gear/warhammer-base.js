@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Warhammer",
 		return dealDamage([target], user, damage, false, element, adventure);
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
-	.setUpgrades("Piercing Warhammer", "Reactive Warhammer", "Slowing Warhammer")
+	.setUpgrades("Reactive Warhammer", "Slowing Warhammer", "Unstoppable Warhammer")
 	.setDurability(15)
 	.setDamage(75)
 	.setBonus(75); // damage

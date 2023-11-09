@@ -2,8 +2,8 @@ const { GearTemplate } = require('../classes');
 const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Piercing Lance",
-	"Strike a foe for @{damage} @{element} unblockable damage (double increase from Power Up)",
+module.exports = new GearTemplate("Unstoppable Lance",
+	"Strike a foe for @{damage} @{element} unblockable damage (double increase from Power Up), even while Stunned",
 	"Damage x@{critBonus}",
 	"Weapon",
 	"Earth",

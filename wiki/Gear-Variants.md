@@ -161,14 +161,6 @@ Regains durability when entering new rooms
 - Iron Fist Stance (Light)
 - Potion Kit (Water)
 
-### Piercing
-Deals Unblockable damage
-
-**Available on**
-- Lance (Earth)
-- Scythe (Darkness)
-- Warhammer (Earth)
-
 ### Prideful
 Increased damage and change element to Untyped
 
@@ -295,6 +287,14 @@ Adds Poison to target
 - Firecracker (Fire)
 - Sickle (Water)
 - Shortsword (Fire)
+
+### Unstoppable
+Deals Unblockable damage, usable while Stunned
+
+**Available on**
+- Lance (Earth)
+- Scythe (Darkness)
+- Warhammer (Earth)
 
 ### Urgent
 Increased priority

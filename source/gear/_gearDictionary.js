@@ -61,7 +61,7 @@ for (const file of [
 	"ironfiststance-organic.js",
 	"lance-accelerating.js",
 	"lance-base.js",
-	"lance-piercing.js",
+	"lance-unstoppable.js",
 	"lance-vigilant.js",
 	"lifedrain-base.js",
 	"lifedrain-flanking.js",
@@ -90,8 +90,8 @@ for (const file of [
 	"scutum-vigilant.js",
 	"scythe-base.js",
 	"scythe-lethal.js",
-	"scythe-piercing.js",
 	"scythe-toxic.js",
+	"scythe-unstoppable.js",
 	"shortsword-accelerating.js",
 	"shortsword-base.js",
 	"shortsword-toxic.js",
@@ -112,9 +112,9 @@ for (const file of [
 	"warcry-slowing.js",
 	"warcry-tormenting.js",
 	"warhammer-base.js",
-	"warhammer-piercing.js",
 	"warhammer-reactive.js",
-	"warhammer-slowing.js"
+	"warhammer-slowing.js",
+	"warhammer-unstoppable.js"
 ]) {
 	const gear = require(`./${file}`);
 	if (gear.name in GEAR) {

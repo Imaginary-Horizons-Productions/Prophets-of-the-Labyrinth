@@ -370,7 +370,7 @@ function resolveMove(move, adventure) {
 	}
 
 	let moveText = `**${user.getName(adventure.room.enemyIdMap)}** `;
-	if (!user.isStunned) {
+	if (!user.isStunned && !move.name.startsWith("Unstoppable")) {
 		if (move.isCrit) {
 			moveText = `💥${moveText}`;
 		}

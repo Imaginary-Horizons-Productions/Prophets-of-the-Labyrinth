@@ -1,9 +1,9 @@
-const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
+const { GearTemplate } = require('../classes/index.js');
+const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Piercing Warhammer",
-	"Strike a foe for @{damage} (+@{bonus} if foe is currently stunned) unblockable @{element} damage",
+module.exports = new GearTemplate("Unstoppable Warhammer",
+	"Strike a foe for @{damage} (+@{bonus} if foe is currently stunned) unblockable @{element} damage, even while Stunned",
 	"Damage x@{critBonus}",
 	"Weapon",
 	"Earth",

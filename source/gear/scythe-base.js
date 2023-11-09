@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Scythe",
 		}
 	})
 ).setTargetingTags({ target: "single", team: "enemy" })
-	.setUpgrades("Lethal Scythe", "Piercing Scythe", "Toxic Scythe")
+	.setUpgrades("Lethal Scythe", "Toxic Scythe", "Unstoppable Scythe")
 	.setDurability(15)
 	.setDamage(75)
 	.setBonus(99); // execute threshold

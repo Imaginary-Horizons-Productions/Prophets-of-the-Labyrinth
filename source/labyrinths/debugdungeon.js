@@ -50,8 +50,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Reactive Life Drain",
 				"Urgent Life Drain",
 				"Lethal Scythe",
-				"Piercing Scythe",
 				"Toxic Scythe",
+				"Unstoppable Scythe",
 			]
 		},
 		Earth: {
@@ -77,14 +77,15 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Lethal Certain Victory",
 				"Reckless Certain Victory",
 				"Accelerating Lance",
-				"Piercing Lance",
+				"Unstoppable Lance",
 				"Vigilant Lance",
 				"Double Pistol",
 				"Duelist's Pistol",
 				"Long Sabotage Kit",
 				"Shattering Sabotage Kit",
-				"Piercing Warhammer",
-				"Slowing Warhammer"
+				"Reactive Warhammer",
+				"Slowing Warhammer",
+				"Unstoppable Warhammer",
 			]
 		},
 		Fire: {

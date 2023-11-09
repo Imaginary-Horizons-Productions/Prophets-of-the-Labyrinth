@@ -4,6 +4,8 @@
 - Combined Barrier and Vigilance Charm
 - Doubled poise and added stagger, left per round fall-off and matching element stagger cure at 1
 - Combatant stagger can no longer be modified while the combatant is stunned
+- Players now need to select their moves when Stunned (for Unstoppable)
+- The Piercing gear variant is now Unstoppable; it is now also usable while Stunned
 - New Debuff: Frail - Deals damage when the bearer is Stunned
 - Iron Fist Stance crits now apply Frail to all enemies instead of granting the user Power Up
 - Some enemies's poise now scales with party size
