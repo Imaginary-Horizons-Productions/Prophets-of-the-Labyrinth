@@ -114,6 +114,8 @@ function nextRoom(roomType, thread) {
 
 	adventure.delvers.forEach(delver => {
 		delver.modifiers = {};
+		delver.stagger = 0;
+		delver.isStunned = false;
 		delver.gear.forEach(gear => {
 			if (gear.name.startsWith("Organic")) {
 				gear.durability++;
