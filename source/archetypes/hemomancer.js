@@ -12,12 +12,16 @@ module.exports = new ArchetypeTemplate("Hemomancer",
 				return second.getTotalSpeed() - first.getTotalSpeed();
 			});
 		for (const combatant of activeCombatants) {
-			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)}${combatant.isStunned ? " 💫" : ""}`, value: `Stagger: ${generateTextBar(combatant.stagger, combatant.poise, combatant.poise)}\nSpeed: ${combatant.getTotalSpeed()}` });
+			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)}`, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.poise, combatant.poise)}`}\nSpeed: ${combatant.getTotalSpeed()}` });
 		}
 		embed.setDescription("Combatants may act out of order if they have priority or they are tied in speed.");
 		return embed.setTitle(`Hemomancer Predictions for Round ${adventure.room.round + 1}`);
 	},
 	(combatant) => {
-		return `Stagger: ${generateTextBar(combatant.stagger, combatant.poise, combatant.poise)}`;
+		if (combatant.isStunned) {
+			return "💫 Stunned";
+		} else {
+			return `Stagger: ${generateTextBar(combatant.stagger, combatant.poise, combatant.poise)}`;
+		}
 	}
 );
