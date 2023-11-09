@@ -1,5 +1,4 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("War Cry",
 	"Inflict @{stagger} on a foe and all foes with Exposed",

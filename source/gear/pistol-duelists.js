@@ -1,6 +1,7 @@
 const { GearTemplate } = require("../classes");
 const { needsLivingTargets } = require("../shared/actionComponents");
 const { dealDamage, addModifier, getCombatantWeaknesses } = require("../util/combatantUtil");
+
 module.exports = new GearTemplate("Duelist's Pistol",
 	"Strike a foe for @{damage} (+@{bonus} if only attacker) @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
 	"Damage x@{critBonus}",
