@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 			const removedDebuffs = [];
 			if (isCrit && targetDebuffs.length > 1) {
 				for (let i = 0; i < 2; i++) {
-					const debuffIndex = adventure.generateRandomNumber(targetDebuffs, "battle");
+					const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
 					const rolledDebuff = targetDebuffs[debuffIndex];
 					const wasRemoved = removeModifier(target, { name: rolledDebuff, stacks: "all" });
 					if (wasRemoved) {
@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 					}
 				}
 			} else if (targetDebuffs.length > 0) {
-				const rolledDebuff = targetDebuffs[adventure.generateRandomNumber(targetDebuffs, "battle")];
+				const rolledDebuff = targetDebuffs[adventure.generateRandomNumber(targetDebuffs.length, "battle")];
 				const wasRemoved = removeModifier(target, { name: rolledDebuff, stacks: "all" });
 				if (wasRemoved) {
 					removedDebuffs.push(rolledDebuff);
@@ -44,7 +44,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 		if (resultTexts.length > 0) {
 			return resultTexts.join(" ");
 		} else {
-			return "The party had no debuffs to cure.";
+			return "No debuffs were cured on the party.";
 		}
 	})
 ).setTargetingTags({ target: "all", team: "delver" })
