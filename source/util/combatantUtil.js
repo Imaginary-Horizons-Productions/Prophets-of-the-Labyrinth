@@ -12,7 +12,7 @@ function downedCheck(target, adventure) {
 		if (target.team === "delver") {
 			target.hp = target.maxHP;
 			adventure.lives = Math.max(adventure.lives - 1, 0);
-			return ` *${targetName} was downed*${adventure.lives > 0 ? " and been revived" : ""}.`;
+			return ` *${targetName} was downed*${adventure.lives > 0 ? " and revived" : ""}.`;
 		} else {
 			target.hp = 0;
 			return ` *${targetName} was downed*.`;
