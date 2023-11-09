@@ -318,7 +318,7 @@ function newRound(adventure, thread, lastRoundText) {
 						const move = new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
 							.setName(actionName)
 							.setSpeedByCombatant(combatant)
-							.setPriority(enemyTemplate.actions[move.name].priority);
+							.setPriority(enemyTemplate.actions[actionName].priority);
 						enemyTemplate.actions[actionName].selector(combatant, adventure).forEach(({ team, index }) => {
 							move.addTarget(new CombatantReference(team, index));
 						});
@@ -447,19 +447,13 @@ function resolveMove(move, adventure) {
 	}
 
 	// Poison/Regen
-	const poisonStacks = user.getModifierStacks("Poison");
-	let poisonDamage = poisonStacks * 10;
-	if (user.team === "enemy") {
-		const funnelDamage = adventure.getArtifactCount("Spiral Funnel") * 5 * poisonStacks;
-		poisonDamage += funnelDamage;
-		adventure.updateArtifactStat("Spiral Funnel", "Additional Damage", funnelDamage);
-	}
-
-	const regenStacks = user.getModifierStacks("Regen");
-	if (poisonDamage) {
-		moveText += ` ${dealModifierDamage([user], poisonDamage, "Poison", adventure)}`;
-	} else if (regenStacks) {
-		moveText += ` ${gainHealth(user, regenStacks * 10, adventure)}`;
+	if ("Poison" in user.modifiers) {
+		moveText += ` ${dealModifierDamage(user, "Poison", adventure)}`;
+	} else {
+		const regenStacks = user.getModifierStacks("Regen");
+		if (regenStacks) {
+			moveText += ` ${gainHealth(user, regenStacks * 10, adventure)}`;
+		}
 	}
 	return `${moveText}\n`;
 }
@@ -528,7 +522,7 @@ function endRound(adventure, thread) {
 			}
 
 			if ("Frail" in combatant.modifiers) {
-				lastRoundText += dealModifierDamage([combatant], combatant.modifiers.Frail * 25, "Frail", adventure);
+				lastRoundText += dealModifierDamage(combatant, "Frail", adventure);
 				removeModifier(combatant, { name: "Frail", stacks: "all" });
 
 				const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);

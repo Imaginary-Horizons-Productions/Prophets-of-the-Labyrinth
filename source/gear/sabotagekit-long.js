@@ -30,7 +30,8 @@ module.exports = new GearTemplate("Long Sabotage Kit",
 		}
 		return `${target.getName(adventure.room.enemyIdMap)} is Slowed${weaknessPool.length > 0 ? `, and gains ${rolledWeakness}` : ""}.`;
 	})
-).setTargetingTags({ target: "single", team: "enemy" })
+).setSidegrades("Shattering Sabotage Kit")
+	.setTargetingTags({ target: "single", team: "enemy" })
 	.setModifiers({ name: "Slow", stacks: 3 }, { name: "Slow", stacks: 5 })
 	.setDurability(15)
 	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" });

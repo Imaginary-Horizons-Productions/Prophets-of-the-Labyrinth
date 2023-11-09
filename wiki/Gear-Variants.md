@@ -38,6 +38,7 @@ Adds Power Up to the user
 Cures a random debuff on target
 
 **Available on**
+- all Refreshing Breezes (Wind)
 - Barrier (Earth)
 
 ### Corrosive
@@ -217,6 +218,13 @@ Increased damage
 - all Spears (Wind)
 - Daggers (Wind)
 - Sickle (Water)
+
+### Shattering
+Adds Frail to target
+
+**Available on**
+- Corrosion (Fire)
+- Sabotage Kit (Earth)
 
 ### Slowing
 Adds Slow to target

@@ -110,7 +110,11 @@ class Adventure {
 			this.rnIndices[branch] = end % this.rnTable.length;
 			const max = 12 ** digits;
 			const sectionLength = max / exclusiveMax;
-			const roll = parseInt(this.rnTable.slice(start, end), 12);
+			let tableSegment = this.rnTable.slice(start, end);
+			if (start > end) {
+				tableSegment = `${this.rnTable.slice(start)}${this.rnTable.slice(0, end)}`;
+			}
+			const roll = parseInt(tableSegment, 12);
 			return Math.floor(roll / sectionLength);
 		}
 	}

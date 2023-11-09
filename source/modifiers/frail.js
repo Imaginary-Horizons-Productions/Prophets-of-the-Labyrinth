@@ -1,7 +1,7 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Frail",
-	"Take @{stacks*10} damage when Stunned.",
+	"Deals @{stackCount*20} (+@{funnelCount*5} on enemies due to Spiral Funnels) damage when Stunned. Lose @{roundDecrement} stack per round.",
 	false,
 	true,
 	false,

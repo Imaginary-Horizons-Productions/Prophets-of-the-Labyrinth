@@ -16,11 +16,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;
 		}
-		if (delver.isStunned) {
-			interaction.reply({ content: "You cannot pick a move because you are stunned this round.", ephemeral: true });
-			return;
-		}
-
 		interaction.reply({
 			embeds: [
 				new EmbedBuilder().setColor(getColor(adventure.room.element))
