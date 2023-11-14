@@ -161,7 +161,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Urgent Potion Kit",
 				"Hunter's Sickle",
 				"Sharpened Sickle",
-				"Toxic Sickle"
+				"Toxic Sickle",
+				"Swift Wolf Ring"
 			]
 		},
 		Wind: {
