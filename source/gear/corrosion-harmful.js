@@ -6,7 +6,7 @@ module.exports = new GearTemplate("Harmful Corrosion",
 	"Also inflict @{stagger}",
 	"Spell",
 	"Fire",
-	200,
+	350,
 	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [powerDown], stagger, damage } = module.exports;
 		if (user.element === element) {
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Harmful Corrosion",
 		return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Powered Down.`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Flanking Corrosion", "Shattering Corrosion")
+	.setSidegrades("Flanking Corrosion", "Shattering Corrosion")
 	.setModifiers({ name: "Power Down", stacks: 40 })
 	.setStagger(2)
 	.setDamage(50)

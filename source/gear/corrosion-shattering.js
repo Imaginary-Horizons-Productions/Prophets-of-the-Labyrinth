@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Shattering Corrosion",
 		return `${target.getName(adventure.room.enemyIdMap)} is Powered Down.`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Flanking Corrosion")
+	.setSidegrades("Flanking Corrosion", "Harmful Corrosion")
 	.setModifiers({ name: "Power Down", stacks: 40 }, { name: "Frail", stacks: 4 })
 	.setStagger(2)
 	.setDurability(15);
