@@ -63,8 +63,10 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 						pendingDamage = 0;
 					}
 				}
-				const damageCap = 500 + powerUp;
-				pendingDamage = Math.min(pendingDamage, damageCap);
+				if (!user.gear?.some(gear => gear.name.startsWith("Surpassing"))) {
+					const damageCap = 500 + powerUp;
+					pendingDamage = Math.min(pendingDamage, damageCap);
+				}
 				target.hp -= pendingDamage;
 				let damageText = ` **${targetName}** takes ${pendingDamage} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}`;
 				if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {

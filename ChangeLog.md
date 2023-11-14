@@ -1,7 +1,8 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth Version 0.13.0:
-- New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Swift Wolf Ring
+- New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Surpassing Wolf Ring, Swift Wolf Ring
 - Combined Barrier and Vigilance Charm
+- New Artifacts: Celestial Knight Insignia, Boat Parts
 - Doubled poise and added stagger, left per round fall-off and matching element stagger cure at 1
 - Combatant stagger can no longer be modified while the combatant is stunned
 - Players now need to select their moves when Stunned (for Unstoppable)

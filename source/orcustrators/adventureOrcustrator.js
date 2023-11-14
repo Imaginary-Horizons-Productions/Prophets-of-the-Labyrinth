@@ -15,7 +15,7 @@ const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
-const { clearBlock, removeModifier, addModifier, dealModifierDamage } = require("../util/combatantUtil");
+const { clearBlock, removeModifier, addModifier, dealModifierDamage, addBlock, gainHealth } = require("../util/combatantUtil");
 const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
 const { renderRoom, updateRoomHeader } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
@@ -286,6 +286,13 @@ function newRound(adventure, thread, lastRoundText) {
 					clearBlock(combatant);
 				}
 
+				const boatPartsCount = adventure.getArtifactCount("Boat Parts");
+				if (boatPartsCount > 0 && adventure.room.round <= boatPartsCount + 1 && combatant.team === "delver") {
+					const boatBlock = boatPartsCount * 25 + 25;
+					addBlock(combatant, boatBlock);
+					adventure.updateArtifactStat("Block Generated", boatBlock);
+				}
+
 				// Roll Round Speed
 				const percentBonus = (adventure.generateRandomNumber(21, "battle") - 10) / 100;
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
@@ -378,7 +385,6 @@ function resolveMove(move, adventure) {
 		}
 
 		let effect;
-		let breakText = "";
 		let needsLivingTargets = false;
 		switch (move.type) {
 			case "action":
@@ -397,29 +403,6 @@ function resolveMove(move, adventure) {
 				break;
 			case "gear":
 				effect = getGearProperty(move.name, "effect");
-				if (move.name !== "Punch" && move.userReference.team !== "enemy") {
-					let decrementDurability = true;
-					const gearCategory = getGearProperty(move.name, "category");
-					if (gearCategory === "Spell") {
-						const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
-						if (crystalShardCount > 0) {
-							const durabilitySaveChance = 1 - 0.85 ** crystalShardCount;
-							const max = 144;
-							adventure.updateArtifactStat("Crystal Shard", "Expected Durability Saved", durabilitySaveChance.toFixed(2));
-							if (adventure.generateRandomNumber(max, "battle") < max * durabilitySaveChance) {
-								decrementDurability = false;
-								adventure.updateArtifactStat("Crystal Shard", "Actual Durability Saved", 1);
-							}
-						}
-					}
-					if (decrementDurability) {
-						const gear = user.gear.find(gear => gear.name === move.name);
-						gear.durability--;
-						if (gear.durability < 1) {
-							breakText = ` The ${move.name} broke!`;
-						}
-					}
-				}
 				needsLivingTargets = getGearProperty(move.name, "targetingTags").needsLivingTargets;
 				moveText = `${getEmoji(getGearProperty(move.name, "element"))} ${moveText}`;
 				break;
@@ -463,7 +446,7 @@ function resolveMove(move, adventure) {
 				}
 
 				const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
-				moveText += `. ${resultText}${deadTargetText}${breakText}`;
+				moveText += `. ${resultText}${deadTargetText}${decrementDurability(move.name, user, adventure)}`;
 			} else if (targets.length === 1) {
 				moveText += `, but ${targets[0].getName(adventure.room.enemyIdMap)} was already dead!`;
 			} else {
@@ -472,7 +455,7 @@ function resolveMove(move, adventure) {
 		} else {
 			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
 			const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
-			moveText += `. ${resultText}${breakText}`;
+			moveText += `. ${resultText}${decrementDurability(move.name, user, adventure)}`;
 		}
 	} else {
 		moveText = `💫 ${moveText} is Stunned!`;
@@ -487,7 +470,43 @@ function resolveMove(move, adventure) {
 			moveText += ` ${gainHealth(user, regenStacks * 10, adventure)}`;
 		}
 	}
+	const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
+	if (insigniaCount > 0 && user.team === "delver" && move.isCrit) {
+		const insigniaHealing = 15 + insigniaCount * 15;
+		moveText += ` ${gainHealth(user, insigniaHealing, adventure)}`;
+		adventure.updateArtifactStat("Health Restored", insigniaHealing);
+	}
 	return `${moveText}\n`;
+}
+
+/**
+ * @param {string} moveName
+ * @param {Combatant} user
+ * @param {Adventure} adventure
+ */
+function decrementDurability(moveName, user, adventure) {
+	if (moveName !== "Punch" && user.team === "delver") {
+		const gearCategory = getGearProperty(moveName, "category");
+		if (gearCategory === "Spell") {
+			const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
+			if (crystalShardCount > 0) {
+				const durabilitySaveChance = 1 - 0.85 ** crystalShardCount;
+				const max = 144;
+				adventure.updateArtifactStat("Crystal Shard", "Expected Durability Saved", durabilitySaveChance.toFixed(2));
+				if (adventure.generateRandomNumber(max, "battle") < max * durabilitySaveChance) {
+					adventure.updateArtifactStat("Crystal Shard", "Actual Durability Saved", 1);
+					return "";
+				}
+			}
+		}
+
+		const gear = user.gear.find(gear => gear.name === moveName);
+		gear.durability--;
+		if (gear.durability < 1) {
+			return ` The ${moveName} broke!`;
+		}
+	}
+	return "";
 }
 
 /** Generate reactive moves, randomize speed ties, then resolve moves

@@ -70,11 +70,13 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.S
 						new ActionRowBuilder().addComponents(
 							new StringSelectMenuBuilder().setCustomId(`artifact${SAFE_DELIMITER}${index}`)
 								.setPlaceholder(`Get details about an artifact...${artifactPages.length > 1 ? ` (Page ${index + 1})` : ""}`)
-								.setOptions(page.map(artifact => ({
-									label: `${artifact} x ${adventure.artifacts[artifact].count}`,
-									value: `${artifact}${SAFE_DELIMITER}${adventure.artifacts[artifact].count}`
-								})
-								))
+								.setOptions(page.map(artifact => {
+									const count = adventure.getArtifactCount(artifact);
+									return {
+										label: `${artifact} x ${count}`,
+										value: `${artifact}${SAFE_DELIMITER}${count}`
+									};
+								}))
 						)
 					))
 				} else {

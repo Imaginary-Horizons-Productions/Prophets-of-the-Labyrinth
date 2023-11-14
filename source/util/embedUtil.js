@@ -288,7 +288,7 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 		embed.addFields(artifactTemplate.flavorText);
 	}
 	if (adventure) {
-		const artifactCopy = Object.assign({}, adventure.artifacts[artifactTemplate.name]);
+		const artifactCopy = Object.assign({}, adventure.getArtifactCount(artifactTemplate.name));
 		delete artifactCopy["count"];
 		Object.entries(artifactCopy).forEach(([statistic, value]) => {
 			embed.addFields({ name: statistic, value: value.toString() });

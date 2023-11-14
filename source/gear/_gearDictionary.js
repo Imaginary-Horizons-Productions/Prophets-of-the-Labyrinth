@@ -119,6 +119,7 @@ for (const file of [
 	"warhammer-slowing.js",
 	"warhammer-unstoppable.js",
 	"wolfring-base.js",
+	"wolfring-surpassing.js",
 	"wolfring-swift.js"
 ]) {
 	const gear = require(`./${file}`);

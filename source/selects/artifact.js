@@ -21,7 +21,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			embed.addFields(artifact.flavorText);
 		}
 		const adventure = getAdventure(interaction.channelId);
-		const artifactCopy = Object.assign({}, adventure.artifacts[artifactName]);
+		const artifactCopy = Object.assign({}, adventure.getArtifactCount(artifactName));
 		delete artifactCopy["count"];
 		Object.entries(artifactCopy).forEach(([statistic, value]) => {
 			embed.addFields({ name: statistic, value: value.toString() });
