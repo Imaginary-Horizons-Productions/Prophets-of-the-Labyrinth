@@ -167,6 +167,7 @@ Archetypes:
 - Reinforced
 - Sharpened
 - Shattering
+- Surpassing
 - Swift
 - Taunting
 - Thick

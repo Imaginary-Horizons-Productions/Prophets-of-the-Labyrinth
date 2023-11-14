@@ -252,6 +252,12 @@ Add Stagger to target
 **Available on**
 - all Morning Stars (Light)
 
+### Surpassing
+User isn't subject to damage cap
+
+**Available on**
+- Wolf Ring (Water)
+
 ### Sweeping
 Targets whole team
 
