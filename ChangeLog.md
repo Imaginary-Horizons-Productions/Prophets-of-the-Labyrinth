@@ -1,6 +1,6 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth Version 0.13.0:
-- New Gear: Refreshing Breeze, Shattering Sabotage Kit, Shattering Corrosion
+- New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion
 - Combined Barrier and Vigilance Charm
 - Doubled poise and added stagger, left per round fall-off and matching element stagger cure at 1
 - Combatant stagger can no longer be modified while the combatant is stunned

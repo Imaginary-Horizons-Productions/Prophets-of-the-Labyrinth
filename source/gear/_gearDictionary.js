@@ -40,6 +40,7 @@ for (const file of [
 	"cloak-thick.js",
 	"corrosion-base.js",
 	"corrosion-flanking.js",
+	"corrosion-harmful.js",
 	"corrosion-shattering.js",
 	"daggers-base.js",
 	"daggers-sharpened.js",

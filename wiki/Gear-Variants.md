@@ -110,6 +110,12 @@ Adds Block to the target
 - Inspiration (Wind)
 - Scutum (Fire)
 
+### Harmful
+Deals damage to target
+
+**Available on**
+- Corrosion (Fire)
+
 ### Healing
 Heal the user
 

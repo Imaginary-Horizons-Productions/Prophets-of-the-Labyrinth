@@ -155,6 +155,7 @@ Archetypes:
 - Double
 - Duelist's
 - Fate-Sealing
+- Harmful
 - Healing
 - Long
 - Mercurial
