@@ -37,7 +37,7 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 		const targetName = target.getName(adventure.room.enemyIdMap);
 		if (!(`${element} Absorb` in target.modifiers)) {
 			if (!("Evade" in target.modifiers) || isUnblockable) {
-				const powerUp = user?.getModifierStacks("Power Up");
+				const powerUp = user?.getModifierStacks("Power Up") ?? 0;
 				let pendingDamage = damage + powerUp;
 				if ("Exposed" in target.modifiers) {
 					pendingDamage *= 1.5;
