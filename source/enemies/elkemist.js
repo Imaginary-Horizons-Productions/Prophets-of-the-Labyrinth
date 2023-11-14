@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		// Damage a single foe and small progress
-		let damage = 75 + (user.modifiers["Power Up"] || 0);
+		let damage = 75 + user.getModifierStacks("Power Up");
 		if (isCrit) {
 			damage *= 2;
 		}
