@@ -3,13 +3,13 @@ const { payHP, dealDamage } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Power from Wrath",
 	"Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing hp)",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Pact",
 	"Darkness",
 	200,
 	([target], user, isCrit, adventure) => {
 		let { element, damage, hpCost } = module.exports;
-		const furiousness = (user.maxHP - user.hp) / user.maxHP + 1;
+		const furiousness = (user.getMaxHP() - user.hp) / user.getMaxHP() + 1;
 		let pendingDamage = damage * furiousness;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");

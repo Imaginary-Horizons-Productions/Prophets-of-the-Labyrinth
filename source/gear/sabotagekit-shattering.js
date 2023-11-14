@@ -4,7 +4,7 @@ const { elementsList, getResistances } = require('../util/elementUtil.js');
 
 module.exports = new GearTemplate("Shattering Sabotage Kit",
 	"Afflict a foe with @{mod0Stacks} @{mod0}, @{mod2Stacks} @{@mod2} and a random weakness",
-	"Slow and Weakness +@{critBonus}",
+	"Slow and Weakness +@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	350,

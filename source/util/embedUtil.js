@@ -305,10 +305,10 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 function gearToEmbedField(gearName, durability) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = durability === Infinity ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability)`;
+	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability)`;
 	return {
 		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))}${durabilityText}`,
-		value: buildGearDescription(gearName, true)
+		value: buildGearDescription(gearName, maxDurability !== 0)
 	};
 }
 
@@ -321,7 +321,7 @@ function inspectSelfPayload(delver, gearCapacity) {
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.getName()} the ${delver.archetype}`)
-		.setDescription(`${generateTextBar(delver.hp, delver.maxHP, 11)} ${delver.hp}/${delver.maxHP} HP\nStagger: ${generateTextBar(delver.stagger, delver.stagger, delver.stagger)}\nYour ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.`);
+		.setDescription(`${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nYour ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.`);
 	if (delver.block > 0) {
 		embed.addFields({ name: "Block", value: delver.block.toString() })
 	}

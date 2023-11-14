@@ -3,17 +3,17 @@ const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Bow",
 	"Strike a foe for @{damage} @{element} damage with priority, gain @{bonus}g on kill",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, bonus: bonusBounty, critBonus } = module.exports;
+		let { element, damage, bonus: bonusBounty, critMultiplier } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			damage *= critMultiplier;
 		}
 		let damageText = dealDamage([target], user, damage, false, element, adventure);
 		if (target.hp < 1) {

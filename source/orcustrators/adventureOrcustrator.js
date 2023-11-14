@@ -291,7 +291,7 @@ function newRound(adventure, thread, lastRoundText) {
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
 
 				// Roll Critical Hit
-				const baseCritChance = (1 + (combatant.critBonus / 100)) * (1 / 5);
+				const baseCritChance = (1 + (combatant.getCritBonus() / 100)) * (1 / 5);
 				const max = 144;
 				let threshold;
 				if (combatant.team === "delver") {
@@ -546,7 +546,7 @@ function endRound(adventure, thread) {
 		if (combatant.isStunned) {
 			combatant.isStunned = false;
 			combatant.stagger = 0;
-		} else if (combatant.stagger >= combatant.poise) {
+		} else if (combatant.stagger >= combatant.getPoise()) {
 			combatant.isStunned = true;
 
 			if ("Progress" in combatant.modifiers) {

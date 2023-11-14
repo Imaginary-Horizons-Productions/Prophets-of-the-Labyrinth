@@ -3,7 +3,7 @@ const { addBlock, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Long Barrier",
 	"Gain @{block} block and @{mod0Stacks} @{mod0}",
-	"@{mod0} x@{critBonus}",
+	"@{mod0} x@{critMultiplier}",
 	"Spell",
 	"Earth",
 	350,

@@ -3,18 +3,18 @@ const { addBlock, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Reinforced Buckler",
 	"Grant @{block} block to an ally and yourself and gain @{mod0Stacks} @{mod0}",
-	"Block x@{critBonus}",
+	"Block x@{critMultiplier}",
 	"Armor",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [powerUp], block, critBonus } = module.exports;
+		let { element, modifiers: [powerUp], block, critMultiplier } = module.exports;
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 			target.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critBonus;
+			block *= critMultiplier;
 		}
 		addBlock(target, block);
 		addBlock(user, block);

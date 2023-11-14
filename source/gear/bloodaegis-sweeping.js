@@ -3,17 +3,17 @@ const { addBlock, payHP } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sweeping Blood Aegis",
 	"Pay @{hpCost} hp; gain @{block} block and intercept all later single target moves",
-	"Block x@{critBonus}",
+	"Block x@{critMultiplier}",
 	"Pact",
 	"Darkness",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, block, critBonus, hpCost } = module.exports;
+		let { element, block, critMultiplier, hpCost } = module.exports;
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critBonus;
+			block *= critMultiplier;
 		}
 		addBlock(user, block);
 

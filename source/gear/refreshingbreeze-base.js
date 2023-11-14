@@ -4,7 +4,7 @@ const { removeModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Refreshing Breeze",
 	"Cure a random debuff from each ally",
-	"Debuffs cured x@{critBonus}",
+	"Debuffs cured x@{critMultiplier}",
 	"Spell",
 	"Wind",
 	200,

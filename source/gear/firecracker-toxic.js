@@ -4,15 +4,15 @@ const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Firecracker",
 	"Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Fire",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [poison], damage, critBonus } = module.exports;
+		let { element, modifiers: [poison], damage, critMultiplier } = module.exports;
 		let pendingDamage = damage;
 		if (isCrit) {
-			pendingDamage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
 		targets.map(target => {
 			if (user.element === element) {

@@ -3,17 +3,17 @@ const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Slowing Daggers",
 	"Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [slow], damage, critBonus } = module.exports;
+		let { element, modifiers: [slow], damage, critMultiplier } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			damage *= critMultiplier;
 		}
 		addModifier(target, slow);
 		return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;

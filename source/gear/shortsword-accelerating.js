@@ -3,17 +3,17 @@ const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Shortsword",
 	"Strike a foe for @{damage} @{element} damage, then apply @{mod0Stacks} @{mod0} to the foe and @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to yourself",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [exposed, quicken], damage, critBonus } = module.exports;
+		let { element, modifiers: [exposed, quicken], damage, critMultiplier } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			damage *= critMultiplier;
 		}
 		const damageText = dealDamage([target], user, damage, false, element, adventure);
 		addModifier(user, exposed);

@@ -3,12 +3,12 @@ const { dealDamage, addModifier, getCombatantWeaknesses } = require("../util/com
 
 module.exports = new GearTemplate("Duelist's Pistol",
 	"Strike a foe for @{damage} (+@{bonus} if only attacker) @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { damage, bonus, critBonus, element, modifiers: [powerUp] } = module.exports;
+		let { damage, bonus, critMultiplier, element, modifiers: [powerUp] } = module.exports;
 		const targetIndex = adventure.getCombatantIndex(target);
 		const userIndex = adventure.getCombatantIndex(user);
 		const isLoneAttacker = !adventure.room.moves.some(move => !(move.userReference.team === user.team && move.userReference.index === userIndex) && move.targets.some(moveTarget => moveTarget.team === target.team && moveTarget.index === targetIndex));
@@ -17,12 +17,12 @@ module.exports = new GearTemplate("Duelist's Pistol",
 			target.addStagger("elementMatchFoe");
 		}
 		if (getCombatantWeaknesses(target).includes(element)) {
-			const damageText = dealDamage([target], user, pendingDamage * (isCrit ? critBonus : 1), false, element, adventure);
+			const damageText = dealDamage([target], user, pendingDamage * (isCrit ? critMultiplier : 1), false, element, adventure);
 			const ally = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
 			addModifier(ally, powerUp);
 			return `${damageText} ${ally.name} was Powered Up!`
 		} else {
-			return dealDamage([target], user, pendingDamage * (isCrit ? critBonus : 1), false, element, adventure);
+			return dealDamage([target], user, pendingDamage * (isCrit ? critMultiplier : 1), false, element, adventure);
 		}
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })

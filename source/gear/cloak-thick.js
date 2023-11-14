@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thick Cloak",
-	"Gain @{mod0Stacks} @{mod0}",
+	"Gain @{critBonus} Crit Rate; gain @{mod0Stacks} @{mod0} when used in combat",
 	"@{mod0} +@{bonus}",
 	"Armor",
 	"Wind",
@@ -20,4 +20,5 @@ module.exports = new GearTemplate("Thick Cloak",
 	.setSidegrades("Accelerating Cloak", "Long Cloak")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setBonus(1) // Evade stacks
+	.setCritBonus(5)
 	.setDurability(30);

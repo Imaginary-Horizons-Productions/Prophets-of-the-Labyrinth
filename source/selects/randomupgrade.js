@@ -1,4 +1,4 @@
-const { SelectWrapper } = require('../classes');
+const { SelectWrapper, Gear } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -24,7 +24,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		if (durabilityDifference > 0) {
 			user.gear[index].durability += durabilityDifference;
 		}
-		user.gear.splice(index, 1, { name: upgradeName, durability: Math.min(upgradeDurability, user.gear[index].durability) });
+		user.gear.splice(index, 1, new Gear(gearName, getGearProperty(gearName, "maxDurability"), getGearProperty(gearName, "maxHP"), getGearProperty(gearName, "speed"), getGearProperty(gearName, "critBonus"), getGearProperty(gearName, "poise")));
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 			const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);
 			let components = roomMessage.components;

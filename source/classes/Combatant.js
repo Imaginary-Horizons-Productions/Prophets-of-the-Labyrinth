@@ -33,16 +33,22 @@ class Combatant {
 	 */
 	getName(enemyIdMap) { }
 
-	/** Get the number of stacks of the given modifier the combatant has
-	 * @param {string} modifierName
-	 */
-	getModifierStacks(modifierName) {
-		return this.modifiers[modifierName] ?? 0
-	}
+	/** @returns {number} */
+	getMaxHP() { }
 
-	/** Speed is affected by `roundSpeed` and modifiers */
-	getTotalSpeed() {
-		let totalSpeed = this.speed + this.roundSpeed;
+	/** @returns {number} */
+	getSpeed() {
+		let gearSpeed = 0;
+		if ("gear" in this) {
+			gearSpeed = this.gear.reduce((totalGearSpeed, gear) => {
+				if (parseInt(gear.speed)) {
+					return totalGearSpeed + gear.speed;
+				} else {
+					return totalGearSpeed;
+				}
+			}, 0);
+		}
+		let totalSpeed = this.speed + this.roundSpeed + gearSpeed;
 		if ("Slow" in this.modifiers) {
 			const slowStacks = this.getModifierStacks("Slow");
 			totalSpeed -= slowStacks * 5;
@@ -52,6 +58,19 @@ class Combatant {
 			totalSpeed += quickenStacks * 5;
 		}
 		return Math.ceil(totalSpeed);
+	}
+
+	/** @returns {number} */
+	getCritBonus() { }
+
+	/** @returns {number} */
+	getPoise() { }
+
+	/** Get the number of stacks of the given modifier the combatant has
+	 * @param {string} modifierName
+	 */
+	getModifierStacks(modifierName) {
+		return this.modifiers[modifierName] ?? 0
 	}
 
 	/** add Stagger, negative values allowed
@@ -65,7 +84,7 @@ class Combatant {
 			} else if (value === "elementMatchFoe") {
 				pendingStagger = 2;
 			}
-			this.stagger = Math.min(Math.max(this.stagger + pendingStagger, 0), this.poise);
+			this.stagger = Math.min(Math.max(this.stagger + pendingStagger, 0), this.getPoise());
 		}
 	}
 }
@@ -86,19 +105,39 @@ class Delver extends Combatant {
 	gear = [];
 	startingArtifact = "";
 
-	/**
-	 * @param {string} archetypeName
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementEnum
-	 */
-	setArchetype(archetypeName, elementEnum) {
-		this.archetype = archetypeName;
-		this.element = elementEnum;
-		return this;
-	}
-
 	/** @param {{[enemyName: string]: number}} enemyIdMap */
 	getName(enemyIdMap) {
 		return this.name;
+	}
+
+	getMaxHP() {
+		return this.maxHP + this.gear.reduce((totalGearMaxHP, gear) => {
+			if (parseInt(gear.maxHP)) {
+				return totalGearMaxHP + gear.maxHP;
+			} else {
+				return totalGearMaxHP;
+			}
+		}, 0);
+	}
+
+	getCritBonus() {
+		return this.critBonus + this.gear.reduce((totalCritBonus, gear) => {
+			if (parseInt(gear.critBonus)) {
+				return totalCritBonus + gear.critBonus;
+			} else {
+				return totalCritBonus;
+			}
+		}, 0);
+	}
+
+	getPoise() {
+		return this.poise + this.gear.reduce((totalGearPoise, gear) => {
+			if (parseInt(gear.poise)) {
+				return totalGearPoise + gear.poise;
+			} else {
+				return totalGearPoise;
+			}
+		}, 0);
 	}
 }
 
@@ -106,10 +145,18 @@ class Gear {
 	/**
 	 * @param {string} nameInput
 	 * @param {number} durabilityInput
+	 * @param {number} maxHPInput
+	 * @param {number} speedInput
+	 * @param {number} critBonusInput
+	 * @param {number} poiseInput
 	 */
-	constructor(nameInput, durabilityInput) {
+	constructor(nameInput, durabilityInput, maxHPInput, speedInput, critBonusInput, poiseInput) {
 		this.name = nameInput;
 		this.durability = durabilityInput;
+		this.maxHP = maxHPInput;
+		this.speed = speedInput;
+		this.critBonus = critBonusInput;
+		this.poise = poiseInput;
 	}
 };
 

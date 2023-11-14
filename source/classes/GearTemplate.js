@@ -36,11 +36,9 @@ class GearTemplate {
 	upgrades = [];
 	/** @type {string[]} */
 	sidegrades = [];
-	critBonus = 2;
+	critMultiplier = 2;
 	/** @type {number} */
 	damage;
-	/** @type {number} */
-	bonus;
 	/** @type {number} */
 	block;
 	/** @type {number} */
@@ -51,8 +49,14 @@ class GearTemplate {
 	priority;
 	/** @type {number} */
 	stagger;
+	/** @type {number} */
+	bonus;
 	/** @type {{name: string, stacks: number}[]} */
 	modifiers;
+	maxHP = 0;
+	speed = 0;
+	critBonus = 0;
+	poise = 0;
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
 
@@ -90,15 +94,9 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {number} integer */
-	setBonus(integer) {
-		this.bonus = integer;
-		return this;
-	}
-
 	/** @param {number} numberInput */
-	setCritBonus(numberInput) {
-		this.critBonus = numberInput;
+	setCritMultiplier(numberInput) {
+		this.critMultiplier = numberInput;
 		return this;
 	}
 
@@ -132,9 +130,39 @@ class GearTemplate {
 		return this;
 	}
 
+	/** @param {number} integer */
+	setBonus(integer) {
+		this.bonus = integer;
+		return this;
+	}
+
 	/** @param {...{name: string, stacks: number}} modifiersArray */
 	setModifiers(...modifiersArray) {
 		this.modifiers = modifiersArray;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setMaxHP(integer) {
+		this.maxHP = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setSpeed(integer) {
+		this.speed = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setCritBonus(integer) {
+		this.critBonus = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setPoise(integer) {
+		this.poise = integer;
 		return this;
 	}
 

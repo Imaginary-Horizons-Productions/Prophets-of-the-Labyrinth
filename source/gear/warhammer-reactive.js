@@ -3,12 +3,12 @@ const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Warhammer",
 	"Strike a foe for @{damage} (+@{bonus} if after foe or if foe is currently stunned) @{element} damage",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		const { element, damage, bonus, critBonus } = module.exports;
+		const { element, damage, bonus, critMultiplier } = module.exports;
 		let pendingDamage = damage;
 		if (target.isStunned) {
 			pendingDamage += bonus;
@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Reactive Warhammer",
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			pendingDamage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
 		return dealDamage([target], user, pendingDamage, false, element, adventure);
 	}

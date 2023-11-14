@@ -56,7 +56,7 @@ class Move {
 
 	/** @param {Combatant} combatant */
 	setSpeedByCombatant(combatant) {
-		this.speed = combatant.getTotalSpeed();
+		this.speed = combatant.getSpeed();
 		return this;
 	}
 

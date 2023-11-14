@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { SelectWrapper } = require('../classes');
+const { SelectWrapper, Gear } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { SAFE_DELIMITER, ZERO_WIDTH_WHITESPACE } = require('../constants');
@@ -47,7 +47,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 					break;
 				case "gear":
 					if (delver.gear.length < adventure.getGearCapacity()) {
-						delver.gear.push({ name, durability: getGearProperty(name, "maxDurability") });
+						delver.gear.push(new Gear(name, getGearProperty(gearName, "maxDurability"), getGearProperty(gearName, "maxHP"), getGearProperty(gearName, "speed"), getGearProperty(gearName, "critBonus"), getGearProperty(gearName, "poise")));
 						adventure.room.resources[name].count = Math.max(count - 1, 0);
 						result = {
 							content: `${interaction.member.displayName} takes a ${name}. There are ${count - 1} remaining.`

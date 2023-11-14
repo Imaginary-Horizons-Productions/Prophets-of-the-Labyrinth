@@ -3,17 +3,17 @@ const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sharpened Daggers",
 	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, critBonus } = module.exports;
+		let { element, damage, critMultiplier } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			damage *= critMultiplier;
 		}
 		return dealDamage([target], user, damage, false, element, adventure);
 	}

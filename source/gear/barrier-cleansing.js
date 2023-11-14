@@ -4,7 +4,7 @@ const { addBlock, removeModifier, addModifier } = require('../util/combatantUtil
 
 module.exports = new GearTemplate("Cleansing Barrier",
 	"Gain @{block} block and @{mod0Stacks} @{mod0} and cure a random debuff",
-	"@{mod0} x@{critBonus}",
+	"@{mod0} x@{critMultiplier}",
 	"Spell",
 	"Earth",
 	350,

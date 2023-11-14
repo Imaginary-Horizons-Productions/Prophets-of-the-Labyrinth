@@ -3,17 +3,17 @@ const { addModifier, dealDamage, gainHealth } = require('../util/combatantUtil.j
 
 module.exports = new GearTemplate("Flanking Life Drain",
 	"Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}, then gain @{healing} hp",
-	"Healing x@{critBonus}",
+	"Healing x@{critMultiplier}",
 	"Spell",
 	"Darkness",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [exposed], damage, healing, critBonus } = module.exports;
+		let { element, modifiers: [exposed], damage, healing, critMultiplier } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			healing *= critBonus;
+			healing *= critMultiplier;
 		}
 		let damageText = dealDamage([target], user, damage, false, element, adventure);
 		addModifier(target, exposed);

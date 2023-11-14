@@ -3,17 +3,17 @@ const { addModifier, dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Scythe",
 	"Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
-	"Instant death threshold x@{critBonus}",
+	"Instant death threshold x@{critMultiplier}",
 	"Weapon",
 	"Darkness",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [poison], damage, bonus: hpThreshold, critBonus } = module.exports;
+		let { element, modifiers: [poison], damage, bonus: hpThreshold, critMultiplier } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			hpThreshold *= critBonus;
+			hpThreshold *= critMultiplier;
 		}
 		if (target.hp > hpThreshold) {
 			addModifier(target, poison);

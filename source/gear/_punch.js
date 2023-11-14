@@ -3,12 +3,12 @@ const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Punch",
 	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Technique",
 	"Untyped",
 	0,
 	([target], user, isCrit, adventure) => {
-		let { damage, critBonus, element } = module.exports;
+		let { damage, critMultiplier, element } = module.exports;
 		const ironFistStacks = user.getModifierStacks("Iron Fist Stance");
 		const pendingElement = ironFistStacks > 0 ? user.element : element;
 		const floatingMistStacks = user.getModifierStacks("Floating Mist Stance");
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Punch",
 			totalStagger++;
 		}
 		if (isCrit) {
-			pendingDamage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
 		if (totalStagger > 0) {
 			target.addStagger(totalStagger);

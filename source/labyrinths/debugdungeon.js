@@ -150,7 +150,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Midas Staff",
 				"Poison Torrent",
 				"Potion Kit",
-				"Sickle"
+				"Sickle",
+				"Wolf Ring"
 			],
 			Rare: [
 				"Soothing Midas Staff",

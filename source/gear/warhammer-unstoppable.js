@@ -3,12 +3,12 @@ const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Unstoppable Warhammer",
 	"Strike a foe for @{damage} (+@{bonus} if foe is currently stunned) unblockable @{element} damage, even while Stunned",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, bonus, critBonus } = module.exports;
+		let { element, damage, bonus, critMultiplier } = module.exports;
 		if (target.isStunned) {
 			damage += bonus;
 		}
@@ -16,7 +16,7 @@ module.exports = new GearTemplate("Unstoppable Warhammer",
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			damage *= critMultiplier;
 		}
 		return dealDamage([target], user, damage, true, element, adventure);
 	}

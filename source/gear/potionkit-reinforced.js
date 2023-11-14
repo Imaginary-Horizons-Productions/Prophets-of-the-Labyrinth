@@ -17,19 +17,19 @@ const rollablePotions = [
 
 module.exports = new GearTemplate("Reinforced Potion Kit",
 	"Gain @{block} block and add 1 random potion to loot",
-	"Instead add @{critBonus} potions",
+	"Instead add @{critMultiplier} potions",
 	"Trinket",
 	"Water",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, block, critBonus } = module.exports;
+		let { element, block, critMultiplier } = module.exports;
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
 		const randomPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 		addBlock(user, block);
 		if (isCrit) {
-			adventure.addResource(randomPotion, "item", "loot", critBonus);
+			adventure.addResource(randomPotion, "item", "loot", critMultiplier);
 			return `${user.getName(adventure.room.enemyIdMap)} prepares to Block and sets a double-batch of ${randomPotion} simmering.`;
 		} else {
 			adventure.addResource(randomPotion, "item", "loot", 1);

@@ -3,18 +3,18 @@ const { addModifier, dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Sickle",
 	"Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} (+5% foe max hp) @{element} damage",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Water",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [poison], damage, critBonus } = module.exports;
-		damage += (0.05 * target.maxHP);
+		let { element, modifiers: [poison], damage, critMultiplier } = module.exports;
+		damage += (0.05 * target.getMaxHP());
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			damage *= critMultiplier;
 		}
 		let damageText = dealDamage([target], user, damage, false, element, adventure);
 		if (target.hp > 0) {

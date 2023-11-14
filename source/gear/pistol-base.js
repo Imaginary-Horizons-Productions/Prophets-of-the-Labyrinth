@@ -3,22 +3,22 @@ const { dealDamage, addModifier, getCombatantWeaknesses } = require('../util/com
 
 module.exports = new GearTemplate("Pistol",
 	"Strike a foe for @{damage} @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { damage, critBonus, element, modifiers: [powerUp] } = module.exports;
+		let { damage, critMultiplier, element, modifiers: [powerUp] } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (getCombatantWeaknesses(target).includes(element)) {
-			const damageText = dealDamage([target], user, damage * (isCrit ? critBonus : 1), false, element, adventure);
+			const damageText = dealDamage([target], user, damage * (isCrit ? critMultiplier : 1), false, element, adventure);
 			const ally = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
 			addModifier(ally, powerUp);
 			return `${damageText} ${ally.name} was Powered Up!`
 		} else {
-			return dealDamage([target], user, damage * (isCrit ? critBonus : 1), false, element, adventure);
+			return dealDamage([target], user, damage * (isCrit ? critMultiplier : 1), false, element, adventure);
 		}
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })

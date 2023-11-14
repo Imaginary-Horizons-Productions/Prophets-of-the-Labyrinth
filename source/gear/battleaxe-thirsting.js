@@ -3,17 +3,17 @@ const { addModifier, dealDamage, gainHealth } = require('../util/combatantUtil.j
 
 module.exports = new GearTemplate("Thirsting Battleaxe",
 	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; heal @{healing} hp on kill",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [exposed], damage, critBonus, healing } = module.exports;
+		let { element, modifiers: [exposed], damage, critMultiplier, healing } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			damage *= critMultiplier;
 		}
 		addModifier(user, exposed);
 		let damageText = dealDamage([target], user, damage, false, element, adventure);

@@ -3,17 +3,17 @@ const { dealDamage, addModifier, payHP } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reckless Certain Victory",
 	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}; pay HP for your @{mod0}",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Pact",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [powerUp, exposed], damage, critBonus } = module.exports;
+		let { element, modifiers: [powerUp, exposed], damage, critMultiplier } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			damage *= critMultiplier;
 		}
 		addModifier(user, powerUp);
 		addModifier(user, exposed);

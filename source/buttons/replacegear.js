@@ -1,4 +1,4 @@
-const { ButtonWrapper } = require('../classes');
+const { ButtonWrapper, Gear } = require('../classes');
 const { EMPTY_MESSAGE_PAYLOAD } = require('../constants');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -13,7 +13,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		if (count > 0) {
 			const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 			const discardedName = delver.gear[index].name;
-			delver.gear.splice(index, 1, { name, durability: getGearProperty(name, "maxDurability") });
+			delver.gear.splice(index, 1, new Gear(name, getGearProperty(gearName, "maxDurability"), getGearProperty(gearName, "maxHP"), getGearProperty(gearName, "speed"), getGearProperty(gearName, "critBonus"), getGearProperty(gearName, "poise")));
 			interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 				adventure.room.resources[name].count--;
 				adventure.gold -= cost;

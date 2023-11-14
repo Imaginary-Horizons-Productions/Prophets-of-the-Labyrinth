@@ -115,7 +115,9 @@ for (const file of [
 	"warhammer-base.js",
 	"warhammer-reactive.js",
 	"warhammer-slowing.js",
-	"warhammer-unstoppable.js"
+	"warhammer-unstoppable.js",
+	"wolfring-base.js",
+	"wolfring-swift.js"
 ]) {
 	const gear = require(`./${file}`);
 	if (gear.name in GEAR) {
@@ -161,13 +163,16 @@ function buildGearDescription(gearName, buildFullDescription) {
 		}
 
 		description = description.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
-			.replace(/@{critBonus}/g, getGearProperty(gearName, "critBonus"))
+			.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
 			.replace(/@{damage}/g, getGearProperty(gearName, "damage"))
 			.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
 			.replace(/@{block}/g, getGearProperty(gearName, "block"))
 			.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
 			.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
-			.replace(/@{stagger}/g, `${getGearProperty(gearName, "stagger")} Stagger`);
+			.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
+			.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
+			.replace(/@{critBonus}/g, getGearProperty(gearName, "critBonus"))
+			.replace(/@{poise}/g, getGearProperty(gearName, "poise"));
 		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifier.name)
 				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);

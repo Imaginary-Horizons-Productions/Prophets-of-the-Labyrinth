@@ -167,6 +167,12 @@ Regains durability when entering new rooms
 - Iron Fist Stance (Light)
 - Potion Kit (Water)
 
+### Poised
+Passively increases user's poise
+
+**Available on**
+- all Wolf Rings (Water)
+
 ### Prideful
 Increased damage and change element to Untyped
 
@@ -256,6 +262,12 @@ Targets whole team
 - Inspiration (Wind)
 - Scutum (Fire)
 - Spear (Wind)
+
+### Swift
+Passively increases user's speed
+
+**Available on**
+- Wolf Ring (Water)
 
 ### Taunting
 Change target's move's target to user

@@ -98,6 +98,7 @@ Archetypes: Chemist
 
 ### Common Variants
 - Hunter's
+- Poised
 - Slowing
 - Soothing
 - Sweeping
@@ -166,6 +167,7 @@ Archetypes:
 - Reinforced
 - Sharpened
 - Shattering
+- Swift
 - Taunting
 - Thick
 - Tormenting

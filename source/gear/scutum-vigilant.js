@@ -3,18 +3,18 @@ const { addBlock } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Vigilant Scutum",
 	"Grant @{block} block to an ally and yourself and gain @{mod0Stacks} @{mod0}",
-	"Block x@{critBonus}",
+	"Block x@{critMultiplier}",
 	"Armor",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [vigilance], block, critBonus } = module.exports;
+		let { element, modifiers: [vigilance], block, critMultiplier } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
 			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critBonus;
+			block *= critMultiplier;
 		}
 		addBlock(target, block);
 		addBlock(user, block);

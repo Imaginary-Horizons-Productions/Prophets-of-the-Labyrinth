@@ -375,6 +375,21 @@ class Enemy extends Combatant {
 			return this.name;
 		}
 	}
+
+	/** @returns {number} */
+	getMaxHP() {
+		return this.maxHP;
+	}
+
+	/** @returns {number} */
+	getCritBonus() {
+		return this.critBonus;
+	}
+
+	/** @returns {number} */
+	getPoise() {
+		return this.poise;
+	}
 };
 
 module.exports = {

@@ -3,17 +3,17 @@ const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Scythe",
 	"Strike a foe for @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
-	"Instant death threshold x@{critBonus}",
+	"Instant death threshold x@{critMultiplier}",
 	"Weapon",
 	"Darkness",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, bonus: hpThreshold, critBonus } = module.exports;
+		let { element, damage, bonus: hpThreshold, critMultiplier } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			hpThreshold *= critBonus;
+			hpThreshold *= critMultiplier;
 		}
 		if (target.hp > hpThreshold) {
 			return dealDamage([target], user, damage, false, element, adventure);
