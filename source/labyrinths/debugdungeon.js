@@ -136,6 +136,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Rare: [
 				"Soothing Floating Mist Stance",
+				"Discounted Infinite Regeneration",
 				"Fate-Sealing Infinite Regeneration",
 				"Organic Iron Fist Stance",
 				"Evasive Sun Flare",
@@ -154,8 +155,9 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Wolf Ring"
 			],
 			Rare: [
-				"Soothing Midas Staff",
 				"Accelerating Midas Staff",
+				"Discounted Midas Staff",
+				"Soothing Midas Staff",
 				"Reinforced Potion Kit",
 				"Organic Potion Kit",
 				"Urgent Potion Kit",
