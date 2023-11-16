@@ -3,6 +3,7 @@ const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getArtifact, getAllArtifactNames } = require('../artifacts/_artifactDictionary');
+const { RN_TABLE_BASE } = require('../constants');
 
 const mainId = "viewstartingartifacts";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -23,15 +24,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		let artifactBulletList = "";
 		const playerArtifactCollection = Object.values(playerProfile.artifacts);
 		for (let i = 0; i < 5; i++) {
-			const digits = Math.ceil(Math.log2(artifactPool.length) / Math.log2(12));
+			const digits = Math.ceil(Math.log2(artifactPool.length) / Math.log2(RN_TABLE_BASE));
 			const end = (start + digits) % adventure.rnTable.length;
-			const max = 12 ** digits;
+			const max = RN_TABLE_BASE ** digits;
 			const sectionLength = max / artifactPool.length;
 			let tableSegment = adventure.rnTable.slice(start, end);
 			if (start > end) {
 				tableSegment = `${adventure.rnTable.slice(start)}${adventure.rnTable.slice(0, end)}`;
 			}
-			const roll = parseInt(tableSegment, 12);
+			const roll = parseInt(tableSegment, RN_TABLE_BASE);
 			const rolledArtifact = artifactPool[Math.floor(roll / sectionLength)];
 			if (!artifactsRolledSoFar.has(rolledArtifact)) {
 				artifactBulletList += `\n- ${rolledArtifact}`;

@@ -3,7 +3,7 @@ const { ThreadChannel, EmbedBuilder, Message } = require("discord.js");
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
-const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, MAX_MESSAGE_ACTION_ROWS } = require("../constants.js");
+const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE } = require("../constants.js");
 
 const { getCompany, setCompany } = require("./companyOrcustrator");
 
@@ -99,7 +99,7 @@ const roomTypesByRarity = {
 function rollGearTier(adventure) {
 	const cloverCount = adventure.getArtifactCount("Negative-One Leaf Clover");
 	const baseUpgradeChance = 1 / 8;
-	const max = 144;
+	const max = RN_TABLE_BASE ** 2;
 	const threshold = max * sumGeometricSeries(baseUpgradeChance, 1 - baseUpgradeChance, 1 + cloverCount);
 	adventure.updateArtifactStat("Negative-One Leaf Clover", "Expected Extra Rare Gear", (threshold / max) - baseUpgradeChance);
 	return adventure.generateRandomNumber(max, "general") < threshold ? "Rare" : "Common";
@@ -137,7 +137,7 @@ function nextRoom(roomType, thread) {
 			adventure.updateArtifactStat("Enchanted Map", "Extra Rooms Rolled", mapCount);
 		}
 		const numCandidates = 2 + mapCount;
-		const max = 144;
+		const max = RN_TABLE_BASE ** 2;
 		const rushingChance = adventure.getChallengeIntensity("Rushing") / 100;
 		const roomWeights = Object.keys(roomTypesByRarity);
 		const totalWeight = roomWeights.reduce((total, weight) => total + parseInt(weight), 0);
@@ -299,7 +299,7 @@ function newRound(adventure, thread, lastRoundText) {
 
 				// Roll Critical Hit
 				const baseCritChance = (1 + (combatant.getCritBonus() / 100)) * (1 / 5);
-				const max = 144;
+				const max = RN_TABLE_BASE ** 2;
 				let threshold;
 				if (combatant.team === "delver") {
 					const featherCount = adventure.getArtifactCount("Hawk Tailfeather");
@@ -491,7 +491,7 @@ function decrementDurability(moveName, user, adventure) {
 			const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
 			if (crystalShardCount > 0) {
 				const durabilitySaveChance = 1 - 0.85 ** crystalShardCount;
-				const max = 144;
+				const max = RN_TABLE_BASE ** 2;
 				adventure.updateArtifactStat("Crystal Shard", "Expected Durability Saved", durabilitySaveChance.toFixed(2));
 				if (adventure.generateRandomNumber(max, "battle") < max * durabilitySaveChance) {
 					adventure.updateArtifactStat("Crystal Shard", "Actual Durability Saved", 1);

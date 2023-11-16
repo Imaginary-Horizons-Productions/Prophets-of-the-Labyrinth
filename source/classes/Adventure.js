@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { MAX_MESSAGE_ACTION_ROWS } = require("../constants.js");
+const { MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
 const { parseExpression } = require("../util/textUtil.js");
@@ -83,12 +83,7 @@ class Adventure {
 	}
 
 	generateRNTable() {
-		let hash = crypto.createHash("sha256").update(this.initialSeed).digest("hex");
-		let segments = [];
-		for (let i = 0; i < hash.length; i += 4) {
-			segments.push(hash.slice(i, i + 4));
-		}
-		this.rnTable = segments.reduce((table, segment) => table + parseInt(segment, 16).toString(12), "");
+		this.rnTable = crypto.createHash("sha256").update(this.initialSeed).digest("hex");
 		return this;
 	}
 
@@ -104,17 +99,17 @@ class Adventure {
 		if (exclusiveMax === 1) {
 			return 0;
 		} else {
-			const digits = Math.ceil(Math.log2(exclusiveMax) / Math.log2(12));
+			const digits = Math.ceil(Math.log2(exclusiveMax) / Math.log2(RN_TABLE_BASE));
 			const start = this.rnIndices[branch];
 			const end = start + digits;
 			this.rnIndices[branch] = end % this.rnTable.length;
-			const max = 12 ** digits;
+			const max = RN_TABLE_BASE ** digits;
 			const sectionLength = max / exclusiveMax;
 			let tableSegment = this.rnTable.slice(start, end);
 			if (start > end) {
 				tableSegment = `${this.rnTable.slice(start)}${this.rnTable.slice(0, end)}`;
 			}
-			const roll = parseInt(tableSegment, 12);
+			const roll = parseInt(tableSegment, RN_TABLE_BASE);
 			return Math.floor(roll / sectionLength);
 		}
 	}
