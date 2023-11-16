@@ -19,6 +19,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const options = [{ label: "None", description: "Deselect your picked starting artifact", value: "None" }];
 
 		const artifactPool = getAllArtifactNames();
+		// This randomizer is separate from the Adventure method because it doesn't advance the rnIndex so that players can't reroll starting artifacts by pushing the button again
 		let start = parseInt(interaction.user.id) % adventure.rnTable.length;
 		const artifactsRolledSoFar = new Set();
 		let artifactBulletList = "";
