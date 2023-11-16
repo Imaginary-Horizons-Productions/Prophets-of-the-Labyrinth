@@ -1,17 +1,17 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth Version 0.13.0:
-- New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Surpassing Wolf Ring, Swift Wolf Ring
+- New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Surpassing Wolf Ring, Swift Wolf Ring, Harmful Poison Torrent
 - Combined Barrier and Vigilance Charm
 - New Artifacts: Celestial Knight Insignia, Boat Parts
 - Bloodshield Sword (artifact) reworked into Health Insurance Loophole, now grants gold instead of block
 - Doubled poise and added stagger, left per round fall-off and matching element stagger cure at 1
 - Combatant stagger can no longer be modified while the combatant is stunned
-- Players now need to select their moves when Stunned (for Unstoppable)
 - The Piercing gear variant is now Unstoppable; it is now also usable while Stunned
+- Players now need to select their moves when Stunned (for Unstoppable)
 - New Debuff: Frail - Deals damage when the bearer is Stunned
 - Iron Fist Stance crits now apply Frail to all enemies instead of granting the user Power Up
 - Some enemies's poise now scales with party size
-- New Challenge: Placebos - Items have a chance to do nothing
+- New Challenge: Unlabelled Placebos - Items have a chance to do nothing
 - Tweaked room rarities, largely to make Battles and Events more common
 - New Item: Panacea - Cures up to 2 debuffs on the user
 ## Prophets of the Labyrinth Version 0.12.0:

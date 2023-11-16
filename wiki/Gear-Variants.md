@@ -13,6 +13,12 @@ Adds Quicken to the user
 - Shortsword (Fire)
 - Sun Flare (Light)
 
+### Accurate
+Passively increases the user's Crit Rate
+
+**Available on**
+- all Cloaks (Wind)
+
 ### Awesome
 Bonus damage if target is Stunned
 
@@ -115,6 +121,7 @@ Deals damage to target
 
 **Available on**
 - Corrosion (Fire)
+- Poison Torrent (Water)
 
 ### Healing
 Heal the user

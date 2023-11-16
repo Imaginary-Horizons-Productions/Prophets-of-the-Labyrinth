@@ -15,8 +15,9 @@ module.exports = new GearTemplate("Poison Torrent",
 				target.addStagger("elementMatchFoe");
 			}
 		})
-		return `${targets.map(target => target.getName(adventure.room.enemyIdMap)).join(", ")} was Poisoned.`;
+		return `**${targets.map(target => target.getName(adventure.room.enemyIdMap)).join(", ")}** was Poisoned.`;
 	}
 ).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })
+	.setUpgrades("Harmful Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 })
 	.setDurability(15);

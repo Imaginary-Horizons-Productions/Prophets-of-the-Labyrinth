@@ -78,6 +78,7 @@ for (const file of [
 	"pistol-double.js",
 	"pistol-duelists.js",
 	"poisontorrent-base.js",
+	"poisontorrent-harmful.js",
 	"potionkit-base.js",
 	"potionkit-organic.js",
 	"potionkit-reinforced.js",

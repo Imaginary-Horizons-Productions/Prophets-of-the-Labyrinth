@@ -40,7 +40,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				targetText = "all enemies";
 			}
 			for (let i = 0; i < targetCount; i++) {
-				newMove.addTarget(new CombatantReference(team, i));
+				newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", i));
 			}
 		} else if (target.startsWith("random")) {
 			const targetCount = Number(target.split(SAFE_DELIMITER)[1]);
@@ -53,10 +53,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				targetText = `${targetCount} random enem${targetCount === 1 ? "y" : "ies"}`;
 			}
 			for (let i = 0; i < targetCount; i++) {
-				newMove.addTarget(new CombatantReference(team, adventure.generateRandomNumber(poolSize, "battle")));
+				newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", adventure.generateRandomNumber(poolSize, "battle")));
 			}
 		} else if (target === "self") {
-			newMove.addTarget(new CombatantReference(team, userIndex));
+			newMove.addTarget(new CombatantReference("delver", userIndex));
 		} else if (target === "none") {
 			newMove.addTarget(new CombatantReference("none", -1));
 		}
