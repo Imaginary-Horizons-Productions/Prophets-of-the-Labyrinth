@@ -47,7 +47,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 					break;
 				case "gear":
 					if (delver.gear.length < adventure.getGearCapacity()) {
-						delver.gear.push(new Gear(name, getGearProperty(gearName, "maxDurability"), getGearProperty(gearName, "maxHP"), getGearProperty(gearName, "speed"), getGearProperty(gearName, "critBonus"), getGearProperty(gearName, "poise")));
+						delver.gear.push(new Gear(name, getGearProperty(name, "maxDurability"), getGearProperty(name, "maxHP"), getGearProperty(name, "speed"), getGearProperty(name, "critBonus"), getGearProperty(name, "poise")));
 						adventure.room.resources[name].count = Math.max(count - 1, 0);
 						result = {
 							content: `${interaction.member.displayName} takes a ${name}. There are ${count - 1} remaining.`
