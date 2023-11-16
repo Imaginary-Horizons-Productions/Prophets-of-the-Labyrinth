@@ -295,7 +295,6 @@ Increased durability
 **Available on**
 - Barrier (Earth)
 - Battleaxe (Fire)
-- Cloak (Wind)
 - Censer (Fire)
 
 ### Thirsting
