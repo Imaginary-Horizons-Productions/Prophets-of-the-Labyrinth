@@ -24,5 +24,4 @@ module.exports = new GearTemplate("Firecracker",
 ).setTargetingTags({ target: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setUpgrades("Double Firecracker", "Mercurial Firecracker", "Toxic Firecracker")
 	.setDurability(15)
-	.setCritBonus(2)
 	.setDamage(50);

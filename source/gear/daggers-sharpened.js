@@ -20,5 +20,5 @@ module.exports = new GearTemplate("Sharpened Daggers",
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sweeping Daggers", "Slowing Daggers")
 	.setDurability(15)
-	.setCritBonus(3)
+	.setCritMultiplier(3)
 	.setDamage(100);

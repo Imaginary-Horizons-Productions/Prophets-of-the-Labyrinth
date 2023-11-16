@@ -39,7 +39,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				delver.element = archetypeTemplate.element;
 				delver.gear = archetypeTemplate.startingGear.map(gearName => {
 					return new Gear(gearName,
-						getGearProperty(gearName, "maxDurability"), getGearProperty(gearName, "maxHP"), getGearProperty(gearName, "speed"), getGearProperty(gearName, "critBonus"), getGearProperty(gearName, "poise"));
+						getGearProperty(gearName, "maxDurability"), getGearProperty(gearName, "maxHP"), getGearProperty(gearName, "speed"), getGearProperty(gearName, "critRate"), getGearProperty(gearName, "poise"));
 				});
 			})
 

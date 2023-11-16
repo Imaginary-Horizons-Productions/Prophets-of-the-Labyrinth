@@ -55,7 +55,7 @@ class GearTemplate {
 	modifiers;
 	maxHP = 0;
 	speed = 0;
-	critBonus = 0;
+	critRate = 0;
 	poise = 0;
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
@@ -155,8 +155,8 @@ class GearTemplate {
 	}
 
 	/** @param {number} integer */
-	setCritBonus(integer) {
-		this.critBonus = integer;
+	setCritRate(integer) {
+		this.critRate = integer;
 		return this;
 	}
 

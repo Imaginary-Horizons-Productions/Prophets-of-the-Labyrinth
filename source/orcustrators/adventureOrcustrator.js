@@ -298,7 +298,7 @@ function newRound(adventure, thread, lastRoundText) {
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
 
 				// Roll Critical Hit
-				const baseCritChance = (1 + (combatant.getCritBonus() / 100)) * (1 / 5);
+				const baseCritChance = (1 + (combatant.getCritRate() / 100)) * (1 / 5);
 				const max = RN_TABLE_BASE ** 2;
 				let threshold;
 				if (combatant.team === "delver") {

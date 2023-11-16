@@ -22,5 +22,5 @@ module.exports = new GearTemplate("Slowing Daggers",
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")
 	.setModifiers({ name: "Slow", stacks: 1 })
 	.setDurability(15)
-	.setCritBonus(3)
+	.setCritMultiplier(3)
 	.setDamage(75);

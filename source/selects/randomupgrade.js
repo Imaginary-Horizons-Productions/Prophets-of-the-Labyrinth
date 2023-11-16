@@ -24,7 +24,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		if (durabilityDifference > 0) {
 			user.gear[index].durability += durabilityDifference;
 		}
-		user.gear.splice(index, 1, new Gear(upgradeName, Math.min(upgradeDurability, user.gear[index].durability), getGearProperty(gearName, "maxHP"), getGearProperty(gearName, "speed"), getGearProperty(gearName, "critBonus"), getGearProperty(gearName, "poise")));
+		user.gear.splice(index, 1, new Gear(upgradeName, Math.min(upgradeDurability, user.gear[index].durability), getGearProperty(gearName, "maxHP"), getGearProperty(gearName, "speed"), getGearProperty(gearName, "critRate"), getGearProperty(gearName, "poise")));
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 			const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);
 			let components = roomMessage.components;

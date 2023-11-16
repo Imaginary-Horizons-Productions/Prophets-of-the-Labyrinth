@@ -23,7 +23,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				if (delver.gear.length < adventure.getGearCapacity()) {
 					adventure.gold -= cost;
 					adventure.room.resources[name].count--;
-					delver.gear.push(new Gear(name, getGearProperty(name, "maxDurability"), getGearProperty(name, "maxHP"), getGearProperty(name, "speed"), getGearProperty(name, "critBonus"), getGearProperty(name, "poise")));
+					delver.gear.push(new Gear(name, getGearProperty(name, "maxDurability"), getGearProperty(name, "maxHP"), getGearProperty(name, "speed"), getGearProperty(name, "critRate"), getGearProperty(name, "poise")));
 					interaction.message.edit(renderRoom(adventure, interaction.channel));
 					interaction.reply({ content: `${interaction.member.displayName} buys a ${name} for ${cost}g.` });
 					setAdventure(adventure);

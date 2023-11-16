@@ -18,6 +18,7 @@ Passively increases the user's Crit Rate
 
 **Available on**
 - all Cloaks (Wind)
+- Cloak (Wind)
 
 ### Awesome
 Bonus damage if target is Stunned

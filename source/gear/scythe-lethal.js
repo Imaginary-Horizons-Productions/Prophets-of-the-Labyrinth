@@ -27,4 +27,4 @@ module.exports = new GearTemplate("Lethal Scythe",
 	.setDurability(15)
 	.setDamage(75)
 	.setBonus(99) // execute threshold
-	.setCritBonus(3);
+	.setCritMultiplier(3);

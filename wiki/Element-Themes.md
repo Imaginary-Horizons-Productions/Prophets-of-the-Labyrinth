@@ -147,6 +147,7 @@ Archetypes:
 ### Uncommon Variants
 
 ## Uncategorized Variants
+- Accurate
 - Awesome
 - Bouncing
 - Cleansing

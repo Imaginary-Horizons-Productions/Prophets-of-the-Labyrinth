@@ -325,12 +325,12 @@ class Enemy extends Combatant {
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
 	 * @param {number} speedInput
 	 * @param {number} poiseExpression
-	 * @param {number} critBonusInput
+	 * @param {number} critRateInput
 	 * @param {string} firstActionName
 	 * @param {{[modifierName]: number}} startingModifiersShallowCopy
 	 * @param {number} delverCount
 	 */
-	constructor(nameInput, elementEnum, speedInput, poiseExpression, critBonusInput, firstActionName, startingModifiersShallowCopy, delverCount) {
+	constructor(nameInput, elementEnum, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, delverCount) {
 		super(nameInput, "enemy");
 		this.archetype = nameInput;
 		/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
@@ -339,7 +339,7 @@ class Enemy extends Combatant {
 		if (poiseExpression && delverCount) { // allows parameterless class casting on load without crashing
 			this.poise = parseExpression(poiseExpression, delverCount);
 		}
-		this.critBonus = critBonusInput;
+		this.critRate = critRateInput;
 		this.nextAction = firstActionName;
 		this.modifiers = startingModifiersShallowCopy;
 	}
@@ -377,8 +377,8 @@ class Enemy extends Combatant {
 	}
 
 	/** @returns {number} */
-	getCritBonus() {
-		return this.critBonus;
+	getCritRate() {
+		return this.critRate;
 	}
 
 	/** @returns {number} */

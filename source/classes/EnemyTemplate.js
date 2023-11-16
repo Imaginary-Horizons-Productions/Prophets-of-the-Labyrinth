@@ -10,19 +10,19 @@ class EnemyTemplate {
 	 * @param {number} maxHPInput
 	 * @param {number} speedInput
 	 * @param {string} poiseExpressionInput expression, where n = delver count, that parses to number of Stagger to Stun
-	 * @param {number} critBonusPercent multiplicative increase to base 1/4 crit chance
+	 * @param {number} critRateBonus multiplicative increase to base 1/5 crit chance
 	 * @param {string} firstActionName use "random" for random move in enemy's move pool
-	 * @param {boolean} isBoss sets enemy to not randomize HP and adds 15 critBonus
+	 * @param {boolean} isBoss sets enemy to not randomize HP and adds 15 critRate
 	 */
-	constructor(nameInput, elementEnum, maxHPInput, speedInput, poiseExpressionInput, critBonusPercent, firstActionName, isBoss) {
+	constructor(nameInput, elementEnum, maxHPInput, speedInput, poiseExpressionInput, critRateBonus, firstActionName, isBoss) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!elementEnum) throw new BuildError("Falsy elementEnum");
 		if (!maxHPInput) throw new BuildError("Falsy maxHPInput");
 		if (!speedInput) throw new BuildError("Falsy speedInput");
 		if (!poiseExpressionInput) throw new BuildError("Falsy poiseExpression");
 		if (!isBoss && isBoss !== false) throw new BuildError("Nonfalse falsy isBoss");
-		const pendingCritBonus = critBonusPercent + (isBoss ? 15 : 0);
-		if (!pendingCritBonus && pendingCritBonus !== 0) throw new BuildError("Nonzero falsy critBonus");
+		const pendingCritRate = critRateBonus + (isBoss ? 15 : 0);
+		if (!pendingCritRate && pendingCritRate !== 0) throw new BuildError("Nonzero falsy critRate");
 		if (!firstActionName) throw new BuildError("Falsy firstActionName");
 
 		this.name = nameInput;
@@ -31,7 +31,7 @@ class EnemyTemplate {
 		this.speed = speedInput;
 		/** @type {string} expression, where n = delver count */
 		this.poiseExpression = poiseExpressionInput;
-		this.critBonus = pendingCritBonus;
+		this.critRate = pendingCritRate;
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
 	}

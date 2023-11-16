@@ -24,5 +24,4 @@ module.exports = new GearTemplate("Mercurial Firecracker",
 ).setTargetingTags({ target: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Firecracker", "Toxic Firecracker")
 	.setDurability(15)
-	.setCritBonus(2)
 	.setDamage(50);

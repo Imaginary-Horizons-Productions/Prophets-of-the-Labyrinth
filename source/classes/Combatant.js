@@ -15,7 +15,7 @@ class Combatant {
 	element;
 	maxHP = 300;
 	speed = 100;
-	critBonus = 0;
+	critRate = 0;
 	poise = 6;
 
 	hp = 300;
@@ -61,7 +61,7 @@ class Combatant {
 	}
 
 	/** @returns {number} */
-	getCritBonus() { }
+	getCritRate() { }
 
 	/** @returns {number} */
 	getPoise() { }
@@ -120,12 +120,12 @@ class Delver extends Combatant {
 		}, 0);
 	}
 
-	getCritBonus() {
-		return this.critBonus + this.gear.reduce((totalCritBonus, gear) => {
-			if (parseInt(gear.critBonus)) {
-				return totalCritBonus + gear.critBonus;
+	getCritRate() {
+		return this.critRate + this.gear.reduce((totalCritRate, gear) => {
+			if (parseInt(gear.critRate)) {
+				return totalCritRate + gear.critRate;
 			} else {
-				return totalCritBonus;
+				return totalCritRate;
 			}
 		}, 0);
 	}
@@ -147,15 +147,15 @@ class Gear {
 	 * @param {number} durabilityInput
 	 * @param {number} maxHPInput
 	 * @param {number} speedInput
-	 * @param {number} critBonusInput
+	 * @param {number} critRateInput
 	 * @param {number} poiseInput
 	 */
-	constructor(nameInput, durabilityInput, maxHPInput, speedInput, critBonusInput, poiseInput) {
+	constructor(nameInput, durabilityInput, maxHPInput, speedInput, critRateInput, poiseInput) {
 		this.name = nameInput;
 		this.durability = durabilityInput;
 		this.maxHP = maxHPInput;
 		this.speed = speedInput;
-		this.critBonus = critBonusInput;
+		this.critRate = critRateInput;
 		this.poise = poiseInput;
 	}
 };

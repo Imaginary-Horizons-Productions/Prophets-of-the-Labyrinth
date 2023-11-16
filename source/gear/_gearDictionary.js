@@ -35,9 +35,9 @@ for (const file of [
 	"certainvictory-lethal.js",
 	"certainvictory-reckless.js",
 	"cloak-accelerating.js",
+	"cloak-accurate.js",
 	"cloak-base.js",
 	"cloak-long.js",
-	"cloak-thick.js",
 	"corrosion-base.js",
 	"corrosion-flanking.js",
 	"corrosion-harmful.js",
@@ -175,7 +175,7 @@ function buildGearDescription(gearName, buildFullDescription) {
 			.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
 			.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
 			.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
-			.replace(/@{critBonus}/g, getGearProperty(gearName, "critBonus"))
+			.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
 			.replace(/@{poise}/g, getGearProperty(gearName, "poise"))
 			.replace(/@{stagger}/g, `${getGearProperty(gearName, "stagger")} Stagger`);
 		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {

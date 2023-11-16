@@ -26,5 +26,4 @@ module.exports = new GearTemplate("Toxic Firecracker",
 	.setSidegrades("Double Firecracker", "Mercurial Firecracker")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)
-	.setCritBonus(2)
 	.setDamage(50);

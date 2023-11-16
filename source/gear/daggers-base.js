@@ -21,4 +21,4 @@ module.exports = new GearTemplate("Daggers",
 	.setUpgrades("Sharpened Daggers", "Sweeping Daggers", "Slowing Daggers")
 	.setDurability(15)
 	.setDamage(75)
-	.setCritBonus(3);
+	.setCritMultiplier(3);

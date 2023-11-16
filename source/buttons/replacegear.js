@@ -13,7 +13,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		if (count > 0) {
 			const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 			const discardedName = delver.gear[index].name;
-			delver.gear.splice(index, 1, new Gear(name, getGearProperty(name, "maxDurability"), getGearProperty(name, "maxHP"), getGearProperty(name, "speed"), getGearProperty(name, "critBonus"), getGearProperty(name, "poise")));
+			delver.gear.splice(index, 1, new Gear(name, getGearProperty(name, "maxDurability"), getGearProperty(name, "maxHP"), getGearProperty(name, "speed"), getGearProperty(name, "critRate"), getGearProperty(name, "poise")));
 			interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 				adventure.room.resources[name].count--;
 				adventure.gold -= cost;
