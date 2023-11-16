@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Cloak",
 		return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade.`;
 	}
 ).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
-	.setUpgrades("Accelerating Cloak", "Long Cloak", "Thick Cloak")
+	.setUpgrades("Accelerating Cloak", "Accurate Cloak", "Long Cloak")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setBonus(1) // Evade stacks
 	.setCritRate(5)
