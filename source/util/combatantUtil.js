@@ -157,24 +157,22 @@ function payHP(user, damage, adventure) {
  * @param {Combatant} combatant
  * @param {number} healing
  * @param {Adventure} adventure
- * @param {boolean} inCombat
  */
-function gainHealth(combatant, healing, adventure, inCombat = true) {
+function gainHealth(combatant, healing, adventure) {
 	combatant.hp += healing;
-	let excessHealing = 0;
-	const bloodshieldSwordCount = adventure.getArtifactCount("Bloodshield Sword");
+	const loopholeCount = adventure.getArtifactCount("Health Insurance Loophole");
+	let loopholeGold = 0;
 	if (combatant.hp > combatant.getMaxHP()) {
-		excessHealing = combatant.hp - combatant.getMaxHP();
 		combatant.hp = combatant.getMaxHP();
-		if (combatant.team === "delver" && bloodshieldSwordCount > 0 && inCombat) {
-			let convertedBlock = excessHealing * bloodshieldSwordCount;
-			addBlock(combatant, convertedBlock);
-			adventure.updateArtifactStat("Bloodshield Sword", "Block Gained", convertedBlock);
+		if (combatant.team === "delver" && loopholeCount > 0) {
+			loopholeGold = (combatant.hp - combatant.getMaxHP()) * loopholeCount;
+			adventure.gainGold(loopholeGold);
+			adventure.updateArtifactStat("Health Insurance Loophole", "Gold Gained", loopholeGold);
 		}
 	}
 
 	if (combatant.hp === combatant.getMaxHP()) {
-		return `${combatant.getName(adventure.room.enemyIdMap)} was fully healed${excessHealing && inCombat && bloodshieldSwordCount > 0 ? ` (and gained block)` : ""}!`;
+		return `${combatant.getName(adventure.room.enemyIdMap)} was fully healed${loopholeGold > 0 ? ` (${loopholeGold} gold gained)` : ""}!`;
 	} else {
 		return `${combatant.getName(adventure.room.enemyIdMap)} *gained ${healing} hp*.`
 	}

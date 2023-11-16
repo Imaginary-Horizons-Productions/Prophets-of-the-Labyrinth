@@ -26,7 +26,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const resultText = `${payHP(delver, hpLost, adventure)} Everyone else gains ${hpGained} hp.`;
 		adventure.delvers.forEach(delver => {
 			if (delver.id != interaction.user.id) {
-				gainHealth(delver, hpGained, adventure, false);
+				gainHealth(delver, hpGained, adventure);
 			}
 		})
 		interaction.update({ components: editButtons(interaction.message.components, { [interaction.customId]: { preventUse: true, label: `${interaction.member.displayName} shared HP.`, emoji: "✔️" } }) });

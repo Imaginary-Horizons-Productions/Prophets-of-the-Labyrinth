@@ -3,6 +3,7 @@
 - New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Surpassing Wolf Ring, Swift Wolf Ring
 - Combined Barrier and Vigilance Charm
 - New Artifacts: Celestial Knight Insignia, Boat Parts
+- Bloodshield Sword (artifact) reworked into Health Insurance Loophole, now grants gold instead of block
 - Doubled poise and added stagger, left per round fall-off and matching element stagger cure at 1
 - Combatant stagger can no longer be modified while the combatant is stunned
 - Players now need to select their moves when Stunned (for Unstoppable)
