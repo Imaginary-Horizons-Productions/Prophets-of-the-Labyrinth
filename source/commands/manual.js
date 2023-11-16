@@ -128,7 +128,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 				}
 				break;
 			case subcommands[1].name: // gear-info
-				const gearName = interaction.options.getString(subcommands[0].optionsInput[0].name);
+				const gearName = interaction.options.getString(subcommands[1].optionsInput[0].name);
 				if (!gearExists(gearName)) {
 					interaction.reply({ content: `Stats on **${gearName}** could not be found. Check for typos!`, ephemeral: true });
 					return;
@@ -154,10 +154,11 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 					fields.push(extraField);
 				}
 
+				const gearElement = getGearProperty(gearName, "element");
 				interaction.reply({
 					embeds: [
-						embedTemplate().setColor(getColor(getGearProperty(gearName, "element")))
-							.setTitle(gearName)
+						embedTemplate().setColor(getColor(gearElement))
+							.setTitle(`${gearName} ${getEmoji(gearElement)}`)
 							.setDescription(buildGearDescription(gearName, true))
 							.addFields(fields)
 					],
@@ -165,7 +166,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 				});
 				break;
 			case subcommands[2].name: // item-info
-				const itemName = interaction.options.getString(subcommands[1].optionsInput[0].name);
+				const itemName = interaction.options.getString(subcommands[2].optionsInput[0].name);
 				if (!itemExists(itemName)) {
 					interaction.reply({ content: `Stats on **${itemName}** could not be found. Check for typos!`, ephemeral: true });
 					return;
@@ -186,7 +187,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 				interaction.reply({ embeds: [embed], ephemeral: true });
 				break;
 			case subcommands[3].name: // artifact-info
-				const artifactName = interaction.options.getString(subcommands[2].optionsInput[0].name);
+				const artifactName = interaction.options.getString(subcommands[3].optionsInput[0].name);
 				const artifactTemplate = getArtifact(artifactName);
 				if (!artifactTemplate) {
 					interaction.reply({ content: `Could not find an artifact named ${artifactName}.`, ephemeral: true });
