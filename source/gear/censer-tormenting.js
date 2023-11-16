@@ -10,9 +10,11 @@ module.exports = new GearTemplate("Tormenting Censer",
 	350,
 	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [slow], damage, bonus } = module.exports;
+		const debuffs = [];
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
 				addModifier(target, { name: modifier, stacks: 1 });
+				debuffs.push(modifier);
 			}
 		}
 		if (user.element === element) {
@@ -24,9 +26,9 @@ module.exports = new GearTemplate("Tormenting Censer",
 		let damageText = dealDamage([target], user, damage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
 			addModifier(target, slow);
-			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed and their other debuffs are duplicated.`;
+			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed${debuffs.length > 0 ? ` and they gain ${debuffs.join(", ")}` : ""}.`;
 		} else {
-			return `${damageText} ${target.getName(adventure.room.enemyIdMap)}'s debuffs are duplicated.`;
+			return `${damageText}${debuffs.length > 0 ? `${target.getName(adventure.room.enemyIdMap)}'s gains ${debuffs.join(", ")}.` : ""}`;
 		}
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })

@@ -10,9 +10,11 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 	350,
 	([target], user, isCrit, adventure) => {
 		let { element, modifiers: [slow], stagger } = module.exports;
+		const debuffs = [];
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
 				addModifier(target, { name: modifier, stacks: 1 });
+				debuffs.push(modifier);
 			}
 		}
 		if (user.element === element) {
@@ -21,9 +23,9 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 		target.addStagger(stagger);
 		if (isCrit) {
 			addModifier(target, slow);
-			return `${target.getName(adventure.room.enemyIdMap)} is Staggered, their debuffs are duplicated, and they're slowed.`;
+			return `${target.getName(adventure.room.enemyIdMap)} is Staggered${debuffs.length > 0 ? `, Slowed, and they gain ${debuffs.join(", ")}` : " and Slowed"}.`;
 		} else {
-			return `${target.getName(adventure.room.enemyIdMap)} is Staggered and their debuffs are duplicated.`;
+			return `${target.getName(adventure.room.enemyIdMap)} is Staggered${debuffs.length > 0 ? ` and they gain ${debuffs.join(", ")}` : ""}.`;
 		}
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
