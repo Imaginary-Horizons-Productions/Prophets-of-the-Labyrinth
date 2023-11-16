@@ -175,7 +175,8 @@ function buildGearDescription(gearName, buildFullDescription) {
 			.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
 			.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
 			.replace(/@{critBonus}/g, getGearProperty(gearName, "critBonus"))
-			.replace(/@{poise}/g, getGearProperty(gearName, "poise"));
+			.replace(/@{poise}/g, getGearProperty(gearName, "poise"))
+			.replace(/@{stagger}/g, `${getGearProperty(gearName, "stagger")} Stagger`);
 		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifier.name)
 				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
