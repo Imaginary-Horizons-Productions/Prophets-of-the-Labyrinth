@@ -1,4 +1,5 @@
 const { GearTemplate } = require("../classes");
+const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { dealDamage, addModifier } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Tormenting Censer",
