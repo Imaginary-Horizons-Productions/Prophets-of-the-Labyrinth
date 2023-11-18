@@ -2,7 +2,11 @@ const crypto = require("crypto");
 const { MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
+const { elementsList } = require("../util/elementUtil.js");
 const { parseExpression } = require("../util/textUtil.js");
+
+const elementPool = elementsList();
+const DESCRIPTORS = ["Shining", "New", "Dusty", "Old", "Floating", "Undersea", "Future", "Intense"];
 
 class Adventure {
 	/** NOTE: The setters in this class are require for a well formed entity. Currently procrastinating on refactoring /delve to fix that.
@@ -17,6 +21,8 @@ class Adventure {
 		this.guildId = guildIdInput;
 		this.labyrinth = labyrinthInput;
 		this.leaderId = leaderIdInput;
+		this.element = elementPool[this.generateRandomNumber(elementPool.length, "general")];
+		this.name = `${DESCRIPTORS[this.generateRandomNumber(DESCRIPTORS.length, "general")]} ${labyrinthInput} of ${this.element}`;
 	}
 	/** @type {string} should match the id of the adventure's thread */
 	id;
@@ -68,18 +74,6 @@ class Adventure {
 	/** @param {string} threadId */
 	setId(threadId) {
 		this.id = threadId;
-		return this;
-	}
-
-	/** @param {string} adventureName */
-	setName(adventureName) {
-		this.name = adventureName;
-		return this;
-	}
-
-	/** @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
-	setElement(elementEnum) {
-		this.element = elementEnum;
 		return this;
 	}
 

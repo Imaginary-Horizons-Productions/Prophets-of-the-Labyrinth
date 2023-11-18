@@ -3,13 +3,11 @@ const { PermissionFlagsBits } = require('discord.js');
 const { CommandWrapper, Adventure, Delver } = require('../classes');
 const { setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getChallenge } = require('../challenges/_challengeDictionary');
-const { elementsList, getColor } = require('../util/elementUtil');
+const { getColor } = require('../util/elementUtil');
 const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator');
 const { prerollBoss, defaultLabyrinths, labyrinthExists } = require('../labyrinths/_labyrinthDictionary');
 const { SAFE_DELIMITER } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
-
-const DESCRIPTORS = ["Shining", "New", "Dusty", "Old", "Floating", "Undersea", "Future", "Intense"];
 
 const mainId = "delve";
 const options = [
@@ -37,17 +35,12 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 			return;
 		}
 
-		const adventure = new Adventure(interaction.options.getString(options[1].name), interaction.guildId, interaction.options.getString(options[0].name), interaction.user.id);
+		const adventure = new Adventure(interaction.options.getString(options[1].name), interaction.guildId, labyrinthName, interaction.user.id);
 		// roll bosses
 		prerollBoss("Final Battle", adventure);
 		prerollBoss("Artifact Guardian", adventure);
 
-		const elementPool = elementsList();
-		const pickedElement = elementPool[adventure.generateRandomNumber(elementPool.length, "general")];
-		adventure.setName(`${DESCRIPTORS[adventure.generateRandomNumber(DESCRIPTORS.length, "general")]} ${labyrinthName} of ${pickedElement}`)
-			.setElement(pickedElement);
-
-		const embed = new EmbedBuilder().setColor(getColor(pickedElement))
+		const embed = new EmbedBuilder().setColor(getColor(adventure.element))
 			.setAuthor({ name: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png", url: "https://github.com/Imaginary-Horizons-Productions/prophets-of-the-labyrinth" })
 			.setTitle(adventure.name)
 			.setThumbnail("https://cdn.discordapp.com/attachments/545684759276421120/734093574031016006/bountyboard.png")
