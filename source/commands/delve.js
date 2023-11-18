@@ -37,7 +37,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 			return;
 		}
 
-		const adventure = new Adventure(interaction.options.getString(options[1].name), interaction.guildId, interaction.options.getString(options[0].name), interaction.user.id).generateRNTable();
+		const adventure = new Adventure(interaction.options.getString(options[1].name), interaction.guildId, interaction.options.getString(options[0].name), interaction.user.id);
 		// roll bosses
 		prerollBoss("Final Battle", adventure);
 		prerollBoss("Artifact Guardian", adventure);

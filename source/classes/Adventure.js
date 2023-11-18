@@ -13,6 +13,7 @@ class Adventure {
 	 */
 	constructor(seedInput, guildIdInput, labyrinthInput, leaderIdInput) {
 		this.initialSeed = seedInput || Date.now().toString();
+		this.rnTable = crypto.createHash("sha256").update(this.initialSeed).digest("hex");
 		this.guildId = guildIdInput;
 		this.labyrinth = labyrinthInput;
 		this.leaderId = leaderIdInput;
@@ -79,11 +80,6 @@ class Adventure {
 	/** @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
 	setElement(elementEnum) {
 		this.element = elementEnum;
-		return this;
-	}
-
-	generateRNTable() {
-		this.rnTable = crypto.createHash("sha256").update(this.initialSeed).digest("hex");
 		return this;
 	}
 
