@@ -5,11 +5,11 @@ const { Combatant, Delver } = require("./Combatant.js");
 const { elementsList } = require("../util/elementUtil.js");
 const { parseExpression } = require("../util/textUtil.js");
 
-const elementPool = elementsList();
+const allElements = elementsList();
 const DESCRIPTORS = ["Shining", "New", "Dusty", "Old", "Floating", "Undersea", "Future", "Intense"];
 
 class Adventure {
-	/** NOTE: The setters in this class are require for a well formed entity. Currently procrastinating on refactoring /delve to fix that.
+	/** NOTE: setId is require for a well formed entity. Currently procrastinating on refactoring /delve to fix that.
 	 * @param {string} seedInput
 	 * @param {string} guildIdInput
 	 * @param {string} labyrinthInput
@@ -21,7 +21,7 @@ class Adventure {
 		this.guildId = guildIdInput;
 		this.labyrinth = labyrinthInput;
 		this.leaderId = leaderIdInput;
-		this.element = elementPool[this.generateRandomNumber(elementPool.length, "general")];
+		this.element = allElements[this.generateRandomNumber(allElements.length, "general")];
 		this.name = `${DESCRIPTORS[this.generateRandomNumber(DESCRIPTORS.length, "general")]} ${labyrinthInput} of ${this.element}`;
 	}
 	/** @type {string} should match the id of the adventure's thread */

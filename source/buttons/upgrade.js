@@ -33,15 +33,21 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				})
 			}
 		})
-		if (options.length > 0) {
-			let upgradeSelect = new ActionRowBuilder().addComponents(
-				new StringSelectMenuBuilder().setCustomId("randomupgrade")
-					.setPlaceholder("Pick a piece of gear to randomly tinker with...")
-					.setOptions(options)
-			)
-			interaction.reply({ content: `You can use 1 room action to tinker with a piece of gear. It'll upgrade if it hasn't already or change form if it has.`, components: [upgradeSelect], ephemeral: true });
-		} else {
+		if (options.length < 1) {
 			interaction.reply({ content: "You don't have any gear that can be tinkered with.", ephemeral: true });
+			return;
 		}
+
+		interaction.reply({
+			content: `You can use 1 room action to tinker with a piece of gear. It'll upgrade if it hasn't already or change form if it has.`,
+			components: [
+				new ActionRowBuilder().addComponents(
+					new StringSelectMenuBuilder().setCustomId("randomupgrade")
+						.setPlaceholder("Pick a piece of gear to randomly tinker with...")
+						.setOptions(options)
+				)
+			],
+			ephemeral: true
+		});
 	}
 );
