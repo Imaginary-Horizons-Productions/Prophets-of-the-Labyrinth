@@ -7,7 +7,8 @@ const { getRoom, ROOM_CATEGORIES } = require("../rooms/_roomDictionary");
 const LABYRINTHS = {};
 
 for (const file of [
-	"debugdungeon.js"
+	"debugdungeon.js",
+	"everythingbagel.js"
 ]) {
 	/** @type {LabyrinthTemplate} */
 	const labyrinth = require(`./${file}`);
@@ -113,7 +114,7 @@ function rollRoom(type, adventure) {
 	if (!(type in LABYRINTHS[adventure.labyrinth].availableRooms)) {
 		console.error("Attempt to create room of unidentified type: " + type);
 		adventure.roomCandidates = { [`Battle${SAFE_DELIMITER}${adventure.depth}`]: { voterIds: [], isHidden: false } };
-		return LABYRINTHS["Debug Dungeon"].availableRooms["Empty"][0];
+		return LABYRINTHS["Everything Bagel"].availableRooms["Empty"][0];
 	}
 	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];
 	const roomName = roomPool[adventure.generateRandomNumber(roomPool.length, "general")];
@@ -127,7 +128,7 @@ function rollRoom(type, adventure) {
 module.exports = {
 	labyrinthExists,
 	/** This array determines which labyrinths show up in the `/delve labyrinth` autocomplete. It is desync'd from the list of all labyrinths to allow for easter eggs (ie remove Debug Dungeon after "real" labyrinths are made) */
-	defaultLabyrinths: ["Debug Dungeon"],
+	defaultLabyrinths: ["Everything Bagel"],
 	getLabyrinthProperty,
 	rollItem,
 	rollGear,
