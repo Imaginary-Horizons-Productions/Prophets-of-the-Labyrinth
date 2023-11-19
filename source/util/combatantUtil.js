@@ -1,5 +1,5 @@
 const { Combatant, Adventure } = require("../classes");
-const { getInverse, isNonStacking, getModifierDescription, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
+const { getInverse, getModifierDescription, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getWeaknesses, getResistances, elementsList } = require("./elementUtil.js");
 
 /**
@@ -262,7 +262,7 @@ function removeModifier(combatant, { name: modifier, stacks, force = false }) {
 function modifiersToString(combatant, adventure) {
 	let modifiersText = "";
 	for (const modifier in combatant.modifiers) {
-		modifiersText += `*${modifier}${isNonStacking(modifier) ? "" : ` x ${combatant.modifiers[modifier]}`}* - ${getModifierDescription(modifier, combatant, adventure)}\n`;
+		modifiersText += `*${modifier} x ${combatant.modifiers[modifier]}* - ${getModifierDescription(modifier, combatant, adventure)}\n`;
 	}
 	return modifiersText;
 }

@@ -74,11 +74,6 @@ function isDebuff(modifierName) {
 }
 
 /** @param {string} modifierName */
-function isNonStacking(modifierName) {
-	return MODIFIERS[modifierName].isNonStacking;
-}
-
-/** @param {string} modifierName */
 function getInverse(modifierName) {
 	return MODIFIERS[modifierName].inverse;
 }
@@ -88,6 +83,5 @@ module.exports = {
 	getTurnDecrement,
 	isBuff,
 	isDebuff,
-	isNonStacking,
 	getInverse
 };

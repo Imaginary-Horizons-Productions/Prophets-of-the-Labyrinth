@@ -9,7 +9,7 @@ const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { isBuff, isDebuff, isNonStacking } = require("../modifiers/_modifierDictionary");
+const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
@@ -348,7 +348,7 @@ function inspectSelfPayload(delver, gearCapacity) {
 				style = ButtonStyle.Secondary;
 			}
 			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
-				.setLabel(`${modifierName}${isNonStacking(modifierName) ? "" : ` x ${delver.modifiers[modifierName]}`}`)
+				.setLabel(`${modifierName} x ${delver.modifiers[modifierName]}`)
 				.setStyle(style))
 		}
 		if (modifiers.length > 4) {
