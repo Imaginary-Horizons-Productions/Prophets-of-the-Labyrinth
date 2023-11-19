@@ -6,7 +6,7 @@ class ModifierTemplate {
 	 * @param {string} descriptionInput
 	 * @param {boolean} isBuffInput
 	 * @param {boolean} isDebuffInput
-	 * @param {number} turnDecrementInput
+	 * @param {number | "all"} turnDecrementInput
 	 */
 	constructor(nameInput, descriptionInput, isBuffInput, isDebuffInput, turnDecrementInput) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
