@@ -1,7 +1,7 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Earth Weakness",
-	"Suffer Weakness to Earth damage for @{stackCount} rounds.",
+	"Suffer weakness to Earth damage for @{stackCount} rounds.",
 	false,
 	true,
 	1

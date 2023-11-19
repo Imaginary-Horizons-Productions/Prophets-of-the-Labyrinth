@@ -17,6 +17,7 @@ for (const file of [
 	"exposed.js",
 	"frail.js",
 	"oblivious.js",
+	"paralysis.js",
 	"poison.js",
 	"power-down.js",
 	"power-up.js",

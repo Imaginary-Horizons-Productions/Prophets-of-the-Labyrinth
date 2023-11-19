@@ -1,7 +1,7 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Vigilance",
-	"The combatant will retain block for @{stackCount} rounds.",
+	"Retain Block between rounds for @{stackCount} rounds.",
 	true,
 	false,
 	1

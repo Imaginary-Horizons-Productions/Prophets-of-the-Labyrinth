@@ -1,7 +1,7 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Quicken",
-	"The unit's next @{stackCount} move(s) will have +@{stackCount*5} speed.",
+	"Increase move speed by @{stackCount*5} for @{stackCount} rounds.",
 	false,
 	true,
 	0

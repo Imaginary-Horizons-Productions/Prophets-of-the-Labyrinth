@@ -587,7 +587,7 @@ function endRound(adventure, thread) {
 				}
 			}
 		} else {
-			combatant.addStagger(-1);
+			combatant.addStagger(combatant.getModifierStacks("Paralysis") > 0 ? 1 : -1);
 		}
 	}
 
