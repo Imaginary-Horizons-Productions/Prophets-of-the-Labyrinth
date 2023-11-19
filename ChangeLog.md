@@ -15,6 +15,7 @@
 - New Challenge: Unlabelled Placebos - Items have a chance to do nothing
 - Tweaked room rarities, largely to make Battles and Events more common
 - New Item: Panacea - Cures up to 2 debuffs on the user
+- New Enemy: Mechabee Soldier
 ## Prophets of the Labyrinth Version 0.12.0:
 - Reintroduced Light and Darkness elements
 - Reworked Martial Artist starting gear

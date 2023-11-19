@@ -2,6 +2,7 @@ const { EnemyTemplate } = require("../classes");
 const { isBuff } = require("../modifiers/_modifierDictionary.js");
 const { addBlock, dealDamage, addModifier } = require("../util/combatantUtil");
 const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
+const { isDebuff } = require("../modifiers/slow.js");
 
 module.exports = new EnemyTemplate("Elkemist",
 	"Water",
@@ -23,8 +24,17 @@ module.exports = new EnemyTemplate("Elkemist",
 		} else {
 			addModifier(user, { name: "Progress", stacks: 45 + adventure.generateRandomNumber(31, "battle") });
 		}
+		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
+		let removedDebuff = null;
+		if (targetDebuffs.length > 0) {
+			const rolledDebuff = targetDebuffs[adventure.generateRandomNumber(targetDebuffs.length, "battle")];
+			const wasRemoved = removeModifier(user, { name: rolledDebuff, stacks: "all" });
+			if (wasRemoved) {
+				removedDebuff = rolledDebuff;
+			}
+		}
 		addBlock(user, 200);
-		return "It gathers some materials, fortifying its laboratory to Block incoming damage.";
+		return `It gathers some materials${removedDebuff ? ` and cures itself of ${removedDebuff}` : ""}, fortifying its laboratory to Block incoming damage.`;
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
@@ -66,7 +76,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	element: "Untyped",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		// Remove buffs from all foes and gain progress per removed
+		// Convert all buffs on foes to Fire Weakness and gain Progress per buff removed
 		let progressGained = adventure.generateRandomNumber(16, "battle");
 		const affectedDelvers = new Set();
 		if (isCrit) {
@@ -75,6 +85,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		for (const target of targets) {
 			for (let modifier in target.modifiers) {
 				if (isBuff(modifier)) {
+					addModifier(target, { name: "Fire Weakness", stacks: target.modifiers[modifier] });
 					delete target.modifiers[modifier];
 					progressGained += 5;
 					if (!affectedDelvers.has(target.name)) {
@@ -86,9 +97,9 @@ module.exports = new EnemyTemplate("Elkemist",
 		addModifier(user, { name: "Progress", stacks: progressGained });
 
 		if (affectedDelvers.size > 0) {
-			return `It cackles as it nullifies buffs on ${[...affectedDelvers].join(", ")}.`;
+			return `It cackles as it transmutes buffs on ${[...affectedDelvers].join(", ")} to Fire Weakness.`;
 		} else {
-			return "It's disappointed the party has no buffs to nullify.";
+			return "It's disappointed the party has no buffs to transmute.";
 		}
 	},
 	selector: selectAllFoes,

@@ -16,21 +16,23 @@ module.exports = new GearTemplate("Refreshing Breeze",
 				target.addStagger("elementMatchAlly");
 			}
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
-			const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
-			const removedDebuffs = [];
-			for (let i = 0; i < debuffsToRemove; i++) {
-				const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
-				const rolledDebuff = targetDebuffs[debuffIndex];
-				const wasRemoved = removeModifier(target, { name: rolledDebuff, stacks: "all" });
-				if (wasRemoved) {
-					removedDebuffs.push(rolledDebuff);
-					targetDebuffs.splice(debuffIndex, 1);
+			if (targetDebuffs.length > 0) {
+				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
+				const removedDebuffs = [];
+				for (let i = 0; i < debuffsToRemove; i++) {
+					const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
+					const rolledDebuff = targetDebuffs[debuffIndex];
+					const wasRemoved = removeModifier(target, { name: rolledDebuff, stacks: "all" });
+					if (wasRemoved) {
+						removedDebuffs.push(rolledDebuff);
+						targetDebuffs.splice(debuffIndex, 1);
+					}
 				}
-			}
-			if (removedDebuffs.length > 1) {
-				resultTexts.push(`${target.getName(adventure.room.enemyIdMap)} is cured of ${removedDebuffs[0]} and ${removedDebuffs[1]}.`)
-			} else if (removedDebuffs.length > 0) {
-				resultTexts.push(`${target.getName(adventure.room.enemyIdMap)} is cured of ${removedDebuffs[0]}.`)
+				if (removedDebuffs.length > 1) {
+					resultTexts.push(`${target.getName(adventure.room.enemyIdMap)} is cured of ${removedDebuffs[0]} and ${removedDebuffs[1]}.`)
+				} else if (removedDebuffs.length > 0) {
+					resultTexts.push(`${target.getName(adventure.room.enemyIdMap)} is cured of ${removedDebuffs[0]}.`)
+				}
 			}
 		})
 		if (resultTexts.length > 0) {

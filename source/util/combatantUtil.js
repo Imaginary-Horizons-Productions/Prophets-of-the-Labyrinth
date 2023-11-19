@@ -223,7 +223,6 @@ function addModifier(combatant, { name: modifier, stacks: pendingStacks, force =
 		if (combatant.getModifierStacks("Progress") >= 100) {
 			combatant.modifiers.Progress = 0;
 			addModifier(combatant, { name: "Power Up", stacks: 100, force: false });
-			addModifier(combatant, { name: "Stasis", stacks: 1, force: false });
 		}
 		return true;
 	} else {
