@@ -11,6 +11,7 @@
 - Players now need to select their moves when Stunned (for Unstoppable)
 - New Debuff: Frail - Deals damage when the bearer is Stunned
 - Iron Fist Stance crits now apply Frail to all enemies instead of granting the user Power Up
+- New Debuff: Paralysis - Stagger increases instead of falling off between rounds
 - Some enemies's poise now scales with party size
 - New Challenge: Unlabelled Placebos - Items have a chance to do nothing
 - Tweaked room rarities, largely to make Battles and Events more common
