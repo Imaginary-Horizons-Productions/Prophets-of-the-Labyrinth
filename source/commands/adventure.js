@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, PermissionFlagsBits } = require('discord.js');
 const { CommandWrapper } = require('../classes');
-const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, MAX_MESSAGE_ACTION_ROWS } = require('../constants');
+const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, MAX_MESSAGE_ACTION_ROWS, EMPTY_SELECT_OPTION_SET } = require('../constants');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { inspectSelfPayload, randomAuthorTip } = require('../util/embedUtil');
 const { getColor } = require('../util/elementUtil');
@@ -86,10 +86,7 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.S
 						new StringSelectMenuBuilder().setCustomId(`artifact`)
 							.setPlaceholder("No artifacts to inspect...")
 							.setDisabled(true)
-							.setOptions([{
-								label: "placeholder",
-								value: "placeholder"
-							}])
+							.setOptions(EMPTY_SELECT_OPTION_SET)
 					))
 				}
 				interaction.reply({ embeds: [embed], components: infoSelects, ephemeral: true })

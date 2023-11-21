@@ -6,7 +6,7 @@ const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { buildGearDescription } = require("../gear/_gearDictionary");
 
-const { ordinalSuffixEN } = require("./textUtil");
+const { ordinalSuffixEN, trimForSelectOptionDescription } = require("./textUtil");
 
 /** Modify the buttons whose `customId`s are keys in `edits` from among `components` based on `preventUse`, `label`, and `emoji` then return all components
  * @param {MessageActionRow[]} components
@@ -88,9 +88,9 @@ function generateLootRow(adventure) {
 				}
 
 				if (type === "gear") {
-					option.description = buildGearDescription(name, false);
+					option.description = trimForSelectOptionDescription(buildGearDescription(name, false));
 				} else if (type === "artifact") {
-					option.description = getArtifact(name).dynamicDescription(count);
+					option.description = trimForSelectOptionDescription(getArtifact(name).dynamicDescription(count));
 				}
 				options.push(option)
 			}

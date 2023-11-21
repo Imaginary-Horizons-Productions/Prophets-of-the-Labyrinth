@@ -8,6 +8,7 @@ const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator')
 const { prerollBoss, defaultLabyrinths, labyrinthExists } = require('../labyrinths/_labyrinthDictionary');
 const { SAFE_DELIMITER } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
+const { trimForSelectOptionDescription } = require('../util/textUtil');
 
 const mainId = "delve";
 const options = [
@@ -67,7 +68,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 				const options = [{ label: "None", description: "Deselect previously selected challenges", value: "None" }];
 				["Can't Hold All this Value", "Restless", "Rushing"].forEach(challengeName => {
 					const challenge = getChallenge(challengeName);
-					options.push({ label: challengeName, description: challenge.dynamicDescription(challenge.intensity, challenge.duration), value: challengeName });
+					options.push({ label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName });
 				})
 				adventure.setId(thread.id);
 				setAdventure(adventure);

@@ -1,6 +1,8 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { getArtifact } = require("../artifacts/_artifactDictionary");
+const { trimForSelectOptionDescription } = require("../util/textUtil");
+const { EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 module.exports = new RoomTemplate("Twin Pedestals",
 	"@{adventure}",
@@ -14,7 +16,7 @@ module.exports = new RoomTemplate("Twin Pedestals",
 			const count = adventure.getArtifactCount(artifact);
 			return {
 				label: artifact,
-				description: getArtifact(artifact).dynamicDescription(count + 1),
+				description: trimForSelectOptionDescription(getArtifact(artifact).dynamicDescription(count + 1)),
 				value: artifact
 			}
 		});
@@ -32,7 +34,7 @@ module.exports = new RoomTemplate("Twin Pedestals",
 					new StringSelectMenuBuilder().setCustomId("artifactdupe")
 						.setPlaceholder("No artifacts to duplicate")
 						.setDisabled(true)
-						.setOptions([{ label: "placeholder", value: "placeholder" }])
+						.setOptions(EMPTY_SELECT_OPTION_SET)
 				)
 			];
 		}

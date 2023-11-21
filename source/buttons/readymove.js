@@ -6,6 +6,7 @@ const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getEmoji, getColor } = require('../util/elementUtil');
 const { gearToEmbedField, randomAuthorTip } = require('../util/embedUtil');
+const { trimForSelectOptionDescription } = require('../util/textUtil');
 
 const mainId = "readymove";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -28,7 +29,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			if (enemy.hp > 0) {
 				enemyOptions.push({
 					label: enemy.getName(adventure.room.enemyIdMap),
-					description: miniPredictBuilder(enemy),
+					description: trimForSelectOptionDescription(miniPredictBuilder(enemy)),
 					value: `enemy${SAFE_DELIMITER}${i}`
 				})
 			}
@@ -36,7 +37,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const delverOptions = adventure.delvers.map((ally, i) => {
 			return {
 				label: ally.name,
-				description: miniPredictBuilder(ally),
+				description: trimForSelectOptionDescription(miniPredictBuilder(ally)),
 				value: `delver${SAFE_DELIMITER}${i}`
 			}
 		});

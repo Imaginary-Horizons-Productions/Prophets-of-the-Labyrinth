@@ -4,6 +4,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 const { getItem } = require("../items/_itemDictionary");
+const { trimForSelectOptionDescription } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Treasure! Gold or Items?",
 	"@{adventure}",
@@ -27,7 +28,7 @@ module.exports = new RoomTemplate("Treasure! Gold or Items?",
 				}
 
 				if (type === "item") {
-					option.description = getItem(name).description;
+					option.description = trimForSelectOptionDescription(getItem(name).description);
 				}
 				options.push(option)
 			}

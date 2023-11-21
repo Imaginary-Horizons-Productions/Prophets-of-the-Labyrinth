@@ -1,9 +1,10 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
-const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET, MAX_SELECT_DESCRIPTION_LENGTH } = require("../constants");
+const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { generateMerchantScoutingRow } = require("../util/messageComponentUtil");
+const { trimForSelectOptionDescription } = require("../util/textUtil");
 
 const uiGroups = [`gear${SAFE_DELIMITER}?`, "item"];
 
@@ -25,13 +26,9 @@ module.exports = new RoomTemplate("Item Merchant",
 					const cost = adventure.room.resources[name].cost;
 					/** @type {number} */
 					const maxDurability = getGearProperty(name, "maxDurability");
-					let description = buildGearDescription(name, false);
-					if (description.length > MAX_SELECT_DESCRIPTION_LENGTH) {
-						description = description.slice(0, 99) + "…"; // Single character elipsis
-					}
 					gearOptions.push({
 						label: `${cost}g: ${name} (${maxDurability} uses)`,
-						description,
+						description: trimForSelectOptionDescription(buildGearDescription(name, false)),
 						value: `${name}${SAFE_DELIMITER}${i}`
 					});
 					break;
@@ -39,7 +36,7 @@ module.exports = new RoomTemplate("Item Merchant",
 					const item = getItem(name);
 					itemOptions.push({
 						label: `${item.cost}g: ${name}`,
-						description: item.description,
+						description: trimForSelectOptionDescription(item.description),
 						value: `${name}${SAFE_DELIMITER}${i}`
 					})
 					break;

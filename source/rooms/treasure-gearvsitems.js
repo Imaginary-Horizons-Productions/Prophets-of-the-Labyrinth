@@ -5,6 +5,7 @@ const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 const { buildGearDescription } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
+const { trimForSelectOptionDescription } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Treasure! Gear or Items?",
 	"@{adventure}",
@@ -24,10 +25,10 @@ module.exports = new RoomTemplate("Treasure! Gear or Items?",
 				option.label = `${name} x ${count}`;
 				switch (type) {
 					case "gear":
-						option.description = buildGearDescription(name, false);
+						option.description = trimForSelectOptionDescription(buildGearDescription(name, false));
 						break;
 					case "item":
-						option.description = getItem(name).description;
+						option.description = trimForSelectOptionDescription(getItem(name).description);
 						break;
 				}
 				options.push(option)

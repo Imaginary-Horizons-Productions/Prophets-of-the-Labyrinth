@@ -4,6 +4,7 @@ const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getArtifact, getAllArtifactNames } = require('../artifacts/_artifactDictionary');
 const { RN_TABLE_BASE } = require('../constants');
+const { trimForSelectOptionDescription } = require('../util/textUtil');
 
 const mainId = "viewstartingartifacts";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -41,7 +42,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (playerArtifactCollection.includes(rolledArtifact)) {
 					options.push({
 						label: rolledArtifact,
-						description: getArtifact(rolledArtifact).dynamicDescription(1),
+						description: trimForSelectOptionDescription(getArtifact(rolledArtifact).dynamicDescription(1)),
 						value: rolledArtifact
 					})
 				}

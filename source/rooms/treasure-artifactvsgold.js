@@ -4,6 +4,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 const { getArtifact } = require("../artifacts/_artifactDictionary");
+const { trimForSelectOptionDescription } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Treasure! Artifact or Gold?",
 	"@{adventure}",
@@ -27,7 +28,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gold?",
 				}
 
 				if (type === "artifact") {
-					option.description = getArtifact(name).dynamicDescription(count);
+					option.description = trimForSelectOptionDescription(getArtifact(name).dynamicDescription(count));
 				}
 				options.push(option)
 			}

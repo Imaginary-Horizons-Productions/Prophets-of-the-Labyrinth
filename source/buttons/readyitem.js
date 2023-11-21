@@ -5,6 +5,7 @@ const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getColor } = require('../util/elementUtil');
 const { randomAuthorTip } = require('../util/embedUtil');
 const { getItem } = require('../items/_itemDictionary');
+const { trimForSelectOptionDescription } = require('../util/textUtil');
 
 const mainId = "readyitem";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -29,7 +30,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setPlaceholder("Pick an item...")
 						.addOptions(Object.keys(adventure.items).slice(0, MAX_SELECT_OPTIONS).reduce((options, item) => options.concat({
 							label: `${item} (Held: ${adventure.items[item]})`,
-							description: getItem(item).description,
+							description: trimForSelectOptionDescription(getItem(item).description),
 							value: item
 						}), [])))
 			],

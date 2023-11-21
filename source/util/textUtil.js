@@ -110,11 +110,21 @@ function ordinalSuffixEN(integer) {
 	}
 }
 
+/** @param {string} text */
+function trimForSelectOptionDescription(text) {
+	if (text.length > 100) {
+		return `${text.slice(0, 99)}…`;
+	} else {
+		return text;
+	}
+}
+
 module.exports = {
 	getNumberEmoji,
 	generateTextBar,
 	generateRuntimeTemplateStringRegExp,
 	parseExpression,
 	calculateTagContent,
-	ordinalSuffixEN
+	ordinalSuffixEN,
+	trimForSelectOptionDescription
 };
