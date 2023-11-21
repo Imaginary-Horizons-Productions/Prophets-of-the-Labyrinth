@@ -3,7 +3,7 @@ const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly } = re
 const { addBlock, addModifier } = require("../util/combatantUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 
-const mechabee = require("./mechabee.js")
+const drone = require("./mechabeedrone.js")
 
 const PATTERN = {
 	"Swarm Protocol": "V.E.N.O.Missile",
@@ -83,7 +83,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	element: "Untyped",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		spawnEnemy(mechabee, adventure);
+		spawnEnemy(drone, adventure);
 		return "Another mechabee arrives.";
 	},
 	selector: selectNone,

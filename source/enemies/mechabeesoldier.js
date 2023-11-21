@@ -8,7 +8,7 @@ const PATTERN = {
 	"Neurotoxin Strike": "Self-Destruct",
 	"Self-Destruct": "Barrel Roll"
 }
-function mechabeeSoldierPattern(actionName) {
+function soldierPattern(actionName) {
 	return PATTERN[actionName]
 }
 
@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: mechabeeSoldierPattern
+	next: soldierPattern
 }).addAction({
 	name: "Barrel Roll",
 	element: "Untyped",
@@ -51,7 +51,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: mechabeeSoldierPattern
+	next: soldierPattern
 }).addAction({
 	name: "Neurotoxin Strike",
 	element: "Earth",
@@ -67,7 +67,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: mechabeeSoldierPattern
+	next: soldierPattern
 }).addAction({
 	name: "Self-Destruct",
 	element: "Earth",
@@ -86,5 +86,5 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: mechabeeSoldierPattern
+	next: soldierPattern
 });

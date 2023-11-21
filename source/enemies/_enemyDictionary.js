@@ -9,7 +9,7 @@ for (const file of [
 	"elkemist.js",
 	"firearrowfrog.js",
 	"geodetortoise.js",
-	"mechabee.js",
+	"mechabeedrone.js",
 	"mechabeesoldier.js",
 	"mechaqueen.js",
 	"ooze.js",

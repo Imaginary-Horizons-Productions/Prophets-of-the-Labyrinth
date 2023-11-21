@@ -1,5 +1,5 @@
-const { EnemyTemplate } = require("../classes");
-const { dealDamage, addModifier } = require("../util/combatantUtil");
+const { EnemyTemplate } = require("../classes/index.js");
+const { dealDamage, addModifier } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 
@@ -9,11 +9,11 @@ const PATTERN = {
 	"Call for Help": "Self-Destruct",
 	"Self-Destruct": "Sting"
 }
-function mechabeePattern(actionName) {
+function dronePattern(actionName) {
 	return PATTERN[actionName]
 }
 
-module.exports = new EnemyTemplate("Mechabee",
+module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
 	200,
 	100,
@@ -36,7 +36,7 @@ module.exports = new EnemyTemplate("Mechabee",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: mechabeePattern
+	next: dronePattern
 }).addAction({
 	name: "Barrel Roll",
 	element: "Untyped",
@@ -52,7 +52,7 @@ module.exports = new EnemyTemplate("Mechabee",
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: mechabeePattern
+	next: dronePattern
 }).addAction({
 	name: "Call for Help",
 	element: "Untyped",
@@ -63,7 +63,7 @@ module.exports = new EnemyTemplate("Mechabee",
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: mechabeePattern
+	next: dronePattern
 }).addAction({
 	name: "Self-Destruct",
 	element: "Darkness",
@@ -82,5 +82,5 @@ module.exports = new EnemyTemplate("Mechabee",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: mechabeePattern
+	next: dronePattern
 });
