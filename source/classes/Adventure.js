@@ -204,7 +204,7 @@ class Adventure {
 		if (artifact in this.artifacts) {
 			this.artifacts[artifact].count += count;
 		} else {
-			this.artifacts[artifact] = { count: count };
+			this.artifacts[artifact] = { count };
 		}
 	}
 

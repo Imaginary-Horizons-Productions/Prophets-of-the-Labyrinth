@@ -41,7 +41,7 @@ function getArtifact(artifactName) {
 }
 
 function getArtifactCounts() {
-	return Object.values(ARTIFACTS).length; //TODO #225 separate artifact counts by element
+	return Object.values(ARTIFACTS).length;
 }
 
 /** @param {Adventure} adventure */
