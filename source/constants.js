@@ -21,6 +21,7 @@ module.exports = {
 	MAX_MESSAGE_ACTION_ROWS: 5,
 	MAX_BUTTONS_PER_ROW: 5,
 	MAX_SELECT_OPTIONS: 25,
+	MAX_SELECT_DESCRIPTION_LENGTH: 100,
 	DISCORD_ICON_URL: "https://cdn.discordapp.com/attachments/618523876187570187/1110265047516721333/discord-mark-blue.png",
 	EMPTY_MESSAGE_PAYLOAD: { content: "\u200B", embeds: [], components: [] },
 

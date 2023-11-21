@@ -1,6 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
-const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
+const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET, MAX_SELECT_DESCRIPTION_LENGTH } = require("../constants");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { generateMerchantScoutingRow } = require("../util/messageComponentUtil");
@@ -26,7 +26,7 @@ module.exports = new RoomTemplate("Item Merchant",
 					/** @type {number} */
 					const maxDurability = getGearProperty(name, "maxDurability");
 					let description = buildGearDescription(name, false);
-					if (description.length > 100) {
+					if (description.length > MAX_SELECT_DESCRIPTION_LENGTH) {
 						description = description.slice(0, 99) + "…"; // Single character elipsis
 					}
 					gearOptions.push({
