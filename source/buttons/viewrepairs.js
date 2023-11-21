@@ -39,7 +39,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				interaction.reply({ content: "None of your gear needs repair.", ephemeral: true });
 			}
 		} else {
-			interaction.reply({ content: "The forge's supplies have been exhausted.", ephemeral: true });
+			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
 		}
 	}
 );

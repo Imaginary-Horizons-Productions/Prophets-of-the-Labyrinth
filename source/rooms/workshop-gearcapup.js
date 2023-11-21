@@ -1,9 +1,9 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 
-module.exports = new RoomTemplate("Abandoned Forge",
+module.exports = new RoomTemplate("Tanning Workshop",
 	"@{adventure}",
-	"The room contains an abandoned forge. There seem to be enough supplies leftover for everyone to do something.",
+	"This workshop contains various leatherworking tools. You could make some bags, bandoliers, or holsters for the party go carry more gear.",
 	[
 		new ResourceTemplate("n", "internal", "roomAction")
 	]
@@ -14,11 +14,15 @@ module.exports = new RoomTemplate("Abandoned Forge",
 				new ButtonBuilder().setCustomId("upgrade")
 					.setLabel("Consider gear upgrades")
 					.setEmoji("1️⃣")
-					.setStyle(ButtonStyle.Success),
+					.setStyle(ButtonStyle.Primary),
 				new ButtonBuilder().setCustomId("viewrepairs")
 					.setLabel("Plan gear repairs")
 					.setEmoji("1️⃣")
-					.setStyle(ButtonStyle.Primary)
+					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder().setCustomId("gearcapup")
+					.setLabel("Increase the party's Gear Capacity")
+					.setEmoji("1️⃣")
+					.setStyle(ButtonStyle.Success)
 			)
 		];
 	}

@@ -1,11 +1,12 @@
 const { SelectWrapper } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
+const { getGearProperty, buildGearRecord } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { editButtons, consumeRoomActions } = require('../util/messageComponentUtil');
 
-const mainId = "repair";
+const mainId = "randomtinker";
 module.exports = new SelectWrapper(mainId, 3000,
-	/** Grant half the selected gear's max durability */
+	/** Randomly select a sidegrade for a given piece of gear */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (adventure.room.resources.roomAction.count < 1) {
@@ -14,8 +15,16 @@ module.exports = new SelectWrapper(mainId, 3000,
 		}
 
 		const user = adventure.delvers.find(delver => delver.id === interaction.user.id);
-		const [gearName, index, value] = interaction.values[0].split(SAFE_DELIMITER);
-		user.gear[Number(index)].durability += Number(value);
+		const [gearName, index] = interaction.values[0].split(SAFE_DELIMITER);
+		/** @type {string[]} */
+		const sidegrades = getGearProperty(gearName, "sidegrades");
+		const sidegradeName = sidegrades[adventure.generateRandomNumber(sidegrades.length, "general")];
+		const sidegradeDurability = getGearProperty(sidegradeName, "maxDurability");
+		const durabilityDifference = sidegradeDurability - getGearProperty(gearName, "maxDurability");
+		if (durabilityDifference > 0) {
+			user.gear[index].durability += durabilityDifference;
+		}
+		user.gear.splice(index, 1, buildGearRecord(sidegradeName, Math.min(sidegradeDurability, user.gear[index].durability)));
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 			const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);
 			let components = roomMessage.components;
@@ -31,7 +40,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return roomMessage.edit({ embeds, components });
 		}).then(() => {
 			interaction.update({ components: [] });
-			interaction.channel.send({ content: `${interaction.user} repaired ${value} durability on their ${gearName}.` });
+			interaction.channel.send(`${interaction.user}'s *${gearName}* has been tinkered to **${sidegradeName}**!`);
 			setAdventure(adventure);
 		})
 	}

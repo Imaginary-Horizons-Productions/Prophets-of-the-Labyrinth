@@ -208,12 +208,12 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 		}
 	},
 	{
-		"Event": ["Twin Pedestals", "Elemental Research", "Free Gold?", "Health Redistribution", "The Score Beggar", "Repair Kit, just hanging out", "Forge", "Merchant", "Rest Site", "Treasure"],
+		"Event": ["Twin Pedestals", "Elemental Research", "Free Gold?", "Health Redistribution", "The Score Beggar", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
 		"Battle": ["Hawk Fight", "Frog Fight", "Mechabee Fight", "Slime Fight", "Tortoise Fight"],
 		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
 		"Rest Site": ["Rest Site: Mysterious Challenger"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors", "The Hexagon"],
-		"Forge": ["Abandoned Forge"],
+		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
 		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],
 		"Empty": ["Empty Room"]

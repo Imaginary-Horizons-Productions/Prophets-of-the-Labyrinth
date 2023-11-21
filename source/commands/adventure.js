@@ -34,6 +34,7 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.S
 		switch (interaction.options.getSubcommand()) {
 			case subcommands[0].name: // party-stats
 				const guardsScouted = adventure.artifactGuardians.slice(0, adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians);
+				const gearCapacity = adventure.getGearCapacity();
 				const embed = new EmbedBuilder().setColor(getColor(adventure.element))
 					.setAuthor(randomAuthorTip())
 					.setTitle(`Party Stats - ${adventure.name}`)
@@ -41,6 +42,7 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.S
 					.addFields([
 						{ name: `${adventure.lives} Lives Remaining`, value: "When a player runs out of HP, a life will be lost and they'll be returned to max HP. When all lives are lost, the adventure will end." },
 						{ name: `${adventure.gold} Gold`, value: `Gold is exchanged for goods and services within adventures. *Gold will be lost when an adventure ends.*\nPeak Gold: ${adventure.peakGold}` },
+						{ name: `Gear Capacity: ${gearCapacity}`, value: `Each delver can carry ${gearCapacity} pieces of gear. Gear capacity can be increased at Tanning Workshops and by the Hammerspace Holster artifact.` },
 						{ name: "Items", value: Object.keys(adventure.items).map(item => `${item} x ${adventure.items[item]}`).join("\n") || "None" },
 						{
 							name: "Scouting",

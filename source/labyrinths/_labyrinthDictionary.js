@@ -98,7 +98,7 @@ function prerollBoss(type, adventure) {
 }
 
 /** Filters by type, then rolls a random room or returns the scouted room
- * @param {"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Forge" | "Artifact Guardian" | "Treasure" | "Empty"} type Room Types are internal tags that describe the contents of the room for randomization bucketing/UI generation purposes
+ * @param {"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Workshop" | "Artifact Guardian" | "Treasure" | "Empty"} type Room Types are internal tags that describe the contents of the room for randomization bucketing/UI generation purposes
  * @param {Adventure} adventure
  * @returns {RoomTemplate}
  */

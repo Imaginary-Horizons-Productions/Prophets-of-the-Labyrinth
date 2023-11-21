@@ -91,7 +91,7 @@ function setAdventure(adventure) {
 /** @type {Record<number, string[]>} key = weight, value = roomTag[] */
 const roomTypesByRarity = {
 	1: ["Treasure"],
-	5: ["Forge", "Rest Site", "Merchant", "Artifact Guardian"],
+	5: ["Workshop", "Rest Site", "Merchant", "Artifact Guardian"],
 	13: ["Battle", "Event"]
 };
 
@@ -106,7 +106,7 @@ function rollGearTier(adventure) {
 }
 
 /** Set up the upcoming room: roll options for rooms after, update adventure's room meta data object for current room, and generate room's resources
- * @param {"Artifact Guardian" | "Treasure" | "Forge" | "Rest Site" | "Merchant" | "Battle" | "Event" | "Empty"} roomType
+ * @param {"Artifact Guardian" | "Treasure" | "Workshop" | "Rest Site" | "Merchant" | "Battle" | "Event" | "Empty"} roomType
  * @param {ThreadChannel} thread
  */
 function nextRoom(roomType, thread) {
@@ -239,7 +239,7 @@ function nextRoom(roomType, thread) {
 }
 
 /**
- * @param {"Artifact Guardian" | "Treasure" | "Forge" | "Rest Site" | "Merchant" | "Battle" | "Event" | "Empty"} roomType
+ * @param {"Artifact Guardian" | "Treasure" | "Workshop" | "Rest Site" | "Merchant" | "Battle" | "Event" | "Empty"} roomType
  * @param {ThreadChannel} thread
  */
 function endRoom(roomType, thread) {

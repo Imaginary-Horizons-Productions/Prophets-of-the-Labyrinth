@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Surpassing Wolf Ring",
-	"Gain @{poise} Poise, your attacks aren't subject to the damage cap", //TODONOW add limit break effect
+	"Gain @{poise} Poise, your attacks aren't subject to the damage cap",
 	"N/A",
 	"Trinket",
 	"Water",

@@ -17,6 +17,7 @@
 - New Item: Panacea - Cures up to 2 debuffs on the user
 - New Enemy: Mechabee Soldier
 - Buffed Elkemist ||Toil removes a random debuff, Bubble converts buffs to Fire Weakness, Progress no longer grants Stasis||
+- Forges are now Workshops: They now always offer repairs and upgrades. They will randomly offer one of the following: changing gear upgrades, increasing party gear capacity, or trading for an unknown upgraded gear.
 ## Prophets of the Labyrinth Version 0.12.0:
 - Reintroduced Light and Darkness elements
 - Reworked Martial Artist starting gear

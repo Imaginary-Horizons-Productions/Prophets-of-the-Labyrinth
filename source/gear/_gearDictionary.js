@@ -1,4 +1,4 @@
-const { BuildError, GearTemplate } = require("../classes");
+const { BuildError, GearTemplate, Gear } = require("../classes");
 const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
@@ -155,8 +155,22 @@ function getGearProperty(gearName, propertyName) {
 	}
 }
 
+/**
+ * @param {string} gearName
+ * @param {number | "max"} durability
+ */
+function buildGearRecord(gearName, durability) {
+	const template = GEAR[gearName];
+	return new Gear(gearName, durability === "max" ? template.maxDurability : durability, template.maxHP, template.speed, template.critRate, template.poise);
+}
+
+/**
+ * @param {string} gearName
+ * @param {boolean} buildFullDescription
+ */
 function buildGearDescription(gearName, buildFullDescription) {
 	if (gearExists(gearName)) {
+		/** @type {string} */
 		let description;
 		if (buildFullDescription) {
 			// return the base and crit effects of the gear with the base italicized
@@ -183,6 +197,8 @@ function buildGearDescription(gearName, buildFullDescription) {
 				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		})
 		return description;
+	} else {
+		return "";
 	}
 }
 
@@ -190,5 +206,6 @@ module.exports = {
 	gearNames: Object.keys(GEAR),
 	gearExists,
 	getGearProperty,
+	buildGearRecord,
 	buildGearDescription
 };

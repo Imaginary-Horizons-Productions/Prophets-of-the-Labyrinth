@@ -1,6 +1,6 @@
-const { ButtonWrapper, Gear } = require('../classes');
+const { ButtonWrapper } = require('../classes');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
-const { getGearProperty } = require('../gear/_gearDictionary');
+const { buildGearRecord } = require('../gear/_gearDictionary');
 const { getAdventure, nextRoom, fetchRecruitMessage, setAdventure } = require('../orcustrators/adventureOrcustrator');
 
 const mainId = "ready";
@@ -38,7 +38,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const archetypeTemplate = getArchetype(delver.archetype);
 				delver.element = archetypeTemplate.element;
 				delver.gear = archetypeTemplate.startingGear.map(gearName => {
-					return new Gear(gearName, getGearProperty(gearName, "maxDurability"), getGearProperty(gearName, "maxHP"), getGearProperty(gearName, "speed"), getGearProperty(gearName, "critRate"), getGearProperty(gearName, "poise"));
+					return buildGearRecord(gearName, "max");
 				});
 			})
 
