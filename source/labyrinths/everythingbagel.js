@@ -148,6 +148,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Cursed: [
 			],
 			Common: [
+				"Ice Bolt",
 				"Midas Staff",
 				"Poison Torrent",
 				"Potion Kit",

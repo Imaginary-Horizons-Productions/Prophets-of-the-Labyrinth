@@ -242,6 +242,7 @@ Adds Frail to target
 Adds Slow to target
 
 **Available on**
+- all Ice Bolts (Water)
 - Daggers (Wind)
 - War Cry (Fire)
 - Warhammer (Earth)
