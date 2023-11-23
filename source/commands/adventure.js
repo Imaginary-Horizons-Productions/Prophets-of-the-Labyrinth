@@ -4,6 +4,7 @@ const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, MAX_MESSAGE_ACTION_ROWS, EMPTY_SELEC
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { inspectSelfPayload, randomAuthorTip } = require('../util/embedUtil');
 const { getColor } = require('../util/elementUtil');
+const { listifyEN } = require('../util/textUtil');
 
 const mainId = "adventure";
 const options = [];
@@ -47,18 +48,18 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.S
 						{
 							name: "Scouting",
 							value: `Final Battle: ${adventure.scouting.finalBoss ? adventure.finalBoss : "???"}\nArtifact Guardians: ${guardsScouted.length > 0 ?
-								guardsScouted.map((encounter, index) => {
+								listifyEN(guardsScouted.map((encounter, index) => {
 									if (index + 1 <= adventure.scouting.artifactGuardiansEncountered) {
 										return `~~${encounter}~~`;
 									} else {
 										return encounter;
 									}
-								}).join(", ") + "..." : "???"}`
+								})) + "..." : "???"}`
 						}
 					]);
 				const challenges = Object.keys(adventure.challenges);
 				if (challenges.length) {
-					embed.addFields({ name: "Challenges", value: Object.keys(adventure.challenges).join(", ") });
+					embed.addFields({ name: "Challenges", value: listifyEN(Object.keys(adventure.challenges)) });
 				}
 				const infoSelects = [];
 				const allArtifacts = Object.keys(adventure.artifacts);
@@ -67,7 +68,7 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.S
 					artifactPages.push(allArtifacts.slice(i, i + MAX_SELECT_OPTIONS));
 				}
 				if (artifactPages.length > 0) {
-					embed.addFields({ name: "Artifacts", value: Object.entries(adventure.artifacts).map(entry => `${entry[0]} x ${entry[1].count}`).join(", ") })
+					embed.addFields({ name: "Artifacts", value: listifyEN(Object.entries(adventure.artifacts).map(entry => `${entry[0]} x ${entry[1].count}`)) })
 					infoSelects.push(...artifactPages.slice(0, MAX_MESSAGE_ACTION_ROWS).map((page, index) =>
 						new ActionRowBuilder().addComponents(
 							new StringSelectMenuBuilder().setCustomId(`artifact${SAFE_DELIMITER}${index}`)

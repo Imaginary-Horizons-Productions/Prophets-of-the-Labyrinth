@@ -8,20 +8,34 @@ module.exports = new GearTemplate("Double Pistol",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { damage, critMultiplier, element, modifiers: [powerUp] } = module.exports;
+		const { damage, critMultiplier, element, modifiers: [powerUp] } = module.exports;
+		let pendingDamage = damage;
+		if (isCrit) {
+			pendingDamage *= critMultiplier;
+		}
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (getCombatantWeaknesses(target).includes(element)) {
-			const damageText = dealDamage([target], user, damage * (isCrit ? critMultiplier : 1), false, element, adventure);
+			const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
+			const poweredUpAllies = [];
 			const ally = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
-			addModifier(ally, powerUp);
+			const poweredUpFirstAlly = addModifier(ally, powerUp);
+			if (poweredUpFirstAlly) {
+				poweredUpAllies.push(ally.getName(adventure.room.enemyIdMap));
+			}
 			const secondAlly = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
-			addModifier(secondAlly, powerUp);
-			return `${damageText} ${ally.name} and ${secondAlly} were Powered Up!`
-		} else {
-			return dealDamage([target], user, damage * (isCrit ? critMultiplier : 1), false, element, adventure);
+			const poweredUpSecondAlly = addModifier(secondAlly, powerUp);
+			if (poweredUpSecondAlly) {
+				poweredUpAllies.push(secondAlly.getName(adventure.room.enemyIdMap));
+			}
+			if (poweredUpAllies.length === 2) { //TODONOW replace switches with else ifs for more order control
+				return `${damageText} ${poweredUpAllies[0]} and ${poweredUpAllies[1]} were Powered Up!`;
+			} else if (poweredUpAllies.length === 1) {
+				return `${damageText} ${poweredUpAllies[0]} was Powered Up!`;
+			}
 		}
+		return dealDamage([target], user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Duelist's Pistol")

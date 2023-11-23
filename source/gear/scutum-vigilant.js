@@ -8,19 +8,20 @@ module.exports = new GearTemplate("Vigilant Scutum",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [vigilance], block, critMultiplier } = module.exports;
+		const { element, modifiers: [vigilance], block, critMultiplier } = module.exports;
+		let pendingBlock = block;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
 			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critMultiplier;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(target, block);
-		addBlock(user, block);
-		addModifier(user, vigilance);
+		addBlock(target, pendingBlock);
+		addBlock(user, pendingBlock);
+		const addedVigilance = addModifier(user, vigilance);
 		const userName = user.getName(adventure.room.enemyIdMap);
-		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}. ${userName} gains Vigilance.`;
+		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}.${addedVigilance ? ` ${userName} gains Vigilance.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")

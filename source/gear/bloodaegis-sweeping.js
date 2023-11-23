@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addBlock, payHP } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Blood Aegis",
 	"Pay @{hpCost} hp; gain @{block} block and intercept all later single target moves",
@@ -8,14 +9,15 @@ module.exports = new GearTemplate("Sweeping Blood Aegis",
 	"Darkness",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, block, critMultiplier, hpCost } = module.exports;
+		const { element, block, critMultiplier, hpCost } = module.exports;
+		let pendingBlock = block;
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critMultiplier;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(user, block);
+		addBlock(user, pendingBlock);
 
 		const provokedTargets = [];
 		const targetTeam = user.team === "delver" ? "enemy" : "delver";
@@ -28,8 +30,10 @@ module.exports = new GearTemplate("Sweeping Blood Aegis",
 			}
 		})
 
-		if (provokedTargets.length > 0) {
-			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${provokedTargets.join(", ")} fall(s) for the provocation.`;
+		if (provokedTargets.length > 1) {
+			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${listifyEN(provokedTargets)} fall for the provocation.`;
+		} else if (provokedTargets.length === 1) {
+			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${provokedTargets[0]} falls for the provocation.`;
 		} else {
 			return `Preparing to Block, ${payHP(user, hpCost, adventure)}`;
 		}

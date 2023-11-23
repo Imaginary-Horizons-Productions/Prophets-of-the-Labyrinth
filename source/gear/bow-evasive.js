@@ -8,15 +8,16 @@ module.exports = new GearTemplate("Evasive Bow",
 	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [evade], damage, critMultiplier } = module.exports;
+		const { element, modifiers: [evade], damage, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
 		addModifier(user, evade);
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is ready to Evade.`;
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is ready to Evade.`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Bow", "Mercurial Bow")

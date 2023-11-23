@@ -8,21 +8,27 @@ module.exports = new GearTemplate("Duelist's Pistol",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { damage, bonus, critMultiplier, element, modifiers: [powerUp] } = module.exports;
+		const { damage, bonus, critMultiplier, element, modifiers: [powerUp] } = module.exports;
+		let pendingDamage = damage;
 		const targetIndex = adventure.getCombatantIndex(target);
 		const userIndex = adventure.getCombatantIndex(user);
-		const isLoneAttacker = !adventure.room.moves.some(move => !(move.userReference.team === user.team && move.userReference.index === userIndex) && move.targets.some(moveTarget => moveTarget.team === target.team && moveTarget.index === targetIndex));
-		let pendingDamage = damage + (isLoneAttacker ? bonus : 0);
+		// Duelist's check
+		if (!adventure.room.moves.some(move => !(move.userReference.team === user.team && move.userReference.index === userIndex) && move.targets.some(moveTarget => moveTarget.team === target.team && moveTarget.index === targetIndex))) {
+			pendingDamage += bonus;
+		}
+		if (isCrit) {
+			pendingDamage *= critMultiplier;
+		}
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (getCombatantWeaknesses(target).includes(element)) {
-			const damageText = dealDamage([target], user, pendingDamage * (isCrit ? critMultiplier : 1), false, element, adventure);
+			const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 			const ally = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
-			addModifier(ally, powerUp);
-			return `${damageText} ${ally.name} was Powered Up!`
+			const addedPowerUp = addModifier(ally, powerUp);
+			return `${damageText}${addedPowerUp ? ` ${ally.getName(adventure.room.enemyIdMap)} was Powered Up!` : ""}`;
 		} else {
-			return dealDamage([target], user, pendingDamage * (isCrit ? critMultiplier : 1), false, element, adventure);
+			return dealDamage([target], user, pendingDamage, false, element, adventure);
 		}
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })

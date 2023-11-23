@@ -8,8 +8,11 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 	"Water",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [curse, quicken], bonus } = module.exports;
-		const pendingCurse = { ...curse, stacks: curse.stacks + (isCrit ? bonus : 0) };
+		const { element, modifiers: [curse, quicken], bonus } = module.exports;
+		const pendingCurse = { ...curse };
+		if (isCrit) {
+			pendingCurse.stacks += bonus;
+		}
 		if (user.element === element) {
 			if (target.team === user.team) {
 				target.addStagger("elementMatchAlly");
@@ -17,9 +20,27 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 				target.addStagger("elementMatchFoe");
 			}
 		}
-		addModifier(target, pendingCurse);
-		addModifier(user, quicken);
-		return `${target.getName(adventure.room.enemyIdMap)} gains Curse of Midas. ${user.getName(adventure.room.enemyIdMap)} is Quickened.`;
+		const addedCurse = addModifier(target, pendingCurse);
+		const addedQuicken = addModifier(user, quicken);
+		const targetName = target.getName(adventure.room.enemyIdMap);
+		const userName = user.getName(adventure.room.enemyIdMap);
+		if (targetName === userName) {
+			if (addedCurse) {
+				return `${userName} gains Curse of Midas${addedQuicken ? " and is Quickened" : ""}.`;
+			} else if (addedQuicken) {
+				return `${userName} is Quickened.`;
+			} else {
+				return "But nothing happened.";
+			}
+		} else {
+			if (addedCurse) {
+				return `${targetName} gains Curse of Midas. ${addedQuicken ? ` ${userName} is Quickened.` : ""}`;
+			} else if (addedQuicken) {
+				return `${userName} is Quickened.`;
+			} else {
+				return "But nothing happened.";
+			}
+		}
 	}
 ).setTargetingTags({ target: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Discounted Midas Staff", "Soothing Midas Staff")

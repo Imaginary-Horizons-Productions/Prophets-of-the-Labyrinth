@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 const { addModifier } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
 	"Inflict @{stagger} and duplicate debuffs on a foe and all foes with Exposed",
@@ -22,7 +23,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 			}
 		})
 
-		let { element, stagger, bonus } = module.exports;
+		const { element, stagger, bonus } = module.exports;
 		let pendingStaggerStacks = stagger;
 		if (user.element === element) {
 			pendingStaggerStacks += 2;
@@ -30,7 +31,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
-		const tormentTexts = [];
+		const tormentTexts = "";
 		targetArray.forEach(target => {
 			const debuffs = [];
 			target.addStagger(pendingStaggerStacks);
@@ -41,10 +42,10 @@ module.exports = new GearTemplate("Tormenting War Cry",
 				}
 			}
 			if (debuffs.length > 0) {
-				tormentTexts.push(`${target.getName(adventure.room.enemyIdMap)} gains ${debuffs.join(", ")}.`);
+				tormentTexts += ` ${target.getName(adventure.room.enemyIdMap)} gains ${listifyEN(debuffs)}.`;
 			}
 		})
-		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.${tormentTexts.length > 0 ? ` ${tormentTexts.join(" ")}` : ""}`;
+		return `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.${tormentTexts}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")

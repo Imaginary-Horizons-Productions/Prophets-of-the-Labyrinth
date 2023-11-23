@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Charging War Cry",
 	"Inflict @{stagger} on a foe and all foes with Exposed then gain @{mod0Stacks} @{mod0}",
@@ -21,7 +22,7 @@ module.exports = new GearTemplate("Charging War Cry",
 			}
 		})
 
-		let { element, modifiers: [powerup], stagger, bonus } = module.exports;
+		const { element, modifiers: [powerup], stagger, bonus } = module.exports;
 		let pendingStaggerStacks = stagger;
 		if (user.element === element) {
 			pendingStaggerStacks += 2;
@@ -32,8 +33,12 @@ module.exports = new GearTemplate("Charging War Cry",
 		targetArray.forEach(target => {
 			target.addStagger(pendingStaggerStacks);
 		});
-		addModifier(user, powerup);
-		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry. ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+		let resultText = `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
+		const addedPowerUp = addModifier(user, powerup);
+		if (addedPowerUp) {
+			resultText += ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+		}
+		return resultText;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Slowing War Cry", "Tormenting War Cry")

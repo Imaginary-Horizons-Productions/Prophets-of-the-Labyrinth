@@ -8,17 +8,18 @@ module.exports = new GearTemplate("Long Barrier",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [vigilance, critVigilance], block } = module.exports;
+		const { element, modifiers: [vigilance, critVigilance], block } = module.exports;
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
+		let addedVigilance = true;
 		if (isCrit) {
-			addModifier(user, vigilance);
+			addedVigilance = addModifier(user, vigilance);
 		} else {
-			addModifier(user, critVigilance);
+			addedVigilance = addModifier(user, critVigilance);
 		}
 		addBlock(user, block);
-		return `${user.getName(adventure.room.enemyIdMap)} Vigilantly prepares to Block.`;
+		return `${user.getName(adventure.room.enemyIdMap)}${addedVigilance ? " Vigilantly" : ""} prepares to Block.`;
 	}
 ).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
 	.setSidegrades("Cleansing Barrier", "Devoted Barrier")

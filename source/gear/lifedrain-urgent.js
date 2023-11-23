@@ -8,14 +8,15 @@ module.exports = new GearTemplate("Urgent Life Drain",
 	"Darkness",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, healing, critMultiplier } = module.exports;
+		const { element, damage, healing, critMultiplier } = module.exports;
+		let pendingHealing = healing;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			healing *= critMultiplier;
+			pendingHealing *= critMultiplier;
 		}
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, healing, adventure)}`;
+		return `${dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, pendingHealing, adventure)}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Life Drain", "Reactive Life Drain")

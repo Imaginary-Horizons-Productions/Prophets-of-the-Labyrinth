@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 	"Wind",
 	200,
 	(targets, user, isCrit, adventure) => {
-		let { element } = module.exports;
+		const { element } = module.exports;
 		const resultTexts = [];
 		targets.forEach(target => {
 			if (user.element === element) {

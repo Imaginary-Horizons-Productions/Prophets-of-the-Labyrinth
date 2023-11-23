@@ -8,16 +8,21 @@ module.exports = new GearTemplate("Floating Mist Stance",
 	"Light",
 	200,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [displayEvade, floatingMistStance] } = module.exports;
+		const { element, modifiers: [displayEvade, floatingMistStance] } = module.exports;
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
+		let addedEvade = false;
 		if (isCrit) {
-			addModifier(user, displayEvade);
+			addedEvade = addModifier(user, displayEvade);
 		}
 		removeModifier(user, { name: "Iron Fist Stance", stacks: "all", force: true });
-		addModifier(user, floatingMistStance);
-		return `${user.getName(adventure.room.enemyIdMap)} enters Floating Mist Stance${isCrit ? " and prepares to Evade" : ""}.`;
+		const addedFloatingMistStance = addModifier(user, floatingMistStance);
+		if (addedFloatingMistStance) {
+			return `${user.getName(adventure.room.enemyIdMap)} enters Floating Mist Stance${addedEvade ? " and prepares to Evade" : ""}.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 ).setUpgrades("Soothing Floating Mist Stance")
 	.setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })

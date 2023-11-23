@@ -5,6 +5,7 @@ const { getAllArtifactNames, getArtifact } = require('../artifacts/_artifactDict
 const { generateArtifactEmbed, embedTemplate } = require('../util/embedUtil');
 const { getColor, getWeaknesses, getResistances, getEmoji, getOpposite, elementsList } = require('../util/elementUtil');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
+const { listifyEN } = require('../util/textUtil');
 
 const mainId = "manual";
 const options = [];
@@ -94,7 +95,7 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 						interaction.reply({
 							embeds: [
 								embedTemplate().setTitle("Elements")
-									.setDescription(`Each combatant is associated with one of the following elements: ${allElements.map(element => `${element} ${getEmoji(element)}`).join(", ")}. Based on their element, damage they receive may be increased, decreased, or not changed depending on the element of the incoming damage.\n\nWhen a combatant receives damage they're weak to, damage is doubled. When a combatant receives damage they're resistant to, damage is halved. This change is calculated before block.`)
+									.setDescription(`Each combatant is associated with one of the following elements: ${listifyEN(allElements.map(element => `${element} ${getEmoji(element)}`))}. Based on their element, damage they receive may be increased, decreased, or not changed depending on the element of the incoming damage.\n\nWhen a combatant receives damage they're weak to, damage is doubled. When a combatant receives damage they're resistant to, damage is halved. This change is calculated before block.`)
 									.addFields(
 										allElements.map(element => {
 											const weaknesses = getWeaknesses(element);
@@ -141,12 +142,12 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 
 				const upgrades = getGearProperty(gearName, "upgrades");
 				if (upgrades.length > 0) {
-					fields.push({ name: "Upgrades Into", value: upgrades.join(", ") });
+					fields.push({ name: "Upgrades Into", value: listifyEN(upgrades) });
 				}
 
 				const sidegrades = getGearProperty(gearName, "sidegrades");
 				if (sidegrades.length > 0) {
-					fields.push({ name: "Can be Tinkered Into", value: sidegrades.join(", ") });
+					fields.push({ name: "Can be Tinkered Into", value: listifyEN(sidegrades) });
 				}
 
 				const extraField = getGearProperty(gearName, "flavorText");

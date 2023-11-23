@@ -8,14 +8,16 @@ module.exports = new GearTemplate("Spear",
 	"Wind",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, stagger, damage } = module.exports;
+		const { element, stagger, damage } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
+		let resultText = dealDamage([target], user, damage, false, element, adventure);
 		if (isCrit) {
 			target.addStagger(stagger);
+			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
 		}
-		return dealDamage([target], user, damage, false, element, adventure);
+		return resultText;
 	}
 ).setTargetingTags({ target: "single", team: "foe" })
 	.setUpgrades("Lethal Spear", "Reactive Spear", "Sweeping Spear")

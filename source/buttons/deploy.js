@@ -3,7 +3,7 @@ const { ButtonWrapper } = require('../classes');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getEmoji } = require('../util/elementUtil');
-const { trimForSelectOptionDescription } = require('../util/textUtil');
+const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 
 const mainId = "deploy";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -17,7 +17,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (archetype) {
 					archetypeOptions.push({
 						label: `${archetypeName} ${getEmoji(archetype.element)}`,
-						description: trimForSelectOptionDescription(`Gear: ${archetype.startingGear.join(", ")}`),
+						description: trimForSelectOptionDescription(`Gear: ${listifyEN(archetype.startingGear)}`),
 						value: archetypeName
 					})
 				} else {

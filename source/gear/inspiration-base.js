@@ -8,13 +8,20 @@ module.exports = new GearTemplate("Inspiration",
 	"Wind",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [powerUp], bonus } = module.exports;
-		const pendingPowerUp = { ...powerUp, stacks: powerUp.stacks + (isCrit ? bonus : 0) };
+		const { element, modifiers: [powerUp], bonus } = module.exports;
+		const pendingPowerUp = { ...powerUp };
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
 		}
-		addModifier(target, pendingPowerUp);
-		return `${target.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+		if (isCrit) {
+			pendingPowerUp.stacks += bonus;
+		}
+		const addedPowerUp = addModifier(target, pendingPowerUp);
+		if (addedPowerUp) {
+			return `${target.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 ).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Guarding Inspiration", "Soothing Inspiration", "Sweeping Inspiration")

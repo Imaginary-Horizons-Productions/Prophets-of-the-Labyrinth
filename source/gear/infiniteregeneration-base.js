@@ -8,15 +8,16 @@ module.exports = new GearTemplate("Infinite Regeneration",
 	"Light",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [regen], hpCost, critMultiplier } = module.exports;
+		const { element, modifiers: [regen], hpCost, critMultiplier } = module.exports;
+		let pendingHPCost = hpCost;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			hpCost /= critMultiplier;
+			pendingHPCost /= critMultiplier;
 		}
-		addModifier(target, regen);
-		return `${payHP(user, hpCost, adventure)} ${user.getName(adventure.room.enemyIdMap)} gains Regen.`;
+		const addedRegen = addModifier(target, regen);
+		return `${payHP(user, pendingHPCost, adventure)}${addedRegen ? ` ${user.getName(adventure.room.enemyIdMap)} gains Regen.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Discounted Infinite Regeneration", "Fate-Sealing Infinite Regeneration")

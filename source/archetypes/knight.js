@@ -1,4 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
+const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Knight",
 	"They'll be able to predict who enemies are targeting with which moves. They'll gain Power Up for protecting allies with their Buckler too.",
@@ -17,7 +18,7 @@ module.exports = new ArchetypeTemplate("Knight",
 						}
 					});
 					if (name !== "@{clone}") {
-						embed.addFields({ name: enemy.getName(adventure.room.enemyIdMap), value: `Round ${adventure.room.round + 1}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}(Targets: ${targetNames.length ? targetNames.join(", ") : "none"})\nRound ${adventure.room.round + 2}: ${enemy.nextAction}` });
+						embed.addFields({ name: enemy.getName(adventure.room.enemyIdMap), value: `Round ${adventure.room.round + 1}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}(Targets: ${targetNames.length ? listifyEN(targetNames) : "none"})\nRound ${adventure.room.round + 2}: ${enemy.nextAction}` });
 					} else {
 						embed.addFields({ name: enemy.getName(adventure.room.enemyIdMap), value: "Mirror Clones mimic your allies!" })
 					}

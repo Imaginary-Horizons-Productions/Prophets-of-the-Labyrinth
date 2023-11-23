@@ -8,24 +8,25 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 	"Darkness",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [powerUp], block, critMultiplier, hpCost } = module.exports;
+		const { element, modifiers: [powerUp], block, critMultiplier, hpCost } = module.exports;
+		let pendingBlock = block;
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critMultiplier;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(user, block);
-		addModifier(user, powerUp);
+		addBlock(user, pendingBlock);
+		const addedPowerUp = addModifier(user, powerUp);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
 		});
 		if (targetMove.targets.length === 1) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up. ${target.getName(adventure.room.enemyIdMap)} falls for the provocation.`;
+			return `Preparing to Block, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""} ${target.getName(adventure.room.enemyIdMap)} falls for the provocation.`;
 		} else {
-			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+			return `Preparing to Block, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""}`;
 		}
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })

@@ -1,6 +1,7 @@
 const { GearTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { dealDamage, addModifier } = require("../util/combatantUtil");
+const { listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Tormenting Censer",
 	"Burn a foe for @{damage} (+@{bonus} if target has debuffs) @{element} damage, duplicate its debuffs",
@@ -9,7 +10,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [slow], damage, bonus } = module.exports;
+		const { element, modifiers: [slow], damage, bonus } = module.exports;
 		const debuffs = [];
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
@@ -25,11 +26,12 @@ module.exports = new GearTemplate("Tormenting Censer",
 		}
 		let damageText = dealDamage([target], user, damage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			addModifier(target, slow);
-			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed${debuffs.length > 0 ? ` and they gain ${debuffs.join(", ")}` : ""}.`;
-		} else {
-			return `${damageText}${debuffs.length > 0 ? `${target.getName(adventure.room.enemyIdMap)}'s gains ${debuffs.join(", ")}.` : ""}`;
+			const addedSlow = addModifier(target, slow);
+			if (addedSlow) {
+				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed${debuffs.length > 0 ? ` and they gain ${listifyEN(debuffs)}` : ""}.`;
+			}
 		}
+		return `${damageText}${debuffs.length > 0 ? `${target.getName(adventure.room.enemyIdMap)}'s gains ${listifyEN(debuffs)}.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Censer", "Thick Censer")

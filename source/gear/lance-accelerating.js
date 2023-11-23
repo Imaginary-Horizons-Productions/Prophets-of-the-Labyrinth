@@ -8,18 +8,18 @@ module.exports = new GearTemplate("Accelerating Lance",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [quicken], damage, critMultiplier } = module.exports;
+		const { element, modifiers: [quicken], damage, critMultiplier } = module.exports;
+		const pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		const powerUpStacks = user.getModifierStacks("Power Up");
-		damage += powerUpStacks;
+		pendingDamage += powerUpStacks;
 		if (isCrit) {
-			damage *= critMultiplier;
-			damage += powerUpStacks;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(user, quicken);
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Quickened.`;
+		const addedQuicken = addModifier(user, quicken);
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedQuicken ? ` ${user.getName(adventure.room.enemyIdMap)} is Quickened.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Unstoppable Lance", "Vigilant Lance")

@@ -8,15 +8,16 @@ module.exports = new GearTemplate("Lethal Spear",
 	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, stagger, damage, critMultiplier } = module.exports;
+		const { element, stagger, damage, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 			target.addStagger(stagger);
 		}
-		return dealDamage([target], user, damage, false, element, adventure);
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${isCrit ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Spear", "Sweeping Spear")

@@ -8,16 +8,17 @@ module.exports = new GearTemplate("Evasive Sun Flare",
 	"Light",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [evade, slow], stagger } = module.exports;
+		const { element, modifiers: [evade, slow], stagger } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
+		let addedSlow = false;
 		if (isCrit) {
-			addModifier(target, slow);
+			addedSlow = addModifier(target, slow);
 		}
 		target.addStagger(stagger);
-		addModifier(user, evade);
-		return `${user.getName(adventure.room.enemyIdMap)} prepares to Evade. ${target.getName(adventure.room.enemyIdMap)} is Staggered${isCrit ? ` and Slowed` : ""}.`;
+		const addedEvade = addModifier(user, evade);
+		return `${addedEvade ? `${user.getName(adventure.room.enemyIdMap)} prepares to Evade. ` : ""}${target.getName(adventure.room.enemyIdMap)} is Staggered${addedSlow ? ` and Slowed` : ""}.`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Sun Flare", "Tormenting Sun Flare")
