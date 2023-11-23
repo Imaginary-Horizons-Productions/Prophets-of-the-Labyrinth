@@ -9,21 +9,24 @@ module.exports = new GearTemplate("Fate-Sealing Censer",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [slow, stasis], damage, bonus } = module.exports;
+		const { element, modifiers: [slow, stasis], damage, bonus } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			damage += bonus;
 		}
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		const damageText = dealDamage([target], user, damage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			addModifier(target, slow);
-			addModifier(target, stasis);
-			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed and enters Stasis.`;
-		} else {
-			return damageText;
+			const addedSlow = addModifier(target, slow);
+			const addedStasis = addModifier(target, stasis);
+			if (addedSlow) {
+				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed and enters Stasis.`;
+			} else if (addedStasis) {
+				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} enters Stasis.`;
+			}
 		}
+		return damageText;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Thick Censer", "Tormenting Censor")

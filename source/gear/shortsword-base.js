@@ -8,17 +8,24 @@ module.exports = new GearTemplate("Shortsword",
 	"Fire",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [exposed], damage, critMultiplier } = module.exports;
+		const { element, modifiers: [exposed], damage, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		const damageText = dealDamage([target], user, damage, false, element, adventure);
-		addModifier(user, exposed);
-		addModifier(target, exposed);
-		return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Exposed. ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
+		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
+		const addedExposedUser = addModifier(user, exposed);
+		if (addedExposedUser) {
+			resultText += ` ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
+		}
+		const addedExposedTarget = addModifier(target, exposed);
+		if (addedExposedTarget) {
+			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Exposed.`;
+		}
+		return resultText;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Accelerating Shortsword", "Toxic Shortsword")

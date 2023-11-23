@@ -9,16 +9,16 @@ module.exports = new GearTemplate("Firecracker",
 	"Fire",
 	200,
 	(targets, user, isCrit, adventure) => {
-		let { element, damage, critMultiplier } = module.exports;
+		const { element, damage, critMultiplier } = module.exports;
 		let pendingDamage = damage;
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		targets.map(target => {
-			if (user.element === element) {
+		if (user.element === element) {
+			targets.map(target => {
 				target.addStagger("elementMatchFoe");
-			}
-		})
+			})
+		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ target: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })

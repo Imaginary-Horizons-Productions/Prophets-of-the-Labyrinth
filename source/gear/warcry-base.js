@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("War Cry",
 	"Inflict @{stagger} on a foe and all foes with Exposed",
@@ -20,7 +21,7 @@ module.exports = new GearTemplate("War Cry",
 			}
 		})
 
-		let { element, stagger, bonus } = module.exports;
+		const { element, stagger, bonus } = module.exports;
 		let pendingStaggerStacks = stagger;
 		if (user.element === element) {
 			pendingStaggerStacks += 2;
@@ -31,7 +32,7 @@ module.exports = new GearTemplate("War Cry",
 		targetArray.forEach(target => {
 			target.addStagger(pendingStaggerStacks);
 		})
-		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
+		return `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: false })
 	.setUpgrades("Charging War Cry", "Slowing War Cry", "Tormenting War Cry")

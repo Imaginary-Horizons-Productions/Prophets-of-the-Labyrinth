@@ -8,15 +8,19 @@ module.exports = new GearTemplate("Harmful Corrosion",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [powerDown], stagger, damage } = module.exports;
+		const { element, modifiers: [powerDown], stagger, damage } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			target.addStagger(stagger);
 		}
-		addModifier(target, powerDown);
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Powered Down.`;
+		const addedPowerDown = addModifier(target, powerDown);
+		if (addedPowerDown) {
+			return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Powered Down${isCrit ? " and Staggered" : ""}.`;
+		} else {
+			return `${dealDamage([target], user, damage, false, element, adventure)}${isCrit ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
+		}
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Corrosion", "Shattering Corrosion")

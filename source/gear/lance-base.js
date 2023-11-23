@@ -8,15 +8,15 @@ module.exports = new GearTemplate("Lance",
 	"Earth",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, critMultiplier } = module.exports;
+		const { element, damage, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		const powerUpStacks = user.getModifierStacks("Power Up");
-		damage += powerUpStacks;
+		pendingDamage += powerUpStacks;
 		if (isCrit) {
-			damage *= critMultiplier;
-			damage += powerUpStacks;
+			pendingDamage *= critMultiplier;
 		}
 		return dealDamage([target], user, damage, false, element, adventure);
 	}

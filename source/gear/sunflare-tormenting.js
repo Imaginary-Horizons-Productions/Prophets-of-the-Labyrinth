@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { addModifier } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Tormenting Sun Flare",
 	"Inflict @{stagger} on a foe and duplicate its debuffs with priority",
@@ -9,7 +10,7 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 	"Light",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [slow], stagger } = module.exports;
+		const { element, modifiers: [slow], stagger } = module.exports;
 		const debuffs = [];
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
@@ -21,12 +22,17 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 			target.addStagger("elementMatchFoe");
 		}
 		target.addStagger(stagger);
+		const resultTexts = ["Staggered"];
 		if (isCrit) {
-			addModifier(target, slow);
-			return `${target.getName(adventure.room.enemyIdMap)} is Staggered${debuffs.length > 0 ? `, Slowed, and they gain ${debuffs.join(", ")}` : " and Slowed"}.`;
-		} else {
-			return `${target.getName(adventure.room.enemyIdMap)} is Staggered${debuffs.length > 0 ? ` and they gain ${debuffs.join(", ")}` : ""}.`;
+			const addedSlow = addModifier(target, slow);
+			if (addedSlow) {
+				resultTexts.push("Slowed");
+			}
 		}
+		if (debuffs.length > 0) {
+			resultTexts.push(`they gain ${listifyEN(debuffs)}`);
+		}
+		return `${target.getName(adventure.room.enemyIdMap)} is ${listifyEN(resultTexts)}.`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Sun Flare", "Evasive Sun Flare")

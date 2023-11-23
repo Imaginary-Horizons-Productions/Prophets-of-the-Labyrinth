@@ -16,8 +16,8 @@ module.exports = new GearTemplate("Ice Bolt",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		addModifier(target, slow);
-		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		const addedSlow = addModifier(target, slow);
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedSlow ? ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setDamage(75)

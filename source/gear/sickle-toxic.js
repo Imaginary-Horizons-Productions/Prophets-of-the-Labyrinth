@@ -8,21 +8,22 @@ module.exports = new GearTemplate("Toxic Sickle",
 	"Water",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [poison], damage, critMultiplier } = module.exports;
-		damage += (0.05 * target.getMaxHP());
+		const { element, modifiers: [poison], damage, critMultiplier } = module.exports;
+		let pendingDamage = damage + (0.05 * target.getMaxHP());
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (target.hp > 0) {
-			addModifier(target, poison);
-			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
-		} else {
-			return damageText;
+			const addedPoison = addModifier(target, poison);
+			if (addedPoison) {
+				resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
+			}
 		}
+		return resultText;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Sickle", "Sharpened Sickle")

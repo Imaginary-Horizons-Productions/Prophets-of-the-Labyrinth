@@ -8,16 +8,32 @@ module.exports = new GearTemplate("Shattering Corrosion",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [powerDown, frail], stagger } = module.exports;
+		const { element, modifiers: [powerDown, frail], stagger } = module.exports;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			target.addStagger(stagger);
 		}
-		addModifier(target, powerDown);
-		addModifier(target, frail);
-		return `${target.getName(adventure.room.enemyIdMap)} is Powered Down.`;
+		const addedPowerDown = addModifier(target, powerDown);
+		const addedFrail = addModifier(target, frail);
+		if (addedPowerDown) {
+			if (isCrit) {
+				return `${target.getName(adventure.room.enemyIdMap)} is Powered Down, becomes Frail, and is Staggered.`;
+			} else {
+				return `${target.getName(adventure.room.enemyIdMap)} is Powered Down and becomes Frail.`;
+			}
+		} else if (addedFrail) {
+			if (isCrit) {
+				return `${target.getName(adventure.room.enemyIdMap)} becomes Frail and is Staggered.`;
+			} else {
+				return `${target.getName(adventure.room.enemyIdMap)} becomes Frail.`;
+			}
+		} else if (isCrit) {
+			return `${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Corrosion", "Harmful Corrosion")

@@ -7,7 +7,7 @@ module.exports = new GearTemplate("name",
 	"element",
 	200,
 	(targets, user, isCrit, adventure) => {
-		let { element } = module.exports;
+		const { element } = module.exports;
 		if (user.element === element) {
 
 		}

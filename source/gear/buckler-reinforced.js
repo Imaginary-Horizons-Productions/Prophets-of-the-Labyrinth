@@ -8,19 +8,20 @@ module.exports = new GearTemplate("Reinforced Buckler",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [powerUp], block, critMultiplier } = module.exports;
+		const { element, modifiers: [powerUp], block, critMultiplier } = module.exports;
+		let pendingBlock = block;
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 			target.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critMultiplier;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(target, block);
-		addBlock(user, block);
-		addModifier(user, powerUp);
+		addBlock(target, pendingBlock);
+		addBlock(user, pendingBlock);
+		const addedPowerUp = addModifier(user, powerUp);
 		const userName = user.getName(adventure.room.enemyIdMap);
-		return `Damage will be Blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}. ${userName} is Powered Up.`;
+		return `Damage will be Blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}.${addedPowerUp ? ` ${userName} is Powered Up.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Devoted Buckler", "Guarding Buckler")

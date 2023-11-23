@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing War Cry",
 	"Inflict @{stagger} and @{mod0Stacks} @{mod0} on a foe and all foes with Exposed",
@@ -21,7 +22,7 @@ module.exports = new GearTemplate("Slowing War Cry",
 			}
 		})
 
-		let { element, modifiers: [slow], stagger, bonus } = module.exports;
+		const { element, modifiers: [slow], stagger, bonus } = module.exports;
 		let pendingStaggerStacks = stagger;
 		if (user.element === element) {
 			pendingStaggerStacks += 2;
@@ -29,11 +30,21 @@ module.exports = new GearTemplate("Slowing War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
+		let resultText = `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
+		const slowedTargets = [];
 		targetArray.forEach(target => {
 			target.addStagger(pendingStaggerStacks);
-			addModifier(target, slow);
+			const addedSlow = addModifier(target, slow);
+			if (addedSlow) {
+				slowedTargets.push(target.getName(adventure.room.enemyIdMap));
+			}
 		})
-		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered and Slowed by the fierce war cry.`;
+		if (slowedTargets.length > 1) {
+			resultText += ` ${listifyEN(slowedTargets)} are Slowed.`;
+		} else if (slowedTargets.length > 0) {
+			resultText += ` ${slowedTargets[0]} is Slowed.`;
+		}
+		return resultText;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Tormenting War Cry")

@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Guarding Scutum",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, block, bonus, critMultiplier } = module.exports;
+		const { element, block, bonus, critMultiplier } = module.exports;
 		let selfBlock = bonus;
 		let targetBlock = block;
 		if (user.element === element) {

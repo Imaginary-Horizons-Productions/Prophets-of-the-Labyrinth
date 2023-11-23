@@ -8,15 +8,16 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [powerUp], damage, critMultiplier } = module.exports;
+		const { element, modifiers: [powerUp], damage, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(user, powerUp);
-		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+		const addedPowerUp = addModifier(user, powerUp);
+		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Reckless Certain Victory")

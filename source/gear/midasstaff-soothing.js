@@ -8,8 +8,11 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 	"Water",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [curse, regen], bonus } = module.exports;
-		const pendingCurse = { ...curse, stacks: curse.stacks + (isCrit ? bonus : 0) };
+		const { element, modifiers: [curse, regen], bonus } = module.exports;
+		const pendingCurse = { ...curse };
+		if (isCrit) {
+			pendingCurse.stacks += bonus;
+		}
 		if (user.element === element) {
 			if (target.team === user.team) {
 				target.addStagger("elementMatchAlly");
@@ -17,9 +20,15 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 				target.addStagger("elementMatchFoe");
 			}
 		}
-		addModifier(target, pendingCurse);
-		addModifier(target, regen);
-		return `${target.getName(adventure.room.enemyIdMap)} gains Curse of Midas and Regen.`;
+		const addedCurse = addModifier(target, pendingCurse);
+		const addedRegen = addModifier(target, regen);
+		if (addedCurse) {
+			return `${target.getName(adventure.room.enemyIdMap)} gains Curse of Midas${addedRegen ? ` and Regen` : ""}.`;
+		} else if (addedRegen) {
+			return `${target.getName(adventure.room.enemyIdMap)} gains Regen.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 ).setTargetingTags({ target: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Accelerating Midas Staff", "Discounted Midas Staff")

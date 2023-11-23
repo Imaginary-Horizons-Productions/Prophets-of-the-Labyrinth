@@ -8,11 +8,12 @@ module.exports = new GearTemplate("Sweeping Scutum",
 	"Fire",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, block, critMultiplier } = module.exports;
+		const { element, block, critMultiplier } = module.exports;
+		let pendingBlock = block;
 		if (isCrit) {
-			block *= critMultiplier;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(user, block);
+		addBlock(user, pendingBlock);
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
@@ -20,7 +21,7 @@ module.exports = new GearTemplate("Sweeping Scutum",
 			if (user.element === element) {
 				target.addStagger("elementMatchAlly");
 			}
-			addBlock(target, block);
+			addBlock(target, pendingBlock);
 		})
 		return "Damage will be blocked for everyone.";
 	}

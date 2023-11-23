@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Morning Star",
 	"Light",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, stagger, damage, critMultiplier } = module.exports;
+		const { element, stagger, damage, critMultiplier } = module.exports;
 		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");

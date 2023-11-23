@@ -8,16 +8,17 @@ module.exports = new GearTemplate("Scutum",
 	"Fire",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, block, critMultiplier } = module.exports;
+		const { element, block, critMultiplier } = module.exports;
+		let pendingBlock = block;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
 			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critMultiplier;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(target, block);
-		addBlock(user, block);
+		addBlock(target, pendingBlock);
+		addBlock(user, pendingBlock);
 		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${user.getName(adventure.room.enemyIdMap)}.`;
 	}
 ).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })

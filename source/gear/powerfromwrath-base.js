@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Power from Wrath",
 	"Darkness",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, hpCost } = module.exports;
+		const { element, damage, hpCost } = module.exports;
 		const furiousness = (user.getMaxHP() - user.hp) / user.getMaxHP() + 1;
 		let pendingDamage = damage * furiousness;
 		if (user.element === element) {

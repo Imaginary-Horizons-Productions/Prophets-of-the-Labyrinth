@@ -3,7 +3,7 @@ const { ButtonWrapper } = require('../classes');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SAFE_DELIMITER } = require('../constants');
-const { trimForSelectOptionDescription } = require('../util/textUtil');
+const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 
 const mainId = "tinker";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -27,7 +27,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			if (sidegrades.length > 0) {
 				options.push({
 					label: gear.name,
-					description: trimForSelectOptionDescription(`Results: ${sidegrades.join(", ")}`),
+					description: trimForSelectOptionDescription(`Results: ${listifyEN(sidegrades)}`),
 					value: `${gear.name}${SAFE_DELIMITER}${index}`
 				})
 			}

@@ -8,13 +8,20 @@ module.exports = new GearTemplate("Accurate Cloak",
 	"Wind",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [evade], bonus } = module.exports;
-		const pendingEvade = { ...evade, stacks: evade.stacks + (isCrit ? bonus : 0) };
+		const { element, modifiers: [evade], bonus } = module.exports;
+		const pendingEvade = { ...evade };
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
-		addModifier(user, pendingEvade);
-		return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade.`;
+		if (isCrit) {
+			pendingEvade.stacks += bonus;
+		}
+		const addedEvade = addModifier(user, pendingEvade);
+		if (addedEvade) {
+			return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 ).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
 	.setSidegrades("Accelerating Cloak", "Long Cloak")

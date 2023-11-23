@@ -8,19 +8,23 @@ module.exports = new GearTemplate("Slowing Warhammer",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [slow], damage, bonus, critMultiplier } = module.exports;
-
+		const { element, modifiers: [slow], damage, bonus, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (target.isStunned) {
-			damage += bonus;
+			pendingDamage += bonus;
 		}
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(target, slow);
-		return dealDamage([target], user, damage, false, element, adventure);
+		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure)
+		const addedSlow = addModifier(target, slow);
+		if (addedSlow) {
+			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		}
+		return resultText;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Warhammer", "Unstoppable Warhammer")

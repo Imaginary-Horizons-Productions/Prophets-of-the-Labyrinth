@@ -8,17 +8,18 @@ module.exports = new GearTemplate("Warhammer",
 	"Earth",
 	200,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, bonus, critMultiplier } = module.exports;
+		const { element, damage, bonus, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (target.isStunned) {
-			damage += bonus;
+			pendingDamage += bonus;
 		}
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, damage, false, element, adventure);
+		return dealDamage([target], user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Reactive Warhammer", "Slowing Warhammer", "Unstoppable Warhammer")

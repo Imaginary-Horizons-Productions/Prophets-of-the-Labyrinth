@@ -3,6 +3,7 @@ const { isBuff } = require("../modifiers/_modifierDictionary.js");
 const { addBlock, dealDamage, addModifier } = require("../util/combatantUtil");
 const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { isDebuff } = require("../modifiers/slow.js");
+const { listifyEN } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Elkemist",
 	"Water",
@@ -97,7 +98,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		addModifier(user, { name: "Progress", stacks: progressGained });
 
 		if (affectedDelvers.size > 0) {
-			return `It cackles as it transmutes buffs on ${[...affectedDelvers].join(", ")} to Fire Weakness.`;
+			return `It cackles as it transmutes buffs on ${listifyEN([...affectedDelvers])} to Fire Weakness.`;
 		} else {
 			return "It's disappointed the party has no buffs to transmute.";
 		}

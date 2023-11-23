@@ -8,16 +8,17 @@ module.exports = new GearTemplate("Flanking Life Drain",
 	"Darkness",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [exposed], damage, healing, critMultiplier } = module.exports;
+		const { element, modifiers: [exposed], damage, healing, critMultiplier } = module.exports;
+		let pendingHealing = healing;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			healing *= critMultiplier;
+			pendingHealing *= critMultiplier;
 		}
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
-		addModifier(target, exposed);
-		return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Exposed. ${gainHealth(user, healing, adventure)}`;
+		const damageText = dealDamage([target], user, damage, false, element, adventure);
+		const addedExposed = addModifier(target, exposed);
+		return `${damageText}${addedExposed ? ` ${target.getName(adventure.room.enemyIdMap)} is Exposed.` : ""} ${gainHealth(user, pendingHealing, adventure)}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Life Drain", "Urgent Life Drain")

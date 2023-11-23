@@ -4,7 +4,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 const { buildGearDescription } = require("../gear/_gearDictionary");
-const { trimForSelectOptionDescription } = require("../util/textUtil");
+const { trimForSelectOptionDescription, listifyEN } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 	"@{adventure}",
@@ -43,7 +43,7 @@ module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 	} else {
 		return [new ActionRowBuilder().addComponents(
 			new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}treasure`)
-				.setPlaceholder(`Picked: ${adventure.room.state.pickedTreasure.names.join(", ")}`)
+				.setPlaceholder(`Picked: ${listifyEN(adventure.room.state.pickedTreasure.names)}`)
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)
 		)];

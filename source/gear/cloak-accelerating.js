@@ -8,15 +8,25 @@ module.exports = new GearTemplate("Accelerating Cloak",
 	"Wind",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [evade, quicken], bonus } = module.exports;
-		const pendingEvade = { ...evade, stacks: evade.stacks + (isCrit ? bonus : 0) };
-		const pendingQuicken = { ...quicken, stacks: quicken.stacks + (isCrit ? bonus : 0) };
+		const { element, modifiers: [evade, quicken], bonus } = module.exports;
+		const pendingEvade = { ...evade };
+		const pendingQuicken = { ...quicken };
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
-		addModifier(user, pendingEvade);
-		addModifier(user, pendingQuicken);
-		return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade and Quickened.`;
+		if (isCrit) {
+			pendingEvade.stacks += bonus;
+			pendingQuicken.stacks += bonus;
+		}
+		const addedEvade = addModifier(user, pendingEvade);
+		const addedQuicken = addModifier(user, pendingQuicken);
+		if (addedEvade) {
+			return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade and Quickened.`;
+		} else if (addedQuicken) {
+			return `${user.getName(adventure.room.enemyIdMap)} is Quickened.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 ).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
 	.setSidegrades("Accurate Cloak", "Long Cloak")

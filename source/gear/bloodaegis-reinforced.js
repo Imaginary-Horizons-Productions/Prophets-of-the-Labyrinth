@@ -8,14 +8,15 @@ module.exports = new GearTemplate("Reinforced Blood Aegis",
 	"Darkness",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, block, critMultiplier, hpCost } = module.exports;
+		const { element, block, critMultiplier, hpCost } = module.exports;
+		let pendingBlock = block;
 		if (user.element === element) {
 			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critMultiplier;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(user, block);
+		addBlock(user, pendingBlock);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;

@@ -21,7 +21,7 @@ const { renderRoom, updateRoomHeader } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
-const { parseExpression } = require("../util/textUtil");
+const { parseExpression, listifyEN } = require("../util/textUtil");
 const { sumGeometricSeries } = require("../util/mathUtil");
 
 /** @type {Map<string, Adventure>} */
@@ -442,7 +442,7 @@ function resolveMove(move, adventure) {
 			if (livingTargets.length > 0) {
 				const deadTargetText = "";
 				if (deadTargets.length > 0) {
-					deadTargetText += ` ${deadTargets.map(target => target.getName(adventure.room.enemyIdMap)).join(", ")} ${deadTargets === 1 ? "was" : "were"} already dead!`
+					deadTargetText += ` ${listifyEN(deadTargets.map(target => target.getName(adventure.room.enemyIdMap)))} ${deadTargets === 1 ? "was" : "were"} already dead!`
 				}
 
 				const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);

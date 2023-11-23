@@ -8,15 +8,15 @@ module.exports = new GearTemplate("Hunter's Sickle",
 	"Water",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, critMultiplier, bonus: bonusBounty } = module.exports;
-		damage += (0.05 * target.getMaxHP());
+		const { element, damage, critMultiplier, bonus: bonusBounty } = module.exports;
+		let pendingDamage = damage + (0.05 * target.getMaxHP());
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		let damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (target.hp < 1) {
 			adventure.gainGold(bonusBounty);
 			damageText += ` ${user.getName(adventure.room.enemyIdMap)} harvests ${bonusBounty}g of alchemical reagents.`;

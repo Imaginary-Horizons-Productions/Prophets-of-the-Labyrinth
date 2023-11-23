@@ -8,14 +8,15 @@ module.exports = new GearTemplate("Hunter's Bow",
 	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, bonus: bonusBounty, critMultiplier } = module.exports;
+		const { element, damage, bonus: bonusBounty, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		let damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (target.hp < 1) {
 			adventure.gainGold(bonusBounty);
 			damageText += ` ${user.getName(adventure.room.enemyIdMap)} forages ${bonusBounty}g of hunting trophies.`;

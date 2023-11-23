@@ -8,16 +8,18 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	"Light",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [regen, stasis], hpCost, critMultiplier } = module.exports;
+		const { element, modifiers: [regen, stasis], hpCost, critMultiplier } = module.exports;
+		let pendingHPCost = hpCost;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
 		}
+		let addedStasis = false;
 		if (isCrit) {
-			hpCost /= critMultiplier;
-			addModifier(target, stasis);
+			pendingHPCost /= critMultiplier;
+			addedStasis = addModifier(target, stasis);
 		}
-		addModifier(target, regen);
-		return `${payHP(user, hpCost, adventure)} ${user.getName(adventure.room.enemyIdMap)} gains Regen${isCrit ? " and enters Stasis" : ""}.`;
+		const addedRegen = addModifier(target, regen);
+		return `${payHP(user, pendingHPCost, adventure)}${addedRegen ? ` ${user.getName(adventure.room.enemyIdMap)} gains Regen${addedStasis ? " and enters Stasis" : ""}.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Discounted Infinite Regeneration")

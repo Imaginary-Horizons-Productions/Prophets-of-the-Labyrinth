@@ -8,15 +8,16 @@ module.exports = new GearTemplate("Slowing Daggers",
 	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [slow], damage, critMultiplier } = module.exports;
+		const { element, modifiers: [slow], damage, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(target, slow);
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		const addedSlow = addModifier(target, slow);
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedSlow ? ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")

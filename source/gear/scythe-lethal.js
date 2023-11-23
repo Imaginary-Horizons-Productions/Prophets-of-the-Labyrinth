@@ -8,14 +8,15 @@ module.exports = new GearTemplate("Lethal Scythe",
 	"Darkness",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, bonus: hpThreshold, critMultiplier } = module.exports;
+		const { element, damage, bonus: hpThreshold, critMultiplier } = module.exports;
+		let pendingHPThreshold = hpThreshold;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			hpThreshold *= critMultiplier;
+			pendingHPThreshold *= critMultiplier;
 		}
-		if (target.hp > hpThreshold) {
+		if (target.hp > pendingHPThreshold) {
 			return dealDamage([target], user, damage, false, element, adventure);
 		} else {
 			target.hp = 0;

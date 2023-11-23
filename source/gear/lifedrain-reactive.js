@@ -8,20 +8,22 @@ module.exports = new GearTemplate("Reactive Life Drain",
 	"Darkness",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, bonus, healing, critMultiplier } = module.exports;
+		const { element, damage, bonus, healing, critMultiplier } = module.exports;
+		let pendingDamage = damage;
+		let pendingHealing = healing;
 		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
 		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === adventure.getCombatantIndex(target));
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
-			damage += bonus;
+			pendingDamage += bonus;
 		}
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			healing *= critMultiplier;
+			pendingHealing *= critMultiplier;
 		}
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, healing, adventure)}`;
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${gainHealth(user, pendingHealing, adventure)}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Life Drain", "Urgent Life Drain")

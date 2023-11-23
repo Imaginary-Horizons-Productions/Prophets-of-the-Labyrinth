@@ -8,20 +8,21 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [powerUp], damage, bonus: bounty, critMultiplier } = module.exports;
+		const { element, modifiers: [powerUp], damage, bonus: bounty, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(user, powerUp);
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		const addedPowerUp = addModifier(user, powerUp);
+		let damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (target.hp < 1) {
 			adventure.gainGold(bounty);
 			damageText += ` ${user.getName(adventure.room.enemyIdMap)} gains ${bounty}g of victory spoils.`;
 		}
-		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText}${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")

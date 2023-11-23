@@ -8,14 +8,15 @@ module.exports = new GearTemplate("Sharpened Daggers",
 	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, damage, critMultiplier } = module.exports;
+		const { element, damage, critMultiplier } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, damage, false, element, adventure);
+		return dealDamage([target], user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sweeping Daggers", "Slowing Daggers")

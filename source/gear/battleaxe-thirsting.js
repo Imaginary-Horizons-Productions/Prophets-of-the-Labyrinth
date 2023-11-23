@@ -8,19 +8,20 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		let { element, modifiers: [exposed], damage, critMultiplier, healing } = module.exports;
+		const { element, modifiers: [exposed], damage, critMultiplier, healing } = module.exports;
+		let pendingDamage = damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critMultiplier;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(user, exposed);
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		const addedExposed = addModifier(user, exposed);
+		let damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (target.hp < 1) {
 			damageText += gainHealth(user, healing, adventure);
 		}
-		return `${damageText} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
+		return `${damageText}${addedExposed ? ` ${user.getName(adventure.room.enemyIdMap)} is Exposed.` : ""}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Prideful Battleaxe", "Thick Battleaxe")
