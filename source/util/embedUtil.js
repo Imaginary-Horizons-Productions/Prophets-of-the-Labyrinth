@@ -319,10 +319,15 @@ function gearToEmbedField(gearName, durability, holder) {
  * @returns {MessagePayload}
  */
 function inspectSelfPayload(delver, gearCapacity) {
+	let description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP`;
+	if (delver.block > 0) {
+		description += ` ${delver.block} Block`;
+	}
+	description += `\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed()}\nCrit Rate: ${delver.getCritRate()}%\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.getName()} the ${delver.archetype}`)
-		.setDescription(`${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP${delver.block > 0 ? ` ${delver.block} Block` : ""}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`);
+		.setDescription(description);
 	for (let index = 0; index < gearCapacity; index++) {
 		if (delver.gear[index]) {
 			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability, delver));

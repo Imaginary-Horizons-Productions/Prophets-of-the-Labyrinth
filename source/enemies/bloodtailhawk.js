@@ -7,7 +7,7 @@ module.exports = new EnemyTemplate("Bloodtail Hawk",
 	200,
 	105,
 	"1",
-	30,
+	10,
 	"Rake",
 	false
 ).addAction({

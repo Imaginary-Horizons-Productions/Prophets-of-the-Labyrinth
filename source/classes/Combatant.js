@@ -16,7 +16,7 @@ class Combatant {
 	maxHP = 300;
 	power = 0;
 	speed = 100;
-	critRate = 0;
+	critRate = 20;
 	poise = 6;
 
 	hp = 300;
