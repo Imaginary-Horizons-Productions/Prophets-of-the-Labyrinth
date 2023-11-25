@@ -37,8 +37,9 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 		const targetName = target.getName(adventure.room.enemyIdMap);
 		if (!(`${element} Absorb` in target.modifiers)) {
 			if (!("Evade" in target.modifiers) || isUnblockable) {
+				const userPower = user?.getPower() ?? 0;
 				const powerUp = user?.getModifierStacks("Power Up") ?? 0;
-				let pendingDamage = damage + powerUp;
+				let pendingDamage = damage + userPower + powerUp;
 				if ("Exposed" in target.modifiers) {
 					pendingDamage *= 1.5;
 				}
@@ -63,10 +64,7 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 						pendingDamage = 0;
 					}
 				}
-				if (!user.gear?.some(gear => gear.name.startsWith("Surpassing"))) {
-					const damageCap = 500 + powerUp;
-					pendingDamage = Math.min(pendingDamage, damageCap);
-				}
+				pendingDamage = Math.min(pendingDamage, user.getDamageCap());
 				target.hp -= pendingDamage;
 				let damageText = ` **${targetName}** takes ${pendingDamage} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}`;
 				if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {

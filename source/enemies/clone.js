@@ -8,4 +8,4 @@ module.exports = new EnemyTemplate("@{clone}",
 	0,
 	"clone", // this shouldn't get used, clones always copy delvers
 	true
-);
+).setPower(35);

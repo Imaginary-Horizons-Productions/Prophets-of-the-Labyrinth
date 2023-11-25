@@ -23,5 +23,5 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 	.setSidegrades("Hunter's Certain Victory", "Reckless Certain Victory")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setCritMultiplier(3);

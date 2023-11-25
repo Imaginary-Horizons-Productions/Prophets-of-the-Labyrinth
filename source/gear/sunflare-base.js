@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sun Flare",
-	"Inflict @{stagger} on a foe with priority",
+	"Inflict @{foeStagger} on a foe with priority",
 	"Also inflict @{mod0Stacks} @{mod0}",
 	"Technique",
 	"Light",

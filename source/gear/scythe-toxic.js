@@ -28,5 +28,5 @@ module.exports = new GearTemplate("Toxic Scythe",
 	.setSidegrades("Lethal Scythe", "Unstoppable Scythe")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setBonus(99); // execute threshold

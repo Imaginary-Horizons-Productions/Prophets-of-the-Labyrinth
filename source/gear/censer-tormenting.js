@@ -36,6 +36,6 @@ module.exports = new GearTemplate("Tormenting Censer",
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Censer", "Thick Censer")
 	.setModifiers({ name: "Slow", stacks: 2 })
-	.setDamage(50)
+	.setDamage(15)
 	.setBonus(75) // damage
 	.setDurability(15);

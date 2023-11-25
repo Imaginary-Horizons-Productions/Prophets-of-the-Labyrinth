@@ -21,5 +21,5 @@ module.exports = new GearTemplate("Life Drain",
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Flanking Life Drain", "Reactive Life Drain", "Urgent Life Drain")
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setHealing(25);

@@ -376,6 +376,10 @@ class Enemy extends Combatant {
 	getPoise() {
 		return this.poise;
 	}
+
+	getDamageCap() {
+		return 500 + this.getModifierStacks("Power Up");
+	}
 };
 
 module.exports = {

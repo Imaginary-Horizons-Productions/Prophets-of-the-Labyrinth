@@ -3,7 +3,7 @@ const { addModifier, dealDamage } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Harmful Corrosion",
 	"Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on a foe",
-	"Also inflict @{stagger}",
+	"Also inflict @{extraStagger}",
 	"Spell",
 	"Fire",
 	350,

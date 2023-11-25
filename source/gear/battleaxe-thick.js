@@ -23,4 +23,4 @@ module.exports = new GearTemplate("Thick Battleaxe",
 	.setSidegrades("Prideful Battleaxe", "Thirsting Battleaxe")
 	.setModifiers({ name: "Exposed", stacks: 1 })
 	.setDurability(30)
-	.setDamage(125);
+	.setDamage(90);

@@ -40,4 +40,4 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 	.setSidegrades("Toxic Shortsword")
 	.setModifiers({ name: "Exposed", stacks: 1 }, { name: "Quicken", stacks: 1 })
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

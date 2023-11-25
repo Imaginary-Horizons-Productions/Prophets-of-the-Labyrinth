@@ -1,4 +1,4 @@
-const { BuildError, GearTemplate, Gear } = require("../classes");
+const { BuildError, GearTemplate, Gear, Delver } = require("../classes");
 const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
@@ -162,14 +162,15 @@ function getGearProperty(gearName, propertyName) {
  */
 function buildGearRecord(gearName, durability) {
 	const template = GEAR[gearName];
-	return new Gear(gearName, durability === "max" ? template.maxDurability : durability, template.maxHP, template.speed, template.critRate, template.poise);
+	return new Gear(gearName, durability === "max" ? template.maxDurability : durability, template.maxHP, template.power, template.speed, template.critRate, template.poise);
 }
 
 /**
  * @param {string} gearName
  * @param {boolean} buildFullDescription
+ * @param {Delver?} holder
  */
-function buildGearDescription(gearName, buildFullDescription) {
+function buildGearDescription(gearName, buildFullDescription, holder) {
 	if (gearExists(gearName)) {
 		/** @type {string} */
 		let description;
@@ -181,9 +182,32 @@ function buildGearDescription(gearName, buildFullDescription) {
 			description = getGearProperty(gearName, "description");
 		}
 
-		description = description.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
+		let damage = getGearProperty(gearName, "damage");
+		const stagger = getGearProperty(gearName, "stagger");
+		const element = getGearProperty(gearName, "element");
+		if (holder) {
+			damage += holder.power + holder.getModifierStacks("Power Up");
+			damage = Math.min(damage, holder.getDamageCap());
+
+			if (holder.element === element) {
+				description = description
+					.replace(/@{foeStagger}/g, `${stagger + 2} Stagger`)
+					.replace(/@{allyStagger}/g, `${stagger + 1} Stagger`);
+			} else {
+				description = description
+					.replace(/@{foeStagger}/g, `${stagger} Stagger`)
+					.replace(/@{allyStagger}/g, `${stagger} Stagger`);
+			}
+		} else {
+			damage = `(${damage} base)`;
+			description = description
+				.replace(/@{foeStagger}/g, `(${stagger} base) Stagger`)
+				.replace(/@{allyStagger}/g, `(${stagger} base) Stagger`);
+		}
+
+		description = description.replace(/@{element}/g, getEmoji(element))
 			.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
-			.replace(/@{damage}/g, getGearProperty(gearName, "damage"))
+			.replace(/@{damage}/g, damage)
 			.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
 			.replace(/@{block}/g, getGearProperty(gearName, "block"))
 			.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
@@ -192,7 +216,7 @@ function buildGearDescription(gearName, buildFullDescription) {
 			.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
 			.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
 			.replace(/@{poise}/g, getGearProperty(gearName, "poise"))
-			.replace(/@{stagger}/g, `${getGearProperty(gearName, "stagger")} Stagger`);
+			.replace(/@{extraStagger}/g, `${stagger} Stagger`);
 		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifier.name)
 				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);

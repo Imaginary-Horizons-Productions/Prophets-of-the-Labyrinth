@@ -3,7 +3,7 @@ const { addModifier } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Charging War Cry",
-	"Inflict @{stagger} on a foe and all foes with Exposed then gain @{mod0Stacks} @{mod0}",
+	"Inflict @{foeStagger} on a foe and all foes with Exposed then gain @{mod0Stacks} @{mod0}",
 	"Stagger +@{bonus}",
 	"Technique",
 	"Fire",

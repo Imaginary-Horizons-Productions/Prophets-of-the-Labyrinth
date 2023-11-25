@@ -21,5 +21,5 @@ module.exports = new GearTemplate("Bow",
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Evasive Bow", "Hunter's Bow", "Mercurial Bow")
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setPriority(1);

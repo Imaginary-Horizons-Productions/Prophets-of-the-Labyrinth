@@ -21,4 +21,4 @@ module.exports = new GearTemplate("Sickle",
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Hunter's Sickle", "Sharpened Sickle", "Toxic Sickle")
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

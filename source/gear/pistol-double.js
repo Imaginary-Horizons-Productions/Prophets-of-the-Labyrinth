@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Double Pistol",
 			if (poweredUpSecondAlly) {
 				poweredUpAllies.push(secondAlly.getName(adventure.room.enemyIdMap));
 			}
-			if (poweredUpAllies.length === 2) { //TODONOW replace switches with else ifs for more order control
+			if (poweredUpAllies.length === 2) {
 				return `${damageText} ${poweredUpAllies[0]} and ${poweredUpAllies[1]} were Powered Up!`;
 			} else if (poweredUpAllies.length === 1) {
 				return `${damageText} ${poweredUpAllies[0]} was Powered Up!`;
@@ -41,4 +41,4 @@ module.exports = new GearTemplate("Double Pistol",
 	.setSidegrades("Duelist's Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

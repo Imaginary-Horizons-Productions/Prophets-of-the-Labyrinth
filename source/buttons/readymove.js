@@ -48,7 +48,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 		for (let i = 0; i < usableMoves.length; i++) {
 			const { name: gearName, durability } = usableMoves[i];
-			embed.addFields(gearToEmbedField(gearName, durability));
+			embed.addFields(gearToEmbedField(gearName, durability, delver));
 			const { target, team } = getGearProperty(gearName, "targetingTags");
 			const elementEmoji = getEmoji(getGearProperty(gearName, "element"));
 			if (target === "single") {

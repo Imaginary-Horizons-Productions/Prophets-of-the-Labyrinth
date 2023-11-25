@@ -54,6 +54,7 @@ class GearTemplate {
 	/** @type {{name: string, stacks: number}[]} */
 	modifiers;
 	maxHP = 0;
+	power = 0;
 	speed = 0;
 	critRate = 0;
 	poise = 0;
@@ -145,6 +146,12 @@ class GearTemplate {
 	/** @param {number} integer */
 	setMaxHP(integer) {
 		this.maxHP = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setPower(integer) {
+		this.power = integer;
 		return this;
 	}
 

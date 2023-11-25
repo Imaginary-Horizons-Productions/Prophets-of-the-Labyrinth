@@ -31,4 +31,4 @@ module.exports = new GearTemplate("Shortsword",
 	.setUpgrades("Accelerating Shortsword", "Toxic Shortsword")
 	.setModifiers({ name: "Exposed", stacks: 1 })
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

@@ -19,6 +19,7 @@
 - New Enemy: Mechabee Soldier
 - Buffed Elkemist ||Toil removes a random debuff, Bubble converts buffs to Fire Weakness, Progress no longer grants Stasis||
 - Forges are now Workshops: They now always offer repairs and upgrades. They will randomly offer one of the following: changing gear upgrades, increasing party gear capacity, or trading for an unknown upgraded gear.
+- Gear that applies Stagger now accounts for Same Element Stagger Bonus in their descriptions
 ## Prophets of the Labyrinth Version 0.12.0:
 - Reintroduced Light and Darkness elements
 - Reworked Martial Artist starting gear

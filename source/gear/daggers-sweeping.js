@@ -24,4 +24,4 @@ module.exports = new GearTemplate("Sweeping Daggers",
 	.setSidegrades("Sharpened Daggers", "Slowing Daggers")
 	.setDurability(15)
 	.setCritMultiplier(3)
-	.setDamage(50);
+	.setDamage(15);

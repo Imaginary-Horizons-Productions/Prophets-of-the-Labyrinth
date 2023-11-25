@@ -4,7 +4,7 @@ const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Spear",
 	"Strike all foes for @{damage} @{element} damage",
-	"Also inflict @{stagger}",
+	"Also inflict @{foeStagger}",
 	"Weapon",
 	"Wind",
 	350,
@@ -32,4 +32,4 @@ module.exports = new GearTemplate("Sweeping Spear",
 	.setSidegrades("Lethal Spear", "Reactive Spear")
 	.setStagger(2)
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

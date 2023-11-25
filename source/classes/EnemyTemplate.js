@@ -40,6 +40,12 @@ class EnemyTemplate {
 	/** @type {[modifierName: string]: number} */
 	startingModifiers = {};
 
+	/** @param {number} integer */
+	setPower(integer) {
+		this.power = integer;
+		return this;
+	}
+
 	/**
 	 * @param {string} modifier
 	 * @param {number} stacks

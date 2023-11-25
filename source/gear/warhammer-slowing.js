@@ -30,5 +30,5 @@ module.exports = new GearTemplate("Slowing Warhammer",
 	.setSidegrades("Reactive Warhammer", "Unstoppable Warhammer")
 	.setModifiers({ name: "Slow", stacks: 1 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setBonus(75); // damage

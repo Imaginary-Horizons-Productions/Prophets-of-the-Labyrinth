@@ -14,6 +14,7 @@ class Combatant {
 	/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
 	element;
 	maxHP = 300;
+	power = 0;
 	speed = 100;
 	critRate = 0;
 	poise = 6;
@@ -35,6 +36,9 @@ class Combatant {
 
 	/** @returns {number} */
 	getMaxHP() { }
+
+	/** @returns {number} */
+	getPower() { }
 
 	/** @returns {number} */
 	getSpeed() {
@@ -73,6 +77,9 @@ class Combatant {
 		return this.modifiers[modifierName] ?? 0
 	}
 
+	/** @returns {number} */
+	getDamageCap() { }
+
 	/** add Stagger, negative values allowed
 	 * @param {number | "elementMatchAlly" | "elementMatchFoe"} value
 	 */
@@ -99,6 +106,7 @@ class Delver extends Combatant {
 		super(nameInput, "delver");
 		this.id = idInput;
 		this.adventureId = adventureIdInput;
+		this.power = 35;
 	}
 	isReady = false;
 	/** @type {Gear[]} */
@@ -116,6 +124,16 @@ class Delver extends Combatant {
 				return totalGearMaxHP + gear.maxHP;
 			} else {
 				return totalGearMaxHP;
+			}
+		}, 0);
+	}
+
+	getPower() {
+		return this.power + this.gear.reduce((totalPower, gear) => {
+			if (parseInt(gear.power)) {
+				return totalPower + gear.power;
+			} else {
+				return totalPower;
 			}
 		}, 0);
 	}
@@ -139,6 +157,14 @@ class Delver extends Combatant {
 			}
 		}, 0);
 	}
+
+	getDamageCap() {
+		if (this.gear.some(gear => gear.name.startsWith("Surpassing"))) {
+			return Infinity;
+		} else {
+			return 500 + this.getModifierStacks("Power Up");
+		}
+	}
 }
 
 class Gear {
@@ -146,14 +172,16 @@ class Gear {
 	 * @param {string} nameInput
 	 * @param {number} durabilityInput
 	 * @param {number} maxHPInput
+	 * @param {number} powerInput
 	 * @param {number} speedInput
 	 * @param {number} critRateInput
 	 * @param {number} poiseInput
 	 */
-	constructor(nameInput, durabilityInput, maxHPInput, speedInput, critRateInput, poiseInput) {
+	constructor(nameInput, durabilityInput, maxHPInput, powerInput, speedInput, critRateInput, poiseInput) {
 		this.name = nameInput;
 		this.durability = durabilityInput;
 		this.maxHP = maxHPInput;
+		this.power = powerInput;
 		this.speed = speedInput;
 		this.critRate = critRateInput;
 		this.poise = poiseInput;

@@ -3,7 +3,7 @@ const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Spear",
 	"Strike a foe for @{damage} (+@{bonus} if after foe) @{element} damage",
-	"Also inflict @{stagger}",
+	"Also inflict @{foeStagger}",
 	"Weapon",
 	"Wind",
 	350,
@@ -30,5 +30,5 @@ module.exports = new GearTemplate("Reactive Spear",
 	.setSidegrades("Lethal Spear", "Sweeping Spear")
 	.setStagger(2)
 	.setDurability(15)
-	.setDamage(100)
+	.setDamage(65)
 	.setBonus(75); // damage

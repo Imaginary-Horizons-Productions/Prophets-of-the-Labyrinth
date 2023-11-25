@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { dealDamage } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Morning Star",
-	"Strike a foe applying @{stagger} and @{damage} @{element} damage",
+	"Strike a foe applying @{foeStagger} and @{damage} @{element} damage",
 	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Light",
@@ -22,4 +22,4 @@ module.exports = new GearTemplate("Morning Star",
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setStagger(2)
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

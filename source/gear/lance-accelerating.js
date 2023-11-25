@@ -25,4 +25,4 @@ module.exports = new GearTemplate("Accelerating Lance",
 	.setSidegrades("Unstoppable Lance", "Vigilant Lance")
 	.setModifiers({ name: "Quicken", stacks: 1 })
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

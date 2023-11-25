@@ -3,7 +3,7 @@ const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Shattering Corrosion",
 	"Inflict @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} on a foe",
-	"Also inflict @{stagger}",
+	"Also inflict @{foeStagger}",
 	"Spell",
 	"Fire",
 	350,

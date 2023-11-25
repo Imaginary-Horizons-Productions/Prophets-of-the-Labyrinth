@@ -34,5 +34,5 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 	}
 ).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })
 	.setModifiers({ name: "Poison", stacks: 2 })
-	.setDamage(50)
+	.setDamage(15)
 	.setDurability(15);

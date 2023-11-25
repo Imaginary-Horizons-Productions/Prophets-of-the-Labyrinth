@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("War Cry",
-	"Inflict @{stagger} on a foe and all foes with Exposed",
+	"Inflict @{foeStagger} on a foe and all foes with Exposed",
 	"Stagger +@{bonus}",
 	"Technique",
 	"Fire",

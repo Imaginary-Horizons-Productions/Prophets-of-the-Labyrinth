@@ -4,7 +4,7 @@ const { addModifier } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Tormenting Sun Flare",
-	"Inflict @{stagger} on a foe and duplicate its debuffs with priority",
+	"Inflict @{foeStagger} on a foe and duplicate its debuffs with priority",
 	"Also inflict @{mod0Stacks} @{mod0}",
 	"Technique",
 	"Light",

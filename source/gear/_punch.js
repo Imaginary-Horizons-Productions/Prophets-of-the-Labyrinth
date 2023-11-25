@@ -27,4 +27,4 @@ module.exports = new GearTemplate("Punch",
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setDurability(Infinity)
-	.setDamage(35);
+	.setDamage(0);

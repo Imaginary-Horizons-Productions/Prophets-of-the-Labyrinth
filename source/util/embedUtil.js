@@ -300,15 +300,16 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 /** Seen in target selection embeds and /inspect-self gear fields contain nearly all information about the gear they represent
  * @param {string} gearName
  * @param {number} durability
+ * @param {Delver} holder
  * @returns {EmbedField} contents for a message embed field
  */
-function gearToEmbedField(gearName, durability) {
+function gearToEmbedField(gearName, durability, holder) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
 	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability)`;
 	return {
 		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))}${durabilityText}`,
-		value: buildGearDescription(gearName, maxDurability !== 0)
+		value: buildGearDescription(gearName, maxDurability !== 0, holder)
 	};
 }
 
@@ -321,13 +322,10 @@ function inspectSelfPayload(delver, gearCapacity) {
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.getName()} the ${delver.archetype}`)
-		.setDescription(`${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nYour ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.`);
-	if (delver.block > 0) {
-		embed.addFields({ name: "Block", value: delver.block.toString() })
-	}
+		.setDescription(`${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP${delver.block > 0 ? ` ${delver.block} Block` : ""}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`);
 	for (let index = 0; index < gearCapacity; index++) {
 		if (delver.gear[index]) {
-			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability));
+			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability, delver));
 		} else {
 			embed.addFields({ name: `${ordinalSuffixEN(index + 1)} Gear Slot`, value: "No gear yet..." })
 		}

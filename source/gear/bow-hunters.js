@@ -26,6 +26,6 @@ module.exports = new GearTemplate("Hunter's Bow",
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Bow", "Mercurial Bow")
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setBonus(15) // gold
 	.setPriority(1);

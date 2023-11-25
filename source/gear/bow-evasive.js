@@ -23,5 +23,5 @@ module.exports = new GearTemplate("Evasive Bow",
 	.setSidegrades("Hunter's Bow", "Mercurial Bow")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setPriority(1);

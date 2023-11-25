@@ -29,4 +29,4 @@ module.exports = new GearTemplate("Toxic Sickle",
 	.setSidegrades("Hunter's Sickle", "Sharpened Sickle")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

@@ -26,5 +26,5 @@ module.exports = new GearTemplate("Unstoppable Scythe",
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Scythe", "Toxic Scythe")
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setBonus(99); // execute threshold

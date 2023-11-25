@@ -22,4 +22,4 @@ module.exports = new GearTemplate("Power from Wrath",
 ).setTargetingTags({ target: "single", team: "enemy", needsLivingTargets: true })
 	.setDurability(15)
 	.setHPCost(40)
-	.setDamage(75);
+	.setDamage(40);

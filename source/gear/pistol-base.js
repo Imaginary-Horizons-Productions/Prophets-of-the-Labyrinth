@@ -29,4 +29,4 @@ module.exports = new GearTemplate("Pistol",
 	.setUpgrades("Double Pistol", "Duelist's Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);
