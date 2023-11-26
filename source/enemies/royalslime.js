@@ -14,6 +14,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 ).addAction({
 	name: "Element Shift",
 	element: "Untyped",
+	description: "Change the Royal Slime's element to an element it's currently neutral to and gain Absorb for that element",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		const elementPool = elementsList(["Untyped", user.element]);
@@ -32,6 +33,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 }).addAction({
 	name: "Rolling Tackle",
 	element: "@{adventure}",
+	description: "Deal damage of the Royal Slime's element to all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = 75;
@@ -49,6 +51,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 }).addAction({
 	name: "Opposite Rolling Tackle",
 	element: "@{adventureOpposite}",
+	description: "Deal damage of the opposite element of the Royal Slime to all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = 75;
@@ -66,6 +69,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 }).addAction({
 	name: "Goop Deluge",
 	element: "Untyped",
+	description: "Slow all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		targets.forEach(target => {
@@ -81,4 +85,5 @@ module.exports = new EnemyTemplate("Royal Slime",
 	selector: selectAllFoes,
 	needsLivingTargets: false,
 	next: nextRandom
-});
+})
+	.setFlavorText({ name: "Royal Slime's Element", value: "The Royal Slime will start as the adventure's element and change it with Element Shift."});

@@ -1,6 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { selectSelf, selectNone, selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, addBlock, dealDamage } = require("../util/combatantUtil");
+const { getEmoji } = require("../util/elementUtil.js");
 
 const PATTERN = {
 	"Reinforcing Slam": "Burrow",
@@ -25,6 +26,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	.addAction({
 		name: "Reinforcing Slam",
 		element: "Earth",
+		description: `Gain Block and deal ${getEmoji("Earth")} damage to a single foe`,
 		priority: 0,
 		effect: ([target], user, isCrit, adventure) => {
 			let block = 100;
@@ -41,6 +43,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	}).addAction({
 		name: "Burrow",
 		element: "Untyped",
+		description: "Gain Evade",
 		priority: 0,
 		effect: (target, user, isCrit, adventure) => {
 			let stacks = 2;
@@ -58,6 +61,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	.addAction({
 		name: "Eyes of Greed",
 		element: "Untyped",
+		description: "Gain Curse of Midas and inflict Power Down on all foes",
 		priority: 0,
 		effect: (targets, user, isCrit, adventure) => {
 			let stacks = 25;
@@ -77,6 +81,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	}).addAction({
 		name: "Heavy Pockets",
 		element: "Untyped",
+		description: "Inflict Slow on all foes",
 		priority: 0,
 		effect: (targets, user, isCrit, adventure) => {
 			let stacks = 2;
@@ -94,6 +99,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	}).addAction({
 		name: "Escape",
 		element: "Untyped",
+		description: "Escape combat",
 		priority: 0,
 		effect: (targets, user, isCrit, adventure) => {
 			user.hp = 0;

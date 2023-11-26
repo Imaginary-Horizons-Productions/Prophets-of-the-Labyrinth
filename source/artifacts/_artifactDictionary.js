@@ -51,13 +51,9 @@ function rollArtifact(adventure) {
 	return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 }
 
-function getAllArtifactNames() {
-	return Object.keys(ARTIFACTS);
-}
-
 module.exports = {
+	artifactNames: Object.keys(ARTIFACTS),
 	getArtifact,
 	getArtifactCounts,
-	rollArtifact,
-	getAllArtifactNames
+	rollArtifact
 };

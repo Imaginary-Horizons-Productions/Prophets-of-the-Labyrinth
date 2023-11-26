@@ -27,6 +27,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 ).addAction({
 	name: "Swarm Protocol",
 	element: "Untyped",
+	description: `Gain Block and command all Mechabees to Call for Help`,
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		// assumes mechaqueen is at enemy index 0 and that all other enemies are mechabees
@@ -45,6 +46,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 }).addAction({
 	name: "Assault Protocol",
 	element: "Untyped",
+	description: "Gain Block and command all Mechabees to Sting a single foe",
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		// assumes mecha queen is at enemy index 0 and that all other enemies are mechabees
@@ -64,6 +66,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 }).addAction({
 	name: "Sacrifice Protocol",
 	element: "Untyped",
+	description: "Gain Block and command a Mechabee to Self-Destruct",
 	priority: 1,
 	effect: ([target], user, isCrit, adventure) => {
 		addBlock(user, isCrit ? 200 : 100);
@@ -81,6 +84,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 }).addAction({
 	name: "Deploy Drone",
 	element: "Untyped",
+	description: "Summon a Mechabee",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		spawnEnemy(drone, adventure);
@@ -92,6 +96,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 }).addAction({
 	name: "V.E.N.O.Missile",
 	element: "Darkness",
+	description: "Inflict Poison on a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		target.addStagger("elementMatchFoe");
