@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE } = require("../constants.js");
+const { MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, GAME_VERSION } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
 const { elementsList } = require("../util/elementUtil.js");
@@ -16,6 +16,7 @@ class Adventure {
 	 * @param {string} leaderIdInput
 	 */
 	constructor(seedInput, guildIdInput, labyrinthInput, leaderIdInput) {
+		this.version = GAME_VERSION;
 		this.initialSeed = seedInput || Date.now().toString();
 		this.rnTable = crypto.createHash("sha256").update(this.initialSeed).digest("hex");
 		this.guildId = guildIdInput;

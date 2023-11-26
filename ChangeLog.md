@@ -1,5 +1,5 @@
 # Prophets of the Labyrinth Change Log
-## Prophets of the Labyrinth Version 0.13.0:
+## Prophets of the Labyrinth v0.13.0:
 - New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Surpassing Wolf Ring, Swift Wolf Ring, Harmful Poison Torrent, Ice Bolt
 - Reworked Thick Cloak to Accurate Cloak
 - Combined Barrier and Vigilance Charm
@@ -20,7 +20,7 @@
 - Buffed Elkemist ||Toil removes a random debuff, Bubble converts buffs to Fire Weakness, Progress no longer grants Stasis||
 - Forges are now Workshops: They now always offer repairs and upgrades. They will randomly offer one of the following: changing gear upgrades, increasing party gear capacity, or trading for an unknown upgraded gear.
 - Gear that applies Stagger now accounts for Same Element Stagger Bonus in their descriptions
-## Prophets of the Labyrinth Version 0.12.0:
+## Prophets of the Labyrinth v0.12.0:
 - Reintroduced Light and Darkness elements
 - Reworked Martial Artist starting gear
    - Iron Fist Stance: increases Punch damage and changes it to your element
@@ -55,16 +55,3 @@
 - Reduced base crit chance to 1/5
 - Hawk Tailfeather and Negative-One Leaf Clover now offer rerolls on fails
 - Score for gold, lives, depth, and bonus update live; added score to `/adventure party-stats`
-
-## Example Version 0.0.0:
-- Unordered item 1
-- Unordered item 2
-   1. Ordered item 1
-   1. Ordered item 2
-   1. Ordered item 3
-   1. Ordered item 4
-   1. Ordered item 5
-### Known Issues
-- Unordered item 1
-   - Unordered item 2
-   - Unordered item 3
