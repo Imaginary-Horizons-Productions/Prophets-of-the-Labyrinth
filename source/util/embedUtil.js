@@ -245,7 +245,7 @@ function updateRoomHeader(adventure, message) {
 /** The version embed lists the following: changes in the most recent update, known issues in the most recent update, and links to support the project */
 async function generateVersionEmbed() {
 	const data = await fs.promises.readFile('./ChangeLog.md', { encoding: 'utf8' });
-	const dividerRegEx = /## .+ Version/g;
+	const dividerRegEx = /## .+ v\d+.\d+.\d+/g;
 	const changesStartRegEx = /\.\d+:/g;
 	const knownIssuesStartRegEx = /### Known Issues/g;
 	let titleStart = dividerRegEx.exec(data).index;
