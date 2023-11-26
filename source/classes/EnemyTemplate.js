@@ -31,7 +31,7 @@ class EnemyTemplate {
 		this.speed = speedInput;
 		/** @type {string} expression, where n = delver count */
 		this.poiseExpression = poiseExpressionInput;
-		this.critRate = pendingCritRate;
+		this.critRate = 20 + pendingCritRate;
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
 	}
@@ -39,6 +39,8 @@ class EnemyTemplate {
 	actions = {};
 	/** @type {[modifierName: string]: number} */
 	startingModifiers = {};
+	/** @type {import("discord.js").EmbedField} */
+	flavorText;
 
 	/** @param {number} integer */
 	setPower(integer) {
@@ -59,6 +61,7 @@ class EnemyTemplate {
 	 * @param {object} actionsInput
 	 * @param {string} actionsInput.name
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}"} actionsInput.element
+	 * @param {string} actionsInput.description
 	 * @param {number} actionsInput.priority
 	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} actionsInput.effect
 	 * @param {(self: Combatant, adventure: Adventure) => CombatantReference[]} actionsInput.selector
@@ -67,6 +70,12 @@ class EnemyTemplate {
 	 */
 	addAction(actionsInput) {
 		this.actions[actionsInput.name] = actionsInput;
+		return this;
+	}
+
+	/** @param {import("discord.js").EmbedField} fieldObject */
+	setFlavorText(fieldObject) {
+		this.flavorText = fieldObject;
 		return this;
 	}
 };

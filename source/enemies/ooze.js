@@ -13,6 +13,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 ).addAction({
 	name: "Goop Spray",
 	element: "Untyped",
+	description: "Slow a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		if (isCrit) {
@@ -29,6 +30,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 }).addAction({
 	name: "Tackle",
 	element: "@{adventureOpposite}",
+	description: "Deal the Ooze's element damage to a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		let damage = 25;
@@ -41,4 +43,5 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
 	next: nextRandom
-});
+})
+	.setFlavorText({ name: "Ooze's Element", value: "The Ooze's element will be the opposite of the current adventure." });

@@ -31,5 +31,6 @@ function getEnemy(enemyName) {
 }
 
 module.exports = {
+	enemyNames: Object.keys(ENEMIES),
 	getEnemy
 }

@@ -1,6 +1,7 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, addModifier } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
+const { getEmoji } = require("../util/elementUtil.js");
 
 const PATTERN = {
 	"Barrel Roll": "Sting",
@@ -23,6 +24,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 ).addAction({
 	name: "Sting",
 	element: "Earth",
+	description: `Inflict minor ${getEmoji("Earth")} damage and Poison on a single foe`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		target.addStagger("elementMatchFoe");
@@ -39,6 +41,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 }).addAction({
 	name: "Barrel Roll",
 	element: "Untyped",
+	description: "Gain Evade",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let stacks = 2;
@@ -55,6 +58,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 }).addAction({
 	name: "Neurotoxin Strike",
 	element: "Earth",
+	description: `Inflict ${getEmoji("Earth")} damage and Paralysis on a single foe`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		target.addStagger("elementMatchFoe");
@@ -71,6 +75,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 }).addAction({
 	name: "Self-Destruct",
 	element: "Earth",
+	description: `Sacrifice self to deal large ${getEmoji("Earth")} damage to all foes`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = 125;

@@ -4,6 +4,7 @@ const { addBlock, dealDamage, addModifier } = require("../util/combatantUtil");
 const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { isDebuff } = require("../modifiers/slow.js");
 const { listifyEN } = require("../util/textUtil.js");
+const { getEmoji } = require("../util/elementUtil.js");
 
 module.exports = new EnemyTemplate("Elkemist",
 	"Water",
@@ -16,9 +17,9 @@ module.exports = new EnemyTemplate("Elkemist",
 ).addAction({
 	name: "Toil",
 	element: "Untyped",
+	description: "Gains Block, cures a random debuff, and grants a large amount of Progress",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		// Gain block and medium progress
 		user.addStagger("elementMatchAlly");
 		if (isCrit) {
 			addModifier(user, { name: "Progress", stacks: 60 + adventure.generateRandomNumber(46, "battle") });
@@ -43,9 +44,9 @@ module.exports = new EnemyTemplate("Elkemist",
 }).addAction({
 	name: "Trouble",
 	element: "Water",
+	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from Power Up) and gain a small amount of Progress`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
-		// Damage a single foe and small progress
 		let damage = 75 + user.getModifierStacks("Power Up");
 		if (isCrit) {
 			damage *= 2;
@@ -60,9 +61,9 @@ module.exports = new EnemyTemplate("Elkemist",
 }).addAction({
 	name: "Boil",
 	element: "Fire",
+	description: `Deals ${getEmoji("Fire")} damage to all foes`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		// Fire damage to all foes
 		let damage = 75;
 		if (isCrit) {
 			damage *= 2;
@@ -75,9 +76,9 @@ module.exports = new EnemyTemplate("Elkemist",
 }).addAction({
 	name: "Bubble",
 	element: "Untyped",
+	description: "Converts all foe buffs to Fire Weakness and gain Progress per buff removed",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		// Convert all buffs on foes to Fire Weakness and gain Progress per buff removed
 		let progressGained = adventure.generateRandomNumber(16, "battle");
 		const affectedDelvers = new Set();
 		if (isCrit) {
@@ -106,4 +107,4 @@ module.exports = new EnemyTemplate("Elkemist",
 	selector: selectAllFoes,
 	needsLivingTargets: false,
 	next: nextRandom
-});
+}).setFlavorText({ name: "Progress", value: "Each time the Elkemist reaches 100 Progress, it'll gain a large amount of Power Up. Stun the Elkemist to reduce its Progress." });

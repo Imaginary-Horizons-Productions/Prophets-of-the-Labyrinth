@@ -2,6 +2,7 @@ const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, addModifier } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
+const { getEmoji } = require("../util/elementUtil.js");
 
 const PATTERN = {
 	"Sting": "Barrel Roll",
@@ -24,6 +25,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 ).addAction({
 	name: "Sting",
 	element: "Darkness",
+	description: `Inflict minor ${getEmoji("Darkness")} damage and Poison on a single foe`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		target.addStagger("elementMatchFoe");
@@ -40,6 +42,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 }).addAction({
 	name: "Barrel Roll",
 	element: "Untyped",
+	description: "Gain Evade",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let stacks = 2;
@@ -56,6 +59,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 }).addAction({
 	name: "Call for Help",
 	element: "Untyped",
+	description: "Summon another Mechabee",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		spawnEnemy(module.exports, adventure);
@@ -67,6 +71,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 }).addAction({
 	name: "Self-Destruct",
 	element: "Darkness",
+	description: `Sacrifice self to deal large ${getEmoji("Darkness")} damage to all foes`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = 125;

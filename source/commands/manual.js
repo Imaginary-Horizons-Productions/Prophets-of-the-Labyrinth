@@ -1,11 +1,13 @@
 const { CommandWrapper } = require('../classes');
 const { itemExists, getItem, itemNames } = require('../items/_itemDictionary');
 const { gearExists, getGearProperty, buildGearDescription, gearNames } = require('../gear/_gearDictionary');
-const { getAllArtifactNames, getArtifact } = require('../artifacts/_artifactDictionary');
+const { getArtifact, artifactNames } = require('../artifacts/_artifactDictionary');
+const { enemyNames, getEnemy } = require('../enemies/_enemyDictionary');
 const { generateArtifactEmbed, embedTemplate } = require('../util/embedUtil');
 const { getColor, getWeaknesses, getResistances, getEmoji, getOpposite, elementsList } = require('../util/elementUtil');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { listifyEN } = require('../util/textUtil');
+const { modifiers } = require('../gear/warhammer-unstoppable');
 
 const mainId = "manual";
 const options = [];
@@ -63,7 +65,20 @@ const subcommands = [
 				name: "artifact-name",
 				description: "Input is case-sensitive",
 				required: true,
-				autocomplete: getAllArtifactNames().map(name => ({ name, value: name }))
+				autocomplete: artifactNames.map(name => ({ name, value: name }))
+			}
+		]
+	},
+	{
+		name: "enemy-info",
+		description: "Look up details on an enemy",
+		optionsInput: [
+			{
+				type: "String",
+				name: "enemy-name",
+				description: "Input is case-sensitive",
+				required: true,
+				autocomplete: enemyNames.map(name => ({ name, value: name }))
 			}
 		]
 	}
@@ -196,6 +211,31 @@ module.exports = new CommandWrapper(mainId, "Get information about how to play o
 				}
 
 				interaction.reply({ embeds: [generateArtifactEmbed(artifactTemplate, 1, null)], ephemeral: true });
+				break;
+			case "enemy-info":
+				const enemyName = interaction.options.getString("enemy-name");
+				const enemyTemplate = getEnemy(enemyName);
+				if (!enemyTemplate) {
+					interaction.reply({ content: `Could not find an enemy named ${enemyName}.`, ephemeral: true });
+					return;
+				}
+
+				const enemyEmbed = embedTemplate().setTitle(`${enemyName} ${getEmoji(enemyTemplate.element)}`)
+					.setDescription(`Base HP: ${enemyTemplate.maxHP}\nSpeed: ${enemyTemplate.speed}\nCrit Rate: ${enemyTemplate.critRate}%\nPoise: ${enemyTemplate.poiseExpression}`);
+				const startingModifierEntries = Object.entries(enemyTemplate.startingModifiers);
+				const enemyFields = [];
+				if (startingModifierEntries.length > 0) {
+					enemyFields.push({ name: "Starting Modifiers", value: listifyEN(startingModifierEntries.map(([name, stacks]) => `${stacks} ${name}`)) });
+				}
+				enemyFields.push({
+					name: "Actions",
+					value: Object.values(enemyTemplate.actions).map(action => `- **${action.name}** ${getEmoji(action.element)} ${action.description}`).join("\n")
+				})
+				if (enemyTemplate.flavorText) {
+					enemyFields.push(enemyTemplate.flavorText);
+				}
+				enemyEmbed.addFields(enemyFields)
+				interaction.reply({ embeds: [enemyEmbed], ephemeral: true });
 				break;
 		}
 	}

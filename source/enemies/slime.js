@@ -13,6 +13,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 ).addAction({
 	name: "Tackle",
 	element: "@{adventure}",
+	description: "Deal the Slime's element damage to a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		let damage = 25;
@@ -28,6 +29,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 }).addAction({
 	name: "Goop Spray",
 	element: "Untyped",
+	description: "Slow a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		if (isCrit) {
@@ -41,4 +43,5 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
 	next: nextRandom
-});
+})
+	.setFlavorText({ name: "Slime's Element", value: "The Slime's element will match the current adventure." });

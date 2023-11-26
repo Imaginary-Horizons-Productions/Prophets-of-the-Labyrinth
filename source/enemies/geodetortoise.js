@@ -1,6 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { addBlock, addModifier, dealDamage } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf, nextRandom } = require("../shared/actionComponents.js");
+const { getEmoji } = require("../util/elementUtil.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",
 	"Earth",
@@ -13,6 +14,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 ).addAction({
 	name: "Bite",
 	element: "Earth",
+	description: `Deals ${getEmoji("Earth")} damage to a single foe`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		let damage = 50;
@@ -28,6 +30,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 }).addAction({
 	name: "Crystallize",
 	element: "Untyped",
+	description: "Gain Block and Power Up",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		addBlock(user, 150);
