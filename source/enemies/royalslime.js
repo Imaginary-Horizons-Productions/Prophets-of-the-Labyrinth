@@ -2,6 +2,7 @@ const { EnemyTemplate } = require("../classes");
 const { nextRandom, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
+const { listifyEN } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Royal Slime",
 	"@{adventure}",
@@ -19,13 +20,18 @@ module.exports = new EnemyTemplate("Royal Slime",
 	effect: (targets, user, isCrit, adventure) => {
 		const elementPool = elementsList(["Untyped", user.element]);
 		user.element = elementPool[adventure.generateRandomNumber(elementPool.length, "battle")];
+		let addedAbsorb = false;
 		if (isCrit) {
-			addModifier(user, { name: `${user.element} Absorb`, stacks: 5 });
+			addedAbsorb = addModifier(user, { name: `${user.element} Absorb`, stacks: 5 });
 			user.addStagger("elementMatchAlly");
 		} else {
-			addModifier(user, { name: `${user.element} Absorb`, stacks: 3 });
+			addedAbsorb = addModifier(user, { name: `${user.element} Absorb`, stacks: 3 });
 		}
-		return "Its elemental alignment has changed.";
+		if (addedAbsorb) {
+			return "Its elemental alignment has changed.";
+		} else {
+			return "But nothing happened.";
+		}
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
@@ -72,18 +78,31 @@ module.exports = new EnemyTemplate("Royal Slime",
 	description: "Slow all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
+		const slowedTargets = [];
 		targets.forEach(target => {
 			if (isCrit) {
-				addModifier(target, { name: "Slow", stacks: 3 });
+				const addedSlow = addModifier(target, { name: "Slow", stacks: 3 });
+				if (addedSlow) {
+					slowedTargets.push(target.getName(adventure.room.enemyIdMap));
+				}
 				target.addStagger("elementMatchFoe");
 			} else {
-				addModifier(target, { name: "Slow", stacks: 2 });
+				const addedSlow = addModifier(target, { name: "Slow", stacks: 2 });
+				if (addedSlow) {
+					slowedTargets.push(target.getName(adventure.room.enemyIdMap));
+				}
 			}
 		});
-		return "Everyone is Slowed by the sticky ooze.";
+		if (slowedTargets.length > 1) {
+			return `${listifyEN(slowedTargets)} are Slowed by the sticky ooze.`;
+		} else if (slowedTargets.length === 1) {
+			return `${slowedTargets[0]} is Slowed by the sticky ooze.`;
+		} else {
+			return "But nothing happened.";
+		}
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
 	next: nextRandom
 })
-	.setFlavorText({ name: "Royal Slime's Element", value: "The Royal Slime will start as the adventure's element and change it with Element Shift."});
+	.setFlavorText({ name: "Royal Slime's Element", value: "The Royal Slime will start as the adventure's element and change it with Element Shift." });

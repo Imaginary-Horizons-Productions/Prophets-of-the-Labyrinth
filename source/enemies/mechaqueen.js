@@ -100,12 +100,17 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		target.addStagger("elementMatchFoe");
+		let addedPoison = false;
 		if (isCrit) {
-			addModifier(target, { name: "Poison", stacks: 5 });
+			addedPoison = addModifier(target, { name: "Poison", stacks: 5 });
 		} else {
-			addModifier(target, { name: "Poison", stacks: 3 });
+			addedPoison = addModifier(target, { name: "Poison", stacks: 3 });
 		}
-		return `${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
+		if (addedPoison) {
+			return `${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
+		} else {
+			return "But nothing happened.";
+		}
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

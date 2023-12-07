@@ -26,13 +26,14 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	description: `Inflict minor ${getEmoji("Fire")} damage and Poison on a single foe`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
+		let addedPoison = false;
 		let damage = 20;
 		if (isCrit) {
-			addModifier(target, { name: "Poison", stacks: 6 });
+			addedPoison = addModifier(target, { name: "Poison", stacks: 6 });
 		} else {
-			addModifier(target, { name: "Poison", stacks: 3 });
+			addedPoison = addModifier(target, { name: "Poison", stacks: 3 });
 		}
-		return `${target.getName(adventure.room.enemyIdMap)} is Poisoned. ${dealDamage([target], user, damage, false, user.element, adventure)}`;
+		return `${addedPoison ? `${target.getName(adventure.room.enemyIdMap)} is Poisoned. ` : ""}${dealDamage([target], user, damage, false, user.element, adventure)}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -47,9 +48,13 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		if (isCrit) {
 			stacks *= 3;
 		}
-		addModifier(user, { name: "Evade", stacks });
+		const addedEvade = addModifier(user, { name: "Evade", stacks });
 		user.addStagger("elementMatchAlly");
-		return "It's prepared to Evade.";
+		if (addedEvade) {
+			return "It's prepared to Evade.";
+		} else {
+			return "But nothing happened.";
+		}
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
@@ -60,13 +65,18 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	description: "Slow a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
+		let addedSlow = false;
 		if (isCrit) {
-			addModifier(target, { name: "Slow", stacks: 3 });
+			addedSlow = addModifier(target, { name: "Slow", stacks: 3 });
 			target.addStagger("elementMatchFoe");
 		} else {
-			addModifier(target, { name: "Slow", stacks: 2 });
+			addedSlow = addModifier(target, { name: "Slow", stacks: 2 });
 		}
-		return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		if (addedSlow) {
+			return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		} else {
+			return "But nothing happned.";
+		}
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
