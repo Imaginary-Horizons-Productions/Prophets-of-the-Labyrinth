@@ -33,14 +33,15 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	description: "Gain Block and Power Up",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
+		let addedPowerUp = false;
 		addBlock(user, 150);
 		if (isCrit) {
-			addModifier(user, { name: "Power Up", stacks: 50 });
+			addedPowerUp = addModifier(user, { name: "Power Up", stacks: 50 });
 			user.addStagger("elementMatchAlly");
 		} else {
-			addModifier(user, { name: "Power Up", stacks: 25 });
+			addedPowerUp = addModifier(user, { name: "Power Up", stacks: 25 });
 		}
-		return "It prepares to Block and is Powered Up.";
+		return `It prepares to Block${addedPowerUp ? ` and is Powered Up` : ""}.`;
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,

@@ -16,13 +16,18 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	description: "Slow a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
+		let addedSlow = false;
 		if (isCrit) {
-			addModifier(target, { name: "Slow", stacks: 3 });
+			addedSlow = addModifier(target, { name: "Slow", stacks: 3 });
 			target.addStagger("elementMatchFoe");
 		} else {
-			addModifier(target, { name: "Slow", stacks: 2 });
+			addedSlow = addModifier(target, { name: "Slow", stacks: 2 });
 		}
-		return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		if (addedSlow) {
+			return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		} else {
+			return "But nothing happened.";
+		}
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

@@ -28,12 +28,13 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		target.addStagger("elementMatchFoe");
+		let addedPoison = false;
 		if (isCrit) {
-			addModifier(target, { name: "Poison", stacks: 4 });
+			addedPoison = addModifier(target, { name: "Poison", stacks: 4 });
 		} else {
-			addModifier(target, { name: "Poison", stacks: 2 });
+			addedPoison = addModifier(target, { name: "Poison", stacks: 2 });
 		}
-		return dealDamage([target], user, 10, false, user.element, adventure);
+		return `${dealDamage([target], user, 10, false, user.element, adventure)}${addedPoison ? ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.` : ""}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -48,9 +49,13 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		if (isCrit) {
 			stacks *= 3;
 		}
-		addModifier(user, { name: "Evade", stacks });
+		const addedEvade = addModifier(user, { name: "Evade", stacks });
 		user.addStagger("elementMatchAlly");
-		return "It's prepared to Evade.";
+		if (addedEvade) {
+			return "It's prepared to Evade.";
+		} else {
+			return "But nothing happened.";
+		}
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
@@ -62,12 +67,13 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		target.addStagger("elementMatchFoe");
+		let addedParalysis = false;
 		if (isCrit) {
-			addModifier(target, { name: "Paralysis", stacks: 5 });
+			addedParalysis = addModifier(target, { name: "Paralysis", stacks: 5 });
 		} else {
-			addModifier(target, { name: "Paralysis", stacks: 3 });
+			addedParalysis = addModifier(target, { name: "Paralysis", stacks: 3 });
 		}
-		return dealDamage([target], user, 40, false, user.element, adventure);
+		return `${dealDamage([target], user, 40, false, user.element, adventure)}${addedParalysis ? ` ${target.getName(adventure.room.enemyIdMap)} is Paralyzed.` : ""}`;
 	},
 	selector: selectNone,
 	needsLivingTargets: false,

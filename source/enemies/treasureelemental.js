@@ -2,6 +2,7 @@ const { EnemyTemplate } = require("../classes");
 const { selectSelf, selectNone, selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, addBlock, dealDamage } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
+const { listifyEN } = require("../util/textUtil.js");
 
 const PATTERN = {
 	"Reinforcing Slam": "Burrow",
@@ -50,9 +51,13 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			if (isCrit) {
 				stacks *= 3;
 			}
-			addModifier(user, { name: "Evade", stacks });
+			const addedEvade = addModifier(user, { name: "Evade", stacks });
 			user.addStagger("elementMatchAlly");
-			return "It scatters among the other treasure in the room to Evade.";
+			if (addedEvade) {
+				return "It scatters among the other treasure in the room to Evade.";
+			} else {
+				return "But nothing happened.";
+			}
 		},
 		selector: selectSelf,
 		needsLivingTargets: false,
@@ -68,12 +73,26 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			if (isCrit) {
 				stacks *= 2;
 			}
-			addModifier(user, { name: "Curse of Midas", stacks: 1 });
+			const addedCurse = addModifier(user, { name: "Curse of Midas", stacks: 1 });
+			const poweredDownTargets = [];
 			targets.forEach(target => {
-				addModifier(target, { name: "Power Down", stacks });
+				const addedPowerDown = addModifier(target, { name: "Power Down", stacks });
+				if (addedPowerDown) {
+					poweredDownTargets.push(target.getName(adventure.room.enemyIdMap));
+				}
 				target.addStagger("elementMatchFoe");
 			});
-			return "Everyone is Powered Down, due to being distracted by a treasure that catches their eyes.";
+			if (poweredDownTargets.length > 1) {
+				return `${listifyEN(poweredDownTargets)} are Powered Down${addedCurse ? ", distracted by the treasure elemental sparkling brighter" : ""}.`;
+			} else if (poweredDownTargets.length === 1) {
+				return `${poweredDownTargets[0]} is Powered Down${addedCurse ? ", distracted by the treasure elemental sparkling brighter" : ""}.`;
+			} else {
+				if (addedCurse) {
+					return "The treasure elemental sparkles brighter.";
+				} else {
+					return "But nothing happened.";
+				}
+			}
 		},
 		selector: selectAllFoes,
 		needsLivingTargets: false,
@@ -88,10 +107,20 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			if (isCrit) {
 				stacks *= 2;
 			}
+			const slowedTargets = [];
 			targets.forEach(target => {
-				addModifier(target, { name: "Slow", stacks });
+				const addedSlow = addModifier(target, { name: "Slow", stacks });
+				if (addedSlow) {
+					slowedTargets.push(target.getName(adventure.room.enemyIdMap));
+				}
 			});
-			return "Everyone is Slowed trying to grab at some treasure.";
+			if (slowedTargets.length > 1) {
+				return `${listifyEN(slowedTargets)} are Slowed trying to grab at some treasure.`;
+			} else if (slowedTargets.length === 1) {
+				return `${slowedTargets[0]} is Slowed trying to grab at some treasure.`;
+			} else {
+				return "But nothing happened.";
+			}
 		},
 		selector: selectAllFoes,
 		needsLivingTargets: false,

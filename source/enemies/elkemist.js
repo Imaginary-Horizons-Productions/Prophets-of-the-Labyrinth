@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { isBuff } = require("../modifiers/_modifierDictionary.js");
-const { addBlock, dealDamage, addModifier } = require("../util/combatantUtil");
+const { addBlock, dealDamage, addModifier, removeModifier } = require("../util/combatantUtil");
 const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { isDebuff } = require("../modifiers/slow.js");
 const { listifyEN } = require("../util/textUtil.js");
@@ -87,11 +87,14 @@ module.exports = new EnemyTemplate("Elkemist",
 		for (const target of targets) {
 			for (let modifier in target.modifiers) {
 				if (isBuff(modifier)) {
-					addModifier(target, { name: "Fire Weakness", stacks: target.modifiers[modifier] });
-					delete target.modifiers[modifier];
-					progressGained += 5;
-					if (!affectedDelvers.has(target.name)) {
-						affectedDelvers.add(target.name);
+					const buffStackCount = target.modifiers[modifier];
+					const removedBuff = removeModifier(target, { name: modifier, stacks: "all" });
+					if (removedBuff) {
+						progressGained += 5;
+						const addedWeakness = addModifier(target, { name: "Fire Weakness", stacks: buffStackCount });
+						if (addedWeakness && !affectedDelvers.has(target.name)) {
+							affectedDelvers.add(target.name);
+						}
 					}
 				}
 			}
@@ -101,7 +104,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		if (affectedDelvers.size > 0) {
 			return `It cackles as it transmutes buffs on ${listifyEN([...affectedDelvers])} to Fire Weakness.`;
 		} else {
-			return "It's disappointed the party has no buffs to transmute.";
+			return "It's disappointed it wasn't able to transmute any buffs.";
 		}
 	},
 	selector: selectAllFoes,
