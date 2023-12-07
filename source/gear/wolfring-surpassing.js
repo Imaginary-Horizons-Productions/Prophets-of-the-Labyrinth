@@ -4,7 +4,7 @@ module.exports = new GearTemplate("Surpassing Wolf Ring",
 	"Gain @{poise} Poise, your attacks aren't subject to the damage cap",
 	"N/A",
 	"Trinket",
-	"Water",
+	"Untyped",
 	350,
 	(targets, user, isCrit, adventure) => ""
 ).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })

@@ -98,7 +98,6 @@ Archetypes: Chemist
 
 ### Common Variants
 - Hunter's
-- Poised
 - Slowing
 - Soothing
 - Sweeping
@@ -143,11 +142,14 @@ Weak to: (none)
 Archetypes:
 
 ### Common Variants
+- Accurate
+- Hearty
+- Poised
+- Swift
 
 ### Uncommon Variants
 
 ## Uncategorized Variants
-- Accurate
 - Awesome
 - Bouncing
 - Cleansing
@@ -169,7 +171,6 @@ Archetypes:
 - Sharpened
 - Shattering
 - Surpassing
-- Swift
 - Taunting
 - Thick
 - Tormenting

@@ -1,13 +1,13 @@
 const { GearTemplate } = require('../classes');
 
-module.exports = new GearTemplate("Wolf Ring",
-	"Gain @{poise} Poise",
+module.exports = new GearTemplate("Hearty Scarf",
+	"Gain @{speed} Speed and @{maxHP} Max HP",
 	"N/A",
 	"Trinket",
 	"Untyped",
-	200,
+	350,
 	(targets, user, isCrit, adventure) => ""
 ).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })
-	.setUpgrades("Surpassing Wolf Ring", "Swift Wolf Ring")
 	.setDurability(0)
-	.setPoise(2);
+	.setSpeed(2)
+	.setMaxHP(50);

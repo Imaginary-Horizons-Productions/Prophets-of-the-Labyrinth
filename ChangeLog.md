@@ -1,6 +1,6 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.13.0:
-- New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Surpassing Wolf Ring, Swift Wolf Ring, Harmful Poison Torrent, Ice Bolt
+- New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Surpassing Wolf Ring, Swift Wolf Ring, Harmful Poison Torrent, Ice Bolt, Scarf, Hearty Scarf, Chainmail
 - Reworked Thick Cloak to Accurate Cloak
 - Combined Barrier and Vigilance Charm
 - New Artifacts: Celestial Knight Insignia, Boat Parts

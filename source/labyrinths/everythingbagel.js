@@ -153,8 +153,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Midas Staff",
 				"Poison Torrent",
 				"Potion Kit",
-				"Sickle",
-				"Wolf Ring"
+				"Sickle"
 			],
 			Rare: [
 				"Accelerating Midas Staff",
@@ -166,9 +165,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Urgent Potion Kit",
 				"Hunter's Sickle",
 				"Sharpened Sickle",
-				"Toxic Sickle",
-				"Surpassing Wolf Ring",
-				"Swift Wolf Ring"
+				"Toxic Sickle"
 			]
 		},
 		Wind: {
@@ -204,8 +201,14 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Cursed: [
 			],
 			Common: [
+				"Chainmail",
+				"Scarf",
+				"Wolf Ring"
 			],
 			Rare: [
+				"Hearty Scarf",
+				"Surpassing Wolf Ring",
+				"Swift Wolf Ring"
 			]
 		}
 	},

@@ -130,6 +130,13 @@ Heal the user
 **Available on**
 - all Life Drains (Darkness)
 
+### Hearty
+Passively increases the user's Max HP
+
+**Available on**
+- all Chainmails (Untyped)
+- Scarf (Untyped)
+
 ### Hunter's
 Gain gold on kill
 
@@ -179,7 +186,7 @@ Regains durability when entering new rooms
 Passively increases user's poise
 
 **Available on**
-- all Wolf Rings (Water)
+- all Wolf Rings (Untyped)
 
 ### Prideful
 Increased damage and change element to Untyped
@@ -265,7 +272,7 @@ Add Stagger to target
 User isn't subject to damage cap
 
 **Available on**
-- Wolf Ring (Water)
+- Wolf Ring (Untyped)
 
 ### Sweeping
 Targets whole team
@@ -282,7 +289,8 @@ Targets whole team
 Passively increases user's speed
 
 **Available on**
-- Wolf Ring (Water)
+- all Scarves (Untyped)
+- Wolf Ring (Untyped)
 
 ### Taunting
 Change target's move's target to user
