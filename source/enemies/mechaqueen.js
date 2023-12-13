@@ -71,9 +71,9 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	effect: ([target], user, isCrit, adventure) => {
 		addBlock(user, isCrit ? 200 : 100);
 		if (target) {
-			const targetMove = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === parseInt(target.title));
+			const targetMove = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === parseInt(target.id));
 			targetMove.name = "Self-Destruct";
-			targetMove.targets = selectAllFoes(adventure, target);
+			targetMove.targets = selectAllFoes(target, adventure);
 			return "She prepares to Block and employs desperate measures!";
 		}
 		return "She prepares to Block."

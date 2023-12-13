@@ -153,6 +153,7 @@ function nextRoom(roomType, thread) {
 				}
 			}
 			const candidateTag = `${tagPool[adventure.generateRandomNumber(tagPool.length, "general")]}${SAFE_DELIMITER}${adventure.depth}`;
+			console.log(candidateTag);
 			if (!(candidateTag in adventure.roomCandidates)) {
 				adventure.roomCandidates[candidateTag] = { voterIds: [], isHidden: adventure.generateRandomNumber(max, "general") < max * rushingChance };
 				if (Object.keys(adventure.roomCandidates).length === MAX_MESSAGE_ACTION_ROWS) {
@@ -257,6 +258,7 @@ function endRoom(roomType, thread) {
 			}
 		}
 	}
+	setAdventure(adventure);
 	nextRoom(roomType, thread);
 }
 
@@ -298,7 +300,7 @@ function newRound(adventure, thread, lastRoundText) {
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
 
 				// Roll Critical Hit
-				const baseCritChance = 1 + (combatant.getCritRate() / 100);
+				const baseCritChance = combatant.getCritRate() / 100;
 				const max = RN_TABLE_BASE ** 2;
 				let threshold;
 				if (combatant.team === "delver") {
@@ -446,7 +448,7 @@ function resolveMove(move, adventure) {
 				}
 
 				const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
-				moveText += `. ${resultText}${deadTargetText}${decrementDurability(move.name, user, adventure)}`;
+				moveText += `. ${resultText}${deadTargetText}${move.type === "gear" && move.userReference.team === "delver" ? decrementDurability(move.name, user, adventure) : ""}`;
 			} else if (targets.length === 1) {
 				moveText += `, but ${targets[0].getName(adventure.room.enemyIdMap)} was already dead!`;
 			} else {
@@ -455,7 +457,7 @@ function resolveMove(move, adventure) {
 		} else {
 			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
 			const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
-			moveText += `. ${resultText}${decrementDurability(move.name, user, adventure)}`;
+			moveText += `. ${resultText}${move.type === "gear" && move.userReference.team === "delver" ? decrementDurability(move.name, user, adventure) : ""}`;
 		}
 	} else {
 		moveText = `💫 ${moveText} is Stunned!`;

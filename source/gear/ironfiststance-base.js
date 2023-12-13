@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Iron Fist Stance",
 		removeModifier(user, { name: "Floating Mist Stance", stacks: "all", force: true });
 		const ironFistStanceAdded = addModifier(user, ironFistStance);
 		if (ironFistStanceAdded) {
-			return `${user.getName(adventure.room.enemyIdMap)} enters Iron Fist Stance.${frailedTargets.length > 0 ? `${listifyEN(frailedTargets)} became Frail.` : ""}`;
+			return `${user.getName(adventure.room.enemyIdMap)} enters Iron Fist Stance.${frailedTargets.length > 0 ? ` ${listifyEN(frailedTargets)} became Frail.` : ""}`;
 		} else if (frailedTargets.length > 0) {
 			return `${listifyEN(frailedTargets)} became Frail.`;
 		} else {
