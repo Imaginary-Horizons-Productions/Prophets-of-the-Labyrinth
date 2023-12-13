@@ -153,7 +153,6 @@ function nextRoom(roomType, thread) {
 				}
 			}
 			const candidateTag = `${tagPool[adventure.generateRandomNumber(tagPool.length, "general")]}${SAFE_DELIMITER}${adventure.depth}`;
-			console.log(candidateTag);
 			if (!(candidateTag in adventure.roomCandidates)) {
 				adventure.roomCandidates[candidateTag] = { voterIds: [], isHidden: adventure.generateRandomNumber(max, "general") < max * rushingChance };
 				if (Object.keys(adventure.roomCandidates).length === MAX_MESSAGE_ACTION_ROWS) {
