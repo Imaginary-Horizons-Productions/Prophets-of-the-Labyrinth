@@ -4,7 +4,7 @@ const { elementsList, getResistances } = require('../util/elementUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sabotage Kit",
-	"Afflict a foe with @{mod0Stacks} @{mod0} and ${mod1Stacks} stacks of a random weakness",
+	"Afflict a foe with @{mod0Stacks} @{mod0} and @{mod1Stacks} stacks of a random weakness",
 	"Slow and Weakness +@{bonus}",
 	"Weapon",
 	"Earth",
