@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, addModifier } = require("../util/combatantUtil.js");
-const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
+const { selectRandomFoe, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 
 const PATTERN = {
@@ -75,8 +75,8 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		}
 		return `${dealDamage([target], user, 40, false, user.element, adventure)}${addedParalysis ? ` ${target.getName(adventure.room.enemyIdMap)} is Paralyzed.` : ""}`;
 	},
-	selector: selectNone,
-	needsLivingTargets: false,
+	selector: selectRandomFoe,
+	needsLivingTargets: true,
 	next: soldierPattern
 }).addAction({
 	name: "Self-Destruct",
