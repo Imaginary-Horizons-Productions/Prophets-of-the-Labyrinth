@@ -25,7 +25,7 @@ module.exports = new RoomTemplate("Overpriced Merchant",
 				/** @type {number} */
 				const maxDurability = getGearProperty(name, "maxDurability");
 				const option = {
-					label: `${cost}g: ${name} (${maxDurability} uses)`,
+					label: `${cost}g: ${name} (${maxDurability > 0 ? `${maxDurability}  uses` : "passive"})`,
 					description: trimForSelectOptionDescription(buildGearDescription(name, false)),
 					value: `${name}${SAFE_DELIMITER}${i}`
 				};
