@@ -24,7 +24,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		if (durabilityDifference > 0) {
 			user.gear[index].durability += durabilityDifference;
 		}
-		user.gear.splice(index, 1, buildGearRecord(upgradeName, Math.min(sidegradeDurability, user.gear[index].durability)));
+		user.gear.splice(index, 1, buildGearRecord(upgradeName, Math.min(upgradeDurability, user.gear[index].durability)));
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 			const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);
 			let components = roomMessage.components;
