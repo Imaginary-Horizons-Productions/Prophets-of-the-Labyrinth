@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Life Drain",
 	200,
 	([target], user, isCrit, adventure) => {
 		const { element, damage, healing, critMultiplier } = module.exports;
-		const pendingHealing = healing;
+		let pendingHealing = healing;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
