@@ -15,11 +15,12 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 		}
 		const frailedTargets = [];
 		if (isCrit) {
-			adventure.room.enemies.forEach(enemy => {
-				if (enemy.hp > 0) {
-					const addedFrail = addModifier(enemy, frail);
+			const foeTeam = user.team === "delver" ? adventure.room.enemies : adventure.delvers;
+			foeTeam.forEach(foe => {
+				if (foe.hp > 0) {
+					const addedFrail = addModifier(foe, frail);
 					if (addedFrail) {
-						frailedTargets.push(enemy.getName(adventure.room.enemyIdMap));
+						frailedTargets.push(foe.getName(adventure.room.enemyIdMap));
 					}
 				}
 			})
