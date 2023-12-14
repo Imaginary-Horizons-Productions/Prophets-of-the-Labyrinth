@@ -7,13 +7,9 @@ const { getCompany } = require('../orcustrators/companyOrcustrator');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 
 const mainId = "player-stats";
-const options = [
-	{ type: "User", name: "user", description: "The user's mention (default: yourself)", required: false }
-];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Get the overall PotL stats for a user", null, false, false, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Get the overall PotL stats for a user", null, false, false, 3000,
 	(interaction) => {
-		const user = interaction.options.getUser(options[0].name) || interaction.user;
+		const user = interaction.options.getUser("user") || interaction.user;
 		const { guildId } = interaction;
 		let availability = getCompany(guildId)?.adventuring.has(user.id) ? "❌ Out on adventure" : "🟢 Available for adventure";
 		if (isSponsor(user.id)) {
@@ -43,4 +39,6 @@ module.exports = new CommandWrapper(mainId, "Get the overall PotL stats for a us
 			ephemeral: true
 		});
 	}
+).setOptions(
+	{ type: "User", name: "user", description: "The user's mention (default: yourself)", required: false }
 );

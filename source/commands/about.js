@@ -3,9 +3,7 @@ const { GAME_VERSION } = require('../constants');
 const { embedTemplate } = require('../util/embedUtil');
 
 const mainId = "about";
-const options = [];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Get info and contributors to PotL", null, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Get info and contributors to PotL", null, false, true, 3000,
 	(interaction) => {
 		interaction.reply({
 			embeds: [

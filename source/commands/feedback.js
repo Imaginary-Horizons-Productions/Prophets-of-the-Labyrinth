@@ -3,21 +3,7 @@ const { CommandWrapper } = require('../classes');
 const { MAX_EMBED_TITLE_LENGTH, testGuildId, feedbackChannelId } = require('../constants');
 
 const mainId = "feedback";
-const options = [
-	{
-		type: "String",
-		name: "feedback-type",
-		description: "the type of feedback you'd like to provide",
-		required: true,
-		choices: [
-			{ name: "Bug Report", value: "bug" },
-			{ name: "Feature Request", value: "feature" },
-			{ name: "Balance Suggestion", value: "balance" }
-		]
-	}
-];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an invite to the test server", PermissionFlagsBits.SendMessages, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an invite to the test server", PermissionFlagsBits.SendMessages, false, true, 3000,
 	/** Open the modal associated with the feedback type to prompt more specific information */
 	(interaction) => {
 		if (!testGuildId || !feedbackChannelId) {
@@ -220,5 +206,17 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 				}).catch(console.error);
 				break;
 		}
+	}
+).setOptions(
+	{
+		type: "String",
+		name: "feedback-type",
+		description: "the type of feedback you'd like to provide",
+		required: true,
+		choices: [
+			{ name: "Bug Report", value: "bug" },
+			{ name: "Feature Request", value: "feature" },
+			{ name: "Balance Suggestion", value: "balance" }
+		]
 	}
 );

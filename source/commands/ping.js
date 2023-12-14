@@ -3,9 +3,7 @@ const { CommandWrapper, Adventure } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 
 const mainId = "ping";
-const options = [];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Remind delvers to input their vote or move", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Remind delvers to input their vote or move", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000,
 	/** Remind delvers to input their vote or move */
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);

@@ -4,9 +4,7 @@ const { getCompany } = require('../orcustrators/companyOrcustrator');
 const { resetScores } = require('../orcustrators/playerOrcustrator');
 
 const mainId = "reset";
-const options = [];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Reset player scores for this server", PermissionFlagsBits.ManageRoles, false, false, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Reset player scores for this server", PermissionFlagsBits.ManageRoles, false, false, 3000,
 	(interaction) => {
 		const company = getCompany(interaction.guildId);
 		resetScores(company.userIds, interaction.guildId);

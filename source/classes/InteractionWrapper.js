@@ -64,11 +64,9 @@ class CommandWrapper extends InteractionWrapper {
 	 * @param {boolean} isPremiumCommand
 	 * @param {boolean} allowInDMsInput
 	 * @param {number} cooldownInMS
-	 * @param {{type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: {name: string, value: string}[], choices?: { name: string, value }[]}[]} optionsInput
-	 * @param {{name: string, description: string, optionsInput?: {type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: {name: string, value: string}[], choices?: { name: string, value }[]}}[]} subcommandsInput
 	 * @param {(interaction: CommandInteraction) => void} executeFunction
 	 */
-	constructor(mainIdInput, descriptionInput, defaultMemberPermission, isPremiumCommand, allowInDMsInput, cooldownInMS, optionsInput, subcommandsInput, executeFunction) {
+	constructor(mainIdInput, descriptionInput, defaultMemberPermission, isPremiumCommand, allowInDMsInput, cooldownInMS, executeFunction) {
 		super(mainIdInput, cooldownInMS, executeFunction);
 		this.premiumCommand = isPremiumCommand;
 		this.autocomplete = {};
@@ -79,6 +77,10 @@ class CommandWrapper extends InteractionWrapper {
 		if (defaultMemberPermission) {
 			this.builder.setDefaultMemberPermissions(defaultMemberPermission);
 		}
+	}
+
+	/** @param {...{type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: {name: string, value: string}[], choices?: { name: string, value }[]}} optionsInput */
+	setOptions(...optionsInput) {
 		optionsInput.forEach(option => {
 			this.builder[`add${option.type}Option`](built => {
 				built.setName(option.name).setDescription(option.description).setRequired(option.required);
@@ -94,6 +96,11 @@ class CommandWrapper extends InteractionWrapper {
 				return built;
 			})
 		})
+		return this;
+	}
+
+	/** @param {{name: string, description: string, optionsInput?: {type: "Attachment" | "Boolean" | "Channel" | "Integer" | "Mentionable" | "Number" | "Role" | "String" | "User", name: string, description: string, required: boolean, autocomplete?: {name: string, value: string}[], choices?: { name: string, value }[]}}[]} subcommandsInput */
+	setSubcommands(subcommandsInput) {
 		subcommandsInput.forEach(subcommand => {
 			this.builder.addSubcommand(built => {
 				built.setName(subcommand.name).setDescription(subcommand.description);
@@ -117,6 +124,7 @@ class CommandWrapper extends InteractionWrapper {
 				return built;
 			})
 		})
+		return this;
 	}
 };
 

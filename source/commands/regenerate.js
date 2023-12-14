@@ -5,9 +5,7 @@ const { renderRoom } = require('../util/embedUtil');
 const { clearComponents } = require('../util/messageComponentUtil');
 
 const mainId = "regenerate";
-const options = [];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Regenerate the current room message for an adventure", PermissionFlagsBits.SendMessagesInThreads, false, false, 30000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Regenerate the current room message for an adventure", PermissionFlagsBits.SendMessagesInThreads, false, false, 30000,
 	/** Call renderRoom to regenerate room embed and components */
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);
