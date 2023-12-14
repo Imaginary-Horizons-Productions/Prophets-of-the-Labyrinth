@@ -20,7 +20,7 @@ module.exports = new RoomTemplate("Tanning Workshop",
 					.setEmoji("1️⃣")
 					.setStyle(ButtonStyle.Primary),
 				new ButtonBuilder().setCustomId("gearcapup")
-					.setLabel("Increase the party's Gear Capacity")
+					.setLabel("Increase party Gear Capacity")
 					.setEmoji("1️⃣")
 					.setStyle(ButtonStyle.Success)
 			)
