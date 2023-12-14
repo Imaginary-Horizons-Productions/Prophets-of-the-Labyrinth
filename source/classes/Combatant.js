@@ -40,29 +40,11 @@ class Combatant {
 	/** @returns {number} */
 	getPower() { }
 
-	/** @returns {number} */
-	getSpeed() {
-		let gearSpeed = 0;
-		if ("gear" in this) {
-			gearSpeed = this.gear.reduce((totalGearSpeed, gear) => {
-				if (parseInt(gear.speed)) {
-					return totalGearSpeed + gear.speed;
-				} else {
-					return totalGearSpeed;
-				}
-			}, 0);
-		}
-		let totalSpeed = this.speed + this.roundSpeed + gearSpeed;
-		if ("Slow" in this.modifiers) {
-			const slowStacks = this.getModifierStacks("Slow");
-			totalSpeed -= slowStacks * 5;
-		}
-		if ("Quicken" in this.modifiers) {
-			const quickenStacks = this.getModifierStacks("Quicken");
-			totalSpeed += quickenStacks * 5;
-		}
-		return Math.ceil(totalSpeed);
-	}
+	/**
+	 * @param {boolean} includeRoundSpeed
+	 * @returns {number}
+	 */
+	getSpeed(includeRoundSpeed) { }
 
 	/** @returns {number} */
 	getCritRate() { }
@@ -136,6 +118,30 @@ class Delver extends Combatant {
 				return totalPower;
 			}
 		}, 0);
+	}
+
+	/** @param {boolean} includeRoundSpeed */
+	getSpeed(includeRoundSpeed) {
+		const gearSpeed = this.gear.reduce((totalGearSpeed, gear) => {
+			if (parseInt(gear.speed)) {
+				return totalGearSpeed + gear.speed;
+			} else {
+				return totalGearSpeed;
+			}
+		}, 0);
+		let totalSpeed = this.speed + gearSpeed;
+		if (includeRoundSpeed) {
+			totalSpeed += this.roundSpeed;
+		}
+		if ("Slow" in this.modifiers) {
+			const slowStacks = this.getModifierStacks("Slow");
+			totalSpeed -= slowStacks * 5;
+		}
+		if ("Quicken" in this.modifiers) {
+			const quickenStacks = this.getModifierStacks("Quicken");
+			totalSpeed += quickenStacks * 5;
+		}
+		return Math.ceil(totalSpeed);
 	}
 
 	getCritRate() {

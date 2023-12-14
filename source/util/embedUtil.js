@@ -316,14 +316,15 @@ function gearToEmbedField(gearName, durability, holder) {
 /** Generates an object to Discord.js's specification that corresponds with a delver's in-adventure stats
  * @param {Delver} delver
  * @param {number} gearCapacity
+ * @param {boolean} roomHasEnemies
  * @returns {MessagePayload}
  */
-function inspectSelfPayload(delver, gearCapacity) {
+function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 	let description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP`;
 	if (delver.block > 0) {
 		description += ` ${delver.block} Block`;
 	}
-	description += `\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed()}\nCrit Rate: ${delver.getCritRate()}%\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
+	description += `\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.getName()} the ${delver.archetype}`)

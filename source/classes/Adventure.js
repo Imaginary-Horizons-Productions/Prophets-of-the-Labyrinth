@@ -375,6 +375,23 @@ class Enemy extends Combatant {
 		return this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down");
 	}
 
+	/** @param {boolean} includeRoundSpeed */
+	getSpeed(includeRoundSpeed) {
+		let totalSpeed = this.speed;
+		if (includeRoundSpeed) {
+			totalSpeed += this.roundSpeed;
+		}
+		if ("Slow" in this.modifiers) {
+			const slowStacks = this.getModifierStacks("Slow");
+			totalSpeed -= slowStacks * 5;
+		}
+		if ("Quicken" in this.modifiers) {
+			const quickenStacks = this.getModifierStacks("Quicken");
+			totalSpeed += quickenStacks * 5;
+		}
+		return Math.ceil(totalSpeed);
+	}
+
 	/** @returns {number} */
 	getCritRate() {
 		return this.critRate;

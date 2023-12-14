@@ -9,10 +9,10 @@ module.exports = new ArchetypeTemplate("Hemomancer",
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
 			.concat(adventure.delvers)
 			.sort((first, second) => {
-				return second.getSpeed() - first.getSpeed();
+				return second.getSpeed(true) - first.getSpeed(true);
 			});
 		for (const combatant of activeCombatants) {
-			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)}`, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\nSpeed: ${combatant.getSpeed()}` });
+			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)}`, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\nSpeed: ${combatant.getSpeed(true)}` });
 		}
 		embed.setDescription("Combatants may act out of order if they have priority or they are tied in speed.");
 		return embed.setTitle(`Hemomancer Predictions for Round ${adventure.room.round + 1}`);

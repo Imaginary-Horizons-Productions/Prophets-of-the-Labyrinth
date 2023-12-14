@@ -12,7 +12,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;
 		}
-		interaction.reply(inspectSelfPayload(delver, adventure.getGearCapacity()))
+		interaction.reply(inspectSelfPayload(delver, adventure.getGearCapacity(), adventure.room.enemies !== null))
 			.catch(console.error);
 	}
 );
