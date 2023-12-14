@@ -607,7 +607,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 	}
 
 	if (adventure.room.enemies.every(enemy => enemy.hp === 0)) {
-		if (adventure.depth === getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
+		if (adventure.depth >= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
 			return { payload: completeAdventure(adventure, thread, "success", lastRoundText), type: "adventureSuccess" };
 		}
 

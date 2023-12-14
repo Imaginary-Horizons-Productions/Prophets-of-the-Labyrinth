@@ -2,7 +2,7 @@ const { LabyrinthTemplate } = require("../classes");
 
 module.exports = new LabyrinthTemplate("Everything Bagel",
 	"Untyped",
-	10,
+	15,
 	[15],
 	{
 		Darkness: [],
