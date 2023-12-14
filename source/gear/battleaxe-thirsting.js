@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [exposed], damage, critMultiplier, healing } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}

@@ -9,6 +9,7 @@ module.exports = new GearTemplate("Toxic Scythe",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [poison], damage, bonus: hpThreshold, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		let pendingHPThreshold = hpThreshold;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -18,7 +19,7 @@ module.exports = new GearTemplate("Toxic Scythe",
 		}
 		if (target.hp > pendingHPThreshold) {
 			const addedPoison = addModifier(target, poison);
-			return `${dealDamage([target], user, damage, false, element, adventure)}${addedPoison ? ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.` : ""}`;
+			return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedPoison ? ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.` : ""}`;
 		} else {
 			target.hp = 0;
 			return `${target.getName(adventure.room.enemyIdMap)} meets the reaper.`;

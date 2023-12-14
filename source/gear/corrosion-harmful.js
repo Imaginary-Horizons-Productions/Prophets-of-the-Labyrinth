@@ -9,6 +9,7 @@ module.exports = new GearTemplate("Harmful Corrosion",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [powerDown], stagger, damage } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
@@ -17,9 +18,9 @@ module.exports = new GearTemplate("Harmful Corrosion",
 		}
 		const addedPowerDown = addModifier(target, powerDown);
 		if (addedPowerDown) {
-			return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Powered Down${isCrit ? " and Staggered" : ""}.`;
+			return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Powered Down${isCrit ? " and Staggered" : ""}.`;
 		} else {
-			return `${dealDamage([target], user, damage, false, element, adventure)}${isCrit ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
+			return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${isCrit ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
 		}
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })

@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Hunter's Bow",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, damage, bonus: bonusBounty, critMultiplier } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}

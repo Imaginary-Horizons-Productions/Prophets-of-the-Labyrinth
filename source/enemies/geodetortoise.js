@@ -17,7 +17,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	description: `Deals ${getEmoji("Earth")} damage to a single foe`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
-		let damage = 50;
+		let damage = user.getPower() + 50;
 		if (isCrit) {
 			damage *= 2;
 		}

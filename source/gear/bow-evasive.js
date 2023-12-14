@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Evasive Bow",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [evade], damage, critMultiplier } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}

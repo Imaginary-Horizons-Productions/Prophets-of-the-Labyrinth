@@ -10,6 +10,7 @@ module.exports = new GearTemplate("Sweeping Spear",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, stagger, damage } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		const critTargets = [];
 		targets.map(target => {
 			if (user.element === element) {
@@ -21,11 +22,11 @@ module.exports = new GearTemplate("Sweeping Spear",
 			}
 		})
 		if (critTargets.length > 1) {
-			return `${dealDamage(targets, user, damage, false, element, adventure)} ${listifyEN(critTargets)} were Staggered.`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(critTargets)} were Staggered.`;
 		} else if (critTargets.length === 1) {
-			return `${dealDamage(targets, user, damage, false, element, adventure)} ${critTargets[0]} was Staggered.`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${critTargets[0]} was Staggered.`;
 		} else {
-			return dealDamage(targets, user, damage, false, element, adventure);
+			return dealDamage(targets, user, pendingDamage, false, element, adventure);
 		}
 	}
 ).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })

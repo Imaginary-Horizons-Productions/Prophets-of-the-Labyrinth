@@ -28,6 +28,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	description: `Inflict minor ${getEmoji("Darkness")} damage and Poison on a single foe`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
+		let damage = user.getPower() + 10;
 		target.addStagger("elementMatchFoe");
 		let addedPoison = false;
 		if (isCrit) {
@@ -35,7 +36,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		} else {
 			addedPoison = addModifier(target, { name: "Poison", stacks: 2 });
 		}
-		return `${dealDamage([target], user, 10, false, user.element, adventure)}${addedPoison ? ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.` : ""}`;
+		return `${dealDamage([target], user, damage, false, user.element, adventure)}${addedPoison ? ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.` : ""}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -79,7 +80,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	description: `Sacrifice self to deal large ${getEmoji("Darkness")} damage to all foes`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		let damage = 125;
+		let damage = user.getPower() + 125;
 		if (isCrit) {
 			damage *= 2;
 		}

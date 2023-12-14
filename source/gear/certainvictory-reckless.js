@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [powerUp, exposed], damage, critMultiplier } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}

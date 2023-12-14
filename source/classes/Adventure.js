@@ -315,6 +315,7 @@ class Enemy extends Combatant {
 	/** This read-only data class defines an enemy players can fight
 	 * @param {string} nameInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
+	 * @param {number} powerInput
 	 * @param {number} speedInput
 	 * @param {number} poiseExpression
 	 * @param {number} critRateInput
@@ -322,11 +323,12 @@ class Enemy extends Combatant {
 	 * @param {{[modifierName]: number}} startingModifiersShallowCopy
 	 * @param {number} delverCount
 	 */
-	constructor(nameInput, elementEnum, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, delverCount) {
+	constructor(nameInput, elementEnum, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, delverCount) {
 		super(nameInput, "enemy");
 		this.archetype = nameInput;
 		/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
 		this.element = elementEnum;
+		this.power = powerInput;
 		this.speed = speedInput;
 		if (poiseExpression && delverCount) { // allows parameterless class casting on load without crashing
 			this.poise = parseExpression(poiseExpression, delverCount);
@@ -366,6 +368,11 @@ class Enemy extends Combatant {
 	/** @returns {number} */
 	getMaxHP() {
 		return this.maxHP;
+	}
+
+	/** @returns {number} */
+	getPower() {
+		return this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down");
 	}
 
 	/** @returns {number} */

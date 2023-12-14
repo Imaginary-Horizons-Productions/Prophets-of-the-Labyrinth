@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Toxic Firecracker",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [poison], damage, critMultiplier } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}

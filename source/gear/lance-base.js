@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Lance",
 	200,
 	([target], user, isCrit, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}

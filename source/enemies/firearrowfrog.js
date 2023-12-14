@@ -27,7 +27,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		let addedPoison = false;
-		let damage = 20;
+		let damage = user.getPower() + 20;
 		if (isCrit) {
 			addedPoison = addModifier(target, { name: "Poison", stacks: 6 });
 		} else {

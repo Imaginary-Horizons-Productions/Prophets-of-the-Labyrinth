@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Reactive Life Drain",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, damage, bonus, healing, critMultiplier } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		let pendingHealing = healing;
 		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
 		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === adventure.getCombatantIndex(target));

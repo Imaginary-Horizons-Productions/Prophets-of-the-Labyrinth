@@ -11,6 +11,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [slow], damage, bonus } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		const debuffs = [];
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
@@ -22,9 +23,9 @@ module.exports = new GearTemplate("Tormenting Censer",
 			target.addStagger("elementMatchFoe");
 		}
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
-			damage += bonus;
+			pendingDamage += bonus;
 		}
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
 			const addedSlow = addModifier(target, slow);
 			if (addedSlow) {

@@ -10,13 +10,14 @@ module.exports = new GearTemplate("Censer",
 	200,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [slow], damage, bonus } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
-			damage += bonus;
+			pendingDamage += bonus;
 		}
-		const damageText = dealDamage([target], user, damage, false, element, adventure);
+		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
 			const addedSlow = addModifier(target, slow);
 			return `${damageText}${addedSlow ? ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.` : ""}`;

@@ -9,6 +9,7 @@ module.exports = new GearTemplate("Lethal Scythe",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, damage, bonus: hpThreshold, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		let pendingHPThreshold = hpThreshold;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -17,7 +18,7 @@ module.exports = new GearTemplate("Lethal Scythe",
 			pendingHPThreshold *= critMultiplier;
 		}
 		if (target.hp > pendingHPThreshold) {
-			return dealDamage([target], user, damage, false, element, adventure);
+			return dealDamage([target], user, pendingDamage, false, element, adventure);
 		} else {
 			target.hp = 0;
 			return `${target.getName(adventure.room.enemyIdMap)} meets the reaper.`;

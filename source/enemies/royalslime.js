@@ -42,7 +42,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	description: "Deal damage of the Royal Slime's element to all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		let damage = 75;
+		let damage = user.getPower() + 75;
 		if (isCrit) {
 			damage *= 2;
 		}
@@ -60,7 +60,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	description: "Deal damage of the opposite element of the Royal Slime to all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		let damage = 75;
+		let damage = user.getPower() + 75;
 		if (isCrit) {
 			damage *= 2;
 		}

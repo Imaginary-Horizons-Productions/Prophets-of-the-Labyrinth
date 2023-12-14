@@ -9,7 +9,7 @@ const anyTagRegex = generateRuntimeTemplateStringRegExp(null);
  * @param {Adventure} adventure
  */
 function spawnEnemy(enemyTemplate, adventure) {
-	const enemy = new Enemy(enemyTemplate.name, enemyTemplate.element, enemyTemplate.speed, enemyTemplate.poiseExpression, enemyTemplate.critRate, enemyTemplate.firstAction, { ...enemyTemplate.startingModifiers }, adventure.delvers.length);
+	const enemy = new Enemy(enemyTemplate.name, enemyTemplate.element, enemyTemplate.power, enemyTemplate.speed, enemyTemplate.poiseExpression, enemyTemplate.critRate, enemyTemplate.firstAction, { ...enemyTemplate.startingModifiers }, adventure.delvers.length);
 	let hpPercent = 85 + 15 * adventure.delvers.length;
 	if (enemyTemplate.shouldRandomizeHP) {
 		hpPercent += 10 * (2 - adventure.generateRandomNumber(5, "battle"));

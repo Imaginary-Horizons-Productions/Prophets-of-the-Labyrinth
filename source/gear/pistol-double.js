@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Double Pistol",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { damage, critMultiplier, element, modifiers: [powerUp] } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}

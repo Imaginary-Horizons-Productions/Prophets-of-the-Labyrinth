@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	description: "Deal the Slime's element damage to a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
-		let damage = 25;
+		let damage = user.getPower() + 25;
 		if (isCrit) {
 			damage *= 2;
 		}

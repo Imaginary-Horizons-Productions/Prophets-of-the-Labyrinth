@@ -9,6 +9,7 @@ module.exports = new GearTemplate("Life Drain",
 	200,
 	([target], user, isCrit, adventure) => {
 		const { element, damage, healing, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		let pendingHealing = healing;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
@@ -16,7 +17,7 @@ module.exports = new GearTemplate("Life Drain",
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, pendingHealing, adventure)}`;
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${gainHealth(user, pendingHealing, adventure)}`;
 	}
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Flanking Life Drain", "Reactive Life Drain", "Urgent Life Drain")

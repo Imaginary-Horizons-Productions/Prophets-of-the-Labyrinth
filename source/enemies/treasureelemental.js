@@ -30,13 +30,14 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		description: `Gain Block and deal ${getEmoji("Earth")} damage to a single foe`,
 		priority: 0,
 		effect: ([target], user, isCrit, adventure) => {
+			let damage = user.getPower() + 100;
 			let block = 100;
 			if (isCrit) {
 				block *= 2;
 			}
 			addBlock(user, block);
 			user.addStagger("elementMatchAlly");
-			return `It prepares to Block and ${dealDamage([target], user, 100, false, user.element, adventure)}`;
+			return `It prepares to Block and ${dealDamage([target], user, damage, false, user.element, adventure)}`;
 		},
 		selector: selectRandomFoe,
 		needsLivingTargets: false,

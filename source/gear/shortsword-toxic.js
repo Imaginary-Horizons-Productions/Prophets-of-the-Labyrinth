@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Toxic Shortsword",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [exposed, poison], damage, critMultiplier } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}

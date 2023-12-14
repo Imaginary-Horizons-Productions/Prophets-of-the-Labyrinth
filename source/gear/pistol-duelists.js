@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Duelist's Pistol",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { damage, bonus, critMultiplier, element, modifiers: [powerUp] } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		const targetIndex = adventure.getCombatantIndex(target);
 		const userIndex = adventure.getCombatantIndex(user);
 		// Duelist's check

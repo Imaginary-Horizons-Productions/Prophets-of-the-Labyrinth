@@ -9,10 +9,11 @@ module.exports = new GearTemplate("Spear",
 	200,
 	([target], user, isCrit, adventure) => {
 		const { element, stagger, damage } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
-		let resultText = dealDamage([target], user, damage, false, element, adventure);
+		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit) {
 			target.addStagger(stagger);
 			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;

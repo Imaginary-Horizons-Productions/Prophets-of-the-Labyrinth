@@ -10,6 +10,7 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [poison], critMultiplier, damage } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		let pendingPoison = poison;
 		if (isCrit) {
 			pendingPoison.stacks *= critMultiplier;
@@ -25,11 +26,11 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 			}
 		})
 		if (poisonedTargets.length > 1) {
-			return `${dealDamage(targets, user, damage, false, element, adventure)} ${listifyEN(poisonedTargets)} were Poisoned.`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(poisonedTargets)} were Poisoned.`;
 		} else if (poisonedTargets === 1) {
-			return `${dealDamage(targets, user, damage, false, element, adventure)} ${poisonedTargets[0]} was Poisoned.`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${poisonedTargets[0]} was Poisoned.`;
 		} else {
-			return dealDamage(targets, user, damage, false, element, adventure);
+			return dealDamage(targets, user, pendingDamage, false, element, adventure);
 		}
 	}
 ).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })

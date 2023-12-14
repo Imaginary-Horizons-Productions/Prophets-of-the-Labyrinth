@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Double Firecracker",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;
-		let pendingDamage = damage;
+		let pendingDamage = user.getPower() + damage;
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}

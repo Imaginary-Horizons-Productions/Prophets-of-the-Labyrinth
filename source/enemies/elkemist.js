@@ -47,7 +47,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from Power Up) and gain a small amount of Progress`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
-		let damage = 75 + user.getModifierStacks("Power Up");
+		let damage = user.getPower() + 75 + user.getModifierStacks("Power Up");
 		if (isCrit) {
 			damage *= 2;
 		}
@@ -64,7 +64,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	description: `Deals ${getEmoji("Fire")} damage to all foes`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		let damage = 75;
+		let damage = user.getPower() + 75;
 		if (isCrit) {
 			damage *= 2;
 		}
