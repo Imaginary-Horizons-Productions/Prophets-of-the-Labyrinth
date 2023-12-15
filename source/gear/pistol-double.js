@@ -19,12 +19,13 @@ module.exports = new GearTemplate("Double Pistol",
 		if (getCombatantWeaknesses(target).includes(element)) {
 			const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 			const poweredUpAllies = [];
-			const ally = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
+			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies;
+			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
 			const poweredUpFirstAlly = addModifier(ally, powerUp);
 			if (poweredUpFirstAlly) {
 				poweredUpAllies.push(ally.getName(adventure.room.enemyIdMap));
 			}
-			const secondAlly = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
+			const secondAlly = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
 			const poweredUpSecondAlly = addModifier(secondAlly, powerUp);
 			if (poweredUpSecondAlly) {
 				poweredUpAllies.push(secondAlly.getName(adventure.room.enemyIdMap));

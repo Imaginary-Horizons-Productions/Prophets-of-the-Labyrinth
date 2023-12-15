@@ -18,7 +18,8 @@ module.exports = new GearTemplate("Pistol",
 		}
 		if (getCombatantWeaknesses(target).includes(element)) {
 			const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
-			const ally = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
+			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies;
+			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
 			const addedPowerUp = addModifier(ally, powerUp);
 			return `${damageText}${addedPowerUp ? ` ${ally.getName(adventure.room.enemyIdMap)} was Powered Up!` : ""}`
 		} else {
