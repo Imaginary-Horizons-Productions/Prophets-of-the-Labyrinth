@@ -1,3 +1,5 @@
+const { SURPASSING_VALUE } = require("../constants");
+
 class Combatant {
 	/**
 	 * @param {string} nameInput
@@ -165,11 +167,8 @@ class Delver extends Combatant {
 	}
 
 	getDamageCap() {
-		if (this.gear.some(gear => gear.name.startsWith("Surpassing"))) {
-			return Infinity;
-		} else {
-			return 500 + this.getModifierStacks("Power Up");
-		}
+		const capBoostFromGear = SURPASSING_VALUE * this.gear.reduce((surpassingCount, gear) => gear.name.startsWith("Surpassing") ? surpassingCount + 1 : surpassingCount, 0);
+		return 500 + this.getModifierStacks("Power Up") + capBoostFromGear;
 	}
 }
 

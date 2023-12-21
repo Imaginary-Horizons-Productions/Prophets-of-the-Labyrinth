@@ -1,7 +1,8 @@
 const { GearTemplate } = require('../classes');
+const { SURPASSING_VALUE } = require('../constants');
 
 module.exports = new GearTemplate("Surpassing Wolf Ring",
-	"Gain @{poise} Poise, your attacks aren't subject to the damage cap",
+	"Gain @{poise} Poise, increase your damage cap by @{bonus}",
 	"N/A",
 	"Trinket",
 	"Untyped",
@@ -10,4 +11,5 @@ module.exports = new GearTemplate("Surpassing Wolf Ring",
 ).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })
 	.setSidegrades("Swift Wolf Ring")
 	.setDurability(0)
-	.setPoise(2);
+	.setPoise(2)
+	.setBlock(SURPASSING_VALUE);
