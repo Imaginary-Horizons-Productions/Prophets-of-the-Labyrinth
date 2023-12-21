@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Potion Kit",
 	200,
 	(targets, user, isCrit, adventure) => {
 		const { element, bonus, critMultiplier } = module.exports;
-		const pendingPotionCount = bonus;
+		let pendingPotionCount = bonus;
 		if (isCrit) {
 			pendingPotionCount *= critMultiplier;
 		}
