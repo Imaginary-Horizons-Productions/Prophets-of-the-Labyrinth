@@ -139,11 +139,11 @@ function payHP(user, damage, adventure) {
 	let resultText = ` **${userName}** pays ${damage} hp.${downedCheck(user, adventure)}`;
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
-			resultText += `***${adventure.lives} lives remain.***`;
+			resultText += ` ***${adventure.lives} lives remain.***`;
 		} else if (adventure.lives === 1) {
-			resultText += `***${adventure.lives} life remains.***`;
+			resultText += ` ***${adventure.lives} life remains.***`;
 		} else {
-			resultText += `***GAME OVER***`;
+			resultText += ` ***GAME OVER***`;
 		}
 	}
 	return resultText;
