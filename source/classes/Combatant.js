@@ -34,25 +34,25 @@ class Combatant {
 	 * @param {{[enemyName: string]: number}} enemyIdMap
 	 * @returns {string}
 	 */
-	getName(enemyIdMap) { throw `getName not implemented in child class ${this.constructor.name}` } //TODONOW make name private to enforce usage of .getName()?
+	getName(enemyIdMap) { throw new Error(`getName not implemented in child class ${this.constructor.name}`) }
 
 	/** @returns {number} */
-	getMaxHP() { throw `getMaxHP not implemented in child class ${this.constructor.name}` }
+	getMaxHP() { throw new Error(`getMaxHP not implemented in child class ${this.constructor.name}`) }
 
 	/** @returns {number} */
-	getPower() { throw `getPower not implemented in child class ${this.constructor.name}` }
+	getPower() { throw new Error(`getPower not implemented in child class ${this.constructor.name}`) }
 
 	/**
 	 * @param {boolean} includeRoundSpeed
 	 * @returns {number}
 	 */
-	getSpeed(includeRoundSpeed) { throw `getSpeed not implemented in child class ${this.constructor.name}` }
+	getSpeed(includeRoundSpeed) { throw new Error(`getSpeed not implemented in child class ${this.constructor.name}`) }
 
 	/** @returns {number} */
-	getCritRate() { throw `getCritRate not implemented in child class ${this.constructor.name}` }
+	getCritRate() { throw new Error(`getCritRate not implemented in child class ${this.constructor.name}`) }
 
 	/** @returns {number} */
-	getPoise() { throw `getPoise not implemented in child class ${this.constructor.name}` }
+	getPoise() { throw new Error(`getPoise not implemented in child class ${this.constructor.name}`) }
 
 	/** Get the number of stacks of the given modifier the combatant has
 	 * @param {string} modifierName
@@ -62,7 +62,7 @@ class Combatant {
 	}
 
 	/** @returns {number} */
-	getDamageCap() { throw `getDamageCap not implemented in child class ${this.constructor.name}` }
+	getDamageCap() { throw new Error(`getDamageCap not implemented in child class ${this.constructor.name}`) }
 
 	/** add Stagger, negative values allowed
 	 * @param {number | "elementMatchAlly" | "elementMatchFoe"} value
