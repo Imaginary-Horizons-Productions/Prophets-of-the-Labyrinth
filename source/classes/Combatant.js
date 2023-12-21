@@ -34,25 +34,25 @@ class Combatant {
 	 * @param {{[enemyName: string]: number}} enemyIdMap
 	 * @returns {string}
 	 */
-	getName(enemyIdMap) { }
+	getName(enemyIdMap) { throw `getName not implemented in child class ${this.constructor.name}` } //TODONOW make name private to enforce usage of .getName()?
 
 	/** @returns {number} */
-	getMaxHP() { }
+	getMaxHP() { throw `getMaxHP not implemented in child class ${this.constructor.name}` }
 
 	/** @returns {number} */
-	getPower() { }
+	getPower() { throw `getPower not implemented in child class ${this.constructor.name}` }
 
 	/**
 	 * @param {boolean} includeRoundSpeed
 	 * @returns {number}
 	 */
-	getSpeed(includeRoundSpeed) { }
+	getSpeed(includeRoundSpeed) { throw `getSpeed not implemented in child class ${this.constructor.name}` }
 
 	/** @returns {number} */
-	getCritRate() { }
+	getCritRate() { throw `getCritRate not implemented in child class ${this.constructor.name}` }
 
 	/** @returns {number} */
-	getPoise() { }
+	getPoise() { throw `getPoise not implemented in child class ${this.constructor.name}` }
 
 	/** Get the number of stacks of the given modifier the combatant has
 	 * @param {string} modifierName
@@ -62,7 +62,7 @@ class Combatant {
 	}
 
 	/** @returns {number} */
-	getDamageCap() { }
+	getDamageCap() { throw `getDamageCap not implemented in child class ${this.constructor.name}` }
 
 	/** add Stagger, negative values allowed
 	 * @param {number | "elementMatchAlly" | "elementMatchFoe"} value
