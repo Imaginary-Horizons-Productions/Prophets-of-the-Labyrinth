@@ -1,6 +1,7 @@
 const { CommandInteraction } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
-const { elementsList, getWeaknesses, getResistances, getEmoji } = require("../../util/elementUtil");
+const { elementsList, getWeaknesses, getResistances, getEmoji, getOpposite } = require("../../util/elementUtil");
+const { listifyEN } = require("../../util/textUtil");
 
 const matchingElementStaggerField = { name: "Matching Element Stagger", value: "When a combatant makes a move that matches their element, their target gets a bonus effect. If the target is an ally, they are relieved of 1 Stagger. If the target is an enemy, they suffer 2 additional Stagger. Check the page on Stagger to learn more about Stagger and Stun." };
 const allElements = elementsList();
