@@ -269,7 +269,7 @@ Add Stagger to target
 - all Morning Stars (Light)
 
 ### Surpassing
-User isn't subject to damage cap
+Increases the user's damage cap
 
 **Available on**
 - Wolf Ring (Untyped)
