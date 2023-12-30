@@ -20,7 +20,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		adventure.gearCapacity++;
-		const { embeds, remainingActions } = consumeRoomActions(adventure, interaction.embeds, actionCost);
+		const { embeds, remainingActions } = consumeRoomActions(adventure, interaction.message.embeds, actionCost);
 		let components = interaction.message.components;
 		if (remainingActions < 1) {
 			components = editButtons(components, {
