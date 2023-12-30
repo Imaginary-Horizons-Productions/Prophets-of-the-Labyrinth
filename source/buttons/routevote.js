@@ -30,7 +30,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		interaction.reply(`${interaction.user} ${changeVote ? "changed their vote to" : "voted for"} ${adventure.roomCandidates[candidateTag].isHidden ? "???" : candidate}.`).then(_message => {
 			// Decide by unanimous vote
-			if (adventure.roomCandidates[candidateTag].voterIds?.length === adventure.delvers.length) {
+			if (candidateTag in adventure.roomCandidates && adventure.roomCandidates[candidateTag].voterIds?.length === adventure.delvers.length) {
 				const uiRows = [...interaction.message.components.map(row => {
 					return new ActionRowBuilder().addComponents(row.components.map(({ data: component }) => {
 						switch (component.type) {

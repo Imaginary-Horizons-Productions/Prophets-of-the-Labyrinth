@@ -257,7 +257,6 @@ function endRoom(roomType, thread) {
 			}
 		}
 	}
-	setAdventure(adventure);
 	nextRoom(roomType, thread);
 }
 
