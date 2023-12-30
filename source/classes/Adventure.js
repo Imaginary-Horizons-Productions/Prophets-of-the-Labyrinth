@@ -193,6 +193,11 @@ class Adventure {
 	 * @param {number} count
 	 */
 	gainArtifact(artifact, count) {
+		if (artifact in this.artifacts) {
+			this.artifacts[artifact].count += count;
+		} else {
+			this.artifacts[artifact] = { count };
+		}
 		if (artifact === "Oil Painting") {
 			this.gainGold(500 * count);
 			this.updateArtifactStat(artifact, "Gold Gained", 500 * count);
@@ -201,11 +206,6 @@ class Adventure {
 			this.updateArtifactStat(artifact, "Lives Gained", count);
 		} else if (artifact === "Hammerspace Holster") {
 			this.updateArtifactStat(artifact, "Extra Gear Capacity", count);
-		}
-		if (artifact in this.artifacts) {
-			this.artifacts[artifact].count += count;
-		} else {
-			this.artifacts[artifact] = { count };
 		}
 	}
 
