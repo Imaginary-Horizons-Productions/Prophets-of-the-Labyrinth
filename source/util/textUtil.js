@@ -124,7 +124,7 @@ function trimForSelectOptionDescription(text) {
  */
 function listifyEN(texts) {
 	if (texts.length > 2) {
-		const textsSansLast = texts.slice(0, texts.length - 2);
+		const textsSansLast = texts.slice(0, texts.length - 1);
 		return `${textsSansLast.join(", ")}, and ${texts[texts.length - 1]}`;
 	} else if (texts.length === 2) {
 		return texts.join(" and ");

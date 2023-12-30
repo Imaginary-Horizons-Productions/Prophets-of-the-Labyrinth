@@ -1,8 +1,7 @@
 const { EnemyTemplate } = require("../classes");
-const { isBuff } = require("../modifiers/_modifierDictionary.js");
+const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary.js");
 const { addBlock, dealDamage, addModifier, removeModifier } = require("../util/combatantUtil");
 const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
-const { isDebuff } = require("../modifiers/slow.js");
 const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
 
