@@ -2,9 +2,7 @@ const { CommandWrapper } = require('../classes');
 const { embedTemplate } = require('../util/embedUtil');
 
 const mainId = "support";
-const options = [];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "List ways to support PotL", null, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "List ways to support PotL", null, false, true, 3000,
 	(interaction) => {
 		interaction.reply({
 			embeds: [

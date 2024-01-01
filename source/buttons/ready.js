@@ -1,4 +1,6 @@
 const { ButtonWrapper } = require('../classes');
+const { getArchetype } = require('../archetypes/_archetypeDictionary');
+const { buildGearRecord } = require('../gear/_gearDictionary');
 const { getAdventure, nextRoom, fetchRecruitMessage, setAdventure } = require('../orcustrators/adventureOrcustrator');
 
 const mainId = "ready";
@@ -32,6 +34,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (delver.startingArtifact) {
 					adventure.gainArtifact(delver.startingArtifact, 1);
 				}
+
+				const archetypeTemplate = getArchetype(delver.archetype);
+				delver.element = archetypeTemplate.element;
+				delver.gear = archetypeTemplate.startingGear.map(gearName => {
+					return buildGearRecord(gearName, "max");
+				});
 			})
 
 			interaction.reply({ content: `The adventure has begun (and closed to new delvers joining)! You can use the \`/adventure\` commands to check adventure status.`, fetchReply: true }).then(message => {

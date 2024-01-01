@@ -3,24 +3,18 @@ const { PermissionFlagsBits } = require('discord.js');
 const { CommandWrapper, Adventure, Delver } = require('../classes');
 const { setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getChallenge } = require('../challenges/_challengeDictionary');
-const { elementsList, getColor } = require('../util/elementUtil');
+const { getColor } = require('../util/elementUtil');
 const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator');
 const { prerollBoss, defaultLabyrinths, labyrinthExists } = require('../labyrinths/_labyrinthDictionary');
 const { SAFE_DELIMITER } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
-
-const DESCRIPTORS = ["Shining", "New", "Dusty", "Old", "Floating", "Undersea", "Future", "Intense"];
+const { trimForSelectOptionDescription } = require('../util/textUtil');
 
 const mainId = "delve";
-const options = [
-	{ type: "String", name: "labyrinth", description: "The value to base the run's random events on", required: true, autocomplete: defaultLabyrinths.map(labyrinthName => ({ name: labyrinthName, value: labyrinthName })) },
-	{ type: "String", name: "seed", description: "The value to base the run's random events on", required: false }
-];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionFlagsBits.SendMessages, false, false, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionFlagsBits.SendMessages, false, false, 3000,
 	/** Start a new adventure */
 	(interaction) => {
-		const labyrinthName = interaction.options.getString(options[0].name);
+		const labyrinthName = interaction.options.getString("labyrinth");
 		if (!labyrinthExists(labyrinthName)) {
 			interaction.reply({ content: `There isn't a labyrinth named **${labyrinthName}** (input is case-sensitive).`, ephemeral: true });
 			return;
@@ -37,17 +31,12 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 			return;
 		}
 
-		const adventure = new Adventure(interaction.options.getString(options[1].name), interaction.guildId, interaction.options.getString(options[0].name), interaction.user.id).generateRNTable();
+		const adventure = new Adventure(interaction.options.getString("seed"), interaction.guildId, labyrinthName, interaction.user.id);
 		// roll bosses
 		prerollBoss("Final Battle", adventure);
 		prerollBoss("Artifact Guardian", adventure);
 
-		const elementPool = elementsList();
-		const pickedElement = elementPool[adventure.generateRandomNumber(elementPool.length, "general")];
-		adventure.setName(`${DESCRIPTORS[adventure.generateRandomNumber(DESCRIPTORS.length, "general")]} ${labyrinthName} of ${pickedElement}`)
-			.setElement(pickedElement);
-
-		const embed = new EmbedBuilder().setColor(getColor(pickedElement))
+		const embed = new EmbedBuilder().setColor(getColor(adventure.element))
 			.setAuthor({ name: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png", url: "https://github.com/Imaginary-Horizons-Productions/prophets-of-the-labyrinth" })
 			.setTitle(adventure.name)
 			.setThumbnail("https://cdn.discordapp.com/attachments/545684759276421120/734093574031016006/bountyboard.png")
@@ -74,7 +63,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 				const options = [{ label: "None", description: "Deselect previously selected challenges", value: "None" }];
 				["Can't Hold All this Value", "Restless", "Rushing"].forEach(challengeName => {
 					const challenge = getChallenge(challengeName);
-					options.push({ label: challengeName, description: challenge.dynamicDescription(challenge.intensity, challenge.duration), value: challengeName });
+					options.push({ label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName });
 				})
 				adventure.setId(thread.id);
 				setAdventure(adventure);
@@ -105,4 +94,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 			});
 		}).catch(console.error);
 	}
+).setOptions(
+	{ type: "String", name: "labyrinth", description: "The value to base the run's random events on", required: true, autocomplete: defaultLabyrinths.map(labyrinthName => ({ name: labyrinthName, value: labyrinthName })) },
+	{ type: "String", name: "seed", description: "The value to base the run's random events on", required: false }
 );

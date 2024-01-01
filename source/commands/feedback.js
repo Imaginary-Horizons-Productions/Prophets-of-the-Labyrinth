@@ -3,21 +3,7 @@ const { CommandWrapper } = require('../classes');
 const { MAX_EMBED_TITLE_LENGTH, testGuildId, feedbackChannelId } = require('../constants');
 
 const mainId = "feedback";
-const options = [
-	{
-		type: "String",
-		name: "feedback-type",
-		description: "the type of feedback you'd like to provide",
-		required: true,
-		choices: [
-			{ name: "Bug Report", value: "bug" },
-			{ name: "Feature Request", value: "feature" },
-			{ name: "Balance Suggestion", value: "balance" }
-		]
-	}
-];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an invite to the test server", PermissionFlagsBits.SendMessages, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an invite to the test server", PermissionFlagsBits.SendMessages, false, true, 3000,
 	/** Open the modal associated with the feedback type to prompt more specific information */
 	(interaction) => {
 		if (!testGuildId || !feedbackChannelId) {
@@ -92,7 +78,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 					}).then(feedbackChannel => {
 						feedbackChannel.createInvite({ maxAge: 0 }).then(invite => {
 							feedbackChannel.send({ embeds: [embed] });
-							modalSubmission.reply({ content: `Your bug report has been recorded${errors.length > 0 ? `, but the following errors were encountered: ${errors.join(", ")}` : ""}.You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
+							modalSubmission.reply({ content: `Your bug report has been recorded${errors.length > 0 ? `, but the following errors were encountered:\n- ${errors.join("\n- ")}` : ""}.You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
 						})
 					})
 				}).catch(console.error);
@@ -164,7 +150,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 					}).then(feedbackChannel => {
 						feedbackChannel.createInvite({ maxAge: 0 }).then(invite => {
 							feedbackChannel.send({ embeds: [embed] });
-							modalSubmission.reply({ content: `Your feature request has been recorded${errors.length > 0 ? `, but the following errors were encountered: ${errors.join(", ")}` : ""}. You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
+							modalSubmission.reply({ content: `Your feature request has been recorded${errors.length > 0 ? `, but the following errors were encountered:\n- ${errors.join("\n- ")}` : ""}. You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
 						})
 					})
 				}).catch(console.error);
@@ -214,11 +200,23 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 					}).then(feedbackChannel => {
 						feedbackChannel.createInvite({ maxAge: 0 }).then(invite => {
 							feedbackChannel.send({ embeds: [embed] });
-							modalSubmission.reply({ content: `Your balance suggestion has been recorded${errors.length > 0 ? `, but the following errors were encountered: ${errors.join(", ")}` : ""}. You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
+							modalSubmission.reply({ content: `Your balance suggestion has been recorded${errors.length > 0 ? `, but the following errors were encountered:\n- ${errors.join("\n- ")}` : ""}. You can join the Imaginary Horizons Productions test server to provide additional information here: ${invite.url}`, ephemeral: true })
 						})
 					})
 				}).catch(console.error);
 				break;
 		}
+	}
+).setOptions(
+	{
+		type: "String",
+		name: "feedback-type",
+		description: "the type of feedback you'd like to provide",
+		required: true,
+		choices: [
+			{ name: "Bug Report", value: "bug" },
+			{ name: "Feature Request", value: "feature" },
+			{ name: "Balance Suggestion", value: "balance" }
+		]
 	}
 );

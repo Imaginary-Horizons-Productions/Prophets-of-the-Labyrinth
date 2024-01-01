@@ -1,31 +1,34 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Slowing Warhammer",
-	"Strike a foe for @{damage} (+@{bonus} if foe is currently stunned) @{element} damage and inflict @{mod1Stacks} @{mod1}",
-	"Damage x@{critBonus}",
+	"Strike a foe for @{damage} (+@{bonus} if foe is currently stunned) @{element} damage and inflict @{mod0Stacks} @{mod0}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, slow], damage, bonus, critBonus } = module.exports;
-
-		if (target.getModifierStacks("Stun") > 0) {
-			damage += bonus;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [slow], damage, bonus, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
+		if (target.isStunned) {
+			pendingDamage += bonus;
 		}
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(target, slow);
-		return dealDamage([target], user, damage, false, element, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
-	.setSidegrades("Piercing Warhammer", "Reactive Warhammer")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 1 })
+		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure)
+		const addedSlow = addModifier(target, slow);
+		if (addedSlow) {
+			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		}
+		return resultText;
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+	.setSidegrades("Reactive Warhammer", "Unstoppable Warhammer")
+	.setModifiers({ name: "Slow", stacks: 1 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setBonus(75); // damage

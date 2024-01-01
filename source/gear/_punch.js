@@ -1,31 +1,30 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Punch",
 	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Technique",
 	"Untyped",
 	0,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { damage, critBonus, element } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { damage, critMultiplier, element } = module.exports;
 		const ironFistStacks = user.getModifierStacks("Iron Fist Stance");
 		const pendingElement = ironFistStacks > 0 ? user.element : element;
 		const floatingMistStacks = user.getModifierStacks("Floating Mist Stance");
 		let totalStagger = floatingMistStacks * 2;
-		let pendingDamage = damage + (ironFistStacks * 45);
+		let pendingDamage = user.getPower() + damage + (ironFistStacks * 45);
 		if (user.element === pendingElement) {
 			totalStagger++;
 		}
 		if (isCrit) {
-			pendingDamage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
 		if (totalStagger > 0) {
-			addModifier(target, { name: "Stagger", stacks: totalStagger });
+			target.addStagger(totalStagger);
 		}
-		return dealDamage([target], user, pendingDamage, false, pendingElement, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+		return `${dealDamage([target], user, pendingDamage, false, pendingElement, adventure)}${totalStagger > 0 ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setDurability(Infinity)
-	.setDamage(35);
+	.setDamage(0);

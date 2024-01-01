@@ -3,9 +3,7 @@ const { CommandWrapper, Adventure } = require('../classes');
 const { getAdventure, completeAdventure } = require('../orcustrators/adventureOrcustrator');
 
 const mainId = "give-up";
-const options = [];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Ends the adventure", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Ends the adventure", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000,
 	/** Give up on the current adventure */
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);

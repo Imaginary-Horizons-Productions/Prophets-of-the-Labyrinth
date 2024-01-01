@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { removeModifier, addBlock } = require('../util/combatantUtil');
+const { addBlock } = require('../util/combatantUtil');
+const { listifyEN } = require('../util/textUtil');
 
 const rollablePotions = [
 	"Block Potion",
@@ -16,29 +17,32 @@ const rollablePotions = [
 
 
 module.exports = new GearTemplate("Reinforced Potion Kit",
-	"Gain @{block} block and add 1 random potion to loot",
-	"Instead add @{critBonus} potions",
+	"Gain @{block} block and add @{bonus} random potion to loot",
+	"Potion count x@{critMultiplier}",
 	"Trinket",
 	"Water",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], block, critBonus } = module.exports;
-		if (user.element === element) {
-			removeModifier(user, elementStagger);
-		}
-		const randomPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
-		addBlock(user, block);
+		const { element, bonus, block, critMultiplier } = module.exports;
+		let pendingPotionCount = bonus;
 		if (isCrit) {
-			adventure.addResource(randomPotion, "item", "loot", critBonus);
+			pendingPotionCount *= critMultiplier;
+		}
+		if (user.element === element) {
+			user.addStagger("elementMatchAlly");
+		}
+		addBlock(user, block);
+		const randomPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
+		adventure.addResource(randomPotion, "item", "loot", pendingPotionCount);
+		if (isCrit) {
 			return `${user.getName(adventure.room.enemyIdMap)} prepares to Block and sets a double-batch of ${randomPotion} simmering.`;
 		} else {
-			adventure.addResource(randomPotion, "item", "loot", 1);
 			return `${user.getName(adventure.room.enemyIdMap)} prepares to Block and sets a batch of ${randomPotion} simmering.`;
 		}
 	}
-).setTargetingTags({ target: "none", team: "none" })
+).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })
 	.setSidegrades("Organic Potion Kit", "Urgent Potion Kit")
-	.setModifiers({ name: "Stagger", stacks: 1 })
-	.setDurability(15)
+	.setBonus(1) // Potion count
 	.setBlock(75)
-	.setFlavorText({ name: "Possible Potions", value: rollablePotions.join(", ") });
+	.setDurability(15)
+	.setFlavorText({ name: "Possible Potions", value: listifyEN(rollablePotions) });

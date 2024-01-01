@@ -6,6 +6,7 @@ const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getEmoji, getColor } = require('../util/elementUtil');
 const { gearToEmbedField, randomAuthorTip } = require('../util/embedUtil');
+const { trimForSelectOptionDescription } = require('../util/textUtil');
 
 const mainId = "readymove";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -15,10 +16,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
-			return;
-		}
-		if (delver.getModifierStacks("Stun") > 0) { // Early out if stunned
-			interaction.reply({ content: "You cannot pick a move because you are stunned this round.", ephemeral: true });
 			return;
 		}
 		const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
@@ -32,7 +29,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			if (enemy.hp > 0) {
 				enemyOptions.push({
 					label: enemy.getName(adventure.room.enemyIdMap),
-					description: miniPredictBuilder(enemy),
+					description: trimForSelectOptionDescription(miniPredictBuilder(enemy)),
 					value: `enemy${SAFE_DELIMITER}${i}`
 				})
 			}
@@ -40,7 +37,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const delverOptions = adventure.delvers.map((ally, i) => {
 			return {
 				label: ally.name,
-				description: miniPredictBuilder(ally),
+				description: trimForSelectOptionDescription(miniPredictBuilder(ally)),
 				value: `delver${SAFE_DELIMITER}${i}`
 			}
 		});
@@ -51,17 +48,17 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 		for (let i = 0; i < usableMoves.length; i++) {
 			const { name: gearName, durability } = usableMoves[i];
-			embed.addFields(gearToEmbedField(gearName, durability));
+			embed.addFields(gearToEmbedField(gearName, durability, delver));
 			const { target, team } = getGearProperty(gearName, "targetingTags");
 			const elementEmoji = getEmoji(getGearProperty(gearName, "element"));
 			if (target === "single") {
 				// Select Menu
 				let targetOptions = [];
-				if (team === "enemy" || team === "any") {
+				if (team === "foe" || team === "any") {
 					targetOptions = targetOptions.concat(enemyOptions);
 				}
 
-				if (team === "delver" || team === "any") {
+				if (team === "ally" || team === "any") {
 					targetOptions = targetOptions.concat(delverOptions);
 				}
 				components.push(new ActionRowBuilder().addComponents(

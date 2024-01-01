@@ -1,26 +1,27 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
-const { addBlock, removeModifier } = require('../util/combatantUtil.js');
+const { addBlock, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Barrier",
-	"Grant an ally @{block} block",
-	"Block x@{critBonus}",
+	"Gain @{block} block and @{mod0Stacks} @{mod0}",
+	"@{mod0} x@{critMultiplier}",
 	"Spell",
-	"Light",
+	"Earth",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], block, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [vigilance], block, critMultiplier } = module.exports;
+		const pendingVigilance = { ...vigilance };
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critBonus;
+			pendingVigilance.stacks *= critMultiplier;
 		}
-		addBlock(target, block);
-		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)}.`;
-	})
-).setTargetingTags({ target: "single", team: "delver" })
-	.setUpgrades("Purifiying Barrier", "Thick Barrier", "Urgent Barrier")
-	.setModifiers({ name: "Stagger", stacks: 1 })
+		const addedVigilance = addModifier(user, pendingVigilance);
+		addBlock(user, block);
+		return `${user.getName(adventure.room.enemyIdMap)}${addedVigilance ? " Vigilantly" : ""} prepares to Block.`;
+	}
+).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
+	.setUpgrades("Cleansing Barrier", "Devoted Barrier", "Long Barrier")
+	.setModifiers({ name: "Vigilance", stacks: 1 })
 	.setDurability(5)
-	.setBlock(1000);
+	.setBlock(999);

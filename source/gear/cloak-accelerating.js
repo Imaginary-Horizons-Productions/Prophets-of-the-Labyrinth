@@ -1,25 +1,36 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, removeModifier } = require('../util/combatantUtil.js');
+const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Cloak",
-	"Gain @{mod1Stacks} @{mod1} and @{mod2Stacks} @{mod2}",
-	"@{mod1} +@{bonus} and @{mod2} +@{bonus}",
+	"Gain @{critRate} Crit Rate; gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} when used in combat",
+	"@{mod0} +@{bonus} and @{mod1} +@{bonus}",
 	"Armor",
 	"Wind",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, evade, quicken], bonus } = module.exports;
-		const pendingEvade = { ...evade, stacks: evade.stacks + (isCrit ? bonus : 0) };
-		const pendingQuicken = { ...quicken, stacks: quicken.stacks + (isCrit ? bonus : 0) };
+		const { element, modifiers: [evade, quicken], bonus } = module.exports;
+		const pendingEvade = { ...evade };
+		const pendingQuicken = { ...quicken };
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
-		addModifier(user, pendingEvade);
-		addModifier(user, pendingQuicken);
-		return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade and Quickened.`;
+		if (isCrit) {
+			pendingEvade.stacks += bonus;
+			pendingQuicken.stacks += bonus;
+		}
+		const addedEvade = addModifier(user, pendingEvade);
+		const addedQuicken = addModifier(user, pendingQuicken);
+		if (addedEvade) {
+			return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade and Quickened.`;
+		} else if (addedQuicken) {
+			return `${user.getName(adventure.room.enemyIdMap)} is Quickened.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
-).setTargetingTags({ target: "self", team: "self" })
-	.setSidegrades("Long Cloak", "Thick Cloak")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Evade", stacks: 2 }, { name: "Quicken", stacks: 1 })
+).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
+	.setSidegrades("Accurate Cloak", "Long Cloak")
+	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Quicken", stacks: 1 })
 	.setBonus(1) // Evade stacks
+	.setCritRate(5)
 	.setDurability(15);

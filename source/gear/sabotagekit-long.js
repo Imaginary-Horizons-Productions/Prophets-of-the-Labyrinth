@@ -1,36 +1,47 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { addModifier, getCombatantWeaknesses } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 
 module.exports = new GearTemplate("Long Sabotage Kit",
-	"Afflict a foe with @{mod0Stacks} @{mod0} and a random weakness",
-	"Slow and Weakness +@{critBonus}",
+	"Afflict a foe with @{mod0Stacks} @{mod0} and @{mod1Stacks} stacks of a random weakness",
+	"Slow and Weakness +@{bonus}",
 	"Weapon",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [slow, elementStagger, critSlow] } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [slow, weakness], bonus } = module.exports;
+		const pendingSlow = { ...slow };
+		const pendingWeakness = { stacks: weakness.stacks };
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 		const weaknessPool = elementsList(ineligibleWeaknesses);
-		const rolledWeakness = `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`;
-		if (user.element === element) {
-			addModifier(target, elementStagger);
-		}
+		pendingWeakness.name = `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`;
 		if (isCrit) {
-			addModifier(target, critSlow);
-			if (weaknessPool.length > 0) {
-				addModifier(target, { name: rolledWeakness, stacks: 5 });
-			}
-		} else {
-			addModifier(target, slow);
-			if (weaknessPool.length > 0) {
-				addModifier(target, { name: rolledWeakness, stacks: 3 });
+			pendingSlow.stacks += bonus;
+			pendingWeakness.stacks += bonus;
+		}
+		if (user.element === element) {
+			target.addStagger("elementMatchFoe");
+		}
+		const debuffTexts = [];
+		const addedSlow = addModifier(target, pendingSlow);
+		if (addedSlow) {
+			debuffTexts.push("is Slowed");
+		}
+		if (weaknessPool.length > 0) {
+			const addedWeakness = addModifier(target, pendingWeakness);
+			if (addedWeakness) {
+				debuffTexts.push(`gains ${pendingWeakness.name}`);
 			}
 		}
-		return `${target.getName(adventure.room.enemyIdMap)} is Slowed${weaknessPool.length > 0 ? `, and gains ${rolledWeakness}` : ""}.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
-	.setModifiers({ name: "Slow", stacks: 3 }, { name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 5 })
+		if (debuffTexts.length > 0) {
+			return `${target.getName(adventure.room.enemyIdMap)} ${listifyEN(debuffTexts)}.`;
+		} else {
+			return "But nothing happened.";
+		}
+	}
+).setSidegrades("Shattering Sabotage Kit")
+	.setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+	.setModifiers({ name: "Slow", stacks: 3 }, { name: "unparsed random weakness", stacks: 3 })
+	.setBonus(2) // Crit Slow and Weakness stacks
 	.setDurability(15)
 	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" });

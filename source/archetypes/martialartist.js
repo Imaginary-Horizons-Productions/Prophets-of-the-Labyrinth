@@ -9,18 +9,19 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
 			.concat(adventure.delvers)
 			.sort((first, second) => {
-				return second.getTotalSpeed() - first.getTotalSpeed();
+				return second.getSpeed(true) - first.getSpeed(true);
 			});
 		for (const combatant of activeCombatants) {
-			const staggerCount = combatant.getModifierStacks("Stagger");
-			const isStunned = combatant.getModifierStacks("Stun") > 0;
-			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)}${isStunned ? " 💫" : ""}`, value: `Stagger: ${generateTextBar(staggerCount, combatant.poise, combatant.poise)}\nSpeed: ${combatant.getTotalSpeed()}` });
+			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)}`, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\nSpeed: ${combatant.getSpeed(true)}` });
 		}
 		embed.setDescription("Combatants may act out of order if they have priority or they are tied in speed.");
 		return embed.setTitle(`Martial Artist Predictions for Round ${adventure.room.round + 1}`);
 	},
 	(combatant) => {
-		const staggerCount = combatant.getModifierStacks("Stagger");
-		return `Stagger: ${generateTextBar(staggerCount, combatant.poise, combatant.poise)}`;
+		if (combatant.isStunned) {
+			return "💫 Stunned";
+		} else {
+			return `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`;
+		}
 	}
 );

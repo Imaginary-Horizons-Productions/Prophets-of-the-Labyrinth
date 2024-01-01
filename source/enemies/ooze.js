@@ -6,37 +6,47 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	"@{adventureOpposite}",
 	200,
 	90,
-	5,
+	"n*2+4",
 	0,
 	"Goop Spray",
 	false
 ).addAction({
 	name: "Goop Spray",
 	element: "Untyped",
+	description: "Slow a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
+		let addedSlow = false;
 		if (isCrit) {
-			addModifier(target, { name: "Slow", stacks: 3 });
-			addModifier(target, { name: "Stagger", stacks: 1 });
+			addedSlow = addModifier(target, { name: "Slow", stacks: 3 });
+			target.addStagger("elementMatchFoe");
 		} else {
-			addModifier(target, { name: "Slow", stacks: 2 });
+			addedSlow = addModifier(target, { name: "Slow", stacks: 2 });
 		}
-		return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		if (addedSlow) {
+			return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		} else {
+			return "But nothing happened.";
+		}
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: nextRandom
 }).addAction({
 	name: "Tackle",
 	element: "@{adventureOpposite}",
+	description: "Deal the Ooze's element damage to a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
-		let damage = 25;
+		let damage = user.getPower() + 25;
 		if (isCrit) {
 			damage *= 2;
 		}
-		addModifier(target, { name: "Stagger", stacks: 1 });
+		target.addStagger("elementMatchFoe");
 		return dealDamage([target], user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
+	needsLivingTargets: false,
 	next: nextRandom
-});
+})
+	.setFlavorText({ name: "Ooze's Element", value: "The Ooze's element will be the opposite of the current adventure." });

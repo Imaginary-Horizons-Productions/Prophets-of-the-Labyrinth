@@ -4,6 +4,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 const { getArtifact } = require("../artifacts/_artifactDictionary");
+const { trimForSelectOptionDescription, listifyEN } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Treasure! Artifact or Gold?",
 	"@{adventure}",
@@ -27,7 +28,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gold?",
 				}
 
 				if (type === "artifact") {
-					option.description = getArtifact(name).dynamicDescription(count);
+					option.description = trimForSelectOptionDescription(getArtifact(name).dynamicDescription(count));
 				}
 				options.push(option)
 			}
@@ -42,7 +43,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gold?",
 	} else {
 		return [new ActionRowBuilder().addComponents(
 			new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}treasure`)
-				.setPlaceholder(`Picked: ${adventure.room.state.pickedTreasure.names.join(", ")}`)
+				.setPlaceholder(`Picked: ${listifyEN(adventure.room.state.pickedTreasure.names)}`)
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)
 		)];

@@ -4,6 +4,7 @@ const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getArtifact } = require('../artifacts/_artifactDictionary');
 const { EMPTY_SELECT_OPTION_SET } = require('../constants');
+const { trimForSelectOptionDescription } = require('../util/textUtil');
 
 const mainId = "viewcollectartifact";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -24,10 +25,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const options = [];
 		for (const artifactName in adventure.artifacts) {
 			if (!Object.values(playerProfile.artifacts).includes(artifactName)) {
-				const description = getArtifact(artifactName).dynamicDescription(1);
 				options.push({
 					label: artifactName,
-					description,
+					description: trimForSelectOptionDescription(getArtifact(artifactName).dynamicDescription(1)),
 					value: artifactName
 				})
 			}

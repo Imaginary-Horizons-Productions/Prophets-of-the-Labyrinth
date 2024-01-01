@@ -13,6 +13,13 @@ Adds Quicken to the user
 - Shortsword (Fire)
 - Sun Flare (Light)
 
+### Accurate
+Passively increases the user's Crit Rate
+
+**Available on**
+- all Cloaks (Wind)
+- Cloak (Wind)
+
 ### Awesome
 Bonus damage if target is Stunned
 
@@ -34,6 +41,13 @@ Adds Power Up to the user
 - Blood Aegis (Darkness)
 - War Cry (Fire)
 
+### Cleansing
+Cures a random debuff on target
+
+**Available on**
+- all Refreshing Breezes (Wind)
+- Barrier (Earth)
+
 ### Corrosive
 Adds Power Down to target
 
@@ -45,7 +59,7 @@ Can apply to allies
 
 **Available on**
 - Bucker (Earth)
-- Vigilance Charm (Earth)
+- Barrier (Earth)
 
 ### Discounted
 Reduced base price
@@ -103,11 +117,25 @@ Adds Block to the target
 - Inspiration (Wind)
 - Scutum (Fire)
 
+### Harmful
+Deals damage to target
+
+**Available on**
+- Corrosion (Fire)
+- Poison Torrent (Water)
+
 ### Healing
 Heal the user
 
 **Available on**
 - all Life Drains (Darkness)
+
+### Hearty
+Passively increases the user's Max HP
+
+**Available on**
+- all Chainmails (Untyped)
+- Scarf (Untyped)
 
 ### Hunter's
 Gain gold on kill
@@ -132,7 +160,7 @@ Increased modifier stacks
 **Available on**
 - Cloak (Wind)
 - Sabotage Kit (Earth)
-- Vigilance Charm (Earth)
+- Barrier (Earth)
 
 ### Mercurial
 Damage element matches user
@@ -154,25 +182,17 @@ Regains durability when entering new rooms
 - Iron Fist Stance (Light)
 - Potion Kit (Water)
 
-### Piercing
-Deals Unblockable damage
+### Poised
+Passively increases user's poise
 
 **Available on**
-- Lance (Earth)
-- Scythe (Darkness)
-- Warhammer (Earth)
+- all Wolf Rings (Untyped)
 
 ### Prideful
 Increased damage and change element to Untyped
 
 **Available on**
 - Battleaxe (Fire)
-
-### Purifying
-Cures all debuffs on target
-
-**Available on**
-- Barrier (Light)
 
 ### Reactive
 Bonus damage if user moves after target
@@ -203,7 +223,6 @@ Adds Block to the user
 - Blood Aegis (Darkness)
 - Buckler (Earth)
 - Potion Kit (Water)
-- Vigilance Charm (Earth)
 
 ### Sabotaging
 Adds a random modifier that converts one of target's neutral elements to a weakness
@@ -219,10 +238,18 @@ Increased damage
 - Daggers (Wind)
 - Sickle (Water)
 
+### Shattering
+Adds Frail to target
+
+**Available on**
+- Corrosion (Fire)
+- Sabotage Kit (Earth)
+
 ### Slowing
 Adds Slow to target
 
 **Available on**
+- all Ice Bolts (Water)
 - Daggers (Wind)
 - War Cry (Fire)
 - Warhammer (Earth)
@@ -241,6 +268,12 @@ Add Stagger to target
 **Available on**
 - all Morning Stars (Light)
 
+### Surpassing
+Increases the user's damage cap
+
+**Available on**
+- Wolf Ring (Untyped)
+
 ### Sweeping
 Targets whole team
 
@@ -252,6 +285,13 @@ Targets whole team
 - Scutum (Fire)
 - Spear (Wind)
 
+### Swift
+Passively increases user's speed
+
+**Available on**
+- all Scarves (Untyped)
+- Wolf Ring (Untyped)
+
 ### Taunting
 Change target's move's target to user
 
@@ -262,9 +302,8 @@ Change target's move's target to user
 Increased durability
 
 **Available on**
-- Barrier (Light)
+- Barrier (Earth)
 - Battleaxe (Fire)
-- Cloak (Wind)
 - Censer (Fire)
 
 ### Thirsting
@@ -289,13 +328,21 @@ Adds Poison to target
 - Sickle (Water)
 - Shortsword (Fire)
 
+### Unstoppable
+Deals Unblockable damage, usable while Stunned
+
+**Available on**
+- Lance (Earth)
+- Scythe (Darkness)
+- Warhammer (Earth)
+
 ### Urgent
 Increased priority
 
 **Available on**
 - all Bows (Wind)
 - all Sun Flares (Light)
-- Barrier (Light)
+- Barrier (Earth)
 - Potion Kit (Water)
 - Life Drain (Darkness)
 
@@ -323,3 +370,8 @@ Adds Vigilance to user
 - Adds Power Up to random ally if hitting weakness (all Pistols)
 
 ## Planned Variants
+### Purifying
+Cures all debuffs on target
+
+**Available on**
+- (none)

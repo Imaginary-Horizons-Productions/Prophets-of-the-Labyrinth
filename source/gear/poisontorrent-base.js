@@ -1,22 +1,38 @@
 const { GearTemplate } = require('../classes');
 const { addModifier } = require('../util/combatantUtil');
+const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Poison Torrent",
-	"Inflict @{mod1Stacks} @{mod1} on all foes",
-	"@{mod1} x@{critBonus}",
+	"Inflict @{mod0Stacks} @{mod0} on all foes",
+	"@{mod0} x@{critMultiplier}",
 	"Spell",
 	"Water",
 	200,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, poison], critBonus } = module.exports;
+		const { element, modifiers: [poison], critMultiplier } = module.exports;
+		const pendingPoison = { ...poison };
+		if (isCrit) {
+			pendingPoison.stacks *= critMultiplier;
+		}
+		const poisonedTargets = [];
 		targets.forEach(target => {
-			addModifier(target, { name: "Poison", stacks: poison.stacks * (isCrit ? critBonus : 1) })
+			const addedPoison = addModifier(target, pendingPoison);
+			if (addedPoison) {
+				poisonedTargets.push(target.getName(adventure.room.enemyIdMap));
+			}
 			if (user.element === element) {
-				addModifier(target, elementStagger);
+				target.addStagger("elementMatchFoe");
 			}
 		})
-		return `${targets.map(target => target.getName(adventure.room.enemyIdMap)).join(", ")} was Poisoned.`;
+		if (poisonedTargets.length > 1) {
+			return `**${listifyEN(poisonedTargets)}** were Poisoned.`;
+		} else if (poisonedTargets.length === 1) {
+			return `**${poisonedTargets[0]}** was Poisoned.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
-).setTargetingTags({ target: "all", team: "enemy" })
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Poison", stacks: 2 })
+).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })
+	.setUpgrades("Harmful Poison Torrent")
+	.setModifiers({ name: "Poison", stacks: 2 })
 	.setDurability(15);

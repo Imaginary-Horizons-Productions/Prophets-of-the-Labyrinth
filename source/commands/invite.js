@@ -4,11 +4,7 @@ const { SAFE_DELIMITER } = require('../constants');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 
 const mainId = "invite";
-const options = [
-	{ type: "User", name: "invitee", description: "The user's mention", required: true }
-];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000,
 	/** Invite a friend to an adventure */
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);
@@ -22,7 +18,7 @@ module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", P
 			return;
 		}
 
-		const invitee = interaction.options.getUser(options[0].name);
+		const invitee = interaction.options.getUser("invitee");
 		invitee.send({
 			content: `${interaction.member} has invited you to join *${adventure.name}* in ${interaction.guild}!`,
 			components: [new ActionRowBuilder().addComponents(
@@ -33,4 +29,6 @@ module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", P
 		});
 		interaction.reply({ content: "Invite sent!", ephemeral: true });
 	}
+).setOptions(
+	{ type: "User", name: "invitee", description: "The user's mention", required: true }
 );

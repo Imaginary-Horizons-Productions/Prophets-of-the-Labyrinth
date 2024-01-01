@@ -1,13 +1,14 @@
 const { Adventure, LabyrinthTemplate, RoomTemplate } = require("../classes");
 const { gearExists } = require("../gear/_gearDictionary.js");
 const { itemExists } = require("../items/_itemDictionary.js");
-const { getRoom } = require("../rooms/_roomDictionary");
+const { getRoom, ROOM_CATEGORIES } = require("../rooms/_roomDictionary");
 
 /** @type {Record<string, LabyrinthTemplate>} */
 const LABYRINTHS = {};
 
 for (const file of [
-	"debugdungeon.js"
+	"debugdungeon.js",
+	"everythingbagel.js"
 ]) {
 	/** @type {LabyrinthTemplate} */
 	const labyrinth = require(`./${file}`);
@@ -31,7 +32,7 @@ for (const file of [
 
 	for (const tag in labyrinth.availableRooms) {
 		for (const roomTitle of labyrinth.availableRooms[tag]) {
-			if (!getRoom(roomTitle)) {
+			if (!(ROOM_CATEGORIES.includes(roomTitle) || getRoom(roomTitle))) {
 				console.error(`Unregistered room title in ${labyrinth.name}: ${roomTitle}`);
 			}
 		}
@@ -97,7 +98,7 @@ function prerollBoss(type, adventure) {
 }
 
 /** Filters by type, then rolls a random room or returns the scouted room
- * @param {"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Forge" | "Artifact Guardian" | "Treasure" | "Empty"} type Room Types are internal tags that describe the contents of the room for randomization bucketing/UI generation purposes
+ * @param {"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Workshop" | "Artifact Guardian" | "Treasure" | "Empty"} type Room Types are internal tags that describe the contents of the room for randomization bucketing/UI generation purposes
  * @param {Adventure} adventure
  * @returns {RoomTemplate}
  */
@@ -113,16 +114,21 @@ function rollRoom(type, adventure) {
 	if (!(type in LABYRINTHS[adventure.labyrinth].availableRooms)) {
 		console.error("Attempt to create room of unidentified type: " + type);
 		adventure.roomCandidates = { [`Battle${SAFE_DELIMITER}${adventure.depth}`]: { voterIds: [], isHidden: false } };
-		return LABYRINTHS["Debug Dungeon"].availableRooms["Empty"][0];
+		return LABYRINTHS["Everything Bagel"].availableRooms["Empty"][0];
 	}
 	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];
-	return getRoom(roomPool[adventure.generateRandomNumber(roomPool.length, "general")]);
+	const roomName = roomPool[adventure.generateRandomNumber(roomPool.length, "general")];
+	if (ROOM_CATEGORIES.includes(roomName)) {
+		return rollRoom(roomName, adventure);
+	} else {
+		return getRoom(roomName);
+	}
 }
 
 module.exports = {
 	labyrinthExists,
 	/** This array determines which labyrinths show up in the `/delve labyrinth` autocomplete. It is desync'd from the list of all labyrinths to allow for easter eggs (ie remove Debug Dungeon after "real" labyrinths are made) */
-	defaultLabyrinths: ["Debug Dungeon"],
+	defaultLabyrinths: ["Everything Bagel"],
 	getLabyrinthProperty,
 	rollItem,
 	rollGear,

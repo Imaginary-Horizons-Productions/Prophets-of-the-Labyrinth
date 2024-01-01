@@ -1,28 +1,24 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { dealDamage, addModifier } = require('../util/combatantUtil');
+const { dealDamage } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Lance",
 	"Strike a foe for @{damage} @{element} damage (double increase from Power Up)",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], damage, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, damage, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + user.getModifierStacks("Power Up") + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
-		const powerUpStacks = user.getModifierStacks("Power Up");
-		damage += powerUpStacks;
 		if (isCrit) {
-			damage *= critBonus;
-			damage += powerUpStacks;
+			pendingDamage *= critMultiplier;
 		}
 		return dealDamage([target], user, damage, false, element, adventure);
-	})
-).setUpgrades("Accelerating Lance", "Piercing Lance", "Vigilant Lance")
-	.setTargetingTags({ target: "single", team: "enemy" })
-	.setModifiers({ name: "Stagger", stacks: 1 })
+	}
+).setUpgrades("Accelerating Lance", "Unstoppable Lance", "Vigilant Lance")
+	.setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

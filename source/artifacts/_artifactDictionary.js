@@ -16,11 +16,13 @@ const ROLL_TABLE = {
 
 for (const file of [
 	"amethystspyglass.js",
-	"bloodshieldsword.js",
+	"boatparts.js",
+	"celestialknightinsignia.js",
 	"crystalshard.js",
 	"enchantedmap.js",
 	"hammerspaceholster.js",
 	"hawktailfeather.js",
+	"healthinsuranceloophole.js",
 	"negativeoneleafclover.js",
 	"oilpainting.js",
 	"phoenixfruitblossom.js",
@@ -39,7 +41,7 @@ function getArtifact(artifactName) {
 }
 
 function getArtifactCounts() {
-	return Object.values(ARTIFACTS).length; //TODO #225 separate artifact counts by element
+	return Object.values(ARTIFACTS).length;
 }
 
 /** @param {Adventure} adventure */
@@ -49,13 +51,9 @@ function rollArtifact(adventure) {
 	return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 }
 
-function getAllArtifactNames() {
-	return Object.keys(ARTIFACTS);
-}
-
 module.exports = {
+	artifactNames: Object.keys(ARTIFACTS),
 	getArtifact,
 	getArtifactCounts,
-	rollArtifact,
-	getAllArtifactNames
+	rollArtifact
 };

@@ -1,28 +1,34 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { addModifier, removeModifier } = require('../util/combatantUtil.js');
+const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Midas Staff",
-	"Apply @{mod1Stacks} @{mod1} to a combatant",
-	"@{mod1} +@{bonus}",
+	"Apply @{mod0Stacks} @{mod0} to a combatant",
+	"@{mod0} +@{bonus}",
 	"Trinket",
 	"Water",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, curse], bonus } = module.exports;
-		const pendingCurse = { ...curse, stacks: curse.stacks + (isCrit ? bonus : 0) };
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [curse], bonus } = module.exports;
+		const pendingCurse = { ...curse };
+		if (isCrit) {
+			pendingCurse.stacks += bonus;
+		}
 		if (user.element === element) {
 			if (target.team === user.team) {
-				removeModifier(target, elementStagger);
+				target.addStagger("elementMatchAlly");
 			} else {
-				addModifier(target, elementStagger);
+				target.addStagger("elementMatchFoe");
 			}
 		}
-		addModifier(target, pendingCurse);
-		return `${target.getName(adventure.room.enemyIdMap)} gains Curse of Midas.`;
-	})
-).setTargetingTags({ target: "single", team: "any" })
+		const addedCurse = addModifier(target, pendingCurse);
+		if (addedCurse) {
+			return `${target.getName(adventure.room.enemyIdMap)} gains Curse of Midas.`;
+		} else {
+			return "But nothing happened.";
+		}
+	}
+).setTargetingTags({ target: "single", team: "any", needsLivingTargets: true })
 	.setUpgrades("Accelerating Midas Staff", "Discounted Midas Staff", "Soothing Midas Staff")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Curse of Midas", stacks: 1 })
+	.setModifiers({ name: "Curse of Midas", stacks: 1 })
 	.setBonus(1) // Curse of Midas stacks
 	.setDurability(10);

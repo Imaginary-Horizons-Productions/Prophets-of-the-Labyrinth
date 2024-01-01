@@ -1,26 +1,40 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { addModifier, removeModifier } = require('../util/combatantUtil.js');
+const { addModifier } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Inspiration",
-	"Apply @{mod1Stacks} @{mod1} to all allies",
-	"@{mod1} +@{bonus}",
+	"Apply @{mod0Stacks} @{mod0} to all allies",
+	"@{mod0} +@{bonus}",
 	"Spell",
 	"Wind",
 	350,
-	needsLivingTargets((targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, powerUp], bonus } = module.exports;
-		const pendingPowerUp = { ...powerUp, stacks: powerUp.stacks + (isCrit ? bonus : 0) };
+	(targets, user, isCrit, adventure) => {
+		const { element, modifiers: [powerUp], bonus } = module.exports;
+		const pendingPowerUp = { ...powerUp };
+		if (isCrit) {
+			pendingPowerUp.stacks += bonus;
+		}
+		const poweredUpTargets = [];
 		targets.forEach(target => {
 			if (user.element === element) {
-				removeModifier(target, elementStagger);
+				target.addStagger("elementMatchAlly");
 			}
-			addModifier(target, pendingPowerUp);
+			const addedPowerUp = addModifier(target, pendingPowerUp);
+			if (addedPowerUp) {
+				poweredUpTargets.push(target.getName(adventure.room.enemyIdMap));
+			}
 		})
-		return `Everyone is Powered Up.`;
-	})
-).setTargetingTags({ target: "all", team: "delver" })
+
+		if (poweredUpTargets.length > 1) {
+			return `${listifyEN(poweredUpTargets)} are Powered Up.`;
+		} else if (poweredUpTargets.length === 1) {
+			return `${poweredUpTargets[0]} is Powered Up.`;
+		} else {
+			return "But nothing happened.";
+		}
+	}
+).setTargetingTags({ target: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Inspiration", "Soothing Inspiration")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 })
+	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setBonus(25) // Power Up stacks
 	.setDurability(10);

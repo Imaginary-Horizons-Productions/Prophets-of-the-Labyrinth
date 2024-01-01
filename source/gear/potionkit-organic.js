@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { removeModifier } = require('../util/combatantUtil');
+const { listifyEN } = require('../util/textUtil');
 
 const rollablePotions = [
 	"Block Potion",
@@ -16,27 +16,30 @@ const rollablePotions = [
 
 
 module.exports = new GearTemplate("Organic Potion Kit",
-	"Add 1 random potion to loot, regain 1 durability when entering a new room",
-	"Instead add @{critBonus} potions",
+	"Add @{bonus} random potion to loot, regain 1 durability when entering a new room",
+	"Potion count x@{critMultiplier}",
 	"Trinket",
 	"Water",
 	350,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], critBonus } = module.exports;
+		const { element, bonus, critMultiplier } = module.exports;
+		let pendingPotionCount = bonus;
+		if (isCrit) {
+			pendingPotionCount *= critMultiplier;
+		}
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
 		const randomPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
+		adventure.addResource(randomPotion, "item", "loot", pendingPotionCount);
 		if (isCrit) {
-			adventure.addResource(randomPotion, "item", "loot", critBonus);
 			return `${user.getName(adventure.room.enemyIdMap)} sets a double-batch of ${randomPotion} simmering.`;
 		} else {
-			adventure.addResource(randomPotion, "item", "loot", 1);
 			return `${user.getName(adventure.room.enemyIdMap)} sets a batch of ${randomPotion} simmering.`;
 		}
 	}
-).setTargetingTags({ target: "none", team: "none" })
+).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })
 	.setSidegrades("Reinforced Potion Kit", "Urgent Potion Kit")
-	.setModifiers({ name: "Stagger", stacks: 1 })
+	.setBonus(1) // Potion count
 	.setDurability(15)
-	.setFlavorText({ name: "Possible Potions", value: rollablePotions.join(", ") });
+	.setFlavorText({ name: "Possible Potions", value: listifyEN(rollablePotions) });

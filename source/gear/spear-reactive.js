@@ -1,32 +1,34 @@
 const { GearTemplate, Move } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Spear",
 	"Strike a foe for @{damage} (+@{bonus} if after foe) @{element} damage",
-	"Also inflict @{mod1Stacks} @{mod1}",
+	"Also inflict @{foeStagger}",
 	"Weapon",
 	"Wind",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, critStagger], damage, bonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, stagger, damage, bonus } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
 		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === adventure.getCombatantIndex(target));
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
-			damage += bonus;
+			pendingDamage += bonus;
 		}
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
+		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit) {
-			addModifier(target, critStagger);
+			target.addStagger(stagger);
+			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
 		}
-		return dealDamage([target], user, damage, false, element, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+		return resultText;
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Spear", "Sweeping Spear")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
+	.setStagger(2)
 	.setDurability(15)
-	.setDamage(100)
+	.setDamage(65)
 	.setBonus(75); // damage

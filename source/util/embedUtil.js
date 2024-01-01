@@ -9,7 +9,7 @@ const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { isBuff, isDebuff, isNonStacking } = require("../modifiers/_modifierDictionary");
+const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
@@ -26,7 +26,7 @@ const potlTips = [
 	"Combatants lose their next turn (Stun) when their Stagger reaches their Poise.",
 	"Using items has priority.",
 	"Gear that matches your element removes 1 Stagger on allies.",
-	"Gear that matches your element adds 1 Stagger on foes.",
+	"Gear that matches your element adds 2 Stagger on foes.",
 	"Combatant speed varies every round.",
 	"Damage is capped to 500 in one attack without any Power Up."
 ];
@@ -245,7 +245,7 @@ function updateRoomHeader(adventure, message) {
 /** The version embed lists the following: changes in the most recent update, known issues in the most recent update, and links to support the project */
 async function generateVersionEmbed() {
 	const data = await fs.promises.readFile('./ChangeLog.md', { encoding: 'utf8' });
-	const dividerRegEx = /## .+ Version/g;
+	const dividerRegEx = /## .+ v\d+.\d+.\d+/g;
 	const changesStartRegEx = /\.\d+:/g;
 	const knownIssuesStartRegEx = /### Known Issues/g;
 	let titleStart = dividerRegEx.exec(data).index;
@@ -288,7 +288,7 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 		embed.addFields(artifactTemplate.flavorText);
 	}
 	if (adventure) {
-		const artifactCopy = Object.assign({}, adventure.artifacts[artifactTemplate.name]);
+		const artifactCopy = Object.assign({}, adventure.getArtifactCount(artifactTemplate.name));
 		delete artifactCopy["count"];
 		Object.entries(artifactCopy).forEach(([statistic, value]) => {
 			embed.addFields({ name: statistic, value: value.toString() });
@@ -300,34 +300,38 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 /** Seen in target selection embeds and /inspect-self gear fields contain nearly all information about the gear they represent
  * @param {string} gearName
  * @param {number} durability
+ * @param {Delver} holder
  * @returns {EmbedField} contents for a message embed field
  */
-function gearToEmbedField(gearName, durability) {
+function gearToEmbedField(gearName, durability, holder) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = durability === Infinity ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability)`;
+	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability)`;
 	return {
 		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))}${durabilityText}`,
-		value: buildGearDescription(gearName, true)
+		value: buildGearDescription(gearName, maxDurability !== 0, holder)
 	};
 }
 
 /** Generates an object to Discord.js's specification that corresponds with a delver's in-adventure stats
  * @param {Delver} delver
  * @param {number} gearCapacity
+ * @param {boolean} roomHasEnemies
  * @returns {MessagePayload}
  */
-function inspectSelfPayload(delver, gearCapacity) {
+function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
+	let description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP`;
+	if (delver.block > 0) {
+		description += ` ${delver.block} Block`;
+	}
+	description += `\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.getName()} the ${delver.archetype}`)
-		.setDescription(`${generateTextBar(delver.hp, delver.maxHP, 11)} ${delver.hp}/${delver.maxHP} HP\nYour ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.`);
-	if (delver.block > 0) {
-		embed.addFields({ name: "Block", value: delver.block.toString() })
-	}
+		.setDescription(description);
 	for (let index = 0; index < gearCapacity; index++) {
 		if (delver.gear[index]) {
-			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability));
+			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability, delver));
 		} else {
 			embed.addFields({ name: `${ordinalSuffixEN(index + 1)} Gear Slot`, value: "No gear yet..." })
 		}
@@ -348,7 +352,7 @@ function inspectSelfPayload(delver, gearCapacity) {
 				style = ButtonStyle.Secondary;
 			}
 			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
-				.setLabel(`${modifierName}${isNonStacking(modifierName) ? "" : ` x ${delver.modifiers[modifierName]}`}`)
+				.setLabel(`${modifierName} x ${delver.modifiers[modifierName]}`)
 				.setStyle(style))
 		}
 		if (modifiers.length > 4) {

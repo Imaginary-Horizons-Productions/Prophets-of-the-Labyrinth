@@ -1,30 +1,30 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { addBlock, removeModifier } = require('../util/combatantUtil.js');
+const { addBlock } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Vigilant Scutum",
-	"Grant @{block} block to an ally and yourself and gain @{mod1Stacks} @{mod1}",
-	"Block x@{critBonus}",
+	"Grant @{block} block to an ally and yourself and gain @{mod0Stacks} @{mod0}",
+	"Block x@{critMultiplier}",
 	"Armor",
 	"Fire",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, vigilance], block, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [vigilance], block, critMultiplier } = module.exports;
+		let pendingBlock = block;
 		if (user.element === element) {
-			removeModifier(target, elementStagger);
-			removeModifier(user, elementStagger);
+			target.addStagger("elementMatchAlly");
+			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critBonus;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(target, block);
-		addBlock(user, block);
-		addModifier(user, vigilance);
+		addBlock(target, pendingBlock);
+		addBlock(user, pendingBlock);
+		const addedVigilance = addModifier(user, vigilance);
 		const userName = user.getName(adventure.room.enemyIdMap);
-		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}. ${userName} gains Vigilance.`;
-	})
-).setTargetingTags({ target: "single", team: "delver" })
+		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}.${addedVigilance ? ` ${userName} gains Vigilance.` : ""}`;
+	}
+).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Vigilance", stacks: 1 })
+	.setModifiers({ name: "Vigilance", stacks: 1 })
 	.setDurability(15)
 	.setBlock(75);

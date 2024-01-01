@@ -7,8 +7,9 @@ module.exports = new ItemTemplate("Strength Spinach",
 	"Untyped",
 	30,
 	selectSelf,
+	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier(user, { name: "Power Up", stacks: 50 });
 		return `${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
 	}
-);
+).setFlavorText([{ name: "*Additional Notes*", value: "*It does what it says on the tin.*" }]);

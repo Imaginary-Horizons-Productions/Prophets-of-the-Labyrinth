@@ -1,27 +1,27 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage, addModifier, payHP } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Lethal Certain Victory",
-	"Strike a foe for @{damage} @{element} damage, gain @{mod1Stacks} @{mod1}; pay HP for your @{mod1}",
-	"Damage x@{critBonus}",
+	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; pay HP for your @{mod0}",
+	"Damage x@{critMultiplier}",
 	"Pact",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, powerUp], damage, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [powerUp], damage, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(user, powerUp);
-		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+		const addedPowerUp = addModifier(user, powerUp);
+		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""}`;
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Reckless Certain Victory")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 })
+	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)
-	.setDamage(75)
-	.setCritBonus(3);
+	.setDamage(40)
+	.setCritMultiplier(3);

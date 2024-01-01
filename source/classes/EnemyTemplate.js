@@ -9,28 +9,29 @@ class EnemyTemplate {
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
 	 * @param {number} maxHPInput
 	 * @param {number} speedInput
-	 * @param {number} poiseInput number of Stagger to Stun
-	 * @param {number} critBonusPercent multiplicative increase to base 1/4 crit chance
+	 * @param {string} poiseExpressionInput expression, where n = delver count, that parses to number of Stagger to Stun
+	 * @param {number} critRateBonus multiplicative increase to base 1/5 crit chance
 	 * @param {string} firstActionName use "random" for random move in enemy's move pool
-	 * @param {boolean} isBoss sets enemy to not randomize HP and adds 15 critBonus
+	 * @param {boolean} isBoss sets enemy to not randomize HP and adds 15 critRate
 	 */
-	constructor(nameInput, elementEnum, maxHPInput, speedInput, poiseInput, critBonusPercent, firstActionName, isBoss) {
+	constructor(nameInput, elementEnum, maxHPInput, speedInput, poiseExpressionInput, critRateBonus, firstActionName, isBoss) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!elementEnum) throw new BuildError("Falsy elementEnum");
 		if (!maxHPInput) throw new BuildError("Falsy maxHPInput");
 		if (!speedInput) throw new BuildError("Falsy speedInput");
-		if (!poiseInput) throw new BuildError("Falsy poiseInput");
+		if (!poiseExpressionInput) throw new BuildError("Falsy poiseExpression");
 		if (!isBoss && isBoss !== false) throw new BuildError("Nonfalse falsy isBoss");
-		const pendingCritBonus = critBonusPercent + (isBoss ? 15 : 0);
-		if (!pendingCritBonus && pendingCritBonus !== 0) throw new BuildError("Nonzero falsy critBonus");
+		const pendingCritRate = critRateBonus + (isBoss ? 15 : 0);
+		if (!pendingCritRate && pendingCritRate !== 0) throw new BuildError("Nonzero falsy critRate");
 		if (!firstActionName) throw new BuildError("Falsy firstActionName");
 
 		this.name = nameInput;
 		this.element = elementEnum;
 		this.maxHP = maxHPInput;
 		this.speed = speedInput;
-		this.poise = poiseInput;
-		this.critBonus = pendingCritBonus;
+		/** @type {string} expression, where n = delver count */
+		this.poiseExpression = poiseExpressionInput;
+		this.critRate = 20 + pendingCritRate;
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
 	}
@@ -38,6 +39,14 @@ class EnemyTemplate {
 	actions = {};
 	/** @type {[modifierName: string]: number} */
 	startingModifiers = {};
+	/** @type {import("discord.js").EmbedField} */
+	flavorText;
+
+	/** @param {number} integer */
+	setPower(integer) {
+		this.power = integer;
+		return this;
+	}
 
 	/**
 	 * @param {string} modifier
@@ -52,13 +61,21 @@ class EnemyTemplate {
 	 * @param {object} actionsInput
 	 * @param {string} actionsInput.name
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}"} actionsInput.element
+	 * @param {string} actionsInput.description
 	 * @param {number} actionsInput.priority
 	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} actionsInput.effect
 	 * @param {(self: Combatant, adventure: Adventure) => CombatantReference[]} actionsInput.selector
+	 * @param {boolean} actionsInput.needsLivingTargets Only enemies stay at 0 hp without game over, so only true if it can target an enemy
 	 * @param {(actionName: string) => string} actionsInput.next
 	 */
 	addAction(actionsInput) {
 		this.actions[actionsInput.name] = actionsInput;
+		return this;
+	}
+
+	/** @param {import("discord.js").EmbedField} fieldObject */
+	setFlavorText(fieldObject) {
+		this.flavorText = fieldObject;
 		return this;
 	}
 };

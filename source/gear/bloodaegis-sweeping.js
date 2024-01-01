@@ -1,22 +1,23 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
-const { removeModifier, addBlock, payHP } = require('../util/combatantUtil.js');
+const { addBlock, payHP } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Blood Aegis",
 	"Pay @{hpCost} hp; gain @{block} block and intercept all later single target moves",
-	"Block x@{critBonus}",
+	"Block x@{critMultiplier}",
 	"Pact",
 	"Darkness",
 	350,
-	needsLivingTargets((targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], block, critBonus, hpCost } = module.exports;
+	(targets, user, isCrit, adventure) => {
+		const { element, block, critMultiplier, hpCost } = module.exports;
+		let pendingBlock = block;
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critBonus;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(user, block);
+		addBlock(user, pendingBlock);
 
 		const provokedTargets = [];
 		const targetTeam = user.team === "delver" ? "enemy" : "delver";
@@ -29,15 +30,16 @@ module.exports = new GearTemplate("Sweeping Blood Aegis",
 			}
 		})
 
-		if (provokedTargets.length > 0) {
-			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${provokedTargets.join(", ")} fall(s) for the provocation.`;
+		if (provokedTargets.length > 1) {
+			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${listifyEN(provokedTargets)} fall for the provocation.`;
+		} else if (provokedTargets.length === 1) {
+			return `Preparing to Block, ${payHP(user, hpCost, adventure)} ${provokedTargets[0]} falls for the provocation.`;
 		} else {
 			return `Preparing to Block, ${payHP(user, hpCost, adventure)}`;
 		}
-	})
-).setTargetingTags({ target: "all", team: "enemy" })
+	}
+).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Charging Blood Aegis", "Reinforced Blood Aegis")
-	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setHPCost(25)
 	.setBlock(100);

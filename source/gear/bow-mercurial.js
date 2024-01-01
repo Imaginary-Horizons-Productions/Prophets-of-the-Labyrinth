@@ -1,26 +1,25 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Mercurial Bow",
 	"Strike a foe for @{damage} damage matching the user's element with priority",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Wind",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], damage, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, damage, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, damage, false, element, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+		return dealDamage([target], user, pendingDamage, false, element, adventure);
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Bow", "Hunter's Bow")
-	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setPriority(1);

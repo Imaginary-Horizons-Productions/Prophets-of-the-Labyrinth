@@ -7,6 +7,7 @@ module.exports = new ItemTemplate("Repair Kit",
 	"Untyped",
 	30,
 	selectSelf,
+	false,
 	(targets, user, isCrit, adventure) => {
 		user.gear.forEach((gear) => {
 			/** @type {number} */

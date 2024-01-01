@@ -1,32 +1,33 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { addModifier, dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Scythe",
-	"Strike a foe applying @{mod1Stacks} @{mod1} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
-	"Instant death threshold x@{critBonus}",
+	"Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
+	"Instant death threshold x@{critMultiplier}",
 	"Weapon",
 	"Darkness",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, poison], damage, bonus: hpThreshold, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [poison], damage, bonus: hpThreshold, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
+		let pendingHPThreshold = hpThreshold;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			hpThreshold *= critBonus;
+			pendingHPThreshold *= critMultiplier;
 		}
-		if (target.hp > hpThreshold) {
-			addModifier(target, poison);
-			return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Poisoned.`;
+		if (target.hp > pendingHPThreshold) {
+			const addedPoison = addModifier(target, poison);
+			return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedPoison ? ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.` : ""}`;
 		} else {
 			target.hp = 0;
 			return `${target.getName(adventure.room.enemyIdMap)} meets the reaper.`;
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
-	.setSidegrades("Lethal Scythe", "Piercing Scythe")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Poison", stacks: 3 })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+	.setSidegrades("Lethal Scythe", "Unstoppable Scythe")
+	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setBonus(99); // execute threshold

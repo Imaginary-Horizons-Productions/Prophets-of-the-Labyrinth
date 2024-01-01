@@ -1,32 +1,32 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage, addModifier, payHP } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Certain Victory",
-	"Strike a foe for @{damage} @{element} damage, gain @{mod1Stacks} @{mod1} (@{bonus}g on kill); pay HP for your @{mod1}",
-	"Damage x@{critBonus}",
+	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} (@{bonus}g on kill); pay HP for your @{mod0}",
+	"Damage x@{critMultiplier}",
 	"Pact",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, powerUp], damage, bonus: bounty, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [powerUp], damage, bonus: bounty, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(user, powerUp);
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		const addedPowerUp = addModifier(user, powerUp);
+		let damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (target.hp < 1) {
 			adventure.gainGold(bounty);
 			damageText += ` ${user.getName(adventure.room.enemyIdMap)} gains ${bounty}g of victory spoils.`;
 		}
-		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText} ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText}${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""}`;
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 })
+	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setBonus(15);

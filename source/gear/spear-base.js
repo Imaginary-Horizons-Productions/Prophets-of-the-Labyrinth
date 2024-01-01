@@ -1,25 +1,27 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Spear",
 	"Strike a foe for @{damage} @{element} damage",
-	"Also inflict @{mod1Stacks} @{mod1}",
+	"Also inflict @{foeStagger}",
 	"Weapon",
 	"Wind",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, critStagger], damage } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, stagger, damage } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
+		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit) {
-			addModifier(target, critStagger);
+			target.addStagger(stagger);
+			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
 		}
-		return dealDamage([target], user, damage, false, element, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+		return resultText;
+	}
+).setTargetingTags({ target: "single", team: "foe" })
 	.setUpgrades("Lethal Spear", "Reactive Spear", "Sweeping Spear")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
+	.setStagger(2)
 	.setDurability(15)
-	.setDamage(100);
+	.setDamage(65);

@@ -1,26 +1,27 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Slowing Daggers",
-	"Strike a foe for @{damage} @{element} damage and inflict @{mod1Stacks} @{mod1}",
-	"Damage x@{critBonus}",
+	"Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Wind",
-	350, needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, slow], damage, critBonus } = module.exports;
+	350,
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [slow], damage, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(target, slow);
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+		const addedSlow = addModifier(target, slow);
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedSlow ? ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.` : ""}`;
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 1 })
+	.setModifiers({ name: "Slow", stacks: 1 })
 	.setDurability(15)
-	.setCritBonus(3)
-	.setDamage(75);
+	.setCritMultiplier(3)
+	.setDamage(40);

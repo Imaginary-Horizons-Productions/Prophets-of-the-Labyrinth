@@ -7,14 +7,14 @@ module.exports = {
 	/** @type {string[]} */
 	commandFiles: [
 		"about.js",
-		"adventure.js",
+		"adventure",
 		"commands.js",
 		"data-policy.js",
 		"delve.js",
 		"feedback.js",
 		"give-up.js",
 		"invite.js",
-		"manual.js",
+		"manual",
 		"ping.js",
 		"player-stats.js",
 		"regenerate.js",

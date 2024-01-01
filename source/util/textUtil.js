@@ -110,11 +110,38 @@ function ordinalSuffixEN(integer) {
 	}
 }
 
+/** @param {string} text */
+function trimForSelectOptionDescription(text) {
+	if (text.length > 100) {
+		return `${text.slice(0, 99)}…`;
+	} else {
+		return text;
+	}
+}
+
+/** Formats string array into Oxford English list syntax
+ *  @param {string[]} texts
+ */
+function listifyEN(texts) {
+	if (texts.length > 2) {
+		const textsSansLast = texts.slice(0, texts.length - 1);
+		return `${textsSansLast.join(", ")}, and ${texts[texts.length - 1]}`;
+	} else if (texts.length === 2) {
+		return texts.join(" and ");
+	} else if (texts.length === 1) {
+		return texts[0];
+	} else {
+		return "";
+	}
+}
+
 module.exports = {
 	getNumberEmoji,
 	generateTextBar,
 	generateRuntimeTemplateStringRegExp,
 	parseExpression,
 	calculateTagContent,
-	ordinalSuffixEN
+	ordinalSuffixEN,
+	trimForSelectOptionDescription,
+	listifyEN
 };

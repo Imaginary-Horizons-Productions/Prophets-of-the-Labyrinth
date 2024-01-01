@@ -1,29 +1,28 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Warhammer",
 	"Strike a foe for @{damage} (+@{bonus} if foe is currently stunned) @{element} damage",
-	"Damage x@{critBonus}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], damage, bonus, critBonus } = module.exports;
-		if (target.getModifierStacks("Stun") > 0) {
-			damage += bonus;
+	([target], user, isCrit, adventure) => {
+		const { element, damage, bonus, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
+		if (target.isStunned) {
+			pendingDamage += bonus;
 		}
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, damage, false, element, adventure);
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
-	.setUpgrades("Piercing Warhammer", "Reactive Warhammer", "Slowing Warhammer")
-	.setModifiers({ name: "Stagger", stacks: 1 })
+		return dealDamage([target], user, pendingDamage, false, element, adventure);
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+	.setUpgrades("Reactive Warhammer", "Slowing Warhammer", "Unstoppable Warhammer")
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setBonus(75); // damage

@@ -1,33 +1,33 @@
 const { GearTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
-const { needsLivingTargets } = require("../shared/actionComponents");
 const { dealDamage, addModifier } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Thick Censer",
 	"Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage",
-	"Also apply @{mod1Stacks} @{mod1}",
+	"Also apply @{mod0Stacks} @{mod0}",
 	"Trinket",
 	"Fire",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, slow], damage, bonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [slow], damage, bonus } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
-			damage += bonus;
+			pendingDamage += bonus;
 		}
-		let damageText = dealDamage([target], user, damage, false, element, adventure);
+		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			addModifier(target, slow);
-			return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+			const addedSlow = addModifier(target, slow);
+			return `${damageText}${addedSlow ? ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.` : ""}`;
 		} else {
 			return damageText;
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Censer", "Tormenting Censor")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Slow", stacks: 2 })
-	.setDamage(50)
+	.setModifiers({ name: "Slow", stacks: 2 })
+	.setDamage(15)
 	.setBonus(75) // damage
 	.setDurability(30);

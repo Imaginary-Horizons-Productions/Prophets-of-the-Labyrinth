@@ -6,7 +6,7 @@ const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { buildGearDescription } = require("../gear/_gearDictionary");
 
-const { ordinalSuffixEN } = require("./textUtil");
+const { ordinalSuffixEN, trimForSelectOptionDescription } = require("./textUtil");
 
 /** Modify the buttons whose `customId`s are keys in `edits` from among `components` based on `preventUse`, `label`, and `emoji` then return all components
  * @param {MessageActionRow[]} components
@@ -88,9 +88,9 @@ function generateLootRow(adventure) {
 				}
 
 				if (type === "gear") {
-					option.description = buildGearDescription(name, false);
+					option.description = trimForSelectOptionDescription(buildGearDescription(name, false));
 				} else if (type === "artifact") {
-					option.description = getArtifact(name).dynamicDescription(count);
+					option.description = trimForSelectOptionDescription(getArtifact(name).dynamicDescription(count));
 				}
 				options.push(option)
 			}
@@ -114,10 +114,10 @@ function generateLootRow(adventure) {
 /** @param {Adventure} adventure */
 function generateRoutingRow(adventure) {
 	return new ActionRowBuilder().addComponents(
-		...Object.keys(adventure.roomCandidates).map(candidateTag => {
+		...Object.keys(adventure.roomCandidates).map((candidateTag, index) => {
 			const [roomType, depth] = candidateTag.split(SAFE_DELIMITER);
 			return new ButtonBuilder().setCustomId(`routevote${SAFE_DELIMITER}${candidateTag}`)
-				.setLabel(`Next room: ${adventure.roomCandidates[candidateTag].isHidden ? "???" : roomType}`)
+				.setLabel(`Next room: ${adventure.roomCandidates[candidateTag].isHidden ? `Unknown ${index + 1}` : roomType}`)
 				.setStyle(ButtonStyle.Secondary)
 		}));
 }

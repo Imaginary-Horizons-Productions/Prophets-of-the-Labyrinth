@@ -9,7 +9,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (adventure.room.resources.roomAction.count < 1) {
-			interaction.reply({ content: "The forge's supplies have been exhausted.", ephemeral: true });
+			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
 			return;
 		}
 
@@ -21,8 +21,11 @@ module.exports = new SelectWrapper(mainId, 3000,
 			let components = roomMessage.components;
 			if (remainingActions < 1) {
 				components = editButtons(components, {
-					"upgrade": { preventUse: true, label: "Forge supplies exhausted", emoji: "✔️" },
-					"viewrepairs": { preventUse: true, label: "Forge supplies exhausted", emoji: "✔️" }
+					"gearcapup": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
+					"tinker": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
+					"upgrade": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
+					"viewblackbox": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
+					"viewrepairs": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" }
 				})
 			}
 			return roomMessage.edit({ embeds, components });

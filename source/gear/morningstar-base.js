@@ -1,26 +1,25 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { addModifier, dealDamage } = require('../util/combatantUtil');
+const { dealDamage } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Morning Star",
-	"Strike a foe applying @{mod1Stacks} @{mod1} and @{damage} @{element} damage",
-	"Damage x@{critBonus}",
+	"Strike a foe applying @{foeStagger} and @{damage} @{element} damage",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Light",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, stagger], damage, critBonus } = module.exports;
-		let pendingDamage = damage;
+	([target], user, isCrit, adventure) => {
+		const { element, stagger, damage, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			pendingDamage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(target, stagger);
+		target.addStagger(stagger);
 		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+	.setStagger(2)
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

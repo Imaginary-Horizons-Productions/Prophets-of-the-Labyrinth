@@ -1,27 +1,33 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage, addModifier, payHP } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reckless Certain Victory",
-	"Strike a foe for @{damage} @{element} damage, gain @{mod1Stacks} @{mod1} and @{mod2Stacks} @{mod2}; pay HP for your @{mod1}",
-	"Damage x@{critBonus}",
+	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}; pay HP for your @{mod0}",
+	"Damage x@{critMultiplier}",
 	"Pact",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, powerUp, exposed], damage, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [powerUp, exposed], damage, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
-		addModifier(user, powerUp);
-		addModifier(user, exposed);
-		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up and Exposed.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+		const addedPowerUp = addModifier(user, powerUp);
+		const addedExposed = addModifier(user, exposed);
+		if (addedPowerUp) {
+			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up and Exposed.`;
+		} else if (addedExposed) {
+			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
+		} else {
+			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)}`;
+		}
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Lethal Certain Victory")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 25 }, { name: "Exposed", stacks: 1 })
+	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Exposed", stacks: 1 })
 	.setDurability(15)
-	.setDamage(125);
+	.setDamage(90);

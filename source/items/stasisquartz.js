@@ -7,6 +7,7 @@ module.exports = new ItemTemplate("Stasis Quartz",
 	"Untyped",
 	30,
 	selectSelf,
+	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier(user, { name: "Stasis", stacks: 1 });
 		return `${user.getName(adventure.room.enemyIdMap)} enters Stasis.`;

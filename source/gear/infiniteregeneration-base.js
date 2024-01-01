@@ -1,26 +1,26 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
-const { removeModifier, addModifier, payHP } = require('../util/combatantUtil.js');
+const { addModifier, payHP } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Infinite Regeneration",
-	"Pay @{hpCost} hp to grant an ally @{mod1Stacks} @{mod1}",
-	"HP Cost / @{critBonus}",
+	"Pay @{hpCost} hp to grant an ally @{mod0Stacks} @{mod0}",
+	"HP Cost / @{critMultiplier}",
 	"Pact",
 	"Light",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, regen], hpCost, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [regen], hpCost, critMultiplier } = module.exports;
+		let pendingHPCost = hpCost;
 		if (user.element === element) {
-			removeModifier(target, elementStagger);
+			target.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			hpCost /= critBonus;
+			pendingHPCost /= critMultiplier;
 		}
-		addModifier(target, regen);
-		return `${payHP(user, hpCost, adventure)} ${user.getName(adventure.room.enemyIdMap)} gains Regen.`;
-	})
-).setTargetingTags({ target: "single", team: "delver" })
+		const addedRegen = addModifier(target, regen);
+		return `${payHP(user, pendingHPCost, adventure)}${addedRegen ? ` ${user.getName(adventure.room.enemyIdMap)} gains Regen.` : ""}`;
+	}
+).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Discounted Infinite Regeneration", "Fate-Sealing Infinite Regeneration")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Regen", stacks: 3 })
+	.setModifiers({ name: "Regen", stacks: 3 })
 	.setHPCost(50)
 	.setDurability(10);

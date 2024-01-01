@@ -1,32 +1,31 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { addBlock, removeModifier } = require('../util/combatantUtil.js');
+const { addBlock } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sweeping Scutum",
 	"Grant @{block} block to all allies (including yourself)",
-	"Block x@{critBonus}",
+	"Block x@{critMultiplier}",
 	"Armor",
 	"Fire",
 	350,
-	needsLivingTargets((targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], block, critBonus } = module.exports;
+	(targets, user, isCrit, adventure) => {
+		const { element, block, critMultiplier } = module.exports;
+		let pendingBlock = block;
 		if (isCrit) {
-			block *= critBonus;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(user, block);
+		addBlock(user, pendingBlock);
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
 		targets.forEach(target => {
 			if (user.element === element) {
-				removeModifier(target, elementStagger);
+				target.addStagger("elementMatchAlly");
 			}
-			addBlock(target, block);
+			addBlock(target, pendingBlock);
 		})
 		return "Damage will be blocked for everyone.";
-	})
-).setTargetingTags({ target: "all", team: "delver" })
+	}
+).setTargetingTags({ target: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Vigilant Scutum")
-	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setBlock(75);

@@ -1,33 +1,40 @@
 const { GearTemplate } = require("../classes");
-const { needsLivingTargets } = require("../shared/actionComponents");
 const { dealDamage, addModifier, getCombatantWeaknesses } = require("../util/combatantUtil");
+
 module.exports = new GearTemplate("Duelist's Pistol",
-	"Strike a foe for @{damage} (+@{bonus} if only attacker) @{element} damage, give a random ally @{mod1Stacks} @{mod1} if the foe is weak to @{element}",
-	"Damage x@{critBonus}",
+	"Strike a foe for @{damage} (+@{bonus} if only attacker) @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { damage, bonus, critBonus, element, modifiers: [elementStagger, powerUp] } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { damage, bonus, critMultiplier, element, modifiers: [powerUp] } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		const targetIndex = adventure.getCombatantIndex(target);
 		const userIndex = adventure.getCombatantIndex(user);
-		const isLoneAttacker = !adventure.room.moves.some(move => !(move.userReference.team === user.team && move.userReference.index === userIndex) && move.targets.some(moveTarget => moveTarget.team === target.team && moveTarget.index === targetIndex));
-		let pendingDamage = damage + (isLoneAttacker ? bonus : 0);
+		// Duelist's check
+		if (!adventure.room.moves.some(move => !(move.userReference.team === user.team && move.userReference.index === userIndex) && move.targets.some(moveTarget => moveTarget.team === target.team && moveTarget.index === targetIndex))) {
+			pendingDamage += bonus;
+		}
+		if (isCrit) {
+			pendingDamage *= critMultiplier;
+		}
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (getCombatantWeaknesses(target).includes(element)) {
-			const damageText = dealDamage([target], user, pendingDamage * (isCrit ? critBonus : 1), false, element, adventure);
-			const ally = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
-			addModifier(ally, powerUp);
-			return `${damageText} ${ally.name} was Powered Up!`
+			const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
+			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies;
+			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
+			const addedPowerUp = addModifier(ally, powerUp);
+			return `${damageText}${addedPowerUp ? ` ${ally.getName(adventure.room.enemyIdMap)} was Powered Up!` : ""}`;
 		} else {
-			return dealDamage([target], user, pendingDamage * (isCrit ? critBonus : 1), false, element, adventure);
+			return dealDamage([target], user, pendingDamage, false, element, adventure);
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Pistol")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 30 })
+	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setBonus(75);

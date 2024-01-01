@@ -6,10 +6,9 @@ class ModifierTemplate {
 	 * @param {string} descriptionInput
 	 * @param {boolean} isBuffInput
 	 * @param {boolean} isDebuffInput
-	 * @param {boolean} isNonStackingInput
-	 * @param {number} turnDecrementInput
+	 * @param {number | "all"} turnDecrementInput
 	 */
-	constructor(nameInput, descriptionInput, isBuffInput, isDebuffInput, isNonStackingInput, turnDecrementInput) {
+	constructor(nameInput, descriptionInput, isBuffInput, isDebuffInput, turnDecrementInput) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
 		if (!isBuffInput && isBuffInput !== false) throw new BuildError("Nonfalse falsy isBuffInput");
@@ -20,7 +19,6 @@ class ModifierTemplate {
 		this.description = descriptionInput;
 		this.isBuff = isBuffInput;
 		this.isDebuff = isDebuffInput;
-		this.isNonStacking = isNonStackingInput;
 		this.turnDecrement = turnDecrementInput;
 	}
 	inverse = "";

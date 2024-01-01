@@ -1,4 +1,4 @@
-const { SelectWrapper, Move } = require('../classes');
+const { SelectWrapper, Move, CombatantReference } = require('../classes');
 const { EMPTY_MESSAGE_PAYLOAD } = require('../constants');
 const { getItem } = require('../items/_itemDictionary');
 const { getAdventure, checkNextRound, endRound, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -25,11 +25,12 @@ module.exports = new SelectWrapper(mainId, 3000,
 		}
 
 		// Add move to round list (overwrite exisiting readied move)
-		const item = getItem(itemName);
-		const newMove = new Move(user, userIndex, "item", false)
+		const newMove = new Move(new CombatantReference(user.team, userIndex), "item", false)
+			.setSpeedByCombatant(user)
 			.setPriority(1)
 			.setName(itemName);
 
+		const item = getItem(itemName);
 		item.selectTargets(user, adventure).forEach(target => {
 			newMove.addTarget(target);
 		})
@@ -45,7 +46,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		await adventure.room.moves.push(newMove);
 
 		// Send confirmation text
-		interaction.channel.send(`${interaction.user} ${overwritten ? "switches to ready" : "readies"} **${itemName}**.`).then(() => {
+		interaction.channel.send(`${interaction.user} ${overwritten ? "switches to ready" : "readies"} a(n) **${itemName}**.`).then(() => {
 			setAdventure(adventure);
 			if (checkNextRound(adventure)) {
 				endRound(adventure, interaction.channel);

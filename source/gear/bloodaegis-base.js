@@ -1,22 +1,22 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
-const { removeModifier, addBlock, payHP } = require('../util/combatantUtil.js');
+const { addBlock, payHP } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Blood Aegis",
 	"Pay @{hpCost} hp; gain @{block} block and intercept a later single target move",
-	"Block x@{critBonus}",
+	"Block x@{critMultiplier}",
 	"Pact",
 	"Darkness",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger], block, critBonus, hpCost } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, block, critMultiplier, hpCost } = module.exports;
+		let pendingBlock = block;
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			block *= critBonus;
+			pendingBlock *= critMultiplier;
 		}
-		addBlock(user, block);
+		addBlock(user, pendingBlock);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -27,10 +27,9 @@ module.exports = new GearTemplate("Blood Aegis",
 		} else {
 			return `Preparing to Block, ${payHP(user, hpCost, adventure)}`;
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Charging Blood Aegis", "Reinforced Blood Aegis", "Sweeping Blood Aegis")
-	.setModifiers({ name: "Stagger", stacks: 1 })
 	.setDurability(15)
 	.setHPCost(25)
 	.setBlock(125);

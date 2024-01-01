@@ -1,27 +1,36 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Spear",
 	"Strike all foes for @{damage} @{element} damage",
-	"Also inflict @{mod1Stacks} @{mod1}",
+	"Also inflict @{foeStagger}",
 	"Weapon",
 	"Wind",
 	350,
-	needsLivingTargets((targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, critStagger], damage } = module.exports;
+	(targets, user, isCrit, adventure) => {
+		const { element, stagger, damage } = module.exports;
+		let pendingDamage = user.getPower() + damage;
+		const critTargets = [];
 		targets.map(target => {
 			if (user.element === element) {
-				addModifier(target, elementStagger);
+				target.addStagger("elementMatchFoe");
 			}
 			if (isCrit) {
-				addModifier(target, critStagger);
+				target.addStagger(stagger);
+				critTargets.push(target.getName(adventure.room.enemyIdMap));
 			}
 		})
-		return dealDamage(targets, user, damage, false, element, adventure);
-	})
-).setTargetingTags({ target: "all", team: "enemy" })
+		if (critTargets.length > 1) {
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(critTargets)} were Staggered.`;
+		} else if (critTargets.length === 1) {
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${critTargets[0]} was Staggered.`;
+		} else {
+			return dealDamage(targets, user, pendingDamage, false, element, adventure);
+		}
+	}
+).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Spear", "Reactive Spear")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
+	.setStagger(2)
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

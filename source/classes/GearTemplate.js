@@ -29,18 +29,16 @@ class GearTemplate {
 		this.cost = costInput;
 		this.effect = effectInput;
 	}
-	/** @type {{target: "single" | "all" | "random→x" | "self" | "none", team: "delver" | "enemy" | "any" | "none"}} */
+	/** @type {{target: "single" | "all" | "random→x" | "self" | "none", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} */
 	targetingTags;
 	maxDurability = 0;
 	/** @type {string[]} */
 	upgrades = [];
 	/** @type {string[]} */
 	sidegrades = [];
-	critBonus = 2;
+	critMultiplier = 2;
 	/** @type {number} */
 	damage;
-	/** @type {number} */
-	bonus;
 	/** @type {number} */
 	block;
 	/** @type {number} */
@@ -49,12 +47,21 @@ class GearTemplate {
 	healing;
 	/** @type {number} */
 	priority;
+	/** @type {number} */
+	stagger;
+	/** @type {number} */
+	bonus;
 	/** @type {{name: string, stacks: number}[]} */
 	modifiers;
+	maxHP = 0;
+	power = 0;
+	speed = 0;
+	critRate = 0;
+	poise = 0;
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
 
-	/** @param {{target: "single" | "all" | "random→x" | "self" | "none", team: "delver" | "enemy" | "any" | "none"}} tagObject */
+	/** @param {{target: "single" | "all" | "random→x" | "self" | "none", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} tagObject */
 	setTargetingTags(tagObject) {
 		this.targetingTags = tagObject;
 		return this;
@@ -88,15 +95,9 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {number} integer */
-	setBonus(integer) {
-		this.bonus = integer;
-		return this;
-	}
-
 	/** @param {number} numberInput */
-	setCritBonus(numberInput) {
-		this.critBonus = numberInput;
+	setCritMultiplier(numberInput) {
+		this.critMultiplier = numberInput;
 		return this;
 	}
 
@@ -124,9 +125,51 @@ class GearTemplate {
 		return this;
 	}
 
+	/** @param {number} integer */
+	setStagger(integer) {
+		this.stagger = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setBonus(integer) {
+		this.bonus = integer;
+		return this;
+	}
+
 	/** @param {...{name: string, stacks: number}} modifiersArray */
 	setModifiers(...modifiersArray) {
 		this.modifiers = modifiersArray;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setMaxHP(integer) {
+		this.maxHP = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setPower(integer) {
+		this.power = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setSpeed(integer) {
+		this.speed = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setCritRate(integer) {
+		this.critRate = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setPoise(integer) {
+		this.poise = integer;
 		return this;
 	}
 

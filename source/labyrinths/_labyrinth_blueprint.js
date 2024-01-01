@@ -56,7 +56,7 @@ module.exports = new LabyrinthTemplate("name",
 		"Merchant": [],
 		"Rest Site": [],
 		"Final Battle": [],
-		"Forge": [],
+		"Workshop": [],
 		"Artifact Guardian": [],
 		"Treasure": [],
 		"Empty": ["Empty Room"]

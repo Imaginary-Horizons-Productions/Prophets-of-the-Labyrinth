@@ -1,23 +1,31 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, removeModifier } = require('../util/combatantUtil.js');
+const { addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Cloak",
-	"Gain @{mod1Stacks} @{mod1}",
-	"@{mod1} +@{bonus}",
+	"Gain @{critRate} Crit Rate; gain @{mod0Stacks} @{mod0} when used in combat",
+	"@{mod0} +@{bonus}",
 	"Armor",
 	"Wind",
 	200,
 	(targets, user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, evade], bonus } = module.exports;
-		const pendingEvade = { ...evade, stacks: evade.stacks + (isCrit ? bonus : 0) };
+		const { element, modifiers: [evade], bonus } = module.exports;
+		const pendingEvade = { ...evade };
 		if (user.element === element) {
-			removeModifier(user, elementStagger);
+			user.addStagger("elementMatchAlly");
 		}
-		addModifier(user, pendingEvade);
-		return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade.`;
+		if (isCrit) {
+			pendingEvade.stacks += bonus;
+		}
+		const addedEvade = addModifier(user, pendingEvade);
+		if (addedEvade) {
+			return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
-).setTargetingTags({ target: "self", team: "self" })
-	.setUpgrades("Accelerating Cloak", "Long Cloak", "Thick Cloak")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Evade", stacks: 2 })
+).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
+	.setUpgrades("Accelerating Cloak", "Accurate Cloak", "Long Cloak")
+	.setModifiers({ name: "Evade", stacks: 2 })
 	.setBonus(1) // Evade stacks
+	.setCritRate(5)
 	.setDurability(15);

@@ -2,6 +2,7 @@ const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getChallenge } = require('../challenges/_challengeDictionary');
+const { trimForSelectOptionDescription } = require('../util/textUtil');
 
 const mainId = "viewchallenges";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -18,7 +19,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			if (resource.type === "challenge") {
 				const challengeName = resource.name;
 				const challenge = getChallenge(challengeName);
-				options.push({ label: challengeName, description: challenge.dynamicDescription(challenge.intensity, challenge.duration, challenge.reward), value: challengeName });
+				options.push({ label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration, challenge.reward)), value: challengeName });
 			}
 		})
 		const components = [new ActionRowBuilder().addComponents(

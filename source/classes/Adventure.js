@@ -1,20 +1,29 @@
 const crypto = require("crypto");
-const { MAX_MESSAGE_ACTION_ROWS } = require("../constants.js");
+const { MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, GAME_VERSION } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
+const { elementsList } = require("../util/elementUtil.js");
+const { parseExpression } = require("../util/textUtil.js");
+
+const allElements = elementsList();
+const DESCRIPTORS = ["Shining", "New", "Dusty", "Old", "Floating", "Undersea", "Future", "Intense"];
 
 class Adventure {
-	/** NOTE: The setters in this class are require for a well formed entity. Currently procrastinating on refactoring /delve to fix that.
+	/** NOTE: setId is require for a well formed entity. Currently procrastinating on refactoring /delve to fix that.
 	 * @param {string} seedInput
 	 * @param {string} guildIdInput
 	 * @param {string} labyrinthInput
 	 * @param {string} leaderIdInput
 	 */
 	constructor(seedInput, guildIdInput, labyrinthInput, leaderIdInput) {
+		this.version = GAME_VERSION;
 		this.initialSeed = seedInput || Date.now().toString();
+		this.rnTable = crypto.createHash("sha256").update(this.initialSeed).digest("hex");
 		this.guildId = guildIdInput;
 		this.labyrinth = labyrinthInput;
 		this.leaderId = leaderIdInput;
+		this.element = allElements[this.generateRandomNumber(allElements.length, "general")];
+		this.name = `${DESCRIPTORS[this.generateRandomNumber(DESCRIPTORS.length, "general")]} ${labyrinthInput} of ${this.element}`;
 	}
 	/** @type {string} should match the id of the adventure's thread */
 	id;
@@ -53,6 +62,7 @@ class Adventure {
 	lives = 2;
 	gold = 100;
 	peakGold = 100;
+	gearCapacity = 3;
 	/** @type {Record<string, {count: number; [statistic: string]: number}>} */
 	artifacts = {};
 	/** @type {{[itemName: string]: number}} */
@@ -69,28 +79,6 @@ class Adventure {
 		return this;
 	}
 
-	/** @param {string} adventureName */
-	setName(adventureName) {
-		this.name = adventureName;
-		return this;
-	}
-
-	/** @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
-	setElement(elementEnum) {
-		this.element = elementEnum;
-		return this;
-	}
-
-	generateRNTable() {
-		let hash = crypto.createHash("sha256").update(this.initialSeed).digest("hex");
-		let segments = [];
-		for (let i = 0; i < hash.length; i += 4) {
-			segments.push(hash.slice(i, i + 4));
-		}
-		this.rnTable = segments.reduce((table, segment) => table + parseInt(segment, 16).toString(12), "");
-		return this;
-	}
-
 	/** Generate an integer between 0 and the given `exclusiveMax`
 	 * @param {number} exclusiveMax the integer after the max roll
 	 * @param {"general" | "battle"} branch which rnTable branch to roll on
@@ -103,13 +91,17 @@ class Adventure {
 		if (exclusiveMax === 1) {
 			return 0;
 		} else {
-			const digits = Math.ceil(Math.log2(exclusiveMax) / Math.log2(12));
+			const digits = Math.ceil(Math.log2(exclusiveMax) / Math.log2(RN_TABLE_BASE));
 			const start = this.rnIndices[branch];
 			const end = start + digits;
 			this.rnIndices[branch] = end % this.rnTable.length;
-			const max = 12 ** digits;
+			const max = RN_TABLE_BASE ** digits;
 			const sectionLength = max / exclusiveMax;
-			const roll = parseInt(this.rnTable.slice(start, end), 12);
+			let tableSegment = this.rnTable.slice(start, end);
+			if (start > end) {
+				tableSegment = `${this.rnTable.slice(start)}${this.rnTable.slice(0, end)}`;
+			}
+			const roll = parseInt(tableSegment, RN_TABLE_BASE);
 			return Math.floor(roll / sectionLength);
 		}
 	}
@@ -154,7 +146,7 @@ class Adventure {
 	}
 
 	getGearCapacity() {
-		let count = 3 + this.getArtifactCount("Hammerspace Holster") - this.getChallengeIntensity("Can't Hold All this Value");
+		let count = this.gearCapacity + this.getArtifactCount("Hammerspace Holster") - this.getChallengeIntensity("Can't Hold All this Value");
 		count = Math.min(MAX_MESSAGE_ACTION_ROWS, count);
 		count = Math.max(1, count);
 		return count;
@@ -201,6 +193,11 @@ class Adventure {
 	 * @param {number} count
 	 */
 	gainArtifact(artifact, count) {
+		if (artifact in this.artifacts) {
+			this.artifacts[artifact].count += count;
+		} else {
+			this.artifacts[artifact] = { count };
+		}
 		if (artifact === "Oil Painting") {
 			this.gainGold(500 * count);
 			this.updateArtifactStat(artifact, "Gold Gained", 500 * count);
@@ -209,11 +206,6 @@ class Adventure {
 			this.updateArtifactStat(artifact, "Lives Gained", count);
 		} else if (artifact === "Hammerspace Holster") {
 			this.updateArtifactStat(artifact, "Extra Gear Capacity", count);
-		}
-		if (artifact in this.artifacts) {
-			this.artifacts[artifact].count += count;
-		} else {
-			this.artifacts[artifact] = { count: count };
 		}
 	}
 
@@ -323,20 +315,25 @@ class Enemy extends Combatant {
 	/** This read-only data class defines an enemy players can fight
 	 * @param {string} nameInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
+	 * @param {number} powerInput
 	 * @param {number} speedInput
-	 * @param {number} poiseInput
-	 * @param {number} critBonusInput
+	 * @param {number} poiseExpression
+	 * @param {number} critRateInput
 	 * @param {string} firstActionName
 	 * @param {{[modifierName]: number}} startingModifiersShallowCopy
+	 * @param {number} delverCount
 	 */
-	constructor(nameInput, elementEnum, speedInput, poiseInput, critBonusInput, firstActionName, startingModifiersShallowCopy) {
+	constructor(nameInput, elementEnum, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, delverCount) {
 		super(nameInput, "enemy");
 		this.archetype = nameInput;
 		/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
 		this.element = elementEnum;
+		this.power = powerInput;
 		this.speed = speedInput;
-		this.poise = poiseInput;
-		this.critBonus = critBonusInput;
+		if (poiseExpression && delverCount) { // allows parameterless class casting on load without crashing
+			this.poise = parseExpression(poiseExpression, delverCount);
+		}
+		this.critRate = critRateInput;
 		this.nextAction = firstActionName;
 		this.modifiers = startingModifiersShallowCopy;
 	}
@@ -366,6 +363,47 @@ class Enemy extends Combatant {
 		} else {
 			return this.name;
 		}
+	}
+
+	/** @returns {number} */
+	getMaxHP() {
+		return this.maxHP;
+	}
+
+	/** @returns {number} */
+	getPower() {
+		return this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down");
+	}
+
+	/** @param {boolean} includeRoundSpeed */
+	getSpeed(includeRoundSpeed) {
+		let totalSpeed = this.speed;
+		if (includeRoundSpeed) {
+			totalSpeed += this.roundSpeed;
+		}
+		if ("Slow" in this.modifiers) {
+			const slowStacks = this.getModifierStacks("Slow");
+			totalSpeed -= slowStacks * 5;
+		}
+		if ("Quicken" in this.modifiers) {
+			const quickenStacks = this.getModifierStacks("Quicken");
+			totalSpeed += quickenStacks * 5;
+		}
+		return Math.ceil(totalSpeed);
+	}
+
+	/** @returns {number} */
+	getCritRate() {
+		return this.critRate;
+	}
+
+	/** @returns {number} */
+	getPoise() {
+		return this.poise;
+	}
+
+	getDamageCap() {
+		return 500 + this.getModifierStacks("Power Up");
 	}
 };
 

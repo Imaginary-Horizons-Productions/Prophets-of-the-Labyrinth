@@ -2,19 +2,10 @@ const { CommandWrapper } = require('../classes');
 const { generateVersionEmbed } = require('../util/embedUtil');
 
 const mainId = "version";
-const options = [
-	{
-		type: "Boolean",
-		name: "get-recent-changes",
-		description: "Otherwise get the full change log",
-		required: true
-	}
-];
-const subcommands = [];
-module.exports = new CommandWrapper(mainId, "Get the most recent changes or the full change log", null, false, true, 3000, options, subcommands,
+module.exports = new CommandWrapper(mainId, "Get the PotL change log", null, false, true, 3000,
 	/** Send the user the most recent set of patch notes or full change log */
 	(interaction) => {
-		if (interaction.options.getBoolean(options[0].name)) {
+		if (interaction.options.getString("notes-length") === "last-version") {
 			generateVersionEmbed().then(embed => {
 				interaction.reply({ embeds: [embed], ephemeral: true });
 			}).catch(console.error);
@@ -28,5 +19,16 @@ module.exports = new CommandWrapper(mainId, "Get the most recent changes or the 
 				ephemeral: true
 			});
 		}
+	}
+).setOptions(
+	{
+		type: "String",
+		name: "notes-length",
+		description: "Get the changes in last version or the full change log",
+		choices: [
+			{ name: "Last version", value: "last-version" },
+			{ name: "Full change log", value: "full-change-log" }
+		],
+		required: true
 	}
 );

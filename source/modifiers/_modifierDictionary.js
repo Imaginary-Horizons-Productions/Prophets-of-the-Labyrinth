@@ -15,7 +15,9 @@ for (const file of [
 	"curse-of-midas.js",
 	"evade.js",
 	"exposed.js",
+	"frail.js",
 	"oblivious.js",
+	"paralysis.js",
 	"poison.js",
 	"power-down.js",
 	"power-up.js",
@@ -23,7 +25,6 @@ for (const file of [
 	"quicken.js",
 	"regen.js",
 	"slow.js",
-	"stagger.js",
 	"stance-floating-mist.js",
 	"stance-iron-fist.js",
 	"stasis.js",
@@ -34,8 +35,7 @@ for (const file of [
 	"weakness-light.js",
 	"weakness-untyped.js",
 	"weakness-water.js",
-	"weakness-wind.js",
-	"stun.js"
+	"weakness-wind.js"
 ]) {
 	/** @type {ModifierTemplate} */
 	const modifier = require(`./${file}`);
@@ -53,7 +53,7 @@ for (const file of [
 function getModifierDescription(modifierName, bearer, adventure) {
 	return calculateTagContent(MODIFIERS[modifierName].description, [
 		{ tag: 'stackCount', count: bearer.modifiers[modifierName] },
-		{ tag: 'poise', count: bearer.poise },
+		{ tag: 'poise', count: bearer.getPoise() },
 		{ tag: 'funnelCount', count: adventure.getArtifactCount("Spiral Funnel") },
 		{ tag: 'roundDecrement', count: getTurnDecrement(modifierName) }
 	]);
@@ -75,11 +75,6 @@ function isDebuff(modifierName) {
 }
 
 /** @param {string} modifierName */
-function isNonStacking(modifierName) {
-	return MODIFIERS[modifierName].isNonStacking;
-}
-
-/** @param {string} modifierName */
 function getInverse(modifierName) {
 	return MODIFIERS[modifierName].inverse;
 }
@@ -89,6 +84,5 @@ module.exports = {
 	getTurnDecrement,
 	isBuff,
 	isDebuff,
-	isNonStacking,
 	getInverse
 };

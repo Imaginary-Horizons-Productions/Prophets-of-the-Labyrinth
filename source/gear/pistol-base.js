@@ -1,29 +1,33 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents');
 const { dealDamage, addModifier, getCombatantWeaknesses } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Pistol",
-	"Strike a foe for @{damage} @{element} damage, give a random ally @{mod1Stacks} @{mod1} if the foe is weak to @{element}",
-	"Damage x@{critBonus}",
+	"Strike a foe for @{damage} @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Earth",
 	200,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { damage, critBonus, element, modifiers: [elementStagger, powerUp] } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { damage, critMultiplier, element, modifiers: [powerUp] } = module.exports;
+		let pendingDamage = user.getPower() + damage;
+		if (isCrit) {
+			pendingDamage *= critMultiplier;
+		}
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (getCombatantWeaknesses(target).includes(element)) {
-			const damageText = dealDamage([target], user, damage * (isCrit ? critBonus : 1), false, element, adventure);
-			const ally = adventure.delvers[adventure.generateRandomNumber(adventure.delvers.length, "battle")];
-			addModifier(ally, powerUp);
-			return `${damageText} ${ally.name} was Powered Up!`
+			const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
+			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies;
+			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
+			const addedPowerUp = addModifier(ally, powerUp);
+			return `${damageText}${addedPowerUp ? ` ${ally.getName(adventure.room.enemyIdMap)} was Powered Up!` : ""}`
 		} else {
-			return dealDamage([target], user, damage * (isCrit ? critBonus : 1), false, element, adventure);
+			return dealDamage([target], user, pendingDamage, false, element, adventure);
 		}
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Double Pistol", "Duelist's Pistol")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Power Up", stacks: 30 })
+	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)
-	.setDamage(75);
+	.setDamage(40);

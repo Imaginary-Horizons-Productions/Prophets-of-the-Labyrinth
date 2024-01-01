@@ -23,39 +23,40 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		// Add move to round list (overwrite exisiting readied move)
 		const userIndex = adventure.getCombatantIndex(user);
-		const newMove = new Move(user, userIndex, "gear", user.crit)
+		const newMove = new Move(new CombatantReference(user.team, userIndex), "gear", user.crit)
 			.setName(moveName)
+			.setSpeedByCombatant(user)
 			.setPriority(getGearProperty(moveName, "priority") ?? 0);
 
 		let targetText = "";
 		const { target, team } = getGearProperty(moveName, "targetingTags");
 		if (target === "all") {
 			let targetCount = 0;
-			if (team === "delver") {
+			if (team === "ally") {
 				targetCount = adventure.delvers.length;
 				targetText = "all allies";
-			} else if (team === "enemy") {
+			} else if (team === "foe") {
 				targetCount = adventure.room.enemies.length;
 				targetText = "all enemies";
 			}
 			for (let i = 0; i < targetCount; i++) {
-				newMove.addTarget(new CombatantReference(team, i));
+				newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", i));
 			}
 		} else if (target.startsWith("random")) {
 			const targetCount = Number(target.split(SAFE_DELIMITER)[1]);
 			let poolSize = 0;
-			if (team === "delver") {
+			if (team === "ally") {
 				poolSize = adventure.delvers.length;
 				targetText = `${targetCount} random all${targetCount === 1 ? "y" : "ies"}`;
-			} else if (team === "enemy") {
+			} else if (team === "foe") {
 				poolSize = adventure.room.enemies.length;
 				targetText = `${targetCount} random enem${targetCount === 1 ? "y" : "ies"}`;
 			}
 			for (let i = 0; i < targetCount; i++) {
-				newMove.addTarget(new CombatantReference(team, adventure.generateRandomNumber(poolSize, "battle")));
+				newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", adventure.generateRandomNumber(poolSize, "battle")));
 			}
 		} else if (target === "self") {
-			newMove.addTarget(new CombatantReference(team, userIndex));
+			newMove.addTarget(new CombatantReference("delver", userIndex));
 		} else if (target === "none") {
 			newMove.addTarget(new CombatantReference("none", -1));
 		}

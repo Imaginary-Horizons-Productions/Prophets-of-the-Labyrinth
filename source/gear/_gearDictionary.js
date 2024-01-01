@@ -1,4 +1,4 @@
-const { BuildError, GearTemplate } = require("../classes");
+const { BuildError, GearTemplate, Gear, Delver } = require("../classes");
 const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
@@ -7,9 +7,9 @@ const GEAR = {};
 for (const file of [
 	"_punch.js",
 	"barrier-base.js",
-	"barrier-purifying.js",
-	"barrier-thick.js",
-	"barrier-urgent.js",
+	"barrier-cleansing.js",
+	"barrier-devoted.js",
+	"barrier-long.js",
 	"battleaxe-base.js",
 	"battleaxe-prideful.js",
 	"battleaxe-thick.js",
@@ -34,12 +34,15 @@ for (const file of [
 	"certainvictory-hunters.js",
 	"certainvictory-lethal.js",
 	"certainvictory-reckless.js",
+	"chainmail-base.js",
+	"cloak-accelerating.js",
+	"cloak-accurate.js",
 	"cloak-base.js",
 	"cloak-long.js",
-	"cloak-accelerating.js",
-	"cloak-thick.js",
 	"corrosion-base.js",
 	"corrosion-flanking.js",
+	"corrosion-harmful.js",
+	"corrosion-shattering.js",
 	"daggers-base.js",
 	"daggers-sharpened.js",
 	"daggers-slowing.js",
@@ -50,7 +53,9 @@ for (const file of [
 	"firecracker-toxic.js",
 	"floatingmiststance-base.js",
 	"floatingmiststance-soothing.js",
+	"icebolt-base.js",
 	"infiniteregeneration-base.js",
+	"infiniteregeneration-discounted.js",
 	"infiniteregeneration-fatesealing.js",
 	"inspiration-base.js",
 	"inspiration-guarding.js",
@@ -60,35 +65,41 @@ for (const file of [
 	"ironfiststance-organic.js",
 	"lance-accelerating.js",
 	"lance-base.js",
-	"lance-piercing.js",
+	"lance-unstoppable.js",
 	"lance-vigilant.js",
 	"lifedrain-base.js",
 	"lifedrain-flanking.js",
 	"lifedrain-reactive.js",
 	"lifedrain-urgent.js",
-	"midasstaff-base.js",
-	"midasstaff-soothing.js",
 	"midasstaff-accelerating.js",
+	"midasstaff-base.js",
+	"midasstaff-discounted.js",
+	"midasstaff-soothing.js",
 	"morningstar-base.js",
 	"pistol-base.js",
 	"pistol-double.js",
 	"pistol-duelists.js",
 	"poisontorrent-base.js",
+	"poisontorrent-harmful.js",
 	"potionkit-base.js",
-	"potionkit-reinforced.js",
 	"potionkit-organic.js",
+	"potionkit-reinforced.js",
 	"potionkit-urgent.js",
 	"powerfromwrath-base.js",
+	"refreshingbreeze-base.js",
 	"sabotagekit-base.js",
 	"sabotagekit-long.js",
+	"sabotagekit-shattering.js",
+	"scarf-base.js",
+	"scarf-hearty.js",
 	"scutum-base.js",
 	"scutum-guarding.js",
 	"scutum-sweeping.js",
 	"scutum-vigilant.js",
 	"scythe-base.js",
 	"scythe-lethal.js",
-	"scythe-piercing.js",
 	"scythe-toxic.js",
+	"scythe-unstoppable.js",
 	"shortsword-accelerating.js",
 	"shortsword-base.js",
 	"shortsword-toxic.js",
@@ -100,22 +111,21 @@ for (const file of [
 	"spear-lethal.js",
 	"spear-reactive.js",
 	"spear-sweeping.js",
+	"sunflare-accelerating.js",
 	"sunflare-base.js",
 	"sunflare-evasive.js",
-	"sunflare-accelerating.js",
 	"sunflare-tormenting.js",
-	"vigilancecharm-base.js",
-	"vigilancecharm-devoted.js",
-	"vigilancecharm-long.js",
-	"vigilancecharm-reinforced.js",
 	"warcry-base.js",
 	"warcry-charging.js",
 	"warcry-slowing.js",
 	"warcry-tormenting.js",
 	"warhammer-base.js",
-	"warhammer-piercing.js",
 	"warhammer-reactive.js",
-	"warhammer-slowing.js"
+	"warhammer-slowing.js",
+	"warhammer-unstoppable.js",
+	"wolfring-base.js",
+	"wolfring-surpassing.js",
+	"wolfring-swift.js"
 ]) {
 	const gear = require(`./${file}`);
 	if (gear.name in GEAR) {
@@ -149,8 +159,23 @@ function getGearProperty(gearName, propertyName) {
 	}
 }
 
-function buildGearDescription(gearName, buildFullDescription) {
+/**
+ * @param {string} gearName
+ * @param {number | "max"} durability
+ */
+function buildGearRecord(gearName, durability) {
+	const template = GEAR[gearName];
+	return new Gear(gearName, durability === "max" ? template.maxDurability : durability, template.maxHP, template.power, template.speed, template.critRate, template.poise);
+}
+
+/**
+ * @param {string} gearName
+ * @param {boolean} buildFullDescription
+ * @param {Delver?} holder
+ */
+function buildGearDescription(gearName, buildFullDescription, holder) {
 	if (gearExists(gearName)) {
+		/** @type {string} */
 		let description;
 		if (buildFullDescription) {
 			// return the base and crit effects of the gear with the base italicized
@@ -160,18 +185,48 @@ function buildGearDescription(gearName, buildFullDescription) {
 			description = getGearProperty(gearName, "description");
 		}
 
-		description = description.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
-			.replace(/@{critBonus}/g, getGearProperty(gearName, "critBonus"))
-			.replace(/@{damage}/g, getGearProperty(gearName, "damage"))
+		let damage = getGearProperty(gearName, "damage");
+		const stagger = getGearProperty(gearName, "stagger");
+		const element = getGearProperty(gearName, "element");
+		if (holder) {
+			damage += holder.power + holder.getModifierStacks("Power Up");
+			damage = Math.min(damage, holder.getDamageCap());
+
+			if (holder.element === element) {
+				description = description
+					.replace(/@{foeStagger}/g, `${stagger + 2} Stagger`)
+					.replace(/@{allyStagger}/g, `${stagger + 1} Stagger`);
+			} else {
+				description = description
+					.replace(/@{foeStagger}/g, `${stagger} Stagger`)
+					.replace(/@{allyStagger}/g, `${stagger} Stagger`);
+			}
+		} else {
+			damage = `(${damage} base)`;
+			description = description
+				.replace(/@{foeStagger}/g, `(${stagger} base) Stagger`)
+				.replace(/@{allyStagger}/g, `(${stagger} base) Stagger`);
+		}
+
+		description = description.replace(/@{element}/g, getEmoji(element))
+			.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
+			.replace(/@{damage}/g, damage)
 			.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
 			.replace(/@{block}/g, getGearProperty(gearName, "block"))
 			.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
-			.replace(/@{healing}/g, getGearProperty(gearName, "healing"));
+			.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
+			.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
+			.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
+			.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
+			.replace(/@{poise}/g, getGearProperty(gearName, "poise"))
+			.replace(/@{extraStagger}/g, `${stagger} Stagger`);
 		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifier.name)
 				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		})
 		return description;
+	} else {
+		return "";
 	}
 }
 
@@ -179,5 +234,6 @@ module.exports = {
 	gearNames: Object.keys(GEAR),
 	gearExists,
 	getGearProperty,
+	buildGearRecord,
 	buildGearDescription
 };

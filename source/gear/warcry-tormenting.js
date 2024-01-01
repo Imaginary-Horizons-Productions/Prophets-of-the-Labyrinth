@@ -1,44 +1,55 @@
 const { GearTemplate } = require('../classes');
+const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 const { addModifier } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
-	"Inflict @{mod1Stacks} @{mod1} and duplicate debuffs on a foe and all foes with Exposed",
-	"@{mod1} +@{bonus}",
+	"Inflict @{foeStagger} and duplicate debuffs on a foe and all foes with Exposed",
+	"Stagger +@{bonus}",
 	"Technique",
-	"Fire", 350,
+	"Fire",
+	350,
 	([initialTarget], user, isCrit, adventure) => {
-		const targetSet = new Set().add(initialTarget.getName(adventure.room.enemyIdMap));
-		const targetArray = [initialTarget];
+		const targetSet = new Set();
+		const targetArray = [];
+		if (initialTarget.hp > 0) {
+			targetSet.add(initialTarget.getName(adventure.room.enemyIdMap));
+			targetArray.push(initialTarget);
+		}
 		adventure.room.enemies.forEach(enemy => {
-			if (enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
 				targetSet.add(enemy.getName(adventure.room.enemyIdMap));
 				targetArray.push(enemy);
 			}
 		})
 
-		let { element, modifiers: [elementStagger, stagger], bonus } = module.exports;
-		let pendingStaggerStacks = stagger.stacks;
+		const { element, stagger, bonus } = module.exports;
+		let pendingStaggerStacks = stagger;
 		if (user.element === element) {
-			pendingStaggerStacks += elementStagger.stacks;
+			pendingStaggerStacks += 2;
 		}
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
+		const tormentTexts = "";
 		targetArray.forEach(target => {
-			if (target.hp > 0) {
-				addModifier(target, { name: "Stagger", stacks: pendingStaggerStacks });
-				for (const modifier in target.modifiers) {
-					if (isDebuff(modifier)) {
-						addModifier(target, { name: modifier, stacks: 1 });
-					}
+			const debuffs = [];
+			target.addStagger(pendingStaggerStacks);
+			for (const modifier in target.modifiers) {
+				if (isDebuff(modifier)) {
+					addModifier(target, { name: modifier, stacks: 1 });
+					debuffs.push(modifier);
 				}
 			}
+			if (debuffs.length > 0) {
+				tormentTexts += ` ${target.getName(adventure.room.enemyIdMap)} gains ${listifyEN(debuffs)}.`;
+			}
 		})
-		return `${[...targetSet].join(", ")} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry and their debuffs are duplicated.`;
+		return `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.${tormentTexts}`;
 	}
-).setTargetingTags({ target: "single", team: "enemy" })
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Stagger", stacks: 1 })
-	.setBonus(1) // Stagger stacks
+	.setStagger(2)
+	.setBonus(2) // Stagger stacks
 	.setDurability(15)
 	.setPriority(1);

@@ -1,27 +1,27 @@
 const { GearTemplate } = require('../classes');
-const { needsLivingTargets } = require('../shared/actionComponents.js');
 const { dealDamage, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Evasive Bow",
-	"Strike a foe for @{damage} @{element} damage and gain @{mod1Stacks} @{mod1} with priority",
-	"Damage x@{critBonus}",
+	"Strike a foe for @{damage} @{element} damage and gain @{mod0Stacks} @{mod0} with priority",
+	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Wind",
 	350,
-	needsLivingTargets(([target], user, isCrit, adventure) => {
-		let { element, modifiers: [elementStagger, evade], damage, critBonus } = module.exports;
+	([target], user, isCrit, adventure) => {
+		const { element, modifiers: [evade], damage, critMultiplier } = module.exports;
+		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			addModifier(target, elementStagger);
+			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
-			damage *= critBonus;
+			pendingDamage *= critMultiplier;
 		}
 		addModifier(user, evade);
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is ready to Evade.`;
-	})
-).setTargetingTags({ target: "single", team: "enemy" })
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is ready to Evade.`;
+	}
+).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Bow", "Mercurial Bow")
-	.setModifiers({ name: "Stagger", stacks: 1 }, { name: "Evade", stacks: 2 })
+	.setModifiers({ name: "Evade", stacks: 2 })
 	.setDurability(15)
-	.setDamage(75)
+	.setDamage(40)
 	.setPriority(1);
