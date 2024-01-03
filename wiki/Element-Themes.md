@@ -84,6 +84,7 @@ Archetypes: Martial Artist
 
 ### Uncommon Variants
 - Organic
+- Blasting
 
 ## 💦 Water
 Color: ![Colors.Blue](https://placehold.co/15x15/3498DB/3498DB.png) `Colors.Blue`

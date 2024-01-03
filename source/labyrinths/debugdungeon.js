@@ -108,20 +108,10 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Floating Mist Stance",
-				"Infinite Regeneration",
-				"Iron Fist Stance",
-				"Morning Star",
-				"Sun Flare"
+				"Prismatic Blast"
 			],
 			Rare: [
-				"Soothing Floating Mist Stance",
-				"Discounted Infinite Regeneration",
-				"Fate-Sealing Infinite Regeneration",
-				"Organic Iron Fist Stance",
-				"Evasive Sun Flare",
-				"Accelerating Sun Flare",
-				"Tormenting Sun Flare"
+				"Vexing Prismatic Blast"
 			]
 		},
 		Water: {

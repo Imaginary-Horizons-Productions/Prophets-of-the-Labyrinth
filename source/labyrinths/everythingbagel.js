@@ -133,6 +133,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Infinite Regeneration",
 				"Iron Fist Stance",
 				"Morning Star",
+				"Prismatic Blast",
 				"Sun Flare"
 			],
 			Rare: [
@@ -140,6 +141,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Discounted Infinite Regeneration",
 				"Fate-Sealing Infinite Regeneration",
 				"Organic Iron Fist Stance",
+				"Vexing Prismatic Blast",
 				"Evasive Sun Flare",
 				"Accelerating Sun Flare",
 				"Tormenting Sun Flare"

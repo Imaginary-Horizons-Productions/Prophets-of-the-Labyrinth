@@ -440,12 +440,12 @@ function resolveMove(move, adventure) {
 				}
 			}
 			if (livingTargets.length > 0) {
-				const deadTargetText = "";
+				let deadTargetText = "";
 				if (deadTargets.length > 0) {
 					deadTargetText += ` ${listifyEN(deadTargets.map(target => target.getName(adventure.room.enemyIdMap)))} ${deadTargets === 1 ? "was" : "were"} already dead!`
 				}
 
-				const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
+				const resultText = effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
 				moveText += `. ${resultText}${deadTargetText}${move.type === "gear" && move.userReference.team === "delver" ? decrementDurability(move.name, user, adventure) : ""}`;
 			} else if (targets.length === 1) {
 				moveText += `, but ${targets[0].getName(adventure.room.enemyIdMap)} was already dead!`;
@@ -487,14 +487,14 @@ function resolveMove(move, adventure) {
 function decrementDurability(moveName, user, adventure) {
 	if (moveName !== "Punch" && user.team === "delver") {
 		const gearCategory = getGearProperty(moveName, "category");
-		if (gearCategory === "Spell") {
-			const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
-			if (crystalShardCount > 0) {
-				const durabilitySaveChance = 1 - 0.85 ** crystalShardCount;
+		if (gearCategory === "Weapon") {
+			const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");
+			if (weaponPolishCount > 0) {
+				const durabilitySaveChance = 1 - 0.85 ** weaponPolishCount;
 				const max = RN_TABLE_BASE ** 2;
-				adventure.updateArtifactStat("Crystal Shard", "Expected Durability Saved", durabilitySaveChance.toFixed(2));
+				adventure.updateArtifactStat("Weapon Polish", "Expected Durability Saved", durabilitySaveChance.toFixed(2));
 				if (adventure.generateRandomNumber(max, "battle") < max * durabilitySaveChance) {
-					adventure.updateArtifactStat("Crystal Shard", "Actual Durability Saved", 1);
+					adventure.updateArtifactStat("Weapon Polish", "Actual Durability Saved", 1);
 					return "";
 				}
 			}
