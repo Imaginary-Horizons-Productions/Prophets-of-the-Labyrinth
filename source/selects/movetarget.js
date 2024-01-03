@@ -24,7 +24,8 @@ module.exports = new SelectWrapper(mainId, 3000,
 
 		// Add move to round list (overwrite exisiting readied move)
 		const userIndex = adventure.getCombatantIndex(user);
-		const [targetTeam, targetIndex] = interaction.values[0].split(SAFE_DELIMITER);
+		const [targetTeam, unparsedIndex] = interaction.values[0].split(SAFE_DELIMITER);
+		const targetIndex = parseInt(unparsedIndex);
 		const targetIndices = [];
 		const newMove = new Move(new CombatantReference(user.team, userIndex), "gear", user.crit)
 			.setName(moveName)
@@ -36,20 +37,40 @@ module.exports = new SelectWrapper(mainId, 3000,
 		if (targetingTags.target.startsWith("blast") || (crystalShardCount > 0 && getGearProperty(moveName, "category") === "Spell")) {
 			const blastRange = parseInt(targetingTags.target.split(SAFE_DELIMITER)[1]) ?? 0;
 			const range = crystalShardCount + blastRange;
-			const totalMinIndex = Math.max(targetIndex - range, 0);
 			const targetTeamMaxIndex = targetTeam === "delver" ? adventure.delvers.length - 1 : adventure.room.enemies.length - 1;
-			const totalMaxIndex = Math.min(targetIndex + range, targetTeamMaxIndex);
-			for (let index = totalMinIndex; index <= totalMaxIndex; index++) {
+
+			let targetsSelectedLeft = 0;
+			let prebuffedMinIndex = targetIndex;
+			for (let index = targetIndex - 1; targetsSelectedLeft < range && index >= 0; index--) {
 				if (adventure.room.enemies[index].hp > 0) {
-					newMove.addTarget(new CombatantReference(targetTeam, index));
-					targetIndices.push(index);
+					targetsSelectedLeft++;
+					targetIndices.unshift(index);
+					if (targetsSelectedLeft <= blastRange) {
+						prebuffedMinIndex = index;
+					}
 				}
 			}
 
+			targetIndices.push(targetIndex);
+
+			let targetsSelectedRight = 0;
+			let prebuffedMaxIndex = targetIndex;
+			for (let index = targetIndex + 1; targetsSelectedRight < range && index <= targetTeamMaxIndex; index++) {
+				if (adventure.room.enemies[index].hp > 0) {
+					targetsSelectedRight++;
+					targetIndices.push(index);
+					if (targetsSelectedRight <= blastRange) {
+						prebuffedMaxIndex = index;
+					}
+				}
+			}
+
+			targetIndices.forEach(index => {
+				newMove.addTarget(new CombatantReference(targetTeam, index));
+			});
+
 			if (crystalShardCount > 0) {
-				const prebuffedMinIndex = Math.min(targetIndex + blastRange, targetTeamMaxIndex);
-				const prebuffedMaxIndex = Math.max(targetIndex - blastRange, 0);
-				adventure.updateArtifactStat("Crystal Shard", "Extra Targets", (totalMaxIndex - totalMinIndex) - (prebuffedMaxIndex - prebuffedMinIndex));
+				adventure.updateArtifactStat("Crystal Shard", "Extra Targets", (targetIndices[targetIndices.length - 1] - targetIndices[0]) - (prebuffedMaxIndex - prebuffedMinIndex));
 			}
 		} else {
 			newMove.addTarget(new CombatantReference(targetTeam, targetIndex));
