@@ -192,7 +192,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		}
 	},
 	{
-		"Event": ["Twin Pedestals", "Elemental Research", "Free Gold?", "Health Redistribution", "The Score Beggar", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		"Event": ["Imp Contract Faire", "Workshop", "Merchant", "Rest Site", "Treasure"],
 		"Battle": ["Hawk Fight", "Frog Fight", "Mechabee Fight", "Slime Fight", "Tortoise Fight"],
 		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
 		"Rest Site": ["Rest Site: Mysterious Challenger"],

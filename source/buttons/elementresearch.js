@@ -1,5 +1,6 @@
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
+const { updateRoomHeader } = require('../util/embedUtil');
 
 const mainId = "elementswap";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -19,6 +20,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		adventure.gainGold(200);
 		delver.element = adventure.room.element;
+		updateRoomHeader(adventure, interaction.message);
 		interaction.reply(`${interaction.user} signs the contract and becomes ${adventure.room.element} element.`).then(() => {
 			setAdventure(adventure);
 		});

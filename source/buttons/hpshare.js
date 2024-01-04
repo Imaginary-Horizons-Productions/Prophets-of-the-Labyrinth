@@ -1,6 +1,7 @@
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, completeAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { gainHealth, payHP } = require('../util/combatantUtil');
+const { updateRoomHeader } = require('../util/embedUtil');
 const { editButtons } = require('../util/messageComponentUtil');
 
 const mainId = "hpshare";
@@ -21,8 +22,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		adventure.gold -= goldCost;
-		const hpLost = 50;
-		const hpGained = 50;
+		const hpLost = Math.min(100, delver.hp);
+		const hpGained = hpLost;
 		const resultText = `${payHP(delver, hpLost, adventure)} Everyone else gains ${hpGained} hp.`;
 		adventure.delvers.forEach(delver => {
 			if (delver.id != interaction.user.id) {
@@ -33,6 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		if (adventure.lives < 1) {
 			interaction.channel.send(completeAdventure(adventure, interaction.channel, "defeat", resultText));
 		} else {
+			updateRoomHeader(adventure, interaction.message);
 			interaction.channel.send(resultText);
 			setAdventure(adventure);
 		}
