@@ -29,7 +29,7 @@ class GearTemplate {
 		this.cost = costInput;
 		this.effect = effectInput;
 	}
-	/** @type {{target: "single" | "all" | "random→x" | "self" | "none", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} */
+	/** @type {{target: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} */
 	targetingTags;
 	maxDurability = 0;
 	/** @type {string[]} */
@@ -61,7 +61,7 @@ class GearTemplate {
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
 
-	/** @param {{target: "single" | "all" | "random→x" | "self" | "none", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} tagObject */
+	/** @param {{target: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} tagObject */
 	setTargetingTags(tagObject) {
 		this.targetingTags = tagObject;
 		return this;

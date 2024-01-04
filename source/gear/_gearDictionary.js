@@ -86,6 +86,8 @@ for (const file of [
 	"potionkit-reinforced.js",
 	"potionkit-urgent.js",
 	"powerfromwrath-base.js",
+	"prismaticblast-base.js",
+	"prismaticblast-vexing.js",
 	"refreshingbreeze-base.js",
 	"sabotagekit-base.js",
 	"sabotagekit-long.js",

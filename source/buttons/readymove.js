@@ -51,7 +51,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			embed.addFields(gearToEmbedField(gearName, durability, delver));
 			const { target, team } = getGearProperty(gearName, "targetingTags");
 			const elementEmoji = getEmoji(getGearProperty(gearName, "element"));
-			if (target === "single") {
+			if (target === "single" || target.startsWith("blast")) {
 				// Select Menu
 				let targetOptions = [];
 				if (team === "foe" || team === "any") {

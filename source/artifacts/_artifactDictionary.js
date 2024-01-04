@@ -27,7 +27,8 @@ for (const file of [
 	"oilpainting.js",
 	"phoenixfruitblossom.js",
 	"piggybank.js",
-	"spiralfunnel.js"
+	"spiralfunnel.js",
+	"weaponpolish.js"
 ]) {
 	/** @type {ArtifactTemplate} */
 	const artifact = require(`./${file}`);

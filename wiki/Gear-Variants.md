@@ -26,6 +26,12 @@ Bonus damage if target is Stunned
 **Available on**
 - all Warhammers (Earth)
 
+### Blasting
+Also targets adjacent team members
+
+**Available on**
+- all Prismatic Blasts (Light)
+
 ### Bouncing
 Hits 3 random targets (from a beneficial team)
 
@@ -351,6 +357,7 @@ Bonus damage if target has debuffs
 
 **Available on**
 - all Censers (Fire)
+- Prismatic Blast (Light)
 
 ### Vigilant
 Adds Vigilance to user
