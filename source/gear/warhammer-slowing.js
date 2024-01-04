@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Slowing Warhammer",
 		}
 		return resultText;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Warhammer", "Unstoppable Warhammer")
 	.setModifiers({ name: "Slow", stacks: 1 })
 	.setDurability(15)

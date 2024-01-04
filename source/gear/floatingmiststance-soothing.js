@@ -33,7 +33,7 @@ module.exports = new GearTemplate("Soothing Floating Mist Stance",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
 	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Floating Mist Stance", stacks: 1 }, { name: "Regen", stacks: 2 })
 	.setBonus(2) // Punch stagger boost
 	.setDurability(10);

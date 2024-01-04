@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Evasive Bow",
 		addModifier(user, evade);
 		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is ready to Evade.`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Bow", "Mercurial Bow")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setDurability(15)

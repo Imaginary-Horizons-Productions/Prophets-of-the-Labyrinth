@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Evasive Sun Flare",
 		const addedEvade = addModifier(user, evade);
 		return `${addedEvade ? `${user.getName(adventure.room.enemyIdMap)} prepares to Evade. ` : ""}${target.getName(adventure.room.enemyIdMap)} is Staggered${addedSlow ? ` and Slowed` : ""}.`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Sun Flare", "Tormenting Sun Flare")
 	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Slow", stacks: 2 })
 	.setStagger(2)

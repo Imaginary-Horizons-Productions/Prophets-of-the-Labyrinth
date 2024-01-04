@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Corrosion",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Flanking Corrosion", "Harmful Corrosion", "Shattering Corrosion")
 	.setModifiers({ name: "Power Down", stacks: 40 })
 	.setStagger(2)

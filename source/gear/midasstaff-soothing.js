@@ -30,7 +30,7 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ target: "single", team: "any", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Accelerating Midas Staff", "Discounted Midas Staff")
 	.setModifiers({ name: "Curse of Midas", stacks: 1 }, { name: "Regen", stacks: 2 })
 	.setBonus(1) // Curse of Midas stacks

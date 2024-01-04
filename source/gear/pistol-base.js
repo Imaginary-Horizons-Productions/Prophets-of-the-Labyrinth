@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Pistol",
 			return dealDamage([target], user, pendingDamage, false, element, adventure);
 		}
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Double Pistol", "Duelist's Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)

@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Reactive Spear",
 		}
 		return resultText;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Spear", "Sweeping Spear")
 	.setStagger(2)
 	.setDurability(15)

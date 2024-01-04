@@ -32,7 +32,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			.setSpeedByCombatant(user)
 			.setPriority(getGearProperty(moveName, "priority") ?? 0);
 
-		const targetType = getGearProperty(moveName, "targetingTags").target;
+		const targetType = getGearProperty(moveName, "targetingTags").type;
 		const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
 		if (targetType.startsWith("blast") || (crystalShardCount > 0 && getGearProperty(moveName, "category") === "Spell")) {
 			const blastRange = parseInt(targetType.split(SAFE_DELIMITER)[1]) ?? 0;

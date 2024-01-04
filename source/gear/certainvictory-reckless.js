@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)}`;
 		}
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Lethal Certain Victory")
 	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Exposed", stacks: 1 })
 	.setDurability(15)

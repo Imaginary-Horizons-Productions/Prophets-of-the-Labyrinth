@@ -47,7 +47,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		})
 		return `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.${tormentTexts}`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: false })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks

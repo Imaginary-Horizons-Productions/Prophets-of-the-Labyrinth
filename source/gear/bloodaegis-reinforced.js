@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Reinforced Blood Aegis",
 			return `Preparing to Block, ${payHP(user, hpCost, adventure)}`;
 		}
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Charging Blood Aegis", "Sweeping Blood Aegis")
 	.setDurability(15)
 	.setHPCost(25)

@@ -34,7 +34,7 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 		}
 		return `${target.getName(adventure.room.enemyIdMap)} is ${listifyEN(resultTexts)}.`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Sun Flare", "Evasive Sun Flare")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setStagger(2)

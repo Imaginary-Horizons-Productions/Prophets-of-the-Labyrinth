@@ -14,13 +14,13 @@ module.exports = new SelectWrapper(mainId, 3000,
 
 		if (interaction.values.includes("None")) {
 			adventure.challenges = {};
-			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(starterMessage => {
-				const [{ data: starterEmbed }] = starterMessage.embeds;
-				starterMessage.edit({
+			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(recruitMessage => {
+				const [{ data: recruitEmbed }] = recruitMessage.embeds;
+				recruitMessage.edit({
 					embeds: [
 						new EmbedBuilder({
-							...starterEmbed,
-							fields: starterEmbed.fields.filter(field => field.name !== "Challenges")
+							...recruitEmbed,
+							fields: recruitEmbed.fields.filter(field => field.name !== "Challenges")
 						})
 					]
 				});
@@ -31,18 +31,18 @@ module.exports = new SelectWrapper(mainId, 3000,
 				const challenge = getChallenge(challengeName);
 				adventure.challenges[challengeName] = { intensity: challenge.intensity, duration: challenge.duration };
 			})
-			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(starterMessage => {
-				const [{ data: starterEmbed }] = starterMessage.embeds;
-				const updatedEmbed = new EmbedBuilder(starterEmbed);
+			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(recruitMessage => {
+				const [{ data: recruitEmbed }] = recruitMessage.embeds;
+				const updatedEmbed = new EmbedBuilder(recruitEmbed);
 
 				const challengeField = { name: "Challenges", value: `• ${Object.keys(adventure.challenges).join("\n• ")}` };
-				const fieldIndex = starterEmbed.fields.findIndex(field => field.name === "Challenges");
+				const fieldIndex = recruitEmbed.fields.findIndex(field => field.name === "Challenges");
 				if (fieldIndex !== -1) {
 					updatedEmbed.spliceFields(fieldIndex, 1, challengeField)
 				} else {
 					updatedEmbed.addFields(challengeField);
 				}
-				starterMessage.edit({ embeds: [updatedEmbed] });
+				recruitMessage.edit({ embeds: [updatedEmbed] });
 			})
 			interaction.reply({ content: `The following challenge(s) have been added to this adventure: "${interaction.values.join("\", \"")}"` });
 		}

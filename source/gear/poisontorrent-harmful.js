@@ -33,7 +33,7 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 			return dealDamage(targets, user, pendingDamage, false, element, adventure);
 		}
 	}
-).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setModifiers({ name: "Poison", stacks: 2 })
 	.setDamage(15)
 	.setDurability(15);

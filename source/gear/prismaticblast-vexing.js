@@ -36,7 +36,7 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 			return dealDamage(nondebuffedTargets, user, nonDebuffedDamage, false, element, adventure);
 		}
 	}
-).setTargetingTags({ target: `blast${SAFE_DELIMITER}1`, team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe", needsLivingTargets: true })
 	.setDurability(15)
 	.setBonus(50) // vexing damage
 	.setDamage(40);

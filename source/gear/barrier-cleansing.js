@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Cleansing Barrier",
 		}
 		return `${user.getName(adventure.room.enemyIdMap)}${addedVigilance ? " Vigilantly" : ""} prepares to Block${debuffWasRemoved ? ` and shrugs off ${rolledDebuff}` : ""}.`;
 	}
-).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
 	.setSidegrades("Devoted Barrier", "Long Barrier")
 	.setModifiers({ name: "Vigilance", stacks: 1 })
 	.setDurability(5)

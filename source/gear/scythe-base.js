@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Scythe",
 			return `${target.getName(adventure.room.enemyIdMap)} meets the reaper.`;
 		}
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Lethal Scythe", "Toxic Scythe", "Unstoppable Scythe")
 	.setDurability(15)
 	.setDamage(40)

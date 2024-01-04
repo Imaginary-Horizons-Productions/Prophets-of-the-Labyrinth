@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Long Cloak",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
 	.setSidegrades("Accelerating Cloak", "Accurate Cloak")
 	.setModifiers({ name: "Evade", stacks: 3 })
 	.setBonus(1) // Evade stacks

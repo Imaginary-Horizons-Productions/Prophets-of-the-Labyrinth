@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Ice Bolt",
 		const addedSlow = addModifier(target, slow);
 		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedSlow ? ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.` : ""}`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setDamage(40)
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDurability(15);

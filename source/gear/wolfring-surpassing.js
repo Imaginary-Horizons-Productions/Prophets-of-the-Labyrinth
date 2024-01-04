@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Surpassing Wolf Ring",
 	"Untyped",
 	350,
 	(targets, user, isCrit, adventure) => ""
-).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })
+).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
 	.setSidegrades("Swift Wolf Ring")
 	.setDurability(0)
 	.setPoise(2)

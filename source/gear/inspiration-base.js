@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Inspiration",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Guarding Inspiration", "Soothing Inspiration", "Sweeping Inspiration")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setBonus(25) // Power Up stacks

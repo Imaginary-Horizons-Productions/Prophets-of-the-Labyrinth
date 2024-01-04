@@ -7,6 +7,6 @@ module.exports = new GearTemplate("Chainmail",
 	"Untyped",
 	200,
 	(targets, user, isCrit, adventure) => ""
-).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })
+).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
 	.setDurability(0)
 	.setSpeed(50);

@@ -29,8 +29,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			.setPriority(getGearProperty(moveName, "priority") ?? 0);
 
 		let targetText = "";
-		const { target, team } = getGearProperty(moveName, "targetingTags");
-		if (target === "all") {
+		const { type, team } = getGearProperty(moveName, "targetingTags");
+		if (type === "all") {
 			let targetCount = 0;
 			if (team === "ally") {
 				targetCount = adventure.delvers.length;
@@ -42,8 +42,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			for (let i = 0; i < targetCount; i++) {
 				newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", i));
 			}
-		} else if (target.startsWith("random")) {
-			const targetCount = Number(target.split(SAFE_DELIMITER)[1]);
+		} else if (type.startsWith("random")) {
+			const targetCount = Number(type.split(SAFE_DELIMITER)[1]);
 			let poolSize = 0;
 			if (team === "ally") {
 				poolSize = adventure.delvers.length;
@@ -55,9 +55,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			for (let i = 0; i < targetCount; i++) {
 				newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", adventure.generateRandomNumber(poolSize, "battle")));
 			}
-		} else if (target === "self") {
+		} else if (type === "self") {
 			newMove.addTarget(new CombatantReference("delver", userIndex));
-		} else if (target === "none") {
+		} else if (type === "none") {
 			newMove.addTarget(new CombatantReference("none", -1));
 		}
 
@@ -73,7 +73,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		await adventure.room.moves.push(newMove);
 
 		// Send confirmation text
-		interaction.channel.send(`${interaction.user} ${overwritten ? "switches to ready" : "readies"} **${moveName}**${target !== "none" && target !== "self" ? ` to use on **${targetText}**` : ""}.`).then(() => {
+		interaction.channel.send(`${interaction.user} ${overwritten ? "switches to ready" : "readies"} **${moveName}**${type !== "none" && type !== "self" ? ` to use on **${targetText}**` : ""}.`).then(() => {
 			setAdventure(adventure);
 			if (checkNextRound(adventure)) {
 				endRound(adventure, interaction.channel);

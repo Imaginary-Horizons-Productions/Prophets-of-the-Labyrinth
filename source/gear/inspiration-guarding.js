@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Guarding Inspiration",
 		addBlock(target, block);
 		return `${target.getName(adventure.room.enemyIdMap)} is${addedPowerUp ? ` Powered Up and` : ""} prepared to Block.`;
 	}
-).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Soothing Inspiration", "Sweeping Inspiration")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setBonus(25) // Power Up stacks

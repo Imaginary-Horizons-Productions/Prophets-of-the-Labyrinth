@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Sweeping Spear",
 			return dealDamage(targets, user, pendingDamage, false, element, adventure);
 		}
 	}
-).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Spear", "Reactive Spear")
 	.setStagger(2)
 	.setDurability(15)

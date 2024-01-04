@@ -41,5 +41,5 @@ module.exports = new GearTemplate("Refreshing Breeze",
 			return "No debuffs were cured on the party.";
 		}
 	}
-).setTargetingTags({ target: "all", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setDurability(15);

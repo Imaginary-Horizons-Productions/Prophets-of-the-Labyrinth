@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Buckler",
 		const addedPowerUp = addModifier(user, powerUp);
 		return `Damage will be Blocked for ${target.getName(adventure.room.enemyIdMap)}.${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""}`;
 	}
-).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Devoted Buckler", "Guarding Buckler", "Reinforced Buckler")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)

@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Vigilant Lance",
 		const addedVigilance = addModifier(user, vigilance);
 		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedVigilance ? ` ${user.getName(adventure.room.enemyIdMap)} gains Vigilance.` : ""}`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Lance", "Unstoppable Lance")
 	.setModifiers({ name: "Vigilance", stacks: 2 })
 	.setDurability(15)

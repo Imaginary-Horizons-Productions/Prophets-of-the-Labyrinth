@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Spear",
 		}
 		return resultText;
 	}
-).setTargetingTags({ target: "single", team: "foe" })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Lethal Spear", "Reactive Spear", "Sweeping Spear")
 	.setStagger(2)
 	.setDurability(15)

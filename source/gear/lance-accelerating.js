@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Accelerating Lance",
 		const addedQuicken = addModifier(user, quicken);
 		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedQuicken ? ` ${user.getName(adventure.room.enemyIdMap)} is Quickened.` : ""}`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Unstoppable Lance", "Vigilant Lance")
 	.setModifiers({ name: "Quicken", stacks: 1 })
 	.setDurability(15)

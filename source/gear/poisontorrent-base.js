@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Poison Torrent",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ target: "all", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Harmful Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 })
 	.setDurability(15);

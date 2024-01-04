@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Devoted Barrier",
 		addBlock(target, block);
 		return `Damage will be Blocked for ${target.getName(adventure.room.enemyIdMap)}${addedVigilance ? " and they gain Vigilance" : ""}.`;
 	}
-).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Cleansing Barrier", "Long Barrier")
 	.setModifiers({ name: "Vigilance", stacks: 1 })
 	.setDurability(5)

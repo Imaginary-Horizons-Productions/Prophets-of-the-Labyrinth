@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 		const addedRegen = addModifier(target, regen);
 		return `${payHP(user, pendingHPCost, adventure)}${addedRegen ? ` ${user.getName(adventure.room.enemyIdMap)} gains Regen${addedStasis ? " and enters Stasis" : ""}.` : ""}`;
 	}
-).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Discounted Infinite Regeneration")
 	.setModifiers({ name: "Regen", stacks: 3 }, { name: "Stasis", stacks: 1 })
 	.setHPCost(50)

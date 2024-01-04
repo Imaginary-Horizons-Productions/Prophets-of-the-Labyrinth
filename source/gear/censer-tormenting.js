@@ -34,7 +34,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 		}
 		return `${damageText}${debuffs.length > 0 ? `${target.getName(adventure.room.enemyIdMap)}'s gains ${listifyEN(debuffs)}.` : ""}`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Censer", "Thick Censer")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDamage(15)

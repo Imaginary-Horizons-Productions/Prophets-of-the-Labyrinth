@@ -37,7 +37,7 @@ module.exports = new GearTemplate("Potion Kit",
 			return `${user.getName(adventure.room.enemyIdMap)} sets a batch of ${randomPotion} simmering.`;
 		}
 	}
-).setTargetingTags({ target: "none", team: "none", needsLivingTargets: false })
+).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
 	.setUpgrades("Organic Potion Kit", "Reinforced Potion Kit", "Urgent Potion Kit")
 	.setBonus(1) // Potion count
 	.setDurability(15)

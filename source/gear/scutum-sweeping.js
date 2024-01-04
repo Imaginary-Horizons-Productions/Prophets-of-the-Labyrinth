@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Sweeping Scutum",
 		})
 		return "Damage will be blocked for everyone.";
 	}
-).setTargetingTags({ target: "all", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Vigilant Scutum")
 	.setDurability(15)
 	.setBlock(75);

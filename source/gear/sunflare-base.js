@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Sun Flare",
 		target.addStagger(stagger)
 		return `${target.getName(adventure.room.enemyIdMap)} is Staggered${addedSlow ? " and Slowed" : ""}.`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Accelerating Sun Flare", "Evasive Sun Flare", "Tormenting Sun Flare")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setStagger(2)

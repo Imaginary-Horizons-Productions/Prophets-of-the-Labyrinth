@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Censer",
 			return damageText;
 		}
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Fate-Sealing Censer", "Thick Censer", "Tormenting Censor")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDamage(15)

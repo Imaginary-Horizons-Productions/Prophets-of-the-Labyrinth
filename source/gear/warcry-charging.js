@@ -40,7 +40,7 @@ module.exports = new GearTemplate("Charging War Cry",
 		}
 		return resultText;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: false })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Slowing War Cry", "Tormenting War Cry")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setStagger(2)

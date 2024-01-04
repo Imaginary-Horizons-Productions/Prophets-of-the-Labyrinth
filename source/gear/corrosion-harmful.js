@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Harmful Corrosion",
 			return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${isCrit ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
 		}
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Corrosion", "Shattering Corrosion")
 	.setModifiers({ name: "Power Down", stacks: 40 })
 	.setStagger(2)

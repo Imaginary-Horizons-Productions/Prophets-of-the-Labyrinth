@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Vigilant Scutum",
 		const userName = user.getName(adventure.room.enemyIdMap);
 		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}.${addedVigilance ? ` ${userName} gains Vigilance.` : ""}`;
 	}
-).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")
 	.setModifiers({ name: "Vigilance", stacks: 1 })
 	.setDurability(15)

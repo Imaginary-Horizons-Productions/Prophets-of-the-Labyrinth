@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Power from Wrath",
 		}
 		return `${payHP(user, hpCost, adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)}`;
 	}
-).setTargetingTags({ target: "single", team: "enemy", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "enemy", needsLivingTargets: true })
 	.setDurability(15)
 	.setHPCost(40)
 	.setDamage(40);

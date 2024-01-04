@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Unstoppable Lance",
 		}
 		return dealDamage([target], user, damage, true, element, adventure);
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Lance", "Vigilant Lance")
 	.setDurability(15)
 	.setDamage(40);

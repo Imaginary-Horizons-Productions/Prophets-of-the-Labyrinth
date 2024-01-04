@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Lethal Spear",
 		}
 		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${isCrit ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Spear", "Sweeping Spear")
 	.setStagger(2)
 	.setDurability(15)

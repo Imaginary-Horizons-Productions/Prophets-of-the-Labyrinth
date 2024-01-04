@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Accelerating Sun Flare",
 		const addedQuicken = addModifier(user, quicken);
 		return `${addedQuicken ? `${user.getName(adventure.room.enemyIdMap)} is Quickened. ` : ""}${target.getName(adventure.room.enemyIdMap)} is Staggered${addedSlow ? ` and Slowed` : ""}.`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Sun Flare", "Tormenting Sun Flare")
 	.setModifiers({ name: "Quicken", stacks: 1 }, { name: "Slow", stacks: 2 })
 	.setStagger(2)

@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Scutum",
 		addBlock(user, pendingBlock);
 		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${user.getName(adventure.room.enemyIdMap)}.`;
 	}
-).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Guarding Scutum", "Sweeping Scutum", "Vigilant Scutum")
 	.setDurability(15)
 	.setBlock(75);

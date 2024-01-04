@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 			return `Preparing to Block, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""}`;
 		}
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reinforced Blood Aegis", "Sweeping Blood Aegis")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)

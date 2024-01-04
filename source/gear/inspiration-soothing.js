@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Soothing Inspiration",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ target: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Inspiration", "Sweeping Inspiration")
 	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Regen", stacks: 2 })
 	.setBonus(25) // Power Up stacks

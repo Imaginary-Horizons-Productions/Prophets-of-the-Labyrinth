@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Flanking Life Drain",
 		const addedExposed = addModifier(target, exposed);
 		return `${damageText}${addedExposed ? ` ${target.getName(adventure.room.enemyIdMap)} is Exposed.` : ""} ${gainHealth(user, pendingHealing, adventure)}`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Life Drain", "Urgent Life Drain")
 	.setModifiers({ name: "Exposed", stacks: 2 })
 	.setDurability(15)

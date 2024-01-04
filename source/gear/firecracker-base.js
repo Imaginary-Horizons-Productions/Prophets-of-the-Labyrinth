@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Firecracker",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
-).setTargetingTags({ target: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setUpgrades("Double Firecracker", "Mercurial Firecracker", "Toxic Firecracker")
 	.setDurability(15)
 	.setDamage(15);

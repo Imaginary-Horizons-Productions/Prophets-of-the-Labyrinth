@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ target: "self", team: "any", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
 	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
 	.setBonus(45) // Punch damage boost
 	.setDurability(10);

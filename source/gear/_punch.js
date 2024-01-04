@@ -25,6 +25,6 @@ module.exports = new GearTemplate("Punch",
 		}
 		return `${dealDamage([target], user, pendingDamage, false, pendingElement, adventure)}${totalStagger > 0 ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setDurability(Infinity)
 	.setDamage(0);

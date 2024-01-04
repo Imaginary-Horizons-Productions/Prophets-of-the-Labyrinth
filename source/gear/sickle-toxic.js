@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Toxic Sickle",
 		}
 		return resultText;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Sickle", "Sharpened Sickle")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)

@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Hunter's Bow",
 		}
 		return damageText;
 	}
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Bow", "Mercurial Bow")
 	.setDurability(15)
 	.setDamage(40)
