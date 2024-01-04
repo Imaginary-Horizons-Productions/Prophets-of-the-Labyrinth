@@ -215,7 +215,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 		}
 	},
 	{
-		"Event": ["Twin Pedestals", "Elemental Research", "Free Gold?", "Health Redistribution", "The Score Beggar", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		"Event": ["Twin Pedestals", "Imp Contract Faire", "Free Gold?", "The Score Beggar", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
 		"Battle": ["Hawk Fight", "Frog Fight", "Mechabee Fight", "Slime Fight", "Tortoise Fight"],
 		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
 		"Rest Site": ["Rest Site: Mysterious Challenger"],

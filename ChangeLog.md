@@ -1,5 +1,6 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.14.0:
+- Combined event rooms "Elemental Research" and "HP Redistribution" into "Imp Contract Faire"
 - New Gear: Prismatic Blast, Vexing Prismatic Blast
 - Crystal Shard (artifact) now increases range of Spells--durability saving effect is now on the new Weapon Polish artifact, which applies to Weapons
 ## Prophets of the Labyrinth v0.13.0:
