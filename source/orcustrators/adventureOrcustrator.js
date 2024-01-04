@@ -440,12 +440,12 @@ function resolveMove(move, adventure) {
 				}
 			}
 			if (livingTargets.length > 0) {
-				const deadTargetText = "";
+				let deadTargetText = "";
 				if (deadTargets.length > 0) {
 					deadTargetText += ` ${listifyEN(deadTargets.map(target => target.getName(adventure.room.enemyIdMap)))} ${deadTargets === 1 ? "was" : "were"} already dead!`
 				}
 
-				const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
+				const resultText = effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
 				moveText += `. ${resultText}${deadTargetText}${move.type === "gear" && move.userReference.team === "delver" ? decrementDurability(move.name, user, adventure) : ""}`;
 			} else if (targets.length === 1) {
 				moveText += `, but ${targets[0].getName(adventure.room.enemyIdMap)} was already dead!`;
