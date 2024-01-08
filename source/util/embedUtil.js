@@ -160,8 +160,8 @@ function renderRoom(adventure, thread, descriptionOverride) {
 							}
 							delver.level += levelsGained;
 							const { maxHPGrowth, powerGrowth, speedGrowth, critRateGrowth, poiseGrowth } = getArchetype(delver.archetype);
-							gainHealth(delver, maxHPGrowth * levelsGained, adventure);
 							delver.maxHP += maxHPGrowth * levelsGained;
+							gainHealth(delver, maxHPGrowth * levelsGained, adventure);
 							delver.power += powerGrowth * levelsGained;
 							delver.speed += speedGrowth * levelsGained;
 							delver.critRate += critRateGrowth * levelsGained;
@@ -405,7 +405,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 	description += `\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
-		.setTitle(`${delver.getName()} the ${delver.archetype}`)
+		.setTitle(`${delver.getName()} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
 	for (let index = 0; index < gearCapacity; index++) {
 		if (delver.gear[index]) {
