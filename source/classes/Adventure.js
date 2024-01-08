@@ -367,12 +367,12 @@ class Enemy extends Combatant {
 
 	/** @returns {number} */
 	getMaxHP() {
-		return this.maxHP;
+		return Math.floor(this.maxHP);
 	}
 
 	/** @returns {number} */
 	getPower() {
-		return this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down");
+		return Math.floor(this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down"));
 	}
 
 	/** @param {boolean} includeRoundSpeed */
@@ -389,17 +389,17 @@ class Enemy extends Combatant {
 			const quickenStacks = this.getModifierStacks("Quicken");
 			totalSpeed += quickenStacks * 5;
 		}
-		return Math.ceil(totalSpeed);
+		return Math.floor(totalSpeed);
 	}
 
 	/** @returns {number} */
 	getCritRate() {
-		return this.critRate;
+		return Math.floor(this.critRate);
 	}
 
 	/** @returns {number} */
 	getPoise() {
-		return this.poise;
+		return Math.floor(this.poise);
 	}
 
 	getDamageCap() {

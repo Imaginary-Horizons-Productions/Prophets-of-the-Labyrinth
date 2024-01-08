@@ -7,14 +7,16 @@ const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MA
 const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
 const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 
+const { getArchetype } = require("../archetypes/_archetypeDictionary.js");
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
 const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
+const { gainHealth } = require("./combatantUtil.js");
 const { getEmoji, getColor } = require("./elementUtil");
 const { generateRoutingRow, generateLootRow } = require("./messageComponentUtil");
-const { ordinalSuffixEN, generateTextBar } = require("./textUtil");
+const { ordinalSuffixEN, generateTextBar, listifyEN } = require("./textUtil");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -62,15 +64,24 @@ function embedTemplate() {
  * @param {string} descriptionOverride
  */
 function renderRoom(adventure, thread, descriptionOverride) {
-	const roomTemplate = getRoom(adventure.room.title);
-	const hasEnemies = adventure.room.enemies;
-	const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0);
-
 	const roomEmbed = new EmbedBuilder().setColor(getColor(adventure.room.element))
-		.setAuthor({ name: roomHeaderString(adventure), iconURL: thread.client.user.displayAvatarURL() })
-		.setTitle(`${adventure.room.title}${isCombatVictory ? " - Victory!" : ""}`)
-		.setFooter({ text: `Room #${adventure.depth}${hasEnemies ? ` - Round ${adventure.room.round}` : ""}` });
+		.setAuthor({ name: roomHeaderString(adventure), iconURL: thread.client.user.displayAvatarURL() });
 
+	const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0);
+	if (isCombatVictory) {
+		roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
+	} else {
+		roomEmbed.setTitle(adventure.room.title);
+	}
+
+	const hasEnemies = adventure.room.enemies;
+	if (hasEnemies) {
+		roomEmbed.setFooter({ text: `Room #${adventure.depth} - Round ${adventure.room.round}` });
+	} else {
+		roomEmbed.setFooter({ text: `Room #${adventure.depth}` });
+	}
+
+	const roomTemplate = getRoom(adventure.room.title);
 	if (descriptionOverride || roomTemplate) {
 		roomEmbed.setDescription(descriptionOverride || roomTemplate.description.replace("@{roomElement}", adventure.room.element));
 	}
@@ -123,6 +134,73 @@ function renderRoom(adventure, thread, descriptionOverride) {
 			} else {
 				if (isCombatVictory) {
 					components.push(generateLootRow(adventure));
+
+					const baseLevelsGained = adventure.room.resources.levelsGained?.count ?? 0;
+					if (baseLevelsGained > 0) {
+						const fieldPayload = { name: "Level-Up!" };
+						/** @type {Record<number, string[]>} */
+						const levelMap = {};
+						for (const delver of adventure.delvers) {
+							const manualManuallevels = adventure.getArtifactCount("Manual Manual");
+							if (manualManuallevels > 0) {
+								adventure.updateArtifactStat("Manual Manual", "Bonus Levels", manualManuallevels);
+							}
+							const gearLevelBonus = delver.gear.reduce((bonusLevels, currentGear) => {
+								if (currentGear.name.startsWith("Wise")) {
+									return bonusLevels + 1;
+								} else {
+									return bonusLevels;
+								}
+							}, 0);
+							const levelsGained = baseLevelsGained + manualManuallevels + gearLevelBonus;
+							if (levelsGained in levelMap) {
+								levelMap[levelsGained].push(delver.getName());
+							} else {
+								levelMap[levelsGained] = [delver.getName()];
+							}
+							delver.level += levelsGained;
+							const { maxHPGrowth, powerGrowth, speedGrowth, critRateGrowth, poiseGrowth } = getArchetype(delver.archetype);
+							gainHealth(delver, maxHPGrowth * levelsGained, adventure);
+							delver.maxHP += maxHPGrowth * levelsGained;
+							delver.power += powerGrowth * levelsGained;
+							delver.speed += speedGrowth * levelsGained;
+							delver.critRate += critRateGrowth * levelsGained;
+							delver.poise += poiseGrowth * levelsGained;
+						}
+						if (Object.entries(levelMap).length > 1) {
+							fieldPayload.value = Object.entries(levelMap).map(([levelIncrease, delverNames]) => {
+								if (levelIncrease !== baseLevelsGained) {
+									if (delverNames.length === 1) {
+										if (levelIncrease === 1) {
+											return `- ${delverNames[0]} gains 1 level.`;
+										} else {
+											return `- ${delverNames[0]} gains ${levelIncrease} levels.`;
+										}
+									} else {
+										if (levelIncrease === 1) {
+											return `- ${listifyEN(delverNames)} gain 1 level.`;
+										} else {
+											return `- ${listifyEN(delverNames)} gain ${levelIncrease} levels.`;
+										}
+									}
+								}
+							}).join("- \n");
+							if (levelMap[baseLevelsGained].length < adventure.delvers.length) {
+								if (baseLevelsGained === 1) {
+									fieldPayload.value = `\n- Everyone else gains 1 level.`;
+								} else {
+									fieldPayload.value = `\n- Everyone else gains ${baseLevelsGained} levels.`;
+								}
+							}
+						} else {
+							if (baseLevelsGained === 1) {
+								fieldPayload.value = `Everyone gains 1 level.`;
+							} else {
+								fieldPayload.value = `Everyone gains ${baseLevelsGained} levels.`;
+							}
+						}
+						roomEmbed.addFields(fieldPayload);
+					}
 				}
 				roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
 				components.push(generateRoutingRow(adventure));

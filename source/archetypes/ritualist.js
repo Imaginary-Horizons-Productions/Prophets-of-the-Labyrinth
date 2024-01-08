@@ -6,6 +6,13 @@ const { generateTextBar } = require("../util/textUtil");
 module.exports = new ArchetypeTemplate("Ritualist",
 	"They'll be able to assess combatant modifiers and hp levels. They'll also be able to inflict great harm on foes suffering debuffs with their Censer.",
 	"Fire",
+	{
+		maxHPGrowth: 25,
+		powerGrowth: 5,
+		speedGrowth: 0.5,
+		critRateGrowth: 1,
+		poiseGrowth: 0.25
+	},
 	["Censer", "Corrosion"],
 	(embed, adventure) => {
 		adventure.room.enemies.concat(adventure.delvers).filter(combatant => combatant.hp > 0).forEach(combatant => {

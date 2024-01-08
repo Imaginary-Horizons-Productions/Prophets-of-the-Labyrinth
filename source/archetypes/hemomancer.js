@@ -4,6 +4,13 @@ const { generateTextBar } = require("../util/textUtil");
 module.exports = new ArchetypeTemplate("Hemomancer",
 	"They'll be able to predict the order combatants will act in and their how much Stagger to Stun them. They'll also be able to redirect enemy attacks with Blood Aegis.",
 	"Darkness",
+	{
+		maxHPGrowth: 25,
+		powerGrowth: 5,
+		speedGrowth: 0.5,
+		critRateGrowth: 1,
+		poiseGrowth: 0.25
+	},
 	["Life Drain", "Blood Aegis"],
 	(embed, adventure) => {
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)

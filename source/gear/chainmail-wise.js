@@ -1,13 +1,12 @@
 const { GearTemplate } = require('../classes');
 
-module.exports = new GearTemplate("Chainmail",
-	"Gain @{maxHP} Max HP",
+module.exports = new GearTemplate("Wise Chainmail",
+	"Gain @{maxHP} Max HP. Gain 1 extra level after each battle.",
 	"N/A",
 	"Trinket",
 	"Untyped",
-	200,
+	350,
 	(targets, user, isCrit, adventure) => ""
 ).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
-	.setUpgrades("Wise Chainmail")
 	.setDurability(0)
 	.setMaxHP(50);

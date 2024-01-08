@@ -8,11 +8,12 @@ class ArchetypeTemplate {
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementLabel
+	 * @param {{maxHPGrowth: number, powerGrowth: number, speedGrowth: number, critRateGrowth: number, poiseGrowth: number}} growthRates
 	 * @param {string[]} startingGearNames
 	 * @param {(embed: EmbedBuilder, adventure: Adventure ) => EmbedBuilder} predictFunction
 	 * @param {(combatant: Combatant) => string} miniPredictFunction
 	 */
-	constructor(nameInput, descriptionInput, elementLabel, startingGearNames, predictFunction, miniPredictFunction) {
+	constructor(nameInput, descriptionInput, elementLabel, { maxHPGrowth, powerGrowth, speedGrowth, critRateGrowth, poiseGrowth }, startingGearNames, predictFunction, miniPredictFunction) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
 		if (!elementLabel) throw new BuildError("Falsy elementLabel");
@@ -24,6 +25,11 @@ class ArchetypeTemplate {
 		this.description = descriptionInput;
 		this.element = elementLabel;
 		this.startingGear = startingGearNames;
+		this.maxHPGrowth = maxHPGrowth;
+		this.powerGrowth = powerGrowth;
+		this.speedGrowth = speedGrowth;
+		this.critRateGrowth = critRateGrowth;
+		this.poiseGrowth = poiseGrowth;
 		this.predict = predictFunction;
 		this.miniPredict = miniPredictFunction;
 	}

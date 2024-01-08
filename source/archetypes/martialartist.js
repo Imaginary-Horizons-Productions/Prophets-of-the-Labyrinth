@@ -4,6 +4,13 @@ const { generateTextBar } = require("../util/textUtil");
 module.exports = new ArchetypeTemplate("Martial Artist",
 	"They'll be able to predict the order combatants will act in and their how much Stagger to Stun them. They'll also be able enhance their Punches with various stances.",
 	"Light",
+	{
+		maxHPGrowth: 25,
+		powerGrowth: 5,
+		speedGrowth: 0.5,
+		critRateGrowth: 1,
+		poiseGrowth: 0.25
+	},
 	["Iron Fist Stance", "Floating Mist Stance"],
 	(embed, adventure) => {
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
