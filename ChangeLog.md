@@ -1,8 +1,11 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.14.0:
+- New Gear: Wise Chainmail
 - Combined event rooms "Elemental Research" and "HP Redistribution" into "Imp Contract Faire"
 - New Gear: Prismatic Blast, Vexing Prismatic Blast
 - Crystal Shard (artifact) now increases range of Spells--durability saving effect is now on the new Weapon Polish artifact, which applies to Weapons
+- Delvers now levelup after combat, increasing their stats (1 level for normal battles, 3 levels for artifact guardians, 5 levels for final bosses)
+- New Artifact: Manual Manual
 ## Prophets of the Labyrinth v0.13.0:
 - New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Surpassing Wolf Ring, Swift Wolf Ring, Harmful Poison Torrent, Ice Bolt, Scarf, Hearty Scarf, Chainmail
 - Reworked Thick Cloak to Accurate Cloak

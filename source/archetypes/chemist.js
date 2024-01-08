@@ -5,6 +5,13 @@ const { generateTextBar } = require("../util/textUtil.js");
 module.exports = new ArchetypeTemplate("Chemist",
 	"They'll be able to assess combatant modifiers and hp levels. They'll also be able to make items with their Potion Kit.",
 	"Water",
+	{
+		maxHPGrowth: 25,
+		powerGrowth: 5,
+		speedGrowth: 0.5,
+		critRateGrowth: 1,
+		poiseGrowth: 0.25
+	},
 	["Sickle", "Potion Kit"],
 	(embed, adventure) => {
 		adventure.room.enemies.concat(adventure.delvers).filter(combatant => combatant.hp > 0).forEach(combatant => {

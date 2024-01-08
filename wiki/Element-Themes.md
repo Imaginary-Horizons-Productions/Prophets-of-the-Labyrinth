@@ -177,3 +177,4 @@ Archetypes:
 - Tormenting
 - Vexing
 - Vigilant
+- Wise

@@ -15,6 +15,7 @@ class Combatant {
 	archetype;
 	/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
 	element;
+	level = 1;
 	maxHP = 300;
 	power = 0;
 	speed = 100;
@@ -103,7 +104,7 @@ class Delver extends Combatant {
 	}
 
 	getMaxHP() {
-		return this.maxHP + this.gear.reduce((totalGearMaxHP, gear) => {
+		return Math.floor(this.maxHP) + this.gear.reduce((totalGearMaxHP, gear) => {
 			if (parseInt(gear.maxHP)) {
 				return totalGearMaxHP + gear.maxHP;
 			} else {
@@ -113,13 +114,13 @@ class Delver extends Combatant {
 	}
 
 	getPower() {
-		return this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down") + this.gear.reduce((totalPower, gear) => {
+		return Math.floor(this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down") + this.gear.reduce((totalPower, gear) => {
 			if (parseInt(gear.power)) {
 				return totalPower + gear.power;
 			} else {
 				return totalPower;
 			}
-		}, 0);
+		}, 0));
 	}
 
 	/** @param {boolean} includeRoundSpeed */
@@ -143,27 +144,27 @@ class Delver extends Combatant {
 			const quickenStacks = this.getModifierStacks("Quicken");
 			totalSpeed += quickenStacks * 5;
 		}
-		return Math.ceil(totalSpeed);
+		return Math.floor(totalSpeed);
 	}
 
 	getCritRate() {
-		return this.critRate + this.gear.reduce((totalCritRate, gear) => {
+		return Math.floor(this.critRate + this.gear.reduce((totalCritRate, gear) => {
 			if (parseInt(gear.critRate)) {
 				return totalCritRate + gear.critRate;
 			} else {
 				return totalCritRate;
 			}
-		}, 0);
+		}, 0));
 	}
 
 	getPoise() {
-		return this.poise + this.gear.reduce((totalGearPoise, gear) => {
+		return Math.floor(this.poise + this.gear.reduce((totalGearPoise, gear) => {
 			if (parseInt(gear.poise)) {
 				return totalGearPoise + gear.poise;
 			} else {
 				return totalGearPoise;
 			}
-		}, 0);
+		}, 0));
 	}
 
 	getDamageCap() {

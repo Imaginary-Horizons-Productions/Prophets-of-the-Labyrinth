@@ -367,6 +367,12 @@ Adds Vigilance to user
 - Lance (Earth)
 - Scutum (Fire)
 
+### Wise
+Increases levels gained after battle by 1
+
+**Available on**
+- Chainmail (Earth)
+
 ## Unnamed Variants
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
 - Adds Iron Fist Stance to user (all Iron Fist Stances)

@@ -23,6 +23,7 @@ for (const file of [
 	"hammerspaceholster.js",
 	"hawktailfeather.js",
 	"healthinsuranceloophole.js",
+	"manualmanual.js",
 	"negativeoneleafclover.js",
 	"oilpainting.js",
 	"phoenixfruitblossom.js",

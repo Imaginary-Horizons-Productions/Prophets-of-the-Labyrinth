@@ -61,6 +61,15 @@ async function executeSubcommand(interaction, ...args) {
 				ephemeral: true
 			});
 			break;
+		case "Leveling Up":
+			interaction.reply({
+				embeds: [
+					embedTemplate().setTitle("Leveling Up")
+						.setDescription("Delvers will level up and gain stats after each battle. They'll gain 1 level after normal combat, 3 after artifact guardians, and 5 after final bosses.")
+				],
+				ephemeral: true
+			});
+			break;
 	}
 };
 
@@ -78,7 +87,8 @@ module.exports = {
 					{ name: "Tutorial", value: "Tutorial" },
 					{ name: "Elements", value: "Elements" },
 					{ name: "Stagger", value: "Stagger" },
-					{ name: "Damage Cap", value: "Damage Cap" }
+					{ name: "Damage Cap", value: "Damage Cap" },
+					{ name: "Leveling Up", value: "Leveling Up" }
 				]
 			},
 		]

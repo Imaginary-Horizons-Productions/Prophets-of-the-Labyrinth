@@ -158,16 +158,17 @@ function gainHealth(combatant, healing, adventure) {
 	combatant.hp += healing;
 	const loopholeCount = adventure.getArtifactCount("Health Insurance Loophole");
 	let loopholeGold = 0;
-	if (combatant.hp > combatant.getMaxHP()) {
-		combatant.hp = combatant.getMaxHP();
+	const maxHP = combatant.getMaxHP();
+	if (combatant.hp > maxHP) {
+		combatant.hp = maxHP;
 		if (combatant.team === "delver" && loopholeCount > 0) {
-			loopholeGold = (combatant.hp - combatant.getMaxHP()) * loopholeCount;
+			loopholeGold = (combatant.hp - maxHP) * loopholeCount;
 			adventure.gainGold(loopholeGold);
 			adventure.updateArtifactStat("Health Insurance Loophole", "Gold Gained", loopholeGold);
 		}
 	}
 
-	if (combatant.hp === combatant.getMaxHP()) {
+	if (combatant.hp === maxHP) {
 		return `${combatant.getName(adventure.room.enemyIdMap)} was fully healed${loopholeGold > 0 ? ` (${loopholeGold} gold gained)` : ""}!`;
 	} else {
 		return `${combatant.getName(adventure.room.enemyIdMap)} *gained ${healing} hp*.`
