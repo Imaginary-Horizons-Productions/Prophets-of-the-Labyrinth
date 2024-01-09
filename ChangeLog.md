@@ -6,6 +6,7 @@
 - Crystal Shard (artifact) now increases range of Spells--durability saving effect is now on the new Weapon Polish artifact, which applies to Weapons
 - Delvers now levelup after combat, increasing their stats (1 level for normal battles, 3 levels for artifact guardians, 5 levels for final bosses)
 - New Artifact: Manual Manual
+- New Archetype: Fighter - No predict or extra effects on gear, double stat growths
 ## Prophets of the Labyrinth v0.13.0:
 - New Gear: Refreshing Breeze, Shattering Sabotage Kit, Harmful Corrosion, Shattering Corrosion, Wolf Ring, Surpassing Wolf Ring, Swift Wolf Ring, Harmful Poison Torrent, Ice Bolt, Scarf, Hearty Scarf, Chainmail
 - Reworked Thick Cloak to Accurate Cloak

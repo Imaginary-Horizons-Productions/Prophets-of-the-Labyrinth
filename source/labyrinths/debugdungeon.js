@@ -170,10 +170,16 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Chainmail"
+				"Chainmail",
+				"Second Wind",
+				"Strong Attack"
 			],
 			Rare: [
-				"Wise Chainmail"
+				"Wise Chainmail",
+				"Cleansing Second Wind",
+				"Soothing Second Wind",
+				"Sharpened Strong Attack",
+				"Staggering Strong Attack"
 			]
 		}
 	},

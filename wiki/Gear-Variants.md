@@ -53,6 +53,7 @@ Cures a random debuff on target
 **Available on**
 - all Refreshing Breezes (Wind)
 - Barrier (Earth)
+- Second Wind (Untyped)
 
 ### Corrosive
 Adds Power Down to target
@@ -243,6 +244,7 @@ Increased damage
 - all Spears (Wind)
 - Daggers (Wind)
 - Sickle (Water)
+- Strong Attack (Untyped)
 
 ### Shattering
 Adds Frail to target
@@ -267,12 +269,14 @@ Adds Regen to target
 - all Infinite Regenerations (Light)
 - Floating Mist Stance (Light)
 - Midas Staff (Water)
+- Second Wind (Untyped)
 
 ### Staggering
 Add Stagger to target
 
 **Available on**
 - all Morning Stars (Light)
+- Stong Attack (Untyped)
 
 ### Surpassing
 Increases the user's damage cap

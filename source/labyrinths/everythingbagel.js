@@ -205,11 +205,17 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Common: [
 				"Chainmail",
 				"Scarf",
+				"Second Wind",
+				"Strong Attack",
 				"Wolf Ring"
 			],
 			Rare: [
 				"Wise Chainmail",
 				"Hearty Scarf",
+				"Cleansing Second Wind",
+				"Soothing Second Wind",
+				"Sharpened Strong Attack",
+				"Staggering Strong Attack",
 				"Surpassing Wolf Ring",
 				"Swift Wolf Ring"
 			]
