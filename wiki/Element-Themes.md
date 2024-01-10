@@ -130,6 +130,7 @@ Archetypes: Assassin
 - Staggering
 - Sweeping
 - Thirsting
+- Vigilant
 
 ## 🌐 Untyped
 Color: ![Colors.Greyple](https://placehold.co/15x15/99AAB5/99AAB5.png) `Colors.Greyple`
@@ -176,5 +177,4 @@ Archetypes:
 - Thick
 - Tormenting
 - Vexing
-- Vigilant
 - Wise

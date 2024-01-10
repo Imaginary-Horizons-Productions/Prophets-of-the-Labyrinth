@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectSelf, selectNone, selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
-const { addModifier, addBlock, dealDamage } = require("../util/combatantUtil");
+const { addModifier, dealDamage } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
 const { listifyEN } = require("../util/textUtil.js");
 
@@ -27,17 +27,13 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	.addAction({
 		name: "Reinforcing Slam",
 		element: "Earth",
-		description: `Gain Block and deal ${getEmoji("Earth")} damage to a single foe`,
+		description: `Gain protection and deal ${getEmoji("Earth")} damage to a single foe`,
 		priority: 0,
 		effect: ([target], user, isCrit, adventure) => {
 			let damage = user.getPower() + 100;
-			let block = 100;
-			if (isCrit) {
-				block *= 2;
-			}
-			addBlock(user, block);
+			user.protection += isCrit ? 200 : 100;
 			user.addStagger("elementMatchAlly");
-			return `It prepares to Block and ${dealDamage([target], user, damage, false, user.element, adventure)}`;
+			return `It gains protection and ${dealDamage([target], user, damage, false, user.element, adventure)}`;
 		},
 		selector: selectRandomFoe,
 		needsLivingTargets: false,

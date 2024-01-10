@@ -1,27 +1,26 @@
 const { GearTemplate } = require('../classes');
-const { addBlock } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Scutum",
-	"Grant @{block} block to an ally and yourself",
-	"Block x@{critMultiplier}",
+	"Grant @{protection} protection to an ally and yourself",
+	"Protection x@{critMultiplier}",
 	"Armor",
 	"Fire",
 	200,
 	([target], user, isCrit, adventure) => {
-		const { element, block, critMultiplier } = module.exports;
-		let pendingBlock = block;
+		const { element, protection, critMultiplier } = module.exports;
+		let pendingProtection = protection;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
 			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			pendingBlock *= critMultiplier;
+			pendingProtection *= critMultiplier;
 		}
-		addBlock(target, pendingBlock);
-		addBlock(user, pendingBlock);
-		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${user.getName(adventure.room.enemyIdMap)}.`;
+		target.protection += pendingProtection;
+		user.protection += pendingProtection;
+		return `${target.getName(adventure.room.enemyIdMap)} and ${user.getName(adventure.room.enemyIdMap)} gain protection.`;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Guarding Scutum", "Sweeping Scutum", "Vigilant Scutum")
 	.setDurability(15)
-	.setBlock(75);
+	.setProtection(75);

@@ -1,30 +1,29 @@
 const { GearTemplate } = require('../classes');
-const { addBlock } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Vigilant Scutum",
-	"Grant @{block} block to an ally and yourself and gain @{mod0Stacks} @{mod0}",
-	"Block x@{critMultiplier}",
+	"Grant @{protection} protection to an ally and yourself and gain @{mod0Stacks} @{mod0}",
+	"Protection x@{critMultiplier}",
 	"Armor",
 	"Fire",
 	350,
 	([target], user, isCrit, adventure) => {
-		const { element, modifiers: [vigilance], block, critMultiplier } = module.exports;
-		let pendingBlock = block;
+		const { element, modifiers: [vigilance], protection, critMultiplier } = module.exports;
+		let pendingProtection = protection;
 		if (user.element === element) {
 			target.addStagger("elementMatchAlly");
 			user.addStagger("elementMatchAlly");
 		}
 		if (isCrit) {
-			pendingBlock *= critMultiplier;
+			pendingProtection *= critMultiplier;
 		}
-		addBlock(target, pendingBlock);
-		addBlock(user, pendingBlock);
+		target.protection += pendingProtection;
+		user.protection += pendingProtection;
 		const addedVigilance = addModifier(user, vigilance);
 		const userName = user.getName(adventure.room.enemyIdMap);
-		return `Damage will be blocked for ${target.getName(adventure.room.enemyIdMap)} and ${userName}.${addedVigilance ? ` ${userName} gains Vigilance.` : ""}`;
+		return `${target.getName(adventure.room.enemyIdMap)} and ${userName} gain protection.${addedVigilance ? ` ${userName} gains Vigilance.` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")
 	.setModifiers({ name: "Vigilance", stacks: 1 })
 	.setDurability(15)
-	.setBlock(75);
+	.setProtection(75);

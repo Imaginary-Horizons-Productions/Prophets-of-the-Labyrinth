@@ -4,7 +4,6 @@ const { BuildError, ItemTemplate } = require("../classes");
 const ITEMS = {};
 
 for (const file of [
-	"blockpotion.js",
 	"clearpotion.js",
 	"earthenpotion.js",
 	"explosionpotion.js",
@@ -15,6 +14,7 @@ for (const file of [
 	"oblivionsalt.js",
 	"panacea.js",
 	"placebo.js",
+	"protectionpotion.js",
 	"quickpepper.js",
 	"regenroot.js",
 	"repairkit.js",

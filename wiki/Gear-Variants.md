@@ -117,7 +117,7 @@ Increases damage proprotional to user's missing HP
 - all Power from Wrath (Darkness)
 
 ### Guarding
-Adds Block to the target
+Adds protection to the target
 
 **Available on**
 - Buckler (Earth)
@@ -223,7 +223,7 @@ Increased damage, but adds Exposed to user
 - Certain Victory (Earth)
 
 ### Reinforced
-Adds Block to the user
+Adds protection to the user
 
 **Available on**
 - all Barriers (Light)

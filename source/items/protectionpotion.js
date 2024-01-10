@@ -1,15 +1,14 @@
 const { ItemTemplate } = require("../classes");
 const { selectAllAllies } = require("../shared/actionComponents");
-const { addBlock } = require("../util/combatantUtil");
 
-module.exports = new ItemTemplate("Block Potion",
+module.exports = new ItemTemplate("Protection Potion",
 	"Adds 50 block to all allies",
 	"Untyped",
 	30,
 	selectAllAllies,
 	false,
 	([target], user, isCrit, adventure) => {
-		addBlock(target, 50);
-		return `${user.getName(adventure.room.enemyIdMap)} prepares to Block.`;
+		target.block += 50;
+		return `${user.getName(adventure.room.enemyIdMap)} gains protection.`;
 	}
 );

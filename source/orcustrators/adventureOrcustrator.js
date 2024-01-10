@@ -15,7 +15,7 @@ const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
-const { clearBlock, removeModifier, addModifier, dealModifierDamage, addBlock, gainHealth } = require("../util/combatantUtil");
+const { removeModifier, addModifier, dealModifierDamage, gainHealth } = require("../util/combatantUtil");
 const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
 const { renderRoom, updateRoomHeader } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
@@ -113,6 +113,7 @@ function nextRoom(roomType, thread) {
 	const adventure = getAdventure(thread.id);
 
 	adventure.delvers.forEach(delver => {
+		delver.protection = 0;
 		delver.modifiers = {};
 		delver.stagger = 0;
 		delver.isStunned = false;
@@ -281,16 +282,11 @@ function newRound(adventure, thread, lastRoundText) {
 			 * @param {number} i
 			 */
 			(combatant, i) => {
-				// Clear Excess Block if doesn't have vigilance
-				if (combatant.getModifierStacks("Vigilance") === 0) {
-					clearBlock(combatant);
-				}
-
 				const boatPartsCount = adventure.getArtifactCount("Boat Parts");
 				if (boatPartsCount > 0 && adventure.room.round <= boatPartsCount + 1 && combatant.team === "delver") {
-					const boatBlock = boatPartsCount * 25 + 25;
-					addBlock(combatant, boatBlock);
-					adventure.updateArtifactStat("Block Generated", boatBlock);
+					const boatProtection = boatPartsCount * 25 + 25;
+					combatant.protection += boatProtection;
+					adventure.updateArtifactStat("Protection Generated", boatProtection);
 				}
 
 				// Roll Round Speed
@@ -343,8 +339,13 @@ function newRound(adventure, thread, lastRoundText) {
 				}
 
 				// Decrement Modifiers
+				if (!("Vigilance" in combatant.modifiers)) {
+					removeModifier(combatant, { name: "Evade", stacks: getTurnDecrement("Evade"), force: true });
+				}
 				for (const modifier in combatant.modifiers) {
-					removeModifier(combatant, { name: modifier, stacks: getTurnDecrement(modifier), force: true })
+					if (modifier !== "Evade") {
+						removeModifier(combatant, { name: modifier, stacks: getTurnDecrement(modifier), force: true })
+					}
 				}
 
 				// Persisting Round Effects

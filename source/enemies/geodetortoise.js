@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { addBlock, addModifier, dealDamage } = require("../util/combatantUtil");
+const { addModifier, dealDamage } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf, nextRandom } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 
@@ -30,18 +30,18 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 }).addAction({
 	name: "Crystallize",
 	element: "Untyped",
-	description: "Gain Block and Power Up",
+	description: "Gain protection and Power Up",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let addedPowerUp = false;
-		addBlock(user, 150);
+		user.protection += 25;
 		if (isCrit) {
 			addedPowerUp = addModifier(user, { name: "Power Up", stacks: 50 });
 			user.addStagger("elementMatchAlly");
 		} else {
 			addedPowerUp = addModifier(user, { name: "Power Up", stacks: 25 });
 		}
-		return `It prepares to Block${addedPowerUp ? ` and is Powered Up` : ""}.`;
+		return `It gains protection${addedPowerUp ? ` and is Powered Up` : ""}.`;
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,

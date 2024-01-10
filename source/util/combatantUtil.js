@@ -52,12 +52,12 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 				pendingDamage = Math.ceil(pendingDamage);
 				let blockedDamage = 0;
 				if (!isUnblockable) {
-					if (pendingDamage >= target.block) {
-						pendingDamage -= target.block;
-						blockedDamage = target.block;
-						target.block = 0;
+					if (pendingDamage >= target.protection) {
+						pendingDamage -= target.protection;
+						blockedDamage = target.protection;
+						target.protection = 0;
 					} else {
-						target.block -= pendingDamage;
+						target.protection -= pendingDamage;
 						blockedDamage = pendingDamage;
 						pendingDamage = 0;
 					}
@@ -175,21 +175,6 @@ function gainHealth(combatant, healing, adventure) {
 	}
 }
 
-/**
- * @param {Combatant} combatant
- * @param {number} integer
- */
-function addBlock(combatant, integer) {
-	combatant.block += integer;
-	return combatant;
-}
-
-/** @param {Combatant} combatant */
-function clearBlock(combatant) {
-	combatant.block = 0;
-	return combatant;
-}
-
 /** Checks if adding the modifier inverts exisiting modifiers, increments the (remaining) stacks, then checks if stacks exceed a trigger threshold
  * @param {Combatant} combatant
  * @param {object} modifierData
@@ -282,8 +267,6 @@ module.exports = {
 	dealModifierDamage,
 	payHP,
 	gainHealth,
-	addBlock,
-	clearBlock,
 	addModifier,
 	removeModifier,
 	modifiersToString,

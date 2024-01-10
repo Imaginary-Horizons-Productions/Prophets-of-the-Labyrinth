@@ -221,7 +221,7 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
 			.replace(/@{damage}/g, damage)
 			.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
-			.replace(/@{block}/g, getGearProperty(gearName, "block"))
+			.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
 			.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
 			.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
 			.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))

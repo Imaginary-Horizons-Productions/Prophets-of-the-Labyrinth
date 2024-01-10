@@ -12,4 +12,4 @@ module.exports = new GearTemplate("Surpassing Wolf Ring",
 	.setSidegrades("Swift Wolf Ring")
 	.setDurability(0)
 	.setPoise(2)
-	.setBlock(SURPASSING_VALUE);
+	.setBonus(SURPASSING_VALUE);

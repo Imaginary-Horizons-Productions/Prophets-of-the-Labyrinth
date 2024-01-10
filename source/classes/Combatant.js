@@ -23,7 +23,7 @@ class Combatant {
 	poise = 6;
 
 	hp = 300;
-	block = 0;
+	protection = 0;
 	stagger = 0;
 	isStunned = false;
 	crit = false;

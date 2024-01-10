@@ -30,7 +30,7 @@ async function executeSubcommand(interaction, ...args) {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Elements")
-						.setDescription(`Each combatant is associated with one of the following elements: ${listifyEN(allElements.map(element => `${element} ${getEmoji(element)}`))}. Based on their element, damage they receive may be increased, decreased, or not changed depending on the element of the incoming damage.\n\nWhen a combatant receives damage they're weak to, damage is doubled. When a combatant receives damage they're resistant to, damage is halved. This change is calculated before block.`)
+						.setDescription(`Each combatant is associated with one of the following elements: ${listifyEN(allElements.map(element => `${element} ${getEmoji(element)}`))}. Based on their element, damage they receive may be increased, decreased, or not changed depending on the element of the incoming damage.\n\nWhen a combatant receives damage they're weak to, damage is doubled. When a combatant receives damage they're resistant to, damage is halved. This change is calculated before protection.`)
 						.addFields(
 							allElements.map(element => {
 								const weaknesses = getWeaknesses(element);
@@ -56,7 +56,7 @@ async function executeSubcommand(interaction, ...args) {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Damage Cap")
-						.setDescription("The maximum amount of damage that can be done in one shot after block is 500. This cap is raised for each stack of Power Up a user has.")
+						.setDescription("The maximum amount of damage that can be done in one shot after protection is 500. This cap is raised for each stack of Power Up a user has.")
 				],
 				ephemeral: true
 			});

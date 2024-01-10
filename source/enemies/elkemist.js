@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary.js");
-const { addBlock, dealDamage, addModifier, removeModifier } = require("../util/combatantUtil");
+const { dealDamage, addModifier, removeModifier } = require("../util/combatantUtil");
 const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Elkemist",
 ).addAction({
 	name: "Toil",
 	element: "Untyped",
-	description: "Gains Block, cures a random debuff, and grants a large amount of Progress",
+	description: "Gains protection, cures a random debuff, and grants a large amount of Progress",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		user.addStagger("elementMatchAlly");
@@ -34,8 +34,8 @@ module.exports = new EnemyTemplate("Elkemist",
 				removedDebuff = rolledDebuff;
 			}
 		}
-		addBlock(user, 200);
-		return `It gathers some materials${removedDebuff ? ` and cures itself of ${removedDebuff}` : ""}, fortifying its laboratory to Block incoming damage.`;
+		user.protection += 100;
+		return `It gathers some materials${removedDebuff ? ` and cures itself of ${removedDebuff}` : ""}, fortifying its laboratory to gain protection.`;
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,

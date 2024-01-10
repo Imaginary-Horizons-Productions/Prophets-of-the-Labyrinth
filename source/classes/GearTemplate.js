@@ -40,7 +40,7 @@ class GearTemplate {
 	/** @type {number} */
 	damage;
 	/** @type {number} */
-	block;
+	protection;
 	/** @type {number} */
 	hpCost;
 	/** @type {number} */
@@ -102,8 +102,8 @@ class GearTemplate {
 	}
 
 	/** @param {number} integer */
-	setBlock(integer) {
-		this.block = integer;
+	setProtection(integer) {
+		this.protection = integer;
 		return this;
 	}
 

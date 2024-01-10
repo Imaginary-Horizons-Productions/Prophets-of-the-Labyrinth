@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { listifyEN } = require('../util/textUtil');
 
 const rollablePotions = [
-	"Block Potion",
+	"Protection Potion",
 	"Clear Potion",
 	"Earthen Potion",
 	"Explosive Potion",

@@ -1,6 +1,6 @@
 const { EnemyTemplate, CombatantReference } = require("../classes");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly } = require("../shared/actionComponents");
-const { addBlock, addModifier } = require("../util/combatantUtil");
+const { addModifier } = require("../util/combatantUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 
 const drone = require("./mechabeedrone.js")
@@ -27,7 +27,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 ).addAction({
 	name: "Swarm Protocol",
 	element: "Untyped",
-	description: `Gain Block and command all Mechabees to Call for Help`,
+	description: `Gain protection and command all Mechabees to Call for Help`,
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		// assumes mechaqueen is at enemy index 0 and that all other enemies are mechabees
@@ -37,8 +37,8 @@ module.exports = new EnemyTemplate("Mecha Queen",
 				move.targets = [new CombatantReference("none", -1)];
 			}
 		});
-		addBlock(user, isCrit ? 200 : 100);
-		return "She prepares to Block and demands reinforcements!";
+		user.protection += isCrit ? 60 : 30;
+		return "She gains protection and demands reinforcements!";
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
@@ -46,7 +46,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 }).addAction({
 	name: "Assault Protocol",
 	element: "Untyped",
-	description: "Gain Block and command all Mechabees to Sting a single foe",
+	description: "Gain protection and command all Mechabees to Sting a single foe",
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		// assumes mecha queen is at enemy index 0 and that all other enemies are mechabees
@@ -57,8 +57,8 @@ module.exports = new EnemyTemplate("Mecha Queen",
 				move.targets = mechaqueensTargets;
 			}
 		});
-		addBlock(user, isCrit ? 200 : 100);
-		return "She prepares to Block and orders a full-on attack!";
+		user.protection += isCrit ? 60 : 30;
+		return "She gains protection and orders a full-on attack!";
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -66,17 +66,17 @@ module.exports = new EnemyTemplate("Mecha Queen",
 }).addAction({
 	name: "Sacrifice Protocol",
 	element: "Untyped",
-	description: "Gain Block and command a Mechabee to Self-Destruct",
+	description: "Gain protection and command a Mechabee to Self-Destruct",
 	priority: 1,
 	effect: ([target], user, isCrit, adventure) => {
-		addBlock(user, isCrit ? 200 : 100);
+		user.protection += isCrit ? 60 : 30;
 		if (target) {
 			const targetMove = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === parseInt(target.id));
 			targetMove.name = "Self-Destruct";
 			targetMove.targets = selectAllFoes(target, adventure);
-			return "She prepares to Block and employs desperate measures!";
+			return "She gains protection and employs desperate measures!";
 		}
-		return "She prepares to Block."
+		return "She gains protection."
 	},
 	selector: selectRandomOtherAlly,
 	needsLivingTargets: true,
