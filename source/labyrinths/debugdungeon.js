@@ -39,7 +39,6 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Barrier",
 				"Buckler",
 				"Certain Victory",
 				"Lance",
@@ -48,9 +47,6 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Warhammer"
 			],
 			Rare: [
-				"Cleansing Barrier",
-				"Devoted Barrier",
-				"Long Barrier",
 				"Devoted Buckler",
 				"Guarding Buckler",
 				"Reinforced Buckler",
@@ -141,6 +137,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Barrier",
 				"Bow",
 				"Cloak",
 				"Daggers",
@@ -149,6 +146,9 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Refreshing Breeze"
 			],
 			Rare: [
+				"Cleansing Barrier",
+				"Devoted Barrier",
+				"Long Barrier",
 				"Evasive Bow",
 				"Hunter's Bow",
 				"Mercurial Bow",
