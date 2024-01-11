@@ -1,10 +1,10 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate } = require('../classes/index.js');
 const { addModifier, dealDamage } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Toxic Sickle",
-	"Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} (+5% foe max hp) @{element} damage",
+module.exports = new GearTemplate("Toxic Abacus",
+	"Apply @{mod0Stacks} @{mod0} and @{damage} (+5% foe max hp) @{element} damage to a foe",
 	"Damage x@{critMultiplier}",
-	"Weapon",
+	"Trinket",
 	"Water",
 	350,
 	([target], user, isCrit, adventure) => {
@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Toxic Sickle",
 		return resultText;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Hunter's Sickle", "Sharpened Sickle")
+	.setSidegrades("Hunter's Abacus", "Sharpened Abacus")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)
 	.setDamage(40);

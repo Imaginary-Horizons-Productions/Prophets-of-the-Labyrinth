@@ -150,7 +150,7 @@ Gain gold on kill
 **Available on**
 - Bow (Wind)
 - Certain Victory (Earth)
-- Sickle (Water)
+- Abacus (Water)
 
 ### Lethal
 Increased crit damage
@@ -168,6 +168,7 @@ Increased modifier stacks
 - Cloak (Wind)
 - Sabotage Kit (Earth)
 - Barrier (Earth)
+- Risky Mixture (Darkness)
 
 ### Mercurial
 Damage element matches user
@@ -187,7 +188,7 @@ Regains durability when entering new rooms
 
 **Available on**
 - Iron Fist Stance (Light)
-- Potion Kit (Water)
+- Herb Basket (Earth)
 
 ### Poised
 Passively increases user's poise
@@ -229,7 +230,7 @@ Adds protection to the user
 - all Barriers (Light)
 - Blood Aegis (Darkness)
 - Buckler (Earth)
-- Potion Kit (Water)
+- Herb Basket (Earth)
 
 ### Sabotaging
 Adds a random modifier that converts one of target's neutral elements to a weakness
@@ -243,7 +244,7 @@ Increased damage
 **Available on**
 - all Spears (Wind)
 - Daggers (Wind)
-- Sickle (Water)
+- Abacus (Water)
 - Strong Attack (Untyped)
 
 ### Shattering
@@ -335,7 +336,7 @@ Adds Poison to target
 
 **Available on**
 - Firecracker (Fire)
-- Sickle (Water)
+- Abacus (Water)
 - Shortsword (Fire)
 
 ### Unstoppable
@@ -353,7 +354,7 @@ Increased priority
 - all Bows (Wind)
 - all Sun Flares (Light)
 - Barrier (Earth)
-- Potion Kit (Water)
+- Herb Basket (Earth)
 - Life Drain (Darkness)
 
 ### Vexing
@@ -381,7 +382,7 @@ Increases levels gained after battle by 1
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
 - Adds Iron Fist Stance to user (all Iron Fist Stances)
 - Double benefits from Power Up (all Lances)
-- Percent max hp damage (all Sickles)
+- Percent max hp damage (all Abacuses)
 - Adds Power Up to target (all Inspiration)
 - Also hits targets with Exposed (all War Cries)
 - Adds Power Up to random ally if hitting weakness (all Pistols)
