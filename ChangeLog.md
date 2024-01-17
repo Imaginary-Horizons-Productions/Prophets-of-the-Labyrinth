@@ -1,6 +1,6 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.14.0:
-This update has a systems focus: making damage midigation less situation by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content such as: adding more AoE with the Blasting gear variant and a few new artifacts.
+This update has a systems focus: making damage midigation less situation by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content such as: a new final boss, adding more AoE with the Blasting gear variant, and a few new artifacts.
 ### Combat Levels
 - Delvers now levelup after combat, increasing their stats (1 level for normal battles, 3 levels for artifact guardians, 5 levels for final bosses)
 ### Block Rework
@@ -14,6 +14,7 @@ This update has a systems focus: making damage midigation less situation by havi
 - New Artifact: Manual Manual
 - Crystal Shard (artifact) now increases range of Spells--durability saving effect is now on the new Weapon Polish artifact, which applies to Weapons
 ### Other Changes
+- Added final battle: Confronting the Top Celestial Knight
 - Combined event rooms "Elemental Research" and "HP Redistribution" into "Imp Contract Faire"
 - New Archetype: Fighter - No predict or extra effects on gear, double stat growths
 ## Prophets of the Labyrinth v0.13.0:
