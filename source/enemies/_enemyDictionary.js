@@ -15,6 +15,7 @@ for (const file of [
 	"ooze.js",
 	"royalslime.js",
 	"slime.js",
+	"starryknight.js",
 	"treasureelemental.js"
 ]) {
 	/** @type {EnemyTemplate} */

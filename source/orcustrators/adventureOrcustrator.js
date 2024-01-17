@@ -486,7 +486,7 @@ function resolveMove(move, adventure) {
  * @param {Adventure} adventure
  */
 function decrementDurability(moveName, user, adventure) {
-	if (moveName !== "Punch" && user.team === "delver") {
+	if (!["Punch", "Appease"].includes(moveName) && user.team === "delver") {
 		const gearCategory = getGearProperty(moveName, "category");
 		if (gearCategory === "Weapon") {
 			const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");

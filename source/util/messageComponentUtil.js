@@ -6,7 +6,9 @@ const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { buildGearDescription } = require("../gear/_gearDictionary");
 
-const { ordinalSuffixEN, trimForSelectOptionDescription } = require("./textUtil");
+const { ordinalSuffixEN, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
+const { gainHealth } = require("./combatantUtil");
+const { getArchetype } = require("../archetypes/_archetypeDictionary");
 
 /** Modify the buttons whose `customId`s are keys in `edits` from among `components` based on `preventUse`, `label`, and `emoji` then return all components
  * @param {MessageActionRow[]} components
@@ -72,6 +74,127 @@ function clearComponents(messageId, messageManager) {
 		})
 	}
 };
+
+/** Creates the room builder function for combat rooms
+ * @param {string[]} extraButtons
+ * @returns {(roomEmbed: EmbedBuilder, adventure: Adventure) => {embeds: EmbedBuilder[], components: ActionRowBuilder[]}}
+ */
+function generateCombatRoomBuilder(extraButtons) {
+	return (roomEmbed, adventure) => {
+		roomEmbed.setFooter({ text: `Room #${adventure.depth} - Round ${adventure.room.round}` });
+		const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0);
+		if (!isCombatVictory) {
+			const buttons = [
+				new ButtonBuilder().setCustomId("inspectself")
+					.setEmoji("🔎")
+					.setLabel("Inspect Self")
+					.setStyle(ButtonStyle.Secondary),
+				new ButtonBuilder().setCustomId("predict")
+					.setEmoji("🔮")
+					.setLabel("Predict")
+					.setStyle(ButtonStyle.Secondary),
+				new ButtonBuilder().setCustomId("readymove")
+					.setEmoji("⚔")
+					.setLabel("Ready a Move")
+					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder().setCustomId("readyitem")
+					.setEmoji("🧪")
+					.setLabel("Ready an Item")
+					.setStyle(ButtonStyle.Primary)
+					.setDisabled(!Object.values(adventure.items).some(quantity => quantity > 0))
+			];
+			for (const buttonType of extraButtons) {
+				switch (buttonType) {
+					case "appease":
+						buttons.push(new ButtonBuilder().setCustomId(`appease${SAFE_DELIMITER}${adventure.room.round}`)
+							.setEmoji("🙇")
+							.setLabel("Appease the Starry Knight")
+							.setStyle(ButtonStyle.Secondary)
+						);
+						break;
+				}
+			}
+			return {
+				embeds: [roomEmbed],
+				components: [new ActionRowBuilder().addComponents(buttons)]
+			}
+		} else {
+			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
+
+			const baseLevelsGained = adventure.room.resources.levelsGained?.count ?? 0;
+			if (baseLevelsGained > 0) {
+				const fieldPayload = { name: "Level-Up!" };
+				/** @type {Record<number, string[]>} */
+				const levelMap = {};
+				for (const delver of adventure.delvers) {
+					const manualManuallevels = adventure.getArtifactCount("Manual Manual");
+					if (manualManuallevels > 0) {
+						adventure.updateArtifactStat("Manual Manual", "Bonus Levels", manualManuallevels);
+					}
+					const gearLevelBonus = delver.gear.reduce((bonusLevels, currentGear) => {
+						if (currentGear.name.startsWith("Wise")) {
+							return bonusLevels + 1;
+						} else {
+							return bonusLevels;
+						}
+					}, 0);
+					const levelsGained = baseLevelsGained + manualManuallevels + gearLevelBonus;
+					if (levelsGained in levelMap) {
+						levelMap[levelsGained].push(delver.getName());
+					} else {
+						levelMap[levelsGained] = [delver.getName()];
+					}
+					delver.level += levelsGained;
+					const { maxHPGrowth, powerGrowth, speedGrowth, critRateGrowth, poiseGrowth } = getArchetype(delver.archetype);
+					delver.maxHP += maxHPGrowth * levelsGained;
+					gainHealth(delver, maxHPGrowth * levelsGained, adventure);
+					delver.power += powerGrowth * levelsGained;
+					delver.speed += speedGrowth * levelsGained;
+					delver.critRate += critRateGrowth * levelsGained;
+					delver.poise += poiseGrowth * levelsGained;
+				}
+				if (Object.entries(levelMap).length > 1) {
+					fieldPayload.value = Object.entries(levelMap).map(([levelIncrease, delverNames]) => {
+						if (levelIncrease !== baseLevelsGained) {
+							if (delverNames.length === 1) {
+								if (levelIncrease === 1) {
+									return `- ${delverNames[0]} gains 1 level.`;
+								} else {
+									return `- ${delverNames[0]} gains ${levelIncrease} levels.`;
+								}
+							} else {
+								if (levelIncrease === 1) {
+									return `- ${listifyEN(delverNames)} gain 1 level.`;
+								} else {
+									return `- ${listifyEN(delverNames)} gain ${levelIncrease} levels.`;
+								}
+							}
+						}
+					}).join("- \n");
+					if (levelMap[baseLevelsGained].length < adventure.delvers.length) {
+						if (baseLevelsGained === 1) {
+							fieldPayload.value = `\n- Everyone else gains 1 level.`;
+						} else {
+							fieldPayload.value = `\n- Everyone else gains ${baseLevelsGained} levels.`;
+						}
+					}
+				} else {
+					if (baseLevelsGained === 1) {
+						fieldPayload.value = `Everyone gains 1 level.`;
+					} else {
+						fieldPayload.value = `Everyone gains ${baseLevelsGained} levels.`;
+					}
+				}
+				roomEmbed.addFields(fieldPayload);
+			}
+			roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
+			return {
+				embeds: [roomEmbed],
+				components: [generateLootRow(adventure), generateRoutingRow(adventure)]
+			}
+		}
+	}
+}
 
 /** @param {Adventure} adventure */
 function generateLootRow(adventure) {
@@ -142,6 +265,7 @@ module.exports = {
 	editButtons,
 	consumeRoomActions,
 	clearComponents,
+	generateCombatRoomBuilder,
 	generateLootRow,
 	generateRoutingRow,
 	generateMerchantScoutingRow
