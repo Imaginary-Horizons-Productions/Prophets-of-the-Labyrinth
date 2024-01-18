@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 			pendingDamage *= 2;
 		}
 		if (unfinishedChallenges.length > 0) {
-			return `${dealDamage([target], user, pendingDamage, false, "Light", adventure)} "Ha! You didn't finish **${unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")]}**."`;
+			return `"Ha! You didn't finish **${unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")]}**. ${dealDamage([target], user, pendingDamage, false, "Light", adventure)}"`;
 		} else {
 			return dealDamage([target], user, pendingDamage, false, "Light", adventure);
 		}
