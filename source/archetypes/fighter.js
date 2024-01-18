@@ -15,5 +15,5 @@ module.exports = new ArchetypeTemplate("Fighter",
 		return embed.setTitle(`Fighter Predictions for Round ${adventure.room.round + 1}`)
 			.setDescription("¯\\_(ツ)_/¯");
 	},
-	(combatant) => "¯\\_(ツ)_/¯"
+	(combatant) => ""
 );

@@ -27,19 +27,27 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		for (let i = 0; i < adventure.room.enemies.length; i++) {
 			const enemy = adventure.room.enemies[i];
 			if (enemy.hp > 0) {
-				enemyOptions.push({
+				const optionPayload = {
 					label: enemy.getName(adventure.room.enemyIdMap),
-					description: trimForSelectOptionDescription(miniPredictBuilder(enemy)),
 					value: `enemy${SAFE_DELIMITER}${i}`
-				})
+				};
+				const miniPredict = trimForSelectOptionDescription(miniPredictBuilder(enemy));
+				if (miniPredict) {
+					optionPayload.description = miniPredict;
+				}
+				enemyOptions.push(optionPayload)
 			}
 		}
 		const delverOptions = adventure.delvers.map((ally, i) => {
-			return {
+			const optionPayload = {
 				label: ally.name,
-				description: trimForSelectOptionDescription(miniPredictBuilder(ally)),
 				value: `delver${SAFE_DELIMITER}${i}`
+			};
+			const miniPredict = trimForSelectOptionDescription(miniPredictBuilder(ally));
+			if (miniPredict) {
+				optionPayload.description = miniPredict;
 			}
+			return optionPayload;
 		});
 		const components = [];
 		const usableMoves = delver.gear.filter(gear => gear.durability > 0);
