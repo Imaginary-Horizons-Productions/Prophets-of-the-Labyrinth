@@ -50,7 +50,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "Center of Attention",
 	element: "Light",
-	description: `Inflict ${getEmoji("Light")} damage and apply Insults on all foes (damage increases with foe team size)`,
+	description: `Inflict ${getEmoji("Light")} damage and apply insults on all foes (damage increases with foe team size)`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let pendingDamage = 50 * targets.length;
