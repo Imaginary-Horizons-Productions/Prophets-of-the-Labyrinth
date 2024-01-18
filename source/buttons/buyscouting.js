@@ -18,10 +18,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const cost = adventure.calculateScoutingCost(type);
 		adventure.gold -= cost;
 		if (type === "Final Battle") {
-			adventure.scouting.finalBoss = true;
+			adventure.scouting.bosses++;
 			adventure.updateArtifactStat("Amethyst Spyglass", "Gold Saved", 150 - cost);
-			interaction.message.edit({ components: editButtons(interaction.message.components, { [interaction.customId]: { preventUse: true, label: `Final Battle: ${adventure.finalBoss}`, emoji: "✔️" } }) });
-			interaction.reply(`The merchant reveals that final battle for this adventure will be **${adventure.finalBoss}** (you can review this with \`/party-stats\`).`);
+			interaction.message.edit({ components: editButtons(interaction.message.components, { [interaction.customId]: { preventUse: true, label: `Final Battle: ${adventure.bosses[adventure.scouting.bossesEncountered]}`, emoji: "✔️" } }) });
+			interaction.reply(`The merchant reveals that final battle for this adventure will be **${adventure.bosses[adventure.scouting.bossesEncountered]}** (you can review this with \`/party-stats\`).`);
 		} else {
 			adventure.updateArtifactStat("Amethyst Spyglass", "Gold Saved", 100 - cost);
 			interaction.message.edit({ components: editButtons(interaction.message.components, { [interaction.customId]: { preventUse: adventure.gold < Number(cost), label: `${cost}g: Scout the ${ordinalSuffixEN(adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians + 2)} Artifact Guardian` } }) });

@@ -46,11 +46,13 @@ class Adventure {
 	/** @type {{[challengeName: string]: Challenge}} */
 	challenges = {};
 	scouting = {
-		finalBoss: false,
+		bosses: 0,
+		bossesEncountered: 0,
 		artifactGuardians: 0,
 		artifactGuardiansEncountered: 0
 	}
-	finalBoss = "";
+	/** @type {string[]} */
+	bosses = [];
 	/** @type {string[]} */
 	artifactGuardians = [];
 	score = 0;
@@ -317,9 +319,10 @@ class Enemy extends Combatant {
 	 * @param {{[modifierName]: number}} startingModifiersShallowCopy
 	 * @param {number} delverCount
 	 */
-	constructor(nameInput, elementEnum, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, delverCount) {
+	constructor(nameInput, bossesBeaten, elementEnum, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, delverCount) {
 		super(nameInput, "enemy");
 		this.archetype = nameInput;
+		this.level = bossesBeaten;
 		/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
 		this.element = elementEnum;
 		this.power = powerInput;
@@ -397,7 +400,7 @@ class Enemy extends Combatant {
 	}
 
 	getDamageCap() {
-		return 500 + this.getModifierStacks("Power Up");
+		return 450 + (this.level * 50) + this.getModifierStacks("Power Up");
 	}
 };
 

@@ -7,7 +7,7 @@ const { EMPTY_SELECT_OPTION_SET, MAX_SELECT_OPTIONS, MAX_MESSAGE_ACTION_ROWS, SA
 
 /**
  * @param {CommandInteraction} interaction
- * @param {...[Adventure]} args
+ * @param {[Adventure]} args
  */
 async function executeSubcommand(interaction, ...[adventure]) {
 	const guardsScouted = adventure.artifactGuardians.slice(0, adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians);
@@ -23,7 +23,7 @@ async function executeSubcommand(interaction, ...[adventure]) {
 			{ name: "Items", value: Object.keys(adventure.items).map(item => `${item} x ${adventure.items[item]}`).join("\n") || "None" },
 			{
 				name: "Scouting",
-				value: `Final Battle: ${adventure.scouting.finalBoss ? adventure.finalBoss : "???"}\nArtifact Guardians: ${guardsScouted.length > 0 ?
+				value: `Final Battle: ${adventure.scouting.bosses.length > 0 ? adventure.bosses[0] : "???"}\nArtifact Guardians: ${guardsScouted.length > 0 ?
 					listifyEN(guardsScouted.map((encounter, index) => {
 						if (index + 1 <= adventure.scouting.artifactGuardiansEncountered) {
 							return `~~${encounter}~~`;

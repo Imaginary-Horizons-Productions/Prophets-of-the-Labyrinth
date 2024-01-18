@@ -56,7 +56,7 @@ async function executeSubcommand(interaction, ...args) {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Damage Cap")
-						.setDescription("The maximum amount of damage that can be done in one shot after protection is 500. This cap is raised for each stack of Power Up a user has.")
+						.setDescription("The maximum amount of damage that can be done in one shot after protection is 500. This cap is raised by 50 when leveling up and by 1 for each stack of Power Up a user has.")
 				],
 				ephemeral: true
 			});

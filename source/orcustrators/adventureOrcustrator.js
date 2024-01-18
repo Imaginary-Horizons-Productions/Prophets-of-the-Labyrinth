@@ -223,6 +223,13 @@ function nextRoom(roomType, thread) {
 			}
 			adventure.scouting.artifactGuardians = Math.max(adventure.scouting.artifactGuardians - 1, 0);
 		}
+		if (roomType === "Final Battle") {
+			adventure.scouting.bossesEncountered++;
+			while (adventure.bosses.length <= adventure.scouting.bossesEncountered + adventure.scouting.bosses) {
+				prerollBoss("Final Battle", adventure);
+			}
+			adventure.scouting.bosses = Math.max(adventure.scouting.bosses - 1, 0);
+		}
 
 		for (const enemyName in roomTemplate.enemyList) {
 			for (let i = 0; i < Math.ceil(parseExpression(roomTemplate.enemyList[enemyName], adventure.delvers.length)); i++) {

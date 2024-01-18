@@ -2,8 +2,8 @@ const { LabyrinthTemplate } = require("../classes");
 
 module.exports = new LabyrinthTemplate("Debug Dungeon",
 	"Untyped",
-	10,
-	[10],
+	2,
+	[2],
 	{
 		Darkness: [],
 		Earth: [],

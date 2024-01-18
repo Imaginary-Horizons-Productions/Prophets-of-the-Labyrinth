@@ -93,7 +93,7 @@ function prerollBoss(type, adventure) {
 	if (type === "Artifact Guardian") {
 		adventure.artifactGuardians.push(roomTitle);
 	} else {
-		adventure.finalBoss = roomTitle;
+		adventure.bosses.push(roomTitle);
 	}
 }
 
@@ -108,7 +108,7 @@ function rollRoom(type, adventure) {
 	}
 
 	if (type === "Final Battle") {
-		return getRoom(adventure.finalBoss);
+		return getRoom(adventure.bosses[adventure.scouting.bossesEncountered]);
 	}
 
 	if (!(type in LABYRINTHS[adventure.labyrinth].availableRooms)) {
