@@ -239,7 +239,7 @@ class Adventure {
 
 	/** Initializes a resource in the room's resources if it's not already present
 	 * @param {string} nameInput Note: all names in the combined pool of gear, artifacts, items, and resources must be unique
-	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge"| "item"} typeInput
+	 * @param {"gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge" | "item" | "pickedTreasure"} typeInput
 	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
 	 * @param {number} countInput
 	 * @param {string?} uiGroupInput
@@ -255,11 +255,7 @@ class Adventure {
 				visibility: visibilityInput,
 				count: countInput
 			};
-			if (costInput) {
-				resource.cost = costInput;
-			} else {
-				resource.cost = 0;
-			}
+			resource.cost = costInput ?? 0;
 			if (uiGroupInput) {
 				resource.uiGroup = uiGroupInput;
 			}
@@ -305,10 +301,8 @@ class Room {
 	enemies = null;
 	/** @type {{[enemyName: string]: number} | null} */
 	enemyIdMap = null;
-	/** @type {Record<string, {name: string, type: "gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge"| "item", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
+	/** @type {Record<string, {name: string, type: "gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge" | "item" | "pickedTreasure", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
 	resources = {};
-	/** @type {Record<string, object>} */
-	state = {};
 }
 
 class Enemy extends Combatant {

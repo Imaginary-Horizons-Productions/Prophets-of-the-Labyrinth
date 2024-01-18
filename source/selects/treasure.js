@@ -25,11 +25,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 		let result;
 		const { type, count } = adventure.room.resources[name];
 		if (count > 0) { // Prevents double message if multiple players take near same time
-			if ("pickedTreasure" in adventure.room.state) {
-				adventure.room.state.pickedTreasure.names.push(name);
-			} else {
-				adventure.room.state.pickedTreasure = { names: [name] };
-			}
+			adventure.addResource(`picked${SAFE_DELIMITER}${name}`, "pickedTreasure", "internal", count);
 			switch (type) {
 				case "gold":
 					adventure.gainGold(count);
@@ -42,7 +38,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 					adventure.gainArtifact(name, count);
 					adventure.room.resources[name].count = 0;
 					result = {
-						content: `The party acquires ${name} x ${count}.`
+						content: `The party acquires ${count} ${name}.`
 					}
 					break;
 				case "gear":
@@ -72,7 +68,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 					}
 					adventure.room.resources[name].count = 0;
 					result = {
-						content: `The party acquires ${name} x ${count}.`
+						content: `The party acquires ${count} ${name}.`
 					}
 					break;
 			}

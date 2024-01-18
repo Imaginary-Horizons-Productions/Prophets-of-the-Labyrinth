@@ -22,15 +22,16 @@ module.exports = new GearTemplate("Cauldron Stir",
 	200,
 	([target], user, isCrit, adventure) => {
 		const { element, damage } = module.exports;
+		const pendingDamage = damage + user.getPower();
 		if (user.element === element) {
 			target.addStagger("elementMatchFoe");
 		}
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 			adventure.addResource(rolledPotion, "item", "loot", 1);
-			return `${dealDamage([target], user, damage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} sets a batch of ${rolledPotion} to simmer.`;
+			return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} sets a batch of ${rolledPotion} to simmer.`;
 		} else {
-			return dealDamage([target], user, damage, false, element, adventure);
+			return dealDamage([target], user, pendingDamage, false, element, adventure);
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

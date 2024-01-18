@@ -1,13 +1,15 @@
-const { EnemyTemplate, CombatantReference } = require("../classes");
-const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly } = require("../shared/actionComponents");
-const { addModifier } = require("../util/combatantUtil");
-const { spawnEnemy } = require("../util/roomUtil");
+const { EnemyTemplate, CombatantReference } = require("../classes/index.js");
+const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
+const { addModifier } = require("../util/combatantUtil.js");
+const { spawnEnemy } = require("../util/roomUtil.js");
+const { listifyEN } = require("../util/textUtil.js");
 
 const drone = require("./mechabeedrone.js")
 
 const PATTERN = {
 	"Swarm Protocol": "V.E.N.O.Missile",
 	"Assault Protocol": "V.E.N.O.Missile",
+	"Formation Protocol": "V.E.N.O.Missile",
 	"Sacrifice Protocol": "V.E.N.O.Missile",
 	"Deploy Drone": "a random protocol",
 	"V.E.N.O.Missile": "Deploy Drone"
@@ -16,8 +18,8 @@ function mechaQueenPattern(actionName) {
 	return PATTERN[actionName]
 }
 
-module.exports = new EnemyTemplate("Mecha Queen",
-	"Darkness",
+module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
+	"Earth",
 	500,
 	100,
 	"n*2+2",
@@ -64,6 +66,33 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	needsLivingTargets: false,
 	next: mechaQueenPattern
 }).addAction({
+	name: "Formation Protocol",
+	element: "Untyped",
+	description: "Gain protection and grant Quicken and Power Up to all lower ranking mechabees",
+	priority: 1,
+	effect: (targets, user, isCrit, adventure) => {
+		const modifierMap = {};
+		targets.forEach(target => {
+			if (target.hp > 0 && target.name !== user.name) {
+				const targetName = target.getName(adventure.room.enemyIdMap);
+				modifierMap[targetName] = [];
+				const addedQuicken = addModifier(target, { name: "Quicken", stacks: 3 });
+				if (addedQuicken) {
+					modifierMap[targetName].push("Quicken");
+				}
+				const addedPowerUp = addModifier(target, { name: "Power Up", stacks: 3 });
+				if (addedPowerUp) {
+					modifierMap[targetName].push("Power Up");
+				}
+			}
+		})
+		user.protection += isCrit ? 60 : 30;
+		return `She gains protection and tunes the flight formation to be more efficient! ${Object.entries(modifierMap).map(([targetName, modifiers]) => `${targetName} gains ${listifyEN(modifiers)}.`).join(" ")}`;
+	},
+	selector: selectAllAllies,
+	needsLivingTargets: false,
+	next: mechaQueenPattern
+}).addAction({
 	name: "Sacrifice Protocol",
 	element: "Untyped",
 	description: "Gain protection and command a Mechabee to Self-Destruct",
@@ -95,7 +124,7 @@ module.exports = new EnemyTemplate("Mecha Queen",
 	next: mechaQueenPattern
 }).addAction({
 	name: "V.E.N.O.Missile",
-	element: "Darkness",
+	element: "Untyped",
 	description: "Inflict Poison on a single foe",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {

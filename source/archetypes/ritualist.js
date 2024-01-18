@@ -8,10 +8,10 @@ module.exports = new ArchetypeTemplate("Ritualist",
 	"Fire",
 	{
 		maxHPGrowth: 25,
-		powerGrowth: 5,
+		powerGrowth: 2.5,
 		speedGrowth: 0.5,
 		critRateGrowth: 1,
-		poiseGrowth: 0.25
+		poiseGrowth: 0
 	},
 	["Censer", "Corrosion"],
 	(embed, adventure) => {
