@@ -154,7 +154,8 @@ function generateCombatRoomBuilder(extraButtons) {
 					delver.critRate += critRateGrowth * levelsGained;
 					delver.poise += poiseGrowth * levelsGained;
 				}
-				if (Object.entries(levelMap).length > 1) {
+				const levelMapEntries = Object.entries(levelMap);
+				if (levelMapEntries.length > 1) {
 					fieldPayload.value = Object.entries(levelMap).map(([levelIncrease, delverNames]) => {
 						if (levelIncrease !== baseLevelsGained) {
 							if (delverNames.length === 1) {
@@ -172,18 +173,18 @@ function generateCombatRoomBuilder(extraButtons) {
 							}
 						}
 					}).join("- \n");
-					if (levelMap[baseLevelsGained].length < adventure.delvers.length) {
-						if (baseLevelsGained === 1) {
+					if (levelMap[levelIncrease].length < adventure.delvers.length) {
+						if (levelIncrease === 1) {
 							fieldPayload.value = `\n- Everyone else gains 1 level.`;
 						} else {
-							fieldPayload.value = `\n- Everyone else gains ${baseLevelsGained} levels.`;
+							fieldPayload.value = `\n- Everyone else gains ${levelIncrease} levels.`;
 						}
 					}
 				} else {
-					if (baseLevelsGained === 1) {
+					if (levelMapEntries[0][0] === 1) {
 						fieldPayload.value = `Everyone gains 1 level.`;
 					} else {
-						fieldPayload.value = `Everyone gains ${baseLevelsGained} levels.`;
+						fieldPayload.value = `Everyone gains ${levelMapEntries[0][0]} levels.`;
 					}
 				}
 				roomEmbed.addFields(fieldPayload);
