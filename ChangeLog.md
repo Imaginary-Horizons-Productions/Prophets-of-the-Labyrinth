@@ -1,15 +1,21 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.14.0:
-This update has a systems focus: making damage midigation less situation by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content such as: a new final boss, adding more AoE with the Blasting gear variant, and a few new artifacts.
+This update has a systems focus: making damage mitigation less situation by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content and balance such as: a new final boss, the Chemist rework, adding more AoE with the Blasting gear variant, and a few new artifacts.
 ### Combat Levels
 - Delvers now levelup after combat, increasing their stats (1 level for normal battles, 3 levels for artifact guardians, 5 levels for final bosses)
 ### Block Rework
-- renamed to "protection"
-- expires at end of combat instead of end of turn
+- Renamed to "protection"
+- Expires at end of combat instead of end of turn
 - Vigilance now applies to Evade instead of protection
+### Chemist Starting Gear Rework
+The Chemist was a powerful archetype, but the gameplay didn't allign with the theme. Most of the Chemist's value was in the extreme damage that Sickle dealt, and Potion Kit was largely too situational to be useful. Making potion generation the extra effect for the Chemist's offensive gear puts it on the same path as progress (read: damage) no longer forcing players to pick between theme and success. The Sickle is still around (and in the Water pool), but changing it from a Weapon to a Trinket prevents it from benefiting from Weapon Polish. Changing the Potion Kit to provide herbs instead spreads the loot generation effect out from only Water and the list of herbs is generally considered less situational than the potion list.
+- Cauldron Stir: deals water damage and adds a potion to loot on crit
+- Medicine: grants an ally Regen
+- Sickle: renamed to Abacus, category changed to Trinket
+- Potion Kit: reworked into Herb Basket; element changed to Earth, rollable items are now Panacea, Quick Pepper, Regen Root, and Strength Spinach
 ### Gear
-- New Gear: Wise Chainmail, Prismatic Blast, Vexing Prismatic Blast
-- Barriers now provide 3 Evade instead of 999 Block
+- New Gear: Wise Chainmail, Prismatic Blast, Vexing Prismatic Blast, Cauldron Stir, Medicine, Risky Mixture, Long Risky Mixture
+- Barriers now provide 3 Evade instead of 999 Block and are Wind element
 ### Artifacts
 - New Artifact: Manual Manual
 - Crystal Shard (artifact) now increases range of Spells--durability saving effect is now on the new Weapon Polish artifact, which applies to Weapons
