@@ -6,7 +6,7 @@ module.exports = new GearTemplate("Cleansing Barrier",
 	"Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} and cure a random debuff",
 	"@{mod1} x@{critMultiplier}",
 	"Spell",
-	"Earth",
+	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;

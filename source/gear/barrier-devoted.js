@@ -5,7 +5,7 @@ module.exports = new GearTemplate("Devoted Barrier",
 	"Grant an ally @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}",
 	"@{mod1} x@{critMultiplier}",
 	"Spell",
-	"Earth",
+	"Wind",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;

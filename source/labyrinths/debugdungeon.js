@@ -18,55 +18,22 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Blood Aegis",
-				"Life Drain",
-				"Power from Wrath",
-				"Scythe",
+				"Risky Mixture",
 			],
 			Rare: [
-				"Charging Blood Aegis",
-				"Reinforced Blood Aegis",
-				"Sweeping Blood Aegis",
-				"Flanking Life Drain",
-				"Reactive Life Drain",
-				"Urgent Life Drain",
-				"Lethal Scythe",
-				"Toxic Scythe",
-				"Unstoppable Scythe",
+				"Long Risky Mixture"
 			]
 		},
 		Earth: {
 			Cursed: [
 			],
 			Common: [
-				"Barrier",
-				"Buckler",
-				"Certain Victory",
-				"Lance",
-				"Pistol",
-				"Sabotage Kit",
-				"Warhammer"
+				"Herb Basket",
 			],
 			Rare: [
-				"Cleansing Barrier",
-				"Devoted Barrier",
-				"Long Barrier",
-				"Devoted Buckler",
-				"Guarding Buckler",
-				"Reinforced Buckler",
-				"Hunter's Certain Victory",
-				"Lethal Certain Victory",
-				"Reckless Certain Victory",
-				"Accelerating Lance",
-				"Unstoppable Lance",
-				"Vigilant Lance",
-				"Double Pistol",
-				"Duelist's Pistol",
-				"Long Sabotage Kit",
-				"Shattering Sabotage Kit",
-				"Reactive Warhammer",
-				"Slowing Warhammer",
-				"Unstoppable Warhammer",
+				"Organic Herb Basket",
+				"Reinforced Herb Basket",
+				"Urgent Herb Basket"
 			]
 		},
 		Fire: {
@@ -118,52 +85,26 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Ice Bolt",
-				"Midas Staff",
-				"Poison Torrent",
-				"Potion Kit",
-				"Sickle"
+				"Abacus",
+				"Cauldron Stir",
+				"Medicine"
 			],
 			Rare: [
-				"Accelerating Midas Staff",
-				"Discounted Midas Staff",
-				"Soothing Midas Staff",
-				"Harmful Poison Torrent",
-				"Organic Potion Kit",
-				"Reinforced Potion Kit",
-				"Urgent Potion Kit",
-				"Hunter's Sickle",
-				"Sharpened Sickle",
-				"Toxic Sickle"
+				"Hunter's Abacus",
+				"Sharpened Abacus",
+				"Toxic Abacus",
 			]
 		},
 		Wind: {
 			Cursed: [
 			],
 			Common: [
-				"Bow",
-				"Cloak",
-				"Daggers",
-				"Inspiration",
-				"Spear",
-				"Refreshing Breeze"
+				"Barrier",
 			],
 			Rare: [
-				"Evasive Bow",
-				"Hunter's Bow",
-				"Mercurial Bow",
-				"Accelerating Cloak",
-				"Accurate Cloak",
-				"Long Cloak",
-				"Sharpened Daggers",
-				"Slowing Daggers",
-				"Sweeping Daggers",
-				"Guarding Inspiration",
-				"Soothing Inspiration",
-				"Sweeping Inspiration",
-				"Lethal Spear",
-				"Reactive Spear",
-				"Sweeping Spear",
+				"Cleansing Barrier",
+				"Devoted Barrier",
+				"Long Barrier",
 			]
 		},
 		Untyped: {
