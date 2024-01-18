@@ -6,10 +6,10 @@ module.exports = new ArchetypeTemplate("Hemomancer",
 	"Darkness",
 	{
 		maxHPGrowth: 25,
-		powerGrowth: 5,
+		powerGrowth: 2.5,
 		speedGrowth: 0.5,
 		critRateGrowth: 1,
-		poiseGrowth: 0.25
+		poiseGrowth: 0
 	},
 	["Life Drain", "Blood Aegis"],
 	(embed, adventure) => {

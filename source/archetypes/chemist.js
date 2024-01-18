@@ -7,10 +7,10 @@ module.exports = new ArchetypeTemplate("Chemist",
 	"Water",
 	{
 		maxHPGrowth: 25,
-		powerGrowth: 5,
+		powerGrowth: 2.5,
 		speedGrowth: 0.5,
 		critRateGrowth: 1,
-		poiseGrowth: 0.25
+		poiseGrowth: 0
 	},
 	["Cauldron Stir", "Medicine"],
 	(embed, adventure) => {

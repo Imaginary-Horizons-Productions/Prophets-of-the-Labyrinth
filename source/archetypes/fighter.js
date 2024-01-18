@@ -5,15 +5,15 @@ module.exports = new ArchetypeTemplate("Fighter",
 	"Untyped",
 	{
 		maxHPGrowth: 50,
-		powerGrowth: 10,
+		powerGrowth: 5,
 		speedGrowth: 1,
 		critRateGrowth: 2,
-		poiseGrowth: 0.5
+		poiseGrowth: 0
 	},
 	["Strong Attack", "Second Wind"],
 	(embed, adventure) => {
 		return embed.setTitle(`Fighter Predictions for Round ${adventure.room.round + 1}`)
 			.setDescription("¯\\_(ツ)_/¯");
 	},
-	(combatant) => ""
+	(combatant) => "¯\\_(ツ)_/¯"
 );

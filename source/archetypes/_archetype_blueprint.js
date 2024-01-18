@@ -5,10 +5,10 @@ module.exports = new ArchetypeTemplate("name",
 	"Untyped",
 	{
 		maxHPGrowth: 25,
-		powerGrowth: 5,
+		powerGrowth: 2.5,
 		speedGrowth: 0.5,
 		critRateGrowth: 1,
-		poiseGrowth: 0.25
+		poiseGrowth: 0
 	},
 	[],
 	(embed, adventure) => {
