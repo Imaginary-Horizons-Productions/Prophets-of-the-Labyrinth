@@ -11,6 +11,7 @@ module.exports = new EnemyTemplate("name",
 ).addAction({
 	name: "name",
 	element: "element",
+	description: "",
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		return "";

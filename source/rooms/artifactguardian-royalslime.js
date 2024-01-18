@@ -1,4 +1,5 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("A Slimy Throneroom",
 	"@{adventure}",
@@ -7,5 +8,6 @@ module.exports = new RoomTemplate("A Slimy Throneroom",
 		new ResourceTemplate("3", "internal", "levelsGained"),
 		new ResourceTemplate("1", "loot", "artifact"),
 		new ResourceTemplate("50*n", "loot", "gold")
-	]
+	],
+	generateCombatRoomBuilder([])
 ).addEnemy("Royal Slime", "0.5*n");

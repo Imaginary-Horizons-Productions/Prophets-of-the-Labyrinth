@@ -1,4 +1,4 @@
-const { ActionRowBuilder } = require("discord.js");
+const { ActionRowBuilder, EmbedBuilder } = require("discord.js");
 const { Adventure } = require("./Adventure");
 const { BuildError } = require("./BuildError");
 
@@ -8,22 +8,23 @@ class RoomTemplate {
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{adventureWeakness}"} elementEnum
 	 * @param {string} descriptionInput
 	 * @param {ResourceTemplate[]} resourceArray
+	 * @param {(roomEmbed: EmbedBuilder, adventure: Adventure) => {embeds: EmbedBuilder[], components: ActionRowBuilder[]}} buildRoomFunction
 	 */
-	constructor(titleText, elementEnum, descriptionInput, resourceArray) {
+	constructor(titleText, elementEnum, descriptionInput, resourceArray, buildRoomFunction) {
 		if (!titleText) throw new BuildError("Falsy titleText");
 		if (!elementEnum) throw new BuildError("Falsy elementEnum");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
 		if (!resourceArray) throw new BuildError("Falsy resourceArray");
+		if (!buildRoomFunction) throw new BuildError("Falsy buildRoomFunction");
 
 		this.title = titleText;
 		this.element = elementEnum;
 		this.description = descriptionInput;
 		this.resourceList = resourceArray;
+		this.buildRoom = buildRoomFunction;
 	}
 	/** @type {Record<string, string>} */
 	enemyList = {};
-	/** @type {((adventure: Adventure) => ActionRowBuilder[]) | null} */
-	buildUI = null;
 
 	/**
 	 * @param {string} enemyName
@@ -31,12 +32,6 @@ class RoomTemplate {
 	 */
 	addEnemy(enemyName, countExpression) {
 		this.enemyList[enemyName] = countExpression;
-		return this;
-	}
-
-	/** @param {(adventure: Adventure) => ActionRowBuilder[]} buildUIFunction */
-	setBuildUI(buildUIFunction) {
-		this.buildUI = buildUIFunction;
 		return this;
 	}
 };

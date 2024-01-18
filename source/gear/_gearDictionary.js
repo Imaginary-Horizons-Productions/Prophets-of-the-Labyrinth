@@ -5,6 +5,7 @@ const { getEmoji } = require("../util/elementUtil");
 const GEAR = {};
 
 for (const file of [
+	"_appease.js",
 	"_punch.js",
 	"abacus-base.js",
 	"abacus-hunters.js",

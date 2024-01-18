@@ -224,12 +224,13 @@ function addModifier(combatant, { name: modifier, stacks: pendingStacks, force =
 function removeModifier(combatant, { name: modifier, stacks, force = false }) {
 	// Stasis only protects buffs and debuffs
 	if (force || !("Stasis" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
+		const didHaveModifier = modifier in combatant.modifiers;
 		if (isNaN(parseInt(stacks)) || stacks >= combatant.modifiers[modifier]) {
 			delete combatant.modifiers[modifier];
 		} else if (modifier in combatant.modifiers) {
 			combatant.modifiers[modifier] -= stacks;
 		}
-		return true;
+		return didHaveModifier;
 	} else {
 		removeModifier(combatant, { name: "Stasis", stacks: 1, force: true });
 		return false;

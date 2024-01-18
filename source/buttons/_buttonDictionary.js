@@ -4,6 +4,7 @@ const { ButtonWrapper } = require("../classes");
 const buttonDictionary = {};
 
 for (const file of [
+	"appease.js",
 	"buylife.js",
 	"buyscouting.js",
 	"confirmmove.js",

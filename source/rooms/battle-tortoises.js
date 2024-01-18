@@ -1,4 +1,5 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Tortoise Fight",
 	"Earth",
@@ -6,5 +7,6 @@ module.exports = new RoomTemplate("Tortoise Fight",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
 		new ResourceTemplate("80", "loot", "gold")
-	]
+	],
+	generateCombatRoomBuilder([])
 ).addEnemy("Geode Tortoise", "2");

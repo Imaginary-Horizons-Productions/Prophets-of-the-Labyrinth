@@ -1,4 +1,4 @@
-const { SelectWrapper } = require('../classes');
+const { SelectWrapper, Challenge } = require('../classes');
 const { getChallenge } = require('../challenges/_challengeDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { editButtons, consumeRoomActions } = require('../util/messageComponentUtil');
@@ -24,7 +24,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				adventure.challenges[challengeName].duration += duration;
 				adventure.challenges[challengeName].reward += reward;
 			} else {
-				adventure.challenges[challengeName] = { intensity, duration, reward };
+				adventure.challenges[challengeName] = new Challenge(intensity, reward, duration);
 			}
 			interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 				const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);

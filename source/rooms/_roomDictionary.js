@@ -20,6 +20,7 @@ for (const file of [
 	"finalbattle-elkemist.js",
 	"finalbattle-mechaqueen.js",
 	"finalbattle-mirrors.js",
+	"finalbattle-starryknight.js",
 	"merchant-gear.js",
 	"merchant-item.js",
 	"merchant-overpriced.js",
