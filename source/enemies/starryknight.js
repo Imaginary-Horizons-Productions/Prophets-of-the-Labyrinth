@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 			pendingDamage *= 2;
 		}
 		if (unfinishedChallenges.length > 0) {
-			return `${dealDamage([target], user, pendingDamage, false, "Light", adventure)} "Ha! You didn't finish **${unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")]}**."`;
+			return `"Ha! You didn't finish **${unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")]}**. ${dealDamage([target], user, pendingDamage, false, "Light", adventure)}"`;
 		} else {
 			return dealDamage([target], user, pendingDamage, false, "Light", adventure);
 		}
@@ -50,7 +50,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "Center of Attention",
 	element: "Light",
-	description: `Inflict ${getEmoji("Light")} damage and apply Insults on all foes (damage increases with foe team size)`,
+	description: `Inflict ${getEmoji("Light")} damage and apply insults on all foes (damage increases with foe team size)`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let pendingDamage = 50 * targets.length;
@@ -76,7 +76,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "Boast",
 	element: "Untyped",
-	description: "Inflict Frail and random insults on a foes, gain protection on a crit",
+	description: "Inflict Frail and random insults on all foes, gain protection on a crit",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		if (isCrit) {

@@ -122,6 +122,7 @@ function generateCombatRoomBuilder(extraButtons) {
 			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
 
 			const baseLevelsGained = adventure.room.resources.levelsGained?.count ?? 0;
+			adventure.room.resources.levelsGained.count = 0;
 			if (baseLevelsGained > 0) {
 				const fieldPayload = { name: "Level-Up!" };
 				/** @type {Record<number, string[]>} */
