@@ -76,7 +76,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "Boast",
 	element: "Untyped",
-	description: "Inflict Frail and random insults on a foes, gain protection on a crit",
+	description: "Inflict Frail and random insults on all foes, gain protection on a crit",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		if (isCrit) {
