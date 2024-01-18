@@ -49,12 +49,19 @@ module.exports = new RoomTemplate("Treasure! Gear or Items?",
 				]
 			};
 		} else {
+			const pickedTreasures = [];
+			for (const resource of Object.values(adventure.room.resources)) {
+				const [picked, resourceName] = resource.name.split(SAFE_DELIMITER);
+				if (picked === "picked") {
+					pickedTreasures.push(resourceName);
+				}
+			}
 			return {
 				embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
 				components: [
 					new ActionRowBuilder().addComponents(
 						new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}treasure`)
-							.setPlaceholder(`Picked: ${listifyEN(adventure.room.state.pickedTreasure.names)}`)
+							.setPlaceholder(`Picked: ${listifyEN(pickedTreasures)}`)
 							.setOptions(EMPTY_SELECT_OPTION_SET)
 							.setDisabled(true)
 					),
