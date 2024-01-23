@@ -13,6 +13,7 @@ for (const file of [
 	"freerepairkit.js",
 	"gearcapup.js",
 	"getgoldonfire.js",
+	"greed.js",
 	"hpshare.js",
 	"inspectself.js",
 	"join.js",

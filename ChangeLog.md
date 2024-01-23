@@ -23,6 +23,7 @@ The Chemist was a powerful archetype, but the gameplay didn't allign with the th
 - New Challenge: Training Weights
 - Added final battle: Confronting the Top Celestial Knight
 - The Mechaqueen now has both Mech Mode and Bee Mode
+- Reworked the Treasure Elemental ||Instead of a timed life, delvers can spend their turn adding Curse of Midas to the Elemental, which they now must defeat||
 - Combined event rooms "Elemental Research" and "HP Redistribution" into "Imp Contract Faire"
 - New Archetype: Fighter - No predict or extra effects on gear, double stat growths
 ## Prophets of the Labyrinth v0.13.0:

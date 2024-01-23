@@ -6,6 +6,7 @@ const GEAR = {};
 
 for (const file of [
 	"_appease.js",
+	"_greed.js",
 	"_punch.js",
 	"abacus-base.js",
 	"abacus-hunters.js",

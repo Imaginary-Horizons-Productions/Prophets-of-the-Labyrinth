@@ -74,6 +74,17 @@ function clearComponents(messageId, messageManager) {
 	}
 };
 
+const extraCombatButtonsMap = {
+	"appease": (adventure) => new ButtonBuilder().setCustomId(`appease${SAFE_DELIMITER}${adventure.room.round}`)
+		.setEmoji("🙇")
+		.setLabel("Appease the Starry Knight")
+		.setStyle(ButtonStyle.Secondary),
+	"greed": (adventure) => new ButtonBuilder().setCustomId(`greed${SAFE_DELIMITER}${adventure.room.round}`)
+		.setEmoji("💰")
+		.setLabel("Greed")
+		.setStyle(ButtonStyle.Secondary)
+};
+
 /** Creates the room builder function for combat rooms
  * @param {string[]} extraButtons
  * @returns {(roomEmbed: EmbedBuilder, adventure: Adventure) => {embeds: EmbedBuilder[], components: ActionRowBuilder[]}}
@@ -103,15 +114,7 @@ function generateCombatRoomBuilder(extraButtons) {
 					.setDisabled(!Object.values(adventure.items).some(quantity => quantity > 0))
 			];
 			for (const buttonType of extraButtons) {
-				switch (buttonType) {
-					case "appease":
-						buttons.push(new ButtonBuilder().setCustomId(`appease${SAFE_DELIMITER}${adventure.room.round}`)
-							.setEmoji("🙇")
-							.setLabel("Appease the Starry Knight")
-							.setStyle(ButtonStyle.Secondary)
-						);
-						break;
-				}
+				buttons.push(extraCombatButtonsMap[buttonType](adventure));
 			}
 			return {
 				embeds: [roomEmbed],
