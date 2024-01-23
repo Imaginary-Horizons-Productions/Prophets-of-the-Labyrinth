@@ -114,7 +114,15 @@ function nextRoom(roomType, thread) {
 
 	adventure.delvers.forEach(delver => {
 		delver.protection = 0;
-		delver.modifiers = {};
+		if (adventure.challenges["Training Weights"]?.duration > 0) {
+			const stacks = adventure.challenges["Training Weights"].intensity;
+			delver.modifiers = {
+				"Slow": stacks,
+				"Exposed": stacks
+			};
+		} else {
+			delver.modifiers = {};
+		}
 		delver.stagger = 0;
 		delver.isStunned = false;
 		delver.gear.forEach(gear => {
@@ -342,16 +350,6 @@ function newRound(adventure, thread, lastRoundText) {
 								.setName("@{clone}")
 								.setSpeedByCombatant(combatant)
 						);
-					}
-				}
-
-				// Decrement Modifiers
-				if (!("Vigilance" in combatant.modifiers)) {
-					removeModifier(combatant, { name: "Evade", stacks: getTurnDecrement("Evade"), force: true });
-				}
-				for (const modifier in combatant.modifiers) {
-					if (modifier !== "Evade") {
-						removeModifier(combatant, { name: modifier, stacks: getTurnDecrement(modifier), force: true })
 					}
 				}
 
@@ -596,6 +594,16 @@ function endRound(adventure, thread) {
 			}
 		} else {
 			combatant.addStagger(combatant.getModifierStacks("Paralysis") > 0 ? 1 : -1);
+		}
+
+		// Decrement Modifiers
+		if (!("Vigilance" in combatant.modifiers)) {
+			removeModifier(combatant, { name: "Evade", stacks: getTurnDecrement("Evade"), force: true });
+		}
+		for (const modifier in combatant.modifiers) {
+			if (modifier !== "Evade") {
+				removeModifier(combatant, { name: modifier, stacks: getTurnDecrement(modifier), force: true })
+			}
 		}
 	}
 

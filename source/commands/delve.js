@@ -61,7 +61,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 				setCompany(company);
 
 				const options = [{ label: "None", description: "Deselect previously selected challenges", value: "None" }];
-				["Can't Hold All this Value", "Restless", "Rushing"].forEach(challengeName => {
+				["Training Weights", "Can't Hold All this Value", "Restless", "Rushing"].forEach(challengeName => {
 					const challenge = getChallenge(challengeName);
 					options.push({ label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName });
 				})

@@ -7,8 +7,7 @@ const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { buildGearDescription } = require("../gear/_gearDictionary");
 
 const { ordinalSuffixEN, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
-const { gainHealth } = require("./combatantUtil");
-const { getArchetype } = require("../archetypes/_archetypeDictionary");
+const { levelUp } = require("./delverUtil");
 
 /** Modify the buttons whose `customId`s are keys in `edits` from among `components` based on `preventUse`, `label`, and `emoji` then return all components
  * @param {MessageActionRow[]} components
@@ -145,14 +144,7 @@ function generateCombatRoomBuilder(extraButtons) {
 					} else {
 						levelMap[levelsGained] = [delver.getName()];
 					}
-					delver.level += levelsGained;
-					const { maxHPGrowth, powerGrowth, speedGrowth, critRateGrowth, poiseGrowth } = getArchetype(delver.archetype);
-					delver.maxHP += maxHPGrowth * levelsGained;
-					gainHealth(delver, maxHPGrowth * levelsGained, adventure);
-					delver.power += powerGrowth * levelsGained;
-					delver.speed += speedGrowth * levelsGained;
-					delver.critRate += critRateGrowth * levelsGained;
-					delver.poise += poiseGrowth * levelsGained;
+					levelUp(delver, levelsGained, adventure);
 				}
 				const levelMapEntries = Object.entries(levelMap);
 				if (levelMapEntries.length > 1) {

@@ -8,6 +8,7 @@ for (const file of [
 	"cantholdallthisvalue.js",
 	"restless.js",
 	"rushing.js",
+	"trainingweights.js",
 	"unlabelledplacebos.js"
 ]) {
 	/** @type {ChallengeTemplate} */

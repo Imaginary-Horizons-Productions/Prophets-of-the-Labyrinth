@@ -20,6 +20,7 @@ The Chemist was a powerful archetype, but the gameplay didn't allign with the th
 - New Artifact: Manual Manual
 - Crystal Shard (artifact) now increases range of Spells--durability saving effect is now on the new Weapon Polish artifact, which applies to Weapons
 ### Other Changes
+- New Challenge: Training Weights
 - Added final battle: Confronting the Top Celestial Knight
 - The Mechaqueen now has both Mech Mode and Bee Mode
 - Combined event rooms "Elemental Research" and "HP Redistribution" into "Imp Contract Faire"
