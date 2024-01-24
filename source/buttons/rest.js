@@ -24,7 +24,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		if (remainingActions < 1) {
 			components = editButtons(components, {
 				[interaction.customId]: { preventUse: true, label: "The party rested", emoji: "✔️" },
-				"viewchallenges": { preventUse: true, label: "The challenger is gone", emoji: "✖️" }
+				"viewchallenges": { preventUse: true, label: "The challenger is gone", emoji: "✖️" },
+				"trainingdummy": { preventUse: true, label: "The party didn't train", emoji: "✔️" }
 			});
 		}
 		interaction.update({ embeds, components }).then(() => {

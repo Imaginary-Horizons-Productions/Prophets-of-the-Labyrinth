@@ -26,6 +26,7 @@ for (const file of [
 	"rest.js",
 	"routevote.js",
 	"tinker.js",
+	"trainingdummy.js",
 	"upgrade.js",
 	"viewblackbox.js",
 	"viewchallenges.js",
