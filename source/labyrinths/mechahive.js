@@ -1,7 +1,7 @@
 const { LabyrinthTemplate } = require("../classes");
 
-module.exports = new LabyrinthTemplate("Everything Bagel",
-	"Untyped",
+module.exports = new LabyrinthTemplate("Mechahive",
+	"Darkness",
 	15,
 	[15],
 	{
@@ -21,7 +21,6 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			"Inky Potion",
 			"Salt of Oblivion",
 			"Panacea",
-			"Placebo",
 			"Protection Potion",
 			"Quick Pepper",
 			"Regen Root",
@@ -228,9 +227,9 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 	{
 		// Labyrinth Particulars - more customized
 		"Event": ["Twin Pedestals", "Imp Contract Faire", "Free Gold?", "The Score Beggar", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
-		"Battle": ["Hawk Fight", "Frog Ranch", "Wild Fire-Arrow Frogs", "Mechabee Fight", "Slime Fight", "Tortoise Fight"],
+		"Battle": ["Frog Ranch", "Mechabee Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
-		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors", "The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
+		"Final Battle": ["The Hexagon: Bee Mode", "The Hexagon: Mech Mode"],
 
 		// Labyrinth Infrastructure - less customized
 		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],

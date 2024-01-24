@@ -8,7 +8,10 @@ const LABYRINTHS = {};
 
 for (const file of [
 	"debugdungeon.js",
-	"everythingbagel.js"
+	"castleofthecelestialknights.js",
+	"everythingbagel.js",
+	"mechahive.js",
+	"zooofchimeras.js"
 ]) {
 	/** @type {LabyrinthTemplate} */
 	const labyrinth = require(`./${file}`);
@@ -128,7 +131,7 @@ function rollRoom(type, adventure) {
 module.exports = {
 	labyrinthExists,
 	/** This array determines which labyrinths show up in the `/delve labyrinth` autocomplete. It is desync'd from the list of all labyrinths to allow for easter eggs (ie remove Debug Dungeon after "real" labyrinths are made) */
-	defaultLabyrinths: ["Everything Bagel"],
+	defaultLabyrinths: ["Mechahive", "Castle of the Celestial Knights", "Zoo of Chimeras", "Everything Bagel"],
 	getLabyrinthProperty,
 	rollItem,
 	rollGear,

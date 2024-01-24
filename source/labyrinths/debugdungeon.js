@@ -126,7 +126,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 	},
 	{
 		"Event": ["Imp Contract Faire", "Workshop", "Merchant", "Rest Site", "Treasure"],
-		"Battle": ["Hawk Fight", "Frog Fight", "Mechabee Fight", "Slime Fight", "Tortoise Fight"],
+		"Battle": ["Frog Ranch", "Wild Fire-Arrow Frogs"],
 		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
 		"Rest Site": ["Rest Site: Mysterious Challenger"],
 		"Final Battle": ["The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
