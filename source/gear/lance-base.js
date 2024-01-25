@@ -16,7 +16,7 @@ module.exports = new GearTemplate("Lance",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, damage, false, element, adventure);
+		return dealDamage([target], user, pendingDamage, false, element, adventure);
 	}
 ).setUpgrades("Accelerating Lance", "Unstoppable Lance", "Vigilant Lance")
 	.setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
