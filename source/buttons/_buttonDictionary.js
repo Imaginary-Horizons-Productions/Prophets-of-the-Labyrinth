@@ -25,6 +25,7 @@ for (const file of [
 	"replacegear.js",
 	"rest.js",
 	"routevote.js",
+	"stealwishingwellcore.js",
 	"tinker.js",
 	"trainingdummy.js",
 	"upgrade.js",

@@ -127,7 +127,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		}
 	},
 	{
-		"Event": ["Imp Contract Faire", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		"Event": ["Apple Pie Wishing Well"],
 		"Battle": ["Frog Ranch", "Wild Fire-Arrow Frogs"],
 		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
 		"Rest Site": ["Rest Site: Training Dummy"],

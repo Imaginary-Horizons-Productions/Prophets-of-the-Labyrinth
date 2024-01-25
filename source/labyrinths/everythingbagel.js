@@ -227,7 +227,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 	},
 	{
 		// Labyrinth Particulars - more customized
-		"Event": ["Twin Pedestals", "Imp Contract Faire", "Free Gold?", "The Score Beggar", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		"Event": ["Twin Pedestals", "Imp Contract Faire", "Free Gold?", "Apple Pie Wishing Well", "The Score Beggar", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
 		"Battle": ["Hawk Fight", "Frog Ranch", "Wild Fire-Arrow Frogs", "Mechabee Fight", "Slime Fight", "Tortoise Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors", "The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],

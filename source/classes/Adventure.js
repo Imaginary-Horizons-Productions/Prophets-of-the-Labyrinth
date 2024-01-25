@@ -212,6 +212,17 @@ class Adventure {
 	}
 
 	/**
+	 * @param {string} itemName
+	 * @param {number} count
+	 */
+	decrementItem(itemName, count) {
+		this.items[itemName] -= count;
+		if (this.items[itemName] < 1) {
+			delete this.items[itemName];
+		}
+	}
+
+	/**
 	 * @param {string} artifactName
 	 * @param {string} statName the stat to add to (in case of multiple stats per artifact)
 	 * @param {number} stat the amount to be added

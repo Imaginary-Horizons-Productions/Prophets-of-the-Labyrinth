@@ -211,7 +211,7 @@ function roomHeaderString(adventure) {
  * @param {Message} message
  */
 function updateRoomHeader(adventure, message) {
-	message.edit({ embeds: message.embeds.map(embed => new EmbedBuilder(embed).setAuthor({ name: roomHeaderString(adventure), iconURL: message.client.user.displayAvatarURL() })) })
+	return message.edit({ embeds: message.embeds.map(embed => new EmbedBuilder(embed).setAuthor({ name: roomHeaderString(adventure), iconURL: message.client.user.displayAvatarURL() })) })
 }
 
 /** The version embed lists the following: changes in the most recent update, known issues in the most recent update, and links to support the project */

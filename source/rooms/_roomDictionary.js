@@ -13,6 +13,7 @@ for (const file of [
 	"battle-slimes.js",
 	"battle-tortoises.js",
 	"empty.js",
+	"event-applepiewishingwell.js",
 	"event-artifactdupe.js",
 	"event-freegoldonfire.js",
 	"event-freerepairkit.js",

@@ -423,10 +423,7 @@ function resolveMove(move, adventure) {
 				const { effect: itemEffect, element, needsLivingTargets: needsLivingTargetsInput } = getItem(isPlacebo ? "Placebo" : move.name);
 				effect = itemEffect;
 				if (move.userReference.team !== "enemy") {
-					adventure.items[move.name]--;
-					if (adventure.items[move.name] < 1) {
-						delete adventure.items[move.name];
-					}
+					adventure.decrementItem(move.name, 1);
 				}
 				needsLivingTargets = needsLivingTargetsInput;
 				moveText = `${getEmoji(element)} ${moveText}`;
