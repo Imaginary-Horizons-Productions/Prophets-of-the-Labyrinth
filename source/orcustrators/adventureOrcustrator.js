@@ -478,7 +478,7 @@ function resolveMove(move, adventure) {
 	}
 	const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
 	if (insigniaCount > 0 && user.team === "delver" && move.isCrit) {
-		const insigniaHealing = 15 + insigniaCount * 15;
+		const insigniaHealing = insigniaCount * 15;
 		moveText += ` ${gainHealth(user, insigniaHealing, adventure)}`;
 		adventure.updateArtifactStat("Health Restored", insigniaHealing);
 	}
