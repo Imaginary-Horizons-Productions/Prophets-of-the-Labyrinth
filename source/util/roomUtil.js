@@ -32,7 +32,7 @@ function spawnEnemy(enemyTemplate, adventure) {
 		case "@{adventure}":
 			enemy.element = adventure.element;
 			break;
-		case "@adventureOpposite}":
+		case "@{adventureOpposite}":
 			enemy.element = getOpposite(adventure.element);
 			break;
 		case "@{clone}":
