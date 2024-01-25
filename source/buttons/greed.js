@@ -15,9 +15,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		const delverIndex = adventure.getCombatantIndex(delver);
+		const treasureElementalIndex = adventure.room.enemies.findIndex(enemy => enemy.archetype === "Treasure Elemental");
 		const newMove = new Move(new CombatantReference(delver.team, delverIndex), "gear", false)
 			.setName("Greed")
 			.setSpeedByCombatant(delver)
+			.addTarget(new CombatantReference("enemy", treasureElementalIndex))
 			.setPriority(1);
 
 		let overwritten = false;
@@ -32,7 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		adventure.room.moves.push(newMove);
 
 		// Send confirmation text
-		interaction.channel.send(`${interaction.user} ${overwritten ? "switches to get" : "gets"} ready to Greed in the Treasure Realm.`).then(() => {
+		interaction.reply(`${interaction.user} ${overwritten ? "switches to get" : "gets"} ready to Greed in the Treasure Realm.`).then(() => {
 			setAdventure(adventure);
 			if (checkNextRound(adventure)) {
 				endRound(adventure, interaction.channel);
