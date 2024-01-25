@@ -29,11 +29,13 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Common: [
 				"Herb Basket",
+				"Lance"
 			],
 			Rare: [
 				"Organic Herb Basket",
 				"Reinforced Herb Basket",
-				"Urgent Herb Basket"
+				"Urgent Herb Basket",
+				"Shattering Lance"
 			]
 		},
 		Fire: {
