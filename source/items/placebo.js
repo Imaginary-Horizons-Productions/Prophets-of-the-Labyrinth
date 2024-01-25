@@ -2,12 +2,13 @@ const { ItemTemplate } = require("../classes");
 const { selectNone } = require("../shared/actionComponents");
 
 module.exports = new ItemTemplate("Placebo",
-	"Does nothing (on purpose).",
+	"Gain 25 score.",
 	"Untyped",
 	30,
 	selectNone,
 	false,
 	(targets, user, isCrit, adventure) => {
-		return "But nothing happened!";
+		adventure.score += 25;
+		return "This adventure's score will be increased by 25.";
 	}
 );

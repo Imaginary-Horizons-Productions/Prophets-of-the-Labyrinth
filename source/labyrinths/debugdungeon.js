@@ -11,7 +11,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		Light: [],
 		Water: [],
 		Wind: [],
-		Untyped: ["Panacea", "Placebo"]
+		Untyped: ["Placebo"]
 	},
 	{
 		Darkness: {
@@ -127,7 +127,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		}
 	},
 	{
-		"Event": ["Apple Pie Wishing Well"],
+		"Event": ["The Score Beggar", "Apple Pie Wishing Well"],
 		"Battle": ["Frog Ranch", "Wild Fire-Arrow Frogs"],
 		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
 		"Rest Site": ["Rest Site: Training Dummy"],
