@@ -252,6 +252,7 @@ Adds Frail to target
 
 **Available on**
 - Corrosion (Fire)
+- Lance (Earth)
 - Sabotage Kit (Earth)
 
 ### Slowing
@@ -368,8 +369,7 @@ Bonus damage if target has debuffs
 Adds Vigilance to user
 
 **Available on**
-- Vigilance Charm (Earth)
-- Lance (Earth)
+- all Barriers (Wind)
 - Scutum (Fire)
 
 ### Wise

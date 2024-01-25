@@ -21,6 +21,7 @@ The Chemist was a powerful archetype, but the gameplay didn't allign with the th
 ### Gear
 - New Gear: Wise Chainmail, Prismatic Blast, Vexing Prismatic Blast, Cauldron Stir, Medicine, Risky Mixture, Long Risky Mixture
 - Barriers now provide 3 Evade instead of 999 Block and are Wind element
+- Vigilant Lance is now Shattering Lance
 ### Artifacts
 - New Artifact: Manual Manual
 - Crystal Shard (artifact) now increases range of Spells--durability saving effect is now on the new Weapon Polish artifact, which applies to Weapons
