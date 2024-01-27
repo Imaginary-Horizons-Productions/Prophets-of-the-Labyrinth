@@ -21,7 +21,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		adventure.gainGold(200);
 		delver.element = adventure.room.element;
 		updateRoomHeader(adventure, interaction.message);
-		interaction.reply(`${interaction.user} signs the contract and becomes ${adventure.room.element} element.`).then(() => {
+		interaction.reply(`**${interaction.member.displayName}** signs the contract and becomes ${adventure.room.element} element.`).then(() => {
 			setAdventure(adventure);
 		});
 	}

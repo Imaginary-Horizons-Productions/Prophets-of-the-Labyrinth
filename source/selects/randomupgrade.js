@@ -40,7 +40,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return roomMessage.edit({ embeds, components });
 		}).then(() => {
 			interaction.update({ components: [] });
-			interaction.channel.send(`${interaction.user}'s *${gearName}* has been upgraded to **${upgradeName}**!`);
+			interaction.channel.send(`**${interaction.member.displayName}**'s *${gearName}* has been upgraded to **${upgradeName}**!`);
 			setAdventure(adventure);
 		})
 	}

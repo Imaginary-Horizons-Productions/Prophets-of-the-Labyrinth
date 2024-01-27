@@ -18,7 +18,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		const [artifactName] = interaction.values;
 		if (artifactName === "None") {
 			delver.startingArtifact = "";
-			interaction.channel.send(`${interaction.user} is not planning to bring a starting artifact.`);
+			interaction.channel.send(`**${interaction.member.displayName}** is not planning to bring a starting artifact.`);
 			interaction.update({
 				content: "Forgoing a starting artifact will increase your end of adventure score multiplier (up to 2x if no one takes a starting artifact).",
 				components: [new ActionRowBuilder().addComponents(
@@ -36,7 +36,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 					new StringSelectMenuBuilder(interaction.component.data).setPlaceholder("Pick a different artifact...")
 				)]
 			});
-			interaction.channel.send(`${interaction.user} ${isSwitching ? "has switched to" : "is taking"} ${artifactName} for their starting artifact.`);
+			interaction.channel.send(`**${interaction.member.displayName}** ${isSwitching ? "has switched to" : "is taking"} ${artifactName} for their starting artifact.`);
 		}
 		setAdventure(adventure);
 	}

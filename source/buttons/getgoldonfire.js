@@ -20,7 +20,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		adventure.gainGold(goldCount);
 		updateRoomHeader(adventure, interaction.message);
 		if (adventure.generateRandomNumber(101, "general") > damageChance) { // deal damage on chance 50%
-			const resultText = `${interaction.user} reaches in to grab some coin. Oh no! The gold bursts into flames. The party gains ${goldCount} gold, but ${payHP(delver, 100, adventure)}`;
+			const resultText = `**${interaction.member.displayName}** reaches in to grab some coin. Oh no! The gold bursts into flames. The party gains ${goldCount} gold, but ${payHP(delver, 100, adventure)}`;
 			if (adventure.lives < 1) {
 				interaction.update({ components: [] });
 				interaction.channel.send(completeAdventure(adventure, interaction.channel, "defeat", resultText));
@@ -31,7 +31,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		} else { // just take the gold
 			interaction.update({ components: editButtons(interaction.message.components, { [interaction.customId]: { preventUse: true, label: `+${goldCount} gold`, emoji: "✔️" } }) })
-			interaction.channel.send(`${interaction.user} reaches in to grab some coin. Success! The party gains ${goldCount} gold.`);
+			interaction.channel.send(`**${interaction.member.displayName}** reaches in to grab some coin. Success! The party gains ${goldCount} gold.`);
 			setAdventure(adventure);
 		}
 	}

@@ -31,7 +31,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return roomMessage.edit({ embeds, components });
 		}).then(() => {
 			interaction.update({ components: [] });
-			interaction.channel.send({ content: `${interaction.user} repaired ${value} durability on their ${gearName}.` });
+			interaction.channel.send({ content: `**${interaction.member.displayName}** repaired ${value} durability on their ${gearName}.` });
 			setAdventure(adventure);
 		})
 	}

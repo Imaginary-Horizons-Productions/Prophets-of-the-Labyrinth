@@ -34,7 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		adventure.room.moves.push(newMove);
 
 		// Send confirmation text
-		interaction.reply(`${interaction.user} ${overwritten ? "switches to get" : "gets"} ready to Greed in the Treasure Realm.`).then(() => {
+		interaction.reply(`**${interaction.member.displayName}** ${overwritten ? "switches to get" : "gets"} ready to Greed in the Treasure Realm.`).then(() => {
 			setAdventure(adventure);
 			if (checkNextRound(adventure)) {
 				endRound(adventure, interaction.channel);

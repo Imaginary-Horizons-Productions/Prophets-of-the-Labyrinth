@@ -27,7 +27,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return roomMessage.edit(renderRoom(adventure, interaction.channel));
 		}).then(() => {
 			interaction.update(EMPTY_MESSAGE_PAYLOAD);
-			let resultText = `${interaction.user}`;
+			let resultText = `**${interaction.member.displayName}**`;
 			if (cost > 0) {
 				resultText += ` buys a ${name} for ${cost}g`;
 			} else {

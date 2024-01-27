@@ -28,7 +28,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 		adventure.roomCandidates[candidateTag].voterIds.push(interaction.user.id);
 
-		interaction.reply(`${interaction.user} ${changeVote ? "changed their vote to" : "voted for"} ${adventure.roomCandidates[candidateTag].isHidden ? "???" : candidate}.`).then(_message => {
+		interaction.reply(`**${interaction.member.displayName}** ${changeVote ? "changed their vote to" : "voted for"} ${adventure.roomCandidates[candidateTag].isHidden ? "???" : candidate}.`).then(_message => {
 			// Decide by unanimous vote
 			if (candidateTag in adventure.roomCandidates && adventure.roomCandidates[candidateTag].voterIds?.length === adventure.delvers.length) {
 				const uiRows = [...interaction.message.components.map(row => {

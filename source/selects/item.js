@@ -46,7 +46,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		await adventure.room.moves.push(newMove);
 
 		// Send confirmation text
-		interaction.channel.send(`${interaction.user} ${overwritten ? "switches to ready" : "readies"} a(n) **${itemName}**.`).then(() => {
+		interaction.channel.send(`**${interaction.member.displayName}** ${overwritten ? "switches to ready" : "readies"} a(n) **${itemName}**.`).then(() => {
 			setAdventure(adventure);
 			if (checkNextRound(adventure)) {
 				endRound(adventure, interaction.channel);

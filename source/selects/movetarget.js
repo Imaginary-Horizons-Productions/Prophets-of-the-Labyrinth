@@ -89,7 +89,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 
 		// Send confirmation text
 		const targets = targetIndices.map(index => `**${adventure.getCombatant({ team: targetTeam, index }).getName(adventure.room.enemyIdMap)}**`);
-		interaction.channel.send(`${interaction.user} ${overwritten ? "switches to ready" : "readies"} **${moveName}** to use on ${listifyEN(targets)}.`).then(() => {
+		interaction.channel.send(`**${interaction.member.displayName}** ${overwritten ? "switches to ready" : "readies"} **${moveName}** to use on ${listifyEN(targets)}.`).then(() => {
 			setAdventure(adventure);
 			if (checkNextRound(adventure)) {
 				endRound(adventure, interaction.channel);
