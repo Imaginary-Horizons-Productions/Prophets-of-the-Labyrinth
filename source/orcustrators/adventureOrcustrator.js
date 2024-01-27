@@ -307,6 +307,8 @@ function newRound(adventure, thread, lastRoundText) {
 				// Roll Round Speed
 				const percentBonus = (adventure.generateRandomNumber(21, "battle") - 10) / 100;
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
+				removeModifier(combatant, { name: "Slow", stacks: 1, force: true });
+				removeModifier(combatant, { name: "Quicken", stacks: 1, force: true });
 
 				// Roll Critical Hit
 				const baseCritChance = combatant.getCritRate() / 100;
@@ -554,11 +556,6 @@ function endRound(adventure, thread) {
 			})
 			return;
 		}
-
-		// remove Slow and Quicken
-		const moveUser = adventure.getCombatant(move.userReference);
-		removeModifier(moveUser, { name: "Slow", stacks: 1, force: true });
-		removeModifier(moveUser, { name: "Quicken", stacks: 1, force: true });
 	}
 	adventure.room.moves = [];
 
