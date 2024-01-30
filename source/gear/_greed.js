@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Greed",
 		if (affectedTargets.length === 1) {
 			return `${affectedTargets[0]} gains Curse of Midas and is Powered Up.`;
 		} else {
-			return `${listifyEN(affectedTargets)} gain Curse of Midas and are Powered Up.`;
+			return `${listifyEN(affectedTargets, false)} gain Curse of Midas and are Powered Up.`;
 		}
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })

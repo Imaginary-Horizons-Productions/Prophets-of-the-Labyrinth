@@ -39,7 +39,7 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 			debuffTexts.push("becomes Frail");
 		}
 		if (debuffTexts.length > 0) {
-			return `${target.getName(adventure.room.enemyIdMap)} ${listifyEN(debuffTexts)}.`;
+			return `${target.getName(adventure.room.enemyIdMap)} ${listifyEN(debuffTexts, false)}.`;
 		} else {
 			return "But nothing happend.";
 		}

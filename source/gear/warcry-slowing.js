@@ -30,7 +30,7 @@ module.exports = new GearTemplate("Slowing War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
-		let resultText = `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
+		let resultText = `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
 		const slowedTargets = [];
 		targetArray.forEach(target => {
 			target.addStagger(pendingStaggerStacks);
@@ -40,7 +40,7 @@ module.exports = new GearTemplate("Slowing War Cry",
 			}
 		})
 		if (slowedTargets.length > 1) {
-			resultText += ` ${listifyEN(slowedTargets)} are Slowed.`;
+			resultText += ` ${listifyEN(slowedTargets), false} are Slowed.`;
 		} else if (slowedTargets.length > 0) {
 			resultText += ` ${slowedTargets[0]} is Slowed.`;
 		}

@@ -161,9 +161,9 @@ function generateCombatRoomBuilder(extraButtons) {
 								}
 							} else {
 								if (levelIncrease === 1) {
-									return `- ${listifyEN(delverNames)} gain 1 level.`;
+									return `- ${listifyEN(delverNames, false)} gain 1 level.`;
 								} else {
-									return `- ${listifyEN(delverNames)} gain ${levelIncrease} levels.`;
+									return `- ${listifyEN(delverNames, false)} gain ${levelIncrease} levels.`;
 								}
 							}
 						}

@@ -32,7 +32,7 @@ module.exports = new GearTemplate("War Cry",
 		targetArray.forEach(target => {
 			target.addStagger(pendingStaggerStacks);
 		})
-		return `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
+		return `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setUpgrades("Charging War Cry", "Slowing War Cry", "Tormenting War Cry")

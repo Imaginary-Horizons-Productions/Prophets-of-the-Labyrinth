@@ -67,7 +67,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 			}
 		})
 		user.protection += isCrit ? 60 : 30;
-		return `She gains protection and tunes the flight formation to be more efficient! ${Object.entries(modifierMap).map(([targetName, modifiers]) => `${targetName} gains ${listifyEN(modifiers)}.`).join(" ")}`;
+		return `She gains protection and tunes the flight formation to be more efficient! ${Object.entries(modifierMap).map(([targetName, modifiers]) => `${targetName} gains ${listifyEN(modifiers, false)}.`).join(" ")}`;
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,

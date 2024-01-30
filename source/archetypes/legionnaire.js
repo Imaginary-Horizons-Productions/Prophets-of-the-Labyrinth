@@ -25,7 +25,7 @@ module.exports = new ArchetypeTemplate("Legionnaire",
 						}
 					});
 					if (name !== "@{clone}") {
-						embed.addFields({ name: enemy.getName(adventure.room.enemyIdMap), value: `Round ${adventure.room.round + 1}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}(Targets: ${targetNames.length ? listifyEN(targetNames) : "none"})\nRound ${adventure.room.round + 2}: ${enemy.nextAction}` });
+						embed.addFields({ name: enemy.getName(adventure.room.enemyIdMap), value: `Round ${adventure.room.round + 1}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}(Targets: ${targetNames.length ? listifyEN(targetNames, false) : "none"})\nRound ${adventure.room.round + 2}: ${enemy.nextAction}` });
 					} else {
 						embed.addFields({ name: enemy.getName(adventure.room.enemyIdMap), value: "Mirror Clones mimic your allies!" })
 					}

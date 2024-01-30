@@ -29,10 +29,10 @@ module.exports = new GearTemplate("Tormenting Censer",
 		if (isCrit && target.hp > 0) {
 			const addedSlow = addModifier(target, slow);
 			if (addedSlow) {
-				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed${debuffs.length > 0 ? ` and they gain ${listifyEN(debuffs)}` : ""}.`;
+				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed${debuffs.length > 0 ? ` and they gain ${listifyEN(debuffs, false)}` : ""}.`;
 			}
 		}
-		return `${damageText}${debuffs.length > 0 ? `${target.getName(adventure.room.enemyIdMap)}'s gains ${listifyEN(debuffs)}.` : ""}`;
+		return `${damageText}${debuffs.length > 0 ? `${target.getName(adventure.room.enemyIdMap)}'s gains ${listifyEN(debuffs, false)}.` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Censer", "Thick Censer")

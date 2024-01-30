@@ -60,7 +60,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 				components: [
 					new ActionRowBuilder().addComponents(
 						new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}treasure`)
-							.setPlaceholder(`Picked: ${listifyEN(pickedTreasures)}`)
+							.setPlaceholder(`Picked: ${listifyEN(pickedTreasures, false)}`)
 							.setOptions(EMPTY_SELECT_OPTION_SET)
 							.setDisabled(true)
 					),

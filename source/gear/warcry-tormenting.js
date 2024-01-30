@@ -42,10 +42,10 @@ module.exports = new GearTemplate("Tormenting War Cry",
 				}
 			}
 			if (debuffs.length > 0) {
-				tormentTexts += ` ${target.getName(adventure.room.enemyIdMap)} gains ${listifyEN(debuffs)}.`;
+				tormentTexts += ` ${target.getName(adventure.room.enemyIdMap)} gains ${listifyEN(debuffs, false)}.`;
 			}
 		})
-		return `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.${tormentTexts}`;
+		return `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.${tormentTexts}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")

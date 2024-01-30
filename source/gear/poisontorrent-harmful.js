@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 			}
 		})
 		if (poisonedTargets.length > 1) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(poisonedTargets)} were Poisoned.`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(poisonedTargets, false)} were Poisoned.`;
 		} else if (poisonedTargets === 1) {
 			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${poisonedTargets[0]} was Poisoned.`;
 		} else {

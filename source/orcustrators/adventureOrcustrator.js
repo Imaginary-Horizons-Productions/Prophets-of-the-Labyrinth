@@ -447,7 +447,7 @@ function resolveMove(move, adventure) {
 			if (livingTargets.length > 0) {
 				let deadTargetText = "";
 				if (deadTargets.length > 0) {
-					deadTargetText += ` ${listifyEN(deadTargets.map(target => target.getName(adventure.room.enemyIdMap)))} ${deadTargets === 1 ? "was" : "were"} already dead!`
+					deadTargetText += ` ${listifyEN(deadTargets.map(target => target.getName(adventure.room.enemyIdMap)), false)} ${deadTargets === 1 ? "was" : "were"} already dead!`
 				}
 
 				const resultText = effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure);

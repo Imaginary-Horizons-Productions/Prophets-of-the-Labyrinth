@@ -24,18 +24,18 @@ async function executeSubcommand(interaction, ...[adventure]) {
 			{
 				name: "Scouting",
 				value: `Final Battle: ${adventure.scouting.bosses.length > 0 ? adventure.bosses[0] : "???"}\nArtifact Guardians: ${guardsScouted.length > 0 ?
-					listifyEN(guardsScouted.map((encounter, index) => {
+					guardsScouted.map((encounter, index) => {
 						if (index + 1 <= adventure.scouting.artifactGuardiansEncountered) {
 							return `~~${encounter}~~`;
 						} else {
 							return encounter;
 						}
-					})) + "..." : "???"}`
+					}).join(", ") + "..." : "???"}`
 			}
 		]);
 	const challenges = Object.keys(adventure.challenges);
 	if (challenges.length) {
-		embed.addFields({ name: "Challenges", value: listifyEN(Object.keys(adventure.challenges)) });
+		embed.addFields({ name: "Challenges", value: listifyEN(Object.keys(adventure.challenges), false) });
 	}
 	const infoSelects = [];
 	const allArtifacts = Object.keys(adventure.artifacts);

@@ -21,7 +21,7 @@ async function executeSubcommand(interaction, ...args) {
 	const startingModifierEntries = Object.entries(enemyTemplate.startingModifiers);
 	const enemyFields = [];
 	if (startingModifierEntries.length > 0) {
-		enemyFields.push({ name: "Starting Modifiers", value: listifyEN(startingModifierEntries.map(([name, stacks]) => `${stacks} ${name}`)) });
+		enemyFields.push({ name: "Starting Modifiers", value: listifyEN(startingModifierEntries.map(([name, stacks]) => `${stacks} ${name}`), false) });
 	}
 	enemyFields.push({
 		name: "Actions",

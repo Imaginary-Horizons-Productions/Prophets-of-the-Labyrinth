@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Sweeping Blood Aegis",
 		})
 
 		if (provokedTargets.length > 1) {
-			return `Gaining protection, ${payHP(user, hpCost, adventure)} ${listifyEN(provokedTargets)} fall for the provocation.`;
+			return `Gaining protection, ${payHP(user, hpCost, adventure)} ${listifyEN(provokedTargets, false)} fall for the provocation.`;
 		} else if (provokedTargets.length === 1) {
 			return `Gaining protection, ${payHP(user, hpCost, adventure)} ${provokedTargets[0]} falls for the provocation.`;
 		} else {

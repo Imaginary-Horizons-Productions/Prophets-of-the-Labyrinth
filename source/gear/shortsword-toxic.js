@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Toxic Shortsword",
 			targetDebuffs.push("Exposed");
 		}
 		if (targetDebuffs.length > 0) {
-			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is ${listifyEN(targetDebuffs)}.`;
+			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is ${listifyEN(targetDebuffs, false)}.`;
 		}
 		return resultText;
 	}

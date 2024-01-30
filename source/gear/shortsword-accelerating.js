@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 			selfModifiers.push("Quickened");
 		}
 		if (selfModifiers.length > 0) {
-			resultText += ` ${user.getName(adventure.room.enemyIdMap)} is ${listifyEN(selfModifiers)}.`;
+			resultText += ` ${user.getName(adventure.room.enemyIdMap)} is ${listifyEN(selfModifiers, false)}.`;
 		}
 		const addedExposedTarget = addModifier(target, exposed);
 		if (addedExposedTarget) {

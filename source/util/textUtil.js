@@ -121,13 +121,22 @@ function trimForSelectOptionDescription(text) {
 
 /** Formats string array into Oxford English list syntax
  *  @param {string[]} texts
+ *  @param {boolean} isMutuallyExclusive
  */
-function listifyEN(texts) {
+function listifyEN(texts, isMutuallyExclusive) {
 	if (texts.length > 2) {
 		const textsSansLast = texts.slice(0, texts.length - 1);
-		return `${textsSansLast.join(", ")}, and ${texts[texts.length - 1]}`;
+		if (isMutuallyExclusive) {
+			return `${textsSansLast.join(", ")}, or ${texts[texts.length - 1]}`;
+		} else {
+			return `${textsSansLast.join(", ")}, and ${texts[texts.length - 1]}`;
+		}
 	} else if (texts.length === 2) {
-		return texts.join(" and ");
+		if (isMutuallyExclusive) {
+			return texts.join(" or ");
+		} else {
+			return texts.join(" and ");
+		}
 	} else if (texts.length === 1) {
 		return texts[0];
 	} else {

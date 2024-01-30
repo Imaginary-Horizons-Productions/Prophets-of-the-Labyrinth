@@ -65,7 +65,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		})
 		const insultEntries = Object.entries(insultMap);
 		if (insultEntries.length > 0) {
-			return `"Fear not! I have enough Star Power to take you all on!" ${dealDamage(targets, user, pendingDamage, false, "Light", adventure)} ${Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList)}.`).join(" ")}`;
+			return `"Fear not! I have enough Star Power to take you all on!" ${dealDamage(targets, user, pendingDamage, false, "Light", adventure)} ${Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList, false)}.`).join(" ")}`;
 		} else {
 			return `"Fear not! I have enough Star Power to take you all on!" ${dealDamage(targets, user, pendingDamage, false, "Light", adventure)}`;
 		}
@@ -94,15 +94,15 @@ module.exports = new EnemyTemplate("Starry Knight",
 		const insultEntries = Object.entries(insultMap);
 		if (frailedTargets.length === 1) {
 			if (insultEntries.length > 0) {
-				return `${frailedTargets[0]} gains Frail. ${insultEntries.map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList)}.`).join(" ")}`;
+				return `${frailedTargets[0]} gains Frail. ${insultEntries.map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList, false)}.`).join(" ")}`;
 			} else {
 				return `${frailedTargets[0]} gains Frail.`;
 			}
 		} else {
 			if (insultEntries.length > 0) {
-				return `${listifyEN(frailedTargets)} gain Frail. ${insultEntries.map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList)}.`).join(" ")}`;
+				return `${listifyEN(frailedTargets, false)} gain Frail. ${insultEntries.map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList, false)}.`).join(" ")}`;
 			} else {
-				return `${listifyEN(frailedTargets)} gain Frail.`;
+				return `${listifyEN(frailedTargets, false)} gain Frail.`;
 			}
 		}
 	},

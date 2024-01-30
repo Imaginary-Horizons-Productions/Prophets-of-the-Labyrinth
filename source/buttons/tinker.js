@@ -23,11 +23,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const options = [];
 		delver.gear.forEach((gear, index) => {
-			const sidegrades = getGearProperty(gear.name, "sidegrades");
+			const sidegrades = getGearProperty(gear.name, "sidegrades").map(sidegrade => sidegrade.replace(gear.name, "").trim());
 			if (sidegrades.length > 0) {
 				options.push({
 					label: gear.name,
-					description: trimForSelectOptionDescription(`Results: ${listifyEN(sidegrades)}`),
+					description: trimForSelectOptionDescription(`Possibilities: ${listifyEN(sidegrades, true)}`),
 					value: `${gear.name}${SAFE_DELIMITER}${index}`
 				})
 			}

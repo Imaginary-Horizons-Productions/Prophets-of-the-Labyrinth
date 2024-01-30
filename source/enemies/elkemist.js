@@ -101,7 +101,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		addModifier(user, { name: "Progress", stacks: progressGained });
 
 		if (affectedDelvers.size > 0) {
-			return `It cackles as it transmutes buffs on ${listifyEN([...affectedDelvers])} to Fire Weakness.`;
+			return `It cackles as it transmutes buffs on ${listifyEN([...affectedDelvers], false)} to Fire Weakness.`;
 		} else {
 			return "It's disappointed it wasn't able to transmute any buffs.";
 		}

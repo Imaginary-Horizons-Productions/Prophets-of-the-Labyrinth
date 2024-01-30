@@ -34,7 +34,7 @@ module.exports = new GearTemplate("Long Sabotage Kit",
 			}
 		}
 		if (debuffTexts.length > 0) {
-			return `${target.getName(adventure.room.enemyIdMap)} ${listifyEN(debuffTexts)}.`;
+			return `${target.getName(adventure.room.enemyIdMap)} ${listifyEN(debuffTexts, false)}.`;
 		} else {
 			return "But nothing happened.";
 		}

@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Poison Torrent",
 			}
 		})
 		if (poisonedTargets.length > 1) {
-			return `**${listifyEN(poisonedTargets)}** were Poisoned.`;
+			return `**${listifyEN(poisonedTargets, false)}** were Poisoned.`;
 		} else if (poisonedTargets.length === 1) {
 			return `**${poisonedTargets[0]}** was Poisoned.`;
 		} else {

@@ -94,7 +94,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 			}
 		});
 		if (slowedTargets.length > 1) {
-			return `${listifyEN(slowedTargets)} are Slowed by the sticky ooze.`;
+			return `${listifyEN(slowedTargets, false)} are Slowed by the sticky ooze.`;
 		} else if (slowedTargets.length === 1) {
 			return `${slowedTargets[0]} is Slowed by the sticky ooze.`;
 		} else {

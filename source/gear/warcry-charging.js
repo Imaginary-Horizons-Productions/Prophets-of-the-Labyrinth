@@ -33,7 +33,7 @@ module.exports = new GearTemplate("Charging War Cry",
 		targetArray.forEach(target => {
 			target.addStagger(pendingStaggerStacks);
 		});
-		let resultText = `${listifyEN([...targetSet])} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
+		let resultText = `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
 		const addedPowerUp = addModifier(user, powerup);
 		if (addedPowerUp) {
 			resultText += ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;

@@ -64,7 +64,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 				}
 			});
 			if (slowedTargets.length > 1) {
-				return `${listifyEN(slowedTargets)} are Slowed trying to grab at some treasure.`;
+				return `${listifyEN(slowedTargets, false)} are Slowed trying to grab at some treasure.`;
 			} else if (slowedTargets.length === 1) {
 				return `${slowedTargets[0]} is Slowed trying to grab at some treasure.`;
 			} else {

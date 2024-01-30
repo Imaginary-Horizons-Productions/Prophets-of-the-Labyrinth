@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Sweeping Spear",
 			}
 		})
 		if (critTargets.length > 1) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(critTargets)} were Staggered.`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(critTargets, false)} were Staggered.`;
 		} else if (critTargets.length === 1) {
 			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${critTargets[0]} was Staggered.`;
 		} else {

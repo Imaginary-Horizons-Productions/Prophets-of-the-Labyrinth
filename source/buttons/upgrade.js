@@ -23,11 +23,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const options = [];
 		delver.gear.forEach((gear, index) => {
-			const upgrades = getGearProperty(gear.name, "upgrades");
+			const upgrades = getGearProperty(gear.name, "upgrades").map(upgrade => upgrade.replace(gear.name, "").trim());
 			if (upgrades.length > 0) {
 				options.push({
 					label: gear.name,
-					description: trimForSelectOptionDescription(`Results: ${listifyEN(upgrades)}`),
+					description: trimForSelectOptionDescription(`Possibilities: ${listifyEN(upgrades, true)}`),
 					value: `${gear.name}${SAFE_DELIMITER}${index}`
 				})
 			}

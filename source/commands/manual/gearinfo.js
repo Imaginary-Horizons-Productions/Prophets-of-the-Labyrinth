@@ -22,12 +22,12 @@ async function executeSubcommand(interaction, ...args) {
 
 	const upgrades = getGearProperty(gearName, "upgrades");
 	if (upgrades.length > 0) {
-		fields.push({ name: "Upgrades Into", value: listifyEN(upgrades) });
+		fields.push({ name: "Upgrades Into", value: listifyEN(upgrades, true) });
 	}
 
 	const sidegrades = getGearProperty(gearName, "sidegrades");
 	if (sidegrades.length > 0) {
-		fields.push({ name: "Can be Tinkered Into", value: listifyEN(sidegrades) });
+		fields.push({ name: "Can be Tinkered Into", value: listifyEN(sidegrades, true) });
 	}
 
 	const extraField = getGearProperty(gearName, "flavorText");

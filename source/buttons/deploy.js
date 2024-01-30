@@ -17,7 +17,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (archetype) {
 					archetypeOptions.push({
 						label: `${archetypeName} ${getEmoji(archetype.element)}`,
-						description: trimForSelectOptionDescription(`Gear: ${listifyEN(archetype.startingGear)}`),
+						description: trimForSelectOptionDescription(`Gear: ${listifyEN(archetype.startingGear, false)}`),
 						value: archetypeName
 					})
 				} else {

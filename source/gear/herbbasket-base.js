@@ -35,4 +35,4 @@ module.exports = new GearTemplate("Herb Basket",
 	.setUpgrades("Organic Herb Basket", "Reinforced Herb Basket", "Urgent Herb Basket")
 	.setBonus(1) // Herb count
 	.setDurability(15)
-	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs) });
+	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) });

@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Sweeping Inspiration",
 		})
 
 		if (poweredUpTargets.length > 1) {
-			return `${listifyEN(poweredUpTargets)} are Powered Up.`;
+			return `${listifyEN(poweredUpTargets, false)} are Powered Up.`;
 		} else if (poweredUpTargets.length === 1) {
 			return `${poweredUpTargets[0]} is Powered Up.`;
 		} else {

@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Appease",
 			}
 		}
 		if (curedInsults.length > 0) {
-			return `${user.getName(adventure.room.enemyIdMap)} shrugs off ${listifyEN(curedInsults)}.`;
+			return `${user.getName(adventure.room.enemyIdMap)} shrugs off ${listifyEN(curedInsults, false)}.`;
 		} else {
 			return "But nothing happened.";
 		}

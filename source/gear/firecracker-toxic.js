@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Toxic Firecracker",
 		})
 
 		if (poisonedTargets.length > 1) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(poisonedTargets)} are Poisoned.`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(poisonedTargets, false)} are Poisoned.`;
 		} else if (poisonedTargets.length === 1) {
 			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${poisonedTargets[0]} is Poisoned.`;
 		} else {
