@@ -77,9 +77,12 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Morning Star",
 				"Prismatic Blast"
 			],
 			Rare: [
+				"Awesome Morning Star",
+				"Bashing Morning Star",
 				"Vexing Prismatic Blast"
 			]
 		},

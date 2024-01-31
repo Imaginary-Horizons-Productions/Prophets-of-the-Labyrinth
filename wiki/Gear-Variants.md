@@ -25,6 +25,13 @@ Bonus damage if target is Stunned
 
 **Available on**
 - all Warhammers (Earth)
+- Morning Star (Light)
+
+### Bashing
+Add protection to damage dealt
+
+**Available on**
+- Morning Star (Light)
 
 ### Blasting
 Also targets adjacent team members

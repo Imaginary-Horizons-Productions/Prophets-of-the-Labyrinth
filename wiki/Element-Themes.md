@@ -153,6 +153,7 @@ Archetypes:
 
 ## Uncategorized Variants
 - Awesome
+- Bashing
 - Bouncing
 - Cleansing
 - Corrosive
