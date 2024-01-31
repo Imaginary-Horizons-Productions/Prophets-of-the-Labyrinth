@@ -215,6 +215,18 @@ class Adventure {
 	 * @param {string} itemName
 	 * @param {number} count
 	 */
+	gainItem(itemName, count) {
+		if (itemName in this.items) {
+			this.items[itemName] += count;
+		} else {
+			this.items[itemName] = count;
+		}
+	}
+
+	/**
+	 * @param {string} itemName
+	 * @param {number} count
+	 */
 	decrementItem(itemName, count) {
 		this.items[itemName] -= count;
 		if (this.items[itemName] < 1) {

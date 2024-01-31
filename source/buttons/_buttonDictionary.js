@@ -22,6 +22,7 @@ for (const file of [
 	"ready.js",
 	"readyitem.js",
 	"readymove.js",
+	"repairkittinker.js",
 	"replacegear.js",
 	"rest.js",
 	"routevote.js",

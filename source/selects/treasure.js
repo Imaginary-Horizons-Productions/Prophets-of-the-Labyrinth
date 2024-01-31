@@ -61,11 +61,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 					}
 					break;
 				case "item":
-					if (name in adventure.items) {
-						adventure.items[name] += count;
-					} else {
-						adventure.items[name] = count;
-					}
+					adventure.gainItem(name, count);
 					adventure.room.resources[name].count = 0;
 					result = {
 						content: `The party acquires ${count} ${name}.`

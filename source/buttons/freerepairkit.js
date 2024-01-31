@@ -1,6 +1,7 @@
 const { ButtonWrapper } = require('../classes');
+const { ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { editButtons } = require('../util/messageComponentUtil');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "freerepairkit";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -12,17 +13,14 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		if (adventure.room.resources["Repair Kit"].count > 0) {
-			if ("Repair Kit" in adventure.items) {
-				adventure.items["Repair Kit"]++;
-			} else {
-				adventure.items["Repair Kit"] = 1;
-			}
+			adventure.gainItem("Repair Kit", 1);
 			adventure.room.resources["Repair Kit"].count = 0;
+			adventure.addResource("Repair Kit taken", "pickedTreasure", "internal", 1);
+			interaction.update(renderRoom(adventure, interaction.message.channel)).then(() => {
+				setAdventure(adventure);
+			});
+		} else {
+			interaction.update({ content: ZERO_WIDTH_WHITESPACE });
 		}
-		interaction.update({
-			components: editButtons(interaction.message.components, { [interaction.customId]: { preventUse: true, label: "Repair Kit Acquired", emoji: "✔️" } })
-		}).then(() => {
-			setAdventure(adventure);
-		});
 	}
 );

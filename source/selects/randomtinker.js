@@ -1,7 +1,8 @@
 const { SelectWrapper } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { getGearProperty, buildGearRecord } = require('../gear/_gearDictionary');
+const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
+const { transformGear } = require('../util/delverUtil');
 const { editButtons, consumeRoomActions } = require('../util/messageComponentUtil');
 
 const mainId = "randomtinker";
@@ -14,17 +15,12 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return;
 		}
 
-		const user = adventure.delvers.find(delver => delver.id === interaction.user.id);
+		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 		const [gearName, index] = interaction.values[0].split(SAFE_DELIMITER);
 		/** @type {string[]} */
 		const sidegrades = getGearProperty(gearName, "sidegrades");
 		const sidegradeName = sidegrades[adventure.generateRandomNumber(sidegrades.length, "general")];
-		const sidegradeDurability = getGearProperty(sidegradeName, "maxDurability");
-		const durabilityDifference = sidegradeDurability - getGearProperty(gearName, "maxDurability");
-		if (durabilityDifference > 0) {
-			user.gear[index].durability += durabilityDifference;
-		}
-		user.gear.splice(index, 1, buildGearRecord(sidegradeName, Math.min(sidegradeDurability, user.gear[index].durability)));
+		transformGear(delver, index, gearName, sidegradeName);
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 			const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);
 			let components = roomMessage.components;

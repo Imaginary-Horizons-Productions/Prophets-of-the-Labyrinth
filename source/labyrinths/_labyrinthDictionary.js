@@ -1,4 +1,5 @@
 const { Adventure, LabyrinthTemplate, RoomTemplate } = require("../classes");
+const { SAFE_DELIMITER } = require("../constants.js");
 const { gearExists } = require("../gear/_gearDictionary.js");
 const { itemExists } = require("../items/_itemDictionary.js");
 const { getRoom, ROOM_CATEGORIES } = require("../rooms/_roomDictionary");

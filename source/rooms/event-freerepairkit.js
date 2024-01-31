@@ -9,13 +9,21 @@ module.exports = new RoomTemplate("Repair Kit, just hanging out",
 		new ResourceTemplate("1", "internal", "Repair Kit").setCostExpression("0")
 	],
 	function (roomEmbed, adventure) {
+		const wasRepairKitTaken = "Repair Kit taken" in adventure.room.resources;
+		const isRepairKitRemaining = adventure.room.resources["Repair Kit"].count > 0;
 		return {
 			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
 			components: [
 				new ActionRowBuilder().addComponents(
-					new ButtonBuilder()
-						.setCustomId("freerepairkit")
-						.setLabel("Take the Repair Kit")
+					new ButtonBuilder().setCustomId("freerepairkit")
+						.setLabel(isRepairKitRemaining ? "Save the Repair Kit" : wasRepairKitTaken ? "Repair Kit saved" : "Repair Kit used")
+						.setEmoji(isRepairKitRemaining ? "🔧" : wasRepairKitTaken ? "✔️" : "✖️")
+						.setDisabled(!isRepairKitRemaining)
+						.setStyle(ButtonStyle.Primary),
+					new ButtonBuilder().setCustomId("repairkittinker")
+						.setLabel(isRepairKitRemaining ? "Use the Repair Kit for a random random upgrade" : wasRepairKitTaken ? "Repair Kit saved" : "Repair Kit used")
+						.setEmoji(isRepairKitRemaining ? "⬆️" : wasRepairKitTaken ? "✖️" : "✔️")
+						.setDisabled(!isRepairKitRemaining)
 						.setStyle(ButtonStyle.Primary)
 				),
 				generateRoutingRow(adventure)
