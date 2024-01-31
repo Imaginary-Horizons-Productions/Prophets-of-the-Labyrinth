@@ -208,6 +208,7 @@ module.exports = new LabyrinthTemplate("Mechahive",
 		},
 		Untyped: {
 			Cursed: [
+				"Cursed Blade"
 			],
 			Common: [
 				"Chainmail",

@@ -115,6 +115,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		},
 		Untyped: {
 			Cursed: [
+				"Cursed Blade"
 			],
 			Common: [
 				"Chainmail",

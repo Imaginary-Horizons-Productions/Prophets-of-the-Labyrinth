@@ -52,6 +52,7 @@ for (const file of [
 	"corrosion-flanking.js",
 	"corrosion-harmful.js",
 	"corrosion-shattering.js",
+	"cursed-blade.js",
 	"daggers-base.js",
 	"daggers-sharpened.js",
 	"daggers-slowing.js",

@@ -153,6 +153,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 		},
 		Water: {
 			Cursed: [
+				"Cursed Blade"
 			],
 			Common: [
 				"Abacus",

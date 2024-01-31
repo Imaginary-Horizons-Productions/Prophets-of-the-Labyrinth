@@ -102,7 +102,14 @@ function rollGearTier(adventure) {
 	const max = RN_TABLE_BASE ** 2;
 	const threshold = max * sumGeometricSeries(baseUpgradeChance, 1 - baseUpgradeChance, 1 + cloverCount);
 	adventure.updateArtifactStat("Negative-One Leaf Clover", "Expected Extra Rare Gear", (threshold / max) - baseUpgradeChance);
-	return adventure.generateRandomNumber(max, "general") < threshold ? "Rare" : "Common";
+	const roll = adventure.generateRandomNumber(max, "general");
+	if (roll >= 7 / 8 * max) {
+		return "Cursed";
+	} else if (roll < threshold) {
+		return "Rare";
+	} else {
+		return "Common";
+	}
 }
 
 /** Set up the upcoming room: roll options for rooms after, update adventure's room meta data object for current room, and generate room's resources

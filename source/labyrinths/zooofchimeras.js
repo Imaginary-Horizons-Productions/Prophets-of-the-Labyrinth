@@ -208,6 +208,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 		},
 		Untyped: {
 			Cursed: [
+				"Cursed Blade"
 			],
 			Common: [
 				"Chainmail",
