@@ -53,6 +53,7 @@ for (const file of [
 	"corrosion-harmful.js",
 	"corrosion-shattering.js",
 	"cursed-blade.js",
+	"cursed-tome.js",
 	"daggers-base.js",
 	"daggers-sharpened.js",
 	"daggers-slowing.js",

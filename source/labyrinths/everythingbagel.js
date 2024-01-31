@@ -208,7 +208,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 		},
 		Untyped: {
 			Cursed: [
-				"Cursed Blade"
+				"Cursed Blade",
+				"Cursed Tome"
 			],
 			Common: [
 				"Chainmail",
