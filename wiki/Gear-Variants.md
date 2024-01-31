@@ -143,6 +143,7 @@ Heal the user
 
 **Available on**
 - all Life Drains (Darkness)
+- all Second Winds (Untyped)
 
 ### Hearty
 Passively increases the user's Max HP
@@ -343,14 +344,15 @@ Increment a stack on all target's debuffs
 Adds Poison to target
 
 **Available on**
+- Cauldron Stir (Water)
 - Firecracker (Fire)
-- Abacus (Water)
 - Shortsword (Fire)
 
 ### Unstoppable
 Deals Unblockable damage, usable while Stunned
 
 **Available on**
+- Abacus (Water)
 - Lance (Earth)
 - Scythe (Darkness)
 - Warhammer (Earth)

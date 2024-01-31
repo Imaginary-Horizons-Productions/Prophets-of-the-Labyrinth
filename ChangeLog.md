@@ -19,9 +19,10 @@ The Chemist was a powerful archetype, but the gameplay didn't allign with the th
 - Sickle: renamed to Abacus, category changed to Trinket
 - Potion Kit: reworked into Herb Basket; element changed to Earth, rollable items are now Panacea, Quick Pepper, Regen Root, and Strength Spinach
 ### Gear
-- New Gear: Wise Chainmail, Prismatic Blast, Vexing Prismatic Blast, Cauldron Stir, Medicine, Risky Mixture, Long Risky Mixture, Awesome Morning Star, Bashing Morning Star
+- New Gear: Wise Chainmail, Prismatic Blast, Vexing Prismatic Blast, Cauldron Stir, Toxic Cauldron Stir, Medicine, Risky Mixture, Long Risky Mixture, Awesome Morning Star, Bashing Morning Star
 - Barriers now provide 3 Evade instead of 999 Block and are Wind element
 - Vigilant Lance is now Shattering Lance
+- Changed Toxic Abacus to Unstoppable Abacus
 ### Artifacts
 - New Artifact: Manual Manual
 - Crystal Shard (artifact) now increases range of Spells--durability saving effect is now on the new Weapon Polish artifact, which applies to Weapons

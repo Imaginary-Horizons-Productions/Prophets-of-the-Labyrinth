@@ -35,5 +35,6 @@ module.exports = new GearTemplate("Cauldron Stir",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+	.setUpgrades("Toxic Cauldron Stir")
 	.setDurability(15)
 	.setDamage(40);

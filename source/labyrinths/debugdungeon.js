@@ -97,7 +97,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Rare: [
 				"Hunter's Abacus",
 				"Sharpened Abacus",
-				"Toxic Abacus",
+				"Unstoppable Abacus",
+				"Toxic Cauldron Stir"
 			]
 		},
 		Wind: {

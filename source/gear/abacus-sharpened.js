@@ -19,6 +19,6 @@ module.exports = new GearTemplate("Sharpened Abacus",
 		return dealDamage([target], user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Hunter's Abacus", "Toxic Abacus")
+	.setSidegrades("Hunter's Abacus", "Unstoppable Abacus")
 	.setDurability(15)
 	.setDamage(65);
