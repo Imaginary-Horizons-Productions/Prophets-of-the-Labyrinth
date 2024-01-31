@@ -13,11 +13,13 @@ for (const file of [
 	"buyitem.js",
 	"challenge.js",
 	"collectartifact.js",
+	"gearcollector.js",
 	"item.js",
 	"movetarget.js",
 	"randomtinker.js",
 	"randomupgrade.js",
 	"repair.js",
+	"sellgear.js",
 	"startingartifact.js",
 	"startingchallenges.js",
 	"treasure.js"

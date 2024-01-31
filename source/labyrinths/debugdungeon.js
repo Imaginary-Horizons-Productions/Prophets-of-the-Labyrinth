@@ -127,13 +127,16 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		}
 	},
 	{
-		"Event": ["The Score Beggar", "Apple Pie Wishing Well"],
+		// Labyrinth Particulars - more customized
+		"Event": ["The Score Beggar", "Apple Pie Wishing Well", "Gear Collector"],
 		"Battle": ["Frog Ranch", "Wild Fire-Arrow Frogs"],
-		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
-		"Rest Site": ["Rest Site: Training Dummy"],
-		"Final Battle": ["The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
-		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
+		"Final Battle": ["The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
+
+		// Labyrinth Infrastructure - less customized
+		"Merchant": ["Gear Buying Merchant"],
+		"Rest Site": ["Rest Site: Training Dummy"],
+		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
 		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],
 		"Empty": ["Empty Room"]
 	}

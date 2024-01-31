@@ -227,13 +227,13 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 	},
 	{
 		// Labyrinth Particulars - more customized
-		"Event": ["Twin Pedestals", "Imp Contract Faire", "Free Gold?", "The Score Beggar", "Apple Pie Wishing Well", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		"Event": ["Twin Pedestals", "Imp Contract Faire", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
 		"Battle": ["Slime Fight", "Tortoise Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
 		"Final Battle": ["Hall of Mirrors", "Confronting the Top Celestial Knight"],
 
 		// Labyrinth Infrastructure - less customized
-		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
+		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant", "Gear Buying Merchant"],
 		"Rest Site": ["Rest Site: Mysterious Challenger", "Rest Site: Training Dummy"],
 		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
 		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],

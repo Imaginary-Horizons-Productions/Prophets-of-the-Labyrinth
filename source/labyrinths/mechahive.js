@@ -233,7 +233,7 @@ module.exports = new LabyrinthTemplate("Mechahive",
 		"Final Battle": ["The Hexagon: Bee Mode", "The Hexagon: Mech Mode"],
 
 		// Labyrinth Infrastructure - less customized
-		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant"],
+		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant", "Gear Buying Merchant"],
 		"Rest Site": ["Rest Site: Mysterious Challenger", "Rest Site: Training Dummy"],
 		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
 		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],

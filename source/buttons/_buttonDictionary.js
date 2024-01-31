@@ -32,6 +32,8 @@ for (const file of [
 	"viewblackbox.js",
 	"viewchallenges.js",
 	"viewcollectartifact.js",
+	"viewgearcollector.js",
+	"viewgearsales.js",
 	"viewrepairs.js",
 	"viewstartingartifact.js"
 ]) {

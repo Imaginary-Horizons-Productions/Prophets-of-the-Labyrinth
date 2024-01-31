@@ -13,7 +13,7 @@ const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
-const { ordinalSuffixEN, generateTextBar } = require("./textUtil");
+const { ordinalSuffixEN, generateTextBar, getNumberEmoji } = require("./textUtil");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -93,7 +93,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
 			}
 		default:
 			if ("roomAction" in adventure.room.resources) {
-				roomEmbed.addFields({ name: "Room Actions", value: adventure.room.resources.roomAction.count.toString() });
+				roomEmbed.addFields({ name: "Room Actions", value: `${getNumberEmoji(adventure.room.resources.roomAction.count)} remaining` });
 			}
 
 			if (roomTemplate?.buildRoom) {

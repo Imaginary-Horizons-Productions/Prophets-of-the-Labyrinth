@@ -53,7 +53,7 @@ function consumeRoomActions(adventure, embeds, actionsConsumed) {
 			const updatedEmbed = new EmbedBuilder(embed);
 			const roomActionsFieldIndex = embed.fields.findIndex(field => field.name === "Room Actions");
 			if (roomActionsFieldIndex !== -1) {
-				return updatedEmbed.spliceFields(roomActionsFieldIndex, 1, { name: "Room Actions", value: remainingActions.toString() });
+				return updatedEmbed.spliceFields(roomActionsFieldIndex, 1, { name: "Room Actions", value: `${getNumberEmoji(remainingActions)} remaining` });
 			} else {
 				return updatedEmbed;
 			}
