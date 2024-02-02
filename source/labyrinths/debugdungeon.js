@@ -134,7 +134,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 	},
 	{
 		// Labyrinth Particulars - more customized
-		"Event": ["The Score Beggar", "Apple Pie Wishing Well", "Twin Pedestals", "Gear Collector"],
+		"Event": ["The Score Beggar", "Free Gold?", "Apple Pie Wishing Well", "Twin Pedestals", "Gear Collector"],
 		"Battle": ["Frog Ranch", "Wild Fire-Arrow Frogs"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
 		"Final Battle": ["The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],

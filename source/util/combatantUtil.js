@@ -136,7 +136,7 @@ function payHP(user, damage, adventure) {
 	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
 	const userName = user.getName(adventure.room.enemyIdMap);
-	let resultText = ` **${userName}** pays ${damage} hp.${downedCheck(user, adventure)}`;
+	let resultText = ` **${userName}** pays ${damage} HP.${downedCheck(user, adventure)}`;
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
 			resultText += ` ***${adventure.lives} lives remain.***`;
