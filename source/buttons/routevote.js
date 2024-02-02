@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ComponentType, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ComponentType, StringSelectMenuBuilder, EmbedBuilder } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { SAFE_DELIMITER, ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { getAdventure, endRoom } = require('../orcustrators/adventureOrcustrator');
@@ -50,7 +50,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						}
 					}))
 				})];
-				interaction.message.edit({ components: uiRows });
+				const updatedEmbeds = interaction.message.embeds.map(embed => {
+					return new EmbedBuilder().setColor(embed.color)
+						.setAuthor(embed.author)
+						.setTitle(embed.title)
+						.setDescription(embed.description)
+						.addFields(embed.fields.filter(field => !(["Room Actions", "Decide the next room"].includes(field.name))))
+						.setFooter(embed.footer)
+				})
+				interaction.message.edit({ embeds: updatedEmbeds, components: uiRows });
 				endRoom(candidate, interaction.channel);
 			}
 		});
