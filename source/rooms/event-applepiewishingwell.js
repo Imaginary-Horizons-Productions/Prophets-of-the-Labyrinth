@@ -13,15 +13,13 @@ module.exports = new RoomTemplate("Apple Pie Wishing Well",
 		let wellLabel, wellOptions, isWellDisabled, stealEmoji, stealLabel, isStealDisabled;
 		const isCoreIntact = "Wishing Well Core" in adventure.room.resources;
 		if (isCoreIntact) {
-			const partyItems = Object.entries(adventure.items);
-			if (partyItems.length > 0) {
+			wellOptions = Object.entries(adventure.items).map(([itemName, count]) => ({ label: itemName, description: `Stock: ${count}`, value: itemName }));
+			isWellDisabled = wellOptions.length > 0;
+			if (!isWellDisabled) {
 				wellLabel = "Select an item to toss...";
-				wellOptions = partyItems.map(([itemName, count]) => ({ label: itemName, description: `Stock: ${count}`, value: itemName }));
-				isWellDisabled = false;
 			} else {
 				wellLabel = "No items to toss";
 				wellOptions = EMPTY_SELECT_OPTION_SET;
-				isWellDisabled = true;
 			}
 
 			if ("Well used" in adventure.room.resources) {

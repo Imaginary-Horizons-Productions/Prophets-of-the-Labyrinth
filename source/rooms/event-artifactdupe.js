@@ -26,6 +26,7 @@ module.exports = new RoomTemplate("Twin Pedestals",
 			isDuperDisabled = duperOptions.length < 1;
 			if (isDuperDisabled) {
 				duperLabel = "No artifacts to duplicate";
+				duperOptions = EMPTY_SELECT_OPTION_SET;
 			} else {
 				duperLabel = "Pick an artifact to duplicate...";
 			}
