@@ -16,7 +16,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		if (adventure.room.resources.roomAction.count > 0) {
 			adventure.room.resources.roomAction.count = 0;
 			const artifactName = interaction.values[0];
-			adventure.addResource(`Duped: ${artifactName}`, "pickedTreasure", "internal", 1);
+			adventure.addResource(`Duped: ${artifactName}`, "history", "internal", 1);
 			adventure.gainArtifact(artifactName, 1);
 			interaction.update(renderRoom(adventure, interaction.channel));
 			setAdventure(adventure);

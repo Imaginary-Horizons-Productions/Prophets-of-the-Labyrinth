@@ -25,7 +25,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 		let result;
 		const { type, count } = adventure.room.resources[name];
 		if (count > 0) { // Prevents double message if multiple players take near same time
-			adventure.addResource(`picked${SAFE_DELIMITER}${name}`, "pickedTreasure", "internal", count);
+			adventure.addResource(`picked${SAFE_DELIMITER}${name}`, "history", "internal", count);
 			switch (type) {
 				case "gold":
 					adventure.gainGold(count);
