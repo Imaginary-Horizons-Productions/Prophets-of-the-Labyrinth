@@ -50,8 +50,8 @@ module.exports = new RoomTemplate("Treasure! Gold or Items?",
 		} else {
 			const pickedTreasures = [];
 			for (const resource of Object.values(adventure.room.resources)) {
-				const [picked, resourceName] = resource.name.split(SAFE_DELIMITER);
-				if (picked === "picked") {
+				const [picked, resourceName] = resource.name.split(": ");
+				if (picked === "Picked") {
 					pickedTreasures.push(resourceName);
 				}
 			}
