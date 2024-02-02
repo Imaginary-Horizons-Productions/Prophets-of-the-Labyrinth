@@ -1,8 +1,6 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { updateRoomHeader } = require('../util/embedUtil');
-const { EMPTY_SELECT_OPTION_SET } = require('../constants');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "stealwishingwellcore";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -16,27 +14,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		adventure.gainGold(250);
+		delete adventure.room.resources["Wishing Well Core"];
 		setAdventure(adventure);
-		updateRoomHeader(adventure, interaction.message).then(message => {
-			interaction.update({
-				embeds: message.embeds,
-				components: [
-					new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder().setCustomId("applepiewishingwell")
-							.setPlaceholder("Wishing well core stolen!")
-							.setOptions(EMPTY_SELECT_OPTION_SET)
-							.setDisabled(true)
-					),
-					new ActionRowBuilder().addComponents(
-						new ButtonBuilder().setCustomId(mainId)
-							.setLabel("+250g")
-							.setEmoji("✔️")
-							.setStyle(ButtonStyle.Primary)
-							.setDisabled(true)
-					),
-					message.components[2]
-				]
-			});
-		});
+		interaction.update(renderRoom(adventure, interaction.channel));
 	}
 );
