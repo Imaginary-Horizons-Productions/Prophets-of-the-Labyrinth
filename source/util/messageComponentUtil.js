@@ -6,7 +6,7 @@ const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { buildGearDescription } = require("../gear/_gearDictionary");
 
-const { ordinalSuffixEN, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
+const { ordinalSuffixEN, trimForSelectOptionDescription, listifyEN, getNumberEmoji } = require("./textUtil");
 const { levelUp } = require("./delverUtil");
 
 /** Modify the buttons whose `customId`s are keys in `edits` from among `components` based on `preventUse`, `label`, and `emoji` then return all components
