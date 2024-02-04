@@ -13,9 +13,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		if (adventure.room.resources["Repair Kit"].count > 0) {
+			delete adventure.room.resources["Repair Kit"];
 			adventure.gainItem("Repair Kit", 1);
-			adventure.room.resources["Repair Kit"].count = 0;
-			adventure.addResource("Repair Kit taken", "history", "internal", 1);
 			interaction.update(renderRoom(adventure, interaction.message.channel)).then(() => {
 				setAdventure(adventure);
 			});

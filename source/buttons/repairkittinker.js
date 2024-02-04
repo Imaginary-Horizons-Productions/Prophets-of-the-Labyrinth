@@ -29,15 +29,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		if (adventure.room.resources["Repair Kit"].count > 0) {
+			delete adventure.room.resources["Repair Kit"];
 			const gearIndex = adventure.generateRandomNumber(eligibleGear.length, "general");
 			const [gearToUpgrade, upgradePool] = eligibleGear[gearIndex];
 			const upgradeName = upgradePool[adventure.generateRandomNumber(upgradePool.length, "general")];
+			adventure.addResource(`${delver.name}: ${upgradeName}`, "history", "internal", 1);
 			transformGear(delver, gearIndex, gearToUpgrade, upgradeName);
-			adventure.room.resources["Repair Kit"].count = 0;
 			interaction.update(renderRoom(adventure, interaction.message.channel)).then(() => {
 				setAdventure(adventure);
 			});
-			interaction.channel.send(`**${delver.name}** uses the Repair Kit to upgrade their ${gearToUpgrade} to a **${upgradeName}**.`);
 		} else {
 			interaction.update({ content: ZERO_WIDTH_WHITESPACE });
 		}
