@@ -19,10 +19,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const discardedName = delver.gear[index].name;
 		delver.gear.splice(index, 1, buildGearRecord(name, "max"));
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-			adventure.room.resources[name].count--;
+			adventure.room.decrementResource(name, 1);
 			adventure.gold -= cost;
 			if (source === "treasure") {
-				adventure.room.resources.roomAction.count--;
+				adventure.room.decrementResource("roomAction", 1);
 			}
 			return roomMessage.edit(renderRoom(adventure, interaction.channel));
 		}).then(() => {

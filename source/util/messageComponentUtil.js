@@ -46,7 +46,7 @@ function editButtons(components, edits) {
  * @returns {{embeds: MessageEmbed[], remainingActions: number}}
  */
 function consumeRoomActions(adventure, embeds, actionsConsumed) {
-	adventure.room.resources.roomAction.count -= actionsConsumed;
+	adventure.room.decrementResource("roomAction", actionsConsumed);
 	const remainingActions = adventure.room.resources.roomAction.count;
 	return {
 		embeds: embeds.map(({ data: embed }) => {

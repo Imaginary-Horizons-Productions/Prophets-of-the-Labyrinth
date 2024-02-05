@@ -1,8 +1,8 @@
 const { SelectWrapper, Challenge } = require('../classes');
 const { getChallenge } = require('../challenges/_challengeDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { editButtons, consumeRoomActions } = require('../util/messageComponentUtil');
-const { SAFE_DELIMITER } = require('../constants');
+const { EMPTY_MESSAGE_PAYLOAD } = require('../constants');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "challenge";
 module.exports = new SelectWrapper(mainId, 3000,
@@ -14,7 +14,8 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure?.room.resources.roomAction.count > 0) {
+		interaction.update(EMPTY_MESSAGE_PAYLOAD);
+		if (adventure?.room.hasResource("roomAction")) {
 			const [challengeName] = interaction.values;
 			const { intensity, duration, reward } = getChallenge(challengeName);
 			// Calcluate healPercent before updating challenges in case Restless is selected
@@ -26,23 +27,13 @@ module.exports = new SelectWrapper(mainId, 3000,
 			} else {
 				adventure.challenges[challengeName] = new Challenge(intensity, reward, duration);
 			}
+			adventure.room.decrementResource("roomAction", 1);
+			adventure.room.addResource(`Challenge taken: ${challengeName}`, "history", "internal", 1);
 			interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-				const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);
-				let components = roomMessage.components;
-				if (remainingActions < 1) {
-					components = editButtons(components, {
-						"viewchallenges": { preventUse: true, label: challengeName, emoji: "✔️" },
-						[`rest${SAFE_DELIMITER}${healPercent}`]: { preventUse: true, label: "The fire has burned out", emoji: "✖️" }
-					})
-				}
-				return roomMessage.edit({ embeds, components });
-			}).then(() => {
-				interaction.update({ components: [] });
-				setAdventure(adventure);
-				interaction.channel.send({ content: `The party takes on a new challenge: ${challengeName}` });
+				roomMessage.edit(renderRoom(adventure, interaction.channel));
 			})
-		} else {
-			interaction.reply({ content: "No more actions can be taken in this room.", ephemeral: true });
+			interaction.channel.send({ content: `The party takes on a new challenge: ${challengeName}` });
+			setAdventure(adventure);
 		}
 	}
 );

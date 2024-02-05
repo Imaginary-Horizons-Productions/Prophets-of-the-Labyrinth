@@ -141,7 +141,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 
 		// Labyrinth Infrastructure - less customized
 		"Merchant": ["Gear Buying Merchant"],
-		"Rest Site": ["Rest Site: Training Dummy"],
+		"Rest Site": ["Rest Site: Mysterious Challenger", "Rest Site: Training Dummy"],
 		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
 		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],
 		"Empty": ["Empty Room"]

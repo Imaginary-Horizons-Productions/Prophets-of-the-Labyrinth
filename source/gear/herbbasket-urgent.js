@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Urgent Herb Basket",
 			user.addStagger("elementMatchAlly");
 		}
 		const randomHerb = rollableHerbs[adventure.generateRandomNumber(rollableHerbs.length, "battle")];
-		adventure.addResource(randomHerb, "item", "loot", pendingHerbCount);
+		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
 		if (isCrit) {
 			return `${user.getName(adventure.room.enemyIdMap)} gathers a double-batch of ${randomHerb}.`;
 		} else {

@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Cauldron Stir",
 		}
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
-			adventure.addResource(rolledPotion, "item", "loot", 1);
+			adventure.room.addResource(rolledPotion, "item", "loot", 1);
 			return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} sets a batch of ${rolledPotion} to simmer.`;
 		} else {
 			return dealDamage([target], user, pendingDamage, false, element, adventure);

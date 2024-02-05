@@ -25,7 +25,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 		let result;
 		const { type, count } = adventure.room.resources[name];
 		if (count > 0) { // Prevents double message if multiple players take near same time
-			adventure.addResource(`Picked: ${name}`, "history", "internal", count);
+			adventure.room.addResource(`Picked: ${name}`, "history", "internal", count);
 			switch (type) {
 				case "gold":
 					adventure.gainGold(count);
@@ -73,7 +73,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 			setAdventure(adventure);
 			interaction.reply(result).then(() => {
 				if (source === "treasure") {
-					adventure.room.resources.roomAction.count -= 1;
+					adventure.room.decrementResource("roomAction", 1);
 				}
 				interaction.message.edit(renderRoom(adventure, interaction.channel, interaction.message.embeds[0].description));
 			});
