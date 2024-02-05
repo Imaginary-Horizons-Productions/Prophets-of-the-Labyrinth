@@ -29,11 +29,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		if (adventure.room.resources["Repair Kit"].count > 0) {
-			delete adventure.room.resources["Repair Kit"];
+			adventure.room.decrementResource("Repair Kit", "all");
 			const gearIndex = adventure.generateRandomNumber(eligibleGear.length, "general");
 			const [gearToUpgrade, upgradePool] = eligibleGear[gearIndex];
 			const upgradeName = upgradePool[adventure.generateRandomNumber(upgradePool.length, "general")];
-			adventure.addResource(`${delver.name}: ${upgradeName}`, "history", "internal", 1);
+			adventure.room.addResource(`${delver.name}: ${upgradeName}`, "history", "internal", 1);
 			transformGear(delver, gearIndex, gearToUpgrade, upgradeName);
 			interaction.update(renderRoom(adventure, interaction.message.channel)).then(() => {
 				setAdventure(adventure);

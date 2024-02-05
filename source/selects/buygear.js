@@ -22,7 +22,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			if (adventure.gold >= cost) {
 				if (delver.gear.length < adventure.getGearCapacity()) {
 					adventure.gold -= cost;
-					adventure.room.resources[name].count--;
+					adventure.room.decrementResource(name, 1);
 					delver.gear.push(buildGearRecord(name, "max"));
 					interaction.message.edit(renderRoom(adventure, interaction.channel));
 					interaction.reply({ content: `${interaction.member.displayName} buys a ${name} for ${cost}g.` });

@@ -10,7 +10,7 @@ module.exports = new RoomTemplate("Gear Collector",
 		new ResourceTemplate("0.5*n", "internal", "roomAction")
 	],
 	function (roomEmbed, adventure) {
-		const isOutOfRoomActions = adventure.room.resources.roomAction.count < 1;
+		const isOutOfRoomActions = !adventure.room.hasResource("roomAction");
 		return {
 			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
 			components: [

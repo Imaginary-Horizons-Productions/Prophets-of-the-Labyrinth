@@ -11,10 +11,9 @@ module.exports = new RoomTemplate("Apple Pie Wishing Well",
 	],
 	function (roomEmbed, adventure) {
 		let wellLabel, wellOptions, isWellDisabled, stealEmoji, stealLabel, isStealDisabled;
-		const isCoreIntact = "Wishing Well Core" in adventure.room.resources;
-		if (isCoreIntact) {
+		if (adventure.room.hasResource("Wishing Well Core")) {
 			wellOptions = Object.entries(adventure.items).map(([itemName, count]) => ({ label: itemName, description: `Stock: ${count}`, value: itemName }));
-			isWellDisabled = wellOptions.length > 0;
+			isWellDisabled = wellOptions.length < 1;
 			if (!isWellDisabled) {
 				wellLabel = "Select an item to toss...";
 			} else {
@@ -28,7 +27,7 @@ module.exports = new RoomTemplate("Apple Pie Wishing Well",
 				isStealDisabled = true;
 			} else {
 				stealEmoji = "💰";
-				stealLabel = "Steal the core [+250g]";
+				stealLabel = "Steal the core [+150g]";
 				isStealDisabled = false;
 			}
 		} else {
@@ -36,7 +35,7 @@ module.exports = new RoomTemplate("Apple Pie Wishing Well",
 			wellOptions = EMPTY_SELECT_OPTION_SET;
 			isWellDisabled = true;
 			stealEmoji = "✔️";
-			stealLabel = "+250g";
+			stealLabel = "+150g";
 			isStealDisabled = true;
 		}
 		return {

@@ -12,9 +12,8 @@ module.exports = new RoomTemplate("Twin Pedestals",
 		new ResourceTemplate("1", "internal", "roomAction")
 	],
 	function (roomEmbed, adventure) {
-		const hasRoomActions = adventure.room.resources.roomAction.count > 0;
 		let duperLabel, duperOptions, isDuperDisabled, pillageLabel, pillageEmoji, isPillageDisabled;
-		if (hasRoomActions) {
+		if (adventure.room.hasResource("roomAction")) {
 			duperOptions = Object.keys(adventure.artifacts).map(artifact => {
 				const count = adventure.getArtifactCount(artifact);
 				return {

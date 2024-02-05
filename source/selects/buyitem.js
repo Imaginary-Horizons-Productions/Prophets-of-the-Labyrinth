@@ -26,7 +26,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		}
 
 		adventure.gold -= cost;
-		adventure.room.resources[name].count--;
+		adventure.room.decrementResource(name, 1);
 		adventure.gainItem(name, 1);
 		interaction.message.edit(renderRoom(adventure, interaction.channel));
 		interaction.reply({ content: `${interaction.member.displayName} buys a ${name} for ${cost}g.` });

@@ -21,7 +21,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		delete adventure.room.resources.gold;
 		// deal damage on 50% chance
 		if (adventure.generateRandomNumber(RN_TABLE_BASE, "general") > (RN_TABLE_BASE / 2)) {
-			adventure.addResource(`Burned: ${interaction.member.displayName}`, "history", "internal", 1);
+			adventure.room.addResource(`Burned: ${interaction.member.displayName}`, "history", "internal", 1);
 			payHP(delver, burnDamage, adventure);
 			interaction.update(renderRoom(adventure, interaction.channel, `A large pile of gold sits quietly in the middle of the room, in a burning pillar of flame.`));
 			if (adventure.lives < 1) {

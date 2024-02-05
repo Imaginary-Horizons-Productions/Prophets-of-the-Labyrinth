@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Toxic Cauldron Stir",
 		const addedPoison = addModifier(target, poison);
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
-			adventure.addResource(rolledPotion, "item", "loot", 1);
+			adventure.room.addResource(rolledPotion, "item", "loot", 1);
 			if (addedPoison) {
 				return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} was Poisoned. ${user.getName(adventure.room.enemyIdMap)} sets a batch of ${rolledPotion} to simmer.`;
 			} else {

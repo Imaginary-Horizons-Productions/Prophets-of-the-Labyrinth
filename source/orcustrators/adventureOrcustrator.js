@@ -196,7 +196,7 @@ function nextRoom(roomType, thread) {
 		switch (resourceType) {
 			case "challenge":
 				rollChallenges(Math.min(MAX_SELECT_OPTIONS, count), adventure).forEach(challengeName => {
-					adventure.addResource(challengeName, resourceType, visibility, 1);
+					adventure.room.addResource(challengeName, resourceType, visibility, 1);
 				})
 				break;
 			case "gear":
@@ -206,16 +206,16 @@ function nextRoom(roomType, thread) {
 						tier = rollGearTier(adventure);
 					}
 					const gearName = rollGear(tier, adventure);
-					adventure.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCostExpression ?? "0", getGearProperty(gearName, "cost", resourceType))));
+					adventure.room.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCostExpression ?? "0", getGearProperty(gearName, "cost", resourceType))));
 				}
 				break;
 			case "artifact":
 				const artifact = rollArtifact(adventure);
-				adventure.addResource(artifact, resourceType, visibility, count, uiGroup);
+				adventure.room.addResource(artifact, resourceType, visibility, count, uiGroup);
 				break;
 			case "item":
 				const item = rollItem(adventure);
-				adventure.addResource(item, resourceType, visibility, count, uiGroup, Math.ceil(parseExpression(unparsedCostExpression, getItem(item).cost)));
+				adventure.room.addResource(item, resourceType, visibility, count, uiGroup, Math.ceil(parseExpression(unparsedCostExpression, getItem(item).cost)));
 				break;
 			case "gold":
 				// Randomize loot gold
@@ -223,10 +223,10 @@ function nextRoom(roomType, thread) {
 				if (visibility !== "internal") {
 					goldCount = Math.ceil(count * (90 + adventure.generateRandomNumber(21, "general")) / 100);
 				}
-				adventure.addResource(resourceType, resourceType, visibility, goldCount, uiGroup);
+				adventure.room.addResource(resourceType, resourceType, visibility, goldCount, uiGroup);
 				break;
 			default:
-				adventure.addResource(resourceType, resourceType, visibility, count, uiGroup);
+				adventure.room.addResource(resourceType, resourceType, visibility, count, uiGroup);
 		}
 	}
 
@@ -633,14 +633,14 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 		if (adventure.generateRandomNumber(gearMax, "general") < gearThreshold) {
 			const tier = rollGearTier(adventure);
 			const droppedGear = rollGear(tier, adventure);
-			adventure.addResource(droppedGear, "gear", "loot", 1);
+			adventure.room.addResource(droppedGear, "gear", "loot", 1);
 		}
 
 		// Item drops
 		const itemThreshold = 1;
 		const itemMax = 8;
 		if (adventure.generateRandomNumber(itemMax, "general") < itemThreshold) {
-			adventure.addResource(rollItem(adventure), "item", "loot", 1);
+			adventure.room.addResource(rollItem(adventure), "item", "loot", 1);
 		}
 
 		return { payload: renderRoom(adventure, thread, lastRoundText), type: "endCombat" };

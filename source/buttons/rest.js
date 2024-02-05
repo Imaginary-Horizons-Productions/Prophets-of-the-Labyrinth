@@ -1,7 +1,7 @@
 const { ButtonWrapper } = require('../classes');
 const { setAdventure, getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { gainHealth } = require('../util/combatantUtil');
-const { editButtons, consumeRoomActions } = require('../util/messageComponentUtil');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "rest";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -14,21 +14,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.resources.roomAction.count < 1) {
+		const actionCost = 1;
+		if (!adventure.room.hasResource("roomAction", actionCost)) {
 			interaction.reply({ content: "No more actions can be taken in this room.", ephemeral: true });
 			return;
 		}
 
-		const { embeds, remainingActions } = consumeRoomActions(adventure, interaction.message.embeds, 1);
-		let components = interaction.message.components;
-		if (remainingActions < 1) {
-			components = editButtons(components, {
-				[interaction.customId]: { preventUse: true, label: "The party rested", emoji: "✔️" },
-				"viewchallenges": { preventUse: true, label: "The challenger is gone", emoji: "✖️" },
-				"trainingdummy": { preventUse: true, label: "The party didn't train", emoji: "✔️" }
-			});
-		}
-		interaction.update({ embeds, components }).then(() => {
+		adventure.room.decrementResource("roomAction", actionCost);
+		adventure.room.addResource(`Rested: ${delver.name}`, "history", "internal", 1);
+		interaction.update(renderRoom(adventure, interaction.channel)).then(() => {
 			interaction.followUp(gainHealth(delver, Math.ceil(delver.getMaxHP() * (parseInt(healPercent) / 100.0)), adventure));
 			setAdventure(adventure);
 		});

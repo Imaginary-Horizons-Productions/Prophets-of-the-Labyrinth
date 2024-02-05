@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Reinforced Herb Basket",
 		}
 		user.protection += protection;
 		const randomHerb = rollableHerbs[adventure.generateRandomNumber(rollableHerbs.length, "battle")];
-		adventure.addResource(randomHerb, "item", "loot", pendingHerbCount);
+		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
 		if (isCrit) {
 			return `${user.getName(adventure.room.enemyIdMap)} gains protection and gathers a double-batch of ${randomHerb}.`;
 		} else {

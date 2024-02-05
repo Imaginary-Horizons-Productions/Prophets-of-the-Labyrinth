@@ -4,7 +4,7 @@ const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "stealwishingwellcore";
 module.exports = new ButtonWrapper(mainId, 3000,
-	/** Disable wishing well, gain 250g */
+	/** Disable wishing well, gain gold */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
@@ -13,7 +13,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		adventure.gainGold(250);
+		adventure.gainGold(150);
 		delete adventure.room.resources["Wishing Well Core"];
 		setAdventure(adventure);
 		interaction.update(renderRoom(adventure, interaction.channel));
