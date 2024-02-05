@@ -11,19 +11,33 @@ module.exports = new RoomTemplate("Gear Collector",
 	],
 	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
-		const isOutOfRoomActions = !adventure.room.hasResource("roomAction");
-		return {
-			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
-			components: [
-				new ActionRowBuilder().addComponents(
-					new ButtonBuilder().setCustomId("viewgearcollector")
-						.setStyle(ButtonStyle.Primary)
-						.setLabel(isOutOfRoomActions ? "Gear traded" : "Sell gear")
-						.setEmoji(getNumberEmoji(1))
-						.setDisabled(isOutOfRoomActions)
-				),
-				generateRoutingRow(adventure)
-			]
-		};
+		if (adventure.room.hasResource("roomAction")) {
+			return {
+				embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+				components: [
+					new ActionRowBuilder().addComponents(
+						new ButtonBuilder().setCustomId("viewgearcollector")
+							.setStyle(ButtonStyle.Primary)
+							.setLabel("Sell gear")
+							.setEmoji(getNumberEmoji(1))
+					),
+					generateRoutingRow(adventure)
+				]
+			};
+		} else {
+			return {
+				embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+				components: [
+					new ActionRowBuilder().addComponents(
+						new ButtonBuilder().setCustomId("viewgearcollector")
+							.setStyle(ButtonStyle.Primary)
+							.setLabel("Gear traded")
+							.setEmoji(getNumberEmoji(1))
+							.setDisabled(true)
+					),
+					generateRoutingRow(adventure)
+				]
+			};
+		}
 	}
 );

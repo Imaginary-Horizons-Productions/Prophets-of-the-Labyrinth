@@ -287,7 +287,7 @@ class Room {
 		this.title = titleInput;
 		this.element = elementEnum;
 		this.history = initialHistoryMap;
-		if (Object.keys(enemyList).length > 0) {
+		if (enemyList && Object.keys(enemyList).length > 0) {
 			this.round = -1;
 			this.moves = [];
 			this.enemies = [];

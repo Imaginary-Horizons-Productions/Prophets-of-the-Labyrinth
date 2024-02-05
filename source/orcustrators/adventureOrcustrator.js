@@ -47,6 +47,8 @@ async function loadAdventures() {
 				adventure.delvers = castDelvers;
 
 				if (adventure.room) {
+					adventure.room = Object.assign(new Room(), adventure.room);
+
 					// Cast enemies into Enemy class
 					if (adventure.room.enemies) {
 						const castEnemies = [];
