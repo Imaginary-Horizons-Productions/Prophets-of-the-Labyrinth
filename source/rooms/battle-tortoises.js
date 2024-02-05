@@ -8,5 +8,6 @@ module.exports = new RoomTemplate("Tortoise Fight",
 		new ResourceTemplate("1", "internal", "levelsGained"),
 		new ResourceTemplate("80", "loot", "gold")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
 ).addEnemy("Geode Tortoise", "2");

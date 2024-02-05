@@ -9,6 +9,7 @@ module.exports = new RoomTemplate("Free Gold?",
 	[
 		new ResourceTemplate("300", "internal", "gold")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		let reward = 300;
 		let burnDamage = 100;

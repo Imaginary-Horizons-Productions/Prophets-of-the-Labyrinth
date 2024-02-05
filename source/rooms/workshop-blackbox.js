@@ -9,6 +9,7 @@ module.exports = new RoomTemplate("Workshop with Black Box",
 		new ResourceTemplate("n", "internal", "roomAction"),
 		new ResourceTemplate("1", "internal", "gear").setTier("Rare").setCostExpression("0")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		return {
 			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],

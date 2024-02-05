@@ -7,6 +7,7 @@ module.exports = new RoomTemplate("The Hexagon: Bee Mode",
 	[
 		new ResourceTemplate("5", "internal", "levelsGained")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
 ).addEnemy("Mecha Queen: Bee Mode", "1")
 	.addEnemy("Mechabee Drone", "n");

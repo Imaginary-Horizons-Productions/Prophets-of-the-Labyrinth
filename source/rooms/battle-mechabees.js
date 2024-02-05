@@ -8,6 +8,7 @@ module.exports = new RoomTemplate("Mechabee Fight",
 		new ResourceTemplate("1", "internal", "levelsGained"),
 		new ResourceTemplate("25*n", "loot", "gold")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
 ).addEnemy("Mechabee Drone", "n*0.25")
 	.addEnemy("Mechabee Soldier", "1")

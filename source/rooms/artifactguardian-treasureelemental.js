@@ -8,5 +8,6 @@ module.exports = new RoomTemplate("A windfall of treasure!",
 		new ResourceTemplate("3", "internal", "levelsGained"),
 		new ResourceTemplate("1", "loot", "artifact")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder(["greed"])
 ).addEnemy("Treasure Elemental", "1");

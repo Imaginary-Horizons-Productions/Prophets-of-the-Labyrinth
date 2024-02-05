@@ -14,6 +14,7 @@ module.exports = new RoomTemplate("Gear Merchant",
 		new ResourceTemplate("n", "always", "gear").setTier("?").setUIGroup(uiGroups[0]),
 		new ResourceTemplate("1", "always", "gear").setTier("Rare").setUIGroup(uiGroups[1])
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		const mixedGearOptions = [];
 		const rareGearOptions = [];

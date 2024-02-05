@@ -6,6 +6,7 @@ module.exports = new RoomTemplate("name",
 	[
 		new ResourceTemplate("countExpression", "visibility", "type")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		return {
 			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],

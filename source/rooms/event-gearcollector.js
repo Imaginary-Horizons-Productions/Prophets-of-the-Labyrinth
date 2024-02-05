@@ -9,6 +9,7 @@ module.exports = new RoomTemplate("Gear Collector",
 	[
 		new ResourceTemplate("0.5*n", "internal", "roomAction")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		const isOutOfRoomActions = !adventure.room.hasResource("roomAction");
 		return {

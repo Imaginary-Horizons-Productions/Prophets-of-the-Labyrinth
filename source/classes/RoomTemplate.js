@@ -8,19 +8,22 @@ class RoomTemplate {
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{adventureWeakness}"} elementEnum
 	 * @param {string} descriptionInput
 	 * @param {ResourceTemplate[]} resourceArray
+	 * @param {(adventure: Adventure) => Record<string, string[]>} buildHistoryFunction
 	 * @param {(roomEmbed: EmbedBuilder, adventure: Adventure) => {embeds: EmbedBuilder[], components: ActionRowBuilder[]}} buildRoomFunction
 	 */
-	constructor(titleText, elementEnum, descriptionInput, resourceArray, buildRoomFunction) {
+	constructor(titleText, elementEnum, descriptionInput, resourceArray, buildHistoryFunction, buildRoomFunction) {
 		if (!titleText) throw new BuildError("Falsy titleText");
 		if (!elementEnum) throw new BuildError("Falsy elementEnum");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
 		if (!resourceArray) throw new BuildError("Falsy resourceArray");
+		if (!buildHistoryFunction) throw new BuildError("Falsy buildHistoryFunction");
 		if (!buildRoomFunction) throw new BuildError("Falsy buildRoomFunction");
 
 		this.title = titleText;
 		this.element = elementEnum;
 		this.description = descriptionInput;
 		this.resourceList = resourceArray;
+		this.buildHistory = buildHistoryFunction;
 		this.buildRoom = buildRoomFunction;
 	}
 	/** @type {Record<string, string>} */

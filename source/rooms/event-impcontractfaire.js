@@ -6,6 +6,7 @@ module.exports = new RoomTemplate("Imp Contract Faire",
 	"@{adventureWeakness}",
 	"The next room contains several stalls with imps hawking suspicious contracts. One imp offers a lucrative opportunity (*given you allow your element to be changed to @{roomElement}). Another offers a sketcy procedure for improving party health.",
 	[],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		return {
 			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],

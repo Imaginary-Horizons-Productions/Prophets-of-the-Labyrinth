@@ -280,11 +280,13 @@ class Room {
 	/** This read-write payload class describes a room in an adventure
 	 * @param {string} titleInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementEnum
+	 * @param {Record<string, string[]>} initialHistoryMap
 	 * @param {{[enemyName: string]: number}} enemyList
 	 */
-	constructor(titleInput, elementEnum, enemyList) {
+	constructor(titleInput, elementEnum, initialHistoryMap, enemyList) {
 		this.title = titleInput;
 		this.element = elementEnum;
+		this.history = initialHistoryMap;
 		if (Object.keys(enemyList).length > 0) {
 			this.round = -1;
 			this.moves = [];
@@ -302,6 +304,8 @@ class Room {
 	enemyIdMap = null;
 	/** @type {Record<string, {name: string, type: "gear" | "artifact" | "gold" | "scouting" | "roomAction" | "challenge" | "item" | "history", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
 	resources = {};
+	/** @type {Record<string, string[]>} */
+	history = {};
 
 	/** checks if the given resource has the given count in the room
 	 * @param {string} name

@@ -10,6 +10,7 @@ module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 		new ResourceTemplate("n", "internal", "roomAction"),
 		new ResourceTemplate("2", "internal", "challenge")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		const healPercent = Math.trunc(30 * (1 - (adventure.getChallengeIntensity("Restless") / 100)));
 		let restEmoji, restLabel, challengeEmoji, challengeLabel;

@@ -8,6 +8,7 @@ module.exports = new RoomTemplate("Frog Ranch",
 		new ResourceTemplate("1", "internal", "levelsGained"),
 		new ResourceTemplate("50*n", "loot", "gold")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
 ).addEnemy("Mechabee Soldier", "1")
 	.addEnemy("Fire-Arrow Frog", "0.5*n")

@@ -11,6 +11,7 @@ module.exports = new RoomTemplate("Twin Pedestals",
 	[
 		new ResourceTemplate("1", "internal", "roomAction")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		let duperLabel, duperOptions, isDuperDisabled, pillageLabel, pillageEmoji, isPillageDisabled;
 		if (adventure.room.hasResource("roomAction")) {

@@ -7,5 +7,6 @@ module.exports = new RoomTemplate("Confronting the Top Celestial Knight",
 	[
 		new ResourceTemplate("5", "internal", "levelsGained")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder(["appease"])
 ).addEnemy("Starry Knight", "1");
