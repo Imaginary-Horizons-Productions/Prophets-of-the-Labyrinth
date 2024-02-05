@@ -21,7 +21,7 @@ module.exports = new RoomTemplate("Treasure! Gold or Items?",
 		};
 	},
 	function (roomEmbed, adventure) {
-		if (adventure.room.resources.roomAction.count > 0) {
+		if (adventure.room.hasResource("roomAction")) {
 			const options = [];
 			for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 				if (visibility === "always" && count > 0) {

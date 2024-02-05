@@ -2,7 +2,7 @@ const { SelectWrapper } = require('../classes');
 const { EMPTY_MESSAGE_PAYLOAD } = require('../constants');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { updateRoomHeader } = require('../util/embedUtil');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "sellgear";
 module.exports = new SelectWrapper(mainId, 3000,
@@ -19,12 +19,14 @@ module.exports = new SelectWrapper(mainId, 3000,
 		const gearName = delver.gear[saleIndex].name;
 		let price = pricePercent / 100 * getGearProperty(gearName, "cost");
 		const maxDurability = getGearProperty(gearName, "maxDurability");
-		price *= (delver.gear[saleIndex].durability / maxDurability);
+		if (maxDurability > 0) {
+			price *= (delver.gear[saleIndex].durability / maxDurability);
+		}
 		delver.gear.splice(saleIndex, 1);
 		adventure.gainGold(price);
 		setAdventure(adventure);
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-			updateRoomHeader(adventure, roomMessage);
+			roomMessage.edit(renderRoom(adventure, interaction.channel));
 			interaction.update(EMPTY_MESSAGE_PAYLOAD);
 			interaction.channel.send(`**${interaction.member.displayName}** sells their ${gearName} for ${price}g.`);
 		})

@@ -17,12 +17,19 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const pricePercent = 50;
 		const saleOptions = delver.gear.map((gear, index) => {
-			const gearPrice = getGearProperty(gear.name, "cost") * pricePercent / 100;
 			const maxDurability = getGearProperty(gear.name, "maxDurability");
-			return {
-				label: `${gear.name} (${gear.durability}/${maxDurability})`,
-				description: `${gearPrice}g`,
-				value: index.toString()
+			if (maxDurability > 0) {
+				return {
+					label: `${gear.name} (${gear.durability}/${maxDurability})`,
+					description: `${getGearProperty(gear.name, "cost") * pricePercent / 100 * gear.durability / maxDurability}g`,
+					value: index.toString()
+				};
+			} else {
+				return {
+					label: `${gear.name}`,
+					description: `${getGearProperty(gear.name, "cost") * pricePercent / 100}g`,
+					value: index.toString()
+				};
 			}
 		});
 		if (saleOptions.length > 0) {
