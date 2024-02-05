@@ -15,9 +15,13 @@ module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 		new ResourceTemplate("250*n", "always", "gold").setCostExpression("0"),
 		new ResourceTemplate("2", "always", "gear").setTier("?").setCostExpression("0")
 	],
-	function (adventure) { return {}; },
+	function (adventure) {
+		return {
+			"Treasure picked": []
+		};
+	},
 	function (roomEmbed, adventure) {
-		if (adventure.room.resources.roomAction.count > 0) {
+		if (adventure.room.hasResource("roomAction")) {
 			const options = [];
 			for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 				if (visibility === "always" && count > 0) {
@@ -49,19 +53,12 @@ module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 				]
 			};
 		} else {
-			const pickedTreasures = [];
-			for (const resource of Object.values(adventure.room.resources)) {
-				const [picked, resourceName] = resource.name.split(": ");
-				if (picked === "Picked") {
-					pickedTreasures.push(resourceName);
-				}
-			}
 			return {
 				embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
 				components: [
 					new ActionRowBuilder().addComponents(
 						new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}treasure`)
-							.setPlaceholder(`Picked: ${listifyEN(pickedTreasures, false)}`)
+							.setPlaceholder(`Picked: ${listifyEN(adventure.room.history["Treasure picked"], false)}`)
 							.setOptions(EMPTY_SELECT_OPTION_SET)
 							.setDisabled(true)
 					),

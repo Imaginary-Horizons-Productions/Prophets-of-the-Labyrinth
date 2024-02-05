@@ -16,7 +16,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 			return;
 		}
 
-		if (source === "treasure" && adventure.room.resources.roomAction.count < 1) {
+		if (source === "treasure" && !adventure.room.hasResource("roomAction", 1)) {
 			interaction.reply({ content: "There aren't any more treasure picks to use.", ephemeral: true });
 			return;
 		}
@@ -25,18 +25,17 @@ module.exports = new SelectWrapper(mainId, 2000,
 		let result;
 		const { type, count } = adventure.room.resources[name];
 		if (count > 0) { // Prevents double message if multiple players take near same time
-			adventure.room.addResource(`Picked: ${name}`, "history", "internal", count);
 			switch (type) {
 				case "gold":
 					adventure.gainGold(count);
-					adventure.room.resources[name].count = 0;
+					delete adventure.room.resources[name];
 					result = {
 						content: `The party acquires ${count} gold.`
 					}
 					break;
 				case "artifact":
 					adventure.gainArtifact(name, count);
-					adventure.room.resources[name].count = 0;
+					delete adventure.room.resources[name];
 					result = {
 						content: `The party acquires ${count} ${name}.`
 					}
@@ -44,7 +43,11 @@ module.exports = new SelectWrapper(mainId, 2000,
 				case "gear":
 					if (delver.gear.length < adventure.getGearCapacity()) {
 						delver.gear.push(buildGearRecord(name, "max"));
-						adventure.room.resources[name].count = Math.max(count - 1, 0);
+						if (adventure.room.resources[name].count > 1) {
+							adventure.room.resources[name].count--;
+						} else {
+							delete adventure.room.resources[name];
+						}
 						result = {
 							content: `${interaction.member.displayName} takes a ${name}. There are ${count - 1} remaining.`
 						}
@@ -62,7 +65,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 					break;
 				case "item":
 					adventure.gainItem(name, count);
-					adventure.room.resources[name].count = 0;
+					delete adventure.room.resources[name];
 					result = {
 						content: `The party acquires ${count} ${name}.`
 					}
@@ -74,6 +77,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 			interaction.reply(result).then(() => {
 				if (source === "treasure") {
 					adventure.room.decrementResource("roomAction", 1);
+					adventure.room.history["Treasure picked"].push(name);
 				}
 				interaction.message.edit(renderRoom(adventure, interaction.channel, interaction.message.embeds[0].description));
 			});
