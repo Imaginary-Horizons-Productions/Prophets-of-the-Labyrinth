@@ -16,14 +16,14 @@ module.exports = new RoomTemplate("The Score Beggar",
 			tradeButtons.addComponents(
 				new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}score`)
 					.setStyle(ButtonStyle.Primary)
-					.setEmoji("❤️")
+					.setEmoji("⚕️")
 					.setLabel("Take the flask [-50 score, +1 life]")
 			);
 			if ("Placebo" in adventure.items) {
 				tradeButtons.addComponents(
 					new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}placebo`)
 						.setStyle(ButtonStyle.Primary)
-						.setEmoji("❤️")
+						.setEmoji("⚕️")
 						.setLabel("Trade a Placebo [-1 Placebo, +1 life]")
 				)
 			}

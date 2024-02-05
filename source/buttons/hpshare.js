@@ -1,8 +1,7 @@
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, completeAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { gainHealth, payHP } = require('../util/combatantUtil');
-const { updateRoomHeader } = require('../util/embedUtil');
-const { editButtons } = require('../util/messageComponentUtil');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "hpshare";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -22,6 +21,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		adventure.gold -= goldCost;
+		adventure.room.history["HP Donor"].push(delver.name);
 		const hpLost = Math.min(100, delver.hp);
 		const hpGained = hpLost;
 		const resultText = `${payHP(delver, hpLost, adventure)} Everyone else gains ${hpGained} hp.`;
@@ -30,13 +30,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				gainHealth(delver, hpGained, adventure);
 			}
 		})
-		interaction.update({ components: editButtons(interaction.message.components, { [interaction.customId]: { preventUse: true, label: `${interaction.member.displayName} shared HP.`, emoji: "✔️" } }) });
+		setAdventure(adventure);
 		if (adventure.lives < 1) {
-			interaction.channel.send(completeAdventure(adventure, interaction.channel, "defeat", resultText));
+			interaction.update(completeAdventure(adventure, interaction.channel, "defeat", resultText));
 		} else {
-			updateRoomHeader(adventure, interaction.message);
+			interaction.update(renderRoom(adventure, interaction.channel));
 			interaction.channel.send(resultText);
-			setAdventure(adventure);
 		}
 	}
 );
