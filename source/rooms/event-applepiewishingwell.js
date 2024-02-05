@@ -9,6 +9,7 @@ module.exports = new RoomTemplate("Apple Pie Wishing Well",
 	[
 		new ResourceTemplate("1", "internal", "Wishing Well Core")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		let wellLabel, wellOptions, isWellDisabled, stealEmoji, stealLabel, isStealDisabled;
 		if (adventure.room.hasResource("Wishing Well Core")) {

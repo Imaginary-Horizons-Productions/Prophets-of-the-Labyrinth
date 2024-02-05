@@ -15,6 +15,7 @@ module.exports = new RoomTemplate("Item Merchant",
 		new ResourceTemplate("n", "always", "gear").setTier("?").setUIGroup(uiGroups[0]),
 		new ResourceTemplate("n", "always", "item").setUIGroup(uiGroups[1])
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		const gearOptions = [];
 		const itemOptions = [];

@@ -9,5 +9,6 @@ module.exports = new RoomTemplate("A Slimy Throneroom",
 		new ResourceTemplate("1", "loot", "artifact"),
 		new ResourceTemplate("50*n", "loot", "gold")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
 ).addEnemy("Royal Slime", "0.5*n");

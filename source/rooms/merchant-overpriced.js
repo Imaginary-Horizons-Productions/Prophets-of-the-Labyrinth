@@ -14,6 +14,7 @@ module.exports = new RoomTemplate("Overpriced Merchant",
 		new ResourceTemplate("2*n", "always", "gear").setTier("?").setCostExpression("1.5*n").setUIGroup(uiGroups[0]),
 		new ResourceTemplate("2", "always", "gear").setTier("Rare").setCostExpression("1.5*n").setUIGroup(uiGroups[1])
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		const mixedGearOptions = [];
 		const rareGearOptions = [];

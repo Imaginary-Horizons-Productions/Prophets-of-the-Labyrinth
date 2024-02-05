@@ -11,6 +11,7 @@ module.exports = new RoomTemplate("Gear Buying Merchant",
 	[
 		new ResourceTemplate("n", "always", "gear").setTier("?")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		const mixedGearOptions = [];
 

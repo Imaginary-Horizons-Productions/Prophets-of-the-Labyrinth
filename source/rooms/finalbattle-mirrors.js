@@ -7,5 +7,6 @@ module.exports = new RoomTemplate("Hall of Mirrors",
 	[
 		new ResourceTemplate("5", "internal", "levelsGained")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
 ).addEnemy("@{clone}", "n");

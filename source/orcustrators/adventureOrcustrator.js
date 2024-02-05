@@ -182,7 +182,7 @@ function nextRoom(roomType, thread) {
 
 	// Generate current room
 	const roomTemplate = rollRoom(roomType, adventure);
-	adventure.room = new Room(roomTemplate.title, roomTemplate.element, roomTemplate.enemyList);
+	adventure.room = new Room(roomTemplate.title, roomTemplate.element, roomTemplate.buildHistory(adventure), roomTemplate.enemyList);
 	if (adventure.room.element === "@{adventure}") {
 		adventure.room.element = adventure.element;
 	} else if (adventure.room.element === "@{adventureWeakness}") {

@@ -8,5 +8,6 @@ module.exports = new RoomTemplate("Wild Fire-Arrow Frogs",
 		new ResourceTemplate("1", "internal", "levelsGained"),
 		new ResourceTemplate("25*n", "loot", "gold")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
 ).addEnemy("Fire-Arrow Frog", "n");

@@ -8,6 +8,7 @@ module.exports = new RoomTemplate("Repair Kit, just hanging out",
 	[
 		new ResourceTemplate("1", "internal", "Repair Kit")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		let saveEmoji, saveLabel, tinkerEmoji, tinkerLabel;
 		const isRepairKitRemaining = "Repair Kit" in adventure.room.resources;

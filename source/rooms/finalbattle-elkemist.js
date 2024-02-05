@@ -7,5 +7,6 @@ module.exports = new RoomTemplate("A Northern Laboratory",
 	[
 		new ResourceTemplate("5", "internal", "levelsGained")
 	],
+	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
 ).addEnemy("Elkemist", "1");

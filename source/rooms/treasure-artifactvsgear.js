@@ -15,6 +15,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 		new ResourceTemplate("1", "always", "artifact").setCostExpression("0"),
 		new ResourceTemplate("2", "always", "gear").setTier("?").setCostExpression("0")
 	],
+	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
 		if (adventure.room.resources.roomAction.count > 0) {
 			const options = [];
