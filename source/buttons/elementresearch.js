@@ -1,10 +1,11 @@
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { updateRoomHeader } = require('../util/embedUtil');
+const { getEmoji } = require('../util/elementUtil');
+const { renderRoom } = require('../util/embedUtil');
 
-const mainId = "elementswap";
+const mainId = "elementresearch";
 module.exports = new ButtonWrapper(mainId, 3000,
-	/** +200g, switch user's element to the room's element */
+	/** gain gold, switch user's element to the room's element */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
@@ -20,9 +21,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		adventure.gainGold(200);
 		delver.element = adventure.room.element;
-		updateRoomHeader(adventure, interaction.message);
-		interaction.reply(`**${interaction.member.displayName}** signs the contract and becomes ${adventure.room.element} element.`).then(() => {
-			setAdventure(adventure);
-		});
+		setAdventure(adventure);
+		interaction.update(renderRoom(adventure, interaction.channel));
+		interaction.channel.send(`**${interaction.member.displayName}** signs the contract and becomes ${getEmoji(adventure.room.element)} ${adventure.room.element} element.`);
 	}
 );

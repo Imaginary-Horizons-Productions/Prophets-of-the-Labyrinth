@@ -19,3 +19,6 @@ Here is a list of reserved emoji and their meanings:
 * 🔎 Inspect Self
 * ⚔ Ready a Move
 * 🧪 Read an Item
+* ⚕️ Lives
+* ❤️ HP
+* 💰 Gold
