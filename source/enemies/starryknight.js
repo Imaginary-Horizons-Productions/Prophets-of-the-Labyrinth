@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 ).addAction({
 	name: "Mock the Accursed",
 	element: "Light",
-	description: `Inflict ${getEmoji("Light")} damage to a single foe; increases with foe's debuffs and unfinished challenges`,
+	description: `Inflict ${getEmoji("Light")} damage to a single foe; increases with foe's debuffs, cursed gear, and unfinished challenges`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		const unfinishedChallenges = [];
@@ -33,7 +33,15 @@ module.exports = new EnemyTemplate("Starry Knight",
 				return count;
 			}
 		}, 0);
-		let pendingDamage = 100 + (50 * (unfinishedChallenges.length + targetDebuffCount));
+		let targetCursedGearCount = 0;
+		if ("gear" in target) {
+			for (const gearPiece of target.gear) {
+				if (gearPiece.name.startsWith("Cursed")) {
+					targetCursedGearCount++;
+				}
+			}
+		}
+		let pendingDamage = 100 + (50 * (unfinishedChallenges.length + targetDebuffCount + targetCursedGearCount));
 		target.addStagger("elementMatchFoe");
 		if (isCrit) {
 			pendingDamage *= 2;
