@@ -2,7 +2,7 @@ const { SelectWrapper } = require('../classes');
 const { EMPTY_MESSAGE_PAYLOAD } = require('../constants');
 const { buildGearRecord } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { editButtons } = require('../util/messageComponentUtil');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "blackboxgear";
 module.exports = new SelectWrapper(mainId, 3000,
@@ -22,14 +22,12 @@ module.exports = new SelectWrapper(mainId, 3000,
 		}
 
 		const gearIndex = interaction.values[0];
-		blackBoxResource.count--;
+		delete adventure.room.resources[blackBoxResource.name];
 		const tradedGearName = delver.gear[gearIndex].name;
+		adventure.room.history["Traded for box"].push(tradedGearName);
 		delver.gear.splice(gearIndex, 1, buildGearRecord(blackBoxResource.name, "max"));
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-			const updatedRows = editButtons(roomMessage.components, {
-				"viewblackbox": { preventUse: true, label: `${tradedGearName} traded`, emoji: "✔️" }
-			})
-			roomMessage.edit({ components: updatedRows });
+			roomMessage.edit(renderRoom(adventure, interaction.channel));
 		})
 		setAdventure(adventure);
 		interaction.update(EMPTY_MESSAGE_PAYLOAD);

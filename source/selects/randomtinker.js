@@ -3,7 +3,7 @@ const { SAFE_DELIMITER } = require('../constants');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { transformGear } = require('../util/delverUtil');
-const { editButtons, consumeRoomActions } = require('../util/messageComponentUtil');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "randomtinker";
 module.exports = new SelectWrapper(mainId, 3000,
@@ -21,23 +21,13 @@ module.exports = new SelectWrapper(mainId, 3000,
 		const sidegrades = getGearProperty(gearName, "sidegrades");
 		const sidegradeName = sidegrades[adventure.generateRandomNumber(sidegrades.length, "general")];
 		transformGear(delver, index, gearName, sidegradeName);
+		adventure.room.history.Tinkerers.push(delver.name);
+		adventure.room.decrementResource("roomAction", 1);
+		interaction.update(renderRoom(adventure, interaction.channel));
+		interaction.channel.send(`**${interaction.member.displayName}**'s *${gearName}* has been tinkered to **${sidegradeName}**!`);
+		setAdventure(adventure);
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-			const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);
-			let components = roomMessage.components;
-			if (remainingActions < 1) {
-				components = editButtons(components, {
-					"gearcapup": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-					"tinker": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-					"upgrade": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-					"viewblackbox": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-					"viewrepairs": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" }
-				})
-			}
-			return roomMessage.edit({ embeds, components });
-		}).then(() => {
-			interaction.update({ components: [] });
-			interaction.channel.send(`**${interaction.member.displayName}**'s *${gearName}* has been tinkered to **${sidegradeName}**!`);
-			setAdventure(adventure);
-		})
+			return roomMessage.edit(renderRoom(adventure, interaction.channel));
+		});
 	}
 );

@@ -23,7 +23,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const options = [];
 		delver.gear.forEach((gear, index) => {
-			const sidegrades = getGearProperty(gear.name, "sidegrades").map(sidegrade => sidegrade.replace(gear.name, "").trim());
+			const sidegrades = getGearProperty(gear.name, "sidegrades");
 			if (sidegrades.length > 0) {
 				options.push({
 					label: gear.name,

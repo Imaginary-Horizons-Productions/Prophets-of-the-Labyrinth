@@ -1,7 +1,7 @@
 const { SelectWrapper } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, EMPTY_MESSAGE_PAYLOAD } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { editButtons, consumeRoomActions } = require('../util/messageComponentUtil');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "repair";
 module.exports = new SelectWrapper(mainId, 3000,
@@ -13,26 +13,16 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return;
 		}
 
-		const user = adventure.delvers.find(delver => delver.id === interaction.user.id);
+		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 		const [gearName, index, value] = interaction.values[0].split(SAFE_DELIMITER);
-		user.gear[Number(index)].durability += Number(value);
+		delver.gear[Number(index)].durability += Number(value);
+		adventure.room.history.Repairers.push(delver.name);
+		adventure.room.decrementResource("roomAction", 1);
+		setAdventure(adventure);
+		interaction.update(EMPTY_MESSAGE_PAYLOAD);
+		interaction.channel.send({ content: `**${interaction.member.displayName}** repaired ${value} durability on their ${gearName}.` });
 		interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-			const { embeds, remainingActions } = consumeRoomActions(adventure, roomMessage.embeds, 1);
-			let components = roomMessage.components;
-			if (remainingActions < 1) {
-				components = editButtons(components, {
-					"gearcapup": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-					"tinker": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-					"upgrade": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-					"viewblackbox": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-					"viewrepairs": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" }
-				})
-			}
-			return roomMessage.edit({ embeds, components });
-		}).then(() => {
-			interaction.update({ components: [] });
-			interaction.channel.send({ content: `**${interaction.member.displayName}** repaired ${value} durability on their ${gearName}.` });
-			setAdventure(adventure);
+			return roomMessage.edit(renderRoom(adventure, interaction.channel));
 		})
 	}
 );

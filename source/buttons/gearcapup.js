@@ -1,7 +1,7 @@
 const { ButtonWrapper } = require('../classes');
 const { MAX_MESSAGE_ACTION_ROWS } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { consumeRoomActions, editButtons } = require('../util/messageComponentUtil');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "gearcapup";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -19,25 +19,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		adventure.gearCapacity++;
-		const { embeds, remainingActions } = consumeRoomActions(adventure, interaction.message.embeds, actionCost);
-		let components = interaction.message.components;
-		if (remainingActions < 1) {
-			components = editButtons(components, {
-				[mainId]: { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-				"tinker": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-				"upgrade": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-				"viewblackbox": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" },
-				"viewrepairs": { preventUse: true, label: "Supplies exhausted", emoji: "✔️" }
-			});
-		} else if (adventure.gearCapacity >= MAX_MESSAGE_ACTION_ROWS) {
-			adventure.gearCapacity = MAX_MESSAGE_ACTION_ROWS;
-			components = editButtons(components, {
-				[mainId]: { preventUse: true, label: "Max Gear Capacity", emoji: "✔️" }
-			});
+		if (adventure.gearCapacity < MAX_MESSAGE_ACTION_ROWS) {
+			adventure.gearCapacity++;
+			adventure.room.decrementResource("roomAction", actionCost);
+			adventure.room.history["Cap boosters"].push(interaction.member.displayName);
+			setAdventure(adventure);
+			interaction.channel.send(`The party's gear capacity has been boosted to ${adventure.gearCapacity}.`);
 		}
-		setAdventure(adventure);
-		interaction.update({ embeds, components });
-		interaction.channel.send(`The party's gear capacity has been boosted to ${adventure.gearCapacity}.`);
+		interaction.update(renderRoom(adventure, interaction.channel));
 	}
 );

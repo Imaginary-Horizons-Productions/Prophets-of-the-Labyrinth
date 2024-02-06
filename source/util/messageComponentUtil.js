@@ -9,59 +9,6 @@ const { buildGearDescription } = require("../gear/_gearDictionary");
 const { ordinalSuffixEN, trimForSelectOptionDescription, listifyEN, getNumberEmoji } = require("./textUtil");
 const { levelUp } = require("./delverUtil");
 
-/** Modify the buttons whose `customId`s are keys in `edits` from among `components` based on `preventUse`, `label`, and `emoji` then return all components
- * @param {MessageActionRow[]} components
- * @param {{[customId: string]: {preventUse: boolean; label: string; emoji?: string}}} edits
- * @returns {MessageActionRow[]} the components of the message with the button edited
- */
-function editButtons(components, edits) {
-	return components.map(row => {
-		return new ActionRowBuilder().addComponents(row.components.map(({ data: component }) => {
-			const customId = component.custom_id;
-			switch (component.type) {
-				case ComponentType.Button:
-					const editedButton = new ButtonBuilder(component);
-					if (customId in edits) {
-						const { preventUse, label, emoji } = edits[customId];
-						editedButton.setDisabled(preventUse)
-							.setLabel(label);
-						if (emoji) {
-							editedButton.setEmoji(emoji);
-						}
-					};
-					return editedButton;
-				case ComponentType.StringSelect:
-					return new StringSelectMenuBuilder(component);
-				default:
-					throw new Error(`Disabling unregistered component from editButtons: ${component.type}`);
-			}
-		}));
-	})
-}
-
-/** Update the room action resource's count and edit the room embeds to show remaining room action
- * @param {Adventure} adventure
- * @param {MessageEmbed[]} embeds
- * @param {number} actionsConsumed
- * @returns {{embeds: MessageEmbed[], remainingActions: number}}
- */
-function consumeRoomActions(adventure, embeds, actionsConsumed) {
-	adventure.room.decrementResource("roomAction", actionsConsumed);
-	const remainingActions = adventure.room.resources.roomAction.count;
-	return {
-		embeds: embeds.map(({ data: embed }) => {
-			const updatedEmbed = new EmbedBuilder(embed);
-			const roomActionsFieldIndex = embed.fields.findIndex(field => field.name === "Room Actions");
-			if (roomActionsFieldIndex !== -1) {
-				return updatedEmbed.spliceFields(roomActionsFieldIndex, 1, { name: "Room Actions", value: `${getNumberEmoji(remainingActions)} remaining` });
-			} else {
-				return updatedEmbed;
-			}
-		}),
-		remainingActions
-	}
-}
-
 /** Remove components (buttons and selects) from a given message
  * @param {string} messageId - the id of the message to remove components from
  * @param {MessageManager} messageManager - the MessageManager for the channel the message is in
@@ -248,9 +195,9 @@ function generateMerchantScoutingRow(adventure) {
 	const guardScoutingCost = adventure.calculateScoutingCost("Artifact Guardian");
 	return new ActionRowBuilder().addComponents(
 		new ButtonBuilder().setCustomId(`buyscouting${SAFE_DELIMITER}Final Battle`)
-			.setLabel(`${adventure.scouting.bosses.length > 0 ? `Final Battle: ${adventure.bosses[adventure.scouting.bossesEncountered]}` : `${bossScoutingCost}g: Scout the Final Battle`}`)
+			.setLabel(`${adventure.scouting.bosses > 0 ? `Final Battle: ${adventure.bosses[adventure.scouting.bossesEncountered]}` : `${bossScoutingCost}g: Scout the Final Battle`}`)
 			.setStyle(ButtonStyle.Secondary)
-			.setDisabled(adventure.scouting.bosses.length > 0 || adventure.gold < bossScoutingCost),
+			.setDisabled(adventure.scouting.bosses > 0 || adventure.gold < bossScoutingCost),
 		new ButtonBuilder().setCustomId(`buyscouting${SAFE_DELIMITER}Artifact Guardian`)
 			.setLabel(`${guardScoutingCost}g: Scout the ${ordinalSuffixEN(adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians + 1)} Artifact Guardian`)
 			.setStyle(ButtonStyle.Secondary)
@@ -259,8 +206,6 @@ function generateMerchantScoutingRow(adventure) {
 }
 
 module.exports = {
-	editButtons,
-	consumeRoomActions,
 	clearComponents,
 	generateCombatRoomBuilder,
 	generateLootRow,

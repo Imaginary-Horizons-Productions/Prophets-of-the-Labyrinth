@@ -1,8 +1,7 @@
 const { ButtonWrapper } = require('../classes');
 const { prerollBoss } = require('../labyrinths/_labyrinthDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { updateRoomHeader } = require('../util/embedUtil');
-const { editButtons } = require('../util/messageComponentUtil');
+const { renderRoom } = require('../util/embedUtil');
 const { ordinalSuffixEN } = require('../util/textUtil');
 
 const mainId = "buyscouting";
@@ -20,18 +19,16 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		if (type === "Final Battle") {
 			adventure.scouting.bosses++;
 			adventure.updateArtifactStat("Amethyst Spyglass", "Gold Saved", 150 - cost);
-			interaction.message.edit({ components: editButtons(interaction.message.components, { [interaction.customId]: { preventUse: true, label: `Final Battle: ${adventure.bosses[adventure.scouting.bossesEncountered]}`, emoji: "✔️" } }) });
 			interaction.reply(`The merchant reveals that final battle for this adventure will be **${adventure.bosses[adventure.scouting.bossesEncountered]}** (you can review this with \`/party-stats\`).`);
 		} else {
 			adventure.updateArtifactStat("Amethyst Spyglass", "Gold Saved", 100 - cost);
-			interaction.message.edit({ components: editButtons(interaction.message.components, { [interaction.customId]: { preventUse: adventure.gold < Number(cost), label: `${cost}g: Scout the ${ordinalSuffixEN(adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians + 2)} Artifact Guardian` } }) });
 			interaction.reply(`The merchant reveals that the ${ordinalSuffixEN(adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians + 1)} artifact guardian for this adventure will be **${adventure.artifactGuardians[adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians]}** (you can review this with \`/adventure party-stats\`).`);
 			adventure.scouting.artifactGuardians++;
 			while (adventure.artifactGuardians.length <= adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians) {
 				prerollBoss("Artifact Guardian", adventure);
 			}
 		}
-		updateRoomHeader(adventure, interaction.message);
+		interaction.message.edit(renderRoom(adventure, interaction.channel));
 		setAdventure(adventure);
 	}
 );
