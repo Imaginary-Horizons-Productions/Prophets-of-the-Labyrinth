@@ -21,7 +21,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		adventure.room.decrementResource("roomAction", actionCost);
-		adventure.room.addResource(`Rested: ${delver.name}`, "history", "internal", 1);
+		adventure.room.history.Rested.push(delver.name);
 		interaction.update(renderRoom(adventure, interaction.channel)).then(() => {
 			interaction.followUp(gainHealth(delver, Math.ceil(delver.getMaxHP() * (parseInt(healPercent) / 100.0)), adventure));
 			setAdventure(adventure);

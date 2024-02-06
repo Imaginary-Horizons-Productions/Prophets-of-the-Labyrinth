@@ -10,7 +10,12 @@ module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 		new ResourceTemplate("n", "internal", "roomAction"),
 		new ResourceTemplate("2", "internal", "challenge")
 	],
-	function (adventure) { return {}; },
+	function (adventure) {
+		return {
+			"Rested": [],
+			"New challenges": []
+		};
+	},
 	function (roomEmbed, adventure) {
 		const healPercent = Math.trunc(30 * (1 - (adventure.getChallengeIntensity("Restless") / 100)));
 		let restEmoji, restLabel, challengeEmoji, challengeLabel;
@@ -21,18 +26,16 @@ module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 			challengeEmoji = "1️⃣";
 			challengeLabel = "Take a challenge";
 		} else {
-			const restedResources = Object.values(adventure.room.resources).filter(resource => resource.name.startsWith("Rested: "));
-			if (restedResources.length > 0) {
+			if (adventure.room.history.Rested.length > 0) {
 				restEmoji = "✔️";
 				restLabel = "The party rested";
 			} else {
 				restEmoji = "✖️";
 				restLabel = "The fire has burned out";
 			}
-			const challengerResources = Object.values(adventure.room.resources).filter(resource => resource.name.startsWith("Challenge taken: "));
-			if (challengerResources.length > 0) {
+			if (adventure.room.history["New challenges"].length > 0) {
 				challengeEmoji = "✔️";
-				if (challengerResources.length === 1) {
+				if (adventure.room.history["New challenges"].length === 1) {
 					challengeLabel = "New challenge taken";
 				} else {
 					challengeLabel = "New challenges taken";

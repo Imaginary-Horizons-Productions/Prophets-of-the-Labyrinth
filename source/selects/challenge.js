@@ -18,8 +18,6 @@ module.exports = new SelectWrapper(mainId, 3000,
 		if (adventure?.room.hasResource("roomAction")) {
 			const [challengeName] = interaction.values;
 			const { intensity, duration, reward } = getChallenge(challengeName);
-			// Calcluate healPercent before updating challenges in case Restless is selected
-			const healPercent = Math.trunc(30 * (1 - (adventure.getChallengeIntensity("Restless") / 100)));
 			if (adventure.challenges[challengeName]) {
 				adventure.challenges[challengeName].intensity += intensity;
 				adventure.challenges[challengeName].duration += duration;
@@ -28,7 +26,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				adventure.challenges[challengeName] = new Challenge(intensity, reward, duration);
 			}
 			adventure.room.decrementResource("roomAction", 1);
-			adventure.room.addResource(`Challenge taken: ${challengeName}`, "history", "internal", 1);
+			adventure.room.history["New challenges"].push(challengeName);
 			interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 				roomMessage.edit(renderRoom(adventure, interaction.channel));
 			})

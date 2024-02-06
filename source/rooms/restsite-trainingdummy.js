@@ -9,7 +9,12 @@ module.exports = new RoomTemplate("Rest Site: Training Dummy",
 	[
 		new ResourceTemplate("n", "internal", "roomAction")
 	],
-	function (adventure) { return {}; },
+	function (adventure) {
+		return {
+			"Rested": [],
+			"Trained": []
+		};
+	},
 	function (roomEmbed, adventure) {
 		const healPercent = Math.trunc(30 * (1 - (adventure.getChallengeIntensity("Restless") / 100)));
 		let restEmoji, restLabel, trainingEmoji, trainingLabel;
@@ -20,16 +25,14 @@ module.exports = new RoomTemplate("Rest Site: Training Dummy",
 			trainingEmoji = "1️⃣";
 			trainingLabel = "Use the training dummy";
 		} else {
-			const restedResources = Object.values(adventure.room.resources).filter(resource => resource.name.startsWith("Rested: "));
-			if (restedResources.length > 0) {
+			if (adventure.room.history.Rested.length > 0) {
 				restEmoji = "✔️";
 				restLabel = "The party rested";
 			} else {
 				restEmoji = "✖️";
 				restLabel = "The fire has burned out";
 			}
-			const trainingResources = Object.values(adventure.room.resources).filter(resource => resource.name.startsWith("Trained: "));
-			if (trainingResources.length > 0) {
+			if (adventure.room.history.Trained.length > 0) {
 				trainingEmoji = "✔️";
 				trainingLabel = "The party trained";
 			} else {
