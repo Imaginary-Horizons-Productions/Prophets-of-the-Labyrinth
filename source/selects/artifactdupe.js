@@ -13,10 +13,10 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.resources.roomAction.count > 0) {
-			adventure.room.resources.roomAction.count = 0;
+		if (adventure.room.hasResource("roomAction")) {
+			adventure.room.decrementResource("roomAction", "all");
 			const artifactName = interaction.values[0];
-			adventure.room.addResource(`Duped: ${artifactName}`, "history", "internal", 1);
+			adventure.room.history["Duped artifact"].push(artifactName);
 			adventure.gainArtifact(artifactName, 1);
 			interaction.update(renderRoom(adventure, interaction.channel));
 			setAdventure(adventure);

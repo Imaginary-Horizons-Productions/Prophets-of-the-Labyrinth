@@ -13,8 +13,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.resources.roomAction.count > 0) {
-			adventure.room.resources.roomAction.count = 0;
+		if (adventure.room.hasResource("roomAction")) {
+			adventure.room.decrementResource("roomAction", "all");
 			adventure.gainGold(350);
 			interaction.update(renderRoom(adventure, interaction.channel));
 			setAdventure(adventure);

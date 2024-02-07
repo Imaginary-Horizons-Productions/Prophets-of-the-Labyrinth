@@ -11,7 +11,11 @@ module.exports = new RoomTemplate("Twin Pedestals",
 	[
 		new ResourceTemplate("1", "internal", "roomAction")
 	],
-	function (adventure) { return {}; },
+	function (adventure) {
+		return {
+			"Duped artifact": []
+		};
+	},
 	function (roomEmbed, adventure) {
 		let duperLabel, duperOptions, isDuperDisabled, pillageLabel, pillageEmoji, isPillageDisabled;
 		if (adventure.room.hasResource("roomAction")) {
@@ -34,9 +38,8 @@ module.exports = new RoomTemplate("Twin Pedestals",
 			pillageEmoji = "💰";
 			isPillageDisabled = false;
 		} else {
-			const dupedArtifact = Object.keys(adventure.room.resources).find(resourceName => resourceName.startsWith("Duped: "))?.split(": ")[1];
-			if (dupedArtifact) {
-				duperLabel = `Duplicated: ${dupedArtifact}`;
+			if (adventure.room.history["Duped artifact"].length > 0) {
+				duperLabel = `Duplicated: ${adventure.room.history["Duped artifact"][0]}`;
 				duperOptions = EMPTY_SELECT_OPTION_SET;
 				isDuperDisabled = true;
 				pillageLabel = "Pedestals used";
