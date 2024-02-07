@@ -9,17 +9,20 @@ module.exports = new RoomTemplate("Free Gold?",
 	[
 		new ResourceTemplate("300", "internal", "gold")
 	],
-	function (adventure) { return {}; },
+	function (adventure) {
+		return {
+			"Burned": []
+		};
+	},
 	function (roomEmbed, adventure) {
 		let reward = 300;
 		let burnDamage = 100;
 		let getEmoji = "💰";
 		let getLabel = `Leaving it would be a waste [+${reward}g]`;
 		let isGetDisabled = false;
-		const burnedDelver = Object.values(adventure.room.resources).find(resource => resource.name.startsWith("Burned: "))?.name.split(": ")[1];
-		if (burnedDelver) {
+		if (adventure.room.history.Burned.length > 0) {
 			getEmoji = "🔥";
-			getLabel = `+${reward}g, ${burnedDelver} -${burnDamage} HP`;
+			getLabel = `+${reward}g, ${adventure.room.history.Burned[0]} -${burnDamage} HP`;
 			isGetDisabled = true;
 		} else if (!("gold" in adventure.room.resources)) {
 			getEmoji = "✔️";
