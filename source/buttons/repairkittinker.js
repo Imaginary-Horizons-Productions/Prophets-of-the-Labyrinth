@@ -28,16 +28,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.resources["Repair Kit"].count > 0) {
+		if (adventure.room.hasResource("Repair Kit")) {
 			adventure.room.decrementResource("Repair Kit", "all");
 			const gearIndex = adventure.generateRandomNumber(eligibleGear.length, "general");
 			const [gearToUpgrade, upgradePool] = eligibleGear[gearIndex];
 			const upgradeName = upgradePool[adventure.generateRandomNumber(upgradePool.length, "general")];
-			adventure.room.addResource(`${delver.name}: ${upgradeName}`, "history", "internal", 1);
+			adventure.room.history.Upgrades.push([delver.name, upgradeName]);
 			transformGear(delver, gearIndex, gearToUpgrade, upgradeName);
-			interaction.update(renderRoom(adventure, interaction.message.channel)).then(() => {
-				setAdventure(adventure);
-			});
+			setAdventure(adventure);
+			interaction.update(renderRoom(adventure, interaction.message.channel));
 		} else {
 			interaction.update({ content: ZERO_WIDTH_WHITESPACE });
 		}

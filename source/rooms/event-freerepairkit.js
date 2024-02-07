@@ -8,7 +8,11 @@ module.exports = new RoomTemplate("Repair Kit, just hanging out",
 	[
 		new ResourceTemplate("1", "internal", "Repair Kit")
 	],
-	function (adventure) { return {}; },
+	function (adventure) {
+		return {
+			"Upgrades": []
+		};
+	},
 	function (roomEmbed, adventure) {
 		let saveEmoji, saveLabel, tinkerEmoji, tinkerLabel;
 		const isRepairKitRemaining = "Repair Kit" in adventure.room.resources;
@@ -18,9 +22,8 @@ module.exports = new RoomTemplate("Repair Kit, just hanging out",
 			tinkerEmoji = "⬆️";
 			tinkerLabel = "Use the Repair Kit for a random random upgrade";
 		} else {
-			const upgradeResource = Object.values(adventure.room.resources).find(resource => resource.name.includes(": "));
-			if (upgradeResource) {
-				const [user, upgrade] = upgradeResource.name.split(": ")
+			if (adventure.room.history.Upgrades.length > 0) {
+				const [user, upgrade] = adventure.room.history.Upgrades[0];
 				saveEmoji = "✖️";
 				saveLabel = "Repair Kit used";
 				tinkerEmoji = "✔️";
