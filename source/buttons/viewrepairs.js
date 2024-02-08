@@ -27,7 +27,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				})
 			}
 		})
-		if (adventure.room.resources.roomAction.count > 0) {
+		if (adventure.room.hasResource("roomAction")) {
 			if (options.length > 0) {
 				let upgradeSelect = new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId("repair")

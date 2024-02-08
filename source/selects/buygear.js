@@ -17,8 +17,8 @@ module.exports = new SelectWrapper(mainId, 3000,
 		}
 
 		const [name, menuIndex] = interaction.values[0].split(SAFE_DELIMITER);
-		const { count, cost } = adventure.room.resources[name];
-		if (count > 0) {
+		if (adventure.room.hasResource(name)) {
+			const { cost } = adventure.room.resources[name];
 			if (adventure.gold >= cost) {
 				if (delver.gear.length < adventure.getGearCapacity()) {
 					adventure.gold -= cost;

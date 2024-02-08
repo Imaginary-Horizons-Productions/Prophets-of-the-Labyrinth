@@ -20,7 +20,7 @@ module.exports = new RoomTemplate("Gear Merchant",
 		const rareGearOptions = [];
 
 		Object.values(adventure.room.resources).forEach(({ name, uiGroup }, i) => {
-			if (adventure.room.resources[name].count > 0) {
+			if (adventure.room.hasResource(name)) {
 				if (uiGroups.includes(uiGroup)) {
 					const cost = adventure.room.resources[name].cost;
 					/** @type {number} */

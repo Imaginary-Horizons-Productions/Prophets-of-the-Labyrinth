@@ -12,7 +12,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.resources["Repair Kit"].count > 0) {
+		if (adventure.room.hasResource("Repair Kit")) {
 			delete adventure.room.resources["Repair Kit"];
 			adventure.gainItem("Repair Kit", 1);
 			interaction.update(renderRoom(adventure, interaction.message.channel)).then(() => {

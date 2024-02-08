@@ -21,7 +21,7 @@ module.exports = new RoomTemplate("Item Merchant",
 		const itemOptions = [];
 
 		Object.values(adventure.room.resources).forEach(({ name, uiGroup }, i) => {
-			if (adventure.room.resources[name].count > 0) {
+			if (adventure.room.hasResource(name)) {
 				switch (uiGroup) {
 					case uiGroups[0]: // gear
 						const cost = adventure.room.resources[name].cost;

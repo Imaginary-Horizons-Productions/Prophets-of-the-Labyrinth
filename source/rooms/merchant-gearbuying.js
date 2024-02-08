@@ -16,7 +16,7 @@ module.exports = new RoomTemplate("Gear Buying Merchant",
 		const mixedGearOptions = [];
 
 		Object.values(adventure.room.resources).forEach(({ name }, i) => {
-			if (adventure.room.resources[name].count > 0) {
+			if (adventure.room.hasResource(name)) {
 				const cost = adventure.room.resources[name].cost;
 				/** @type {number} */
 				const maxDurability = getGearProperty(name, "maxDurability");
