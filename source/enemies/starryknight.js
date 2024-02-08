@@ -41,7 +41,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 				}
 			}
 		}
-		let pendingDamage = 100 + (50 * (unfinishedChallenges.length + targetDebuffCount + targetCursedGearCount));
+		let pendingDamage = user.getPower() + 100 + (50 * (unfinishedChallenges.length + targetDebuffCount + targetCursedGearCount));
 		target.addStagger("elementMatchFoe");
 		if (isCrit) {
 			pendingDamage *= 2;
@@ -61,7 +61,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	description: `Inflict ${getEmoji("Light")} damage and apply insults on all foes (damage increases with foe team size)`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		let pendingDamage = 50 * targets.length;
+		let pendingDamage = user.getPower() + 50 * targets.length;
 		const insultMap = {};
 		targets.forEach(target => {
 			target.addStagger("elementMatchFoe");
@@ -128,6 +128,9 @@ module.exports = new EnemyTemplate("Starry Knight",
 function addNewRandomInsults(insultMap, combatant, count, adventure) {
 	const availableInsults = ["Ugly", "Stupid", "Smelly", "Boring", "Lacking Rhythm"].filter(insult => !(insult in combatant.modifiers));
 	for (let i = 0; i < count; i++) {
+		if (availableInsults.length < 1) {
+			break;
+		}
 		const insultIndex = adventure.generateRandomNumber(availableInsults.length, "battle");
 		const rolledInsult = availableInsults[insultIndex];
 		const combatantName = combatant.getName(adventure.room.enemyIdMap);

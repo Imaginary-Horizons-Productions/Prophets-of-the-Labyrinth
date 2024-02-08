@@ -23,6 +23,7 @@ The Chemist was a powerful archetype, but the gameplay didn't allign with the th
 - Barriers now provide 3 Evade instead of 999 Block and are Wind element
 - Vigilant Lance is now Shattering Lance
 - Changed Toxic Abacus to Unstoppable Abacus
+- Nerfed Corrosion to 20 Power Down base
 ### Artifacts
 - New Artifact: Manual Manual
 - Crystal Shard (artifact) now increases range of Spells--durability saving effect is now on the new Weapon Polish artifact, which applies to Weapons

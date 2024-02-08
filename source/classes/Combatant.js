@@ -169,7 +169,7 @@ class Delver extends Combatant {
 
 	getDamageCap() {
 		const capBoostFromGear = SURPASSING_VALUE * this.gear.reduce((surpassingCount, gear) => gear.name.startsWith("Surpassing") ? surpassingCount + 1 : surpassingCount, 0);
-		return 500 + this.getModifierStacks("Power Up") + capBoostFromGear;
+		return 450 + (this.level * 50) + this.getModifierStacks("Power Up") + capBoostFromGear;
 	}
 }
 
