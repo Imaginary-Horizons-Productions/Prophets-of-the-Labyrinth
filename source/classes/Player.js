@@ -5,6 +5,7 @@ class Player {
 	constructor(idInput) {
 		this.id = idInput;
 		this.nextFreeRoll = Date.now();
+		this.unlockRandomArchetype(3);
 	}
 	/** @type {{[guildId: string]: {total: number, high: number}}} */
 	scores = {};
@@ -22,12 +23,13 @@ class Player {
 				if (highScore === null) {
 					pool.push(archetype);
 				}
+				return pool;
 			}, []);
 
 			if (pool.length < 1) {
 				break;
 			}
-			const rolledArchetype = pool[Math.floor(pool.length * Math.random())]
+			const rolledArchetype = pool[Math.floor(pool.length * Math.random())];
 			rolledArchetypes.push(rolledArchetype);
 			this.archetypes[rolledArchetype] = 0;
 		}
