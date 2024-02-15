@@ -6,8 +6,7 @@ const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { buildGearDescription } = require("../gear/_gearDictionary");
 
-const { ordinalSuffixEN, trimForSelectOptionDescription, listifyEN, getNumberEmoji } = require("./textUtil");
-const { levelUp } = require("./delverUtil");
+const { ordinalSuffixEN, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
 
 /** Remove components (buttons and selects) from a given message
  * @param {string} messageId - the id of the message to remove components from
@@ -70,68 +69,43 @@ function generateCombatRoomBuilder(extraButtons) {
 		} else {
 			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
 
-			const baseLevelsGained = adventure.room.resources.levelsGained?.count ?? 0;
-			adventure.room.resources.levelsGained.count = 0;
-			if (baseLevelsGained > 0) {
-				const fieldPayload = { name: "Level-Up!" };
-				/** @type {Record<number, string[]>} */
-				const levelMap = {};
-				for (const delver of adventure.delvers) {
-					const manualManuallevels = adventure.getArtifactCount("Manual Manual");
-					if (manualManuallevels > 0) {
-						adventure.updateArtifactStat("Manual Manual", "Bonus Levels", manualManuallevels);
-					}
-					const gearLevelBonus = delver.gear.reduce((bonusLevels, currentGear) => {
-						if (currentGear.name.startsWith("Wise")) {
-							return bonusLevels + 1;
-						} else {
-							return bonusLevels;
-						}
-					}, 0);
-					const levelsGained = baseLevelsGained + manualManuallevels + gearLevelBonus;
-					if (levelsGained in levelMap) {
-						levelMap[levelsGained].push(delver.getName());
-					} else {
-						levelMap[levelsGained] = [delver.getName()];
-					}
-					levelUp(delver, levelsGained, adventure);
-				}
-				const levelMapEntries = Object.entries(levelMap);
-				if (levelMapEntries.length > 1) {
-					fieldPayload.value = Object.entries(levelMap).map(([levelIncrease, delverNames]) => {
-						if (levelIncrease !== baseLevelsGained) {
-							if (delverNames.length === 1) {
-								if (levelIncrease === 1) {
-									return `- ${delverNames[0]} gains 1 level.`;
-								} else {
-									return `- ${delverNames[0]} gains ${levelIncrease} levels.`;
-								}
+			const levelUpField = { name: "Level-Up!" };
+			const levelEntries = Object.entries(adventure.room.history).filter(([historyKey, _]) => historyKey.startsWith("levelsGained:"));
+			const baseLevels = adventure.room.history.baseLevels.length;
+			if (levelEntries.length > 1) {
+				levelUpField.value = levelEntries.map(([historyKey, delverNames]) => {
+					const levels = parseInt(historyKey.split("levelsGained:")[1]);
+					if (levels !== baseLevels) {
+						if (delverNames.length === 1) {
+							if (levels === 1) {
+								return `- ${delverNames[0]} gains 1 level.`;
 							} else {
-								if (levelIncrease === 1) {
-									return `- ${listifyEN(delverNames, false)} gain 1 level.`;
-								} else {
-									return `- ${listifyEN(delverNames, false)} gain ${levelIncrease} levels.`;
-								}
+								return `- ${delverNames[0]} gains ${levels} levels.`;
+							}
+						} else {
+							if (levels === 1) {
+								return `- ${listifyEN(delverNames, false)} gain 1 level.`;
+							} else {
+								return `- ${listifyEN(delverNames, false)} gain ${levels} levels.`;
 							}
 						}
-					}).join("- \n");
-					if (levelMap[levelIncrease].length < adventure.delvers.length) {
-						if (levelIncrease === 1) {
-							fieldPayload.value = `\n- Everyone else gains 1 level.`;
-						} else {
-							fieldPayload.value = `\n- Everyone else gains ${levelIncrease} levels.`;
-						}
 					}
-				} else {
-					if (levelMapEntries[0][0] === 1) {
-						fieldPayload.value = `Everyone gains 1 level.`;
+				}).join("- \n");
+				if (adventure.room.history[`levelsGained:${baseLevels}`].length < adventure.delvers.length) {
+					if (levels === 1) {
+						levelUpField.value = `\n- Everyone else gains 1 level.`;
 					} else {
-						fieldPayload.value = `Everyone gains ${levelMapEntries[0][0]} levels.`;
+						levelUpField.value = `\n- Everyone else gains ${baseLevels} levels.`;
 					}
 				}
-				roomEmbed.addFields(fieldPayload);
+			} else {
+				if (baseLevels === 1) {
+					levelUpField.value = `Everyone gains 1 level.`;
+				} else {
+					levelUpField.value = `Everyone gains ${baseLevels} levels.`;
+				}
 			}
-			roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
+			roomEmbed.addFields(levelUpField, { name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
 			return {
 				embeds: [roomEmbed],
 				components: [generateLootRow(adventure), generateRoutingRow(adventure)]

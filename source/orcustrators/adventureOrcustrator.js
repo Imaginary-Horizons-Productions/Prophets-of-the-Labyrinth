@@ -23,6 +23,7 @@ const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression, listifyEN } = require("../util/textUtil");
 const { sumGeometricSeries } = require("../util/mathUtil");
+const { levelUp } = require("../util/delverUtil.js");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();
@@ -625,8 +626,38 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 	}
 
 	if (adventure.room.enemies.every(enemy => enemy.hp === 0)) {
+		if ("endedCombat" in adventure.room.history) {
+			return { type: "endCombat" };
+		}
+		adventure.room.history.endedCombat = [];
+
 		if (adventure.depth >= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
 			return { payload: completeAdventure(adventure, thread, "success", lastRoundText), type: "adventureSuccess" };
+		}
+
+		const baseLevelsGained = adventure.room.resources.levelsGained.count ?? 0;
+		delete adventure.room.resources.levelsGained;
+		adventure.room.history.baseLevels = Array(baseLevelsGained);
+		for (const delver of adventure.delvers) {
+			const manualManuallevels = adventure.getArtifactCount("Manual Manual");
+			if (manualManuallevels > 0) {
+				adventure.updateArtifactStat("Manual Manual", "Bonus Levels", manualManuallevels);
+			}
+			const gearLevelBonus = delver.gear.reduce((bonusLevels, currentGear) => {
+				if (currentGear.name.startsWith("Wise")) {
+					return bonusLevels + 1;
+				} else {
+					return bonusLevels;
+				}
+			}, 0);
+			const levelsGained = baseLevelsGained + manualManuallevels + gearLevelBonus;
+			const historyKey = `levelsGained:${levelsGained}`;
+			if (historyKey in adventure.room.history) {
+				adventure.room.history[historyKey].push(delver.getName());
+			} else {
+				adventure.room.history[historyKey] = delver.getName();
+			}
+			levelUp(delver, levelsGained, adventure);
 		}
 
 		// Gear drops
