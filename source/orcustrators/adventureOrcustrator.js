@@ -637,7 +637,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 
 		const baseLevelsGained = adventure.room.resources.levelsGained.count ?? 0;
 		delete adventure.room.resources.levelsGained;
-		adventure.room.history.baseLevels = Array(baseLevelsGained);
+		adventure.room.history.baseLevels = [baseLevelsGained];
 		for (const delver of adventure.delvers) {
 			const manualManuallevels = adventure.getArtifactCount("Manual Manual");
 			if (manualManuallevels > 0) {

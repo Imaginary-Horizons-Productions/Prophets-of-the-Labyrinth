@@ -71,7 +71,8 @@ function generateCombatRoomBuilder(extraButtons) {
 
 			const levelUpField = { name: "Level-Up!" };
 			const levelEntries = Object.entries(adventure.room.history).filter(([historyKey, _]) => historyKey.startsWith("levelsGained:"));
-			const baseLevels = adventure.room.history.baseLevels.length;
+			/** @type {number} didn't want to allow numbers as history entries generally or convert to and from string; see checkEndCombat in adventureOrcustrator */
+			const baseLevels = adventure.room.history.baseLevels[0];
 			if (levelEntries.length > 1) {
 				levelUpField.value = levelEntries.map(([historyKey, delverNames]) => {
 					const levels = parseInt(historyKey.split("levelsGained:")[1]);
