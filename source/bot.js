@@ -3,7 +3,7 @@ const { REST, Routes, Client, ActivityType, IntentsBitField, Events } = require(
 const { readFile, writeFile } = require("fs").promises;
 
 const { Company } = require("./classes");
-const { SAFE_DELIMITER, authPath, testGuildId, announcementsChannelId, lastPostedVersion } = require("./constants.js");
+const { SAFE_DELIMITER, authPath, testGuildId, announcementsChannelId, lastPostedVersion, SKIP_INTERACTION_HANDLING } = require("./constants.js");
 
 const { loadCompanies, setCompany } = require("./orcustrators/companyOrcustrator.js");
 const { loadAdventures } = require("./orcustrators/adventureOrcustrator.js");
@@ -92,19 +92,7 @@ client.on(Events.ClientReady, () => {
 })
 
 client.on(Events.InteractionCreate, interaction => {
-	if (interaction.isModalSubmit()) {
-		// Modal Submissions are to be handled in the interactions that show them with awaitModalSubmit
-		return;
-	} else if (interaction.isCommand()) {
-		const command = getCommand(interaction.commandName);
-		const cooldownTimestamp = command.getCooldownTimestamp(interaction.user.id, interactionCooldowns);
-		if (cooldownTimestamp) {
-			interaction.reply({ content: `Please wait, the \`/${interaction.commandName}\` command is on cooldown. It can be used again <t:${cooldownTimestamp}:R>.`, ephemeral: true });
-			return;
-		}
-
-		command.execute(interaction);
-	} else if (interaction.isAutocomplete()) {
+	if (interaction.isAutocomplete()) {
 		const command = getCommand(interaction.commandName);
 		const focusedOption = interaction.options.getFocused(true);
 		const unfilteredChoices = command.autocomplete?.[focusedOption.name] ?? [];
@@ -114,6 +102,17 @@ client.on(Events.InteractionCreate, interaction => {
 		const choices = unfilteredChoices.filter(choice => choice.value.includes(focusedOption.value))
 			.slice(0, 25);
 		interaction.respond(choices);
+	} else if (interaction.isCommand()) {
+		const command = getCommand(interaction.commandName);
+		const cooldownTimestamp = command.getCooldownTimestamp(interaction.user.id, interactionCooldowns);
+		if (cooldownTimestamp) {
+			interaction.reply({ content: `Please wait, the \`/${interaction.commandName}\` command is on cooldown. It can be used again <t:${cooldownTimestamp}:R>.`, ephemeral: true });
+			return;
+		}
+
+		command.execute(interaction);
+	} else if (interaction.customId.startsWith(SKIP_INTERACTION_HANDLING)) {
+		return;
 	} else {
 		const [mainId, ...args] = interaction.customId.split(SAFE_DELIMITER);
 		let getter;

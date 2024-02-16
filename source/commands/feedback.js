@@ -1,6 +1,6 @@
 const { ActionRowBuilder, TextInputBuilder, ModalBuilder, TextInputStyle, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const { CommandWrapper } = require('../classes');
-const { MAX_EMBED_TITLE_LENGTH, testGuildId, feedbackChannelId } = require('../constants');
+const { MAX_EMBED_TITLE_LENGTH, testGuildId, feedbackChannelId, SKIP_INTERACTION_HANDLING } = require('../constants');
 
 const mainId = "feedback";
 module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an invite to the test server", PermissionFlagsBits.SendMessages, false, true, 3000,
@@ -12,11 +12,10 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 		}
 
 		let titlePrefix;
-		const feedbackType = interaction.options.getString("feedback-type");
-		switch (feedbackType) {
+		switch (interaction.options.getString("feedback-type")) {
 			case "bug":
 				titlePrefix = "Bug Report: ";
-				interaction.showModal(new ModalBuilder().setCustomId(feedbackType)
+				interaction.showModal(new ModalBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
 					.setTitle("Bug Report")
 					.addComponents(
 						new ActionRowBuilder().addComponents(
@@ -48,7 +47,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						)
 					)
 				);
-				interaction.awaitModalSubmit({ filter: (interaction) => interaction.customId === feedbackType, time: 300000 }).then(modalSubmission => {
+				interaction.awaitModalSubmit({ filter: (incoming) => incoming.customId === `${SKIP_INTERACTION_HANDLING}${interaction.id}`, time: 300000 }).then(modalSubmission => {
 					const errors = [];
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
 						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue("title")}`)
@@ -85,7 +84,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 				break;
 			case "feature":
 				titlePrefix = "Feature Request: ";
-				interaction.showModal(new ModalBuilder().setCustomId(feedbackType)
+				interaction.showModal(new ModalBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
 					.setTitle("Feature Request")
 					.addComponents(
 						new ActionRowBuilder().addComponents(
@@ -120,7 +119,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						)
 					)
 				);
-				interaction.awaitModalSubmit({ filter: (interaction) => interaction.customId === feedbackType, time: 300000 }).then(modalSubmission => {
+				interaction.awaitModalSubmit({ filter: (incoming) => incoming.customId === `${SKIP_INTERACTION_HANDLING}${interaction.id}`, time: 300000 }).then(modalSubmission => {
 					const errors = [];
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
 						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue("title")}`)
@@ -157,7 +156,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 				break;
 			case "balance":
 				titlePrefix = "Balance Suggestion";
-				interaction.showModal(new ModalBuilder().setCustomId(feedbackType)
+				interaction.showModal(new ModalBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
 					.setTitle("Balance Suggestion")
 					.addComponents(
 						new ActionRowBuilder().addComponents(
@@ -180,7 +179,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						)
 					)
 				);
-				interaction.awaitModalSubmit({ filter: (interaction) => interaction.customId === feedbackType, time: 300000 }).then(modalSubmission => {
+				interaction.awaitModalSubmit({ filter: (incoming) => incoming.customId === `${SKIP_INTERACTION_HANDLING}${interaction.id}`, time: 300000 }).then(modalSubmission => {
 					const errors = [];
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
 						.setTitle(titlePrefix)
