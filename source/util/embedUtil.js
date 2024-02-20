@@ -63,7 +63,7 @@ function embedTemplate() {
 function renderRoom(adventure, thread, descriptionOverride) {
 	const roomEmbed = new EmbedBuilder().setColor(getColor(adventure.room.element))
 		.setAuthor({ name: roomHeaderString(adventure), iconURL: thread.client.user.displayAvatarURL() })
-		.setTitle(adventure.room.title)
+		.setTitle(adventure.room.title ?? "in setup")
 		.setFooter({ text: `Room #${adventure.depth}` });
 
 	const roomTemplate = getRoom(adventure.room.title);

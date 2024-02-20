@@ -5,7 +5,6 @@ const selectDictionary = {};
 
 for (const file of [
 	"applepiewishingwell.js",
-	"archetype.js",
 	"artifact.js",
 	"artifactdupe.js",
 	"blackboxgear.js",
