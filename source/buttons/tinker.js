@@ -2,7 +2,7 @@ const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { SKIP_INTERACTION_HANDLING } = require('../constants');
+const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 const { transformGear } = require('../util/delverUtil');
 const { renderRoom } = require('../util/embedUtil');
@@ -30,7 +30,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				options.push({
 					label: gear.name,
 					description: trimForSelectOptionDescription(`Possibilities: ${listifyEN(sidegrades, true)}`),
-					value: index.toString()
+					value: `${adventure.depth}${SAFE_DELIMITER}${index.toString()}`
 				})
 			}
 		})
@@ -53,14 +53,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
+				const [startedDepth, unparsedIndex] = collectedInteraction.values[0].split(SAFE_DELIMITER);
 				const adventure = getAdventure(interaction.channelId);
-				if (!adventure.room.hasResource("roomAction")) {
-					interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
+				if (!adventure.room.hasResource("roomAction") || startedDepth !== adventure.depth.toString()) {
 					return;
 				}
 
 				const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
-				const unparsedIndex = collectedInteraction.values[0];
 				const index = parseInt(unparsedIndex);
 				const gearName = delver.gear[index].name;
 				/** @type {string[]} */
