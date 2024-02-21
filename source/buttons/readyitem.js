@@ -34,8 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 								description: trimForSelectOptionDescription(getItem(item).description),
 								value: item
 							}), [])))
-				],
-				ephemeral: true
+				]
 			});
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
