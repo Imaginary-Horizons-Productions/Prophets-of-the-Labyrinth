@@ -5,6 +5,7 @@ const buttonDictionary = {};
 
 for (const file of [
 	"appease.js",
+	"blackbox.js",
 	"buylife.js",
 	"buyscouting.js",
 	"confirmmove.js",
@@ -31,7 +32,6 @@ for (const file of [
 	"tinker.js",
 	"trainingdummy.js",
 	"upgrade.js",
-	"viewblackbox.js",
 	"viewchallenges.js",
 	"viewcollectartifact.js",
 	"viewgearcollector.js",
