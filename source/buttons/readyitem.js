@@ -40,6 +40,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", (collectedInteraction) => {
+				const adventure = getAdventure(collectedInteraction.channelId);
+				const delver = adventure?.delvers.find(delver => delver.id === collectedInteraction.user.id);
+				if (!delver) {
+					return;
+				}
+
 				const round = collectedInteraction.customId.split(SAFE_DELIMITER)[1];
 				if (adventure.room.round !== Number(round)) {
 					return;

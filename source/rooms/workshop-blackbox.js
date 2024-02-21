@@ -57,7 +57,7 @@ module.exports = new RoomTemplate("Workshop with Black Box",
 						.setEmoji(repairEmoji)
 						.setLabel(repairLabel)
 						.setDisabled(isRepairDisabled),
-					new ButtonBuilder().setCustomId("viewblackbox")
+					new ButtonBuilder().setCustomId("blackbox")
 						.setStyle(ButtonStyle.Success)
 						.setEmoji(boxEmoji)
 						.setLabel(boxLabel)
