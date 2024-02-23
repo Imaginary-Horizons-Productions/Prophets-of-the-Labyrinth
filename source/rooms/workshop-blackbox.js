@@ -52,7 +52,7 @@ module.exports = new RoomTemplate("Workshop with Black Box",
 						.setEmoji(upgradeEmoji)
 						.setLabel(upgradeLabel)
 						.setDisabled(isUpgradeDisabled),
-					new ButtonBuilder().setCustomId("viewrepairs")
+					new ButtonBuilder().setCustomId("repair")
 						.setStyle(ButtonStyle.Primary)
 						.setEmoji(repairEmoji)
 						.setLabel(repairLabel)

@@ -54,7 +54,7 @@ module.exports = new RoomTemplate("Tanning Workshop",
 						.setEmoji(upgradeEmoji)
 						.setLabel(upgradeLabel)
 						.setDisabled(isUpgradeDisabled),
-					new ButtonBuilder().setCustomId("viewrepairs")
+					new ButtonBuilder().setCustomId("repair")
 						.setStyle(ButtonStyle.Primary)
 						.setEmoji(repairEmoji)
 						.setLabel(repairLabel)
