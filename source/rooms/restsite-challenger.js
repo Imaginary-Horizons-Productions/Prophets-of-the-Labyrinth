@@ -54,7 +54,7 @@ module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 						.setEmoji(restEmoji)
 						.setLabel(restLabel)
 						.setDisabled(!hasRoomActions),
-					new ButtonBuilder().setCustomId("viewchallenges")
+					new ButtonBuilder().setCustomId("challenges")
 						.setStyle(ButtonStyle.Danger)
 						.setEmoji(challengeEmoji)
 						.setLabel(challengeLabel)

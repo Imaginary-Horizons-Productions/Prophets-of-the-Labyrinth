@@ -5,22 +5,13 @@ const selectDictionary = {};
 
 for (const file of [
 	"applepiewishingwell.js",
-	"archetype.js",
 	"artifact.js",
 	"artifactdupe.js",
-	"blackboxgear.js",
 	"buygear.js",
 	"buyitem.js",
-	"challenge.js",
-	"collectartifact.js",
 	"gearcollector.js",
-	"item.js",
-	"movetarget.js",
-	"randomtinker.js",
-	"randomupgrade.js",
 	"repair.js",
 	"sellgear.js",
-	"startingartifact.js",
 	"startingchallenges.js",
 	"treasure.js"
 ]) {

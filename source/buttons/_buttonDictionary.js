@@ -5,9 +5,11 @@ const buttonDictionary = {};
 
 for (const file of [
 	"appease.js",
+	"blackbox.js",
 	"buylife.js",
 	"buyscouting.js",
-	"confirmmove.js",
+	"challenges.js",
+	"collectartifact.js",
 	"deploy.js",
 	"elementresearch.js",
 	"freerepairkit.js",
@@ -27,17 +29,14 @@ for (const file of [
 	"replacegear.js",
 	"rest.js",
 	"routevote.js",
+	"startingartifacts.js",
 	"stealwishingwellcore.js",
 	"tinker.js",
 	"trainingdummy.js",
 	"upgrade.js",
-	"viewblackbox.js",
-	"viewchallenges.js",
-	"viewcollectartifact.js",
 	"viewgearcollector.js",
 	"viewgearsales.js",
-	"viewrepairs.js",
-	"viewstartingartifact.js"
+	"viewrepairs.js"
 ]) {
 	/** @type {ButtonWrapper} */
 	const button = require(`./${file}`);
