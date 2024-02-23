@@ -77,7 +77,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 							new ButtonBuilder().setCustomId("deploy")
 								.setLabel("Pick Archetype")
 								.setStyle(ButtonStyle.Primary),
-							new ButtonBuilder().setCustomId("viewstartingartifacts")
+							new ButtonBuilder().setCustomId("startingartifacts")
 								.setLabel("Pick Starting Artifact")
 								.setStyle(ButtonStyle.Secondary)
 						),

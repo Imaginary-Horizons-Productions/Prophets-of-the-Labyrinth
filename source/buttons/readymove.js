@@ -92,7 +92,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const [_, startedDepth, round, moveName, actionRowIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
 				const adventure = getAdventure(collectedInteraction.channelId);
 				const delver = adventure?.delvers.find(delver => delver.id === collectedInteraction.user.id);
-				if (adventure.room.round !== Number(round) || startedDepth !== adventure.depth.toString() || moveName !== "Punch" && !(delver.gear[actionRowIndex - 1].durability > 0)) {
+				if (adventure.room.round !== Number(round) || startedDepth !== adventure.depth.toString()) {
 					return;
 				}
 

@@ -1,12 +1,12 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
-const { getAdventure } = require('../orcustrators/adventureOrcustrator');
+const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getArtifact, artifactNames } = require('../artifacts/_artifactDictionary');
-const { RN_TABLE_BASE } = require('../constants');
+const { RN_TABLE_BASE, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
 
-const mainId = "viewstartingartifacts";
+const mainId = "startingartifacts";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Send the player a message with a select a starting artifact */
 	(interaction, args) => {
@@ -49,17 +49,42 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			start = (start + 1) % adventure.rnTable.length;
 		}
 
-		interaction.reply({
-			content: `You can bring 1 of the following artifacts on this adventure (if you've collected that artifact from a previous adventure):${artifactBulletList}\nEach player will have a different set of artifacts to select from.`,
-			components: [
-				new ActionRowBuilder().addComponents(
-					new StringSelectMenuBuilder()
-						.setCustomId("startingartifact")
-						.setPlaceholder("Select an artifact...")
-						.addOptions(options)
-				)
-			],
-			ephemeral: true
-		});
+		interaction.deferReply({ ephemeral: true }).then(() => {
+			return interaction.editReply({
+				content: `You can bring 1 of the following artifacts on this adventure (if you've collected that artifact from a previous adventure):${artifactBulletList}\nEach player will have a different set of artifacts to select from.`,
+				components: [
+					new ActionRowBuilder().addComponents(
+						new StringSelectMenuBuilder()
+							.setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
+							.setPlaceholder("Select an artifact...")
+							.addOptions(options)
+					)
+				]
+			});
+		}).then(reply => {
+			const collector = reply.createMessageComponentCollector({ max: 1 });
+			collector.on("collect", collectedInteraction => {
+				const adventure = getAdventure(collectedInteraction.channelId);
+				const delver = adventure?.delvers.find(delver => delver.id === collectedInteraction.user.id);
+				const [artifactName] = collectedInteraction.values;
+				if (delver?.startingArtifact === "" && artifactName === "None" || adventure.state !== "config") {
+					return;
+				}
+
+				if (artifactName === "None") {
+					delver.startingArtifact = "";
+					collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}** has decided not to bring a starting artifact.`);
+				} else {
+					const isSwitching = delver.startingArtifact !== "";
+					delver.startingArtifact = artifactName;
+					collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}** ${isSwitching ? "has switched to" : "is taking"} ${artifactName} for their starting artifact.`);
+				}
+				setAdventure(adventure);
+			})
+
+			collector.on("end", () => {
+				interaction.deleteReply();
+			})
+		})
 	}
 );
