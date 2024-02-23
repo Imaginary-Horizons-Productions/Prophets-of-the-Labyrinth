@@ -85,7 +85,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
 				embeds: [roomEmbed],
 				components: [
 					new ActionRowBuilder().addComponents(
-						new ButtonBuilder().setCustomId("viewcollectartifact")
+						new ButtonBuilder().setCustomId("collectartifact")
 							.setLabel("Collect Artifact")
 							.setStyle(ButtonStyle.Success)
 					)
