@@ -30,7 +30,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				options.push({
 					label: gear.name,
 					description: trimForSelectOptionDescription(`Possibilities: ${listifyEN(sidegrades, true)}`),
-					value: `${adventure.depth}${SAFE_DELIMITER}${index.toString()}`
+					value: index.toString()
 				})
 			}
 		})
@@ -44,7 +44,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				content: "You can use 1 room action to change a piece of gear to a different upgrade.",
 				components: [
 					new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
+						new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
 							.setPlaceholder("Pick a piece of gear to randomly tinker with...")
 							.setOptions(options)
 					)
@@ -53,14 +53,14 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
-				const [startedDepth, unparsedIndex] = collectedInteraction.values[0].split(SAFE_DELIMITER);
-				const adventure = getAdventure(interaction.channelId);
+				const [_, startedDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
+				const adventure = getAdventure(collectedInteraction.channelId);
 				if (!adventure.room.hasResource("roomAction") || startedDepth !== adventure.depth.toString()) {
 					return;
 				}
 
-				const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
-				const index = parseInt(unparsedIndex);
+				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
+				const index = parseInt(collectedInteraction.values[0]);
 				const gearName = delver.gear[index].name;
 				/** @type {string[]} */
 				const sidegrades = getGearProperty(gearName, "sidegrades");
@@ -68,10 +68,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				transformGear(delver, index, gearName, sidegradeName);
 				adventure.room.history.Tinkerers.push(delver.name);
 				adventure.room.decrementResource("roomAction", 1);
-				interaction.channel.send(`**${interaction.member.displayName}**'s *${gearName}* has been tinkered to **${sidegradeName}**!`);
+				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}**'s *${gearName}* has been tinkered to **${sidegradeName}**!`);
 				setAdventure(adventure);
-				interaction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-					return roomMessage.edit(renderRoom(adventure, interaction.channel));
+				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
+					return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
 				});
 			})
 

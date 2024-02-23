@@ -27,7 +27,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				],
 				components: [
 					new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.room.round}`)
+						new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}`)
 							.setPlaceholder("Pick an item...")
 							.addOptions(Object.keys(adventure.items).slice(0, MAX_SELECT_OPTIONS).reduce((options, item) => options.concat({
 								label: `${item} (Held: ${adventure.items[item]})`,
@@ -40,22 +40,18 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", (collectedInteraction) => {
 				const adventure = getAdventure(collectedInteraction.channelId);
-				const delver = adventure?.delvers.find(delver => delver.id === collectedInteraction.user.id);
-				if (!delver) {
-					return;
-				}
-
-				const round = collectedInteraction.customId.split(SAFE_DELIMITER)[1];
-				if (adventure.room.round !== Number(round)) {
+				const [_, startingDepth, round] = collectedInteraction.customId.split(SAFE_DELIMITER);
+				if (adventure?.room.round !== Number(round) || startingDepth !== adventure.depth.toString()) {
 					return;
 				}
 
 				const [itemName] = collectedInteraction.values;
+				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				const userIndex = adventure.getCombatantIndex(delver);
 				// Filter out: item uses by self and enemy (only count own team)
 				const committedCount = adventure?.room.moves.filter(move => move.name === itemName && move.userReference.team === delver.team && move.userReference.index !== userIndex).length;
 				if (!(itemName in adventure?.items && adventure?.items[itemName] > committedCount)) {
-					interaction.update({ content: `The party doesn't have any more ${itemName}(s) to use.`, embeds: [], components: [] });
+					collectedInteraction.update({ content: `The party doesn't have any more ${itemName}(s) to use.`, embeds: [], components: [] });
 					return;
 				}
 
@@ -81,10 +77,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				adventure.room.moves.push(newMove);
 
 				// Send confirmation text
-				interaction.channel.send(`**${interaction.member.displayName}** ${overwritten ? "switches to ready" : "readies"} a(n) **${itemName}**.`).then(() => {
+				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}** ${overwritten ? "switches to ready" : "readies"} a(n) **${itemName}**.`).then(() => {
 					setAdventure(adventure);
 					if (checkNextRound(adventure)) {
-						endRound(adventure, interaction.channel);
+						endRound(adventure, collectedInteraction.channel);
 					}
 				}).catch(console.error);
 			})
