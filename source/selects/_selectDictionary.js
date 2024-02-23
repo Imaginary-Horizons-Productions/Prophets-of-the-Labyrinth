@@ -10,7 +10,6 @@ for (const file of [
 	"buygear.js",
 	"buyitem.js",
 	"gearcollector.js",
-	"movetarget.js",
 	"repair.js",
 	"sellgear.js",
 	"startingartifact.js",
