@@ -12,7 +12,6 @@ for (const file of [
 	"gearcollector.js",
 	"repair.js",
 	"sellgear.js",
-	"startingartifact.js",
 	"startingchallenges.js",
 	"treasure.js"
 ]) {
