@@ -31,12 +31,12 @@ for (const file of [
 	"rest.js",
 	"routevote.js",
 	"sellgear.js",
+	"selltogearcollector.js",
 	"startingartifacts.js",
 	"stealwishingwellcore.js",
 	"tinker.js",
 	"trainingdummy.js",
-	"upgrade.js",
-	"viewgearcollector.js"
+	"upgrade.js"
 ]) {
 	/** @type {ButtonWrapper} */
 	const button = require(`./${file}`);
