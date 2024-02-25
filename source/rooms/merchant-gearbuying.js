@@ -39,7 +39,7 @@ module.exports = new RoomTemplate("Gear Buying Merchant",
 						.setDisabled(!hasMixedGearOptions)
 				),
 				new ActionRowBuilder().addComponents(
-					new ButtonBuilder().setCustomId("viewgearsales")
+					new ButtonBuilder().setCustomId("sellgear")
 						.setEmoji("💰")
 						.setLabel("Sell Gear")
 						.setStyle(ButtonStyle.Primary)
