@@ -16,7 +16,7 @@ module.exports = new RoomTemplate("Gear Collector",
 				embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
 				components: [
 					new ActionRowBuilder().addComponents(
-						new ButtonBuilder().setCustomId("viewgearcollector")
+						new ButtonBuilder().setCustomId("selltogearcollector")
 							.setStyle(ButtonStyle.Primary)
 							.setLabel("Sell gear")
 							.setEmoji(getNumberEmoji(1))
