@@ -84,9 +84,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				));
 			}
 		}
-		interaction.deferReply({ ephemeral: true }).then(() => {
-			return interaction.editReply({ embeds: [embed], components });
-		}).then(reply => {
+		interaction.reply({ embeds: [embed], components, ephemeral: true, fetchReply: true }).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const [_, startedDepth, round, moveName, actionRowIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
@@ -221,10 +219,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 				collectedInteraction.channel.send(confirmationText).then(() => {
 					setAdventure(adventure);
-					if (checkNextRound(adventure)) {
-						endRound(adventure, collectedInteraction.channel);
-					}
 				}).catch(console.error);
+				if (checkNextRound(adventure)) {
+					endRound(adventure, collectedInteraction.channel);
+				}
 			})
 
 			collector.on("end", () => {
