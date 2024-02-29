@@ -85,7 +85,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		}
 		interaction.deferReply({ ephemeral: true }).then(() => {
-			return interaction.editReply({ embeds: [embed], components })
+			return interaction.editReply({ embeds: [embed], components });
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
