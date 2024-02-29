@@ -27,7 +27,6 @@ for (const file of [
 	"readymove.js",
 	"repair.js",
 	"repairkittinker.js",
-	"replacegear.js",
 	"rest.js",
 	"routevote.js",
 	"sellgear.js",
