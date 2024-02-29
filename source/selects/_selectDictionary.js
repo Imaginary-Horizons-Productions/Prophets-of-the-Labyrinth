@@ -9,9 +9,6 @@ for (const file of [
 	"artifactdupe.js",
 	"buygear.js",
 	"buyitem.js",
-	"gearcollector.js",
-	"repair.js",
-	"sellgear.js",
 	"startingchallenges.js",
 	"treasure.js"
 ]) {

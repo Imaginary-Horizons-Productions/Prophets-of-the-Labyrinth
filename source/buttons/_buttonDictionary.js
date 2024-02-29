@@ -25,18 +25,17 @@ for (const file of [
 	"ready.js",
 	"readyitem.js",
 	"readymove.js",
+	"repair.js",
 	"repairkittinker.js",
-	"replacegear.js",
 	"rest.js",
 	"routevote.js",
+	"sellgear.js",
+	"selltogearcollector.js",
 	"startingartifacts.js",
 	"stealwishingwellcore.js",
 	"tinker.js",
 	"trainingdummy.js",
-	"upgrade.js",
-	"viewgearcollector.js",
-	"viewgearsales.js",
-	"viewrepairs.js"
+	"upgrade.js"
 ]) {
 	/** @type {ButtonWrapper} */
 	const button = require(`./${file}`);
