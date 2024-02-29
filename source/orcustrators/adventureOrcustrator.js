@@ -655,7 +655,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 			if (historyKey in adventure.room.history) {
 				adventure.room.history[historyKey].push(delver.getName());
 			} else {
-				adventure.room.history[historyKey] = delver.getName();
+				adventure.room.history[historyKey] = [delver.getName()];
 			}
 			levelUp(delver, levelsGained, adventure);
 		}
