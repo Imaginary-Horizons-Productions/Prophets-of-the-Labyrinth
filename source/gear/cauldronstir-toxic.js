@@ -37,7 +37,7 @@ module.exports = new GearTemplate("Toxic Cauldron Stir",
 			}
 		} else {
 			if (addedPoison) {
-				return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} was Poisoned.`;
+				return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} was Poisoned.`;
 			} else {
 				return dealDamage([target], user, pendingDamage, false, element, adventure);
 			}
