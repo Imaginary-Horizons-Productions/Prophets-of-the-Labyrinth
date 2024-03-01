@@ -100,10 +100,11 @@ function generateCombatRoomBuilder(extraButtons) {
 					}
 				}
 			} else {
-				if (baseLevels === 1) {
+				const levels = parseInt(levelEntries[0][0].split("levelsGained:")[1]);
+				if (levels === 1) {
 					levelUpField.value = `Everyone gains 1 level.`;
 				} else {
-					levelUpField.value = `Everyone gains ${baseLevels} levels.`;
+					levelUpField.value = `Everyone gains ${levels} levels.`;
 				}
 			}
 			roomEmbed.addFields(levelUpField, { name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
