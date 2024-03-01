@@ -49,18 +49,18 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			start = (start + 1) % adventure.rnTable.length;
 		}
 
-		interaction.deferReply({ ephemeral: true }).then(() => {
-			return interaction.editReply({
-				content: `You can bring 1 of the following artifacts on this adventure (if you've collected that artifact from a previous adventure):${artifactBulletList}\nEach player will have a different set of artifacts to select from.`,
-				components: [
-					new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder()
-							.setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
-							.setPlaceholder("Select an artifact...")
-							.addOptions(options)
-					)
-				]
-			});
+		interaction.reply({
+			content: `You can bring 1 of the following artifacts on this adventure (if you've collected that artifact from a previous adventure):${artifactBulletList}\nEach player will have a different set of artifacts to select from.`,
+			components: [
+				new ActionRowBuilder().addComponents(
+					new StringSelectMenuBuilder()
+						.setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
+						.setPlaceholder("Select an artifact...")
+						.addOptions(options)
+				)
+			],
+			ephemeral: true,
+			fetchReply: true
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {

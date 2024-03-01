@@ -31,15 +31,15 @@ module.exports = new SelectWrapper(mainId, 2000,
 		const { type, count } = adventure.room.resources[name];
 		const isReplacing = type === "gear" && delver.gear.length >= adventure.getGearCapacity();
 		if (isReplacing) {
-			interaction.deferReply({ ephemeral: true }).then(() => {
-				return interaction.editReply({
-					content: `You can only carry ${adventure.getGearCapacity()} pieces of gear at a time. Pick one to replace with the ${name}:`,
-					components: [new ActionRowBuilder().addComponents(delver.gear.map((gear, index) => {
-						return new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${index}`)
-							.setLabel(`Discard ${gear.name}`)
-							.setStyle(ButtonStyle.Secondary)
-					}))]
-				});
+			interaction.reply({
+				content: `You can only carry ${adventure.getGearCapacity()} pieces of gear at a time. Pick one to replace with the ${name}:`,
+				components: [new ActionRowBuilder().addComponents(delver.gear.map((gear, index) => {
+					return new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${index}`)
+						.setLabel(`Discard ${gear.name}`)
+						.setStyle(ButtonStyle.Secondary)
+				}))],
+				ephemeral: true,
+				fetchReply: true
 			}).then(reply => {
 				const collector = reply.createMessageComponentCollector({ max: 1 });
 				collector.on("collect", collectedInteraction => {

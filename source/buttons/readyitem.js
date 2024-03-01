@@ -17,25 +17,25 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;
 		}
-		interaction.deferReply({ ephemeral: true }).then(() => {
-			return interaction.editReply({
-				embeds: [
-					new EmbedBuilder().setColor(getColor(adventure.room.element))
-						.setAuthor(randomAuthorTip())
-						.setTitle("Readying an Item")
-						.setDescription("Using an item has priority (it'll happen before non-priority actions).\n\nPick one option from below as your move for this round:")
-				],
-				components: [
-					new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}`)
-							.setPlaceholder("Pick an item...")
-							.addOptions(Object.keys(adventure.items).slice(0, MAX_SELECT_OPTIONS).reduce((options, item) => options.concat({
-								label: `${item} (Held: ${adventure.items[item]})`,
-								description: trimForSelectOptionDescription(getItem(item).description),
-								value: item
-							}), [])))
-				]
-			});
+		interaction.reply({
+			embeds: [
+				new EmbedBuilder().setColor(getColor(adventure.room.element))
+					.setAuthor(randomAuthorTip())
+					.setTitle("Readying an Item")
+					.setDescription("Using an item has priority (it'll happen before non-priority actions).\n\nPick one option from below as your move for this round:")
+			],
+			components: [
+				new ActionRowBuilder().addComponents(
+					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}`)
+						.setPlaceholder("Pick an item...")
+						.addOptions(Object.keys(adventure.items).slice(0, MAX_SELECT_OPTIONS).reduce((options, item) => options.concat({
+							label: `${item} (Held: ${adventure.items[item]})`,
+							description: trimForSelectOptionDescription(getItem(item).description),
+							value: item
+						}), [])))
+			],
+			ephemeral: true,
+			fetchReply: true
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", (collectedInteraction) => {

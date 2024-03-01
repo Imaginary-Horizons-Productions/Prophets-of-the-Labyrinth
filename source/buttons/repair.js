@@ -39,15 +39,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		interaction.deferReply({ ephemeral: true }).then(() => {
-			return interaction.editReply({
-				content: "You can use 1 room action to repair a piece of gear. That piece of gear will regain half its max durability.",
-				components: [new ActionRowBuilder().addComponents(
-					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
-						.setPlaceholder("Pick a piece of gear to repair...")
-						.setOptions(options)
-				)]
-			});
+		interaction.reply({
+			content: "You can use 1 room action to repair a piece of gear. That piece of gear will regain half its max durability.",
+			components: [new ActionRowBuilder().addComponents(
+				new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
+					.setPlaceholder("Pick a piece of gear to repair...")
+					.setOptions(options)
+			)],
+			ephemeral: true,
+			fetchReply: true
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {

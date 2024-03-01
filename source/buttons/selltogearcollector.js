@@ -26,17 +26,17 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		});
 		if (saleOptions.length > 0) {
-			interaction.deferReply({ ephemeral: true }).then(() => {
-				return interaction.editReply({
-					content: "Seems like the Gear Collector is willing to pay extra for your gear.",
-					components: [
-						new ActionRowBuilder().addComponents(
-							new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
-								.setPlaceholder("Select a piece of gear to sell...")
-								.setOptions(saleOptions)
-						)
-					]
-				})
+			interaction.reply({
+				content: "Seems like the Gear Collector is willing to pay extra for your gear.",
+				components: [
+					new ActionRowBuilder().addComponents(
+						new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
+							.setPlaceholder("Select a piece of gear to sell...")
+							.setOptions(saleOptions)
+					)
+				],
+				ephemeral: true,
+				fetchReply: true
 			}).then(reply => {
 				const collector = reply.createMessageComponentCollector({ max: 1 });
 				collector.on("collect", collectedIntearction => {

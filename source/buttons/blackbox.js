@@ -26,20 +26,20 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		interaction.deferReply({ ephemeral: true }).then(() => {
-			return interaction.editReply({
-				content: "You can trade a piece of gear the mysterious Rare gear in the black box.",
-				components: [
-					new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
-							.setPlaceholder("Pick a piece of gear to trade...")
-							.setOptions(delver.gear.map((gear, index) => ({
-								label: gear.name,
-								value: index.toString()
-							})))
-					)
-				]
-			});
+		interaction.reply({
+			content: "You can trade a piece of gear the mysterious Rare gear in the black box.",
+			components: [
+				new ActionRowBuilder().addComponents(
+					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
+						.setPlaceholder("Pick a piece of gear to trade...")
+						.setOptions(delver.gear.map((gear, index) => ({
+							label: gear.name,
+							value: index.toString()
+						})))
+				)
+			],
+			ephemeral: true,
+			fetchReply: true
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", (collectedInteraction) => {

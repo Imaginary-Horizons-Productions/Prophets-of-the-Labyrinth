@@ -32,30 +32,17 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				})
 			}
 		}
-		interaction.deferReply({ ephemeral: true }).then(() => {
-			if (options.length) {
-				return interaction.editReply({
-					content: "Select an artifact to keep from this adventure.",
-					components: [new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder()
-							.setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
-							.setPlaceholder("Select an artifact...")
-							.addOptions(options)
-							.setDisabled(options.length < 1)
-					)]
-				});
-			} else {
-				interaction.editReply({
-					content: "You have already collected all of the artifacts the party obtained in this adventure.",
-					components: [new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder()
-							.setCustomId(SKIP_INTERACTION_HANDLING)
-							.setPlaceholder("Select an artifact...")
-							.addOptions(EMPTY_SELECT_OPTION_SET)
-							.setDisabled(true)
-					)]
-				});
-			}
+		interaction.reply({
+			content: options.length > 0 ? "Select an artifact to keep from this adventure." : "You have already collected all of the artifacts the party obtained in this adventure.",
+			components: [new ActionRowBuilder().addComponents(
+				new StringSelectMenuBuilder()
+					.setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
+					.setPlaceholder("Select an artifact...")
+					.addOptions(options.length > 0 ? options : EMPTY_SELECT_OPTION_SET)
+					.setDisabled(options.length < 1)
+			)],
+			ephemeral: true,
+			fetchReply: true
 		}).then(reply => {
 			if (reply) {
 				const collector = reply.createMessageComponentCollector({ max: 1 });
