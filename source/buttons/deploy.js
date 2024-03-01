@@ -27,19 +27,18 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 			}
 		}
-		interaction.deferReply({ ephemeral: true }).then(() => {
-			return interaction.editReply({
-				content: `Select your archetype for this adventure!\n\nArchetypes can predict different information in combat and have different weaknesses and resistances based on their element.`,
-				components: [
-					new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder()
-							.setCustomId(`${SKIP_INTERACTION_HANDLING}archetype`)
-							.setPlaceholder("Select an archetype...")
-							.addOptions(archetypeOptions)
-					)
-				],
-				fetchReply: true
-			})
+		interaction.reply({
+			content: `Select your archetype for this adventure!\n\nArchetypes can predict different information in combat and have different weaknesses and resistances based on their element.`,
+			components: [
+				new ActionRowBuilder().addComponents(
+					new StringSelectMenuBuilder()
+						.setCustomId(`${SKIP_INTERACTION_HANDLING}archetype`)
+						.setPlaceholder("Select an archetype...")
+						.addOptions(archetypeOptions)
+				)
+			],
+			ephemeral: true,
+			fetchReply: true
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {

@@ -29,9 +29,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				.setPlaceholder("Select a challenge...")
 				.addOptions(options)
 		)];
-		interaction.deferReply({ ephemeral: true }).then(() => {
-			return interaction.editReply({ content: "Shoot for glory (and higher scores)! Add a challenge to the run:", components });
-		}).then(reply => {
+		interaction.reply({ content: "Shoot for glory (and higher scores)! Add a challenge to the run:", components, ephemeral: true, fetchReply: true }).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);

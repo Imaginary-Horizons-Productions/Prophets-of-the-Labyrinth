@@ -36,17 +36,17 @@ module.exports = new SelectWrapper(mainId, 3000,
 			interaction.reply({ content: `${interaction.member.displayName} buys a ${name} for ${cost}g.` });
 			setAdventure(adventure);
 		} else {
-			interaction.deferReply({ ephemeral: true }).then(() => {
-				return interaction.editReply({
-					content: `You can only carry ${adventure.getGearCapacity()} pieces of gear at a time. Pick one to replace:`,
-					components: [new ActionRowBuilder().addComponents(
-						delver.gear.map((gear, index) => {
-							return new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${index}`)
-								.setLabel(`Discard ${gear.name}`)
-								.setStyle(ButtonStyle.Secondary)
-						})
-					)]
-				});
+			interaction.reply({
+				content: `You can only carry ${adventure.getGearCapacity()} pieces of gear at a time. Pick one to replace:`,
+				components: [new ActionRowBuilder().addComponents(
+					delver.gear.map((gear, index) => {
+						return new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${index}`)
+							.setLabel(`Discard ${gear.name}`)
+							.setStyle(ButtonStyle.Secondary)
+					})
+				)],
+				ephemeral: true,
+				fetchReply: true
 			}).then(reply => {
 				const collector = reply.createMessageComponentCollector({ max: 1 });
 				collector.on("collect", collectedInteraction => {
