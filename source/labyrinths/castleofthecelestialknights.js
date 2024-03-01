@@ -2,6 +2,7 @@ const { LabyrinthTemplate } = require("../classes");
 
 module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 	"Light",
+	"Atop this castle resides the Starry Knight, boss of the Celestial Knights. Gather weapons and steel your nerves to overthrow the tyrant!",
 	15,
 	[15],
 	{

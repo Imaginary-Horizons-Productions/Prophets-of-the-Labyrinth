@@ -2,6 +2,7 @@ const { LabyrinthTemplate } = require("../classes");
 
 module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 	"Water",
+	"These are all normal animals, right?",
 	15,
 	[15],
 	{

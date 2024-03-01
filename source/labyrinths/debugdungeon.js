@@ -2,6 +2,7 @@ const { LabyrinthTemplate } = require("../classes");
 
 module.exports = new LabyrinthTemplate("Debug Dungeon",
 	"Untyped",
+	"This labyrinth contains whatever the devs were testing most recently. Balance not guaranteed!",
 	5,
 	[5],
 	{

@@ -5,7 +5,7 @@ const { setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getChallenge } = require('../challenges/_challengeDictionary');
 const { getColor } = require('../util/elementUtil');
 const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator');
-const { prerollBoss, defaultLabyrinths, labyrinthExists } = require('../labyrinths/_labyrinthDictionary');
+const { prerollBoss, defaultLabyrinths, labyrinthExists, getLabyrinthProperty } = require('../labyrinths/_labyrinthDictionary');
 const { SAFE_DELIMITER } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
@@ -68,7 +68,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 				adventure.setId(thread.id);
 				setAdventure(adventure);
 				thread.send({
-					content: `This is ${interaction.member}'s new adventure. The adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
+					content: `**${labyrinthName}**\n*${getLabyrinthProperty(labyrinthName, "description")}*\nParty Leader: ${interaction.member}\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
 					components: [
 						new ActionRowBuilder().addComponents(
 							new ButtonBuilder().setCustomId("ready")
