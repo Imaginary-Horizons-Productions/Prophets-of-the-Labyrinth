@@ -2,6 +2,7 @@ const { LabyrinthTemplate } = require("../classes");
 
 module.exports = new LabyrinthTemplate("Mechahive",
 	"Darkness",
+	"The source of the mechabee threat! Make sure to bring some Poison antidote.",
 	15,
 	[15],
 	{

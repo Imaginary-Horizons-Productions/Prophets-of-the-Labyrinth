@@ -2,6 +2,7 @@ const { LabyrinthTemplate } = require("../classes");
 
 module.exports = new LabyrinthTemplate("name",
 	"Untyped",
+	"description",
 	10,
 	[10],
 	{

@@ -2,6 +2,7 @@ const { LabyrinthTemplate } = require("../classes");
 
 module.exports = new LabyrinthTemplate("Everything Bagel",
 	"Untyped",
+	"Every and anything is possible in the great Everything Bagel of life! All content has an equal to chance to roll here, balance not guaranteed!",
 	15,
 	[15],
 	{
