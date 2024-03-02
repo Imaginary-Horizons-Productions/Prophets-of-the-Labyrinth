@@ -196,6 +196,7 @@ Regains durability when entering new rooms
 
 **Available on**
 - Iron Fist Stance (Light)
+- Fever Break (Darkness)
 - Herb Basket (Earth)
 
 ### Poised
@@ -293,6 +294,7 @@ Increases the user's damage cap
 
 **Available on**
 - Wolf Ring (Untyped)
+- Fever Break (Darkness)
 
 ### Sweeping
 Targets whole team
@@ -364,6 +366,7 @@ Increased priority
 - all Bows (Wind)
 - all Sun Flares (Light)
 - Barrier (Earth)
+- Fever Break (Darkness)
 - Herb Basket (Earth)
 - Life Drain (Darkness)
 

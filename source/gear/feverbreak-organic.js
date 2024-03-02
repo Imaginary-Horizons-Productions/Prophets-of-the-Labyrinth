@@ -3,16 +3,18 @@ const { dealDamage, removeModifier } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 const { SURPASSING_VALUE } = require('../constants');
 
-module.exports = new GearTemplate("Fever Break",
+module.exports = new GearTemplate("Organic Fever Break",
     "Deals to a foe, the damage that is pending from any Poison and Frail on them, and then removes those debuffs",
     "Poison and Frail not removed",
     "Spell",
-    "Dark",
+    "Darkness",
     350,
     ([target], user, isCrit, adventure) => {
+        const { element } = module.exports;
         const funnelCount = adventure.getArtifactCount("Spiral Funnel");
-        const { Poison, Frail } = target.modifiers;
-        let pendingDamage = (10 + 5 * funnelCount) * (Poison ** 2 + Poison) / 2 + (20 + 5 * funnelCount) * Frail;
+        const poisons = target.getModifierStacks("Poison");
+        const frails = target.getModifierStacks("Frail");
+        let pendingDamage = (10 + 5 * funnelCount) * (poisons ** 2 + poisons) / 2 + (20 + 5 * funnelCount) * frails;
         let cleanseText = "";
         if (user.element === element) {
             target.addStagger("elementMatchFoe");
@@ -31,7 +33,7 @@ module.exports = new GearTemplate("Fever Break",
         }
         return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${cleanseText}`;
     }
-).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
-    .setUpgrades("Organic Fever Break", "Surpassing Fever Break", "Urgent Fever Break")
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+    .setSidegrades("Surpassing Fever Break", "Urgent Fever Break")
     .setDurability(5)
     .setDamage(0);
