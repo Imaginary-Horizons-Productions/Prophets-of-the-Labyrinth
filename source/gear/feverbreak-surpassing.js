@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Fever Break",
     "Poison and Frail not removed",
     "Spell",
     "Dark",
-    200,
+    350,
     ([target], user, isCrit, adventure) => {
         const funnelCount = adventure.getArtifactCount("Spiral Funnel");
         const { Poison, Frail } = target.modifiers;
@@ -34,4 +34,5 @@ module.exports = new GearTemplate("Fever Break",
 ).setTargetingTags({ target: "single", team: "foe", needsLivingTargets: true })
     .setUpgrades("Organic Fever Break", "Surpassing Fever Break", "Urgent Fever Break")
     .setDurability(5)
-    .setDamage(0);
+    .setDamage(0)
+	.setBonus(SURPASSING_VALUE);

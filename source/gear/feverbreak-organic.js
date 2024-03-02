@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Fever Break",
     "Poison and Frail not removed",
     "Spell",
     "Dark",
-    200,
+    350,
     ([target], user, isCrit, adventure) => {
         const funnelCount = adventure.getArtifactCount("Spiral Funnel");
         const { Poison, Frail } = target.modifiers;
