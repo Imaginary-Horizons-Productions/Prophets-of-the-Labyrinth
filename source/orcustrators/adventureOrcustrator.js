@@ -137,7 +137,10 @@ function nextRoom(roomType, thread) {
 		delver.isStunned = false;
 		delver.gear.forEach(gear => {
 			if (gear.name.startsWith("Organic")) {
-				gear.durability++;
+				const maxDurability = getGearProperty(gear.name, "maxDurability");
+				if (gear.durability < maxDurability) {
+					gear.durability++;
+				}
 			}
 		})
 	})
