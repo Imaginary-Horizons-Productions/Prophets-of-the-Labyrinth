@@ -19,8 +19,8 @@ module.exports = new GearTemplate("Fever Break",
         if (user.element === element) {
             target.addStagger("elementMatchFoe");
         }
+        let removedDebuffs = [];
         if (!isCrit) {
-            removedDebuffs = [];
             if (removeModifier(target, { name: "Poison", stacks: "all" })) {
                 removedDebuffs.push("Poison");
             }
