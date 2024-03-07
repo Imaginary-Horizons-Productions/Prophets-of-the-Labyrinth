@@ -31,7 +31,7 @@ The Chemist was a powerful archetype, but the gameplay didn't allign with the th
 - New Challenge: Training Weights
 - Reworked the Treasure Elemental ||Instead of a timed life, delvers can spend their turn adding Curse of Midas to the Elemental, which they now must defeat||
 - Combined event rooms "Elemental Research" and "HP Redistribution" into "Imp Contract Faire"
-- New Archetype: Fighter - No predict or extra effects on gear, double stat growths
+- New Archetype: Fighter - Joke predict, simple starting gear, double stat growths
 ## Prophets of the Labyrinth v0.13.2:
 - Fixed a crash caused by new player profiles not rolling starting archetypes
 ## Prophets of the Labyrinth v0.13.1:
