@@ -5,7 +5,7 @@ const { listifyEN } = require('../util/textUtil.js');
 module.exports = new GearTemplate("Appease",
 	"Shrug off all insults",
 	"N/A",
-	"Technique",
+	"Action",
 	"Untyped",
 	0,
 	(targets, user, isCrit, adventure) => {
