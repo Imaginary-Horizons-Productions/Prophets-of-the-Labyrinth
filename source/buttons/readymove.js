@@ -162,7 +162,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					const targetType = getGearProperty(moveName, "targetingTags").type;
 					const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
 					if (targetType.startsWith("blast") || (crystalShardCount > 0 && getGearProperty(moveName, "category") === "Spell")) {
-						const blastRange = parseInt(targetType.split(SAFE_DELIMITER)[1]) ?? 0;
+						const blastRange = parseInt(targetType.split(SAFE_DELIMITER)[1] ?? 0);
 						const range = crystalShardCount + blastRange;
 						const targetTeamMaxIndex = targetTeam === "delver" ? adventure.delvers.length - 1 : adventure.room.enemies.length - 1;
 
