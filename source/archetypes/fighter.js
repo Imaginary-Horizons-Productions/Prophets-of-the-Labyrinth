@@ -17,7 +17,7 @@ module.exports = new ArchetypeTemplate("Fighter",
 			`I'm a fighter.`,
 			`I don't have any fancy gear.`,
 			`I have double stat growths!`,
-			`¯\\\\(ツ)/¯`,
+			"¯\\_(ツ)\_/¯",
 			`This delve into ${adventure.name} is exciting!`,
 			`I *think* it's <t:${Math.floor(Date.now() / 1000)}:t>.`,
 			`It's high noon... (<t:${Math.floor(new Date().setHours(12, 0, 0) / 1000)}:R>)`
