@@ -16,6 +16,7 @@ async function executeSubcommand(interaction, ...args) {
 	}
 
 	const fields = [
+		{ name: "Category", value: getGearProperty(gearName, "category") },
 		{ name: "Max Durability", value: getGearProperty(gearName, "maxDurability").toString() },
 		{ name: "Base Value", value: `${getGearProperty(gearName, "cost").toString()}g` }
 	];
