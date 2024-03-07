@@ -30,7 +30,7 @@ function getCompany(companyId) {
 		throw new Error("Attempted to get company with falsey id");
 	}
 
-	const company = companyDictionary.get(companyId);
+	let company = companyDictionary.get(companyId);
 	if (!company) {
 		company = new Company(companyId);
 		setCompany(company);
