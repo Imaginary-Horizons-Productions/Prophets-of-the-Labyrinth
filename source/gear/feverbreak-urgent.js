@@ -4,7 +4,7 @@ const { listifyEN } = require('../util/textUtil');
 const { SURPASSING_VALUE } = require('../constants');
 
 module.exports = new GearTemplate("Urgent Fever Break",
-    "Deals to a foe, the damage that is pending from any Poison and Frail on them, and then removes those debuffs",
+    "Deals @{element} damage to a foe (with priority), equal to damage that is pending from any Poison and Frail on them, and then removes those debuffs",
     "Poison and Frail not removed",
     "Spell",
     "Darkness",
@@ -19,8 +19,8 @@ module.exports = new GearTemplate("Urgent Fever Break",
         if (user.element === element) {
             target.addStagger("elementMatchFoe");
         }
+        let removedDebuffs = [];
         if (!isCrit) {
-            removedDebuffs = [];
             if (removeModifier(target, { name: "Poison", stacks: "all" })) {
                 removedDebuffs.push("Poison");
             }
@@ -36,5 +36,4 @@ module.exports = new GearTemplate("Urgent Fever Break",
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
     .setSidegrades("Organic Fever Break", "Surpassing Fever Break")
     .setDurability(5)
-    .setDamage(0)
     .setPriority(1);
