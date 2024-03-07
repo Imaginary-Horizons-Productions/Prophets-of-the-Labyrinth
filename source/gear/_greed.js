@@ -5,7 +5,7 @@ const { listifyEN } = require('../util/textUtil.js');
 module.exports = new GearTemplate("Greed",
 	"Add @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to all Treasure Elementals with priority",
 	"N/A",
-	"Technique",
+	"Action",
 	"Untyped",
 	0,
 	(targets, user, isCrit, adventure) => {
