@@ -7,7 +7,7 @@ class GearTemplate {
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
 	 * @param {string} critDescriptionInput
-	 * @param {"Weapon" | "Armor" | "Spell" | "Pact" | "Trinket" | "Technique"} categoryInput
+	 * @param {"Weapon" | "Armor" | "Spell" | "Pact" | "Trinket" | "Technique" | "Action"} categoryInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementInput
 	 * @param {number} costInput
 	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} effectInput
