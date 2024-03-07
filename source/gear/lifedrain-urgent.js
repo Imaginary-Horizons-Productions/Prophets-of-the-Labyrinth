@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Urgent Life Drain",
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		return `${dealDamage([target], user, damage, false, element, adventure)} ${gainHealth(user, pendingHealing, adventure)}`;
+		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${gainHealth(user, pendingHealing, adventure)}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Life Drain", "Reactive Life Drain")
