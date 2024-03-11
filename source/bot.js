@@ -1,3 +1,19 @@
+const log = console.log;
+
+console.log = function () {
+	log.apply(console, [`<t:${Math.floor(Date.now() / 1000)}> ` + arguments[0]].concat(Array.prototype.slice.call(arguments, 1)));
+}
+
+const error = console.error;
+
+console.error = function () {
+	if (arguments[0] instanceof Error) {
+		error.apply(console, [`<t:${Math.floor(Date.now() / 1000)}> ` + arguments[0].stack].concat(Array.prototype.slice.call(arguments, 1)));
+	} else {
+		error.apply(console, [`<t:${Math.floor(Date.now() / 1000)}> ` + arguments[0]].concat(Array.prototype.slice.call(arguments, 1)));
+	}
+}
+
 //#region Imports
 const { REST, Routes, Client, ActivityType, IntentsBitField, Events } = require("discord.js");
 const { readFile, writeFile } = require("fs").promises;
