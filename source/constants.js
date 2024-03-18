@@ -27,6 +27,7 @@ module.exports = {
 	testGuildId,
 	feedbackChannelId,
 	announcementsChannelId,
+	commandIds: {},
 
 	// Internal Convention
 	lastPostedVersion,

@@ -1,3 +1,5 @@
+const { commandIds } = require("../constants");
+
 /** @type {Record<number, string>} */
 const NUMBER_EMOJI = {
 	0: '0️⃣',
@@ -144,6 +146,18 @@ function listifyEN(texts, isMutuallyExclusive) {
 	}
 }
 
+/**
+ * @param {string} commandName
+ * @param {string?} subcommandName
+ */
+function commandMention(commandName, subcommandName) {
+	if (!(commandName in commandIds)) {
+		return `\`/${commandName}${subcommandName ? ` ${subcommandName}` : ""}\``;
+	}
+
+	return `</${commandName}${subcommandName ? ` ${subcommandName}` : ""}:${commandIds[commandName]}>`;
+}
+
 module.exports = {
 	getNumberEmoji,
 	generateTextBar,
@@ -152,5 +166,6 @@ module.exports = {
 	calculateTagContent,
 	ordinalSuffixEN,
 	trimForSelectOptionDescription,
-	listifyEN
+	listifyEN,
+	commandMention
 };
