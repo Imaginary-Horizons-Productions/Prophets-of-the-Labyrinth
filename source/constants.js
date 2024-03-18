@@ -8,6 +8,8 @@ module.exports = {
 	ZERO_WIDTH_WHITESPACE: "\u200B",
 
 	// Discord Constants
+	serverGuideMention: "<id:guide>",
+	channelBrowserMention: "<id:customize>",
 	MAX_MESSAGE_CONTENT_LENGTH: 2000,
 	MAX_EMBED_AUTHOR_NAME_LENGTH: 256,
 	MAX_EMBED_TITLE_LENGTH: 256,
