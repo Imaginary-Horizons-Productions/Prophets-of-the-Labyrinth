@@ -15,7 +15,7 @@ const { REST, Routes, Client, ActivityType, IntentsBitField, Events } = require(
 const { readFile, writeFile } = require("fs").promises;
 
 const { Company } = require("./classes");
-const { SAFE_DELIMITER, authPath, testGuildId, announcementsChannelId, lastPostedVersion, SKIP_INTERACTION_HANDLING } = require("./constants.js");
+const { SAFE_DELIMITER, authPath, testGuildId, announcementsChannelId, lastPostedVersion, SKIP_INTERACTION_HANDLING, commandIds } = require("./constants.js");
 
 const { loadCompanies, setCompany } = require("./orcustrators/companyOrcustrator.js");
 const { loadAdventures } = require("./orcustrators/adventureOrcustrator.js");
@@ -62,12 +62,16 @@ client.on(Events.ClientReady, () => {
 	console.log(`Connected as ${client.user.tag}`);
 
 	if (process.argv[4] === "prod") {
-		(async () => {
+		(() => {
 			try {
-				await new REST({ version: 9 }).setToken(require(authPath).token).put(
+				new REST({ version: 9 }).setToken(require(authPath).token).put(
 					Routes.applicationCommands(client.user.id),
 					{ body: slashData }
-				)
+				).then(commands => {
+					for (const command of commands) {
+						commandIds[command.name] = command.id;
+					}
+				})
 			} catch (error) {
 				console.error(error);
 			}
@@ -99,6 +103,12 @@ client.on(Events.ClientReady, () => {
 					})
 				})
 			}).catch(console.error);
+		});
+	} else {
+		client.application.commands.fetch({ guildId: testGuildId }).then(commands => {
+			commands.each(command => {
+				commandIds[command.name] = command.id;
+			})
 		});
 	}
 })
