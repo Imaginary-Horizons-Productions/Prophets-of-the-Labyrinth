@@ -146,16 +146,16 @@ function listifyEN(texts, isMutuallyExclusive) {
 	}
 }
 
-/**
- * @param {string} commandName
- * @param {string?} subcommandName
+/** generates a command mention, which users can click to shortcut them to using the command
+ * @param {string} fullCommand for subcommands append a whitespace and the subcommandName
  */
-function commandMention(commandName, subcommandName) {
-	if (!(commandName in commandIds)) {
-		return `\`/${commandName}${subcommandName ? ` ${subcommandName}` : ""}\``;
+function commandMention(fullCommand) {
+	const [mainCommand] = fullCommand.split(" ");
+	if (!(mainCommand in commandIds)) {
+		return `\`/${fullCommand}\``;
 	}
 
-	return `</${commandName}${subcommandName ? ` ${subcommandName}` : ""}:${commandIds[commandName]}>`;
+	return `</${fullCommand}:${commandIds[mainCommand]}>`;
 }
 
 module.exports = {

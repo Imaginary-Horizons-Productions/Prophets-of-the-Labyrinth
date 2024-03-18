@@ -43,7 +43,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				});
 			})
 
-			interaction.reply({ content: `The adventure has begun (and closed to new delvers joining)! You can use ${commandMention("adventure", "party-stats")} or ${commandMention("adventure", "inspect-self")} to check adventure status.`, fetchReply: true }).then(message => {
+			interaction.reply({ content: `The adventure has begun (and closed to new delvers joining)! You can use ${commandMention("adventure party-stats")} or ${commandMention("adventure inspect-self")} to check adventure status.`, fetchReply: true }).then(message => {
 				message.pin();
 				adventure.state = "ongoing";
 				adventure.messageIds.utility = message.id;
