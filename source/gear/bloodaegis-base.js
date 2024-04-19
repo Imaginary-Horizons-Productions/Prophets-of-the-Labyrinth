@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { payHP } = require('../util/combatantUtil.js');
+const { payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Blood Aegis",
 	"Pay @{hpCost} hp; gain @{protection} protection and intercept a later single target move",
@@ -11,12 +11,12 @@ module.exports = new GearTemplate("Blood Aegis",
 		const { element, protection, critMultiplier, hpCost } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingProtection *= critMultiplier;
 		}
-		user.protection += pendingProtection;
+		addProtection([user], pendingProtection);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;

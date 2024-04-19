@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Midas Staff",
 	"Apply @{mod0Stacks} @{mod0} to a combatant",
@@ -15,12 +15,12 @@ module.exports = new GearTemplate("Midas Staff",
 		}
 		if (user.element === element) {
 			if (target.team === user.team) {
-				target.addStagger("elementMatchAlly");
+				changeStagger([target], "elementMatchAlly");
 			} else {
-				target.addStagger("elementMatchFoe");
+				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const addedCurse = addModifier(target, pendingCurse);
+		const addedCurse = addModifier([target], pendingCurse).length > 0;
 		if (addedCurse) {
 			return `${target.getName(adventure.room.enemyIdMap)} gains Curse of Midas.`;
 		} else {

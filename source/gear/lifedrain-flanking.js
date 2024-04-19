@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, gainHealth } = require('../util/combatantUtil.js');
+const { addModifier, dealDamage, gainHealth, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Flanking Life Drain",
 	"Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}, then gain @{healing} hp",
@@ -7,19 +8,19 @@ module.exports = new GearTemplate("Flanking Life Drain",
 	"Spell",
 	"Darkness",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [exposed], damage, healing, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let pendingHealing = healing;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
-		const addedExposed = addModifier(target, exposed);
-		return `${damageText}${addedExposed ? ` ${target.getName(adventure.room.enemyIdMap)} is Exposed.` : ""} ${gainHealth(user, pendingHealing, adventure)}`;
+		const resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const exposedTargets = addModifier(targets, exposed);
+		return `${resultText}${exposedTargets.length > 0 ? ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}` : ""} ${gainHealth(user, pendingHealing, adventure)}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Life Drain", "Urgent Life Drain")

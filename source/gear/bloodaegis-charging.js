@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, payHP } = require('../util/combatantUtil.js');
+const { addModifier, payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Charging Blood Aegis",
 	"Pay @{hpCost} hp; gain @{protection} protection, @{mod0Stacks} @{mod0}, intercept a later single target move",
@@ -11,13 +11,13 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		const { element, modifiers: [powerUp], protection, critMultiplier, hpCost } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingProtection *= critMultiplier;
 		}
-		user.protection += pendingProtection;
-		const addedPowerUp = addModifier(user, powerUp);
+		addProtection([user], pendingProtection);
+		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;

@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { dealDamage } = require('../util/combatantUtil');
+const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vexing Prismatic Blast",
 	"Strike a foe and adjacent foes for @{damage} @{element} damage (+@{bonus} if target has any debuffs)",
@@ -14,10 +14,10 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 		let nonDebuffedDamage = user.getPower() + damage;
 		const debuffedTargets = [];
 		const nondebuffedTargets = [];
+		if (user.element === element) {
+			changeStagger(targets, "elementMatchFoe");
+		}
 		targets.forEach(target => {
-			if (user.element === element) {
-				target.addStagger("elementMatchFoe");
-			}
 			if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 				debuffedTargets.push(target);
 			} else {

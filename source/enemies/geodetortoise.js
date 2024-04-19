@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { addModifier, dealDamage } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf, nextRandom } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 
@@ -16,13 +16,13 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	element: "Earth",
 	description: `Deals ${getEmoji("Earth")} damage to a single foe`,
 	priority: 0,
-	effect: ([target], user, isCrit, adventure) => {
+	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 50;
 		if (isCrit) {
 			damage *= 2;
 		}
-		target.addStagger("elementMatchFoe");
-		return dealDamage([target], user, damage, false, user.element, adventure);
+		changeStagger(targets, "elementMatchFoe");
+		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -34,12 +34,12 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let addedPowerUp = false;
-		user.protection += 25;
+		addProtection([user], 25);
 		if (isCrit) {
-			addedPowerUp = addModifier(user, { name: "Power Up", stacks: 50 });
-			user.addStagger("elementMatchAlly");
+			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 50 }).length > 0;
+			changeStagger([user], "elementMatchAlly");
 		} else {
-			addedPowerUp = addModifier(user, { name: "Power Up", stacks: 25 });
+			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 25 }).length > 0;
 		}
 		return `It gains protection${addedPowerUp ? ` and is Powered Up` : ""}.`;
 	},

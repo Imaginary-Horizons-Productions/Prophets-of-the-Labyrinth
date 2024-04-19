@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { changeStagger } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("War Cry",
@@ -29,9 +30,7 @@ module.exports = new GearTemplate("War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
-		targetArray.forEach(target => {
-			target.addStagger(pendingStaggerStacks);
-		})
+		changeStagger(targetArray, pendingStaggerStacks);
 		return `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })

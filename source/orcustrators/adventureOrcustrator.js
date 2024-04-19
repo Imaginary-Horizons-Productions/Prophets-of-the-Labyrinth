@@ -15,7 +15,7 @@ const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
-const { removeModifier, addModifier, dealModifierDamage, gainHealth } = require("../util/combatantUtil");
+const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
 const { renderRoom, updateRoomHeader } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
@@ -313,15 +313,15 @@ function newRound(adventure, thread, lastRoundText) {
 				const boatPartsCount = adventure.getArtifactCount("Boat Parts");
 				if (boatPartsCount > 0 && adventure.room.round <= boatPartsCount + 1 && combatant.team === "delver") {
 					const boatProtection = boatPartsCount * 25 + 25;
-					combatant.protection += boatProtection;
+					addProtection([combatant], boatProtection);
 					adventure.updateArtifactStat("Protection Generated", boatProtection);
 				}
 
 				// Roll Round Speed
 				const percentBonus = (adventure.generateRandomNumber(21, "battle") - 10) / 100;
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
-				removeModifier(combatant, { name: "Slow", stacks: 1, force: true });
-				removeModifier(combatant, { name: "Quicken", stacks: 1, force: true });
+				removeModifier([combatant], { name: "Slow", stacks: 1, force: true });
+				removeModifier([combatant], { name: "Quicken", stacks: 1, force: true });
 
 				// Roll Critical Hit
 				const baseCritChance = combatant.getCritRate() / 100;
@@ -371,7 +371,7 @@ function newRound(adventure, thread, lastRoundText) {
 				// Persisting Round Effects
 				const floatingMistStacks = combatant.getModifierStacks("Floating Mist Stance");
 				if (floatingMistStacks > 0) {
-					addModifier(combatant, { name: "Evade", stacks: floatingMistStacks * 2 });
+					addModifier([combatant], { name: "Evade", stacks: floatingMistStacks * 2 });
 				}
 			})
 	}
@@ -399,7 +399,7 @@ function resolveMove(move, adventure) {
 		return "";
 	}
 
-	let moveText = `**${user.getName(adventure.room.enemyIdMap)}** `;
+	let moveText = `**${getNames([user], adventure)[0]}** `;
 	if (!user.isStunned && !move.name.startsWith("Unstoppable")) {
 		if (move.isCrit) {
 			moveText = `💥${moveText}`;
@@ -460,13 +460,13 @@ function resolveMove(move, adventure) {
 			if (livingTargets.length > 0) {
 				let deadTargetText = "";
 				if (deadTargets.length > 0) {
-					deadTargetText += ` ${listifyEN(deadTargets.map(target => target.getName(adventure.room.enemyIdMap)), false)} ${deadTargets === 1 ? "was" : "were"} already dead!`
+					deadTargetText += ` ${listifyEN(getNames(deadTargets, adventure), false)} ${deadTargets === 1 ? "was" : "were"} already dead!`
 				}
 
 				const resultText = effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
 				moveText += `. ${resultText}${deadTargetText}${move.type === "gear" && move.userReference.team === "delver" ? decrementDurability(move.name, user, adventure) : ""}`;
 			} else if (targets.length === 1) {
-				moveText += `, but ${targets[0].getName(adventure.room.enemyIdMap)} was already dead!`;
+				moveText += `, but ${getNames([targets[0]], adventure)[0]} was already dead!`;
 			} else {
 				moveText += `, but all targets were already dead!`;
 			}
@@ -587,7 +587,7 @@ function endRound(adventure, thread) {
 
 			if ("Frail" in combatant.modifiers) {
 				lastRoundText += dealModifierDamage(combatant, "Frail", adventure);
-				removeModifier(combatant, { name: "Frail", stacks: "all" });
+				removeModifier([combatant], { name: "Frail", stacks: "all" });
 
 				const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);
 				if (payload) {
@@ -600,16 +600,16 @@ function endRound(adventure, thread) {
 				}
 			}
 		} else {
-			combatant.addStagger(combatant.getModifierStacks("Paralysis") > 0 ? 1 : -1);
+			changeStagger([combatant], combatant.getModifierStacks("Paralysis") > 0 ? 1 : -1);
 		}
 
 		// Decrement Modifiers
 		if (!("Vigilance" in combatant.modifiers)) {
-			removeModifier(combatant, { name: "Evade", stacks: getTurnDecrement("Evade"), force: true });
+			removeModifier([combatant], { name: "Evade", stacks: getTurnDecrement("Evade"), force: true });
 		}
 		for (const modifier in combatant.modifiers) {
 			if (modifier !== "Evade") {
-				removeModifier(combatant, { name: modifier, stacks: getTurnDecrement(modifier), force: true })
+				removeModifier([combatant], { name: modifier, stacks: getTurnDecrement(modifier), force: true })
 			}
 		}
 	}
@@ -656,9 +656,9 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 			const levelsGained = baseLevelsGained + manualManuallevels + gearLevelBonus;
 			const historyKey = `levelsGained:${levelsGained}`;
 			if (historyKey in adventure.room.history) {
-				adventure.room.history[historyKey].push(delver.getName());
+				adventure.room.history[historyKey].push(delver.name);
 			} else {
-				adventure.room.history[historyKey] = [delver.getName()];
+				adventure.room.history[historyKey] = [delver.name];
 			}
 			levelUp(delver, levelsGained, adventure);
 		}

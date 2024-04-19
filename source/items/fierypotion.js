@@ -10,7 +10,11 @@ module.exports = new ItemTemplate("Fiery Potion",
 	selectSelf,
 	false,
 	(targets, user, isCrit, adventure) => {
-		addModifier(user, { name: "Fire Absorb", stacks: 3 });
-		return `${user.getName(adventure.room.enemyIdMap)} now absorbs ${getEmoji("Fire")} damage.`;
+		const addedAbsorb = addModifier([user], { name: "Fire Absorb", stacks: 3 }).length > 0;
+		if (addedAbsorb) {
+			return `${getNames([user], adventure)[0]} now absorbs ${getEmoji("Fire")} damage.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 ).setFlavorText(["*Additional Notes*", "*Not to be confused with __Explosive Potion__. DO NOT apply to enemies.*"]);

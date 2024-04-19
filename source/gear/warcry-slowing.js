@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing War Cry",
@@ -32,11 +32,10 @@ module.exports = new GearTemplate("Slowing War Cry",
 		}
 		let resultText = `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
 		const slowedTargets = [];
-		targetArray.forEach(target => {
-			target.addStagger(pendingStaggerStacks);
-			const addedSlow = addModifier(target, slow);
+		changeStagger(targetArray, pendingStaggerStacks);
+		addModifier(targetArray, slow).forEach((addedSlow, index) => {
 			if (addedSlow) {
-				slowedTargets.push(target.getName(adventure.room.enemyIdMap));
+				slowedTargets.push(targetArray[index].getName(adventure.room.enemyIdMap));
 			}
 		})
 		if (slowedTargets.length > 1) {

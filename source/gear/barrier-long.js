@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Long Barrier",
 	"Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}",
@@ -7,19 +8,25 @@ module.exports = new GearTemplate("Long Barrier",
 	"Spell",
 	"Wind",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [evade, vigilance, critVigilance] } = module.exports;
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
-		let addedVigilance = true;
-		if (isCrit) {
-			addedVigilance = addModifier(user, vigilance);
+		const addedModifiers = [];
+		const addedVigilance = addModifier([user], isCrit ? critVigilance : vigilance).length > 0;
+		if (addedVigilance) {
+			addedModifiers.push("Vigilance");
+		}
+		const addedEvade = addModifier([user], evade).length > 0;
+		if (addedEvade) {
+			addedModifiers.push("Evade");
+		}
+		if (addedModifiers.length > 0) {
+			return `${getNames([user], adventure)[0]} gains ${listifyEN(addedModifiers)}.`;
 		} else {
-			addedVigilance = addModifier(user, critVigilance);
+			return "But nothing happened.";
 		}
-		addModifier(user, evade);
-		return `${user.getName(adventure.room.enemyIdMap)}${addedVigilance ? " Vigilantly" : ""} prepares to Evade.`;
 	}
 ).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
 	.setSidegrades("Cleansing Barrier", "Devoted Barrier")

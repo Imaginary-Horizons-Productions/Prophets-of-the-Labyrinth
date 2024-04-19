@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Inspiration",
@@ -14,16 +14,10 @@ module.exports = new GearTemplate("Sweeping Inspiration",
 		if (isCrit) {
 			pendingPowerUp.stacks += bonus;
 		}
-		const poweredUpTargets = [];
-		targets.forEach(target => {
-			if (user.element === element) {
-				target.addStagger("elementMatchAlly");
-			}
-			const addedPowerUp = addModifier(target, pendingPowerUp);
-			if (addedPowerUp) {
-				poweredUpTargets.push(target.getName(adventure.room.enemyIdMap));
-			}
-		})
+		const poweredUpTargets = getNames(addModifier(targets, pendingPowerUp), adventure);
+		if (user.element === element) {
+			changeStagger(targets, "elementMatchAlly");
+		}
 
 		if (poweredUpTargets.length > 1) {
 			return `${listifyEN(poweredUpTargets, false)} are Powered Up.`;

@@ -31,12 +31,6 @@ class Combatant {
 	/** @type {{[modifierName: string]: number}} */
 	modifiers = {};
 
-	/**
-	 * @param {{[enemyName: string]: number}} enemyIdMap
-	 * @returns {string}
-	 */
-	getName(enemyIdMap) { throw new Error(`getName not implemented in child class ${this.constructor.name}`) }
-
 	/** @returns {number} */
 	getMaxHP() { throw new Error(`getMaxHP not implemented in child class ${this.constructor.name}`) }
 
@@ -64,21 +58,6 @@ class Combatant {
 
 	/** @returns {number} */
 	getDamageCap() { throw new Error(`getDamageCap not implemented in child class ${this.constructor.name}`) }
-
-	/** add Stagger, negative values allowed
-	 * @param {number | "elementMatchAlly" | "elementMatchFoe"} value
-	 */
-	addStagger(value) {
-		if (!this.isStunned) {
-			let pendingStagger = value;
-			if (value === "elementMatchAlly") {
-				pendingStagger = -1;
-			} else if (value === "elementMatchFoe") {
-				pendingStagger = 2;
-			}
-			this.stagger = Math.min(Math.max(this.stagger + pendingStagger, 0), this.getPoise());
-		}
-	}
 }
 
 class Delver extends Combatant {
@@ -97,11 +76,6 @@ class Delver extends Combatant {
 	/** @type {Gear[]} */
 	gear = [];
 	startingArtifact = "";
-
-	/** @param {{[enemyName: string]: number}} enemyIdMap */
-	getName(enemyIdMap) {
-		return this.name;
-	}
 
 	getMaxHP() {
 		return Math.floor(this.maxHP) + this.gear.reduce((totalGearMaxHP, gear) => {

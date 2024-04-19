@@ -1,7 +1,7 @@
 const { EnemyTemplate, Combatant, Adventure } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
-const { dealDamage, addModifier } = require("../util/combatantUtil");
+const { dealDamage, addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 const { listifyEN } = require("../util/textUtil");
 
@@ -42,7 +42,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 			}
 		}
 		let pendingDamage = user.getPower() + 100 + (50 * (unfinishedChallenges.length + targetDebuffCount + targetCursedGearCount));
-		target.addStagger("elementMatchFoe");
+		changeStagger([target], "elementMatchFoe");
 		if (isCrit) {
 			pendingDamage *= 2;
 		}
@@ -63,14 +63,8 @@ module.exports = new EnemyTemplate("Starry Knight",
 	effect: (targets, user, isCrit, adventure) => {
 		let pendingDamage = user.getPower() + 50 * targets.length;
 		const insultMap = {};
-		targets.forEach(target => {
-			target.addStagger("elementMatchFoe");
-			if (isCrit) {
-				addNewRandomInsults(insultMap, target, 2, adventure);
-			} else {
-				addNewRandomInsults(insultMap, target, 1, adventure);
-			}
-		})
+		changeStagger(targets, "elementMatchFoe");
+		addNewRandomInsults(insultMap, targets, isCrit ? 2 : 1, adventure);
 		const insultEntries = Object.entries(insultMap);
 		if (insultEntries.length > 0) {
 			return `"Fear not! I have enough Star Power to take you all on!" ${dealDamage(targets, user, pendingDamage, false, "Light", adventure)} ${Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList, false)}.`).join(" ")}`;
@@ -88,17 +82,11 @@ module.exports = new EnemyTemplate("Starry Knight",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		if (isCrit) {
-			user.protection += 100;
+			addProtection([user], 100);
 		}
-		const frailedTargets = [];
+		const frailedTargets = addModifier(targets, { name: "Frail", stacks: 4 });
 		const insultMap = {};
-		targets.forEach(target => {
-			const addedFrail = addModifier(target, { name: "Frail", stacks: 4 });
-			if (addedFrail) {
-				frailedTargets.push(target.getName(adventure.room.enemyIdMap));
-			}
-			addNewRandomInsults(insultMap, target, 1, adventure);
-		})
+		addNewRandomInsults(insultMap, targets, 1, adventure);
 		const insultEntries = Object.entries(insultMap);
 		if (frailedTargets.length === 1) {
 			if (insultEntries.length > 0) {
@@ -119,29 +107,32 @@ module.exports = new EnemyTemplate("Starry Knight",
 	next: nextRandom
 }).setFlavorText({ name: "Insult to Injury", value: "Insult debuffs (Ugly, Stupid, Smelly, Boring, Lacking Rhythm) make the Starry Knight's Mock the Accursed more dangerous. Appease the Starry Knight to cure them all." });
 
-/**
+/** avoid grouping addModifier by insult, since delvers want to know how many insults they've gained, thus we want to group by delver
  * @param {Record<string, string[]>} insultMap
- * @param {Combatant} combatant
+ * @param {Combatant[]} combatants
  * @param {number} count
  * @param {Adventure} adventure
  */
-function addNewRandomInsults(insultMap, combatant, count, adventure) {
-	const availableInsults = ["Ugly", "Stupid", "Smelly", "Boring", "Lacking Rhythm"].filter(insult => !(insult in combatant.modifiers));
-	for (let i = 0; i < count; i++) {
-		if (availableInsults.length < 1) {
-			break;
-		}
-		const insultIndex = adventure.generateRandomNumber(availableInsults.length, "battle");
-		const rolledInsult = availableInsults[insultIndex];
-		const combatantName = combatant.getName(adventure.room.enemyIdMap);
-		const didAddInsult = addModifier(combatant, { name: rolledInsult, stacks: 1 });
-		if (didAddInsult) {
-			if (combatantName in insultMap) {
-				insultMap[combatantName].push(rolledInsult);
-			} else {
-				insultMap[combatantName] = [rolledInsult];
+function addNewRandomInsults(insultMap, combatants, count, adventure) {
+	const combatantNames = getNames(combatants, adventure);
+	combatants.forEach((combatant, index) => {
+		const availableInsults = ["Ugly", "Stupid", "Smelly", "Boring", "Lacking Rhythm"].filter(insult => !(insult in combatant.modifiers));
+		for (let i = 0; i < count; i++) {
+			if (availableInsults.length < 1) {
+				break;
 			}
-			availableInsults.splice(insultIndex, 1);
+			const insultIndex = adventure.generateRandomNumber(availableInsults.length, "battle");
+			const rolledInsult = availableInsults[insultIndex];
+			const combatantName = combatantNames[index];
+			const didAddInsult = addModifier([combatant], { name: rolledInsult, stacks: 1 }).length > 0;
+			if (didAddInsult) {
+				if (combatantName in insultMap) {
+					insultMap[combatantName].push(rolledInsult);
+				} else {
+					insultMap[combatantName] = [rolledInsult];
+				}
+				availableInsults.splice(insultIndex, 1);
+			}
 		}
-	}
+	})
 }

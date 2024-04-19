@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage } = require('../util/combatantUtil');
-const { listifyEN } = require('../util/textUtil');
+const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Harmful Poison Torrent",
 	"Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on all foes",
@@ -15,20 +15,12 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 		if (isCrit) {
 			pendingPoison.stacks *= critMultiplier;
 		}
-		const poisonedTargets = [];
-		targets.forEach(target => {
-			const addedPoison = addModifier(target, pendingPoison);
-			if (addedPoison) {
-				poisonedTargets.push(target.getName(adventure.room.enemyIdMap));
-			}
-			if (user.element === element) {
-				target.addStagger("elementMatchFoe");
-			}
-		})
-		if (poisonedTargets.length > 1) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(poisonedTargets, false)} were Poisoned.`;
-		} else if (poisonedTargets === 1) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${poisonedTargets[0]} was Poisoned.`;
+		const poisonedTargets = getNames(addModifier(targets, pendingPoison), adventure);
+		if (user.element === element) {
+			changeStagger(targets, "elementMatchFoe");
+		}
+		if (poisonedTargets.length > 0) {
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, poisonedTargets, "is", "are", "Poisoned.")}`;
 		} else {
 			return dealDamage(targets, user, pendingDamage, false, element, adventure);
 		}

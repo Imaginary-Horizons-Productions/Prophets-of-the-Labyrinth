@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Abacus",
 	"Deal @{damage} (+5% foe max hp) @{element} damage to a foe, gain @{bonus}g on kill",
@@ -7,21 +7,29 @@ module.exports = new GearTemplate("Hunter's Abacus",
 	"Trinket",
 	"Water",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, damage, critMultiplier, bonus: bonusBounty } = module.exports;
-		let pendingDamage = user.getPower() + damage + (0.05 * target.getMaxHP());
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
-			pendingDamage *= critMultiplier;
+		let resultText = "";
+		let hunts = 0;
+		targets.forEach(target => {
+			let pendingDamage = user.getPower() + damage + (0.05 * target.getMaxHP());
+			if (isCrit) {
+				pendingDamage *= critMultiplier;
+			}
+			resultText += dealDamage([target], user, pendingDamage, false, element, adventure);
+			if (target.hp < 1) {
+				hunts++;
+			}
+		})
+		const totalGold = bonusBounty * hunts;
+		if (totalGold > 0) {
+			adventure.gainGold(totalGold);
+			resultText += ` ${getNames([user], adventure)} harvests ${totalGold}g of alchemical reagents.`;
 		}
-		let damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
-		if (target.hp < 1) {
-			adventure.gainGold(bonusBounty);
-			damageText += ` ${user.getName(adventure.room.enemyIdMap)} harvests ${bonusBounty}g of alchemical reagents.`;
-		}
-		return damageText;
+		return resultText;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Abacus", "Unstoppable Abacus")

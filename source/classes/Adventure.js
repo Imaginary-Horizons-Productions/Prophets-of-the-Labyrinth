@@ -400,15 +400,6 @@ class Enemy extends Combatant {
 		}
 	}
 
-	/** @param {{[enemyName: string]: number}} enemyIdMap */
-	getName(enemyIdMap) {
-		if (enemyIdMap[this.name] > 1) {
-			return `${this.name} ${this.id}`;
-		} else {
-			return this.name;
-		}
-	}
-
 	/** @returns {number} */
 	getMaxHP() {
 		return Math.floor(this.maxHP);

@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier } = require("../util/combatantUtil");
+const { addModifier, getNames } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Regen Root",
 	"Grants the user 5 Regen",
@@ -9,7 +9,11 @@ module.exports = new ItemTemplate("Regen Root",
 	selectSelf,
 	false,
 	(targets, user, isCrit, adventure) => {
-		addModifier(user, { name: "Regen", stacks: 5 });
-		return `${user.getName(adventure.room.enemyIdMap)} gains Regen.`;
+		const addedRegen = addModifier([user], { name: "Regen", stacks: 5 }).length > 0;
+		if (addedRegen) {
+			return `${getNames([user], adventure)[0]} gains Regen.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 );

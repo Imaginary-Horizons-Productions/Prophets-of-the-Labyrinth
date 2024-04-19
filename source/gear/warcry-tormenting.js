@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
@@ -32,12 +32,12 @@ module.exports = new GearTemplate("Tormenting War Cry",
 			pendingStaggerStacks += bonus;
 		}
 		const tormentTexts = "";
+		changeStagger(targetArray, pendingStaggerStacks);
 		targetArray.forEach(target => {
 			const debuffs = [];
-			target.addStagger(pendingStaggerStacks);
 			for (const modifier in target.modifiers) {
 				if (isDebuff(modifier)) {
-					addModifier(target, { name: modifier, stacks: 1 });
+					addModifier([target], { name: modifier, stacks: 1 });
 					debuffs.push(modifier);
 				}
 			}

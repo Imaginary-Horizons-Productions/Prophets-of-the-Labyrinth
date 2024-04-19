@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, dealDamage } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
+const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Harmful Corrosion",
 	"Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on a foe",
@@ -7,20 +8,20 @@ module.exports = new GearTemplate("Harmful Corrosion",
 	"Spell",
 	"Fire",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [powerDown], stagger, damage } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
-			target.addStagger(stagger);
+			changeStagger(targets, stagger);
 		}
-		const addedPowerDown = addModifier(target, powerDown);
-		if (addedPowerDown) {
-			return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Powered Down${isCrit ? " and Staggered" : ""}.`;
+		const poweredDownTargets = addModifier(targets, powerDown);
+		if (poweredDownTargets.length > 0) {
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(targets, adventure), "is", "are", "Powered Down")}${isCrit ? " and Staggered" : ""}.`;
 		} else {
-			return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${isCrit ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${isCrit ? ` ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}` : ""}`;
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

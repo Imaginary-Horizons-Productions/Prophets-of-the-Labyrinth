@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
-const { addModifier } = require("../util/combatantUtil");
+const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Flanking Corrosion",
 	"Inflict @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} on a foe",
@@ -7,30 +8,29 @@ module.exports = new GearTemplate("Flanking Corrosion",
 	"Spell",
 	"Fire",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [powerDown, exposed], stagger } = module.exports;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
+		let staggeredSentence;
 		if (isCrit) {
-			target.addStagger(stagger);
+			changeStagger(targets, stagger);
+			staggeredSentence = joinAsStatement(false, getNames(getNames(targets, adventure), adventure), "was", "were", "Staggered.");
 		}
-		const addedPowerDown = addModifier(target, powerDown);
-		const addedExposed = addModifier(target, exposed);
-		if (addedPowerDown) {
+		const poweredDownTargets = addModifier(targets, powerDown);
+		const exposedTargets = addModifier(targets, exposed);
+		if (exposedTargets) {
+			const sentences = [
+				joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."),
+				joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed."),
+			];
 			if (isCrit) {
-				return `${target.getName(adventure.room.enemyIdMap)} is Powered Down, Exposed, and Staggered.`;
-			} else {
-				return `${target.getName(adventure.room.enemyIdMap)} is Powered Down and Exposed.`;
+				sentences.push(staggeredSentence);
 			}
-		} else if (addedExposed) {
-			if (isCrit) {
-				return `${target.getName(adventure.room.enemyIdMap)} is Exposed and Staggered.`;
-			} else {
-				return `${target.getName(adventure.room.enemyIdMap)} is Exposed.`;
-			}
+			return sentences.join(" ");
 		} else if (isCrit) {
-			return `${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
+			return staggeredSentence;
 		} else {
 			return "But nothing happened.";
 		}

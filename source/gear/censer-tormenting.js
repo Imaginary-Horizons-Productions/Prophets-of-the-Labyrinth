@@ -1,6 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
-const { dealDamage, addModifier } = require("../util/combatantUtil");
+const { dealDamage, addModifier, changeStagger } = require("../util/combatantUtil");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Tormenting Censer",
@@ -15,19 +15,19 @@ module.exports = new GearTemplate("Tormenting Censer",
 		const debuffs = [];
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
-				addModifier(target, { name: modifier, stacks: 1 });
+				addModifier([target], { name: modifier, stacks: 1 });
 				debuffs.push(modifier);
 			}
 		}
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			pendingDamage += bonus;
 		}
 		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			const addedSlow = addModifier(target, slow);
+			const addedSlow = addModifier([target], slow).length > 0;
 			if (addedSlow) {
 				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed${debuffs.length > 0 ? ` and they gain ${listifyEN(debuffs, false)}` : ""}.`;
 			}

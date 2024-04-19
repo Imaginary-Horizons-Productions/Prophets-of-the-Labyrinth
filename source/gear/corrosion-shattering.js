@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
-const { addModifier } = require("../util/combatantUtil");
+const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Shattering Corrosion",
 	"Inflict @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} on a foe",
@@ -7,30 +8,27 @@ module.exports = new GearTemplate("Shattering Corrosion",
 	"Spell",
 	"Fire",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [powerDown, frail], stagger } = module.exports;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
+		const targetNames = getNames(targets, adventure);
+		const sentences = [];
 		if (isCrit) {
-			target.addStagger(stagger);
+			changeStagger(targets, stagger);
+			sentences.push(joinAsStatement(false, targetNames, "was", "were", "Staggered."));
 		}
-		const addedPowerDown = addModifier(target, powerDown);
-		const addedFrail = addModifier(target, frail);
-		if (addedPowerDown) {
-			if (isCrit) {
-				return `${target.getName(adventure.room.enemyIdMap)} is Powered Down, becomes Frail, and is Staggered.`;
-			} else {
-				return `${target.getName(adventure.room.enemyIdMap)} is Powered Down and becomes Frail.`;
-			}
-		} else if (addedFrail) {
-			if (isCrit) {
-				return `${target.getName(adventure.room.enemyIdMap)} becomes Frail and is Staggered.`;
-			} else {
-				return `${target.getName(adventure.room.enemyIdMap)} becomes Frail.`;
-			}
-		} else if (isCrit) {
-			return `${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
+		const poweredDownTargets = addModifier(targets, powerDown);
+		if (poweredDownTargets.length > 0) {
+			sentences.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
+		}
+		const frailedTargets = addModifier(targets, frail);
+		if (frailedTargets.length > 0) {
+			sentences.push(joinAsStatement(false, getNames(frailedTargets, adventure), "becomes", "become", "Frail."));
+		}
+		if (sentences.length > 0) {
+			return sentences.join(" ");
 		} else {
 			return "But nothing happened.";
 		}

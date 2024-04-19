@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { changeStagger, addProtection, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vigilant Scutum",
 	"Grant @{protection} protection to an ally and yourself and gain @{mod0Stacks} @{mod0}",
@@ -10,15 +11,13 @@ module.exports = new GearTemplate("Vigilant Scutum",
 		const { element, modifiers: [vigilance], protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
-			target.addStagger("elementMatchAlly");
-			user.addStagger("elementMatchAlly");
+			changeStagger([target, user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingProtection *= critMultiplier;
 		}
-		target.protection += pendingProtection;
-		user.protection += pendingProtection;
-		const addedVigilance = addModifier(user, vigilance);
+		addProtection([target, user], pendingProtection);
+		const addedVigilance = addModifier([user], vigilance).length > 0;
 		const userName = user.getName(adventure.room.enemyIdMap);
 		return `${target.getName(adventure.room.enemyIdMap)} and ${userName} gain protection.${addedVigilance ? ` ${userName} gains Vigilance.` : ""}`;
 	}

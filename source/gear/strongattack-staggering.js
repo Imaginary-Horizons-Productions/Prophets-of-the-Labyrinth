@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Strong Attack",
 	"Strike a foe applying @{foeStagger} and @{damage} @{element} damage",
@@ -7,17 +8,17 @@ module.exports = new GearTemplate("Staggering Strong Attack",
 	"Weapon",
 	"Untyped",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { damage, element, stagger, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		target.addStagger(stagger);
-		return dealDamage([target], user, pendingDamage, false, element, adventure);
+		changeStagger(targets, stagger);
+		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Weapon")

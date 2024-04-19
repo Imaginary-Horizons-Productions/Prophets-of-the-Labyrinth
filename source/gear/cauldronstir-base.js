@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
 
 const rollablePotions = [
 	"Protection Potion",
@@ -20,18 +20,18 @@ module.exports = new GearTemplate("Cauldron Stir",
 	"Weapon",
 	"Water",
 	200,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, damage } = module.exports;
 		const pendingDamage = damage + user.getPower();
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
-			return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} sets a batch of ${rolledPotion} to simmer.`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`;
 		} else {
-			return dealDamage([target], user, pendingDamage, false, element, adventure);
+			return dealDamage(targets, user, pendingDamage, false, element, adventure);
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

@@ -1,6 +1,6 @@
 const { EnemyTemplate, CombatantReference } = require("../classes/index.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage } = require("../util/combatantUtil.js");
+const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { listifyEN } = require("../util/textUtil.js");
 
@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 				move.targets = [new CombatantReference("none", -1)];
 			}
 		});
-		user.protection += isCrit ? 60 : 30;
+		addProtection([user], isCrit ? 60 : 30);
 		return "She gains protection and demands reinforcements!";
 	},
 	selector: selectNone,
@@ -51,23 +51,11 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	description: "Gain protection and grant Quicken and Power Up to all lower ranking mechabees",
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
-		const modifierMap = {};
-		targets.forEach(target => {
-			if (target.hp > 0 && target.name !== user.name) {
-				const targetName = target.getName(adventure.room.enemyIdMap);
-				modifierMap[targetName] = [];
-				const addedQuicken = addModifier(target, { name: "Quicken", stacks: 3 });
-				if (addedQuicken) {
-					modifierMap[targetName].push("Quicken");
-				}
-				const addedPowerUp = addModifier(target, { name: "Power Up", stacks: 3 });
-				if (addedPowerUp) {
-					modifierMap[targetName].push("Power Up");
-				}
-			}
-		})
-		user.protection += isCrit ? 60 : 30;
-		return `She gains protection and tunes the flight formation to be more efficient! ${Object.entries(modifierMap).map(([targetName, modifiers]) => `${targetName} gains ${listifyEN(modifiers, false)}.`).join(" ")}`;
+		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
+		const quickenedTargets = addModifier(filteredTargets, { name: "Quicken", stacks: 3 });
+		const poweredUpTargets = addModifier(filteredTargets, { name: "Power Up", stacks: 3 });
+		addProtection([user], isCrit ? 60 : 30);
+		return `She gains protection and tunes the flight formation to be more efficient! ${joinAsStatement(false, getNames(quickenedTargets, adventure), "is", "are", "Quickened. ")}${joinAsStatement(false, getNames(poweredUpTargets, adventure), "is", "are", "Powered Up.")}`;
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
@@ -86,7 +74,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 				move.targets = mechaqueensTargets;
 			}
 		});
-		user.protection += isCrit ? 60 : 30;
+		addProtection([user], isCrit ? 60 : 30);
 		return "She gains protection and orders a full-on attack!";
 	},
 	selector: selectRandomFoe,
@@ -98,7 +86,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	description: "Gain protection and command a Mechabee to Self-Destruct",
 	priority: 1,
 	effect: ([target], user, isCrit, adventure) => {
-		user.protection += isCrit ? 60 : 30;
+		addProtection([user], isCrit ? 60 : 30);
 		if (target) {
 			const targetMove = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === parseInt(target.id));
 			targetMove.name = "Self-Destruct";
@@ -127,13 +115,13 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	element: "Darkness",
 	description: "Inflict Darkness damage on a single foe",
 	priority: 0,
-	effect: ([target], user, isCrit, adventure) => {
+	effect: (targets, user, isCrit, adventure) => {
 		let pendingDamage = 125;
-		target.addStagger("elementMatchFoe");
+		changeStagger(targets, "elementMatchFoe");
 		if (isCrit) {
 			pendingDamage *= 2;
 		}
-		return dealDamage([target], user, pendingDamage, false, "Darkness", adventure);
+		return dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

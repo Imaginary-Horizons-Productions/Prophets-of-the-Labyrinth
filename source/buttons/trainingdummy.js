@@ -24,7 +24,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		adventure.room.decrementResource("roomAction", actionCost);
 		adventure.room.history.Trained.push(delver.name);
 		interaction.update(renderRoom(adventure, interaction.channel)).then(() => {
-			interaction.followUp(`${delver.getName()} leveled up!`);
+			interaction.followUp(`${delver.name} leveled up!`);
 			setAdventure(adventure);
 		});
 	}

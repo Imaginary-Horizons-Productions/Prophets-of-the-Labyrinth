@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { gainHealth, removeModifier } = require('../util/combatantUtil');
+const { gainHealth, removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Cleansing Second Wind",
 	"Regain @{healing} hp and shrug off a random debuff.",
@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Cleansing Second Wind",
 		const { healing, element, critMultiplier } = module.exports;
 		let pendingHealing = healing;
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
@@ -21,9 +21,9 @@ module.exports = new GearTemplate("Cleansing Second Wind",
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (userDebuffs.length > 0) {
 			const rolledDebuff = userDebuffs[adventure.generateRandomNumber(userDebuffs.length, "battle")];
-			const debuffWasRemoved = removeModifier(user, { name: rolledDebuff, stacks: "all" });
+			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (debuffWasRemoved) {
-				resultText += ` ${user.getName(adventure.room.enemyIdMap)} shrugs off ${rolledDebuff}.`;
+				resultText += ` ${getNames([user], adventure)[0]} shrugs off ${rolledDebuff}.`;
 			}
 		}
 		return resultText;

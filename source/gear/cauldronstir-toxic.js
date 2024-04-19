@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier } = require('../util/combatantUtil');
+const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 const rollablePotions = [
 	"Protection Potion",
@@ -20,26 +21,26 @@ module.exports = new GearTemplate("Toxic Cauldron Stir",
 	"Weapon",
 	"Water",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, damage, modifiers: [poison] } = module.exports;
 		const pendingDamage = damage + user.getPower();
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
-		const addedPoison = addModifier(target, poison);
+		const poisonedTargets = addModifier(targets, poison);
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
-			if (addedPoison) {
-				return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} was Poisoned. ${user.getName(adventure.room.enemyIdMap)} sets a batch of ${rolledPotion} to simmer.`;
+			if (poisonedTargets.length > 0) {
+				return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")} ${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`;
 			} else {
-				return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} sets a batch of ${rolledPotion} to simmer.`;
+				return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`;
 			}
 		} else {
-			if (addedPoison) {
-				return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} was Poisoned.`;
+			if (poisonedTargets.length > 0) {
+				return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")}`;
 			} else {
-				return dealDamage([target], user, pendingDamage, false, element, adventure);
+				return dealDamage(targets, user, pendingDamage, false, element, adventure);
 			}
 		}
 	}

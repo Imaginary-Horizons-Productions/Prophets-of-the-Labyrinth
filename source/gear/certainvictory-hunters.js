@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, payHP } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, payHP, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Certain Victory",
 	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} (@{bonus}g on kill); pay HP for your @{mod0}",
@@ -11,12 +11,12 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 		const { element, modifiers: [powerUp], damage, bonus: bounty, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedPowerUp = addModifier(user, powerUp);
+		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		let damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (target.hp < 1) {
 			adventure.gainGold(bounty);

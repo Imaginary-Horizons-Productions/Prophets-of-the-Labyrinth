@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage } = require('../util/combatantUtil');
+const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Ice Bolt",
 	"Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on one foe",
@@ -7,17 +8,17 @@ module.exports = new GearTemplate("Ice Bolt",
 	"Spell",
 	"Water",
 	200,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, damage, modifiers: [slow], critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedSlow = addModifier(target, slow);
-		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedSlow ? ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.` : ""}`;
+		const slowedTargets = addModifier(targets, slow);
+		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed.")}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setDamage(40)

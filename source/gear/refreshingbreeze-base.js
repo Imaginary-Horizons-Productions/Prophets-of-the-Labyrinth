@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { removeModifier } = require('../util/combatantUtil');
+const { removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Refreshing Breeze",
 	"Cure a random debuff from each ally",
@@ -11,10 +12,10 @@ module.exports = new GearTemplate("Refreshing Breeze",
 	(targets, user, isCrit, adventure) => {
 		const { element } = module.exports;
 		const resultTexts = [];
+		if (user.element === element) {
+			changeStagger(targets, "elementMatchAlly");
+		}
 		targets.forEach(target => {
-			if (user.element === element) {
-				target.addStagger("elementMatchAlly");
-			}
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
@@ -22,16 +23,14 @@ module.exports = new GearTemplate("Refreshing Breeze",
 				for (let i = 0; i < debuffsToRemove; i++) {
 					const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
 					const rolledDebuff = targetDebuffs[debuffIndex];
-					const wasRemoved = removeModifier(target, { name: rolledDebuff, stacks: "all" });
+					const wasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
 					if (wasRemoved) {
 						removedDebuffs.push(rolledDebuff);
 						targetDebuffs.splice(debuffIndex, 1);
 					}
 				}
-				if (removedDebuffs.length > 1) {
-					resultTexts.push(`${target.getName(adventure.room.enemyIdMap)} is cured of ${removedDebuffs[0]} and ${removedDebuffs[1]}.`)
-				} else if (removedDebuffs.length > 0) {
-					resultTexts.push(`${target.getName(adventure.room.enemyIdMap)} is cured of ${removedDebuffs[0]}.`)
+				if (removedDebuffs.length > 0) {
+					resultTexts.push(`${getNames([target], adventure)[0]} is cured of ${listifyEN(removedDebuffs)}.`)
 				}
 			}
 		})

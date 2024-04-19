@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier } = require("../util/combatantUtil");
+const { addModifier, getNames } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Smoke Bomb",
 	"Grants the user 2 Evade",
@@ -9,7 +9,11 @@ module.exports = new ItemTemplate("Smoke Bomb",
 	selectSelf,
 	false,
 	(targets, user, isCrit, adventure) => {
-		addModifier(user, { name: "Evade", stacks: 2 });
-		return `${user.getName(adventure.room.enemyIdMap)} prepares to Evade.`;
+		const addedEvade = addModifier([user], { name: "Evade", stacks: 2 }).length > 0;
+		if (addedEvade) {
+			return `${getNames([user], adventure)[0]} prepares to Evade.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 ).setFlavorText(["*Additional Notes*", "*\"While the foe suspects you're fleeing\" is the third best time to strike, beat only by \"when they least expect it\" and \"first\".*"]);

@@ -19,6 +19,6 @@ module.exports = new SelectWrapper(mainId, 3000,
 		adventure.room.history["Items tossed"].push(tossedItem);
 		gainHealth(delver, delver.maxHP, adventure);
 		interaction.update(renderRoom(adventure, interaction.channel));
-		interaction.channel.send(`The ${tossedItem} becomes an apple pie. **${delver.getName()} is fully healed** by the delicious pie.`)
+		interaction.channel.send(`The ${tossedItem} becomes an apple pie. **${delver.name} is fully healed** by the delicious pie.`)
 	}
 );

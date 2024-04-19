@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { changeStagger, addProtection, getNames } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 
 const rollableHerbs = [
@@ -21,15 +22,15 @@ module.exports = new GearTemplate("Reinforced Herb Basket",
 			pendingHerbCount *= critMultiplier;
 		}
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
-		user.protection += protection;
+		addProtection([user], protection);
 		const randomHerb = rollableHerbs[adventure.generateRandomNumber(rollableHerbs.length, "battle")];
 		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
 		if (isCrit) {
-			return `${user.getName(adventure.room.enemyIdMap)} gains protection and gathers a double-batch of ${randomHerb}.`;
+			return `${getNames([user], adventure)[0]} gains protection and gathers a double-batch of ${randomHerb}.`;
 		} else {
-			return `${user.getName(adventure.room.enemyIdMap)} gains protection and gathers a batch of ${randomHerb}.`;
+			return `${getNames([user], adventure)[0]} gains protection and gathers a batch of ${randomHerb}.`;
 		}
 	}
 ).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })

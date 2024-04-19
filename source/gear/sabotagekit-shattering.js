@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier, getCombatantWeaknesses } = require('../util/combatantUtil.js');
+const { addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
@@ -21,20 +21,20 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 			pendingWeakness.stacks += bonus;
 		}
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		const debuffTexts = [];
-		const addedSlow = addModifier(target, pendingSlow);
+		const addedSlow = addModifier([target], pendingSlow).length > 0;
 		if (addedSlow) {
 			debuffTexts.push("is Slowed");
 		}
 		if (weaknessPool.length > 0) {
-			const addedWeakness = addModifier(target, pendingWeakness);
+			const addedWeakness = addModifier([target], pendingWeakness).length > 0;
 			if (addedWeakness) {
 				debuffTexts.push(`gains ${pendingWeakness.name}`);
 			}
 		}
-		const addedFrail = addModifier(target, frail);
+		const addedFrail = addModifier([target], frail).length > 0;
 		if (addedFrail) {
 			debuffTexts.push("becomes Frail");
 		}

@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Tormenting Sun Flare",
@@ -14,17 +14,17 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 		const debuffs = [];
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
-				addModifier(target, { name: modifier, stacks: 1 });
+				addModifier([target], { name: modifier, stacks: 1 });
 				debuffs.push(modifier);
 			}
 		}
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
-		target.addStagger(stagger);
+		changeStagger([target], stagger);
 		const resultTexts = ["Staggered"];
 		if (isCrit) {
-			const addedSlow = addModifier(target, slow);
+			const addedSlow = addModifier([target], slow).length > 0;
 			if (addedSlow) {
 				resultTexts.push("Slowed");
 			}

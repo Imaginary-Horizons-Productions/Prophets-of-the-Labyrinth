@@ -158,6 +158,23 @@ function commandMention(fullCommand) {
 	return `</${fullCommand}:${commandIds[mainCommand]}>`;
 }
 
+/**
+ * @param {boolean} shouldListifyExclusively
+ * @param {string[]} entities
+ * @param {string} singularVerb
+ * @param {string} pluralVerb
+ * @param {string} descriptor
+ */
+function joinAsStatement(shouldListifyExclusively, entities, singularVerb, pluralVerb, descriptor) {
+	if (entities.length > 1) {
+		return `${listifyEN(entities, shouldListifyExclusively)} ${pluralVerb} ${descriptor}`;
+	} else if (entities === 1) {
+		return `${entities[0]} ${singularVerb} ${descriptor}`;
+	} else {
+		return "";
+	}
+}
+
 module.exports = {
 	getNumberEmoji,
 	generateTextBar,
@@ -167,5 +184,6 @@ module.exports = {
 	ordinalSuffixEN,
 	trimForSelectOptionDescription,
 	listifyEN,
-	commandMention
+	commandMention,
+	joinAsStatement
 };

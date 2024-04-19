@@ -1,8 +1,8 @@
 const { EnemyTemplate } = require("../classes");
 const { nextRandom, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
-const { listifyEN } = require("../util/textUtil.js");
+const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Royal Slime",
 	"@{adventure}",
@@ -22,10 +22,10 @@ module.exports = new EnemyTemplate("Royal Slime",
 		user.element = elementPool[adventure.generateRandomNumber(elementPool.length, "battle")];
 		let addedAbsorb = false;
 		if (isCrit) {
-			addedAbsorb = addModifier(user, { name: `${user.element} Absorb`, stacks: 5 });
-			user.addStagger("elementMatchAlly");
+			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 5 }).length > 0;
+			changeStagger([user], "elementMatchAlly");
 		} else {
-			addedAbsorb = addModifier(user, { name: `${user.element} Absorb`, stacks: 3 });
+			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 3 }).length > 0;
 		}
 		if (addedAbsorb) {
 			return "Its elemental alignment has changed.";
@@ -46,9 +46,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		if (isCrit) {
 			damage *= 2;
 		}
-		targets.map(target => {
-			target.addStagger("elementMatchFoe");
-		})
+		changeStagger(targets, "elementMatchFoe");
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
@@ -64,9 +62,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		if (isCrit) {
 			damage *= 2;
 		}
-		targets.map(target => {
-			target.addStagger("elementMatchFoe");
-		})
+		changeStagger(targets, "elementMatchFoe");
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
@@ -78,25 +74,12 @@ module.exports = new EnemyTemplate("Royal Slime",
 	description: "Slow all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const slowedTargets = [];
-		targets.forEach(target => {
-			if (isCrit) {
-				const addedSlow = addModifier(target, { name: "Slow", stacks: 3 });
-				if (addedSlow) {
-					slowedTargets.push(target.getName(adventure.room.enemyIdMap));
-				}
-				target.addStagger("elementMatchFoe");
-			} else {
-				const addedSlow = addModifier(target, { name: "Slow", stacks: 2 });
-				if (addedSlow) {
-					slowedTargets.push(target.getName(adventure.room.enemyIdMap));
-				}
-			}
-		});
-		if (slowedTargets.length > 1) {
-			return `${listifyEN(slowedTargets, false)} are Slowed by the sticky ooze.`;
-		} else if (slowedTargets.length === 1) {
-			return `${slowedTargets[0]} is Slowed by the sticky ooze.`;
+		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
+		if (isCrit) {
+			changeStagger(targets, "elementMatchFoe");
+		}
+		if (slowedTargets.length > 0) {
+			return joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed by the sticky ooze.");
 		} else {
 			return "But nothing happened.";
 		}

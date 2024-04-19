@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier } = require("../util/combatantUtil");
+const { addModifier, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new ItemTemplate("Earthen Potion",
@@ -10,7 +10,11 @@ module.exports = new ItemTemplate("Earthen Potion",
 	selectSelf,
 	false,
 	(targets, user, isCrit, adventure) => {
-		addModifier(user, { name: "Earth Absorb", stacks: 3 });
-		return `${user.getName(adventure.room.enemyIdMap)} now absorbs ${getEmoji("Earth")} damage.`;
+		const addedAbsorb = addModifier([user], { name: "Earth Absorb", stacks: 3 }).length > 0;
+		if (addedAbsorb) {
+			return `${getNames([user], adventure)[0]} now absorbs ${getEmoji("Earth")} damage.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 );

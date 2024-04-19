@@ -1,6 +1,7 @@
 const { ItemTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
-const { removeModifier } = require("../util/combatantUtil");
+const { removeModifier, getNames } = require("../util/combatantUtil");
+const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ItemTemplate("Panacea",
 	"Cure the user of up to 2 random debuffs",
@@ -17,7 +18,7 @@ module.exports = new ItemTemplate("Panacea",
 		for (let i = 0; i < debuffsToRemove; i++) {
 			const debuffIndex = adventure.generateRandomNumber(userDebuffs.length, "battle");
 			const rolledDebuff = userDebuffs[debuffIndex];
-			const wasRemoved = removeModifier(user, { name: rolledDebuff, stacks: "all" });
+			const wasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (wasRemoved) {
 				removedDebuffs.push(rolledDebuff);
 				userDebuffs.splice(debuffIndex, 1);
@@ -25,11 +26,9 @@ module.exports = new ItemTemplate("Panacea",
 		}
 
 		if (removedDebuffs.length > 1) {
-			return `${user.getName(adventure.room.enemyIdMap)} is cured of ${removedDebuffs[0]} and ${removedDebuffs[1]}.`;
-		} else if (removedDebuffs.length > 0) {
-			return `${user.getName(adventure.room.enemyIdMap)} is cured of ${removedDebuffs[0]}.`;
+			return `${getNames([user], adventure)[0]} is cured of ${listifyEN(removedDebuffs)}.`;
 		} else {
-			return `No debuffs were cured on ${user.getName(adventure.room.enemyIdMap)}.`;
+			return "But nothing happened.";
 		}
 	}
 );
