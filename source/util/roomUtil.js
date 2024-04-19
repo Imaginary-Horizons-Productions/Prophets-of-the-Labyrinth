@@ -10,34 +10,35 @@ const anyTagRegex = generateRuntimeTemplateStringRegExp(null);
  */
 function spawnEnemy(enemyTemplate, adventure) {
 	const enemy = new Enemy(enemyTemplate.name, adventure.scouting.bossesEncountered, enemyTemplate.element, enemyTemplate.power ?? 0, enemyTemplate.speed, enemyTemplate.poiseExpression, enemyTemplate.critRate, enemyTemplate.firstAction, { ...enemyTemplate.startingModifiers }, adventure.delvers.length);
-	let hpPercent = 85 + 15 * adventure.delvers.length;
-	if (enemyTemplate.shouldRandomizeHP) {
-		hpPercent += 10 * (2 - adventure.generateRandomNumber(5, "battle"));
-	}
-	const pendingHP = Math.ceil(enemyTemplate.maxHP * hpPercent / 100);
-	enemy.setHP(pendingHP);
-	switch (enemyTemplate.name.match(anyTagRegex)?.[0]) { // this prevents all replaces from running; which is problematic because @{clone} assumes player and enemy counts match
-		case "@{adventure}":
-			enemy.name = enemyTemplate.name.replace("@{adventure}", adventure.element);
-			break;
-		case "@{adventureOpposite}":
-			enemy.name = enemyTemplate.name.replace("@{adventureOpposite}", getOpposite(adventure.element));
-			break;
-		case "@{clone}":
-			enemy.name = `Mirror ${adventure.delvers[adventure.room.enemies.length].archetype}`;
-			break;
-	}
+	if (enemy.archetype === "@{clone}") {
+		const counterpart = adventure.delvers[adventure.room.enemies.length];
+		enemy.name = `Mirror ${counterpart.archetype}`;
+		enemy.element = counterpart.element;
+		enemy.setHP(enemyTemplate.maxHP + counterpart.gear.reduce((totalMaxHP, currentGear) => totalMaxHP + currentGear.maxHP, 0));
+		enemy.power += counterpart.gear.reduce((totalPower, currentGear) => totalPower + currentGear.power, 0);
+		enemy.speed += counterpart.gear.reduce((totalSpeed, currentGear) => totalSpeed + currentGear.speed, 0);
+		enemy.critRate += counterpart.gear.reduce((totalCritRate, currentGear) => totalCritRate + currentGear.critRate, 0);
+		enemy.poise += counterpart.gear.reduce((totalPoise, currentGear) => totalPoise + currentGear.poise, 0);
+	} else {
+		let hpPercent = 85 + 15 * adventure.delvers.length;
+		if (enemyTemplate.shouldRandomizeHP) {
+			hpPercent += 10 * (2 - adventure.generateRandomNumber(5, "battle"));
+		}
+		const pendingHP = Math.ceil(enemyTemplate.maxHP * hpPercent / 100);
+		enemy.setHP(pendingHP);
+		enemy.name = enemyTemplate.name
+			.replace("@{adventure}", adventure.element)
+			.replace("@{adventureOpposite}", getOpposite(adventure.element));
 
-	switch (enemyTemplate.element.match(anyTagRegex)?.[0]) { // this prevents all replaces from running; which is problematic because @{clone} assumes player and enemy counts match
-		case "@{adventure}":
-			enemy.element = adventure.element;
-			break;
-		case "@{adventureOpposite}":
-			enemy.element = getOpposite(adventure.element);
-			break;
-		case "@{clone}":
-			enemy.element = adventure.delvers[adventure.room.enemies.length].element;
-			break;
+		// Look for exact matches because element is a whitelist
+		switch (enemyTemplate.element.match(anyTagRegex)?.[0]) {
+			case "@{adventure}":
+				enemy.element = adventure.element;
+				break;
+			case "@{adventureOpposite}":
+				enemy.element = getOpposite(adventure.element);
+				break;
+		}
 	}
 	enemy.setId(adventure);
 	if (adventure.room.enemies) {
