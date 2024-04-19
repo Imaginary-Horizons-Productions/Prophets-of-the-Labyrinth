@@ -168,7 +168,7 @@ function commandMention(fullCommand) {
 function joinAsStatement(shouldListifyExclusively, entities, singularVerb, pluralVerb, descriptor) {
 	if (entities.length > 1) {
 		return `${listifyEN(entities, shouldListifyExclusively)} ${pluralVerb} ${descriptor}`;
-	} else if (entities === 1) {
+	} else if (entities.length === 1) {
 		return `${entities[0]} ${singularVerb} ${descriptor}`;
 	} else {
 		return "";
