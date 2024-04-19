@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 
 module.exports = new EnemyTemplate("@{clone}",
-	"@{clone}",
+	"@{clone}", // this shouldn't get used, clones always copy delvers
 	300,
 	100,
 	"6",
@@ -12,5 +12,5 @@ module.exports = new EnemyTemplate("@{clone}",
 	.addAction({
 		name: "Mirroring Moves",
 		element: "Untyped",
-		description: "Clones will use the same move on a mirrored target as the delver they've copied."
+		description: "Clones come with the same gear and will use the same move on a mirrored target as the delver they've copied."
 	});
