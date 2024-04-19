@@ -426,6 +426,9 @@ function resolveMove(move, adventure) {
 				effect = getGearProperty(move.name, "effect");
 				needsLivingTargets = getGearProperty(move.name, "targetingTags").needsLivingTargets;
 				moveText = `${getEmoji(getGearProperty(move.name, "element"))} ${moveText}`;
+				if (move.userReference.team === "delver" && adventure.getArtifactCount("Crystal Shard") > 0 && getGearProperty(move.name, "category") === "Spell") {
+					adventure.updateArtifactStat("Crystal Shard", "Spells Cast", 1);
+				}
 				break;
 			case "item":
 				let isPlacebo = false;

@@ -197,10 +197,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						targetIndices.forEach(index => {
 							newMove.addTarget(new CombatantReference(targetTeam, index));
 						});
-
-						if (crystalShardCount > 0) {
-							adventure.updateArtifactStat("Crystal Shard", "Extra Targets", (targetIndices[targetIndices.length - 1] - targetIndices[0]) - (prebuffedMaxIndex - prebuffedMinIndex));
-						}
 					} else {
 						newMove.addTarget(new CombatantReference(targetTeam, targetIndex));
 						targetIndices.push(targetIndex);
