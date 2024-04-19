@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Fate-Sealing Censer",
 	"Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage",
@@ -12,15 +12,15 @@ module.exports = new GearTemplate("Fate-Sealing Censer",
 		const { element, modifiers: [slow, stasis], damage, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			pendingDamage += bonus;
 		}
 		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			const addedSlow = addModifier(target, slow);
-			const addedStasis = addModifier(target, stasis);
+			const addedSlow = addModifier([target], slow).length > 0;
+			const addedStasis = addModifier([target], stasis).length > 0;
 			if (addedSlow) {
 				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed and enters Stasis.`;
 			} else if (addedStasis) {

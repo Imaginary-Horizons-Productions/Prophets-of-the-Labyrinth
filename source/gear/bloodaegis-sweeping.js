@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { payHP } = require('../util/combatantUtil.js');
+const { payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Blood Aegis",
@@ -12,12 +12,12 @@ module.exports = new GearTemplate("Sweeping Blood Aegis",
 		const { element, protection, critMultiplier, hpCost } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingProtection *= critMultiplier;
 		}
-		user.protection += pendingProtection;
+		addProtection([user], pendingProtection);
 
 		const provokedTargets = [];
 		const targetTeam = user.team === "delver" ? "enemy" : "delver";

@@ -7,6 +7,7 @@ const { getGearProperty } = require('../gear/_gearDictionary');
 const { getEmoji, getColor } = require('../util/elementUtil');
 const { gearToEmbedField, randomAuthorTip } = require('../util/embedUtil');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
+const { getNames } = require('../util/combatantUtil');
 
 const mainId = "readymove";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -24,11 +25,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			.setDescription(`Your ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.\n\nPick one option from below as your move for this round:`);
 		const enemyOptions = [];
 		const miniPredictBuilder = getArchetype(delver.archetype).miniPredict;
+		const enemyNames = getNames(adventure.room.enemies, adventure);
 		for (let i = 0; i < adventure.room.enemies.length; i++) {
 			const enemy = adventure.room.enemies[i];
 			if (enemy.hp > 0) {
 				const optionPayload = {
-					label: enemy.getName(adventure.room.enemyIdMap),
+					label: enemyNames[i],
 					value: `enemy${SAFE_DELIMITER}${i}`
 				};
 				const miniPredict = trimForSelectOptionDescription(miniPredictBuilder(enemy));
@@ -214,7 +216,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					}
 					adventure.room.moves.push(newMove);
 
-					const targets = targetIndices.map(index => `**${adventure.getCombatant({ team: targetTeam, index }).getName(adventure.room.enemyIdMap)}**`);
+					const targets = getNames(targetIndices.map(index => adventure.getCombatant({ team: targetTeam, index })), adventure).map(name => `**${name}**`);
 					confirmationText = `**${collectedInteraction.member.displayName}** ${overwritten ? "switches to ready" : "readies"} **${moveName}** to use on ${listifyEN(targets, false)}.`;
 				}
 				collectedInteraction.channel.send(confirmationText).then(() => {

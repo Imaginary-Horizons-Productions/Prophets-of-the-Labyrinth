@@ -1,4 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
+const { getNames } = require("../util/combatantUtil");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Knight",
@@ -17,17 +18,11 @@ module.exports = new ArchetypeTemplate("Knight",
 			if (userReference.team === "enemy") {
 				const enemy = adventure.getCombatant(userReference);
 				if (enemy.hp > 0) {
-					const targetNames = [];
-					targets.forEach(reference => {
-						const combatant = adventure.getCombatant(reference);
-						if (combatant) {
-							targetNames.push(combatant.getName(adventure.room.enemyIdMap));
-						}
-					});
+					const targetNames = getNames(targets.map(targetReference => adventure.getCombatant(targetReference)), adventure);
 					if (name !== "@{clone}") {
-						embed.addFields({ name: enemy.getName(adventure.room.enemyIdMap), value: `Round ${adventure.room.round + 1}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}(Targets: ${targetNames.length ? listifyEN(targetNames, false) : "none"})\nRound ${adventure.room.round + 2}: ${enemy.nextAction}` });
+						embed.addFields({ name: getNames([enemy], adventure, false)[0], value: `Round ${adventure.room.round + 1}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}(Targets: ${listifyEN(targetNames, false) || "none"})\nRound ${adventure.room.round + 2}: ${enemy.nextAction}` });
 					} else {
-						embed.addFields({ name: enemy.getName(adventure.room.enemyIdMap), value: "Mirror Clones mimic your allies!" })
+						embed.addFields({ name: getNames([enemy], adventure, false)[0], value: "Mirror Clones mimic your allies!" })
 					}
 				}
 			}

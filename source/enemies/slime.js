@@ -1,6 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe, nextRandom } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
+const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("@{adventure} Slime",
 	"@{adventure}",
@@ -15,13 +16,13 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	element: "@{adventure}",
 	description: "Deal the Slime's element damage to a single foe",
 	priority: 0,
-	effect: ([target], user, isCrit, adventure) => {
+	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 25;
 		if (isCrit) {
 			damage *= 2;
 		}
-		target.addStagger("elementMatchFoe");
-		return dealDamage([target], user, damage, false, adventure.element, adventure);
+		changeStagger(targets, "elementMatchFoe");
+		return dealDamage(targets, user, damage, false, adventure.element, adventure);
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -31,16 +32,13 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	element: "Untyped",
 	description: "Slow a single foe",
 	priority: 0,
-	effect: ([target], user, isCrit, adventure) => {
-		let addedSlow = false;
+	effect: (targets, user, isCrit, adventure) => {
+		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 		if (isCrit) {
-			addedSlow = addModifier(target, { name: "Slow", stacks: 3 });
-			target.addStagger("elementMatchFoe");
-		} else {
-			addedSlow = addModifier(target, { name: "Slow", stacks: 2 });
+			changeStagger(targets, "elementMatchFoe");
 		}
-		if (addedSlow) {
-			return `${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+		if (slowedTargets.length > 0) {
+			return joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed.");
 		} else {
 			return "But nothing happened.";
 		}

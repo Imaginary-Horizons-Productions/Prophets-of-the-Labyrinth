@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, payHP } = require('../util/combatantUtil.js');
+const { addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	"Pay @{hpCost} hp to grant an ally @{mod0Stacks} @{mod0}",
@@ -7,19 +8,19 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	"Pact",
 	"Light",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [regen, stasis], hpCost, critMultiplier } = module.exports;
 		let pendingHPCost = hpCost;
 		if (user.element === element) {
-			target.addStagger("elementMatchAlly");
+			changeStagger(targets, "elementMatchAlly");
 		}
-		let addedStasis = false;
+		let stasisedTargets = [];
 		if (isCrit) {
 			pendingHPCost /= critMultiplier;
-			addedStasis = addModifier(target, stasis);
+			stasisedTargets.concat(addModifier(targets, stasis)).length > 0;
 		}
-		const addedRegen = addModifier(target, regen);
-		return `${payHP(user, pendingHPCost, adventure)}${addedRegen ? ` ${user.getName(adventure.room.enemyIdMap)} gains Regen${addedStasis ? " and enters Stasis" : ""}.` : ""}`;
+		const regenedTargets = addModifier(targets, regen);
+		return `${payHP(user, pendingHPCost, adventure)}${regenedTargets.length > 0 ? ` ${joinAsStatement(false, regenedTargets, "gains", "gain", "Regen.")}` : ""}${stasisedTargets.length > 0 ? ` ${joinAsStatement(false, stasisedTargets, "enters", "enter", "Stasis.")}` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Discounted Infinite Regeneration")

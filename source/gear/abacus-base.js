@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Abacus",
 	"Deal @{damage} (+5% foe max hp) @{element} damage to a foe",
@@ -7,16 +7,20 @@ module.exports = new GearTemplate("Abacus",
 	"Trinket",
 	"Water",
 	200,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;
-		let pendingDamage = user.getPower() + damage + (0.05 * target.getMaxHP());
-		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
-		}
-		if (isCrit) {
-			pendingDamage *= critMultiplier;
-		}
-		return dealDamage([target], user, pendingDamage, false, element, adventure);
+		let resultText = "";
+		targets.forEach(target => {
+			let pendingDamage = user.getPower() + damage + (0.05 * target.getMaxHP());
+			if (user.element === element) {
+				changeStagger([target], "elementMatchFoe");
+			}
+			if (isCrit) {
+				pendingDamage *= critMultiplier;
+			}
+			resultText += dealDamage([target], user, pendingDamage, false, element, adventure);
+		})
+		return resultText;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Hunter's Abacus", "Sharpened Abacus", "Unstoppable Abacus")

@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Spear",
 	"Strike a foe for @{damage} @{element} damage",
@@ -7,16 +8,16 @@ module.exports = new GearTemplate("Spear",
 	"Weapon",
 	"Wind",
 	200,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, stagger, damage } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
-		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
+		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		if (isCrit) {
-			target.addStagger(stagger);
-			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
+			changeStagger(targets, stagger);
+			resultText += ` ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}`;
 		}
 		return resultText;
 	}

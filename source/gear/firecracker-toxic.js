@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants.js');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { listifyEN, joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Toxic Firecracker",
 	"Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage",
@@ -15,24 +15,11 @@ module.exports = new GearTemplate("Toxic Firecracker",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const poisonedTargets = [];
-		targets.map(target => {
-			if (user.element === element) {
-				target.addStagger("elementMatchFoe");
-			}
-			const addedPoison = addModifier(target, poison);
-			if (addedPoison) {
-				poisonedTargets.push(target.getName(adventure.room.enemyIdMap))
-			}
-		})
-
-		if (poisonedTargets.length > 1) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${listifyEN(poisonedTargets, false)} are Poisoned.`;
-		} else if (poisonedTargets.length === 1) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${poisonedTargets[0]} is Poisoned.`;
-		} else {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}`;
+		if (user.element === element) {
+			changeStagger(targets, "elementMatchFoe");
 		}
+		const poisonedTargetNames = getNames(addModifier(targets, poison), adventure);
+		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, poisonedTargetNames, "is", "are", "Poisoned.")}`;
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Firecracker", "Mercurial Firecracker")

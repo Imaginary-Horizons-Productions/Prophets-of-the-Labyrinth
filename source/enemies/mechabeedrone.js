@@ -1,8 +1,9 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
+const { joinAsStatement } = require("../util/textUtil.js");
 
 const PATTERN = {
 	"Sting": "Barrel Roll",
@@ -27,16 +28,11 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	element: "Darkness",
 	description: `Inflict minor ${getEmoji("Darkness")} damage and Poison on a single foe`,
 	priority: 0,
-	effect: ([target], user, isCrit, adventure) => {
+	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 10;
-		target.addStagger("elementMatchFoe");
-		let addedPoison = false;
-		if (isCrit) {
-			addedPoison = addModifier(target, { name: "Poison", stacks: 4 });
-		} else {
-			addedPoison = addModifier(target, { name: "Poison", stacks: 2 });
-		}
-		return `${dealDamage([target], user, damage, false, user.element, adventure)}${addedPoison ? ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.` : ""}`;
+		changeStagger(targets, "elementMatchFoe");
+		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 });
+		return `${dealDamage(targets, user, damage, false, user.element, adventure)}${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -51,8 +47,8 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		if (isCrit) {
 			stacks *= 3;
 		}
-		const addedEvade = addModifier(user, { name: "Evade", stacks });
-		user.addStagger("elementMatchAlly");
+		const addedEvade = addModifier([user], { name: "Evade", stacks }).length > 0;
+		changeStagger([user], "elementMatchAlly");
 		if (addedEvade) {
 			return "It's prepared to Evade.";
 		} else {
@@ -85,9 +81,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 			damage *= 2;
 		}
 		user.hp = 0;
-		targets.map(target => {
-			target.addStagger("elementMatchFoe");
-		})
+		changeStagger(targets, "elementMatchFoe");
 
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},

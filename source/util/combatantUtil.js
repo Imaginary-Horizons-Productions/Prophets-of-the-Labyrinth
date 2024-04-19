@@ -8,7 +8,7 @@ const { getWeaknesses, getResistances, elementsList } = require("./elementUtil.j
  */
 function downedCheck(target, adventure) {
 	if (target.hp <= 0) {
-		const targetName = target.getName(adventure.room.enemyIdMap);
+		const targetName = getNames([target], adventure)[0];
 		if (target.team === "delver") {
 			target.hp = target.getMaxHP();
 			adventure.lives = Math.max(adventure.lives - 1, 0);
@@ -24,17 +24,18 @@ function downedCheck(target, adventure) {
 
 /**
  * @param {Combatant[]} targets
- * @param {Combatant} user
+ * @param {Combatant} assailant
  * @param {number} damage
  * @param {boolean} isUnblockable
  * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} element
  * @param {Adventure} adventure
  */
-function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
+function dealDamage(targets, assailant, damage, isUnblockable, element, adventure) {
 	const previousLifeCount = adventure.lives;
 	const resultTexts = [];
-	for (const target of targets) {
-		const targetName = target.getName(adventure.room.enemyIdMap);
+	const targetNames = getNames(targets, adventure);
+	targets.forEach((target, index) => {
+		const targetName = targetNames[index];
 		if (!(`${element} Absorb` in target.modifiers)) {
 			if (!("Evade" in target.modifiers) || isUnblockable) {
 				let pendingDamage = damage;
@@ -62,7 +63,7 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 						pendingDamage = 0;
 					}
 				}
-				pendingDamage = Math.min(pendingDamage, user.getDamageCap());
+				pendingDamage = Math.min(pendingDamage, assailant.getDamageCap());
 				target.hp -= pendingDamage;
 				let damageText = ` **${targetName}** takes ${pendingDamage} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}`;
 				if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
@@ -72,13 +73,13 @@ function dealDamage(targets, user, damage, isUnblockable, element, adventure) {
 				damageText += downedCheck(target, adventure);
 				resultTexts.push(damageText);
 			} else {
-				removeModifier(target, { name: "Evade", stacks: 1, force: true });
+				removeModifier([target], { name: "Evade", stacks: 1, force: true });
 				resultTexts.push(` ${targetName} evades the attack!`);
 			}
 		} else {
 			resultTexts.push(` ${gainHealth(target, damage, adventure)}`);
 		}
-	}
+	})
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
 			resultTexts.push(`***${adventure.lives} lives remain.***`);
@@ -113,7 +114,7 @@ function dealModifierDamage(target, modifier, adventure) {
 	}
 
 	target.hp -= pendingDamage;
-	let resultText = ` **${target.getName(adventure.room.enemyIdMap)}** takes ${pendingDamage} damage from ${modifier}!${downedCheck(target, adventure)}`;
+	let resultText = ` **${getNames([target], adventure)[0]}** takes ${pendingDamage} damage from ${modifier}!${downedCheck(target, adventure)}`;
 
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
@@ -135,7 +136,7 @@ function dealModifierDamage(target, modifier, adventure) {
 function payHP(user, damage, adventure) {
 	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
-	const userName = user.getName(adventure.room.enemyIdMap);
+	const userName = getNames([user], adventure)[0];
 	let resultText = ` **${userName}** pays ${damage} HP.${downedCheck(user, adventure)}`;
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
@@ -169,78 +170,131 @@ function gainHealth(combatant, healing, adventure) {
 	}
 
 	if (combatant.hp === maxHP) {
-		return `${combatant.getName(adventure.room.enemyIdMap)} was fully healed${loopholeGold > 0 ? ` (${loopholeGold} gold gained)` : ""}!`;
+		return `${getNames([combatant], adventure)[0]} was fully healed${loopholeGold > 0 ? ` (${loopholeGold} gold gained)` : ""}!`;
 	} else {
-		return `${combatant.getName(adventure.room.enemyIdMap)} *gained ${healing} hp*.`
+		return `${getNames([combatant], adventure)[0]} *gained ${healing} hp*.`
 	}
 }
 
+/**
+ * @param {Combatant[]} combatants
+ * @param {Adventure} adventure
+ */
+function getNames(combatants, adventure) {
+	const generatedNames = [];
+	for (const combatant of combatants) {
+		if (combatant.team === "enemy" && adventure.room.enemyIdMap[combatant.name] > 1) {
+			generatedNames.push(`${combatant.name} ${combatant.id}`);
+		} else {
+			generatedNames.push(combatant.name);
+		}
+	}
+
+	return generatedNames;
+}
+
 /** Checks if adding the modifier inverts exisiting modifiers, increments the (remaining) stacks, then checks if stacks exceed a trigger threshold
- * @param {Combatant} combatant
+ * @param {Combatant[]} combatants
  * @param {object} modifierData
  * @param {string} modifierData.name
  * @param {number} modifierData.stacks removes all if not parsable to an integer
  * @param {boolean} modifierData.force whether to ignore the Oblivious check
- * @returns {boolean} if the modifier was added (as opposed to being prevented by Oblivious)
+ * @returns {Combatant[]} the affected combatants (as opposed to being prevented by Oblivious)
  */
-function addModifier(combatant, { name: modifier, stacks: pendingStacks, force = false }) {
-	// Oblivious only blocks buffs and debuffs
-	if (force || !("Oblivious" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
-		const inverse = getInverse(modifier);
-		const inverseStacks = combatant.modifiers[inverse];
-		if (inverseStacks) {
-			removeModifier(combatant, { name: inverse, stacks: pendingStacks, force: true });
-			if (inverseStacks < pendingStacks) {
-				combatant.modifiers[modifier] = pendingStacks - inverseStacks;
-			}
-		} else {
-			if (combatant.modifiers[modifier]) {
-				combatant.modifiers[modifier] += pendingStacks;
+function addModifier(combatants, { name: modifier, stacks: pendingStacks, force = false }) {
+	const affectedCombatants = [];
+	for (const combatant of combatants) {
+		// Oblivious only blocks buffs and debuffs
+		if (force || !("Oblivious" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
+			const inverse = getInverse(modifier);
+			const inverseStacks = combatant.modifiers[inverse];
+			if (inverseStacks) {
+				removeModifier([combatant], { name: inverse, stacks: pendingStacks, force: true });
+				if (inverseStacks < pendingStacks) {
+					combatant.modifiers[modifier] = pendingStacks - inverseStacks;
+				}
 			} else {
-				combatant.modifiers[modifier] = pendingStacks;
+				if (combatant.modifiers[modifier]) {
+					combatant.modifiers[modifier] += pendingStacks;
+				} else {
+					combatant.modifiers[modifier] = pendingStacks;
+				}
 			}
-		}
 
-		// Trigger threshold: Progress
-		if (combatant.getModifierStacks("Progress") >= 100) {
-			combatant.modifiers.Progress = 0;
-			addModifier(combatant, { name: "Power Up", stacks: 100, force: false });
+			// Trigger threshold: Progress
+			if (combatant.getModifierStacks("Progress") >= 100) {
+				combatant.modifiers.Progress = 0;
+				addModifier([combatant], { name: "Power Up", stacks: 100, force: false });
+			}
+			affectedCombatants.push(combatant);
+		} else {
+			removeModifier([combatant], { name: "Oblivious", stacks: 1, force: true });
 		}
-		return true;
-	} else {
-		removeModifier(combatant, { name: "Oblivious", stacks: 1, force: true });
-		return false;
 	}
+	return affectedCombatants;
 }
 
 /** After decrementing a modifier's stacks, delete the modifier's entry in the object
- * @param {Combatant} combatant
+ * @param {Combatant[]} combatants
  * @param {object} modifierData
  * @param {string} modifierData.name
  * @param {number} modifierData.stacks removes all if not parsable to an integer
  * @param {boolean} modifierData.force whether to ignore the Stasis check (eg buffs/debuffs consuming themselves)
- * @returns {boolean} if the modifier was decremented (as opposed to being prevented by Stasis)
+ * @returns {Combatant[]} if the modifier was decremented (as opposed to being prevented by Stasis)
  */
-function removeModifier(combatant, { name: modifier, stacks, force = false }) {
-	// Stasis only protects buffs and debuffs
-	if (force || !("Stasis" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
-		const didHaveModifier = modifier in combatant.modifiers;
-		if (isNaN(parseInt(stacks)) || stacks >= combatant.modifiers[modifier]) {
-			delete combatant.modifiers[modifier];
-		} else if (modifier in combatant.modifiers) {
-			combatant.modifiers[modifier] -= stacks;
+function removeModifier(combatants, { name: modifier, stacks, force = false }) {
+	const affectedCombatants = [];
+	for (const combatant of combatants) {
+		// Stasis only protects buffs and debuffs
+		if (force || !("Stasis" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
+			const didHaveModifier = modifier in combatant.modifiers;
+			if (isNaN(parseInt(stacks)) || stacks >= combatant.modifiers[modifier]) {
+				delete combatant.modifiers[modifier];
+			} else if (modifier in combatant.modifiers) {
+				combatant.modifiers[modifier] -= stacks;
+			}
+			if (didHaveModifier) {
+				affectedCombatants.push(combatant);
+			}
+		} else {
+			removeModifier([combatant], { name: "Stasis", stacks: 1, force: true });
 		}
-		return didHaveModifier;
-	} else {
-		removeModifier(combatant, { name: "Stasis", stacks: 1, force: true });
-		return false;
+	}
+	return affectedCombatants;
+}
+
+/** add Stagger, negative values allowed
+ * @param {Combatant[]} combatants
+ * @param {number | "elementMatchAlly" | "elementMatchFoe"} value
+ */
+function changeStagger(combatants, value) {
+	for (const combatant of combatants) {
+		if (!combatant.isStunned) {
+			let pendingStagger = value;
+			if (value === "elementMatchAlly") {
+				pendingStagger = -1;
+			} else if (value === "elementMatchFoe") {
+				pendingStagger = 2;
+			}
+			combatant.stagger = Math.min(Math.max(combatant.stagger + pendingStagger, 0), combatant.getPoise());
+		}
+	}
+}
+
+/**
+ * @param {Combatant[]} combatants
+ * @param {number} value
+ */
+function addProtection(combatants, value) {
+	for (const combatant of combatants) {
+		combatant.protection += value;
 	}
 }
 
 /** Create a string containing the combatant's current modifiers
  * @param {Combatant} combatant
- * @param {Adventure} adventure
- */
+* @param {Adventure} adventure
+*/
 function modifiersToString(combatant, adventure) {
 	let modifiersText = "";
 	for (const modifier in combatant.modifiers) {
@@ -268,8 +322,11 @@ module.exports = {
 	dealModifierDamage,
 	payHP,
 	gainHealth,
+	getNames,
 	addModifier,
 	removeModifier,
+	changeStagger,
+	addProtection,
 	modifiersToString,
 	getCombatantWeaknesses
 };

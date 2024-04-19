@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Accelerating Cloak",
 	"Gain @{critRate} Crit Rate; gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} when used in combat",
@@ -12,18 +13,23 @@ module.exports = new GearTemplate("Accelerating Cloak",
 		const pendingEvade = { ...evade };
 		const pendingQuicken = { ...quicken };
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingEvade.stacks += bonus;
 			pendingQuicken.stacks += bonus;
 		}
-		const addedEvade = addModifier(user, pendingEvade);
-		const addedQuicken = addModifier(user, pendingQuicken);
+		const results = [];
+		const addedEvade = addModifier([user], pendingEvade).length > 0;
 		if (addedEvade) {
-			return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade and Quickened.`;
-		} else if (addedQuicken) {
-			return `${user.getName(adventure.room.enemyIdMap)} is Quickened.`;
+			results.push("prepared to Evade");
+		}
+		const addedQuicken = addModifier([user], pendingQuicken).length > 0;
+		if (addedQuicken) {
+			results.push("Quickened");
+		}
+		if (results.length > 0) {
+			return `${getNames([user], adventure)[0]} is ${listifyEN(results)}.`;
 		} else {
 			return "But nothing happened.";
 		}

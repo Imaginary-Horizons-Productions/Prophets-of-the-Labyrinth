@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants.js');
-const { dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Mercurial Firecracker",
 	"Strike 3 random foes for @{damage} damage matching the user's element",
@@ -15,9 +15,7 @@ module.exports = new GearTemplate("Mercurial Firecracker",
 			pendingDamage *= critMultiplier;
 		}
 		if (user.element === element) {
-			targets.map(target => {
-				target.addStagger("elementMatchFoe");
-			})
+			changeStagger(targets, "elementMatchFoe");
 		}
 		return dealDamage(targets, user, pendingDamage, false, user.element, adventure);
 	}

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, payHP } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reckless Certain Victory",
 	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}; pay HP for your @{mod0}",
@@ -7,23 +7,23 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 	"Pact",
 	"Earth",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [powerUp, exposed], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedPowerUp = addModifier(user, powerUp);
-		const addedExposed = addModifier(user, exposed);
+		const addedPowerUp = addModifier([user], powerUp).length > 0;
+		const addedExposed = addModifier([user], exposed).length > 0;
 		if (addedPowerUp) {
-			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Powered Up and Exposed.`;
+			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${getNames([user], adventure)[0]} is Powered Up and Exposed.`;
 		} else if (addedExposed) {
-			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)} ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
+			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${getNames([user], adventure)[0]} is Exposed.`;
 		} else {
-			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage([target], user, pendingDamage, false, element, adventure)}`;
+			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage(targets, user, pendingDamage, false, element, adventure)}`;
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

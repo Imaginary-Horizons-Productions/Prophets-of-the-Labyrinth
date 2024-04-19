@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Bashing Morning Star",
 	"Strike a foe applying @{foeStagger} and @{damage} (+protection) @{element} damage",
@@ -7,17 +8,17 @@ module.exports = new GearTemplate("Bashing Morning Star",
 	"Weapon",
 	"Light",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, stagger, damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage + user.protection;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		target.addStagger(stagger);
-		return `${dealDamage([target], user, pendingDamage, false, element, adventure)} ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
+		changeStagger(targets, stagger);
+		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(targets), "was", "were", "Staggered.")}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Awesome Morning Star")

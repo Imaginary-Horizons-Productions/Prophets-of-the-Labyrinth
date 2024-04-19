@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing Daggers",
 	"Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}",
@@ -7,17 +8,17 @@ module.exports = new GearTemplate("Slowing Daggers",
 	"Weapon",
 	"Wind",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [slow], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedSlow = addModifier(target, slow);
-		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedSlow ? ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.` : ""}`;
+		const slowedTargets = addModifier(targets, slow);
+		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${addedSlow ? ` ${joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed.")}` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")

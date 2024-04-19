@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier } = require('../util/combatantUtil');
+const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Accelerating Lance",
 	"Strike a foe for @{damage} @{element} damage (double increase from Power Up), then gain @{mod0Stacks} @{mod0}",
@@ -7,17 +7,17 @@ module.exports = new GearTemplate("Accelerating Lance",
 	"Weapon",
 	"Earth",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [quicken], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + user.getModifierStacks("Power Up") + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedQuicken = addModifier(user, quicken);
-		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedQuicken ? ` ${user.getName(adventure.room.enemyIdMap)} is Quickened.` : ""}`;
+		const addedQuicken = addModifier([user], quicken).length > 0;
+		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${addedQuicken ? ` ${getNames([user], adventure)[0]} is Quickened.` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Shattering Lance", "Unstoppable Lance")

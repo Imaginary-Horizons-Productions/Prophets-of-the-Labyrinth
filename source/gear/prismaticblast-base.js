@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { dealDamage } = require('../util/combatantUtil');
+const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Prismatic Blast",
 	"Strike a foe and adjacent foes for @{damage} @{element} damage",
@@ -12,9 +12,7 @@ module.exports = new GearTemplate("Prismatic Blast",
 		const { element, damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			targets.forEach(target => {
-				target.addStagger("elementMatchFoe");
-			})
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;

@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Spear",
 	"Strike a foe for @{damage} (+@{bonus} if after foe) @{element} damage",
@@ -17,11 +17,11 @@ module.exports = new GearTemplate("Reactive Spear",
 			pendingDamage += bonus;
 		}
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit) {
-			target.addStagger(stagger);
+			changeStagger([target], stagger);
 			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
 		}
 		return resultText;

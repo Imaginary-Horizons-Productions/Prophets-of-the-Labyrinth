@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Inspiration",
 	"Apply @{mod0Stacks} @{mod0} to an ally",
@@ -7,18 +8,18 @@ module.exports = new GearTemplate("Inspiration",
 	"Spell",
 	"Wind",
 	200,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [powerUp], bonus } = module.exports;
 		const pendingPowerUp = { ...powerUp };
 		if (user.element === element) {
-			target.addStagger("elementMatchAlly");
+			changeStagger(targets, "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingPowerUp.stacks += bonus;
 		}
-		const addedPowerUp = addModifier(target, pendingPowerUp);
-		if (addedPowerUp) {
-			return `${target.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+		const poweredUpTargets = addModifier(targets, pendingPowerUp);
+		if (poweredUpTargets.length > 0) {
+			return joinAsStatement(false, getNames(poweredUpTargets, adventure), "is", "are", "Powered Up.");
 		} else {
 			return "But nothing happened.";
 		}

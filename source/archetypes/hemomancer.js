@@ -1,4 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
+const { getNames } = require("../util/combatantUtil");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Hemomancer",
@@ -18,9 +19,10 @@ module.exports = new ArchetypeTemplate("Hemomancer",
 			.sort((first, second) => {
 				return second.getSpeed(true) - first.getSpeed(true);
 			});
-		for (const combatant of activeCombatants) {
-			embed.addFields({ name: `${combatant.getName(adventure.room.enemyIdMap)}`, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\nSpeed: ${combatant.getSpeed(true)}` });
-		}
+		const combatantNames = getNames(activeCombatants, adventure);
+		activeCombatants.forEach((combatant, index) => {
+			embed.addFields({ name: combatantNames[index], value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\nSpeed: ${combatant.getSpeed(true)}` });
+		});
 		embed.setDescription("Combatants may act out of order if they have priority or they are tied in speed.");
 		return embed.setTitle(`Hemomancer Predictions for Round ${adventure.room.round + 1}`);
 	},

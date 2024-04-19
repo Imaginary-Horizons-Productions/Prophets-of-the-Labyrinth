@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Scythe",
 	"Strike a foe for @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Scythe",
 		let pendingDamage = user.getPower() + damage;
 		let pendingHPThreshold = hpThreshold;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingHPThreshold *= critMultiplier;

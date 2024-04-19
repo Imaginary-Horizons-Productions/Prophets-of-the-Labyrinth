@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Evasive Sun Flare",
 	"Inflict @{foeStagger} on a foe and gain @{mod0Stacks} @{mod0} with priority",
@@ -10,14 +10,14 @@ module.exports = new GearTemplate("Evasive Sun Flare",
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [evade, slow], stagger } = module.exports;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		let addedSlow = false;
 		if (isCrit) {
-			addedSlow = addModifier(target, slow);
+			addedSlow = addModifier([target], slow).length > 0;
 		}
-		target.addStagger(stagger);
-		const addedEvade = addModifier(user, evade);
+		changeStagger([target], stagger);
+		const addedEvade = addModifier([user], evade).length > 0;
 		return `${addedEvade ? `${user.getName(adventure.room.enemyIdMap)} prepares to Evade. ` : ""}${target.getName(adventure.room.enemyIdMap)} is Staggered${addedSlow ? ` and Slowed` : ""}.`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

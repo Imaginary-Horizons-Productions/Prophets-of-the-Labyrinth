@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { changeStagger, addProtection } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Scutum",
 	"Grant @{protection} protection to an ally and yourself",
@@ -10,14 +11,12 @@ module.exports = new GearTemplate("Scutum",
 		const { element, protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
-			target.addStagger("elementMatchAlly");
-			user.addStagger("elementMatchAlly");
+			changeStagger([target, user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingProtection *= critMultiplier;
 		}
-		target.protection += pendingProtection;
-		user.protection += pendingProtection;
+		addProtection([target, user], pendingProtection);
 		return `${target.getName(adventure.room.enemyIdMap)} and ${user.getName(adventure.room.enemyIdMap)} gain protection.`;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })

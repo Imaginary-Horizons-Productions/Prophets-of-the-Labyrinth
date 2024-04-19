@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Long Cloak",
 	"Gain @{critRate} Crit Rate; gain @{mod0Stacks} @{mod0} when used in combat",
@@ -11,14 +11,14 @@ module.exports = new GearTemplate("Long Cloak",
 		const { element, modifiers: [evade], bonus } = module.exports;
 		const pendingEvade = { ...evade };
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingEvade.stacks += bonus;
 		}
-		const addedEvade = addModifier(user, pendingEvade);
+		const addedEvade = addModifier([user], pendingEvade).length > 0;
 		if (addedEvade) {
-			return `${user.getName(adventure.room.enemyIdMap)} is prepared to Evade.`;
+			return `${getNames([user], adventure)[0]} is prepared to Evade.`;
 		} else {
 			return "But nothing happened.";
 		}

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { gainHealth } = require('../util/combatantUtil');
+const { gainHealth, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Second Wind",
 	"Regain @{healing} hp.",
@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Second Wind",
 		const { healing, element, critMultiplier } = module.exports;
 		let pendingHealing = healing;
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingHealing *= critMultiplier;

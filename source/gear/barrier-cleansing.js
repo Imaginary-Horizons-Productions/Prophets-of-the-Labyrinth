@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { removeModifier, addModifier } = require('../util/combatantUtil.js');
+const { removeModifier, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Cleansing Barrier",
 	"Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} and cure a random debuff",
@@ -8,25 +9,38 @@ module.exports = new GearTemplate("Cleansing Barrier",
 	"Spell",
 	"Wind",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;
 		const pendingVigilance = { ...vigilance };
 		if (user.element === element) {
-			user.addStagger("elementMatchAlly");
+			changeStagger([user], "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingVigilance.stacks *= critMultiplier;
 		}
-		const addedVigilance = addModifier(user, pendingVigilance);
-		addModifier(user, evade);
+		const addedModifiers = [];
+		const addedVigilance = addModifier([user], pendingVigilance).length > 0;
+		if (addedVigilance) {
+			addedModifiers.push("Vigilance");
+		}
+		const addedEvade = addModifier([user], evade).length > 0;
+		if (addedEvade) {
+			addedModifiers.push("Evade");
+		}
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		let debuffWasRemoved = false;
 		let rolledDebuff;
 		if (userDebuffs.length > 0) {
 			rolledDebuff = userDebuffs[adventure.generateRandomNumber(userDebuffs.length, "battle")];
-			debuffWasRemoved = removeModifier(user, { name: rolledDebuff, stacks: "all" });
+			debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 		}
-		return `${user.getName(adventure.room.enemyIdMap)}${addedVigilance ? " Vigilantly" : ""} prepares to Evade ${debuffWasRemoved ? ` and shrugs off ${rolledDebuff}` : ""}.`;
+		if (addedModifiers.length > 0) {
+			return `${getNames([user], adventure)[0]} gains ${listifyEN(addedModifiers)}${debuffWasRemoved ? ` and shrugs off ${rolledDebuff}` : ""}.`;
+		} else if (debuffWasRemoved) {
+			return `${getNames([user], adventure)[0]} shrugs off ${rolledDebuff}.`;
+		} else {
+			return "But nothing happened.";
+		}
 	}
 ).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
 	.setSidegrades("Devoted Barrier", "Long Barrier")

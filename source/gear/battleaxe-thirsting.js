@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, gainHealth } = require('../util/combatantUtil.js');
+const { addModifier, dealDamage, gainHealth, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thirsting Battleaxe",
 	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; heal @{healing} hp on kill",
@@ -7,21 +7,25 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 	"Weapon",
 	"Fire",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [exposed], damage, critMultiplier, healing } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedExposed = addModifier(user, exposed);
-		let damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
-		if (target.hp < 1) {
-			damageText += gainHealth(user, healing, adventure);
-		}
-		return `${damageText}${addedExposed ? ` ${user.getName(adventure.room.enemyIdMap)} is Exposed.` : ""}`;
+		const addedExposed = addModifier([user], exposed).length > 0;
+		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		let killCount = 0;
+		targets.forEach(target => {
+			if (target.hp < 1) {
+				killCount++
+			}
+		})
+		resultText += gainHealth(user, healing * killCount, adventure);
+		return `${resultText}${addedExposed ? ` ${getNames([user], adventure)[0]} is Exposed.` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Prideful Battleaxe", "Thick Battleaxe")

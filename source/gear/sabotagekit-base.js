@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, getCombatantWeaknesses } = require('../util/combatantUtil.js');
+const { addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
@@ -21,15 +21,15 @@ module.exports = new GearTemplate("Sabotage Kit",
 			pendingWeakness.stacks += bonus;
 		}
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		const debuffTexts = [];
-		const addedSlow = addModifier(target, pendingSlow);
+		const addedSlow = addModifier([target], pendingSlow).length > 0;
 		if (addedSlow) {
 			debuffTexts.push("is Slowed");
 		}
 		if (weaknessPool.length > 0) {
-			const addedWeakness = addModifier(target, pendingWeakness);
+			const addedWeakness = addModifier([target], pendingWeakness).length > 0;
 			if (addedWeakness) {
 				debuffTexts.push(`gains ${pendingWeakness.name}`);
 			}

@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
-const { addModifier } = require("../util/combatantUtil");
+const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Corrosion",
 	"Inflict @{mod0Stacks} @{mod0} on a foe",
@@ -7,19 +8,20 @@ module.exports = new GearTemplate("Corrosion",
 	"Spell",
 	"Fire",
 	200,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [powerDown], stagger } = module.exports;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
-			target.addStagger(stagger);
+			changeStagger(targets, stagger);
 		}
-		const addedPowerDown = addModifier(target, powerDown);
-		if (addedPowerDown) {
-			return `${target.getName(adventure.room.enemyIdMap)} is Powered Down${isCrit ? " and Staggered" : ""}.`;
+		const poweredDownTargets = addModifier(targets, powerDown);
+		const targetNames = getNames(targets, adventure);
+		if (poweredDownTargets.length > 0) {
+			return `${joinAsStatement(false, targetNames, "is", "are", "Powered Down")}${isCrit ? " and Staggered" : ""}.`;
 		} else if (isCrit) {
-			return `${target.getName(adventure.room.enemyIdMap)} is Staggered.`;
+			return joinAsStatement(false, targetNames, "was", "were", "Staggered.");
 		} else {
 			return "But nothing happened.";
 		}

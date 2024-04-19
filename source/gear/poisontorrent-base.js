@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Poison Torrent",
@@ -14,16 +14,10 @@ module.exports = new GearTemplate("Poison Torrent",
 		if (isCrit) {
 			pendingPoison.stacks *= critMultiplier;
 		}
-		const poisonedTargets = [];
-		targets.forEach(target => {
-			const addedPoison = addModifier(target, pendingPoison);
-			if (addedPoison) {
-				poisonedTargets.push(target.getName(adventure.room.enemyIdMap));
-			}
-			if (user.element === element) {
-				target.addStagger("elementMatchFoe");
-			}
-		})
+		const poisonedTargets = getNames(addModifier(targets, pendingPoison), adventure);
+		if (user.element === element) {
+			changeStagger(targets, "elementMatchFoe");
+		}
 		if (poisonedTargets.length > 1) {
 			return `**${listifyEN(poisonedTargets, false)}** were Poisoned.`;
 		} else if (poisonedTargets.length === 1) {

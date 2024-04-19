@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { addModifier, getNames } = require('../util/combatantUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Greed",
 	"Add @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to all Treasure Elementals with priority",
@@ -10,20 +10,12 @@ module.exports = new GearTemplate("Greed",
 	0,
 	(targets, user, isCrit, adventure) => {
 		const { modifiers: [midas, powerUp] } = module.exports;
-		const affectedTargets = [];
-		targets.forEach(target => {
-			if (target.archetype === "Treasure Elemental") {
-				const addedCurse = addModifier(target, midas);
-				const addedPowerUp = addModifier(target, powerUp);
-				if (addedCurse && addedPowerUp) {
-					affectedTargets.push(target.getName(adventure.room.enemyIdMap));
-				}
-			}
-		})
-		if (affectedTargets.length === 1) {
-			return `${affectedTargets[0]} gains Curse of Midas and is Powered Up.`;
+		const poweredUpTargets = addModifier(targets.filter(target => target.archetype === "Treasure Elemental"), powerUp);
+		const affectedTargets = addModifier(poweredUpTargets, midas);
+		if (affectedTargets.length > 0) {
+			return joinAsStatement(false, getNames(affectedTargets, adventure), "gains", "gain", "Curse of Midas and Power Up.");
 		} else {
-			return `${listifyEN(affectedTargets, false)} gain Curse of Midas and are Powered Up.`;
+			return "But nothing happened.";
 		}
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })

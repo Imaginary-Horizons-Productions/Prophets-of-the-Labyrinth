@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage } = require('../util/combatantUtil.js');
+const { addModifier, dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Scythe",
 	"Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
@@ -12,13 +12,13 @@ module.exports = new GearTemplate("Toxic Scythe",
 		let pendingDamage = user.getPower() + damage;
 		let pendingHPThreshold = hpThreshold;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingHPThreshold *= critMultiplier;
 		}
 		if (target.hp > pendingHPThreshold) {
-			const addedPoison = addModifier(target, poison);
+			const addedPoison = addModifier([target], poison).length > 0;
 			return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedPoison ? ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.` : ""}`;
 		} else {
 			target.hp = 0;

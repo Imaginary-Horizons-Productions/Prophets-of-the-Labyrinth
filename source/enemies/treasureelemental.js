@@ -1,8 +1,8 @@
 const { EnemyTemplate } = require("../classes");
 const { selectAllFoes, selectRandomFoe, nextRandom } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
-const { listifyEN } = require("../util/textUtil.js");
+const { listifyEN, joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Treasure Elemental",
 	"Earth",
@@ -18,11 +18,11 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		element: "Earth",
 		description: `Gain protection and deal ${getEmoji("Earth")} damage to a single foe`,
 		priority: 0,
-		effect: ([target], user, isCrit, adventure) => {
+		effect: (targets, user, isCrit, adventure) => {
 			let damage = user.getPower() + 100;
-			user.protection += isCrit ? 100 : 50;
-			user.addStagger("elementMatchAlly");
-			return `It gains protection and ${dealDamage([target], user, damage, false, user.element, adventure)}`;
+			addProtection([user], isCrit ? 100 : 50);
+			changeStagger([user], "elementMatchAlly");
+			return `It gains protection and ${dealDamage(targets, user, damage, false, user.element, adventure)}`;
 		},
 		selector: selectRandomFoe,
 		needsLivingTargets: false,
@@ -32,15 +32,16 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		element: "Earth",
 		description: `Deal ${getEmoji("Earth")} damage to a single foe three times`,
 		priority: 0,
-		effect: ([target], user, isCrit, adventure) => {
+		effect: (targets, user, isCrit, adventure) => {
 			let damage = user.getPower() + 25;
 			if (isCrit) {
 				damage *= 2;
 			}
-			user.addStagger("elementMatchAlly");
-			let text = dealDamage([target], user, damage, false, user.element, adventure);
-			text += dealDamage([target], user, damage, false, user.element, adventure);
-			text += dealDamage([target], user, damage, false, user.element, adventure);
+			changeStagger([user], "elementMatchAlly");
+			let text = "";
+			for (let i = 0; i < 3; i++) {
+				text += dealDamage(targets, user, damage, false, user.element, adventure);
+			}
 			return text;
 		},
 		selector: selectRandomFoe,
@@ -56,17 +57,9 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			if (isCrit) {
 				stacks *= 2;
 			}
-			const slowedTargets = [];
-			targets.forEach(target => {
-				const addedSlow = addModifier(target, { name: "Slow", stacks });
-				if (addedSlow) {
-					slowedTargets.push(target.getName(adventure.room.enemyIdMap));
-				}
-			});
-			if (slowedTargets.length > 1) {
-				return `${listifyEN(slowedTargets, false)} are Slowed trying to grab at some treasure.`;
-			} else if (slowedTargets.length === 1) {
-				return `${slowedTargets[0]} is Slowed trying to grab at some treasure.`;
+			const slowedTargets = addModifier(targets, { name: "Slow", stacks });
+			if (slowedTargets.length > 0) {
+				return joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed trying to grab at some treasure.");
 			} else {
 				return "But nothing happened.";
 			}

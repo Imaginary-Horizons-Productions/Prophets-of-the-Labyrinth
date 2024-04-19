@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil');
+const { addModifier, changeStagger, addProtection, getNames } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Buckler",
 	"Grant an ally @{protection} protection and gain @{mod0Stacks} @{mod0}",
@@ -7,18 +8,18 @@ module.exports = new GearTemplate("Buckler",
 	"Armor",
 	"Earth",
 	200,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [powerUp], protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
-			target.addStagger("elementMatchAlly");
+			changeStagger(targets, "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingProtection *= critMultiplier;
 		}
-		target.protection += pendingProtection;
-		const addedPowerUp = addModifier(user, powerUp);
-		return `${target.getName(adventure.room.enemyIdMap)} gains protection.${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""}`;
+		addProtection(targets, pendingProtection);
+		const addedPowerUp = addModifier([user], powerUp).length > 0;
+		return `${joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "protection.")}${addedPowerUp ? ` ${getNames([user], adventure)[0]} is Powered Up.` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Devoted Buckler", "Guarding Buckler", "Reinforced Buckler")

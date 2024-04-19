@@ -295,7 +295,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
-		.setTitle(`${delver.getName()} the Level ${delver.level} ${delver.archetype}`)
+		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
 	for (let index = 0; index < gearCapacity; index++) {
 		if (delver.gear[index]) {

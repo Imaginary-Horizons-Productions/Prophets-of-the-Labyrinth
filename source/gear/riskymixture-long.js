@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil');
+const { addModifier, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Long Risky Mixture",
 	"Inflict @{mod0Stacks} @{mod0} on a target",
@@ -11,20 +11,20 @@ module.exports = new GearTemplate("Long Risky Mixture",
 		const { element, modifiers: [poison, regen] } = module.exports;
 		if (user.element === element) {
 			if (target.team === user.team) {
-				target.addStagger("elementMatchAlly");
+				changeStagger([target], "elementMatchAlly");
 			} else {
-				target.addStagger("elementMatchFoe");
+				changeStagger([target], "elementMatchFoe");
 			}
 		}
 		if (isCrit) {
-			const addedRegen = addModifier(target, regen);
+			const addedRegen = addModifier([target], regen).length > 0;
 			if (addedRegen) {
 				return `${target.getName(adventure.room.enemyIdMap)} gains Regen.`;
 			} else {
 				return "But nothing happened.";
 			}
 		} else {
-			const addedPoison = addModifier(target, poison);
+			const addedPoison = addModifier([target], poison).length > 0;
 			if (addedPoison) {
 				return `${target.getName(adventure.room.enemyIdMap)} was Poisoned.`;
 			} else {

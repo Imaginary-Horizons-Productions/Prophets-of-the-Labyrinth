@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Soothing Inspiration",
 	"Apply @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to an ally",
@@ -7,21 +8,26 @@ module.exports = new GearTemplate("Soothing Inspiration",
 	"Spell",
 	"Wind",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [powerUp, regen], bonus } = module.exports;
 		const pendingPowerUp = { ...powerUp };
 		if (user.element === element) {
-			target.addStagger("elementMatchAlly");
+			changeStagger(targets, "elementMatchAlly");
 		}
 		if (isCrit) {
 			pendingPowerUp.stacks += bonus;
 		}
-		const addedPowerUp = addModifier(target, pendingPowerUp);
-		const addedRegen = addModifier(target, regen);
-		if (addedPowerUp) {
-			return `${target.getName(adventure.room.enemyIdMap)} is Powered Up and gains Regen.`;
-		} else if (addedRegen) {
-			return `${target.getName(adventure.room.enemyIdMap)} gains Regen.`;
+		const sentences = [];
+		const poweredUpTargets = addModifier(targets, pendingPowerUp);
+		if (poweredUpTargets.length > 0) {
+			sentences.push(joinAsStatement(false, getNames(poweredUpTargets), "is", "are", "Powered Up."));
+		}
+		const regenedTargets = addModifier(targets, regen);
+		if (regenedTargets.length > 0) {
+			sentences.push(joinAsStatement(false, getNames(regenedTargets), "gains", "gain", "Regen."));
+		}
+		if (sentences.length > 0) {
+			return sentences.join(" ");
 		} else {
 			return "But nothing happened.";
 		}

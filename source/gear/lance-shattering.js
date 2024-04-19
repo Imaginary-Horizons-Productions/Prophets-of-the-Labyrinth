@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier } = require('../util/combatantUtil');
+const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Shattering Lance",
 	"Apply @{mod0Stacks} @{mod0} and @{damage} @{element} damage (double increase from Power Up) to a foe",
@@ -7,17 +8,21 @@ module.exports = new GearTemplate("Shattering Lance",
 	"Weapon",
 	"Earth",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [frail], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + user.getModifierStacks("Power Up") + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedFrail = addModifier(target, frail);
-		return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedFrail ? ` ${target.getName(adventure.room.enemyIdMap)} becomes Frail.` : ""}`;
+		const frailedTargets = addModifier(targets, frail);
+		if (frailedTargets.length > 0) {
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(frailedTargets), "becomes", "become", "Frail.")}`;
+		} else {
+			return dealDamage(targets, user, pendingDamage, false, element, adventure);
+		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Lance", "Unstoppable Lance")

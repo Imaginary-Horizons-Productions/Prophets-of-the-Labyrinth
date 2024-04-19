@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Punch",
 	"Strike a foe for @{damage} @{element} damage",
@@ -7,7 +8,7 @@ module.exports = new GearTemplate("Punch",
 	"Technique",
 	"Untyped",
 	0,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { damage, critMultiplier, element } = module.exports;
 		const ironFistStacks = user.getModifierStacks("Iron Fist Stance");
 		const pendingElement = ironFistStacks > 0 ? user.element : element;
@@ -21,9 +22,9 @@ module.exports = new GearTemplate("Punch",
 			pendingDamage *= critMultiplier;
 		}
 		if (totalStagger > 0) {
-			target.addStagger(totalStagger);
+			changeStagger(targets, totalStagger);
 		}
-		return `${dealDamage([target], user, pendingDamage, false, pendingElement, adventure)}${totalStagger > 0 && user.element !== "Untyped" ? ` ${target.getName(adventure.room.enemyIdMap)} is Staggered.` : ""}`;
+		return `${dealDamage(targets, user, pendingDamage, false, pendingElement, adventure)}${totalStagger > 0 && user.element !== "Untyped" ? ` ${joinAsStatement(false, getNames(targets), "was", "were", "Staggered.")}` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setDurability(Infinity)

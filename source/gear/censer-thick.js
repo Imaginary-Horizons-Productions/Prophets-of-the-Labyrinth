@@ -1,6 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
-const { dealDamage, addModifier } = require("../util/combatantUtil");
+const { dealDamage, addModifier, changeStagger } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Thick Censer",
 	"Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage",
@@ -12,14 +12,14 @@ module.exports = new GearTemplate("Thick Censer",
 		const { element, modifiers: [slow], damage, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger([target], "elementMatchFoe");
 		}
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			pendingDamage += bonus;
 		}
 		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			const addedSlow = addModifier(target, slow);
+			const addedSlow = addModifier([target], slow).length > 0;
 			return `${damageText}${addedSlow ? ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.` : ""}`;
 		} else {
 			return damageText;

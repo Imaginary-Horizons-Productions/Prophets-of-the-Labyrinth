@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Charging War Cry",
@@ -30,11 +30,9 @@ module.exports = new GearTemplate("Charging War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
-		targetArray.forEach(target => {
-			target.addStagger(pendingStaggerStacks);
-		});
+		changeStagger(targetArray, pendingStaggerStacks);
 		let resultText = `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
-		const addedPowerUp = addModifier(user, powerup);
+		const addedPowerUp = addModifier([user], powerup).length > 0;
 		if (addedPowerUp) {
 			resultText += ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
 		}

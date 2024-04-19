@@ -1,7 +1,8 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
+const { joinAsStatement } = require("../util/textUtil.js");
 
 const PATTERN = {
 	"Barrel Roll": "Sting",
@@ -26,16 +27,11 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	element: "Earth",
 	description: `Inflict minor ${getEmoji("Earth")} damage and Poison on a single foe`,
 	priority: 0,
-	effect: ([target], user, isCrit, adventure) => {
+	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 10;
-		target.addStagger("elementMatchFoe");
-		let addedPoison = false;
-		if (isCrit) {
-			addedPoison = addModifier(target, { name: "Poison", stacks: 4 });
-		} else {
-			addedPoison = addModifier(target, { name: "Poison", stacks: 2 });
-		}
-		return `${dealDamage([target], user, damage, false, user.element, adventure)}${addedPoison ? ` ${target.getName(adventure.room.enemyIdMap)} is Poisoned.` : ""}`;
+		changeStagger(targets, "elementMatchFoe");
+		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 });
+		return `${dealDamage(targets, user, damage, false, user.element, adventure)}${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -50,8 +46,8 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		if (isCrit) {
 			stacks *= 3;
 		}
-		const addedEvade = addModifier(user, { name: "Evade", stacks });
-		user.addStagger("elementMatchAlly");
+		const addedEvade = addModifier([user], { name: "Evade", stacks }).length > 0;
+		changeStagger([user], "elementMatchAlly");
 		if (addedEvade) {
 			return "It's prepared to Evade.";
 		} else {
@@ -66,16 +62,11 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	element: "Earth",
 	description: `Inflict ${getEmoji("Earth")} damage and Paralysis on a single foe`,
 	priority: 0,
-	effect: ([target], user, isCrit, adventure) => {
+	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 40;
-		target.addStagger("elementMatchFoe");
-		let addedParalysis = false;
-		if (isCrit) {
-			addedParalysis = addModifier(target, { name: "Paralysis", stacks: 5 });
-		} else {
-			addedParalysis = addModifier(target, { name: "Paralysis", stacks: 3 });
-		}
-		return `${dealDamage([target], user, damage, false, user.element, adventure)}${addedParalysis ? ` ${target.getName(adventure.room.enemyIdMap)} is Paralyzed.` : ""}`;
+		changeStagger(targets, "elementMatchFoe");
+		const paralyzedTargets = addModifier(targets, { name: "Paralysis", stacks: isCrit ? 5 : 3 });
+		return `${dealDamage(targets, user, damage, false, user.element, adventure)}${joinAsStatement(false, getNames(paralyzedTargets, adventure), "is", "are", "Paralyzed.")}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
@@ -91,9 +82,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 			damage *= 2;
 		}
 		user.hp = 0;
-		targets.map(target => {
-			target.addStagger("elementMatchFoe");
-		})
+		changeStagger(targets, "elementMatchFoe");
 
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},

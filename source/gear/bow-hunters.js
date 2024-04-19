@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Bow",
 	"Strike a foe for @{damage} @{element} damage with priority, gain @{bonus}g on kill",
@@ -7,21 +7,28 @@ module.exports = new GearTemplate("Hunter's Bow",
 	"Weapon",
 	"Wind",
 	350,
-	([target], user, isCrit, adventure) => {
+	(targets, user, isCrit, adventure) => {
 		const { element, damage, bonus: bonusBounty, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			target.addStagger("elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		let damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
-		if (target.hp < 1) {
-			adventure.gainGold(bonusBounty);
-			damageText += ` ${user.getName(adventure.room.enemyIdMap)} forages ${bonusBounty}g of hunting trophies.`;
+		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		let hunts = 0;
+		targets.forEach(target => {
+			if (target.hp < 1) {
+				hunts++;
+			}
+		})
+		const totalGold = bonusBounty * hunts;
+		if (totalGold > 0) {
+			adventure.gainGold(totalGold);
+			resultText += ` ${getNames([user], adventure)[0]} forages ${totalGold}g of hunting trophies.`;
 		}
-		return damageText;
+		return resultText;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Bow", "Mercurial Bow")
