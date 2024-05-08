@@ -25,13 +25,13 @@ module.exports = new EnemyTemplate("Asteroid",
   description: `Inflict ${getEmoji("Earth")} damage to delver, and loses some health`,
   priority: 0,
   effect: (targets, user, isCrit, adventure) => {
-    let damage = user.getPower();
+    let damage = user.getPower()+30;
     let recoilDmg = 20;
     if (isCrit) {
       damage *= 2;
     }
     changeStagger(targets, "elementMatchFoe");
-    return `${dealDamage(targets, user, damage, false, user.element, adventure) + dealDamage(user, user, recoilDmg, false, "Untyped", adventure)}`;
+    return `${dealDamage(targets, user, damage, false, user.element, adventure) + dealDamage([user], user, recoilDmg, false, "Untyped", adventure)}`;
   },
   selector: selectRandomFoe,
   needsLivingTargets: true,
@@ -42,7 +42,7 @@ module.exports = new EnemyTemplate("Asteroid",
   description: `Sacrifice self to attack random combatants multiple times with ${getEmoji("Earth")} damage (number directed at delvers is proportional to current HP)`,
   priority: 0,
   effect: (targets, user, isCrit, adventure) => {
-    let damage = user.getPower();
+    let damage = user.getPower()+30;
     let numAttacks = 5;
     if (isCrit) {
       numAttacks *= 2;
@@ -62,13 +62,12 @@ module.exports = new EnemyTemplate("Asteroid",
     }
     let resultString = "";
     for (target of targetList) {
-      resultString += dealDamage(target, user, damage, false, user.element, adventure);
-      changeStagger(target, "elementMatchFoe");
+      resultString += dealDamage([target], user, damage, false, user.element, adventure);
+      changeStagger([target], "elementMatchFoe");
     }
     return resultString;
   },
   selector: selectNone,
   needsLivingTargets: false,
   next: asteroidPattern
-})
-  .setPower(30);
+});

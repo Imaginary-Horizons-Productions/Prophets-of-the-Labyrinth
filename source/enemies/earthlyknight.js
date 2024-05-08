@@ -8,8 +8,8 @@ const { getEmoji } = require("../util/elementUtil.js");
 const asteroid = require("./asteroid.js")
 
 const PATTERN = {
-  "Call Asteroid": "Tremor Smash", // happens at most every other turn (avg every 4)
-  "Damping Wallop": "Tremor Smash",
+  "Call Asteroid": "Tremor Smash",
+  "Damping Wallop": "random",
   "Tremor Smash": "random"
 }
 function earthlyKnightPattern(actionName) {
@@ -30,15 +30,16 @@ module.exports = new EnemyTemplate("Earthly Knight",
   description: `Inflict ${getEmoji("Earth")} damage and remove a buff`,
   priority: 0,
   effect: (targets, user, isCrit, adventure) => {
-    let damage = user.getPower() + 40;
+    let damage = user.getPower() + 75;
     changeStagger(targets, "elementMatchFoe");
     let resultString = ""
     for (target of targets) {
-      resultString += dealDamage(target, user, damage, false, user.element, adventure);
+      resultString += dealDamage([target], user, damage, false, user.element, adventure);
       const targetBuffs = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
-      const debuffIndex = adventure.generateRandomNumber(targetBuffs.length, "battle");
-      const rolledDebuff = targetBuffs[debuffIndex];
-      const wasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
+      console.log(targetBuffs);
+      const buffIndex = adventure.generateRandomNumber(targetBuffs.length, "battle");
+      const rolledDebuff = targetBuffs[buffIndex];
+      const wasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
       if (wasRemoved) {
         resultString += `${rolledDebuff} was lost.`;
       }
@@ -54,7 +55,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
   description: `Deal minor ${getEmoji("Earth")} to all foes and stagger them`,
   priority: 0,
   effect: (targets, user, isCrit, adventure) => {
-    let damage = user.getPower() - 35;
+    let damage = user.getPower();
     if (isCrit) {
       damage *= 2;
     }

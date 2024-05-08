@@ -6,8 +6,8 @@ const { joinAsStatement } = require("../util/textUtil.js");
 
 const PATTERN = {
 	"Armored Avalanche": "random",
-	"Freefall Flare-Up": "Armored Avalanche", // every other turn at most (avg every 3 ish turns)
-	"Sonic Slash": "Armored Avalanche"
+	"Freefall Flare-Up": "Sonic Slash",
+	"Sonic Slash": "random"
 }
 function meteorKnightPattern(actionName) {
 	return PATTERN[actionName]
@@ -27,7 +27,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	description: `Inflict ${getEmoji("Fire")} damage with Priority`,
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
-		let damage = user.getPower() + 40;
+		let damage = user.getPower() + 60;
 		if (isCrit) {
 			damage *= 2;
 		} changeStagger(targets, "elementMatchFoe");
@@ -42,24 +42,25 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	description: "Increases protection of target by up to 50%, then deals large damage, and receives recoil proportional to damage blocked",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		let damage = user.getPower() + 85;
+		let damage = user.getPower() + 100;
 		if (isCrit) {
 			damage *= 2;
 		}
 		// Targets get increased efficiency for protection against this attack because they're particularly "braced" for it. Won't provide excess protection, though.
 		let protectedCombatants = [];
-		let totalProt = 0;
+		let totalBlocked = 0;
 		for (const target of targets) {
-			let pendingProt = Math.max(0, damage - 0.5 * target.modifiers["protection"]);
-			if (target.modifiers.hasOwnProperty("protection") && pendingProt > 0) {
-				addProtection(target, pendingProt);
+			let cappedBoostedProt = Math.floor(Math.min(damage, 1.5 * target.protection));
+			let netProtBoost = Math.max(0, cappedBoostedProt - target.protection); // amount needed to reach cap if it does
+			if (netProtBoost > 0) {
+				addProtection([target], netProtBoost);
 				protectedCombatants.push(target);
-				totalProt += target.modifiers["protection"];
+				totalBlocked += Math.min(damage, target.protection);
 			}
 		}
-		const recoilDmg = Math.min(totalProt, damage) / 2; // half the value of armor applied against damage
-		changeStagger([targets], "elementMatchFoe");
-		return `${protectedCombatants ? joinAsStatement(protectedCombatants.map(c => c.name), false, "is", "were", "braced for the charge!") : ""}${dealDamage(targets, user, damage, false, user.element, adventure)}${recoilDmg ? user + " was repelled!" + dealDamage([user], user, recoilDmg, false, user.element, adventure) : ""}`;
+		const recoilDmg = Math.floor(Math.min(totalBlocked, damage) / 2); // half the value of armor applied against damage
+		changeStagger(targets, "elementMatchFoe");
+		return `${protectedCombatants ? joinAsStatement(protectedCombatants.map(c => c.name), false, "is", "were", "braced for the charge!") : ""}${dealDamage(targets, user, damage, false, user.element, adventure)} ${recoilDmg ? user.name + " was repelled!" + dealDamage([user], user, recoilDmg, false, user.element, adventure) : ""}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
@@ -71,9 +72,9 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		const empowered = addModifier(adventure.delvers.concat(adventure.room.enemies).filter(c => c.hp > 0), { name: "Power Up", stacks: 50 });
-		let protected;
+		let protected = [];
 		if (isCrit) {
-			protected = addModifier(adventure.room.enemies.filter(c => c.hp > 0), { name: "Protection", stacks: 50 });
+			protected = addModifier(adventure.room.enemies.filter(c => c.hp > 0), { name: "protection", stacks: 50 });
 		}
 		if (!(empowered || protected)) {
 			return "But nothing happened.";
