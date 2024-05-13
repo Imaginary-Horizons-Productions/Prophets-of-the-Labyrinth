@@ -2,6 +2,7 @@ const { ArtifactTemplate, Adventure } = require("../classes");
 
 /** @type {Record<string, ArtifactTemplate>} */
 const ARTIFACTS = {};
+const ARTIFACT_NAMES = [];
 
 /** @type {{"Earth": ArtifactTemplate[], "Wind": ArtifactTemplate[], "Water": ArtifactTemplate[], "Fire": ArtifactTemplate[], "Untyped": ArtifactTemplate[]}} */
 const ROLL_TABLE = {
@@ -33,13 +34,14 @@ for (const file of [
 ]) {
 	/** @type {ArtifactTemplate} */
 	const artifact = require(`./${file}`);
-	ARTIFACTS[artifact.name] = artifact;
+	ARTIFACTS[artifact.name.toLowerCase()] = artifact;
+	ARTIFACT_NAMES.push(artifact.name);
 	ROLL_TABLE[artifact.element].push(artifact.name);
 }
 
 /** @param {string} artifactName */
 function getArtifact(artifactName) {
-	return ARTIFACTS[artifactName];
+	return ARTIFACTS[artifactName.toLowerCase()];
 }
 
 function getArtifactCounts() {
@@ -54,7 +56,7 @@ function rollArtifact(adventure) {
 }
 
 module.exports = {
-	artifactNames: Object.keys(ARTIFACTS),
+	artifactNames: ARTIFACT_NAMES,
 	getArtifact,
 	getArtifactCounts,
 	rollArtifact
