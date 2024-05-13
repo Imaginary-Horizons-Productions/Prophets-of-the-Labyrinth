@@ -2,6 +2,7 @@ const { EnemyTemplate, BuildError } = require("../classes");
 
 /** @type {Record<string, EnemyTemplate>} */
 const ENEMIES = {};
+const ENEMY_NAMES = [];
 
 for (const file of [
 	"bloodtailhawk.js",
@@ -21,18 +22,19 @@ for (const file of [
 ]) {
 	/** @type {EnemyTemplate} */
 	const enemy = require(`./${file}`);
-	if (enemy.name in ENEMIES) {
+	if (enemy.name.toLowerCase() in ENEMIES) {
 		throw new BuildError(`Duplicate enemy name (${enemy.name})`)
 	}
-	ENEMIES[enemy.name] = enemy;
+	ENEMIES[enemy.name.toLowerCase()] = enemy;
+	ENEMY_NAMES.push(enemy.name);
 }
 
 /** @param {string} enemyName */
 function getEnemy(enemyName) {
-	return ENEMIES[enemyName];
+	return ENEMIES[enemyName.toLowerCase()];
 }
 
 module.exports = {
-	enemyNames: Object.keys(ENEMIES),
+	enemyNames: ENEMY_NAMES,
 	getEnemy
 }
