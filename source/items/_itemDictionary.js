@@ -2,6 +2,7 @@ const { BuildError, ItemTemplate } = require("../classes");
 
 /** @type {Record<string, ItemTemplate>} */
 const ITEMS = {};
+const ITEM_NAMES = [];
 
 for (const file of [
 	"clearpotion.js",
@@ -26,26 +27,27 @@ for (const file of [
 	"windypotion.js"
 ]) {
 	const item = require(`./${file}`);
-	if (item.name in ITEMS) {
+	if (item.name.toLowerCase() in ITEMS) {
 		throw new BuildError(`Duplicate item name (${item.name})`);
 	}
-	ITEMS[item.name] = item;
+	ITEMS[item.name.toLowerCase()] = item;
+	ITEM_NAMES.push(item.name);
 }
 
 /** @param {string} itemName */
 function itemExists(itemName) {
-	return itemName in ITEMS;
+	return itemName.toLowerCase() in ITEMS;
 }
 
 /** Template should not be mutated
  * @param {string} itemName
  */
 function getItem(itemName) {
-	return ITEMS[itemName];
+	return ITEMS[itemName.toLowerCase()];
 }
 
 module.exports = {
-	itemNames: Object.keys(ITEMS),
+	itemNames: ITEM_NAMES,
 	itemExists,
 	getItem
 }
