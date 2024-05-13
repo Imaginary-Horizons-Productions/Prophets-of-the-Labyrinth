@@ -31,7 +31,8 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 			return;
 		}
 
-		const adventure = new Adventure(interaction.options.getString("seed"), interaction.guildId, labyrinthName, interaction.user.id);
+		const labyrinthNameInTitleCaps = getLabyrinthProperty(labyrinthName, "name");
+		const adventure = new Adventure(interaction.options.getString("seed"), interaction.guildId, labyrinthNameInTitleCaps, interaction.user.id);
 		// roll bosses
 		prerollBoss("Final Battle", adventure);
 		prerollBoss("Artifact Guardian", adventure);
@@ -68,7 +69,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 				adventure.setId(thread.id);
 				setAdventure(adventure);
 				thread.send({
-					content: `**${labyrinthName}**\n*${getLabyrinthProperty(labyrinthName, "description")}*\nParty Leader: ${interaction.member}\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
+					content: `**${labyrinthNameInTitleCaps}**\n*${getLabyrinthProperty(labyrinthName, "description")}*\nParty Leader: ${interaction.member}\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
 					components: [
 						new ActionRowBuilder().addComponents(
 							new ButtonBuilder().setCustomId("ready")

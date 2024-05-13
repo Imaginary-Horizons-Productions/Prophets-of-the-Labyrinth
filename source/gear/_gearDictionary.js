@@ -3,6 +3,7 @@ const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
 const GEAR = {};
+const GEAR_NAMES = [];
 
 for (const file of [
 	"_appease.js",
@@ -152,17 +153,18 @@ for (const file of [
 	"wolfring-swift.js"
 ]) {
 	const gear = require(`./${file}`);
-	if (gear.name in GEAR) {
+	if (gear.name.toLowerCase() in GEAR) {
 		throw new BuildError(`Duplicate gear name (${gear.name})`);
 	}
-	GEAR[gear.name] = gear;
+	GEAR[gear.name.toLowerCase()] = gear;
+	GEAR_NAMES.push(gear.name);
 };
 
 /** Checks if a type of gear with the given name exists
  * @param {string} gearName
  */
 function gearExists(gearName) {
-	return gearName in GEAR;
+	return gearName.toLowerCase() in GEAR;
 }
 
 /** Lookup a static property for a type of gear
@@ -172,7 +174,7 @@ function gearExists(gearName) {
  */
 function getGearProperty(gearName, propertyName) {
 	if (gearExists(gearName)) {
-		const template = GEAR[gearName];
+		const template = GEAR[gearName.toLowerCase()];
 		if (propertyName in template) {
 			return template[propertyName];
 		} else {
@@ -188,7 +190,7 @@ function getGearProperty(gearName, propertyName) {
  * @param {number | "max"} durability
  */
 function buildGearRecord(gearName, durability) {
-	const template = GEAR[gearName];
+	const template = GEAR[gearName.toLowerCase()];
 	return new Gear(gearName, durability === "max" ? template.maxDurability : durability, template.maxHP, template.power, template.speed, template.critRate, template.poise);
 }
 
@@ -255,7 +257,7 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 }
 
 module.exports = {
-	gearNames: Object.keys(GEAR),
+	gearNames: GEAR_NAMES,
 	gearExists,
 	getGearProperty,
 	buildGearRecord,

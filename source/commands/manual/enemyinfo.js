@@ -16,7 +16,7 @@ async function executeSubcommand(interaction, ...args) {
 		return;
 	}
 
-	const enemyEmbed = embedTemplate().setTitle(`${enemyName} ${getEmoji(enemyTemplate.element)}`)
+	const enemyEmbed = embedTemplate().setTitle(`${enemyTemplate.name} ${getEmoji(enemyTemplate.element)}`)
 		.setDescription(`Base HP: ${enemyTemplate.maxHP}\nSpeed: ${enemyTemplate.speed}\nCrit Rate: ${enemyTemplate.critRate}%\nPoise: ${enemyTemplate.poiseExpression}`);
 	const startingModifierEntries = Object.entries(enemyTemplate.startingModifiers);
 	const enemyFields = [];

@@ -40,7 +40,7 @@ async function executeSubcommand(interaction, ...args) {
 	interaction.reply({
 		embeds: [
 			embedTemplate().setColor(getColor(gearElement))
-				.setTitle(`${gearName} ${getEmoji(gearElement)}`)
+				.setTitle(`${getGearProperty(gearName, "name")} ${getEmoji(gearElement)}`)
 				.setDescription(buildGearDescription(gearName, true))
 				.addFields(fields)
 		],

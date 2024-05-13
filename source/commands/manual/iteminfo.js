@@ -15,9 +15,9 @@ async function executeSubcommand(interaction, ...args) {
 		return;
 	}
 
-	const { element, description, flavorText } = getItem(itemName);
+	const { name: nameInTitleCaps, element, description, flavorText } = getItem(itemName);
 	const embed = embedTemplate().setColor(getColor(element))
-		.setTitle(itemName)
+		.setTitle(nameInTitleCaps)
 		.setDescription(description);
 	const adventure = getAdventure(interaction.channelId);
 	if (adventure) {
