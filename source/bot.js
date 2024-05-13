@@ -121,7 +121,7 @@ client.on(Events.InteractionCreate, interaction => {
 		if (unfilteredChoices.length < 1) {
 			console.error(`Attempted autocomplete on misconfigured command ${interaction.commandName} ${focusedOption.name}`);
 		}
-		const choices = unfilteredChoices.filter(choice => choice.value.includes(focusedOption.value))
+		const choices = unfilteredChoices.filter(choice => choice.value.toLowerCase().includes(focusedOption.value.toLowerCase()))
 			.slice(0, 25);
 		interaction.respond(choices);
 	} else if (interaction.isCommand()) {
