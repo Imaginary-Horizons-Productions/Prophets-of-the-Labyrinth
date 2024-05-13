@@ -41,12 +41,12 @@ for (const file of [
 			}
 		}
 	}
-	LABYRINTHS[labyrinth.name] = labyrinth;
+	LABYRINTHS[labyrinth.name.toLowerCase()] = labyrinth;
 }
 
 /** @param {string} labyrinthName */
 function labyrinthExists(labyrinthName) {
-	return labyrinthName in LABYRINTHS
+	return labyrinthName.toLowerCase() in LABYRINTHS
 };
 
 /** Lookup static property of a labyrinth by labyrinth name
@@ -55,8 +55,8 @@ function labyrinthExists(labyrinthName) {
  * @returns {unknown}
  */
 function getLabyrinthProperty(labyrinthName, propertyName) {
-	if (labyrinthName in LABYRINTHS) {
-		const template = LABYRINTHS[labyrinthName];
+	if (labyrinthName.toLowerCase() in LABYRINTHS) {
+		const template = LABYRINTHS[labyrinthName.toLowerCase()];
 		if (propertyName in template) {
 			return template[propertyName];
 		} else {
@@ -72,7 +72,7 @@ function getLabyrinthProperty(labyrinthName, propertyName) {
  * @returns {string}
  */
 function rollItem(adventure) {
-	const itemPool = adventure.getElementPool().flatMap((element) => LABYRINTHS[adventure.labyrinth].availableItems[element]);
+	const itemPool = adventure.getElementPool().flatMap((element) => LABYRINTHS[adventure.labyrinth.toLowerCase()].availableItems[element]);
 
 	return itemPool[adventure.generateRandomNumber(itemPool.length, "general")];
 }
@@ -83,7 +83,7 @@ function rollItem(adventure) {
  * @returns {string} the name of the dropped gear
  */
 function rollGear(tier, adventure) {
-	const pool = adventure.getElementPool().flatMap(element => LABYRINTHS[adventure.labyrinth].availableGear[element][tier]);
+	const pool = adventure.getElementPool().flatMap(element => LABYRINTHS[adventure.labyrinth.toLowerCase()].availableGear[element][tier]);
 	return pool[adventure.generateRandomNumber(pool.length, "general")];
 }
 
@@ -92,7 +92,7 @@ function rollGear(tier, adventure) {
  * @param {Adventure} adventure
  */
 function prerollBoss(type, adventure) {
-	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];
+	const roomPool = LABYRINTHS[adventure.labyrinth.toLowerCase()].availableRooms[type];
 	const roomTitle = roomPool[adventure.generateRandomNumber(roomPool.length, "general")];
 	if (type === "Artifact Guardian") {
 		adventure.artifactGuardians.push(roomTitle);
@@ -115,12 +115,12 @@ function rollRoom(type, adventure) {
 		return getRoom(adventure.bosses[adventure.scouting.bossesEncountered]);
 	}
 
-	if (!(type in LABYRINTHS[adventure.labyrinth].availableRooms)) {
+	if (!(type in LABYRINTHS[adventure.labyrinth.toLowerCase()].availableRooms)) {
 		console.error("Attempt to create room of unidentified type: " + type);
 		adventure.roomCandidates = { [`Battle${SAFE_DELIMITER}${adventure.depth}`]: { voterIds: [], isHidden: false } };
-		return LABYRINTHS["Everything Bagel"].availableRooms["Empty"][0];
+		return LABYRINTHS["everything bagel"].availableRooms["Empty"][0];
 	}
-	const roomPool = LABYRINTHS[adventure.labyrinth].availableRooms[type];
+	const roomPool = LABYRINTHS[adventure.labyrinth.toLowerCase()].availableRooms[type];
 	const roomName = roomPool[adventure.generateRandomNumber(roomPool.length, "general")];
 	if (ROOM_CATEGORIES.includes(roomName)) {
 		return rollRoom(roomName, adventure);
@@ -131,7 +131,7 @@ function rollRoom(type, adventure) {
 
 module.exports = {
 	labyrinthExists,
-	/** This array determines which labyrinths show up in the `/delve labyrinth` autocomplete. It is desync'd from the list of all labyrinths to allow for easter eggs (ie remove Debug Dungeon after "real" labyrinths are made) */
+	/** This array determines which labyrinths show up in the `/delve labyrinth` autocomplete. It is desync'd from the list of all labyrinths to allow for secret labyrinths (eg Debug Dungeon) */
 	defaultLabyrinths: ["Mechahive", "Castle of the Celestial Knights", "Zoo of Chimeras", "Everything Bagel"],
 	getLabyrinthProperty,
 	rollItem,
