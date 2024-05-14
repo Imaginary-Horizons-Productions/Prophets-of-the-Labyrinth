@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Charging War Cry",
@@ -12,12 +12,13 @@ module.exports = new GearTemplate("Charging War Cry",
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
-			targetSet.add(initialTarget.getName(adventure.room.enemyIdMap));
+			targetSet.add(getNames([initialTarget], adventure)[0]);
 			targetArray.push(initialTarget);
 		}
 		adventure.room.enemies.forEach(enemy => {
-			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
-				targetSet.add(enemy.getName(adventure.room.enemyIdMap));
+			const enemyName = getNames([enemy], adventure)[0];
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemyName)) {
+				targetSet.add(enemyName);
 				targetArray.push(enemy);
 			}
 		})
@@ -34,7 +35,7 @@ module.exports = new GearTemplate("Charging War Cry",
 		let resultText = `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
 		const addedPowerUp = addModifier([user], powerup).length > 0;
 		if (addedPowerUp) {
-			resultText += ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.`;
+			resultText += ` ${getNames([user], adventure)[0]} is Powered Up.`;
 		}
 		return resultText;
 	}

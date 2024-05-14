@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { selectRandomFoe, nextRandom } = require("../shared/actionComponents.js");
+const { selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil.js");
 
@@ -29,7 +29,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Tackle",
 	element: "@{adventureOpposite}",
@@ -45,6 +45,6 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 })
 	.setFlavorText({ name: "Ooze's Element", value: "The Ooze's element will be the opposite of the current adventure." });

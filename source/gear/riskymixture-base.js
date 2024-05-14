@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Risky Mixture",
 	"Inflict @{mod0Stacks} @{mod0} on a target",
@@ -19,14 +19,14 @@ module.exports = new GearTemplate("Risky Mixture",
 		if (isCrit) {
 			const addedRegen = addModifier([target], regen).length > 0;
 			if (addedRegen) {
-				return `${target.getName(adventure.room.enemyIdMap)} gains Regen.`;
+				return `${getNames([target], adventure)[0]} gains Regen.`;
 			} else {
 				return "But nothing happened.";
 			}
 		} else {
 			const addedPoison = addModifier([target], poison).length > 0;
 			if (addedPoison) {
-				return `${target.getName(adventure.room.enemyIdMap)} was Poisoned.`;
+				return `${getNames([target], adventure)[0]} was Poisoned.`;
 			} else {
 				return "But nothing happened.";
 			}

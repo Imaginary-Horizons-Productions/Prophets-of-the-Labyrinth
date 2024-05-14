@@ -7,23 +7,14 @@ const { getEmoji } = require("../util/elementUtil.js");
 
 const asteroid = require("./asteroid.js")
 
-const PATTERN = {
-  "Call Asteroid": "Tremor Smash",
-  "Damping Wallop": "random",
-  "Tremor Smash": "random"
-}
-function earthlyKnightPattern(actionName) {
-  return PATTERN[actionName]
-}
-
 module.exports = new EnemyTemplate("Earthly Knight",
-  "Earth",
-  250,
-  100,
-  "6",
-  0,
-  "Tremor Smash",
-  false
+	"Earth",
+	250,
+	100,
+	"6",
+	0,
+	"Tremor Smash",
+	false
 ).addAction({
   name: "Damping Wallop",
   element: "Earth",
@@ -50,33 +41,33 @@ module.exports = new EnemyTemplate("Earthly Knight",
   },
   selector: selectRandomFoe,
   needsLivingTargets: true,
-  next: earthlyKnightPattern
+  next: "random"
 }).addAction({
-  name: "Tremor Smash",
-  element: "Earth",
-  description: `Deal minor ${getEmoji("Earth")} to all foes and stagger them`,
-  priority: 0,
-  effect: (targets, user, isCrit, adventure) => {
-    let damage = user.getPower() + 5;
-    if (isCrit) {
-      damage *= 2;
-    }
-    changeStagger(targets, 2);
-    return dealDamage(targets, user, damage, false, user.element, adventure);
-  },
-  selector: selectAllFoes,
-  needsLivingTargets: true,
-  next: earthlyKnightPattern
+	name: "Tremor Smash",
+	element: "Earth",
+	description: `Deal minor ${getEmoji("Earth")} to all foes and stagger them`,
+	priority: 0,
+	effect: (targets, user, isCrit, adventure) => {
+		let damage = user.getPower() + 5;
+		if (isCrit) {
+			damage *= 2;
+		}
+		changeStagger(targets, 2);
+		return dealDamage(targets, user, damage, false, user.element, adventure);
+	},
+	selector: selectAllFoes,
+	needsLivingTargets: true,
+	next: "random"
 }).addAction({
-  name: "Call Asteroid",
-  element: "Untyped",
-  description: "Summon an Asteroid",
-  priority: 0,
-  effect: (targets, user, isCrit, adventure) => {
-    spawnEnemy(asteroid, adventure);
-    return "An Asteroid arrives on the battlefield.";
-  },
-  selector: selectNone,
-  needsLivingTargets: false,
-  next: earthlyKnightPattern
+	name: "Call Asteroid",
+	element: "Untyped",
+	description: "Summon an Asteroid",
+	priority: 0,
+	effect: (targets, user, isCrit, adventure) => {
+		spawnEnemy(asteroid, adventure);
+		return "An Asteroid arrives on the battlefield.";
+	},
+	selector: selectNone,
+	needsLivingTargets: false,
+	next: "Tremor Smash"
 });

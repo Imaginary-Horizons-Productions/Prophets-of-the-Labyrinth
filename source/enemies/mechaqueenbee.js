@@ -6,18 +6,6 @@ const { joinAsStatement } = require("../util/textUtil.js");
 
 const drone = require("./mechabeedrone.js")
 
-const PATTERN = {
-	"Swarm Protocol": "V.E.N.O.Missile",
-	"Assault Protocol": "V.E.N.O.Missile",
-	"Formation Protocol": "V.E.N.O.Missile",
-	"Sacrifice Protocol": "V.E.N.O.Missile",
-	"Deploy Drone": "a random protocol",
-	"V.E.N.O.Missile": "Deploy Drone"
-}
-function mechaQueenPattern(actionName) {
-	return PATTERN[actionName]
-}
-
 module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	"Earth",
 	500,
@@ -44,7 +32,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "V.E.N.O.Missile"
 }).addAction({
 	name: "Assault Protocol",
 	element: "Untyped",
@@ -64,7 +52,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "V.E.N.O.Missile"
 }).addAction({
 	name: "Formation Protocol",
 	element: "Untyped",
@@ -79,7 +67,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "V.E.N.O.Missile"
 }).addAction({
 	name: "Sacrifice Protocol",
 	element: "Untyped",
@@ -97,7 +85,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	},
 	selector: selectRandomOtherAlly,
 	needsLivingTargets: true,
-	next: mechaQueenPattern
+	next: "V.E.N.O.Missile"
 }).addAction({
 	name: "Deploy Drone",
 	element: "Untyped",
@@ -109,7 +97,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "a random protocol"
 }).addAction({
 	name: "V.E.N.O.Missile",
 	element: "Untyped",
@@ -126,5 +114,5 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "Deploy Drone"
 });

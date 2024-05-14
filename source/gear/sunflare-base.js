@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sun Flare",
 	"Inflict @{foeStagger} on a foe with priority",
@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Sun Flare",
 			addedSlow = addModifier([target], slow).length > 0;
 		}
 		changeStagger([target], stagger);
-		return `${target.getName(adventure.room.enemyIdMap)} is Staggered${addedSlow ? " and Slowed" : ""}.`;
+		return `${getNames([target], adventure)[0]} is Staggered${addedSlow ? " and Slowed" : ""}.`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Accelerating Sun Flare", "Evasive Sun Flare", "Tormenting Sun Flare")

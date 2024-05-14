@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { nextRandom, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
+const { selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
 const { joinAsStatement } = require("../util/textUtil.js");
@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Rolling Tackle",
 	element: "@{adventure}",
@@ -51,7 +51,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Opposite Rolling Tackle",
 	element: "@{adventureOpposite}",
@@ -67,7 +67,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Goop Deluge",
 	element: "Untyped",
@@ -86,6 +86,6 @@ module.exports = new EnemyTemplate("Royal Slime",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 })
 	.setFlavorText({ name: "Royal Slime's Element", value: "The Royal Slime will start as the adventure's element and change it with Element Shift." });

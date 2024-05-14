@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
-const { selectRandomFoe, selectSelf, nextRandom } = require("../shared/actionComponents.js");
+const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",
@@ -26,7 +26,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Crystallize",
 	element: "Untyped",
@@ -45,5 +45,5 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 });

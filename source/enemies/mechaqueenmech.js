@@ -5,18 +5,6 @@ const { spawnEnemy } = require("../util/roomUtil.js");
 
 const drone = require("./mechabeedrone.js")
 
-const PATTERN = {
-	"Swarm Protocol": "Laser Array",
-	"Assault Protocol": "Laser Array",
-	"Formation Protocol": "Laser Array",
-	"Sacrifice Protocol": "Laser Array",
-	"Deploy Drone": "a random protocol",
-	"Laser Array": "Deploy Drone"
-}
-function mechaQueenPattern(actionName) {
-	return PATTERN[actionName]
-}
-
 module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	"Darkness",
 	500,
@@ -43,7 +31,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "Laser Array"
 }).addAction({
 	name: "Formation Protocol",
 	element: "Untyped",
@@ -58,7 +46,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "Laser Array"
 }).addAction({
 	name: "Assault Protocol",
 	element: "Untyped",
@@ -78,7 +66,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "Laser Array"
 }).addAction({
 	name: "Sacrifice Protocol",
 	element: "Untyped",
@@ -96,7 +84,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectRandomOtherAlly,
 	needsLivingTargets: true,
-	next: mechaQueenPattern
+	next: "Laser Array"
 }).addAction({
 	name: "Deploy Drone",
 	element: "Untyped",
@@ -108,7 +96,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "a random protocol"
 }).addAction({
 	name: "Laser Array",
 	element: "Darkness",
@@ -124,5 +112,5 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "Deploy Drone"
 });

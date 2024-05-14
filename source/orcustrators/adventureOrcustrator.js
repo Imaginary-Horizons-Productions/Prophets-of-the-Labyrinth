@@ -358,7 +358,7 @@ function newRound(adventure, thread, lastRoundText) {
 							move.addTarget(new CombatantReference(team, index));
 						});
 						adventure.room.moves.push(move);
-						combatant.nextAction = enemyTemplate.actions[actionName].next(actionName);
+						combatant.nextAction = enemyTemplate.actions[actionName].next;
 					} else {
 						adventure.room.moves.push(
 							new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)

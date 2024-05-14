@@ -27,7 +27,7 @@ module.exports = new EnemyTemplate("Asteroid",
   },
   selector: selectRandomFoe,
   needsLivingTargets: true,
-  next: nextRandom
+  next: "random"
 }).addAction({
   name: "Bolide Burst",
   element: "Earth",
@@ -44,5 +44,5 @@ module.exports = new EnemyTemplate("Asteroid",
   },
   selector: selectAllOtherCombatants,
   needsLivingTargets: true,
-  next: nextRandom
+  next: "random"
 });

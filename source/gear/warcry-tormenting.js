@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
@@ -13,12 +13,13 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
-			targetSet.add(initialTarget.getName(adventure.room.enemyIdMap));
+			targetSet.add(getNames([initialTarget], adventure)[0]);
 			targetArray.push(initialTarget);
 		}
 		adventure.room.enemies.forEach(enemy => {
-			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
-				targetSet.add(enemy.getName(adventure.room.enemyIdMap));
+			const enemyName = getNames([enemy], adventure)[0];
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemyName)) {
+				targetSet.add(enemyName);
 				targetArray.push(enemy);
 			}
 		})
@@ -42,7 +43,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 				}
 			}
 			if (debuffs.length > 0) {
-				tormentTexts += ` ${target.getName(adventure.room.enemyIdMap)} gains ${listifyEN(debuffs, false)}.`;
+				tormentTexts += ` ${getNames([target], adventure)[0]} gains ${listifyEN(debuffs, false)}.`;
 			}
 		})
 		return `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.${tormentTexts}`;

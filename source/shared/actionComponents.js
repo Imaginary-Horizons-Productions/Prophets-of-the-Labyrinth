@@ -120,16 +120,6 @@ function selectNone(self, adventure) {
 	return [];
 }
 
-/** @param {string} actionName */
-function nextRepeat(actionName) {
-	return actionName;
-}
-
-/** @param {string} actionName */
-function nextRandom(actionName) {
-	return "random";
-}
-
 module.exports = {
 	selectAllAllies,
 	selectAllOtherAllies,
@@ -139,7 +129,5 @@ module.exports = {
 	selectAllCombatants,
 	selectAllOtherCombatants,
 	selectSelf,
-	selectNone,
-	nextRepeat,
-	nextRandom
+	selectNone
 };
