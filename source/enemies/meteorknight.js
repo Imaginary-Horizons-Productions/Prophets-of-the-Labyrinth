@@ -30,7 +30,8 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		let damage = user.getPower() + 60;
 		if (isCrit) {
 			damage *= 2;
-		} changeStagger(targets, "elementMatchFoe");
+		}
+		changeStagger(targets, "elementMatchFoe");
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
