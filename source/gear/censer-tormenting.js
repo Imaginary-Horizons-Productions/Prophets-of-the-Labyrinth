@@ -1,6 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
-const { dealDamage, addModifier, changeStagger } = require("../util/combatantUtil");
+const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Tormenting Censer",
@@ -29,10 +29,10 @@ module.exports = new GearTemplate("Tormenting Censer",
 		if (isCrit && target.hp > 0) {
 			const addedSlow = addModifier([target], slow).length > 0;
 			if (addedSlow) {
-				return `${damageText} ${target.getName(adventure.room.enemyIdMap)} is Slowed${debuffs.length > 0 ? ` and they gain ${listifyEN(debuffs, false)}` : ""}.`;
+				return `${damageText} ${getNames([target], adventure)[0]} is Slowed${debuffs.length > 0 ? ` and they gain ${listifyEN(debuffs, false)}` : ""}.`;
 			}
 		}
-		return `${damageText}${debuffs.length > 0 ? `${target.getName(adventure.room.enemyIdMap)}'s gains ${listifyEN(debuffs, false)}.` : ""}`;
+		return `${damageText}${debuffs.length > 0 ? `${getNames([target], adventure)[0]}'s gains ${listifyEN(debuffs, false)}.` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Censer", "Thick Censer")

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
+const { payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Blood Aegis",
@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Sweeping Blood Aegis",
 			if (move.userReference.team === targetTeam && move.targets.length === 1) {
 				const target = adventure.getCombatant(move.userReference);
 				move.targets = [{ team: user.team, index: userIndex }];
-				provokedTargets.push(target.getName(adventure.room.enemyIdMap));
+				provokedTargets.push(getNames([target], adventure)[0]);
 			}
 		})
 

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Midas Staff",
 	"Apply @{mod0Stacks} @{mod0} to a combatant, then gain @{mod1Stacks} @{mod1}",
@@ -22,8 +22,7 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 		}
 		const addedCurse = addModifier([target], pendingCurse).length > 0;
 		const addedQuicken = addModifier([user], quicken).length > 0;
-		const targetName = target.getName(adventure.room.enemyIdMap);
-		const userName = user.getName(adventure.room.enemyIdMap);
+		const [targetName, userName] = getNames([target, user], adventure);
 		if (targetName === userName) {
 			if (addedCurse) {
 				return `${userName} gains Curse of Midas${addedQuicken ? " and is Quickened" : ""}.`;

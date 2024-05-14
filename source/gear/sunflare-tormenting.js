@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Tormenting Sun Flare",
@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Tormenting Sun Flare",
 		if (debuffs.length > 0) {
 			resultTexts.push(`they gain ${listifyEN(debuffs, false)}`);
 		}
-		return `${target.getName(adventure.room.enemyIdMap)} is ${listifyEN(resultTexts, false)}.`;
+		return `${getNames([target], adventure)[0]} is ${listifyEN(resultTexts, false)}.`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Sun Flare", "Evasive Sun Flare")

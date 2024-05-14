@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing War Cry",
@@ -12,12 +12,13 @@ module.exports = new GearTemplate("Slowing War Cry",
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
-			targetSet.add(initialTarget.getName(adventure.room.enemyIdMap));
+			targetSet.add(getNames([initialTarget], adventure)[0]);
 			targetArray.push(initialTarget);
 		}
 		adventure.room.enemies.forEach(enemy => {
-			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
-				targetSet.add(enemy.getName(adventure.room.enemyIdMap));
+			const enemyName = getNames([enemy], adventure)[0];
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemyName)) {
+				targetSet.add(enemyName);
 				targetArray.push(enemy);
 			}
 		})
@@ -35,7 +36,7 @@ module.exports = new GearTemplate("Slowing War Cry",
 		changeStagger(targetArray, pendingStaggerStacks);
 		addModifier(targetArray, slow).forEach((addedSlow, index) => {
 			if (addedSlow) {
-				slowedTargets.push(targetArray[index].getName(adventure.room.enemyIdMap));
+				slowedTargets.push(getNames([targetArray[index]], adventure)[0]);
 			}
 		})
 		if (slowedTargets.length > 1) {

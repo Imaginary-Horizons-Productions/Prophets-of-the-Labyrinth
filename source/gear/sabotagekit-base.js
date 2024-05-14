@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, getCombatantWeaknesses, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Sabotage Kit",
 			}
 		}
 		if (debuffTexts.length > 0) {
-			return `${target.getName(adventure.room.enemyIdMap)} ${listifyEN(debuffTexts, false)}.`;
+			return `${getNames([target], adventure)[0]} ${listifyEN(debuffTexts, false)}.`;
 		} else {
 			return "But nothing happened.";
 		}
