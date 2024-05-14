@@ -5,16 +5,6 @@ const { spawnEnemy } = require("../util/roomUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
-const PATTERN = {
-	"Sting": "Barrel Roll",
-	"Barrel Roll": "Call for Help",
-	"Call for Help": "Self-Destruct",
-	"Self-Destruct": "Sting"
-}
-function dronePattern(actionName) {
-	return PATTERN[actionName]
-}
-
 module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
 	200,
@@ -36,7 +26,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: dronePattern
+	next: "Barrel Roll"
 }).addAction({
 	name: "Barrel Roll",
 	element: "Untyped",
@@ -57,7 +47,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: dronePattern
+	next: "Call for Help"
 }).addAction({
 	name: "Call for Help",
 	element: "Untyped",
@@ -69,7 +59,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: dronePattern
+	next: "Self-Destruct"
 }).addAction({
 	name: "Self-Destruct",
 	element: "Darkness",
@@ -87,5 +77,5 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: dronePattern
+	next: "Sting"
 });

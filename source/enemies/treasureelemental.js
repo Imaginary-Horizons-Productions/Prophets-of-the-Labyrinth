@@ -1,8 +1,8 @@
 const { EnemyTemplate } = require("../classes");
-const { selectAllFoes, selectRandomFoe, nextRandom } = require("../shared/actionComponents.js");
+const { selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
-const { listifyEN, joinAsStatement } = require("../util/textUtil.js");
+const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Treasure Elemental",
 	"Earth",
@@ -26,7 +26,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		},
 		selector: selectRandomFoe,
 		needsLivingTargets: false,
-		next: nextRandom
+		next: "random"
 	}).addAction({
 		name: "Hail of Gemstones",
 		element: "Earth",
@@ -46,7 +46,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		},
 		selector: selectRandomFoe,
 		needsLivingTargets: false,
-		next: nextRandom
+		next: "random"
 	}).addAction({
 		name: "Heavy Pockets",
 		element: "Untyped",
@@ -66,5 +66,5 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		},
 		selector: selectAllFoes,
 		needsLivingTargets: false,
-		next: nextRandom
+		next: "random"
 	});

@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary.js");
 const { dealDamage, addModifier, removeModifier, changeStagger, addProtection } = require("../util/combatantUtil");
-const { selectSelf, nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
+const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
 
@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Trouble",
 	element: "Water",
@@ -56,7 +56,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Boil",
 	element: "Fire",
@@ -71,7 +71,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Bubble",
 	element: "Untyped",
@@ -108,5 +108,5 @@ module.exports = new EnemyTemplate("Elkemist",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).setFlavorText({ name: "Progress", value: "Each time the Elkemist reaches 100 Progress, it'll gain a large amount of Power Up. Stun the Elkemist to reduce its Progress." });

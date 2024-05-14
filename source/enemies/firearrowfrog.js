@@ -4,15 +4,6 @@ const { addModifier, dealDamage, changeStagger, getNames } = require("../util/co
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
-const PATTERN = {
-	"Venom Cannon": "random",
-	"Burrow": "Venom Cannon",
-	"Goop Spray": "Venom Cannon"
-}
-function firearrowFrogPattern(actionName) {
-	return PATTERN[actionName]
-}
-
 module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	"Fire",
 	250,
@@ -33,7 +24,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: firearrowFrogPattern
+	next: "random"
 }).addAction({
 	name: "Burrow",
 	element: "Untyped",
@@ -54,7 +45,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: firearrowFrogPattern
+	next: "Venom Cannon"
 }).addAction({
 	name: "Goop Spray",
 	element: "Untyped",
@@ -73,5 +64,5 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: firearrowFrogPattern
+	next: "Venom Cannon"
 });

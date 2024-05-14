@@ -4,15 +4,6 @@ const { selectRandomFoe, selectAllCombatants } = require("../shared/actionCompon
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
-const PATTERN = {
-	"Armored Avalanche": "random",
-	"Freefall Flare-Up": "Sonic Slash",
-	"Sonic Slash": "random"
-}
-function meteorKnightPattern(actionName) {
-	return PATTERN[actionName]
-}
-
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
 	200,
@@ -36,7 +27,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
-	next: meteorKnightPattern
+	next: "random"
 }).addAction({
 	name: "Armored Avalanche",
 	element: "Fire",
@@ -55,7 +46,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
-	next: meteorKnightPattern
+	next: "random"
 }).addAction({
 	name: "Freefall Flare-Up",
 	element: "Untyped",
@@ -74,5 +65,5 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	},
 	selector: selectAllCombatants,
 	needsLivingTargets: true,
-	next: meteorKnightPattern
+	next: "Sonic Slash"
 });
