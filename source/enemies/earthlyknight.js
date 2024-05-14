@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, removeModifier, changeStagger } = require("../util/combatantUtil.js");
+const { dealDamage, removeModifier, changeStagger, getNames } = require("../util/combatantUtil.js");
 const { isBuff } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
@@ -32,16 +32,16 @@ module.exports = new EnemyTemplate("Earthly Knight",
   effect: (targets, user, isCrit, adventure) => {
     let damage = user.getPower() + 75;
     changeStagger(targets, "elementMatchFoe");
-    let resultString = ""
-    for (const target of targets) {
-      resultString += dealDamage([target], user, damage, false, user.element, adventure);
+    let resultString = dealDamage(targets, user, damage, false, user.element, adventure);
+    const targetNames = getNames(targets, adventure);
+    for (let i = 0; i< targets.length; i++) {
+      const target = targets[i];
       const targetBuffs = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
-      console.log(targetBuffs);
       const buffIndex = adventure.generateRandomNumber(targetBuffs.length, "battle");
-      const rolledDebuff = targetBuffs[buffIndex];
-      const wasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
+      const rolledBuff = targetBuffs[buffIndex];
+      const wasRemoved = removeModifier([target], { name: rolledBuff, stacks: "all" }).length > 0;
       if (wasRemoved) {
-        resultString += `${rolledDebuff} was lost.`;
+        resultString += `${targetNames[i]} lost ${rolledBuff}.`;
       }
     }
     return resultString;
@@ -55,11 +55,11 @@ module.exports = new EnemyTemplate("Earthly Knight",
   description: `Deal minor ${getEmoji("Earth")} to all foes and stagger them`,
   priority: 0,
   effect: (targets, user, isCrit, adventure) => {
-    let damage = user.getPower();
+    let damage = user.getPower() + 5;
     if (isCrit) {
       damage *= 2;
     }
-    changeStagger(targets, 3);
+    changeStagger(targets, 2);
     return dealDamage(targets, user, damage, false, user.element, adventure);
   },
   selector: selectAllFoes,

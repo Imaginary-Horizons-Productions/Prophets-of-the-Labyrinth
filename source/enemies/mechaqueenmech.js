@@ -1,8 +1,7 @@
-const { EnemyTemplate, CombatantReference } = require("../classes/index.js");
+const { EnemyTemplate } = require("../classes/index.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
-const { listifyEN } = require("../util/textUtil.js");
 
 const drone = require("./mechabeedrone.js")
 
@@ -36,7 +35,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		adventure.room.moves.forEach(move => {
 			if (move.userReference.team === "enemy" && move.userReference.index !== 0) {
 				move.name = "Call for Help";
-				move.targets = [new CombatantReference("none", -1)];
+				move.targets = [];
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);

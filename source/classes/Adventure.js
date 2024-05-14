@@ -164,8 +164,6 @@ class Adventure {
 				return this.delvers[index];
 			case "enemy":
 				return this.room.enemies[index];
-			case "none":
-				return null;
 		}
 	}
 

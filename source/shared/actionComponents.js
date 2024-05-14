@@ -26,7 +26,7 @@ function selectRandomOtherAlly(self, adventure) {
 		}
 	})
 	if (selfIndex === -1 || otherLivingAllyIndicies.length === 0) {
-		return [new CombatantReference("none", -1)];
+		return [];
 	}
 	const index = otherLivingAllyIndicies[adventure.generateRandomNumber(otherLivingAllyIndicies.length, "battle")];
 	return [new CombatantReference(self.team, index)];
@@ -56,6 +56,14 @@ function selectRandomFoe(self, adventure) {
 	}
 }
 
+/** Selects all combatants (delvers + enemies)
+ * @param {Combatant} self
+ * @param {Adventure} adventure
+ */
+function selectAllCombatants(self, adventure) {
+	return selectAllAllies(self, adventure).concat(selectAllFoes(self, adventure));
+}
+
 /** Selects the user
  * @param {Combatant} self
  * @param {Adventure} adventure
@@ -69,7 +77,7 @@ function selectSelf(self, adventure) {
  * @param {Adventure} adventure
  */
 function selectNone(self, adventure) {
-	return [new CombatantReference("none", -1)];
+	return [];
 }
 
 /** @param {string} actionName */
@@ -87,6 +95,7 @@ module.exports = {
 	selectRandomOtherAlly,
 	selectAllFoes,
 	selectRandomFoe,
+	selectAllCombatants,
 	selectSelf,
 	selectNone,
 	nextRepeat,

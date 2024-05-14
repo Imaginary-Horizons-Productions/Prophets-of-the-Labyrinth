@@ -238,7 +238,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 	{
 		// Labyrinth Particulars - more customized
 		"Event": ["Twin Pedestals", "Imp Contract Faire", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
-		"Battle": ["Slime Fight", "Tortoise Fight"],
+		"Battle": ["Slime Fight", "Tortoise Fight", "Meteor Knight Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
 		"Final Battle": ["Hall of Mirrors", "Confronting the Top Celestial Knight"],
 
