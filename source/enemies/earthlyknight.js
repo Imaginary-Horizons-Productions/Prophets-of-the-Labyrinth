@@ -33,7 +33,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
     let damage = user.getPower() + 75;
     changeStagger(targets, "elementMatchFoe");
     let resultString = ""
-    for (target of targets) {
+    for (const target of targets) {
       resultString += dealDamage([target], user, damage, false, user.element, adventure);
       const targetBuffs = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
       console.log(targetBuffs);
