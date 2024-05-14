@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { selectRandomFoe, nextRepeat } = require("../shared/actionComponents");
+const { selectRandomFoe } = require("../shared/actionComponents");
 const { dealDamage, changeStagger } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 
@@ -26,5 +26,5 @@ module.exports = new EnemyTemplate("Bloodtail Hawk",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: nextRepeat
+	next: "Rake"
 });

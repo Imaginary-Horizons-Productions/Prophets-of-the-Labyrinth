@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { selectRandomFoe, nextRandom } = require("../shared/actionComponents.js");
+const { selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil.js");
 
@@ -26,7 +26,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Goop Spray",
 	element: "Untyped",
@@ -45,6 +45,6 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: nextRandom
+	next: "random"
 })
 	.setFlavorText({ name: "Slime's Element", value: "The Slime's element will match the current adventure." });

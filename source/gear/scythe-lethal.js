@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Lethal Scythe",
 	"Strike a foe for @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Lethal Scythe",
 			return dealDamage([target], user, pendingDamage, false, element, adventure);
 		} else {
 			target.hp = 0;
-			return `${target.getName(adventure.room.enemyIdMap)} meets the reaper.`;
+			return `${getNames([target], adventure)[0]} meets the reaper.`;
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

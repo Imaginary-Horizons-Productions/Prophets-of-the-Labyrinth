@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
+const { payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Blood Aegis",
 	"Pay @{hpCost} hp; gain @{protection} protection and intercept a later single target move",
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Blood Aegis",
 		});
 		if (targetMove.targets.length === 1) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			return `Gaining protection, ${payHP(user, hpCost, adventure)} ${target.getName(adventure.room.enemyIdMap)} falls for the provocation.`;
+			return `Gaining protection, ${payHP(user, hpCost, adventure)} ${getNames([target], adventure)[0]} falls for the provocation.`;
 		} else {
 			return `Gaining protection, ${payHP(user, hpCost, adventure)}`;
 		}

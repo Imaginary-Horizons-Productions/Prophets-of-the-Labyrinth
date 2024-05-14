@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Slowing Warhammer",
 	"Strike a foe for @{damage} (+@{bonus} if foe is currently stunned) @{element} damage and inflict @{mod0Stacks} @{mod0}",
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Slowing Warhammer",
 		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure)
 		const addedSlow = addModifier([target], slow).length > 0;
 		if (addedSlow) {
-			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is Slowed.`;
+			resultText += ` ${getNames([target], adventure)[0]} is Slowed.`;
 		}
 		return resultText;
 	}

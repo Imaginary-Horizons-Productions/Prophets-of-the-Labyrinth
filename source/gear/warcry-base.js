@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { changeStagger } = require('../util/combatantUtil');
+const { changeStagger, getNames } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("War Cry",
@@ -12,12 +12,13 @@ module.exports = new GearTemplate("War Cry",
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
-			targetSet.add(initialTarget.getName(adventure.room.enemyIdMap));
+			targetSet.add(getNames([initialTarget], adventure)[0]);
 			targetArray.push(initialTarget);
 		}
 		adventure.room.enemies.forEach(enemy => {
-			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.getName(adventure.room.enemyIdMap))) {
-				targetSet.add(enemy.getName(adventure.room.enemyIdMap));
+			const enemyName = getNames([enemy], adventure)[0];
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemyName)) {
+				targetSet.add(enemyName);
 				targetArray.push(enemy);
 			}
 		})

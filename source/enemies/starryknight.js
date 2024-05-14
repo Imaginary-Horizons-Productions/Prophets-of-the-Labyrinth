@@ -1,6 +1,6 @@
 const { EnemyTemplate, Combatant, Adventure } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
-const { nextRandom, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
+const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
 const { dealDamage, addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 const { listifyEN } = require("../util/textUtil");
@@ -54,7 +54,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Center of Attention",
 	element: "Light",
@@ -74,7 +74,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: true,
-	next: nextRandom
+	next: "random"
 }).addAction({
 	name: "Boast",
 	element: "Untyped",
@@ -104,7 +104,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: true,
-	next: nextRandom
+	next: "random"
 }).setFlavorText({ name: "Insult to Injury", value: "Insult debuffs (Ugly, Stupid, Smelly, Boring, Lacking Rhythm) make the Starry Knight's Mock the Accursed more dangerous. Appease the Starry Knight to cure them all." });
 
 /** avoid grouping addModifier by insult, since delvers want to know how many insults they've gained, thus we want to group by delver

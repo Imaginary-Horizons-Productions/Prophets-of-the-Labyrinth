@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Evasive Sun Flare",
 	"Inflict @{foeStagger} on a foe and gain @{mod0Stacks} @{mod0} with priority",
@@ -18,7 +18,8 @@ module.exports = new GearTemplate("Evasive Sun Flare",
 		}
 		changeStagger([target], stagger);
 		const addedEvade = addModifier([user], evade).length > 0;
-		return `${addedEvade ? `${user.getName(adventure.room.enemyIdMap)} prepares to Evade. ` : ""}${target.getName(adventure.room.enemyIdMap)} is Staggered${addedSlow ? ` and Slowed` : ""}.`;
+		const [userName, targetName] = getNames([user, target], adventure);
+		return `${addedEvade ? `${userName} prepares to Evade. ` : ""}${targetName} is Staggered${addedSlow ? ` and Slowed` : ""}.`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Sun Flare", "Tormenting Sun Flare")

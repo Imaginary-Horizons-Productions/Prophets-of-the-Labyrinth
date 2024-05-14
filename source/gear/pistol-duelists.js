@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger } = require("../util/combatantUtil");
+const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, getNames } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Duelist's Pistol",
 	"Strike a foe for @{damage} (+@{bonus} if only attacker) @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Duelist's Pistol",
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies;
 			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
 			const addedPowerUp = addModifier([ally], powerUp).length > 0;
-			return `${damageText}${addedPowerUp ? ` ${ally.getName(adventure.room.enemyIdMap)} was Powered Up!` : ""}`;
+			return `${damageText}${addedPowerUp ? ` ${getNames([ally], adventure)[0]} was Powered Up!` : ""}`;
 		} else {
 			return dealDamage([target], user, pendingDamage, false, element, adventure);
 		}

@@ -66,7 +66,7 @@ class EnemyTemplate {
 	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} actionsInput.effect
 	 * @param {(self: Combatant, adventure: Adventure) => CombatantReference[]} actionsInput.selector
 	 * @param {boolean} actionsInput.needsLivingTargets Only enemies stay at 0 hp without game over, so only true if it can target an enemy
-	 * @param {(actionName: string) => string} actionsInput.next
+	 * @param {string} actionsInput.next
 	 */
 	addAction(actionsInput) {
 		this.actions[actionsInput.name] = actionsInput;

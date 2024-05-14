@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
+const { addModifier, payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Charging Blood Aegis",
 	"Pay @{hpCost} hp; gain @{protection} protection, @{mod0Stacks} @{mod0}, intercept a later single target move",
@@ -22,11 +22,12 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
 		});
+		const [userName, targetName] = getNames([user, target], adventure);
 		if (targetMove.targets.length === 1) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			return `Gaining protection, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""} ${target.getName(adventure.room.enemyIdMap)} falls for the provocation.`;
+			return `Gaining protection, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${userName} is Powered Up.` : ""} ${targetName} falls for the provocation.`;
 		} else {
-			return `Gaining protection, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${user.getName(adventure.room.enemyIdMap)} is Powered Up.` : ""}`;
+			return `Gaining protection, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${userName} is Powered Up.` : ""}`;
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

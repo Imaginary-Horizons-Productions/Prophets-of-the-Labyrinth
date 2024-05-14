@@ -5,8 +5,10 @@ const ENEMIES = {};
 const ENEMY_NAMES = [];
 
 for (const file of [
+	"asteroid.js",
 	"bloodtailhawk.js",
 	"clone.js",
+	"earthlyknight.js",
 	"elkemist.js",
 	"firearrowfrog.js",
 	"geodetortoise.js",
@@ -14,6 +16,7 @@ for (const file of [
 	"mechabeesoldier.js",
 	"mechaqueenbee.js",
 	"mechaqueenmech.js",
+	"meteorknight.js",
 	"ooze.js",
 	"royalslime.js",
 	"slime.js",
