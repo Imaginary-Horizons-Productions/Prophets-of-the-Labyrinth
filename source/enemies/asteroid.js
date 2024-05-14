@@ -26,7 +26,7 @@ module.exports = new EnemyTemplate("Asteroid",
   priority: 0,
   effect: (targets, user, isCrit, adventure) => {
     let damage = user.getPower()+30;
-    let recoilDmg = 20;
+    const recoilDmg = 20;
     if (isCrit) {
       damage *= 2;
     }
