@@ -8,7 +8,32 @@ function selectAllAllies(self, adventure) {
 	if (self.team === "delver") {
 		return adventure.delvers.map((delver, index) => new CombatantReference("delver", index));
 	} else {
-		return adventure.room.enemies.map((enemy, index) => new CombatantReference("enemy", index));
+		const liveTargets = [];
+		adventure.room.enemies.forEach((enemy, index) => {
+			if (enemy.hp > 0) {
+				liveTargets.push(new CombatantReference("enemy", index))
+			}
+		});
+		return liveTargets;
+	}
+}
+
+/** Selects all allies of the user (including themself)
+ * @param {Combatant} self
+ * @param {Adventure} adventure
+ */
+function selectAllOtherAllies(self, adventure) {
+	const selfIndex = adventure.getCombatantIndex(self);
+	if (self.team === "delver") {
+		return adventure.delvers.map((delver, index) => new CombatantReference("delver", index)).filter((ref => ref.index !== selfIndex));
+	} else {
+		const liveTargets = [];
+		adventure.room.enemies.forEach((enemy, index) => {
+			if (enemy.hp > 0 && index !== selfIndex) {
+				liveTargets.push(new CombatantReference("enemy", index))
+			}
+		});
+		return liveTargets;
 	}
 }
 
@@ -38,7 +63,13 @@ function selectRandomOtherAlly(self, adventure) {
  */
 function selectAllFoes(self, adventure) {
 	if (self.team === "delver") {
-		return adventure.room.enemies.map((enemy, index) => new CombatantReference("enemy", index));
+		const liveTargets = [];
+		adventure.room.enemies.forEach((enemy, index) => {
+			if (enemy.hp > 0) {
+				liveTargets.push(new CombatantReference("enemy", index))
+			}
+		});
+		return liveTargets;
 	} else {
 		return adventure.delvers.map((delver, index) => new CombatantReference("delver", index));
 	}
@@ -63,6 +94,15 @@ function selectRandomFoe(self, adventure) {
 function selectAllCombatants(self, adventure) {
 	return selectAllAllies(self, adventure).concat(selectAllFoes(self, adventure));
 }
+
+/** Selects all combatants except self (delvers + enemies)
+ * @param {Combatant} self
+ * @param {Adventure} adventure
+ */
+function selectAllOtherCombatants(self, adventure) {
+	return selectAllOtherAllies(self, adventure).concat(selectAllFoes(self, adventure));
+}
+
 
 /** Selects the user
  * @param {Combatant} self
@@ -92,10 +132,12 @@ function nextRandom(actionName) {
 
 module.exports = {
 	selectAllAllies,
+	selectAllOtherAllies,
 	selectRandomOtherAlly,
 	selectAllFoes,
 	selectRandomFoe,
 	selectAllCombatants,
+	selectAllOtherCombatants,
 	selectSelf,
 	selectNone,
 	nextRepeat,

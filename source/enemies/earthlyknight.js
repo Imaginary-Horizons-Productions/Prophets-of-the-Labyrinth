@@ -34,14 +34,16 @@ module.exports = new EnemyTemplate("Earthly Knight",
     changeStagger(targets, "elementMatchFoe");
     let resultString = dealDamage(targets, user, damage, false, user.element, adventure);
     const targetNames = getNames(targets, adventure);
-    for (let i = 0; i< targets.length; i++) {
+    for (let i = 0; i < targets.length; i++) {
       const target = targets[i];
       const targetBuffs = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
-      const buffIndex = adventure.generateRandomNumber(targetBuffs.length, "battle");
-      const rolledBuff = targetBuffs[buffIndex];
-      const wasRemoved = removeModifier([target], { name: rolledBuff, stacks: "all" }).length > 0;
-      if (wasRemoved) {
-        resultString += `${targetNames[i]} lost ${rolledBuff}.`;
+      if (targetBuffs.length > 0) {
+        const buffIndex = adventure.generateRandomNumber(targetBuffs.length, "battle");
+        const rolledBuff = targetBuffs[buffIndex];
+        const wasRemoved = removeModifier([target], { name: rolledBuff, stacks: "all" }).length > 0;
+        if (wasRemoved) {
+          resultString += `${targetNames[i]} lost ${rolledBuff}.`;
+        }
       }
     }
     return resultString;

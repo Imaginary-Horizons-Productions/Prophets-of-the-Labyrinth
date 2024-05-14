@@ -450,7 +450,7 @@ function resolveMove(move, adventure) {
 
 		moveText += `used ${move.name}`;
 		if (needsLivingTargets) {
-			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
+			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference));
 			const livingTargets = [];
 			const deadTargets = [];
 			for (const target of targets) {
@@ -463,7 +463,7 @@ function resolveMove(move, adventure) {
 			if (livingTargets.length > 0) {
 				let deadTargetText = "";
 				if (deadTargets.length > 0) {
-					deadTargetText += ` ${listifyEN(getNames(deadTargets, adventure), false)} ${deadTargets === 1 ? "was" : "were"} already dead!`
+					deadTargetText += ` ${listifyEN(getNames(deadTargets, adventure), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`
 				}
 
 				const resultText = effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure);

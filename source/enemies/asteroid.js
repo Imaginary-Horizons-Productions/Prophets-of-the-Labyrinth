@@ -1,15 +1,7 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, changeStagger, getNames } = require("../util/combatantUtil.js");
-const { selectRandomFoe, selectAllCombatants } = require("../shared/actionComponents.js");
+const { selectRandomFoe, selectAllOtherCombatants, nextRandom } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
-
-const PATTERN = {
-  "Fragment": "random", // can keep fragmenting before randomly exploding on a coin flip
-  "Bolide Burst": "random"
-}
-function asteroidPattern(actionName) {
-  return PATTERN[actionName]
-}
 
 module.exports = new EnemyTemplate("Asteroid",
   "Earth",
@@ -35,7 +27,7 @@ module.exports = new EnemyTemplate("Asteroid",
   },
   selector: selectRandomFoe,
   needsLivingTargets: true,
-  next: asteroidPattern
+  next: nextRandom
 }).addAction({
   name: "Bolide Burst",
   element: "Earth",
@@ -50,7 +42,7 @@ module.exports = new EnemyTemplate("Asteroid",
     changeStagger(targets, "elementMatchFoe");
     return `${dealDamage(targets, user, damage, false, user.element, adventure)} ${getNames([user], adventure)[0]} is downed.`;
   },
-  selector: selectAllCombatants,
+  selector: selectAllOtherCombatants,
   needsLivingTargets: true,
-  next: asteroidPattern
+  next: nextRandom
 });
