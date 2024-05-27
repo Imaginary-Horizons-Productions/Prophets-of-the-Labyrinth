@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Discounted Midas Staff",
 	"Apply @{mod0Stacks} @{mod0} to a combatant",
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Discounted Midas Staff",
 		}
 		const addedCurse = addModifier([target], pendingCurse).length > 0;
 		if (addedCurse) {
-			return `${target.getName(adventure.room.enemyIdMap)} gains Curse of Midas.`;
+			return `${getNames([target], adventure)[0]} gains Curse of Midas.`;
 		} else {
 			return "But nothing happened.";
 		}

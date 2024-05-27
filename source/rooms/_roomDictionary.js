@@ -9,6 +9,7 @@ for (const file of [
 	"battle-bloodtailhawks.js",
 	"battle-frogranch.js",
 	"battle-wildfirearrowfrogs.js",
+	"battle-meteorknight.js",
 	"battle-mechabees.js",
 	"battle-slimes.js",
 	"battle-tortoises.js",

@@ -4,16 +4,6 @@ const { selectRandomFoe, selectSelf, selectAllFoes } = require("../shared/action
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
-const PATTERN = {
-	"Barrel Roll": "Sting",
-	"Sting": "Neurotoxin Strike",
-	"Neurotoxin Strike": "Self-Destruct",
-	"Self-Destruct": "Barrel Roll"
-}
-function soldierPattern(actionName) {
-	return PATTERN[actionName]
-}
-
 module.exports = new EnemyTemplate("Mechabee Soldier",
 	"Earth",
 	250,
@@ -35,7 +25,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: soldierPattern
+	next: "Neurotoxin Strike"
 }).addAction({
 	name: "Barrel Roll",
 	element: "Untyped",
@@ -56,7 +46,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: soldierPattern
+	next: "Sting"
 }).addAction({
 	name: "Neurotoxin Strike",
 	element: "Earth",
@@ -70,7 +60,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
-	next: soldierPattern
+	next: "Self-Destruct"
 }).addAction({
 	name: "Self-Destruct",
 	element: "Earth",
@@ -88,5 +78,5 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: soldierPattern
+	next: "Barrel Roll"
 });

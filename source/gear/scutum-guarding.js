@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { changeStagger, addProtection } = require('../util/combatantUtil');
+const { changeStagger, addProtection, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Guarding Scutum",
 	"Grant @{protection} protection to an ally and @{bonus} protection to yourself",
@@ -20,7 +20,8 @@ module.exports = new GearTemplate("Guarding Scutum",
 		}
 		addProtection([target], targetProtection);
 		addProtection([user], selfProtection);
-		return `${target.getName(adventure.room.enemyIdMap)} and ${user.getName(adventure.room.enemyIdMap)} gain protection.`;
+		const [targetName, userName] = getNames([target, user], adventure);
+		return `${targetName} and ${userName} gain protection.`;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Sweeping Scutum", "Vigilant Scutum")

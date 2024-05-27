@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Toxic Shortsword",
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Toxic Shortsword",
 		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
 		const addedExposedUser = addModifier([user], exposed).length > 0;
 		if (addedExposedUser) {
-			resultText += ` ${user.getName(adventure.room.enemyIdMap)} is Exposed.`;
+			resultText += ` ${getNames([user], adventure)[0]} is Exposed.`;
 		}
 		const targetDebuffs = [];
 		const addedPoison = addModifier([target], poison).length > 0;
@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Toxic Shortsword",
 			targetDebuffs.push("Exposed");
 		}
 		if (targetDebuffs.length > 0) {
-			resultText += ` ${target.getName(adventure.room.enemyIdMap)} is ${listifyEN(targetDebuffs, false)}.`;
+			resultText += ` ${getNames([target], adventure)[0]} is ${listifyEN(targetDebuffs, false)}.`;
 		}
 		return resultText;
 	}

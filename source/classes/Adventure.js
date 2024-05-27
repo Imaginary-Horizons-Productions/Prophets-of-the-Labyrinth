@@ -86,7 +86,7 @@ class Adventure {
 	 * @param {"general" | "battle"} branch which rnTable branch to roll on
 	 */
 	generateRandomNumber(exclusiveMax, branch) {
-		if (typeof exclusiveMax !== 'number' || isNaN(exclusiveMax)) {
+		if (typeof exclusiveMax !== 'number' || isNaN(exclusiveMax) || exclusiveMax === 0) {
 			throw new Error(`generateRandomNumber recieved invalid exclusiveMax: ${exclusiveMax}`);
 		}
 
@@ -164,8 +164,6 @@ class Adventure {
 				return this.delvers[index];
 			case "enemy":
 				return this.room.enemies[index];
-			case "none":
-				return null;
 		}
 	}
 

@@ -134,8 +134,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						}
 					} else if (type === "self") {
 						newMove.addTarget(new CombatantReference("delver", userIndex));
-					} else if (type === "none") {
-						newMove.addTarget(new CombatantReference("none", -1));
 					}
 
 					let overwritten = false;

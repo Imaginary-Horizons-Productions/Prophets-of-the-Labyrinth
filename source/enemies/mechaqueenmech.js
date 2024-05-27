@@ -1,22 +1,9 @@
-const { EnemyTemplate, CombatantReference } = require("../classes/index.js");
+const { EnemyTemplate } = require("../classes/index.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
-const { listifyEN } = require("../util/textUtil.js");
 
 const drone = require("./mechabeedrone.js")
-
-const PATTERN = {
-	"Swarm Protocol": "Laser Array",
-	"Assault Protocol": "Laser Array",
-	"Formation Protocol": "Laser Array",
-	"Sacrifice Protocol": "Laser Array",
-	"Deploy Drone": "a random protocol",
-	"Laser Array": "Deploy Drone"
-}
-function mechaQueenPattern(actionName) {
-	return PATTERN[actionName]
-}
 
 module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	"Darkness",
@@ -36,7 +23,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		adventure.room.moves.forEach(move => {
 			if (move.userReference.team === "enemy" && move.userReference.index !== 0) {
 				move.name = "Call for Help";
-				move.targets = [new CombatantReference("none", -1)];
+				move.targets = [];
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);
@@ -44,7 +31,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "Laser Array"
 }).addAction({
 	name: "Formation Protocol",
 	element: "Untyped",
@@ -59,7 +46,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "Laser Array"
 }).addAction({
 	name: "Assault Protocol",
 	element: "Untyped",
@@ -79,7 +66,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "Laser Array"
 }).addAction({
 	name: "Sacrifice Protocol",
 	element: "Untyped",
@@ -97,7 +84,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectRandomOtherAlly,
 	needsLivingTargets: true,
-	next: mechaQueenPattern
+	next: "Laser Array"
 }).addAction({
 	name: "Deploy Drone",
 	element: "Untyped",
@@ -109,7 +96,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "a random protocol"
 }).addAction({
 	name: "Laser Array",
 	element: "Darkness",
@@ -125,5 +112,5 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: mechaQueenPattern
+	next: "Deploy Drone"
 });
