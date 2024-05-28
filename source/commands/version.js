@@ -1,3 +1,4 @@
+const { AttachmentBuilder } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { generateVersionEmbed } = require('../util/embedUtil');
 
@@ -12,10 +13,7 @@ module.exports = new CommandWrapper(mainId, "Get the PotL change log", null, fal
 		} else {
 			interaction.reply({
 				content: "Here are all the changes so far: ",
-				files: [{
-					attachment: "./ChangeLog.md",
-					name: 'ChangeLog.md'
-				}],
+				files: [new AttachmentBuilder("./ChangeLog.md")],
 				ephemeral: true
 			});
 		}
