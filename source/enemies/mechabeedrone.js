@@ -22,7 +22,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		let damage = user.getPower() + 10;
 		changeStagger(targets, "elementMatchFoe");
 		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 });
-		return `${dealDamage(targets, user, damage, false, user.element, adventure)}${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")}`;
+		return `${dealDamage(targets, user, damage, false, user.element, adventure)} ${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

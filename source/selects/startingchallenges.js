@@ -29,7 +29,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		} else {
 			interaction.values.forEach(challengeName => {
 				const challenge = getChallenge(challengeName);
-				adventure.challenges[challengeName] = { intensity: challenge.intensity, duration: challenge.duration };
+				adventure.challenges[challengeName] = { intensity: challenge.intensity, duration: challenge.duration, reward: challenge.reward };
 			})
 			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(recruitMessage => {
 				const [{ data: recruitEmbed }] = recruitMessage.embeds;

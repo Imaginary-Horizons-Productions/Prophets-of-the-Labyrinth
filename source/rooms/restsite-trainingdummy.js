@@ -5,7 +5,7 @@ const { generateRoutingRow } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Rest Site: Training Dummy",
 	"@{adventure}",
-	"The room contains a campfire and a traing dummy.",
+	"The room contains a campfire and a training dummy.",
 	[
 		new ResourceTemplate("n", "internal", "roomAction")
 	],
