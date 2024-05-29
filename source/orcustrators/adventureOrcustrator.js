@@ -400,7 +400,7 @@ function resolveMove(move, adventure) {
 	}
 
 	let moveText = `**${getNames([user], adventure)[0]}** `;
-	if (!user.isStunned && !move.name.startsWith("Unstoppable")) {
+	if (!user.isStunned || move.name.startsWith("Unstoppable")) {
 		if (move.isCrit) {
 			moveText = `💥${moveText}`;
 		}

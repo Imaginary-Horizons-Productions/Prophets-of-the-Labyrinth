@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		if (isCrit) {
 			stacks *= 3;
 		}
-		const addedEvade = addModifier(user, { name: "Evade", stacks }).length > 0;
+		const addedEvade = addModifier([user], { name: "Evade", stacks }).length > 0;
 		changeStagger([user], "elementMatchAlly");
 		if (addedEvade) {
 			return "It's prepared to Evade.";

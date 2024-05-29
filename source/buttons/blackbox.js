@@ -45,7 +45,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			collector.on("collect", (collectedInteraction) => {
 				const adventure = getAdventure(collectedInteraction.channelId);
 				const [_, startingDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				if (adventure?.depth !== startingDepth) {
+				if (adventure?.depth !== parseInt(startingDepth)) {
 					return;
 				}
 

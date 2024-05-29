@@ -98,7 +98,7 @@ module.exports = new EnemyTemplate("Elkemist",
 				}
 			}
 		}
-		addModifier(user, { name: "Progress", stacks: progressGained });
+		addModifier([user], { name: "Progress", stacks: progressGained });
 
 		if (affectedDelvers.size > 0) {
 			return `It cackles as it transmutes buffs on ${listifyEN([...affectedDelvers], false)} to Fire Weakness.`;

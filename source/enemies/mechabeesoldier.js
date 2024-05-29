@@ -21,7 +21,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		let damage = user.getPower() + 10;
 		changeStagger(targets, "elementMatchFoe");
 		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 });
-		return `${dealDamage(targets, user, damage, false, user.element, adventure)}${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")}`;
+		return `${dealDamage(targets, user, damage, false, user.element, adventure)} ${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -56,7 +56,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		let damage = user.getPower() + 40;
 		changeStagger(targets, "elementMatchFoe");
 		const paralyzedTargets = addModifier(targets, { name: "Paralysis", stacks: isCrit ? 5 : 3 });
-		return `${dealDamage(targets, user, damage, false, user.element, adventure)}${joinAsStatement(false, getNames(paralyzedTargets, adventure), "is", "are", "Paralyzed.")}`;
+		return `${dealDamage(targets, user, damage, false, user.element, adventure)} ${joinAsStatement(false, getNames(paralyzedTargets, adventure), "is", "are", "Paralyzed.")}`;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
