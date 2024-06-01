@@ -141,9 +141,10 @@ function addScoreField(embed, adventure, guildId) {
 	const bonusScoreline = generateScoreline("additive", "Bonus", adventure.score);
 	const challengesScoreline = generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
 	const skippedArtifactScoreline = generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
+	const artifactMultiplierScoreline = generateScoreline("multiplicative", "Floating Multiplier Bonus", 1 + (adventure.getArtifactCount("Floating Multiplier") / 4));
 	const defeatScoreline = generateScoreline("multiplicative", "Defeat", adventure.state === "defeat" ? 0.5 : 1);
 	const giveupScoreline = generateScoreline("multiplicative", "Give Up", adventure.state === "giveup" ? 0 : 1);
-	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
+	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${artifactMultiplierScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
 	adventure.score = finalScore;
 
 	const company = getCompany(guildId);

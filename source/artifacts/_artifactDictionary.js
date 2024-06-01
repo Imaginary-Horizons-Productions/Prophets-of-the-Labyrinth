@@ -21,6 +21,7 @@ for (const file of [
 	"celestialknightinsignia.js",
 	"crystalshard.js",
 	"enchantedmap.js",
+	"floatingmultiplier.js",
 	"hammerspaceholster.js",
 	"hawktailfeather.js",
 	"healthinsuranceloophole.js",
