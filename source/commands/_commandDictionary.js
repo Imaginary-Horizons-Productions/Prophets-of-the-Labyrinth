@@ -19,6 +19,7 @@ module.exports = {
 		"player-stats.js",
 		"regenerate.js",
 		"reset.js",
+		"share-seed.js",
 		"support.js",
 		"version.js"
 	],
