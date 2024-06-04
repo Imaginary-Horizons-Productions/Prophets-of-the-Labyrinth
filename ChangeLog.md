@@ -3,6 +3,9 @@
 ### Artifacts
 - Floating Multiplier (new): Increases the adventure's score by 25% per copy
 
+### Other Changes
+- New command: `/share-seed` lets players share the seed of their completed adventure with others
+
 ## Prophets of the Labyrinth v0.14.0:
 This update has a systems focus: making damage midigation less situation by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content and balance such as: a new final boss, the Chemist rework, adding more AoE with the Blasting gear variant, and a few new artifacts.
 ### Labyrinths
