@@ -1,14 +1,14 @@
-const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, StringSelectMenuBuilder, ButtonStyle, ChannelType, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder, ButtonStyle, ChannelType, MessageFlags } = require('discord.js');
 const { PermissionFlagsBits } = require('discord.js');
 const { CommandWrapper, Adventure, Delver } = require('../classes');
 const { setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getChallenge } = require('../challenges/_challengeDictionary');
-const { getColor } = require('../util/elementUtil');
 const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator');
 const { prerollBoss, defaultLabyrinths, labyrinthExists, getLabyrinthProperty } = require('../labyrinths/_labyrinthDictionary');
 const { SAFE_DELIMITER } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
+const { generateRecruitEmbed } = require('../util/embedUtil');
 
 const mainId = "delve";
 module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionFlagsBits.SendMessages, false, false, 3000,
@@ -37,13 +37,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 		prerollBoss("Final Battle", adventure);
 		prerollBoss("Artifact Guardian", adventure);
 
-		const embed = new EmbedBuilder().setColor(getColor(adventure.element))
-			.setAuthor({ name: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png", url: "https://github.com/Imaginary-Horizons-Productions/prophets-of-the-labyrinth" })
-			.setTitle(adventure.name)
-			.setThumbnail("https://cdn.discordapp.com/attachments/545684759276421120/734093574031016006/bountyboard.png")
-			.setDescription("A new adventure is starting!")
-			.addFields({ name: "1 Party Member", value: `${interaction.member} 👑` })
-		interaction.reply({ embeds: [embed], fetchReply: true }).then(recruitMessage => {
+		interaction.reply({ embeds: [generateRecruitEmbed(adventure)], fetchReply: true }).then(recruitMessage => {
 			adventure.messageIds.recruit = recruitMessage.id;
 			interaction.channel.threads.create({
 				name: adventure.name,
