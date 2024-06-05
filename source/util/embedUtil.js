@@ -55,6 +55,53 @@ function embedTemplate() {
 		.setFooter(randomFooterTip())
 }
 
+/** @param {Adventure} adventure */
+function generateRecruitEmbed(adventure) {
+	// recruit embed must be set before making thread, but cannot add leader to delvers before thread is created
+	const clampedPartySize = Math.max(adventure.delvers.length, 1);
+	const nonLeaderIds = adventure.delvers.filter(delver => delver.id !== adventure.leaderId).map(delver => delver.id);
+	const fields = [
+		{
+			name: `${clampedPartySize} Party Member${clampedPartySize === 1 ? "" : "s"}`,
+			value: `<@${adventure.leaderId}> 👑${nonLeaderIds.length > 0 ? `\n<@${nonLeaderIds.join(">\n<@")}>` : ""}`
+		}
+	];
+	const startingChallenges = Object.keys(adventure.challenges);
+	if (Object.keys(adventure.challenges).length > 0) {
+		fields.push({ name: "Challenges", value: `- ${startingChallenges.join("\n- ")}` });
+	}
+	const isAdventureCompleted = !["config", "ongoing"].includes(adventure.state);
+	if (isAdventureCompleted) {
+		fields.push({ name: "Seed", value: adventure.initialSeed });
+	}
+
+	let description = "";
+	switch (adventure.state) {
+		case "config":
+			description = "An adventure is starting!";
+			break;
+		case "ongoing":
+			description = "The adventure is on-going!";
+			break;
+		case "success":
+			description = "The party succeeded on their adventure!";
+			break;
+		case "defeat":
+			description = "The party retreated.";
+			break;
+		case "giveup":
+			description = "The party retreated.";
+			break;
+	}
+
+	return new EmbedBuilder().setColor(getColor(adventure.element))
+		.setAuthor({ name: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png", url: "https://github.com/Imaginary-Horizons-Productions/prophets-of-the-labyrinth" })
+		.setTitle(adventure.name)
+		.setThumbnail(isAdventureCompleted ? "https://cdn.discordapp.com/attachments/545684759276421120/734092918369026108/completion.png" : "https://cdn.discordapp.com/attachments/545684759276421120/734093574031016006/bountyboard.png")
+		.setDescription(description)
+		.addFields(fields);
+}
+
 /** Derive the embeds and components that correspond with the adventure's state
  * @param {Adventure} adventure
  * @param {ThreadChannel} thread
@@ -194,7 +241,7 @@ function generateScoreline(stackType, label, value) {
 			}
 			break;
 		default:
-			console.error(new Error(`Generating scoreline with unregistered stackType: ${stackType}`));
+			console.error(new Error(`Generating scoreline with unregistered stackType: ${stackType} `));
 	}
 	return "";
 }
@@ -204,7 +251,7 @@ function generateScoreline(stackType, label, value) {
  * @returns {string} text to put in the author name field of a room embed
  */
 function roomHeaderString(adventure) {
-	return `Lives: ${adventure.lives} - Party Gold: ${adventure.gold} - Score: ${adventure.getBaseScore().total}`;
+	return `Lives: ${adventure.lives} - Party Gold: ${adventure.gold} - Score: ${adventure.getBaseScore().total} `;
 }
 
 /** The room header goes in the embed's author field and should contain information about the party's commonly used or important resources
@@ -254,7 +301,7 @@ async function generateVersionEmbed() {
  */
 function generateArtifactEmbed(artifactTemplate, count, adventure) {
 	const embed = embedTemplate()
-		.setTitle(`${getEmoji(artifactTemplate.element)} ${artifactTemplate.name} x ${count}`)
+		.setTitle(`${getEmoji(artifactTemplate.element)} ${artifactTemplate.name} x ${count} `)
 		.setDescription(artifactTemplate.dynamicDescription(count))
 		.addFields({ name: "Scaling", value: artifactTemplate.scalingDescription });
 	if (artifactTemplate.flavorText) {
@@ -279,7 +326,8 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 function gearToEmbedField(gearName, durability, holder) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability)`;
+	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))
+		} ${durability} /${maxDurability} durability)`;
 	return {
 		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))}${durabilityText}`,
 		value: buildGearDescription(gearName, maxDurability !== 0, holder)
@@ -340,6 +388,7 @@ module.exports = {
 	randomAuthorTip,
 	randomFooterTip,
 	embedTemplate,
+	generateRecruitEmbed,
 	renderRoom,
 	updateRoomHeader,
 	generateVersionEmbed,
