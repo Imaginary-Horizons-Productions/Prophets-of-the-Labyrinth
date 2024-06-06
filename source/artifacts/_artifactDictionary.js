@@ -28,6 +28,7 @@ for (const file of [
 	"manualmanual.js",
 	"negativeoneleafclover.js",
 	"oilpainting.js",
+	"peacockcharm.js",
 	"phoenixfruitblossom.js",
 	"piggybank.js",
 	"spiralfunnel.js",

@@ -2,6 +2,7 @@
 ## Prophets of the Labyrinth v0.15.0:
 ### Artifacts
 - Floating Multiplier (new): Increases the adventure's score by 25% per copy
+- Peacock Charm (new): Gain copies + your remaining poise in protection each turn
 
 ### Other Changes
 - New command: `/share-seed` lets players share the seed of their completed adventure with others
