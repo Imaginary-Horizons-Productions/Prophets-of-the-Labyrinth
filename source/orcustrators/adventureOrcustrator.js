@@ -310,11 +310,20 @@ function newRound(adventure, thread, lastRoundText) {
 			 * @param {number} i
 			 */
 			(combatant, i) => {
-				const boatPartsCount = adventure.getArtifactCount("Boat Parts");
-				if (boatPartsCount > 0 && adventure.room.round <= boatPartsCount + 1 && combatant.team === "delver") {
-					const boatProtection = boatPartsCount * 25 + 25;
-					addProtection([combatant], boatProtection);
-					adventure.updateArtifactStat("Protection Generated", boatProtection);
+				if (combatant.team === "delver") {
+					const boatPartsCount = adventure.getArtifactCount("Boat Parts");
+					if (boatPartsCount > 0 && adventure.room.round <= boatPartsCount + 1) {
+						const boatProtection = boatPartsCount * 25 + 25;
+						addProtection([combatant], boatProtection);
+						adventure.updateArtifactStat("Boat Parts", "Protection Generated", boatProtection);
+					}
+
+					const peacockCharmCount = adventure.getArtifactCount("Peacock Charm");
+					if (peacockCharmCount > 0) {
+						const peacockProtection = peacockCharmCount + combatant.poise - combatant.stagger;
+						addProtection([combatant], peacockProtection);
+						adventure.updateArtifactStat("Peacock Charm", "Protection Generated", peacockProtection);
+					}
 				}
 
 				// Roll Round Speed
