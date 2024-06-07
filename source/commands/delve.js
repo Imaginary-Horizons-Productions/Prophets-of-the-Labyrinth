@@ -1,19 +1,22 @@
-const { ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder, ButtonStyle, ChannelType, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
 const { PermissionFlagsBits } = require('discord.js');
 const { CommandWrapper, Adventure, Delver } = require('../classes');
 const { setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { getChallenge } = require('../challenges/_challengeDictionary');
 const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator');
 const { prerollBoss, defaultLabyrinths, labyrinthExists, getLabyrinthProperty } = require('../labyrinths/_labyrinthDictionary');
 const { SAFE_DELIMITER } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
-const { trimForSelectOptionDescription } = require('../util/textUtil');
-const { generateRecruitEmbed } = require('../util/embedUtil');
+const { generateRecruitEmbed, generateAdventureConfigMessage } = require('../util/embedUtil');
 
 const mainId = "delve";
 module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionFlagsBits.SendMessages, false, false, 3000,
 	/** Start a new adventure */
 	(interaction) => {
+		if (interaction.channel.type !== ChannelType.GuildText) {
+			interaction.reply({ content: "Please start your adventure in a text channel (threads cannot be made in thread channels).", ephemeral: true });
+			return;
+		}
+
 		const labyrinthName = interaction.options.getString("labyrinth");
 		if (!labyrinthExists(labyrinthName)) {
 			interaction.reply({ content: `There isn't a labyrinth named **${labyrinthName}** (input is case-sensitive).`, ephemeral: true });
@@ -23,11 +26,6 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 		const company = getCompany(interaction.guildId);
 		if (!isSponsor(interaction.user.id) && company.adventuring.has(interaction.user.id)) {
 			interaction.reply({ content: "Delving in more than one adventure per server is a premium perk. Use `/support` for more details.", ephemeral: true });
-			return;
-		}
-
-		if (interaction.channel.type !== ChannelType.GuildText) {
-			interaction.reply({ content: "Please start your adventure in a text channel (threads cannot be made in thread channels).", ephemeral: true });
 			return;
 		}
 
@@ -55,37 +53,9 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 				company.adventuring.add(interaction.user.id);
 				setCompany(company);
 
-				const options = [{ label: "None", description: "Deselect previously selected challenges", value: "None" }];
-				["Training Weights", "Can't Hold All this Value", "Restless", "Rushing"].forEach(challengeName => {
-					const challenge = getChallenge(challengeName);
-					options.push({ label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName });
-				})
 				adventure.setId(thread.id);
 				setAdventure(adventure);
-				thread.send({
-					content: `**${labyrinthNameInTitleCaps}**\n*${getLabyrinthProperty(labyrinthName, "description")}*\nParty Leader: ${interaction.member}\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
-					components: [
-						new ActionRowBuilder().addComponents(
-							new ButtonBuilder().setCustomId("ready")
-								.setLabel("Ready!")
-								.setStyle(ButtonStyle.Success),
-							new ButtonBuilder().setCustomId("deploy")
-								.setLabel("Pick Archetype")
-								.setStyle(ButtonStyle.Primary),
-							new ButtonBuilder().setCustomId("startingartifacts")
-								.setLabel("Pick Starting Artifact")
-								.setStyle(ButtonStyle.Secondary)
-						),
-						new ActionRowBuilder().addComponents(
-							new StringSelectMenuBuilder().setCustomId("startingchallenges")
-								.setPlaceholder("Select challenge(s)...")
-								.setMinValues(1)
-								.setMaxValues(options.length)
-								.addOptions(options)
-						)
-					],
-					flags: MessageFlags.SuppressNotifications
-				});
+				thread.send(generateAdventureConfigMessage(adventure));
 			});
 		}).catch(console.error);
 	}
