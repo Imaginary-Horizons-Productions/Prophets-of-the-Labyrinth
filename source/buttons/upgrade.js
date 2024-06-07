@@ -75,7 +75,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}**'s *${gearName}* has been upgraded to **${upgradeName}**!`);
 			})
 
-			collector.on("end", () => {
+			collector.on("end", async (interactionCollection) => {
+				await interactionCollection.first().update({ components: [] });
 				interaction.deleteReply();
 			})
 		})
