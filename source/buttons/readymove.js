@@ -167,14 +167,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						const targetTeamMaxIndex = targetTeam === "delver" ? adventure.delvers.length - 1 : adventure.room.enemies.length - 1;
 
 						let targetsSelectedLeft = 0;
-						let prebuffedMinIndex = targetIndex;
 						for (let index = targetIndex - 1; targetsSelectedLeft < range && index >= 0; index--) {
 							if (adventure.room.enemies[index].hp > 0) {
 								targetsSelectedLeft++;
 								targetIndices.unshift(index);
-								if (targetsSelectedLeft <= blastRange) {
-									prebuffedMinIndex = index;
-								}
 							}
 						}
 
