@@ -12,22 +12,14 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return;
 		}
 
-		if (interaction.values.includes("None")) {
-			adventure.challenges = {};
-			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(recruitMessage => {
-				recruitMessage.edit({ embeds: [generateRecruitEmbed(adventure)] });
-			})
-			interaction.reply({ content: "Starting Challenges have been cleared for this adventure." });
-		} else {
-			interaction.values.forEach(challengeName => {
-				const challenge = getChallenge(challengeName);
-				adventure.challenges[challengeName] = { intensity: challenge.intensity, duration: challenge.duration, reward: challenge.reward };
-			})
-			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(recruitMessage => {
-				recruitMessage.edit({ embeds: [generateRecruitEmbed(adventure)] });
-			})
-			interaction.reply({ content: `The following challenge(s) have been added to this adventure: "${interaction.values.join("\", \"")}"` });
-		}
+		interaction.values.forEach(challengeName => {
+			const challenge = getChallenge(challengeName);
+			adventure.challenges[challengeName] = { intensity: challenge.intensity, duration: challenge.duration, reward: challenge.reward };
+		})
+		fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(recruitMessage => {
+			recruitMessage.edit({ embeds: [generateRecruitEmbed(adventure)] });
+		})
+		interaction.reply({ content: `The following challenge(s) have been added to this adventure: "${interaction.values.join("\", \"")}"` });
 		setAdventure(adventure);
 	}
 );

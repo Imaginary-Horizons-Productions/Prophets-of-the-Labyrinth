@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW } = require("../constants");
@@ -13,7 +13,8 @@ const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
-const { ordinalSuffixEN, generateTextBar, getNumberEmoji } = require("./textUtil");
+const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription } = require("./textUtil");
+const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -87,8 +88,6 @@ function generateRecruitEmbed(adventure) {
 			description = "The party succeeded on their adventure!";
 			break;
 		case "defeat":
-			description = "The party retreated.";
-			break;
 		case "giveup":
 			description = "The party retreated.";
 			break;
@@ -100,6 +99,43 @@ function generateRecruitEmbed(adventure) {
 		.setThumbnail(isAdventureCompleted ? "https://cdn.discordapp.com/attachments/545684759276421120/734092918369026108/completion.png" : "https://cdn.discordapp.com/attachments/545684759276421120/734093574031016006/bountyboard.png")
 		.setDescription(description)
 		.addFields(fields);
+}
+
+/** @param {Adventure} adventure */
+function generateAdventureConfigMessage(adventure) {
+	const options = ["Training Weights", "Can't Hold All this Value", "Restless", "Rushing"].map(challengeName => {
+		const challenge = getChallenge(challengeName);
+		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName };
+	})
+	return {
+		content: `**${adventure.labyrinth}**\n*${getLabyrinthProperty(adventure.labyrinth, "description")}*\nParty Leader: <@${adventure.leaderId}>\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
+		components: [
+			new ActionRowBuilder().addComponents(
+				new ButtonBuilder().setCustomId("ready")
+					.setLabel("Ready!")
+					.setStyle(ButtonStyle.Success),
+				new ButtonBuilder().setCustomId("deploy")
+					.setLabel("Pick Archetype")
+					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder().setCustomId("startingartifacts")
+					.setLabel("Pick Starting Artifact")
+					.setStyle(ButtonStyle.Secondary)
+			),
+			new ActionRowBuilder().addComponents(
+				new StringSelectMenuBuilder().setCustomId("startingchallenges")
+					.setPlaceholder("Select challenge(s)...")
+					.setMinValues(1)
+					.setMaxValues(options.length)
+					.addOptions(options)
+			),
+			new ActionRowBuilder().addComponents(
+				new ButtonBuilder().setCustomId("clearstartingchallenges")
+					.setStyle(ButtonStyle.Danger)
+					.setLabel("Clear Starting Challenges")
+			)
+		],
+		flags: MessageFlags.SuppressNotifications
+	}
 }
 
 /** Derive the embeds and components that correspond with the adventure's state
@@ -389,6 +425,7 @@ module.exports = {
 	randomFooterTip,
 	embedTemplate,
 	generateRecruitEmbed,
+	generateAdventureConfigMessage,
 	renderRoom,
 	updateRoomHeader,
 	generateVersionEmbed,
