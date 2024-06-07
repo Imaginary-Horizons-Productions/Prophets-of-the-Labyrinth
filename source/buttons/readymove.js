@@ -181,14 +181,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						targetIndices.push(targetIndex);
 
 						let targetsSelectedRight = 0;
-						let prebuffedMaxIndex = targetIndex;
 						for (let index = targetIndex + 1; targetsSelectedRight < range && index <= targetTeamMaxIndex; index++) {
 							if (adventure.room.enemies[index].hp > 0) {
 								targetsSelectedRight++;
 								targetIndices.push(index);
-								if (targetsSelectedRight <= blastRange) {
-									prebuffedMaxIndex = index;
-								}
 							}
 						}
 
