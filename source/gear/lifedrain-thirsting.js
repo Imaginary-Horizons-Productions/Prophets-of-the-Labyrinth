@@ -16,11 +16,11 @@ module.exports = new GearTemplate("Thirsting Life Drain",
 			changeStagger(targetsLivingAtMoveStart, "elementMatchFoe");
 		}
 		let damageText = dealDamage(targetsLivingAtMoveStart, user, pendingDamage, false, element, adventure);
-		const bonusHealing = targetsLivingAtMoveStart.reduce((count, target) => target.hp < 1 ? count + 1 : count, 0) * bonus;
+		pendingHealing += targetsLivingAtMoveStart.reduce((count, target) => target.hp < 1 ? count + 1 : count, 0) * bonus;
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		return `${damageText} ${gainHealth(user, pendingHealing + bonusHealing, adventure)}`;
+		return `${damageText} ${gainHealth(user, pendingHealing, adventure)}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Life Drain", "Hunter's Life Drain")
