@@ -5,6 +5,7 @@ const { getNumberEmoji } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Gear Collector",
 	"@{adventure}",
+	"Event",
 	"The Gear Collector excitedly approaches you offering gold to help complete their collection.",
 	[
 		new ResourceTemplate("0.5*n", "internal", "roomAction")

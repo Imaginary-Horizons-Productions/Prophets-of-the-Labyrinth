@@ -5,6 +5,7 @@ const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new RoomTemplate("Imp Contract Faire",
 	"@{adventureWeakness}",
+	"Event",
 	"The next room contains several stalls with imps hawking suspicious contracts. One imp offers a lucrative opportunity (*given you allow your element to be changed to @{roomElement}). Another offers a sketcy procedure for improving party health.",
 	[],
 	function (adventure) {

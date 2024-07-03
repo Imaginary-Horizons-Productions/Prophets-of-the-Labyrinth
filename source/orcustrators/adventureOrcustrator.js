@@ -232,7 +232,13 @@ function nextRoom(roomType, thread) {
 				adventure.room.addResource(resourceType, resourceType, visibility, goldCount, uiGroup);
 				break;
 			default:
-				adventure.room.addResource(resourceType, resourceType, visibility, count, uiGroup);
+				let resourceCount = count;
+				const hammerCount = adventure.getArtifactCount("Best-in-Class Hammer");
+				if (roomTemplate.primaryCategory === "Workshop" && resourceType === "roomAction" && hammerCount > 0) {
+					resourceCount += hammerCount;
+					adventure.updateArtifactStat("Best-in-Class Hammer", "Extra Room Actions", hammerCount);
+				}
+				adventure.room.addResource(resourceType, resourceType, visibility, resourceCount, uiGroup);
 		}
 	}
 

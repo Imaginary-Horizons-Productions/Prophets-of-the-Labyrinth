@@ -3,6 +3,7 @@
 ### Artifacts
 - Floating Multiplier (new): Increases the adventure's score by 25% per copy
 - Peacock Charm (new): Gain copies + your remaining poise in protection each turn
+- Best-in-Class Hammer (new): Gain copies extra room actions in Workshops
 
 ### Other Changes
 - New command: `/share-seed` lets players share the seed of their completed adventure with others

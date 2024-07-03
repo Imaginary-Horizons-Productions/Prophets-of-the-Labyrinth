@@ -3,6 +3,7 @@ const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Slime Fight",
 	"@{adventure}",
+	"Battle",
 	"Some slimes and oozes approach...",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),

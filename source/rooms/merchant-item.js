@@ -10,6 +10,7 @@ const uiGroups = [`gear${SAFE_DELIMITER}?`, "item"];
 
 module.exports = new RoomTemplate("Item Merchant",
 	"@{adventure}",
+	"Merchant",
 	"A masked figure sits in front of a a line up of flasks and vials. \"Care to trade?\"",
 	[
 		new ResourceTemplate("n", "always", "gear").setTier("?").setUIGroup(uiGroups[0]),

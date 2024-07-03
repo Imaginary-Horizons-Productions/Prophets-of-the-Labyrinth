@@ -3,6 +3,7 @@ const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Wild Fire-Arrow Frogs",
 	"Fire",
+	"Battle",
 	"A blaze of orange and red in the muck outs itself as a warning sign to a blast of heated mud and venom.",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
