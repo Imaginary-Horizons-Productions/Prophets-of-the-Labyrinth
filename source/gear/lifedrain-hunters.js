@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, gainHealth, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Life Drain",
 	"Strike a foe for @{damage} @{element} damage, then gain @{healing} hp (@{bonus}g on kill)",
