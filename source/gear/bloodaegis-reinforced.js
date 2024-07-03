@@ -1,4 +1,4 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate, Move } = require('../classes');
 const { payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reinforced Blood Aegis",
@@ -21,7 +21,11 @@ module.exports = new GearTemplate("Reinforced Blood Aegis",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
 		});
-		if (targetMove.targets.length === 1) {
+		const userMove = adventure.room.moves.find(move => {
+			const moveUser = adventure.getCombatant(move.userReference);
+			return moveUser.name === user.name && moveUser.title === user.title;
+		});
+		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			return `Gaining protection, ${payHP(user, hpCost, adventure)} ${getNames([target], adventure)[0]} falls for the provocation.`;
 		} else {
@@ -29,7 +33,7 @@ module.exports = new GearTemplate("Reinforced Blood Aegis",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Charging Blood Aegis", "Sweeping Blood Aegis")
+	.setSidegrades("Charging Blood Aegis", "Toxic Blood Aegis")
 	.setDurability(15)
 	.setHPCost(25)
 	.setProtection(250);

@@ -34,5 +34,5 @@ module.exports = new GearTemplate("Hunter's Bow",
 	.setSidegrades("Evasive Bow", "Mercurial Bow")
 	.setDurability(15)
 	.setDamage(40)
-	.setBonus(15) // gold
+	.setBonus(30) // gold
 	.setPriority(1);

@@ -22,7 +22,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
 			.setAuthor(randomAuthorTip())
 			.setTitle("Readying a Move")
-			.setDescription(`Your ${getEmoji(delver.element)} moves add 1 Stagger to enemies and remove 1 Stagger from allies.\n\nPick one option from below as your move for this round:`);
+			.setDescription(`Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.\n\nPick one option from below as your move for this round:`);
 		const enemyOptions = [];
 		const miniPredictBuilder = getArchetype(delver.archetype).miniPredict;
 		const enemyNames = getNames(adventure.room.enemies, adventure);

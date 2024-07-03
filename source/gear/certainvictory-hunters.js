@@ -29,4 +29,4 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)
 	.setDamage(40)
-	.setBonus(15);
+	.setBonus(30);
