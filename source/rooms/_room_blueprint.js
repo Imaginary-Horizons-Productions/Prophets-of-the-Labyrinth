@@ -2,6 +2,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 
 module.exports = new RoomTemplate("name",
 	"element",
+	"primary category",
 	"description",
 	[
 		new ResourceTemplate("countExpression", "visibility", "type")

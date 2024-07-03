@@ -5,6 +5,7 @@ const { MAX_MESSAGE_ACTION_ROWS } = require("../constants");
 
 module.exports = new RoomTemplate("Tanning Workshop",
 	"@{adventure}",
+	"Workshop",
 	"This workshop contains various leatherworking tools. You could make some bags, bandoliers, or holsters for the party go carry more gear.",
 	[
 		new ResourceTemplate("n", "internal", "roomAction")

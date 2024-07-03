@@ -3,6 +3,7 @@ const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Tortoise Fight",
 	"Earth",
+	"Battle",
 	"The rocky terrain rises up to reveal a pair of shelled menaces.",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),

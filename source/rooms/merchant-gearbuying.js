@@ -7,6 +7,7 @@ const { trimForSelectOptionDescription } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Gear Buying Merchant",
 	"@{adventure}",
+	"Merchant",
 	"A masked figure sits in front of a half-full rack of weapons and other gear. \"Care to trade?\"",
 	[
 		new ResourceTemplate("n", "always", "gear").setTier("?")

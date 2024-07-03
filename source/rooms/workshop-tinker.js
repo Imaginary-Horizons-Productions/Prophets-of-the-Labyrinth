@@ -4,6 +4,7 @@ const { generateRoutingRow } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Abandoned Forge",
 	"@{adventure}",
+	"Workshop",
 	"The forge in this room could be used to recast some of your upgraded gear to change it's form.",
 	[
 		new ResourceTemplate("n", "internal", "roomAction")
