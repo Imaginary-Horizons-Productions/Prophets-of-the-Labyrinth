@@ -6,6 +6,7 @@ const CHALLENGES = {};
 for (const file of [
 	"blindavarice.js",
 	"cantholdallthisvalue.js",
+	"intothedeepend.js",
 	"restless.js",
 	"rushing.js",
 	"trainingweights.js",
@@ -15,6 +16,8 @@ for (const file of [
 	const challenge = require(`./${file}`);
 	CHALLENGES[challenge.name] = challenge;
 }
+
+const ROLLABLE_CHALLENGES = Object.keys(CHALLENGES).filter(challengeName => challengeName !== "Into the Deep End");
 
 /** @param {string} challengeName */
 function getChallenge(challengeName) {
@@ -26,10 +29,9 @@ function getChallenge(challengeName) {
  * @param {Adventure} adventure
  */
 function rollChallenges(rolls, adventure) {
-	let challenges = [];
-	let challengeNames = Object.keys(CHALLENGES);
+	const challenges = [];
 	for (let i = 0; i < rolls; i++) {
-		let rolledChallenge = challengeNames[adventure.generateRandomNumber(challengeNames.length, "general")];
+		const rolledChallenge = ROLLABLE_CHALLENGES[adventure.generateRandomNumber(ROLLABLE_CHALLENGES.length, "general")];
 		if (!challenges.includes(rolledChallenge)) {
 			challenges.push(rolledChallenge);
 		}
