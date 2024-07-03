@@ -1,4 +1,4 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate, Move } = require('../classes');
 const { addModifier, payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Charging Blood Aegis",
@@ -18,12 +18,16 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		}
 		addProtection([user], pendingProtection);
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
+		const [userName, targetName] = getNames([user, target], adventure);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
 		});
-		const [userName, targetName] = getNames([user, target], adventure);
-		if (targetMove.targets.length === 1) {
+		const userMove = adventure.room.moves.find(move => {
+			const moveUser = adventure.getCombatant(move.userReference);
+			return moveUser.name === user.name && moveUser.title === user.title;
+		});
+		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			return `Gaining protection, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${userName} is Powered Up.` : ""} ${targetName} falls for the provocation.`;
 		} else {

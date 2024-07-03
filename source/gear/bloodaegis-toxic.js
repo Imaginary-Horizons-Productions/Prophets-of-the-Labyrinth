@@ -1,4 +1,4 @@
-const { GearTemplate } = require('../classes/index.js');
+const { GearTemplate, Move } = require('../classes/index.js');
 const { payHP, changeStagger, addProtection, getNames, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Blood Aegis",
@@ -22,7 +22,11 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
 		});
-		if (targetMove.targets.length === 1) {
+		const userMove = adventure.room.moves.find(move => {
+			const moveUser = adventure.getCombatant(move.userReference);
+			return moveUser.name === user.name && moveUser.title === user.title;
+		});
+		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			return `Gaining protection, ${payHP(user, hpCost, adventure)} ${getNames([target], adventure)[0]} falls for the provocation${addedPoison ? ` and is Poisoned` : ""}.`;
 		} else {
