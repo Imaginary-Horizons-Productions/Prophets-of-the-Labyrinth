@@ -156,9 +156,10 @@ Passively increases the user's Max HP
 Gain gold on kill
 
 **Available on**
+- Abacus (Water)
 - Bow (Wind)
 - Certain Victory (Earth)
-- Abacus (Water)
+- Life Drain (Darkness)
 
 ### Lethal
 Increased crit damage
@@ -215,7 +216,6 @@ Increased damage and change element to Untyped
 Bonus damage if user moves after target
 
 **Available on**
-- Life Drain (Darkness)
 - Spear (Wind)
 - Warhammer (Earth)
 
@@ -301,7 +301,6 @@ Targets whole team
 
 **Available on**
 - all Poison Torrents (Water)
-- Blood Aegis (Darkness)
 - Daggers (Wind)
 - Inspiration (Wind)
 - Scutum (Fire)
@@ -333,6 +332,7 @@ Heal user's HP on kill
 
 **Available on**
 - Battleaxe (Fire)
+- Life Drain (Darkness)
 
 ### Tormenting
 Increment a stack on all target's debuffs
@@ -346,6 +346,7 @@ Increment a stack on all target's debuffs
 Adds Poison to target
 
 **Available on**
+- Blood Aegis (Darkness)
 - Cauldron Stir (Water)
 - Firecracker (Fire)
 - Shortsword (Fire)
@@ -368,7 +369,6 @@ Increased priority
 - Barrier (Earth)
 - Fever Break (Darkness)
 - Herb Basket (Earth)
-- Life Drain (Darkness)
 
 ### Vexing
 Bonus damage if target has debuffs
