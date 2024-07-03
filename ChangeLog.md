@@ -6,10 +6,7 @@ Starting in this update, we're moving toward giving each Archetype a unique pred
 
 The core of the Hemomancer is the previously extremely hard to appreciate Blood-Aegis. The Archetype is most fun when theme and gameplay focuses on the trade-offs and arcane knowledge represented by paying HP upfront to direct the flow of battle, as opposed to the relatively plain numbers exchange of Life Drain. The addition of Speed to the Hemomancer's predict will allow the player to understand which enemies are eligible to disrupt with Blood Aegis, not being able to clearly spot good uses of the Gear made it never satisfying to use. Of course, the Hemomancer will be keeping HP predicts to go with the theme of caring about (their own) HP, and in combination with Speed, this will allow Hemomancers to direct their allies to finish off enemies efficiently before those enemies can act.
 
-Here are the rest of the changes we're making to continue sharpening the Hemomancer's identity:
-- We're doing a pass on enemy moves to make more of them eligible for redirecting, especially buffs
-- Urgent Life Drain is changing to Hunter's Life Drain and Reactive Life Drain is changing to Thirsting Life Drain to emphasize the Hemomancer finishing off foes
-- Sweeping Blood Aegis is changing to Toxic Blood Aegis; deciding which enemy to redirect is a large part of fun strategy of the Gear
+Following these principles, the Hemomancer's starting gear's upgrades are being changed. Urgent Life Drain and Reactive Life Drain are changing to Hunter's Life Drain and Thirsting Life Drain to emphasize the Hemomancer finishing off foes. Also Sweeping Blood Aegis is changing to Toxic Blood Aegis; deciding which enemy to redirect is a large part of fun strategy of the gear.
 
 ### Artifacts
 - Floating Multiplier (new): Increases the adventure's score by 25% per copy
