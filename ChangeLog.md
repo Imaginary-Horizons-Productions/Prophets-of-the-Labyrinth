@@ -14,6 +14,7 @@ Following these principles, the Hemomancer's starting gear's upgrades are being 
 - Best-in-Class Hammer (new): Gain copies extra room actions in Workshops
 
 ### Other Changes
+- New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian
 - New command: `/share-seed` lets players share the seed of their completed adventure with others
 - Increased the reward on Hunter's gear to 30g per kill
 

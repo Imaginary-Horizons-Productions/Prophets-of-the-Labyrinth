@@ -103,7 +103,7 @@ function generateRecruitEmbed(adventure) {
 
 /** @param {Adventure} adventure */
 function generateAdventureConfigMessage(adventure) {
-	const options = ["Training Weights", "Can't Hold All this Value", "Restless", "Rushing"].map(challengeName => {
+	const options = ["Training Weights", "Can't Hold All this Value", "Restless", "Rushing", "Into the Deep End"].map(challengeName => {
 		const challenge = getChallenge(challengeName);
 		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName };
 	})
