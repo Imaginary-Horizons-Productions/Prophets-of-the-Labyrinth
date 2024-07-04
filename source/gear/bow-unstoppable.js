@@ -1,8 +1,8 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Mercurial Bow",
-	"Strike a foe for @{damage} damage matching the user's element with priority",
+module.exports = new GearTemplate("Unstoppable Bow",
+	"Strike a foe for @{damage} unblockable @{element} damage with priority, even while Stunned",
 	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Wind",
@@ -16,7 +16,7 @@ module.exports = new GearTemplate("Mercurial Bow",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, element, adventure);
+		return dealDamage(targets, user, pendingDamage, true, element, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Bow", "Hunter's Bow")

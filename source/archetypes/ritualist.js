@@ -19,7 +19,7 @@ module.exports = new ArchetypeTemplate("Ritualist",
 		const combatantNames = getNames(eligibleCombatants, adventure);
 		eligibleCombatants.forEach((combatant, index) => {
 			const modifiersText = modifiersToString(combatant, adventure);
-			embed.addFields({ name: combatantNames[index], value: `${generateTextBar(combatant.hp, combatant.getMaxHP(), 16)} ${combatant.hp}/${combatant.getMaxHP()} HP${combatant.protection ? `, ${combatant.protection} Protection` : ""}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
+			embed.addFields({ name: combatantNames[index], value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
 		})
 		return embed.setTitle(`Ritualist Predictions for Round ${adventure.room.round}`);
 	},

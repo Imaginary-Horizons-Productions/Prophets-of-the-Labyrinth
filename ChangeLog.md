@@ -15,6 +15,11 @@ Starting in this update, we're moving toward giving each Archetype a unique pred
 - Reactive Life Drain is now **Furious Life Drain**: to reinforce HP management as Hemomancer gameplay
 - Sweeping Blood Aegis is now **Toxic Blood Aegis**: picking which foe to disrupt was important for the fun of the gear's strategy (also more Poison support)
 
+#### Ritualist
+- Predict: Modifiers & Stagger
+- Fate-Sealing Censor is now **Staggering Censor**: adding a little more Stun potential to the Ritualist's new predict
+- Flanking Corrosion is now **Fate-Sealing Corrosion**: getting debuffs to stick is still an important Ritualist niche, and Ritualist doesn't necessarily have the speed information needed to cash in on Flanking
+
 ### Artifacts
 Assigned Elements to the following artifacts. Artifacts are only available when a party member with the artifact's element is present (Untyped always available).
 - Fire: Best-in-Class Hammer
@@ -33,6 +38,9 @@ Assigned Elements to the following artifacts. Artifacts are only available when 
 - Increased the reward on Hunter's gear to 30g per kill
 - Prideful Battleaxe is now **Furious Battleaxe**: "maintain low HP" is a more engaging ask of the player than "accept dealing Untyped damage"
 - Thick Battleaxe is now **Reactive Battleaxe**: Thick isn't very Fire-style, Reactive doubles down on acting after foes
+- Mercurial Bow is now **Unstoppable Bow**: Mercurial was too confusing for the edge it provided
+- Mercurial Firecracker is now **Midas's Firecracker**: Mercurial was too confusing for the edge it provided
+- Increased Curse of Midas applied by Midas Staves to 2: 2 targeted stacks keeps this competitive with Midas's Firecracker's 3 untargeted stacks
 
 ### Other Changes
 - New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian

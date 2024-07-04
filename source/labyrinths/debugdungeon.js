@@ -44,11 +44,17 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Battleaxe"
+				"Battleaxe",
+				"Censor",
+				"Corrosion",
+				"Firecracker"
 			],
 			Rare: [
 				"Furious Battleaxe",
-				"Reactive Battleaxe"
+				"Reactive Battleaxe",
+				"Staggering Censor",
+				"Fate-Sealing Corrosion",
+				"Midas's Firecracker"
 			]
 		},
 		Light: {
@@ -71,8 +77,10 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Bow"
 			],
 			Rare: [
+				"Unstoppable Bow"
 			]
 		},
 		Untyped: {

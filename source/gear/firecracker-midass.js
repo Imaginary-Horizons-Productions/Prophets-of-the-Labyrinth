@@ -1,15 +1,15 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate } = require('../classes/index.js');
 const { SAFE_DELIMITER } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Mercurial Firecracker",
-	"Strike 3 random foes for @{damage} damage matching the user's element",
+module.exports = new GearTemplate("Midas's Firecracker",
+	"Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage",
 	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Fire",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, damage, critMultiplier } = module.exports;
+		const { element, modifiers: [curse], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
@@ -17,9 +17,11 @@ module.exports = new GearTemplate("Mercurial Firecracker",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		return dealDamage(targets, user, pendingDamage, false, user.element, adventure);
+		const cursedTargetnames = getNames(addModifier(targets, curse), adventure);
+		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, cursedTargetnames, "is", "are", "afflicted with Curse of Midas.")}`;
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Firecracker", "Toxic Firecracker")
+	.setModifiers({ name: "Curse of Midas", stacks: 1 })
 	.setDurability(15)
 	.setDamage(15);

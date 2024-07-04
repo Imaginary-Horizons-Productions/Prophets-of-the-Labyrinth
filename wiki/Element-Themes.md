@@ -165,7 +165,6 @@ Archetypes:
 - Harmful
 - Healing
 - Long
-- Mercurial
 - Midas's
 - Purifying
 - Reactive

@@ -107,14 +107,13 @@ Adds Evade to the user
 Adds Stasis to target on crit
 
 **Available on**
-- Censer (Fire)
+- Corrosion (Fire)
 - Infinite Regeneration (Light)
 
 ### Flanking
 Adds Exposed to target
 
 **Available on**
-- Corrosion (Fire)
 - Life Drain (Darkness)
 - Pistol (Earth)
 
@@ -181,18 +180,12 @@ Increased modifier stacks
 - Barrier (Wind)
 - Risky Mixture (Darkness)
 
-### Mercurial
-Damage element matches user
-
-**Available on**
-- Bow (Wind)
-- Firecracker (Fire)
-
 ### Midas's
 Adds Curse of Midas to target
 
 **Available on**
 - all Midas Staves (Water)
+- Firecracker (Fire)
 
 ### Organic
 Regains durability when entering new rooms
@@ -290,6 +283,7 @@ Add Stagger to target
 
 **Available on**
 - all Morning Stars (Light)
+- Censer (Fire)
 - Stong Attack (Untyped)
 
 ### Surpassing
@@ -358,6 +352,7 @@ Deals Unblockable damage, usable while Stunned
 
 **Available on**
 - Abacus (Water)
+- Bow (Wind)
 - Lance (Earth)
 - Scythe (Darkness)
 - Warhammer (Earth)
