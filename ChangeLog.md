@@ -1,12 +1,19 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.15.0:
 After the heavy systems focus in v0.14, this update is looping back to give some love to balance and content. One major focus is adding more differences between the archetypes so that picking party composition is a more interesting decision, a step toward getting to a place where it may vary based on labyrinth choice as well.
-### Hemomancer Redesign
-Starting in this update, we're moving toward giving each Archetype a unique predict. These will be unique combinations of information, as opposed to fully unique types of information. For the Hemomancer, this means other Archetypes will be able to predcit HP and Speed individually, but no other Archetype will be able to predict both at the same time.
+### Archetypes
+Starting in this update, we're moving toward giving each Archetype a unique predict. These will be unique combinations of information, as opposed to fully unique types of information. For example, multiple different archetypes will be able to predcit HP, but only the Hemomancer will be able to predict both HP and Speed.
 
-The core of the Hemomancer is the previously extremely hard to appreciate Blood-Aegis. The Archetype is most fun when theme and gameplay focuses on the trade-offs and arcane knowledge represented by paying HP upfront to direct the flow of battle, as opposed to the relatively plain numbers exchange of Life Drain. The addition of Speed to the Hemomancer's predict will allow the player to understand which enemies are eligible to disrupt with Blood Aegis, not being able to clearly spot good uses of the Gear made it never satisfying to use. Of course, the Hemomancer will be keeping HP predicts to go with the theme of caring about (their own) HP, and in combination with Speed, this will allow Hemomancers to direct their allies to finish off enemies efficiently before those enemies can act.
+#### Detective
+- Predict: Elements & Modifiers
+- Added **Flanking Pistol**: more damage rewards for coordinating with allies
+- Added **Urgent Sabotage Kit**: priority adds a chance to get more mileage out of the debuffs
 
-Following these principles, the Hemomancer's starting gear's upgrades are being changed. Urgent Life Drain and Reactive Life Drain are changing to Hunter's Life Drain and Thirsting Life Drain to emphasize the Hemomancer finishing off foes. Also Sweeping Blood Aegis is changing to Toxic Blood Aegis; deciding which enemy to redirect is a large part of fun strategy of the gear.
+#### Hemomancer
+- Predict: HP & Speed
+- Urgent Life Drain is now **Thirsting Life Drain**: trying to finish foes off has synergy with the new predict
+- Reactive Life Drain is now **Furious Life Drain**: to reinforce HP management as Hemomancer gameplay
+- Sweeping Blood Aegis is now **Toxic Blood Aegis**: picking which foe to disrupt was important for the fun of the gear's strategy (also more Poison support)
 
 ### Artifacts
 Assigned Elements to the following artifacts. Artifacts are only available when a party member with the artifact's element is present (Untyped always available).
@@ -22,10 +29,14 @@ Assigned Elements to the following artifacts. Artifacts are only available when 
 - Peacock Charm: Gain copies + your remaining poise in protection each turn
 - Best-in-Class Hammer: Gain copies extra room actions in Workshops
 
+### Gear
+- Increased the reward on Hunter's gear to 30g per kill
+- Prideful Battleaxe is now **Furious Battleaxe**: "maintain low HP" is a more engaging ask of the player than "accept dealing Untyped damage"
+- Thick Battleaxe is now **Reactive Battleaxe**: Thick isn't very Fire-style, Reactive doubles down on acting after foes
+
 ### Other Changes
 - New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian
 - New command: `/share-seed` lets players share the seed of their completed adventure with others
-- Increased the reward on Hunter's gear to 30g per kill
 
 ## Prophets of the Labyrinth v0.14.0:
 This update has a systems focus: making damage mitigation less situational by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content and balance such as: a new final boss, the Chemist rework, adding more AoE with the Blasting gear variant, and a few new artifacts.

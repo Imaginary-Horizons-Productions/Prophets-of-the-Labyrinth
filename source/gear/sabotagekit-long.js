@@ -40,7 +40,7 @@ module.exports = new GearTemplate("Long Sabotage Kit",
 			return "But nothing happened.";
 		}
 	}
-).setSidegrades("Shattering Sabotage Kit")
+).setSidegrades("Shattering Sabotage Kit", "Urgent Sabotage Kit")
 	.setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setModifiers({ name: "Slow", stacks: 3 }, { name: "unparsed random weakness", stacks: 3 })
 	.setBonus(2) // Crit Slow and Weakness stacks

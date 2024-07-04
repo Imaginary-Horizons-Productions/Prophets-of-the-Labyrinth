@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 		return `${resultText}${addedExposed ? ` ${getNames([user], adventure)[0]} is Exposed.` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Prideful Battleaxe", "Thick Battleaxe")
+	.setSidegrades("Furious Battleaxe", "Reactive Battleaxe")
 	.setModifiers({ name: "Exposed", stacks: 1 })
 	.setDurability(15)
 	.setDamage(90)

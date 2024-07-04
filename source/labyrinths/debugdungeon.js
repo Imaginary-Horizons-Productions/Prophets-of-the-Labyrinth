@@ -24,7 +24,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Rare: [
 				"Toxic Blood Aegis",
-				"Hunter's Life Drain",
+				"Furious Life Drain",
 				"Thirsting Life Drain"
 			]
 		},
@@ -32,16 +32,23 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Pistol",
+				"Sabotage Kit"
 			],
 			Rare: [
+				"Flanking Pistol",
+				"Urgent Sabotage Kit"
 			]
 		},
 		Fire: {
 			Cursed: [
 			],
 			Common: [
+				"Battleaxe"
 			],
 			Rare: [
+				"Furious Battleaxe",
+				"Reactive Battleaxe"
 			]
 		},
 		Light: {

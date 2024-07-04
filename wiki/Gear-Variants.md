@@ -59,7 +59,7 @@ Cures a random debuff on target
 
 **Available on**
 - all Refreshing Breezes (Wind)
-- Barrier (Earth)
+- Barrier (Wind)
 - Second Wind (Untyped)
 
 ### Corrosive
@@ -73,7 +73,7 @@ Can apply to allies
 
 **Available on**
 - Bucker (Earth)
-- Barrier (Earth)
+- Barrier (Wind)
 
 ### Discounted
 Reduced base price
@@ -114,14 +114,17 @@ Adds Stasis to target on crit
 Adds Exposed to target
 
 **Available on**
-- Life Drain (Darkness)
 - Corrosion (Fire)
+- Life Drain (Darkness)
+- Pistol (Earth)
 
 ### Furious
 Increases damage proprotional to user's missing HP
 
 **Available on**
 - all Power from Wrath (Darkness)
+- Battleaxe (Fire)
+- Life Drain (Darkness)
 
 ### Guarding
 Adds protection to the target
@@ -159,7 +162,6 @@ Gain gold on kill
 - Abacus (Water)
 - Bow (Wind)
 - Certain Victory (Earth)
-- Life Drain (Darkness)
 
 ### Lethal
 Increased crit damage
@@ -176,7 +178,7 @@ Increased modifier stacks
 **Available on**
 - Cloak (Wind)
 - Sabotage Kit (Earth)
-- Barrier (Earth)
+- Barrier (Wind)
 - Risky Mixture (Darkness)
 
 ### Mercurial
@@ -206,16 +208,11 @@ Passively increases user's poise
 **Available on**
 - all Wolf Rings (Untyped)
 
-### Prideful
-Increased damage and change element to Untyped
-
-**Available on**
-- Battleaxe (Fire)
-
 ### Reactive
 Bonus damage if user moves after target
 
 **Available on**
+- Battleaxe (Fire)
 - Spear (Wind)
 - Warhammer (Earth)
 
@@ -246,6 +243,12 @@ Adds a random modifier that converts one of target's neutral elements to a weakn
 
 **Available on**
 - all Sabotage Kits (Earth)
+
+### Semi-Decimating
+5% percent max hp damage
+
+**Available on**
+- all Abacuses (Water)
 
 ### Sharpened
 Increased damage
@@ -323,8 +326,7 @@ Change target's move's target to user
 Increased durability
 
 **Available on**
-- Barrier (Earth)
-- Battleaxe (Fire)
+- Barrier (Wind)
 - Censer (Fire)
 
 ### Thirsting
@@ -366,9 +368,10 @@ Increased priority
 **Available on**
 - all Bows (Wind)
 - all Sun Flares (Light)
-- Barrier (Earth)
+- Barrier (Wind)
 - Fever Break (Darkness)
 - Herb Basket (Earth)
+- Sabotage Kit (Earth)
 
 ### Vexing
 Bonus damage if target has debuffs
@@ -394,7 +397,6 @@ Increases levels gained after battle by 1
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
 - Adds Iron Fist Stance to user (all Iron Fist Stances)
 - Double benefits from Power Up (all Lances)
-- Percent max hp damage (all Abacuses)
 - Adds Power Up to target (all Inspiration)
 - Also hits targets with Exposed (all War Cries)
 - Adds Power Up to random ally if hitting weakness (all Pistols)
