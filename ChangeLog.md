@@ -9,9 +9,18 @@ The core of the Hemomancer is the previously extremely hard to appreciate Blood-
 Following these principles, the Hemomancer's starting gear's upgrades are being changed. Urgent Life Drain and Reactive Life Drain are changing to Hunter's Life Drain and Thirsting Life Drain to emphasize the Hemomancer finishing off foes. Also Sweeping Blood Aegis is changing to Toxic Blood Aegis; deciding which enemy to redirect is a large part of fun strategy of the gear.
 
 ### Artifacts
-- Floating Multiplier (new): Increases the adventure's score by 25% per copy
-- Peacock Charm (new): Gain copies + your remaining poise in protection each turn
-- Best-in-Class Hammer (new): Gain copies extra room actions in Workshops
+Assigned Elements to the following artifacts. Artifacts are only available when a party member with the artifact's element is present (Untyped always available).
+- Fire: Best-in-Class Hammer
+- Water: Piggy Bank
+- Earth: Boat Parts
+- Wind: Hawk Tailfeather
+- Light: Hammerspace Holster
+- Darkness: Enchanted Map
+
+#### New Artifacts
+- Floating Multiplier: Increases the adventure's score by 25% per copy
+- Peacock Charm: Gain copies + your remaining poise in protection each turn
+- Best-in-Class Hammer: Gain copies extra room actions in Workshops
 
 ### Other Changes
 - New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian
