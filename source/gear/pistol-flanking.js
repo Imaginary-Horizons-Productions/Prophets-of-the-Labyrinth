@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Flanking Pistol",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Double Pistol", "Duelist's Pistol")
+	.setSidegrades("Double Pistol", "Duelist's Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 }, { name: "Exposed", stacks: 2 })
 	.setDurability(15)
 	.setDamage(40);
