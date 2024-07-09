@@ -35,6 +35,7 @@ Assigned Elements to the following artifacts. Artifacts are only available when 
 - Best-in-Class Hammer: Gain copies extra room actions in Workshops
 
 ### Gear
+- Removed starting gear from drop pool
 - Increased the reward on Hunter's gear to 30g per kill
 - Prideful Battleaxe is now **Furious Battleaxe**: "maintain low HP" is a more engaging ask of the player than "accept dealing Untyped damage"
 - Thick Battleaxe is now **Reactive Battleaxe**: Thick isn't very Fire-style, Reactive doubles down on acting after foes
