@@ -107,9 +107,9 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Censer",
 				"Corrosion",
 				"Firecracker",
+				"Infinite Regeneration",
 				"Scutum",
-				"Shortsword",
-				"War Cry"
+				"Shortsword"
 			],
 			Rare: [
 				"Furious Battleaxe",
@@ -124,15 +124,14 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Double Firecracker",
 				"Midas's Firecracker",
 				"Toxic Firecracker",
+				"Discounted Infinite Regeneration",
+				"Fate-Sealing Infinite Regeneration",
 				"Guarding Scutum",
 				"Sweeping Scutum",
 				"Vigilant Scutum",
 				"Accelerating Shortsword",
 				"Lethal Shortsword",
-				"Toxic Shortsword",
-				"Charging War Cry",
-				"Slowing War Cry",
-				"Tormenting War Cry"
+				"Toxic Shortsword"
 			]
 		},
 		Light: {
@@ -140,25 +139,22 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			],
 			Common: [
 				"Floating Mist Stance",
-				"Infinite Regeneration",
 				"Iron Fist Stance",
 				"Morning Star",
 				"Prismatic Blast",
 				"Shoulder Throw",
-				"Sun Flare"
+				"War Cry"
 			],
 			Rare: [
 				"Soothing Floating Mist Stance",
-				"Discounted Infinite Regeneration",
-				"Fate-Sealing Infinite Regeneration",
 				"Organic Iron Fist Stance",
 				"Awesome Morning Star",
 				"Bashing Morning Star",
 				"Vexing Prismatic Blast",
 				"Evasive Shoulder Throw",
-				"Evasive Sun Flare",
-				"Accelerating Sun Flare",
-				"Tormenting Sun Flare"
+				"Charging War Cry",
+				"Slowing War Cry",
+				"Tormenting War Cry"
 			]
 		},
 		Water: {

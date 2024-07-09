@@ -6,7 +6,7 @@ module.exports = new GearTemplate("War Cry",
 	"Inflict @{foeStagger} on a foe and all foes with Exposed",
 	"Stagger +@{bonus}",
 	"Technique",
-	"Fire",
+	"Light",
 	200,
 	([initialTarget], user, isCrit, adventure) => {
 		const targetSet = new Set();

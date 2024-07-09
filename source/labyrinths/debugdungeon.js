@@ -48,6 +48,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Censer",
 				"Corrosion",
 				"Firecracker",
+				"Infinite Regeneration",
 				"Shortsword"
 			],
 			Rare: [
@@ -56,6 +57,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Staggering Censer",
 				"Fate-Sealing Corrosion",
 				"Midas's Firecracker",
+				"Discounted Infinite Regeneration",
+				"Fate-Sealing Infinite Regeneration",
 				"Lethal Shortsword"
 			]
 		},
@@ -63,10 +66,14 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Shoulder Throw"
+				"Shoulder Throw",
+				"War Cry"
 			],
 			Rare: [
-				"Evasive Shoulder Throw"
+				"Evasive Shoulder Throw",
+				"Charging War Cry",
+				"Slowing War Cry",
+				"Tormenting War Cry"
 			]
 		},
 		Water: {

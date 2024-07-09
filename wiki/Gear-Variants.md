@@ -11,7 +11,6 @@ Adds Quicken to the user
 - Lance (Earth)
 - Midas Staff (Water)
 - Shortsword (Fire)
-- Sun Flare (Light)
 
 ### Accurate
 Passively increases the user's Crit Rate
@@ -53,7 +52,7 @@ Adds Power Up to the user
 - all Bucklers (Earth)
 - all Certain Victory (Earth)
 - Blood Aegis (Darkness)
-- War Cry (Fire)
+- War Cry (Light)
 
 ### Cleansing
 Cures a random debuff on target
@@ -88,7 +87,7 @@ Can apply to allies
 Reduced base price
 
 **Available on**
-- Infinite Regeneration (Light)
+- Infinite Regeneration (Fire)
 - Midas Staff (Water)
 
 ### Double
@@ -111,14 +110,13 @@ Adds Evade to the user
 - all Cloaks (Wind)
 - Bow (Wind)
 - Shoulder Throw (Light)
-- Sun Flare (Light)
 
 ### Fate-Sealing
 Adds Stasis to target on crit
 
 **Available on**
 - Corrosion (Fire)
-- Infinite Regeneration (Light)
+- Infinite Regeneration (Fire)
 
 ### Flanking
 Adds Exposed to target
@@ -278,14 +276,14 @@ Adds Slow to target
 **Available on**
 - all Ice Bolts (Water)
 - Daggers (Wind)
-- War Cry (Fire)
+- War Cry (Light)
 - Warhammer (Earth)
 
 ### Soothing
 Adds Regen to target
 
 **Available on**
-- all Infinite Regenerations (Light)
+- all Infinite Regenerations (Fire)
 - Floating Mist Stance (Light)
 - Medicine (Water)
 - Midas Staff (Water)
@@ -348,8 +346,7 @@ Increment a stack on all target's debuffs
 
 **Available on**
 - Censer (Fire)
-- Sun Flare (Light)
-- War Cry (Fire)
+- War Cry (Light)
 
 ### Toxic
 Adds Poison to target

@@ -7,7 +7,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 	"Inflict @{foeStagger} and duplicate debuffs on a foe and all foes with Exposed",
 	"Stagger +@{bonus}",
 	"Technique",
-	"Fire",
+	"Light",
 	350,
 	([initialTarget], user, isCrit, adventure) => {
 		const targetSet = new Set();

@@ -6,7 +6,7 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	"Pay @{hpCost} hp to grant an ally @{mod0Stacks} @{mod0}",
 	"HP Cost / @{critMultiplier} and grant @{mod1Stacks} @{mod1}",
 	"Pact",
-	"Light",
+	"Fire",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [regen, stasis], hpCost, critMultiplier } = module.exports;
@@ -17,10 +17,17 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 		let stasisedTargets = [];
 		if (isCrit) {
 			pendingHPCost /= critMultiplier;
-			stasisedTargets.concat(addModifier(targets, stasis)).length > 0;
+			stasisedTargets = addModifier(targets, stasis);
 		}
+		const resultSentences = [payHP(user, pendingHPCost, adventure)];
 		const regenedTargets = addModifier(targets, regen);
-		return `${payHP(user, pendingHPCost, adventure)}${regenedTargets.length > 0 ? ` ${joinAsStatement(false, regenedTargets, "gains", "gain", "Regen.")}` : ""}${stasisedTargets.length > 0 ? ` ${joinAsStatement(false, stasisedTargets, "enters", "enter", "Stasis.")}` : ""}`;
+		if (regenedTargets.length > 0) {
+			resultSentences.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", "Regen."));
+		}
+		if (stasisedTargets.length > 0) {
+			resultSentences.push(joinAsStatement(false, getNames(stasisedTargets, adventure), "enters", "enter", "Stasis."));
+		}
+		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Discounted Infinite Regeneration")

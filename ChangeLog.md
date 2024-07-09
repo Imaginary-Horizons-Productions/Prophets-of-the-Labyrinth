@@ -44,6 +44,8 @@ Assigned Elements to the following artifacts. Artifacts are only available when 
 - Increased Curse of Midas applied by **Midas Staves** to 2: 2 targeted stacks keeps this competitive with Midas's Firecracker's 3 untargeted stacks
 - Added **Shoulder Throw**: Light Technique, redirects a foe into targeting themself
 - Added upgrades: **Evasive Shoulder Throw**, **Lethal Shortsword**, **Sabotaging Cauldron Stir**, **Corrosive Cauldron Stir**, **Bouncing Medicine**, **Cleansing Medicine**, **Soothing Medicine**
+- Removed **Sun Flares**: priority + stagger doesn't make sense now that stun doesn't interact with speed anymore
+- **War Cries** are now Light, **Infinite Regenerations** are now Fire: Exposed is more Light synergy (speed), Regen is more Fire (heal over time)
 
 ### Other Changes
 - New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian

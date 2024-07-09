@@ -81,7 +81,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Common: [
 				"Battleaxe",
 				"Firecracker",
-				"War Cry"
+				"Infinite Regeneration"
 			],
 			Rare: [
 				"Furious Battleaxe",
@@ -90,31 +90,27 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Double Firecracker",
 				"Midas's Firecracker",
 				"Toxic Firecracker",
-				"Charging War Cry",
-				"Slowing War Cry",
-				"Tormenting War Cry"
+				"Discounted Infinite Regeneration",
+				"Fate-Sealing Infinite Regeneration"
 			]
 		},
 		Light: {
 			Cursed: [
 			],
 			Common: [
-				"Infinite Regeneration",
 				"Morning Star",
 				"Prismatic Blast",
 				"Shoulder Throw",
-				"Sun Flare"
+				"War Cry"
 			],
 			Rare: [
-				"Discounted Infinite Regeneration",
-				"Fate-Sealing Infinite Regeneration",
 				"Awesome Morning Star",
 				"Bashing Morning Star",
 				"Vexing Prismatic Blast",
 				"Evasive Shoulder Throw",
-				"Evasive Sun Flare",
-				"Accelerating Sun Flare",
-				"Tormenting Sun Flare"
+				"Charging War Cry",
+				"Slowing War Cry",
+				"Tormenting War Cry"
 			]
 		},
 		Water: {
