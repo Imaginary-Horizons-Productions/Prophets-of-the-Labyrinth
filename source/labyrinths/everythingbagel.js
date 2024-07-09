@@ -143,6 +143,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Iron Fist Stance",
 				"Morning Star",
 				"Prismatic Blast",
+				"Shoulder Throw",
 				"Sun Flare"
 			],
 			Rare: [
@@ -153,6 +154,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Awesome Morning Star",
 				"Bashing Morning Star",
 				"Vexing Prismatic Blast",
+				"Evasive Shoulder Throw",
 				"Evasive Sun Flare",
 				"Accelerating Sun Flare",
 				"Tormenting Sun Flare"

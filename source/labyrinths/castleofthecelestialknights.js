@@ -143,6 +143,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Iron Fist Stance",
 				"Morning Star",
 				"Prismatic Blast",
+				"Shoulder Throw",
 				"Sun Flare"
 			],
 			Rare: [
@@ -153,6 +154,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Awesome Morning Star",
 				"Bashing Morning Star",
 				"Vexing Prismatic Blast",
+				"Evasive Shoulder Throw",
 				"Evasive Sun Flare",
 				"Accelerating Sun Flare",
 				"Tormenting Sun Flare"

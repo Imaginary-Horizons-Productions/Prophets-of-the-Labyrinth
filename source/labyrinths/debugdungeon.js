@@ -61,8 +61,10 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Shoulder Throw"
 			],
 			Rare: [
+				"Evasive Shoulder Throw"
 			]
 		},
 		Water: {

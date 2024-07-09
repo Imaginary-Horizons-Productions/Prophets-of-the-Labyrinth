@@ -62,6 +62,12 @@ Cures a random debuff on target
 - Barrier (Wind)
 - Second Wind (Untyped)
 
+### Confusing
+Change target's target to itself
+
+**Available on**
+- all Shoulder Throws (Light)
+
 ### Corrosive
 Adds Power Down to target
 
@@ -101,6 +107,7 @@ Adds Evade to the user
 **Available on**
 - all Cloaks (Wind)
 - Bow (Wind)
+- Shoulder Throw (Light)
 - Sun Flare (Light)
 
 ### Fate-Sealing

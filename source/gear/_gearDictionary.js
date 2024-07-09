@@ -131,6 +131,8 @@ for (const file of [
 	"shortsword-accelerating.js",
 	"shortsword-base.js",
 	"shortsword-toxic.js",
+	"shoulderthrow-base.js",
+	"shoulderthrow-evasive.js",
 	"spear-base.js",
 	"spear-lethal.js",
 	"spear-reactive.js",
