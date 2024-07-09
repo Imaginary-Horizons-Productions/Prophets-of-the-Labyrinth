@@ -44,6 +44,7 @@ Hits 3 random targets (from a beneficial team)
 
 **Available on**
 - all Firecrackers (Fire)
+- Medicine (Water)
 
 ### Charging
 Adds Power Up to the user
@@ -60,6 +61,7 @@ Cures a random debuff on target
 **Available on**
 - all Refreshing Breezes (Wind)
 - Barrier (Wind)
+- Medicine (Water)
 - Second Wind (Untyped)
 
 ### Confusing
@@ -73,6 +75,7 @@ Adds Power Down to target
 
 **Available on**
 - all Corrosions (Fire)
+- Cauldron Stir (Water)
 
 ### Devoted
 Can apply to allies
@@ -176,6 +179,7 @@ Increased crit damage
 - all Daggers (Wind)
 - Certain Victory (Earth)
 - Scythe (Darkness)
+- Shortsword (Fire)
 - Spear (Wind)
 
 ### Long
@@ -243,6 +247,7 @@ Adds a random modifier that converts one of target's neutral elements to a weakn
 
 **Available on**
 - all Sabotage Kits (Earth)
+- Cauldron Stir (Water)
 
 ### Semi-Decimating
 5% percent max hp damage
@@ -282,6 +287,7 @@ Adds Regen to target
 **Available on**
 - all Infinite Regenerations (Light)
 - Floating Mist Stance (Light)
+- Medicine (Water)
 - Midas Staff (Water)
 - Second Wind (Untyped)
 

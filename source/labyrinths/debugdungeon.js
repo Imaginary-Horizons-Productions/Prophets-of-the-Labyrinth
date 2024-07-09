@@ -47,14 +47,16 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Battleaxe",
 				"Censer",
 				"Corrosion",
-				"Firecracker"
+				"Firecracker",
+				"Shortsword"
 			],
 			Rare: [
 				"Furious Battleaxe",
 				"Reactive Battleaxe",
 				"Staggering Censer",
 				"Fate-Sealing Corrosion",
-				"Midas's Firecracker"
+				"Midas's Firecracker",
+				"Lethal Shortsword"
 			]
 		},
 		Light: {
@@ -71,8 +73,15 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Cauldron Stir",
+				"Medicine"
 			],
 			Rare: [
+				"Corrosive Cauldron Stir",
+				"Sabotaging Cauldron Stir",
+				"Bouncing Medicine",
+				"Cleansing Medicine",
+				"Soothing Medicine"
 			]
 		},
 		Wind: {

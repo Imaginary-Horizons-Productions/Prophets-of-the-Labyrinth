@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, getNames, addModifier } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 const rollablePotions = [
 	"Protection Potion",
@@ -14,14 +15,14 @@ const rollablePotions = [
 	"Windy Potion"
 ];
 
-module.exports = new GearTemplate("Cauldron Stir",
-	"Strike a foe for @{damage} @{element} damage",
+module.exports = new GearTemplate("Corrosive Cauldron Stir",
+	"Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on a foe",
 	"Add a random potion to loot",
 	"Weapon",
 	"Water",
-	200,
+	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, damage } = module.exports;
+		const { element, damage, modifiers: [powerdown] } = module.exports;
 		const pendingDamage = damage + user.getPower();
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
@@ -32,9 +33,16 @@ module.exports = new GearTemplate("Cauldron Stir",
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
 			resultSentences.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
 		}
+
+		const poweredDownTargets = addModifier(targets, powerdown);
+		if (poweredDownTargets.length > 0) {
+			resultSentences.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
+		}
+
 		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Corrosive Cauldron Stir", "Toxic Cauldron Stir", "Sabotaging Cauldron Stir")
+	.setSidegrades("Sabotaging Cauldron Stir", "Toxic Cauldron Stir")
+	.setModifiers({ name: "Power Down", stacks: 10 })
 	.setDurability(15)
 	.setDamage(40);

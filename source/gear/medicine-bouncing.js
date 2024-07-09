@@ -1,13 +1,14 @@
 const { GearTemplate } = require('../classes');
+const { SAFE_DELIMITER } = require('../constants');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
-module.exports = new GearTemplate("Medicine",
-	"Grant an ally @{mod0Stacks} @{mod0}",
+module.exports = new GearTemplate("Bouncing Medicine",
+	"Grant 3 random allies @{mod0Stacks} @{mod0}",
 	"@{mod0} x@{critMultiplier}",
 	"Trinket",
 	"Water",
-	200,
+	350,
 	(targets, user, isCrit, adventure) => {
 		const { modifiers: [regen], critMultiplier, element } = module.exports;
 		const pendingRegen = { ...regen };
@@ -24,7 +25,7 @@ module.exports = new GearTemplate("Medicine",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
-	.setUpgrades("Bouncing Medicine", "Cleansing Medicine", "Soothing Medicine")
+).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "ally", needsLivingTargets: true })
+	.setSidegrades("Cleansing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
 	.setDurability(15);

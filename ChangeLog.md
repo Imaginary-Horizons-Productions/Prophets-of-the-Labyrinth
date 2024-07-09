@@ -41,9 +41,9 @@ Assigned Elements to the following artifacts. Artifacts are only available when 
 - Thick Battleaxe is now **Reactive Battleaxe**: Thick isn't very Fire-style, Reactive doubles down on acting after foes
 - Mercurial Bow is now **Unstoppable Bow**: Mercurial was too confusing for the edge it provided
 - Mercurial Firecracker is now **Midas's Firecracker**: Mercurial was too confusing for the edge it provided
-- Increased Curse of Midas applied by Midas Staves to 2: 2 targeted stacks keeps this competitive with Midas's Firecracker's 3 untargeted stacks
+- Increased Curse of Midas applied by **Midas Staves** to 2: 2 targeted stacks keeps this competitive with Midas's Firecracker's 3 untargeted stacks
 - Added **Shoulder Throw**: Light Technique, redirects a foe into targeting themself
-- Added **Evasive Shoulder Throw**
+- Added upgrades: **Evasive Shoulder Throw**, **Lethal Shortsword**, **Sabotaging Cauldron Stir**, **Corrosive Cauldron Stir**, **Bouncing Medicine**, **Cleansing Medicine**, **Soothing Medicine**
 
 ### Other Changes
 - New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian

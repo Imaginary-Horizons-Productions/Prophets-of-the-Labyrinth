@@ -2,12 +2,12 @@ const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
-module.exports = new GearTemplate("Medicine",
+module.exports = new GearTemplate("Soothing Medicine",
 	"Grant an ally @{mod0Stacks} @{mod0}",
 	"@{mod0} x@{critMultiplier}",
 	"Trinket",
 	"Water",
-	200,
+	350,
 	(targets, user, isCrit, adventure) => {
 		const { modifiers: [regen], critMultiplier, element } = module.exports;
 		const pendingRegen = { ...regen };
@@ -25,6 +25,6 @@ module.exports = new GearTemplate("Medicine",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
-	.setUpgrades("Bouncing Medicine", "Cleansing Medicine", "Soothing Medicine")
-	.setModifiers({ name: "Regen", stacks: 3 })
+	.setSidegrades("Bouncing Medicine", "Cleansing Medicine")
+	.setModifiers({ name: "Regen", stacks: 5 })
 	.setDurability(15);

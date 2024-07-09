@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 		const { element, modifiers: [exposed], damage, critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
-		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === adventure.getCombatantIndex(target));
+		const targetMove = adventure.room.moves.find(move => move.userReference.team === targets[0].team && move.userReference.index === adventure.getCombatantIndex(targets[0]));
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
 			pendingDamage += bonus;

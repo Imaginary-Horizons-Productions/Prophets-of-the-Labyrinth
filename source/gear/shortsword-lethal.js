@@ -1,13 +1,13 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
-module.exports = new GearTemplate("Shortsword",
+module.exports = new GearTemplate("Lethal Shortsword",
 	"Strike a foe for @{damage} @{element} damage, then apply @{mod0Stacks} @{mod0} to both the foe and yourself",
 	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Fire",
-	200,
+	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [exposed], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
@@ -29,7 +29,8 @@ module.exports = new GearTemplate("Shortsword",
 		return resultText;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Accelerating Shortsword", "Lethal Shortsword", "Toxic Shortsword")
+	.setSidegrades("Accelerating Shortsword", "Toxic Shortsword")
 	.setModifiers({ name: "Exposed", stacks: 1 })
 	.setDurability(15)
-	.setDamage(40);
+	.setDamage(40)
+	.setCritMultiplier(3);
