@@ -45,14 +45,14 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Common: [
 				"Battleaxe",
-				"Censor",
+				"Censer",
 				"Corrosion",
 				"Firecracker"
 			],
 			Rare: [
 				"Furious Battleaxe",
 				"Reactive Battleaxe",
-				"Staggering Censor",
+				"Staggering Censer",
 				"Fate-Sealing Corrosion",
 				"Midas's Firecracker"
 			]
