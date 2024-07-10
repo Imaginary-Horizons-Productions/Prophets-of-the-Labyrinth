@@ -45,7 +45,9 @@ Assigned Elements to the following artifacts. Artifacts are only available when 
 - Added **Shoulder Throw**: Light Technique, redirects a foe into targeting themself
 - Added upgrades: **Evasive Shoulder Throw**, **Lethal Shortsword**, **Sabotaging Cauldron Stir**, **Corrosive Cauldron Stir**, **Bouncing Medicine**, **Cleansing Medicine**, **Soothing Medicine**
 - Removed **Sun Flares**: priority + stagger doesn't make sense now that stun doesn't interact with speed anymore
-- **War Cries** are now Light, **Infinite Regenerations** are now Fire: Exposed is more Light synergy (speed), Regen is more Fire (heal over time)
+- **War Cries** are now Light: Exposed is more Light synergy (speed)
+- **Infinite Regenerations** are now Fire: Regen is more Fire (heal over time)
+- **Spears** are now Earth: Stagger is more Earth than Wind
 
 ### Other Changes
 - New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian

@@ -33,11 +33,15 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Common: [
 				"Pistol",
-				"Sabotage Kit"
+				"Sabotage Kit",
+				"Spear"
 			],
 			Rare: [
 				"Flanking Pistol",
-				"Urgent Sabotage Kit"
+				"Urgent Sabotage Kit",
+				"Lethal Spear",
+				"Reactive Spear",
+				"Sweeping Spear",
 			]
 		},
 		Fire: {

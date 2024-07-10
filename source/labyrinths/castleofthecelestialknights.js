@@ -61,6 +61,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Common: [
 				"Certain Victory",
 				"Herb Basket",
+				"Spear",
 				"Warhammer"
 			],
 			Rare: [
@@ -70,6 +71,9 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Organic Herb Basket",
 				"Reinforced Herb Basket",
 				"Urgent Herb Basket",
+				"Lethal Spear",
+				"Reactive Spear",
+				"Sweeping Spear",
 				"Reactive Warhammer",
 				"Slowing Warhammer",
 				"Unstoppable Warhammer",
@@ -141,7 +145,6 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Barrier",
 				"Bow",
 				"Inspiration",
-				"Spear",
 				"Refreshing Breeze"
 			],
 			Rare: [
@@ -154,9 +157,6 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Guarding Inspiration",
 				"Soothing Inspiration",
 				"Sweeping Inspiration",
-				"Lethal Spear",
-				"Reactive Spear",
-				"Sweeping Spear",
 			]
 		},
 		Untyped: {

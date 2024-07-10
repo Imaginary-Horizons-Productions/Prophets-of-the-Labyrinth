@@ -61,6 +61,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			Common: [
 				"Certain Victory",
 				"Herb Basket",
+				"Spear",
 				"Warhammer"
 			],
 			Rare: [
@@ -70,6 +71,9 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Organic Herb Basket",
 				"Reinforced Herb Basket",
 				"Urgent Herb Basket",
+				"Lethal Spear",
+				"Reactive Spear",
+				"Sweeping Spear",
 				"Reactive Warhammer",
 				"Slowing Warhammer",
 				"Unstoppable Warhammer",
@@ -139,7 +143,6 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Barrier",
 				"Bow",
 				"Inspiration",
-				"Spear",
 				"Refreshing Breeze"
 			],
 			Rare: [
@@ -152,9 +155,6 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Guarding Inspiration",
 				"Soothing Inspiration",
 				"Sweeping Inspiration",
-				"Lethal Spear",
-				"Reactive Spear",
-				"Sweeping Spear",
 			]
 		},
 		Untyped: {

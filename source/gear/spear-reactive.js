@@ -5,7 +5,7 @@ module.exports = new GearTemplate("Reactive Spear",
 	"Strike a foe for @{damage} (+@{bonus} if after foe) @{element} damage",
 	"Also inflict @{foeStagger}",
 	"Weapon",
-	"Wind",
+	"Earth",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, stagger, damage, bonus } = module.exports;
