@@ -493,6 +493,13 @@ function resolveMove(move, adventure) {
 			const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
 			moveText += `. ${resultText}${move.type === "gear" && move.userReference.team === "delver" ? decrementDurability(move.name, user, adventure) : ""}`;
 		}
+
+		const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
+		if (insigniaCount > 0 && user.team === "delver" && move.isCrit) {
+			const insigniaHealing = insigniaCount * 15;
+			moveText += ` ${gainHealth(user, insigniaHealing, adventure)}`;
+			adventure.updateArtifactStat("Health Restored", insigniaHealing);
+		}
 	} else {
 		moveText = `💫 ${moveText} is Stunned!`;
 	}
@@ -505,12 +512,6 @@ function resolveMove(move, adventure) {
 		if (regenStacks) {
 			moveText += ` ${gainHealth(user, regenStacks * 10, adventure)}`;
 		}
-	}
-	const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
-	if (insigniaCount > 0 && user.team === "delver" && move.isCrit) {
-		const insigniaHealing = insigniaCount * 15;
-		moveText += ` ${gainHealth(user, insigniaHealing, adventure)}`;
-		adventure.updateArtifactStat("Health Restored", insigniaHealing);
 	}
 	return `${moveText}\n`;
 }

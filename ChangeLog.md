@@ -34,6 +34,9 @@ Assigned Elements to the following artifacts. Artifacts are only available when 
 - Peacock Charm: Gain copies + your remaining poise in protection each turn
 - Best-in-Class Hammer: Gain copies extra room actions in Workshops
 
+#### Fixes
+- Fixed Celestial Knight Insiginia triggering on turns the player is stunned
+
 ### Gear
 - Removed starting gear from drop pool
 - Increased the reward on Hunter's gear to 30g per kill
