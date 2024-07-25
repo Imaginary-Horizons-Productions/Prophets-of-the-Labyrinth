@@ -3,6 +3,7 @@ const { dealDamage, addModifier, changeStagger, getNames } = require("../util/co
 const { selectRandomFoe, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
+const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 
 module.exports = new EnemyTemplate("Mechabee Soldier",
 	"Earth",
@@ -15,7 +16,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 ).addAction({
 	name: "Sting",
 	element: "Earth",
-	description: `Inflict minor ${getEmoji("Earth")} damage and Poison on a single foe`,
+	description: `Inflict minor ${getEmoji("Earth")} damage and ${getModifierEmoji("Poison")} on a single foe`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 10;

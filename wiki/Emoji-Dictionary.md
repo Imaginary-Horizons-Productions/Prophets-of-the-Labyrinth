@@ -22,3 +22,8 @@ Here is a list of reserved emoji and their meanings:
 * ⚕️ Lives
 * ❤️ HP
 * 💰 Gold
+
+## Modifier Emoji Convention
+### Debuffs
+- Background color: #D00257
+- Shape: alt-square (square with corner facing up)

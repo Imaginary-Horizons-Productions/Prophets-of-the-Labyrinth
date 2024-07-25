@@ -67,6 +67,11 @@ function getModifierDescription(modifierName, bearer, adventure) {
 }
 
 /** @param {string} modifierName */
+function getModifierEmoji(modifierName) {
+	return MODIFIERS[modifierName].emoji;
+}
+
+/** @param {string} modifierName */
 function getTurnDecrement(modifierName) {
 	return MODIFIERS[modifierName].turnDecrement;
 }
@@ -88,6 +93,7 @@ function getInverse(modifierName) {
 
 module.exports = {
 	getModifierDescription,
+	getModifierEmoji,
 	getTurnDecrement,
 	isBuff,
 	isDebuff,

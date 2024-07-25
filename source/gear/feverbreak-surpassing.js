@@ -1,9 +1,10 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, removeModifier, changeStagger } = require('../util/combatantUtil');
 const { SURPASSING_VALUE } = require('../constants');
+const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
 
 module.exports = new GearTemplate("Surpassing Fever Break",
-	"Deals @{element} damage to a foe, equal to damage that is pending from any Poison and Frail on them, and then removes those debuffs. Also, increase your damage cap by @{bonus}",
+	`Deals @{element} damage to a foe, equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs. Also, increase your damage cap by @{bonus}`,
 	"Poison and Frail not removed",
 	"Spell",
 	"Darkness",

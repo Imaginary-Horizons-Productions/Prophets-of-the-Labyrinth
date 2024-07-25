@@ -1,4 +1,5 @@
 const { BuildError, GearTemplate, Gear, Delver } = require("../classes");
+const { getModifierEmoji } = require("../modifiers/_modifierDictionary");
 const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
@@ -253,7 +254,8 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			.replace(/@{poise}/g, getGearProperty(gearName, "poise"))
 			.replace(/@{extraStagger}/g, `${stagger} Stagger`);
 		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
-			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifier.name)
+			const modifierEmoji = getModifierEmoji(modifier.name);
+			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji ?? modifier.name)
 				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		})
 		return description;

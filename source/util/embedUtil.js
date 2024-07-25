@@ -9,7 +9,7 @@ const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
+const { isBuff, isDebuff, getModifierEmoji } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
@@ -404,9 +404,14 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 			} else {
 				style = ButtonStyle.Secondary;
 			}
-			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
+			const modifierButton = new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
 				.setLabel(`${modifierName} x ${delver.modifiers[modifierName]}`)
-				.setStyle(style))
+				.setStyle(style);
+			const modifierEmoji = getModifierEmoji(modifierName);
+			if (modifierEmoji) {
+				modifierButton.setEmoji(modifierEmoji);
+			}
+			actionRow.push(modifierButton);
 		}
 		if (modifiers.length > 4) {
 			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}MORE`)

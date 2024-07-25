@@ -1,9 +1,10 @@
 const { GearTemplate } = require('../classes');
+const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
 const { dealDamage, removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Fever Break",
-	"Deals @{element} damage to a foe, equal to damage that is pending from any Poison and Frail on them, and then removes those debuffs",
+	`Deals @{element} damage to a foe, equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs`,
 	"Poison and Frail not removed",
 	"Spell",
 	"Darkness",

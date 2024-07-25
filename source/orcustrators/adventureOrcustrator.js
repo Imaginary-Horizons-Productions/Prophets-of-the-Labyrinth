@@ -402,7 +402,7 @@ function newRound(adventure, thread, lastRoundText) {
 	 */
 	function calculateCritThreshold(thresholdMax, baseCritChance, critBoosts) {
 		const virtualRolls = 1 + Math.abs(critBoosts);
-		if (luckyStacks > -1) {
+		if (critBoosts > -1) {
 			return thresholdMax * sumGeometricSeries(baseCritChance, 1 - baseCritChance, virtualRolls);
 		} else {
 			// Design note: Extra factor of 2 because exponential nature scales Unlucky too fast

@@ -1,4 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
+const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
@@ -101,7 +102,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 }).addAction({
 	name: "V.E.N.O.Missile",
 	element: "Untyped",
-	description: "Inflict Poison on a single foe",
+	description: `Inflict ${getModifierEmoji("Poison")} on a single foe`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger(targets, "elementMatchFoe");
