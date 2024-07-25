@@ -342,12 +342,16 @@ function newRound(adventure, thread, lastRoundText) {
 				const baseCritChance = combatant.getCritRate() / 100;
 				const max = RN_TABLE_BASE ** 2;
 				let threshold;
+				const luckyStacks = combatant.getModifierStacks("Lucky") - combatant.getModifierStacks("Unlucky");
 				if (combatant.team === "delver") {
 					const featherCount = adventure.getArtifactCount("Hawk Tailfeather");
-					threshold = max * sumGeometricSeries(baseCritChance, 1 - baseCritChance, 1 + featherCount);
-					adventure.updateArtifactStat("Hawk Tailfeather", "Expected Extra Critical Hits", (threshold / max) - baseCritChance);
-				} else {
-					threshold = max * baseCritChance;
+					if (featherCount > 0) {
+						threshold = calculateCritThreshold(max, baseCritChance, luckyStacks + featherCount);
+						adventure.updateArtifactStat("Hawk Tailfeather", "Expected Extra Critical Hits", (threshold / max) - baseCritChance);
+					}
+				}
+				if (threshold === undefined) {
+					threshold = calculateCritThreshold(max, baseCritChance, luckyStacks);
 				}
 				const critRoll = adventure.generateRandomNumber(max, "battle");
 				combatant.crit = critRoll < threshold;
@@ -389,6 +393,21 @@ function newRound(adventure, thread, lastRoundText) {
 					addModifier([combatant], { name: "Evade", stacks: floatingMistStacks * 2 });
 				}
 			})
+	}
+
+	/**
+	 * @param {number} thresholdMax
+	 * @param {number} baseCritChance
+	 * @param {number} critBoosts
+	 */
+	function calculateCritThreshold(thresholdMax, baseCritChance, critBoosts) {
+		const virtualRolls = 1 + Math.abs(critBoosts);
+		if (luckyStacks > -1) {
+			return thresholdMax * sumGeometricSeries(baseCritChance, 1 - baseCritChance, virtualRolls);
+		} else {
+			// Design note: Extra factor of 2 because exponential nature scales Unlucky too fast
+			return 2 * thresholdMax * (sumGeometricSeries(baseCritChance, 1 - baseCritChance, virtualRolls) ** virtualRolls);
+		}
 	}
 
 	thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
