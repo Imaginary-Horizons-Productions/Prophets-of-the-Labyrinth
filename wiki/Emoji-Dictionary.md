@@ -24,6 +24,10 @@ Here is a list of reserved emoji and their meanings:
 * 💰 Gold
 
 ## Modifier Emoji Convention
+### Buffs
+- Background color: #48BAFF
+- Background shape: circle
+
 ### Debuffs
 - Background color: #D00257
-- Shape: alt-square (square with corner facing up)
+- Background shape: alt-square (square with corner facing up)
