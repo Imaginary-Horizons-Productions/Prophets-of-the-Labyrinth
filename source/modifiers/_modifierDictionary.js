@@ -12,6 +12,7 @@ for (const file of [
 	"absorb-untyped.js",
 	"absorb-water.js",
 	"absorb-wind.js",
+	"agility.js",
 	"boring.js",
 	"curse-of-midas.js",
 	"evade.js",

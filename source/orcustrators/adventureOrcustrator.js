@@ -638,7 +638,13 @@ function endRound(adventure, thread) {
 				}
 			}
 		} else {
-			changeStagger([combatant], combatant.getModifierStacks("Paralysis") > 0 ? 1 : -1);
+			let staggerChange = -1;
+			if (combatant.getModifierStacks("Paralysis") > 0) {
+				staggerChange = 1;
+			} else if (combatant.getModifierStacks("Agility") > 0) {
+				staggerChange = -2;
+			}
+			changeStagger([combatant], staggerChange);
 		}
 
 		// Decrement Modifiers

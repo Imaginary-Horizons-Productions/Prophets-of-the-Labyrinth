@@ -55,6 +55,8 @@ Assigned Elements to the following artifacts. Artifacts are only available when 
 ### Other Changes
 - New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian
 - New command: `/share-seed` lets players share the seed of their completed adventure with others
+- New modifier: Agility - this inverse of Paralysis is a buff that allows the bearer to shrug off 2 Stagger per turn
+- Mechabee Barrel Rolls now add Agility to user on crit instead of more Evade
 
 ## Prophets of the Labyrinth v0.14.0:
 This update has a systems focus: making damage mitigation less situational by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content and balance such as: a new final boss, the Chemist rework, adding more AoE with the Blasting gear variant, and a few new artifacts.
