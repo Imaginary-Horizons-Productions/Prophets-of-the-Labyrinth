@@ -2,7 +2,7 @@ const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
+const { joinAsStatement, listifyEN } = require("../util/textUtil.js");
 const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 
 module.exports = new EnemyTemplate("Mechabee Soldier",
@@ -30,17 +30,23 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 }).addAction({
 	name: "Barrel Roll",
 	element: "Untyped",
-	description: "Gain Evade",
+	description: "Gain Evade, gain Agility on Critical Hit",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		let stacks = 2;
-		if (isCrit) {
-			stacks *= 3;
-		}
-		const addedEvade = addModifier([user], { name: "Evade", stacks }).length > 0;
-		changeStagger([user], "elementMatchAlly");
+		const addedModifiers = [];
+		const addedEvade = addModifier([user], { name: "Evade", stacks: 2 }).length > 0;
 		if (addedEvade) {
-			return "It's prepared to Evade.";
+			addedModifiers.push("Evade");
+		}
+		if (isCrit) {
+			const addedAgility = addModifier([user], { name: "Agility", stacks: 1 }).length > 0;
+			if (addedAgility) {
+				addedModifiers.push("Agility");
+			}
+		}
+		changeStagger([user], "elementMatchAlly");
+		if (addedModifiers.length > 0) {
+			return `It gains ${listifyEN(addedModifiers, false)}.`;
 		} else {
 			return "But nothing happened.";
 		}
