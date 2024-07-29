@@ -69,6 +69,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Common: [
 				"Buckler",
 				"Certain Victory",
+				"Goad Futility",
 				"Herb Basket",
 				"Lance",
 				"Pistol",

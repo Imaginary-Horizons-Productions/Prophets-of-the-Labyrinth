@@ -72,6 +72,7 @@ for (const file of [
 	"firecracker-toxic.js",
 	"floatingmiststance-base.js",
 	"floatingmiststance-soothing.js",
+	"goadfutility-base.js",
 	"herbbasket-base.js",
 	"herbbasket-organic.js",
 	"herbbasket-reinforced.js",

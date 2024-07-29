@@ -32,6 +32,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Goad Futility",
 				"Pistol",
 				"Sabotage Kit",
 				"Spear"
