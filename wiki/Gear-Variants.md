@@ -189,6 +189,12 @@ Increased modifier stacks
 - Barrier (Wind)
 - Risky Mixture (Darkness)
 
+### Lucky
+Add Lucky to the user
+
+**Available on**
+- Scutum (Fire)
+
 ### Midas's
 Adds Curse of Midas to target
 
@@ -390,7 +396,6 @@ Adds Vigilance to user
 
 **Available on**
 - all Barriers (Wind)
-- Scutum (Fire)
 
 ### Wise
 Increases levels gained after battle by 1

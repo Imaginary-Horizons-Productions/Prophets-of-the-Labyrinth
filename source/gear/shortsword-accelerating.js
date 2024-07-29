@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
+		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const selfModifiers = [];
 		const addedExposedUser = addModifier([user], exposed).length > 0;
 		if (addedExposedUser) {
