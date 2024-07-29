@@ -20,6 +20,11 @@ Starting in this update, we're moving toward giving each Archetype a unique pred
 - Fate-Sealing Censor is now **Staggering Censor**: adding a little more Stun potential to the Ritualist's new predict
 - Flanking Corrosion is now **Fate-Sealing Corrosion**: getting debuffs to stick is still an important Ritualist niche, and Ritualist doesn't necessarily have the speed information needed to cash in on Flanking
 
+#### Legionnaire
+- Predict: Critical Hits & Enemy Targets
+- Vigilant Scutum is now **Lucky Scutum**: Vigilance now applies to Evade instead of protection
+- Fixed a crash in **Accelerating Shortsword**
+
 ### Artifacts
 Assigned Elements to the following artifacts. Artifacts are only available when a party member with the artifact's element is present (Untyped always available).
 - Fire: Best-in-Class Hammer
