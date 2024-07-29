@@ -355,6 +355,8 @@ function newRound(adventure, thread, lastRoundText) {
 				}
 				const critRoll = adventure.generateRandomNumber(max, "battle");
 				combatant.crit = critRoll < threshold;
+				removeModifier([combatant], { name: "Lucky", stacks: 1, force: true });
+				removeModifier([combatant], { name: "Unlucky", stacks: 1, force: true });
 
 				// Roll Enemy Moves
 				if (teamName === "enemy") {
