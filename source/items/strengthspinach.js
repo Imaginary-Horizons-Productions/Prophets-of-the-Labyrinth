@@ -16,4 +16,4 @@ module.exports = new ItemTemplate("Strength Spinach",
 			return "But nothing happened.";
 		}
 	}
-).setFlavorText([{ name: "*Additional Notes*", value: "*It does what it says on the tin.*" }]);
+).setFlavorText({ name: "*Additional Notes*", value: "*It does what it says on the tin.*" });

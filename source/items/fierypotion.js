@@ -17,4 +17,4 @@ module.exports = new ItemTemplate("Fiery Potion",
 			return "But nothing happened.";
 		}
 	}
-).setFlavorText(["*Additional Notes*", "*Not to be confused with __Explosive Potion__. DO NOT apply to enemies.*"]);
+).setFlavorText({ name: "*Additional Notes*", value: "*Not to be confused with __Explosive Potion__. DO NOT apply to enemies.*" });

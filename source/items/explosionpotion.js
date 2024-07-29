@@ -11,4 +11,4 @@ module.exports = new ItemTemplate("Explosion Potion",
 	(targets, user, isCrit, adventure) => {
 		return dealDamage(targets, user, 75, false, "Untyped", adventure);
 	}
-).setFlavorText([{ name: "*Additional Notes*", value: "*Not to be confused with __Fiery Potion__. DO NOT apply to self.*" }]);
+).setFlavorText({ name: "*Additional Notes*", value: "*Not to be confused with __Fiery Potion__. DO NOT apply to self.*" });
