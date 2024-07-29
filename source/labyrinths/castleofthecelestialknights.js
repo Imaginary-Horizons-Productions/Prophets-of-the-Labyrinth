@@ -60,6 +60,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			],
 			Common: [
 				"Certain Victory",
+				"Goad Futility",
 				"Herb Basket",
 				"Spear",
 				"Warhammer"

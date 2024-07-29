@@ -60,6 +60,7 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			],
 			Common: [
 				"Certain Victory",
+				"Goad Futility",
 				"Herb Basket",
 				"Spear",
 				"Warhammer"
