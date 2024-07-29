@@ -3,6 +3,7 @@ const { dealDamage, addModifier, changeStagger } = require("../util/combatantUti
 const { selectRandomFoe, selectAllCombatants } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
+const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
@@ -50,7 +51,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 }).addAction({
 	name: "Freefall Flare-Up",
 	element: "Untyped",
-	description: "Powers up all combatants (friend and foe); Protects non-delvers on crit",
+	description: `Grant ${getModifierEmoji("Power Up")} to all combatants (friend and foe); Protects non-delvers on crit`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		const empowered = addModifier(targets, { name: "Power Up", stacks: 20 });

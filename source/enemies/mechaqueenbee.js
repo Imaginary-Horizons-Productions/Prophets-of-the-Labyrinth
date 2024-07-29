@@ -57,7 +57,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 }).addAction({
 	name: "Formation Protocol",
 	element: "Untyped",
-	description: "Gain protection and grant Quicken and Power Up to all lower ranking mechabees",
+	description: `Gain protection and grant Quicken and ${getModifierEmoji("Power Up")} to all lower ranking mechabees`,
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
