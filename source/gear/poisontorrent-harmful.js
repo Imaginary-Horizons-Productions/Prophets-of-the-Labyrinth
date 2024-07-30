@@ -20,12 +20,13 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 			changeStagger(targets, "elementMatchFoe");
 		}
 		if (poisonedTargets.length > 0) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, poisonedTargets, "is", "are", "Poisoned.")}`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, poisonedTargets, "was", "were", "Poisoned.")}`;
 		} else {
 			return dealDamage(targets, user, pendingDamage, false, element, adventure);
 		}
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
+	.setSidegrades("Distracting Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 })
 	.setDamage(15)
 	.setDurability(15);

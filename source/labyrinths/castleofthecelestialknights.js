@@ -136,6 +136,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Accelerating Midas Staff",
 				"Discounted Midas Staff",
 				"Soothing Midas Staff",
+				"Distracting Poison Torrent",
 				"Harmful Poison Torrent"
 			]
 		},

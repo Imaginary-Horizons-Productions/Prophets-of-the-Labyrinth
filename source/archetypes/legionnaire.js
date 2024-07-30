@@ -1,9 +1,10 @@
 const { ArchetypeTemplate } = require("../classes");
+const { getModifierEmoji } = require("../modifiers/_modifierDictionary");
 const { getNames } = require("../util/combatantUtil");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Legionnaire",
-	"They'll be able to predict who enemies are targeting and which combatants will score Critical Hits. They'll be able to coodinate for big damage by inflicting Exposed on foes with their Shortsword.",
+	`They'll be able to predict who enemies are targeting and which combatants will score Critical Hits. They'll be able to coodinate for big damage by inflicting ${getModifierEmoji("Exposed")} on foes with their Shortsword.`,
 	"Fire",
 	{
 		maxHPGrowth: 25,

@@ -86,14 +86,16 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Common: [
 				"Cauldron Stir",
-				"Medicine"
+				"Medicine",
+				"Poison Torrent"
 			],
 			Rare: [
 				"Corrosive Cauldron Stir",
 				"Sabotaging Cauldron Stir",
 				"Bouncing Medicine",
 				"Cleansing Medicine",
-				"Soothing Medicine"
+				"Soothing Medicine",
+				"Distracting Poison Torrent"
 			]
 		},
 		Wind: {

@@ -90,6 +90,12 @@ Reduced base price
 - Infinite Regeneration (Fire)
 - Midas Staff (Water)
 
+### Distracting
+Add Distracted to target
+
+**Available on**
+- Poison Torrent (Water)
+
 ### Double
 Doubles number of targets
 

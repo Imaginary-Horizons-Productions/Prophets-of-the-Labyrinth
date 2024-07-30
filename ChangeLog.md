@@ -45,25 +45,34 @@ Assigned Elements to the following artifacts. Artifacts are only available when 
 ### Gear
 - Removed starting gear from drop pool
 - Increased the reward on Hunter's gear to 30g per kill
+- Removed **Sun Flares**: priority + stagger doesn't make sense now that stun doesn't interact with speed anymore
+- Fixed Pistol's result text reporting the wrong combatant getting Powered Up
+
+#### Newly Added Gear
+- **Shoulder Throw**: ✨ Technique, redirects a foe into targeting themself
+- **Goad Futility**: 🌿 Technique, redirect a foe into targeting user and gain Oblivious
+- Added upgrades: **Evasive Shoulder Throw**, **Lethal Shortsword**, **Sabotaging Cauldron Stir**, **Corrosive Cauldron Stir**, **Bouncing Medicine**, **Cleansing Medicine**, **Soothing Medicine**, **Distracting Poison Torrent**
+
+#### Changed Gear
 - Prideful Battleaxe is now **Furious Battleaxe**: "maintain low HP" is a more engaging ask of the player than "accept dealing Untyped damage"
 - Thick Battleaxe is now **Reactive Battleaxe**: Thick isn't very Fire-style, Reactive doubles down on acting after foes
 - Mercurial Bow is now **Unstoppable Bow**: Mercurial was too confusing for the edge it provided
 - Mercurial Firecracker is now **Midas's Firecracker**: Mercurial was too confusing for the edge it provided
 - Increased Curse of Midas applied by **Midas Staves** to 2: 2 targeted stacks keeps this competitive with Midas's Firecracker's 3 untargeted stacks
-- Added **Shoulder Throw**: ✨ Technique, redirects a foe into targeting themself
-- Added upgrades: **Evasive Shoulder Throw**, **Lethal Shortsword**, **Sabotaging Cauldron Stir**, **Corrosive Cauldron Stir**, **Bouncing Medicine**, **Cleansing Medicine**, **Soothing Medicine**
-- Removed **Sun Flares**: priority + stagger doesn't make sense now that stun doesn't interact with speed anymore
 - **War Cries** are now Light: Exposed is more Light synergy (speed)
 - **Infinite Regenerations** are now Fire: Regen is more Fire (heal over time)
 - **Spears** are now Earth: Stagger is more Earth than Wind
-- Added **Goad Futility**: 🌿 Technique, redirect a foe into targeting user and gain Oblivious
+
+### New Modifiers
+- Agility - this inverse of Paralysis is a buff that allows the bearer to shrug off 2 Stagger per turn
+- Lucky & Unlucky - this buff/debuff pair increases/decreases your chance to critically hit
+- Distracted - this inverse of Vigilance is a debuff that causes Exposed to be retained between rounds
 
 ### Other Changes
 - New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian
 - New command: `/share-seed` lets players share the seed of their completed adventure with others
-- New modifier: Agility - this inverse of Paralysis is a buff that allows the bearer to shrug off 2 Stagger per turn
-- New modifiers: Lucky & Unlucky - this buff/debuff pair increases/decreases your chance to critically hit
 - Mechabee Barrel Rolls now add Agility to user on crit instead of more Evade
+- Changed the Starry Knight's moveset ||to focus on Exposed and Distracted instead of Frail||
 - Fixed a few crashes when looking up items
 
 ## Prophets of the Labyrinth v0.14.0:
