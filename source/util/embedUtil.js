@@ -2,7 +2,7 @@ const fs = require("fs");
 const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW } = require("../constants");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH } = require("../constants");
 
 const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
 const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
@@ -321,11 +321,11 @@ async function generateVersionEmbed() {
 
 	if (knownIssuesStart && knownIssuesStart < knownIssuesEnd) {
 		// Known Issues section found
-		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesStart))
+		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesStart).slice(0, MAX_EMBED_DESCRIPTION_LENGTH))
 			.addFields({ name: "Known Issues", value: data.slice(knownIssuesStart + 16, knownIssuesEnd) });
 	} else {
 		// Known Issues section not found
-		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesEnd));
+		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesEnd).slice(0, MAX_EMBED_DESCRIPTION_LENGTH));
 	}
 	return embed.addFields({ name: "Become a Sponsor", value: "Chip in for server costs or get premium features by sponsoring [PotL on GitHub](https://github.com/Imaginary-Horizons-Productions/Prophets-of-the-Labyrinth)" });
 }

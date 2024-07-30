@@ -1,74 +1,54 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.15.0:
-After the heavy systems focus in v0.14, this update is looping back to give some love to balance and content. One major focus is adding more differences between the archetypes so that picking party composition is a more interesting decision, a step toward getting to a place where it may vary based on labyrinth choice as well.
-### Archetypes
-Starting in this update, we're moving toward giving each Archetype a unique predict. These will be unique combinations of information, as opposed to fully unique types of information. For example, multiple different archetypes will be able to predcit HP, but only the Hemomancer will be able to predict both HP and Speed.
-
-#### Detective
+After the heavy systems focus in v0.14, this update is looping back to give some love to balance and content. One major focus is adding more differences between the archetypes so that picking party composition is a more interesting decision, a step toward getting to a place where it may vary based on labyrinth choice as well. Predicts will be unique combinations of information, as opposed to fully unique types of information. For example, multiple different archetypes will be able to predcit HP, but only the Hemomancer will be able to predict both HP and Speed.
+### Detective
 - Predict: Elements & Modifiers
 - Added **Flanking Pistol**: more damage rewards for coordinating with allies
 - Added **Urgent Sabotage Kit**: priority adds a chance to get more mileage out of the debuffs
-
-#### Hemomancer
+- Fixed Pistol's result text reporting the wrong combatant getting Powered Up
+### Hemomancer
 - Predict: HP & Speed
 - Urgent Life Drain is now **Thirsting Life Drain**: trying to finish foes off has synergy with the new predict
 - Reactive Life Drain is now **Furious Life Drain**: to reinforce HP management as Hemomancer gameplay
 - Sweeping Blood Aegis is now **Toxic Blood Aegis**: picking which foe to disrupt was important for the fun of the gear's strategy (also more Poison support)
-
-#### Ritualist
+### Legionnaire
+- Predict: Critical Hits & Enemy Targets
+- Vigilant Scutum is now **Lucky Scutum**: Vigilance now applies to Evade instead of protection
+- Added **Lethal Shortsword**: crit synergy
+- Fixed a crash in **Accelerating Shortsword**
+### Ritualist
 - Predict: Modifiers & Stagger
 - Fate-Sealing Censor is now **Staggering Censor**: adding a little more Stun potential to the Ritualist's new predict
 - Flanking Corrosion is now **Fate-Sealing Corrosion**: getting debuffs to stick is still an important Ritualist niche, and Ritualist doesn't necessarily have the speed information needed to cash in on Flanking
-
-#### Legionnaire
-- Predict: Critical Hits & Enemy Targets
-- Vigilant Scutum is now **Lucky Scutum**: Vigilance now applies to Evade instead of protection
-- Fixed a crash in **Accelerating Shortsword**
-
-### Artifacts
-Assigned Elements to the following artifacts. Artifacts are only available when a party member with the artifact's element is present (Untyped always available).
+### Artifact Elements
+Some artifacts are now associated with an element and will only available when a party member has that element (Untyped always available).
 - Fire: Best-in-Class Hammer
 - Water: Piggy Bank
 - Earth: Boat Parts
 - Wind: Hawk Tailfeather
 - Light: Hammerspace Holster
 - Darkness: Enchanted Map
-
-#### New Artifacts
-- Floating Multiplier: Increases the adventure's score by 25% per copy
-- Peacock Charm: Gain copies + your remaining poise in protection each turn
-- Best-in-Class Hammer: Gain copies extra room actions in Workshops
-
-#### Fixes
-- Fixed Celestial Knight Insiginia triggering on turns the player is stunned
-
-### Gear
+### New Content
+- Artifacts: Floating Multiplier, Peacock Charm, Best-in-Class Hammer
+- Gear: Shoulder Throw, Goad Futility, Evasive Shoulder Throw, Sabotaging Cauldron Stir, Corrosive Cauldron Stir, Bouncing Medicine, Cleansing Medicine, Soothing Medicine, Distracting Poison Torrent
+### Changed Gear
 - Removed starting gear from drop pool
 - Increased the reward on Hunter's gear to 30g per kill
 - Removed **Sun Flares**: priority + stagger doesn't make sense now that stun doesn't interact with speed anymore
-- Fixed Pistol's result text reporting the wrong combatant getting Powered Up
-
-#### Newly Added Gear
-- **Shoulder Throw**: ✨ Technique, redirects a foe into targeting themself
-- **Goad Futility**: 🌿 Technique, redirect a foe into targeting user and gain Oblivious
-- Added upgrades: **Evasive Shoulder Throw**, **Lethal Shortsword**, **Sabotaging Cauldron Stir**, **Corrosive Cauldron Stir**, **Bouncing Medicine**, **Cleansing Medicine**, **Soothing Medicine**, **Distracting Poison Torrent**
-
-#### Changed Gear
 - Prideful Battleaxe is now **Furious Battleaxe**: "maintain low HP" is a more engaging ask of the player than "accept dealing Untyped damage"
 - Thick Battleaxe is now **Reactive Battleaxe**: Thick isn't very Fire-style, Reactive doubles down on acting after foes
 - Mercurial Bow is now **Unstoppable Bow**: Mercurial was too confusing for the edge it provided
 - Mercurial Firecracker is now **Midas's Firecracker**: Mercurial was too confusing for the edge it provided
 - Increased Curse of Midas applied by **Midas Staves** to 2: 2 targeted stacks keeps this competitive with Midas's Firecracker's 3 untargeted stacks
-- **War Cries** are now Light: Exposed is more Light synergy (speed)
-- **Infinite Regenerations** are now Fire: Regen is more Fire (heal over time)
-- **Spears** are now Earth: Stagger is more Earth than Wind
-
+- **War Cries** are now Light: Exposed is more Light-style than Fire
+- **Infinite Regenerations** are now Fire: Regen is more Fire-style than Light
+- **Spears** are now Earth: Stagger is more Earth-style than Wind
 ### New Modifiers
 - Agility - this inverse of Paralysis is a buff that allows the bearer to shrug off 2 Stagger per turn
 - Lucky & Unlucky - this buff/debuff pair increases/decreases your chance to critically hit
 - Distracted - this inverse of Vigilance is a debuff that causes Exposed to be retained between rounds
-
 ### Other Changes
+- Fixed Celestial Knight Insiginia triggering on turns the player is stunned
 - New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian
 - New command: `/share-seed` lets players share the seed of their completed adventure with others
 - Mechabee Barrel Rolls now add Agility to user on crit instead of more Evade
