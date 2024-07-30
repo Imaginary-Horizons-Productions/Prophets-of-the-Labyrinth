@@ -186,6 +186,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Accelerating Midas Staff",
 				"Discounted Midas Staff",
 				"Soothing Midas Staff",
+				"Distracting Poison Torrent",
 				"Harmful Poison Torrent"
 			]
 		},

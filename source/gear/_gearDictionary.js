@@ -111,6 +111,7 @@ for (const file of [
 	"pistol-duelists.js",
 	"pistol-flanking.js",
 	"poisontorrent-base.js",
+	"poisontorrent-distracting.js",
 	"poisontorrent-harmful.js",
 	"powerfromwrath-base.js",
 	"prismaticblast-base.js",

@@ -1,9 +1,10 @@
 const { GearTemplate } = require('../classes');
+const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
 const { changeStagger, getNames } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("War Cry",
-	"Inflict @{foeStagger} on a foe and all foes with Exposed",
+	`Inflict @{foeStagger} on a foe and all foes with ${getModifierEmoji("Exposed")}`,
 	"Stagger +@{bonus}",
 	"Technique",
 	"Light",

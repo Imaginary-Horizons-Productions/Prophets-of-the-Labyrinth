@@ -134,6 +134,7 @@ module.exports = new LabyrinthTemplate("Mechahive",
 				"Accelerating Midas Staff",
 				"Discounted Midas Staff",
 				"Soothing Midas Staff",
+				"Distracting Poison Torrent",
 				"Harmful Poison Torrent"
 			]
 		},

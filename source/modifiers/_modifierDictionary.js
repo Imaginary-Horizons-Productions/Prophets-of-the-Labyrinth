@@ -15,6 +15,7 @@ for (const file of [
 	"agility.js",
 	"boring.js",
 	"curse-of-midas.js",
+	"distracted.js",
 	"evade.js",
 	"exposed.js",
 	"frail.js",

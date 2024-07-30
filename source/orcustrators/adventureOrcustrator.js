@@ -653,8 +653,11 @@ function endRound(adventure, thread) {
 		if (!("Vigilance" in combatant.modifiers)) {
 			removeModifier([combatant], { name: "Evade", stacks: getTurnDecrement("Evade"), force: true });
 		}
+		if (!("Distracted" in combatant.modifiers)) {
+			removeModifier([combatant], { name: "Exposed", stacks: getTurnDecrement("Exposed"), force: true });
+		}
 		for (const modifier in combatant.modifiers) {
-			if (modifier !== "Evade") {
+			if (["Evade", "Exposed"].includes(modifier)) {
 				removeModifier([combatant], { name: modifier, stacks: getTurnDecrement(modifier), force: true })
 			}
 		}
