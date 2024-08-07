@@ -19,6 +19,7 @@ const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagg
 const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
 const { renderRoom, updateRoomHeader, generateRecruitEmbed } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
+const { anyDieSucceeds } = require("../util/mathUtil.js");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression, listifyEN } = require("../util/textUtil");
@@ -102,7 +103,7 @@ function rollGearTier(adventure) {
 	const cloverCount = adventure.getArtifactCount("Negative-One Leaf Clover");
 	const baseUpgradeChance = 1 / 8;
 	const max = RN_TABLE_BASE ** 2;
-	const threshold = max * sumGeometricSeries(baseUpgradeChance, 1 - baseUpgradeChance, 1 + cloverCount);
+	const threshold = max * anyDieSucceeds(baseUpgradeChance, cloverCount);
 	adventure.updateArtifactStat("Negative-One Leaf Clover", "Expected Extra Rare Gear", (threshold / max) - baseUpgradeChance);
 	const roll = adventure.generateRandomNumber(max, "general");
 	if (roll >= 7 / 8 * max) {
@@ -192,7 +193,11 @@ function nextRoom(roomType, thread) {
 		adventure.room.element = adventure.element;
 	} else if (adventure.room.element === "@{adventureWeakness}") {
 		const weaknessPool = getWeaknesses(adventure.element);
-		adventure.room.element = weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "general")];
+		if (weaknessPool.length > 0) {
+			adventure.room.element = weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "general")];
+		} else {
+			adventure.room.element = "Untyped";
+		}
 	}
 
 	// Initialize Resources
@@ -350,12 +355,12 @@ function newRound(adventure, thread, lastRoundText) {
 				if (combatant.team === "delver") {
 					const featherCount = adventure.getArtifactCount("Hawk Tailfeather");
 					if (featherCount > 0) {
-						threshold = calculateCritThreshold(max, baseCritChance, featherCount);
+						threshold = max * anyDieSucceeds(baseCritChance, featherCount);
 						adventure.updateArtifactStat("Hawk Tailfeather", "Expected Extra Critical Hits", (threshold / max) - baseCritChance);
 					}
 				}
 				if (threshold === undefined) {
-					threshold = calculateCritThreshold(max, baseCritChance, 0);
+					threshold = max * baseCritChance;
 				}
 				const critRoll = adventure.generateRandomNumber(max, "battle");
 				combatant.crit = critRoll < threshold;
@@ -399,15 +404,6 @@ function newRound(adventure, thread, lastRoundText) {
 					addModifier([combatant], { name: "Evade", stacks: floatingMistStacks * 2 });
 				}
 			})
-	}
-
-	/** Aggregate crit chance rolls into one comparison by summing geometric series (`r = 1 - c` for crit rolls)
-	 * @param {number} thresholdMax
-	 * @param {number} baseCritChance
-	 * @param {number} featherCount
-	 */
-	function calculateCritThreshold(thresholdMax, baseCritChance, featherCount) {
-		return thresholdMax * (1 - (1 - baseCritChance) ** (1 + featherCount));
 	}
 
 	thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {

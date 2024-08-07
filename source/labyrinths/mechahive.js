@@ -1,8 +1,9 @@
 const { LabyrinthTemplate } = require("../classes");
+const { getModifierEmoji } = require("../modifiers/_modifierDictionary");
 
 module.exports = new LabyrinthTemplate("Mechahive",
 	"Darkness",
-	"The source of the mechabee threat! Make sure to bring some Poison antidote.",
+	`The source of the mechabee threat! Make sure to bring some ${getModifierEmoji("Poison")} antidote.`,
 	15,
 	[15],
 	{

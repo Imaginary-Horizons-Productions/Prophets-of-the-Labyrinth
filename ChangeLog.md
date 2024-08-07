@@ -1,14 +1,14 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.15.0:
-After the heavy systems focus in v0.14, this update is looping back to give some love to balance and content. One major focus is adding more differences between the archetypes so that picking party composition is a more interesting decision, a step toward getting to a place where it may vary based on labyrinth choice as well. Predicts will be unique combinations of information, as opposed to fully unique types of information. For example, multiple different archetypes will be able to predcit HP, but only the Hemomancer will be able to predict both HP and Speed.
+After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more differences between archetypes so picking party composition is a more interesting decision, a step toward getting to a place where it may vary based on labyrinth choice as well. Predicts are now unique combinations of information, as opposed to fully unique types of information. For example, multiple different archetypes will be able to predcit HP, but only the Hemomancer will be able to predict both HP and Speed.
 ### Detective
 - Predict: Elements & Modifiers
 - Added **Flanking Pistol**: more damage rewards for coordinating with allies
-- Added **Urgent Sabotage Kit**: priority adds a chance to get more mileage out of the debuffs
-- Fixed Pistol's result text reporting the wrong combatant getting Powered Up
+- Added **Urgent Sabotage Kit**: priority improves the party's chance to get mileage out of the debuffs
+- Fixed Pistol's result text reporting the wrong ally getting Powered Up
 ### Hemomancer
 - Predict: HP & Speed
-- Urgent Life Drain is now **Thirsting Life Drain**: trying to finish foes off has synergy with the new predict
+- Urgent Life Drain is now **Thirsting Life Drain**: trying to finish foes off has synergy with predicting HP
 - Reactive Life Drain is now **Furious Life Drain**: to reinforce HP management as Hemomancer gameplay
 - Sweeping Blood Aegis is now **Toxic Blood Aegis**: picking which foe to disrupt was important for the fun of the gear's strategy (also more Poison support)
 ### Legionnaire
@@ -18,8 +18,8 @@ After the heavy systems focus in v0.14, this update is looping back to give some
 - Fixed a crash in **Accelerating Shortsword**
 ### Ritualist
 - Predict: Modifiers & Stagger
-- Fate-Sealing Censor is now **Staggering Censor**: adding a little more Stun potential to the Ritualist's new predict
-- Flanking Corrosion is now **Fate-Sealing Corrosion**: getting debuffs to stick is still an important Ritualist niche, and Ritualist doesn't necessarily have the speed information needed to cash in on Flanking
+- Fate-Sealing Censor is now **Staggering Censor**: adding Stun potential for the Ritualist's new predict
+- Flanking Corrosion is now **Fate-Sealing Corrosion**: getting debuffs to stick is still an important Ritualist niche, and Ritualist doesn't have the speed information needed to cash in on Flanking
 ### Artifact Elements
 Some artifacts are now associated with an element and will only available when a party member has that element (Untyped always available).
 - Fire: Best-in-Class Hammer
