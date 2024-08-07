@@ -41,6 +41,7 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 				let pendingDamage = damage;
 				if ("Exposed" in target.modifiers) {
 					pendingDamage *= 1.5;
+					removeModifier([target], { name: "Exposed", stacks: 1, force: true });
 				}
 				const isWeakness = getCombatantWeaknesses(target).includes(element);
 				if (isWeakness) {

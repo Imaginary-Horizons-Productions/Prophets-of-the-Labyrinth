@@ -45,15 +45,16 @@ Some artifacts are now associated with an element and will only available when a
 - **Spears** are now Earth: Stagger is more Earth-style than Wind
 ### New Modifiers
 - Agility - this inverse of Paralysis is a buff that allows the bearer to shrug off 2 Stagger per turn
-- Lucky & Unlucky - this buff/debuff pair increases/decreases your chance to critically hit
+- Lucky & Unlucky - this buff/debuff pair double/halve your chance to critically hit
 - Distracted - this inverse of Vigilance is a debuff that causes Exposed to be retained between rounds
 ### Other Changes
 - Fixed Celestial Knight Insiginia triggering on turns the player is stunned
-- New starting challenge: Into the Deep End - Start the delve fighting an Artifact Guardian
+- New challenge: Into the Deep End - Start the delve fighting an Artifact Guardian
 - New command: `/share-seed` lets players share the seed of their completed adventure with others
 - Mechabee Barrel Rolls now add Agility to user on crit instead of more Evade
 - Changed the Starry Knight's moveset ||to focus on Exposed and Distracted instead of Frail||
 - Fixed a few crashes when looking up items
+- Exposed: increased bonus to 100%, fixed a bug where it wasn't decrementing on hit
 
 ## Prophets of the Labyrinth v0.14.0:
 This update has a systems focus: making damage mitigation less situational by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content and balance such as: a new final boss, the Chemist rework, adding more AoE with the Blasting gear variant, and a few new artifacts.
