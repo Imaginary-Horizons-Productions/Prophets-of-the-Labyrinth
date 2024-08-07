@@ -22,7 +22,6 @@ const { ensuredPathSave } = require("../util/fileUtil");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression, listifyEN } = require("../util/textUtil");
-const { sumGeometricSeries } = require("../util/mathUtil");
 const { levelUp } = require("../util/delverUtil.js");
 
 /** @type {Map<string, Adventure>} */
@@ -339,19 +338,24 @@ function newRound(adventure, thread, lastRoundText) {
 				removeModifier([combatant], { name: "Quicken", stacks: 1, force: true });
 
 				// Roll Critical Hit
-				const baseCritChance = combatant.getCritRate() / 100;
+				let modifierCritBonus = 1;
+				if ("Lucky" in combatant.modifiers) {
+					modifierCritBonus = 2;
+				} else if ("Unlucky" in combatant.modifiers) {
+					modifierCritBonus = 0.5;
+				}
+				const baseCritChance = combatant.getCritRate() / 100 * modifierCritBonus;
 				const max = RN_TABLE_BASE ** 2;
 				let threshold;
-				const luckyStacks = combatant.getModifierStacks("Lucky") - combatant.getModifierStacks("Unlucky");
 				if (combatant.team === "delver") {
 					const featherCount = adventure.getArtifactCount("Hawk Tailfeather");
 					if (featherCount > 0) {
-						threshold = calculateCritThreshold(max, baseCritChance, luckyStacks + featherCount);
+						threshold = calculateCritThreshold(max, baseCritChance, featherCount);
 						adventure.updateArtifactStat("Hawk Tailfeather", "Expected Extra Critical Hits", (threshold / max) - baseCritChance);
 					}
 				}
 				if (threshold === undefined) {
-					threshold = calculateCritThreshold(max, baseCritChance, luckyStacks);
+					threshold = calculateCritThreshold(max, baseCritChance, 0);
 				}
 				const critRoll = adventure.generateRandomNumber(max, "battle");
 				combatant.crit = critRoll < threshold;
@@ -397,19 +401,13 @@ function newRound(adventure, thread, lastRoundText) {
 			})
 	}
 
-	/**
+	/** Aggregate crit chance rolls into one comparison by summing geometric series (`r = 1 - c` for crit rolls)
 	 * @param {number} thresholdMax
 	 * @param {number} baseCritChance
-	 * @param {number} critBoosts
+	 * @param {number} featherCount
 	 */
-	function calculateCritThreshold(thresholdMax, baseCritChance, critBoosts) {
-		const virtualRolls = 1 + Math.abs(critBoosts);
-		if (critBoosts > -1) {
-			return thresholdMax * sumGeometricSeries(baseCritChance, 1 - baseCritChance, virtualRolls);
-		} else {
-			// Design note: Extra factor of 2 because exponential nature scales Unlucky too fast
-			return 2 * thresholdMax * (sumGeometricSeries(baseCritChance, 1 - baseCritChance, virtualRolls) ** virtualRolls);
-		}
+	function calculateCritThreshold(thresholdMax, baseCritChance, featherCount) {
+		return thresholdMax * (1 - (1 - baseCritChance) ** (1 + featherCount));
 	}
 
 	thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
