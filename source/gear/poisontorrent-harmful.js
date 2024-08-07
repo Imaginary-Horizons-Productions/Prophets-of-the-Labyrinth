@@ -15,15 +15,18 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 		if (isCrit) {
 			pendingPoison.stacks *= critMultiplier;
 		}
-		const poisonedTargets = getNames(addModifier(targets, pendingPoison), adventure);
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+		const resultsSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			if (user.element === element) {
+				changeStagger(stillLivingTargets, "elementMatchFoe");
+			}
+			const poisonedTargets = getNames(addModifier(stillLivingTargets, pendingPoison), adventure);
+			if (poisonedTargets.length > 0) {
+				resultsSentences.push(joinAsStatement(false, poisonedTargets, "was", "were", "Poisoned."));
+			}
 		}
-		if (poisonedTargets.length > 0) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, poisonedTargets, "was", "were", "Poisoned.")}`;
-		} else {
-			return dealDamage(targets, user, pendingDamage, false, element, adventure);
-		}
+		return resultsSentences.join(" ");
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Distracting Poison Torrent")

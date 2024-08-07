@@ -11,9 +11,6 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [exposed, quicken], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
-		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
@@ -30,9 +27,15 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 		if (selfModifiers.length > 0) {
 			resultText += ` ${getNames([user], adventure)[0]} is ${listifyEN(selfModifiers, false)}.`;
 		}
-		const exposedTargets = addModifier(targets.filter(target => target.hp > 0), exposed);
-		if (exposedTargets.length > 0) {
-			resultText += ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}`;
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			if (user.element === element) {
+				changeStagger(targets, "elementMatchFoe");
+			}
+			const exposedTargets = addModifier(stillLivingTargets, exposed);
+			if (exposedTargets.length > 0) {
+				resultText += ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}`;
+			}
 		}
 		return resultText;
 	}

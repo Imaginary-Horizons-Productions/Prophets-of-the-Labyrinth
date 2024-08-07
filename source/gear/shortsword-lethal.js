@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Lethal Shortsword",
 			resultText += ` ${getNames([user], adventure)} is Exposed.`;
 		}
 		const exposedTargets = addModifier(targets.filter(target => target.hp > 0), exposed);
-		if (exposedTargets) {
+		if (exposedTargets.length > 0) {
 			resultText += ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}`;
 		}
 		return resultText;

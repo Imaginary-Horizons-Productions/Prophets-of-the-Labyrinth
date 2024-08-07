@@ -15,11 +15,18 @@ module.exports = new GearTemplate("Toxic Firecracker",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+		const resultsSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			if (user.element === element) {
+				changeStagger(stillLivingTargets, "elementMatchFoe");
+			}
+			const poisonedTargetNames = getNames(addModifier(stillLivingTargets, poison), adventure);
+			if (poisonedTargetNames.length > 0) {
+				resultsSentences.push(joinAsStatement(false, poisonedTargetNames, "is", "are", "Poisoned."));
+			}
 		}
-		const poisonedTargetNames = getNames(addModifier(targets, poison), adventure);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, poisonedTargetNames, "is", "are", "Poisoned.")}`;
+		return resultsSentences.join(" ");
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Firecracker", "Midas's Firecracker")

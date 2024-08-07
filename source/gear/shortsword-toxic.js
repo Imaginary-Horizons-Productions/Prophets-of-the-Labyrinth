@@ -11,9 +11,6 @@ module.exports = new GearTemplate("Toxic Shortsword",
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [exposed, poison], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
-		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
@@ -24,6 +21,9 @@ module.exports = new GearTemplate("Toxic Shortsword",
 		}
 		const targetDebuffs = [];
 		if (target.hp > 0) {
+			if (user.element === element) {
+				changeStagger([target], "elementMatchFoe");
+			}
 			const addedPoison = addModifier([target], poison).length > 0;
 			if (addedPoison) {
 				targetDebuffs.push("Poisoned");
