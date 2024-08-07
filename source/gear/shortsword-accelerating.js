@@ -30,7 +30,7 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 		if (selfModifiers.length > 0) {
 			resultText += ` ${getNames([user], adventure)[0]} is ${listifyEN(selfModifiers, false)}.`;
 		}
-		const exposedTargets = addModifier(targets, exposed);
+		const exposedTargets = addModifier(targets.filter(target => target.hp > 0), exposed);
 		if (exposedTargets.length > 0) {
 			resultText += ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}`;
 		}

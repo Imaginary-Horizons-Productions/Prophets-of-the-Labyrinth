@@ -23,16 +23,18 @@ module.exports = new GearTemplate("Toxic Shortsword",
 			resultText += ` ${getNames([user], adventure)[0]} is Exposed.`;
 		}
 		const targetDebuffs = [];
-		const addedPoison = addModifier([target], poison).length > 0;
-		if (addedPoison) {
-			targetDebuffs.push("Poisoned");
-		}
-		const addedExposedTarget = addModifier([target], exposed).length > 0;
-		if (addedExposedTarget) {
-			targetDebuffs.push("Exposed");
-		}
-		if (targetDebuffs.length > 0) {
-			resultText += ` ${getNames([target], adventure)[0]} is ${listifyEN(targetDebuffs, false)}.`;
+		if (target.hp > 0) {
+			const addedPoison = addModifier([target], poison).length > 0;
+			if (addedPoison) {
+				targetDebuffs.push("Poisoned");
+			}
+			const addedExposedTarget = addModifier([target], exposed).length > 0;
+			if (addedExposedTarget) {
+				targetDebuffs.push("Exposed");
+			}
+			if (targetDebuffs.length > 0) {
+				resultText += ` ${getNames([target], adventure)[0]} is ${listifyEN(targetDebuffs, false)}.`;
+			}
 		}
 		return resultText;
 	}
