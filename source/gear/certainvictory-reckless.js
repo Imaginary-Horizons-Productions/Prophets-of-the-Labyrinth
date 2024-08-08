@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 		if (addedExposed) {
 			addedModifiers.push("Exposed");
 		}
-		if (addedPowerUp) {
+		if (addedModifiers.length > 0) {
 			resultsSentences.push(`${getNames([user], adventure)[0]} is ${listifyEN(addedModifiers)}.`);
 		}
 		resultsSentences.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
