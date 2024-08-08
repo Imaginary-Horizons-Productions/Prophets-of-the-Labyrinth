@@ -9,6 +9,11 @@ module.exports = new GearTemplate("Blood Aegis",
 	200,
 	([target], user, isCrit, adventure) => {
 		const { element, protection, critMultiplier, hpCost } = module.exports;
+		const paymentSentence = payHP(user, hpCost, adventure);
+		if (adventure.lives < 1) {
+			return paymentSentence;
+		}
+		const resultsSentences = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
@@ -27,10 +32,9 @@ module.exports = new GearTemplate("Blood Aegis",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			return `Gaining protection, ${payHP(user, hpCost, adventure)} ${getNames([target], adventure)[0]} falls for the provocation.`;
-		} else {
-			return `Gaining protection, ${payHP(user, hpCost, adventure)}`;
+			resultsSentences.push(`${getNames([target], adventure)[0]} falls for the provocation.`);
 		}
+		return resultsSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Charging Blood Aegis", "Reinforced Blood Aegis", "Toxic Blood Aegis")
