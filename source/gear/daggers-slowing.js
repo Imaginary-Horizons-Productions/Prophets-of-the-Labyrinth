@@ -11,14 +11,21 @@ module.exports = new GearTemplate("Slowing Daggers",
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [slow], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
-		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const slowedTargets = addModifier(targets, slow);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${addedSlow ? ` ${joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed.")}` : ""}`;
+		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			if (user.element === element) {
+				changeStagger(stillLivingTargets, "elementMatchFoe");
+			}
+			const slowedTargets = addModifier(stillLivingTargets, slow);
+			if (slowedTargets.length > 0) {
+				resultSentences.push(joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed."));
+			}
+		}
+		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")
