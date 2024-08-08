@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Reckless Certain Victory",
 	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}; pay HP for your @{mod0}",
@@ -16,15 +17,21 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
+		const resultsSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const addedModifiers = [];
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
-		const addedExposed = addModifier([user], exposed).length > 0;
 		if (addedPowerUp) {
-			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${getNames([user], adventure)[0]} is Powered Up and Exposed.`;
-		} else if (addedExposed) {
-			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${getNames([user], adventure)[0]} is Exposed.`;
-		} else {
-			return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${dealDamage(targets, user, pendingDamage, false, element, adventure)}`;
+			addedModifiers.push("Powered Up");
 		}
+		const addedExposed = addModifier([user], exposed).length > 0;
+		if (addedExposed) {
+			addedModifiers.push("Exposed");
+		}
+		if (addedPowerUp) {
+			resultsSentences.push(`${getNames([user], adventure)[0]} is ${listifyEN(addedModifiers)}.`);
+		}
+		resultsSentences.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
+		return resultsSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Lethal Certain Victory")

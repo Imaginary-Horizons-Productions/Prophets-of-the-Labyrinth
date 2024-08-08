@@ -11,13 +11,17 @@ module.exports = new GearTemplate("Discounted Infinite Regeneration",
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [regen], hpCost, critMultiplier } = module.exports;
 		let pendingHPCost = hpCost;
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
-		}
 		if (isCrit) {
 			pendingHPCost /= critMultiplier;
 		}
-		const resultSentences = [payHP(user, pendingHPCost, adventure)];
+		const paymentSentence = payHP(user, pendingHPCost, adventure);
+		if (adventure.lives < 1) {
+			return paymentSentence;
+		}
+		if (user.element === element) {
+			changeStagger(targets, "elementMatchAlly");
+		}
+		const resultSentences = [paymentSentence];
 		const regenedTargets = addModifier(targets, regen);
 		if (regenedTargets.length > 0) {
 			resultSentences.push(joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "Regen."));

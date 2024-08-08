@@ -9,6 +9,11 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [poison], protection, critMultiplier, hpCost } = module.exports;
+		const paymentSentence = payHP(user, hpCost, adventure);
+		if (adventure.lives < 1) {
+			return paymentSentence;
+		}
+		const resultsSentences = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
@@ -17,7 +22,6 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([user], pendingProtection);
-		const addedPoison = addModifier([target], poison).length > 0;
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -26,12 +30,14 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
+		const addedPoison = addModifier([target], poison).length > 0;
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			return `Gaining protection, ${payHP(user, hpCost, adventure)} ${getNames([target], adventure)[0]} falls for the provocation${addedPoison ? ` and is Poisoned` : ""}.`;
-		} else {
-			return `Gaining protection, ${payHP(user, hpCost, adventure)}${addedPoison ? ` ${getNames([target], adventure)[0]} is Poisoned.` : ""}`;
+			resultsSentences.push(`${getNames([target], adventure)[0]} falls for the provocation${addedPoison ? ` and is Poisoned` : ""}.`);
+		} else if (addedPoison) {
+			resultsSentences.push(`${getNames([target], adventure)[0]} is Poisoned.`);
 		}
+		return resultsSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Charging Blood Aegis", "Reinforced Blood Aegis")
