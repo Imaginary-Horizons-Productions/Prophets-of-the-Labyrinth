@@ -33,3 +33,7 @@ Here is a list of reserved emoji and their meanings:
 - Background color: #D00257
 - Background shape: alt-square (square with corner facing up)
 - Use down arrow as badge if needed, minus sign is reserved for Untyped element
+
+### States
+- Background color: #F8E71C
+- Background shape: triangle
