@@ -69,45 +69,9 @@ function generateCombatRoomBuilder(extraButtons) {
 		} else {
 			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
 
-			const levelUpField = { name: "Level-Up!" };
-			const levelEntries = Object.entries(adventure.room.history).filter(([historyKey, _]) => historyKey.startsWith("levelsGained:"));
 			/** @type {number} didn't want to allow numbers as history entries generally or convert to and from string; see checkEndCombat in adventureOrcustrator */
 			const baseLevels = adventure.room.history.baseLevels[0];
-			if (levelEntries.length > 1) {
-				levelUpField.value = levelEntries.map(([historyKey, delverNames]) => {
-					const levels = parseInt(historyKey.split("levelsGained:")[1]);
-					if (levels !== baseLevels) {
-						if (delverNames.length === 1) {
-							if (levels === 1) {
-								return `- ${delverNames[0]} gains 1 level.`;
-							} else {
-								return `- ${delverNames[0]} gains ${levels} levels.`;
-							}
-						} else {
-							if (levels === 1) {
-								return `- ${listifyEN(delverNames, false)} gain 1 level.`;
-							} else {
-								return `- ${listifyEN(delverNames, false)} gain ${levels} levels.`;
-							}
-						}
-					}
-				}).join("- \n");
-				if (adventure.room.history[`levelsGained:${baseLevels}`].length < adventure.delvers.length) {
-					if (levels === 1) {
-						levelUpField.value = `\n- Everyone else gains 1 level.`;
-					} else {
-						levelUpField.value = `\n- Everyone else gains ${baseLevels} levels.`;
-					}
-				}
-			} else {
-				const levels = parseInt(levelEntries[0][0].split("levelsGained:")[1]);
-				if (levels === 1) {
-					levelUpField.value = `Everyone gains 1 level.`;
-				} else {
-					levelUpField.value = `Everyone gains ${levels} levels.`;
-				}
-			}
-			roomEmbed.addFields(levelUpField, { name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
+			roomEmbed.addFields({ name: "Level-Up!", value: `Everyone gains ${baseLevels} levels.` }, { name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
 			return {
 				embeds: [roomEmbed],
 				components: [generateLootRow(adventure), generateRoutingRow(adventure)]

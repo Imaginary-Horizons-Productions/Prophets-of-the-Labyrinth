@@ -35,50 +35,52 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 	const resultTexts = [];
 	const targetNames = getNames(targets, adventure);
 	targets.forEach((target, index) => {
-		const targetName = targetNames[index];
-		if (!(`${element} Absorb` in target.modifiers)) {
-			if (!("Evade" in target.modifiers) || isUnblockable) {
-				let pendingDamage = damage;
-				if ("Exposed" in target.modifiers) {
-					pendingDamage *= 1.5;
-					removeModifier([target], { name: "Exposed", stacks: 1, force: true });
-				}
-				const isWeakness = getCombatantWeaknesses(target).includes(element);
-				if (isWeakness) {
-					pendingDamage *= 2;
-				}
-				const isResistance = getResistances(target.element).includes(element);
-				if (isResistance) {
-					pendingDamage = pendingDamage / 2;
-				}
-				pendingDamage = Math.ceil(pendingDamage);
-				let blockedDamage = 0;
-				if (!isUnblockable) {
-					if (pendingDamage >= target.protection) {
-						pendingDamage -= target.protection;
-						blockedDamage = target.protection;
-						target.protection = 0;
-					} else {
-						target.protection -= pendingDamage;
-						blockedDamage = pendingDamage;
-						pendingDamage = 0;
+		if (target.hp > 0) { // Skip if target is downed (necessary for multi-hit moves hitting same target)
+			const targetName = targetNames[index];
+			if (!(`${element} Absorb` in target.modifiers)) {
+				if (!("Evade" in target.modifiers) || isUnblockable) {
+					let pendingDamage = damage;
+					if ("Exposed" in target.modifiers) {
+						pendingDamage *= 1.5;
+						removeModifier([target], { name: "Exposed", stacks: 1, force: true });
 					}
+					const isWeakness = getCombatantWeaknesses(target).includes(element);
+					if (isWeakness) {
+						pendingDamage *= 2;
+					}
+					const isResistance = getResistances(target.element).includes(element);
+					if (isResistance) {
+						pendingDamage = pendingDamage / 2;
+					}
+					pendingDamage = Math.ceil(pendingDamage);
+					let blockedDamage = 0;
+					if (!isUnblockable) {
+						if (pendingDamage >= target.protection) {
+							pendingDamage -= target.protection;
+							blockedDamage = target.protection;
+							target.protection = 0;
+						} else {
+							target.protection -= pendingDamage;
+							blockedDamage = pendingDamage;
+							pendingDamage = 0;
+						}
+					}
+					pendingDamage = Math.min(pendingDamage, assailant.getDamageCap());
+					target.hp -= pendingDamage;
+					let damageText = ` **${targetName}** takes ${pendingDamage} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}`;
+					if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
+						adventure.gainGold(Math.floor(pendingDamage / 10));
+						damageText += ` Gold scatters about the room.`;
+					}
+					damageText += downedCheck(target, adventure);
+					resultTexts.push(damageText);
+				} else {
+					removeModifier([target], { name: "Evade", stacks: 1, force: true });
+					resultTexts.push(` ${targetName} evades the attack!`);
 				}
-				pendingDamage = Math.min(pendingDamage, assailant.getDamageCap());
-				target.hp -= pendingDamage;
-				let damageText = ` **${targetName}** takes ${pendingDamage} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}`;
-				if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
-					adventure.gainGold(Math.floor(pendingDamage / 10));
-					damageText += ` Gold scatters about the room.`;
-				}
-				damageText += downedCheck(target, adventure);
-				resultTexts.push(damageText);
 			} else {
-				removeModifier([target], { name: "Evade", stacks: 1, force: true });
-				resultTexts.push(` ${targetName} evades the attack!`);
+				resultTexts.push(` ${gainHealth(target, damage, adventure)}`);
 			}
-		} else {
-			resultTexts.push(` ${gainHealth(target, damage, adventure)}`);
 		}
 	})
 	if (adventure.lives < previousLifeCount) {

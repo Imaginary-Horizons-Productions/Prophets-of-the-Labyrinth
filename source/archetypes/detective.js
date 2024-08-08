@@ -9,7 +9,7 @@ module.exports = new ArchetypeTemplate("Detective",
 		maxHPGrowth: 25,
 		powerGrowth: 2.5,
 		speedGrowth: 0.5,
-		critRateGrowth: 1,
+		critRateGrowth: 0.25,
 		poiseGrowth: 0
 	},
 	["Pistol", "Sabotage Kit"],

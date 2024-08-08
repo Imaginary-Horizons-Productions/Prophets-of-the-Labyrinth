@@ -681,29 +681,8 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 			return { payload: completeAdventure(adventure, thread, "success", lastRoundText), type: "adventureSuccess" };
 		}
 
-		const baseLevelsGained = adventure.room.resources.levelsGained.count ?? 0;
-		delete adventure.room.resources.levelsGained;
-		adventure.room.history.baseLevels = [baseLevelsGained];
 		for (const delver of adventure.delvers) {
-			const manualManuallevels = adventure.getArtifactCount("Manual Manual");
-			if (manualManuallevels > 0) {
-				adventure.updateArtifactStat("Manual Manual", "Bonus Levels", manualManuallevels);
-			}
-			const gearLevelBonus = delver.gear.reduce((bonusLevels, currentGear) => {
-				if (currentGear.name.startsWith("Wise")) {
-					return bonusLevels + 1;
-				} else {
-					return bonusLevels;
-				}
-			}, 0);
-			const levelsGained = baseLevelsGained + manualManuallevels + gearLevelBonus;
-			const historyKey = `levelsGained:${levelsGained}`;
-			if (historyKey in adventure.room.history) {
-				adventure.room.history[historyKey].push(delver.name);
-			} else {
-				adventure.room.history[historyKey] = [delver.name];
-			}
-			levelUp(delver, levelsGained, adventure);
+			levelUp(delver, baseLevelsGained, adventure);
 		}
 
 		// Gear drops

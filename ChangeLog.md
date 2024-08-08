@@ -3,23 +3,23 @@
 After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more differences between archetypes so picking party composition is a more interesting decision, a step toward getting to a place where it may vary based on labyrinth choice as well. Predicts are now unique combinations of information, as opposed to fully unique types of information. For example, multiple different archetypes will be able to predcit HP, but only the Hemomancer will be able to predict both HP and Speed.
 ### Detective
 - Predict: Elements & Modifiers
-- Added **Flanking Pistol**: more damage rewards for coordinating with allies
+- Added **Flanking Pistol**: damage rewards for coordinating with allies
 - Added **Urgent Sabotage Kit**: priority improves the party's chance to get mileage out of the debuffs
-- Fixed Pistol's result text reporting the wrong ally getting Powered Up
+- Fixed Pistol reporting the wrong ally getting Powered Up
 ### Hemomancer
 - Predict: HP & Speed
-- Urgent Life Drain is now **Thirsting Life Drain**: trying to finish foes off has synergy with predicting HP
-- Reactive Life Drain is now **Furious Life Drain**: to reinforce HP management as Hemomancer gameplay
-- Sweeping Blood Aegis is now **Toxic Blood Aegis**: picking which foe to disrupt was important for the fun of the gear's strategy (also more Poison support)
+- Urgent Life Drain → **Thirsting Life Drain**: trying to finish foes off has synergy with predicting HP
+- Reactive Life Drain → **Furious Life Drain**: to reinforce HP management as Hemomancer gameplay
+- Sweeping Blood Aegis → **Toxic Blood Aegis**: picking which foe to disrupt was important for the fun of the gear's strategy (also more Poison support)
 ### Legionnaire
 - Predict: Critical Hits & Enemy Targets
-- Vigilant Scutum is now **Lucky Scutum**: Vigilance now applies to Evade instead of protection
+- Vigilant Scutum → **Lucky Scutum**: Vigilance applies to Evade instead of protection
 - Added **Lethal Shortsword**: crit synergy
 - Fixed a crash in **Accelerating Shortsword**
 ### Ritualist
 - Predict: Modifiers & Stagger
-- Fate-Sealing Censor is now **Staggering Censor**: adding Stun potential for the Ritualist's new predict
-- Flanking Corrosion is now **Fate-Sealing Corrosion**: getting debuffs to stick is still an important Ritualist niche, and Ritualist doesn't have the speed information needed to cash in on Flanking
+- Fate-Sealing Censor → **Staggering Censor**: to add Stun potential
+- Flanking Corrosion → **Fate-Sealing Corrosion**: Ritualist doesn't have a speed predict for Exposed
 ### Artifact Elements
 Some artifacts are now associated with an element and will only available when a party member has that element (Untyped always available).
 - Fire: Best-in-Class Hammer
@@ -31,30 +31,32 @@ Some artifacts are now associated with an element and will only available when a
 ### New Content
 - Artifacts: Floating Multiplier, Peacock Charm, Best-in-Class Hammer
 - Gear: Shoulder Throw, Goad Futility, Evasive Shoulder Throw, Sabotaging Cauldron Stir, Corrosive Cauldron Stir, Bouncing Medicine, Cleansing Medicine, Soothing Medicine, Distracting Poison Torrent
+- Challenge: Into the Deep End
 ### Changed Gear
 - Removed starting gear from drop pool
-- Increased the reward on Hunter's gear to 30g per kill
-- Removed **Sun Flares**: priority + stagger doesn't make sense now that stun doesn't interact with speed anymore
-- Prideful Battleaxe is now **Furious Battleaxe**: "maintain low HP" is a more engaging ask of the player than "accept dealing Untyped damage"
-- Thick Battleaxe is now **Reactive Battleaxe**: Thick isn't very Fire-style, Reactive doubles down on acting after foes
-- Mercurial Bow is now **Unstoppable Bow**: Mercurial was too confusing for the edge it provided
-- Mercurial Firecracker is now **Midas's Firecracker**: Mercurial was too confusing for the edge it provided
-- Increased Curse of Midas applied by **Midas Staves** to 2: 2 targeted stacks keeps this competitive with Midas's Firecracker's 3 untargeted stacks
-- **War Cries** are now Light: Exposed is more Light-style than Fire
-- **Infinite Regenerations** are now Fire: Regen is more Fire-style than Light
-- **Spears** are now Earth: Stagger is more Earth-style than Wind
+- Increased Hunter's gear's reward to 30g per kill
+- Removed **Sun Flares**: priority + stagger doesn't make sense when stun doesn't interact with speed
+- Prideful Battleaxe → **Furious Battleaxe**: "maintain low HP" is a more engaging ask of the player than "accept dealing Untyped damage"
+- Thick Battleaxe → **Reactive Battleaxe**: doubles down on acting after foes
+- Mercurial Bow → **Unstoppable Bow**: Mercurial was too confusing
+- Mercurial Firecracker → **Midas's Firecracker**: Mercurial was too confusing
+- Increased Curse of Midas applied by **Midas Staves** to 2: to keep this competitive with Midas's Firecracker
+- **War Cries** Fire → Light: Exposed is Light-style
+- **Infinite Regenerations** Light → Fire: Regen is Fire-style
+- **Spears** Wind → Earth: Stagger is Earth-style
+- **Wise Chainmail** now increases stat growths by 10% instead of 1 level per combat
 ### New Modifiers
-- Agility - this inverse of Paralysis is a buff that allows the bearer to shrug off 2 Stagger per turn
-- Lucky & Unlucky - this buff/debuff pair double/halve your chance to critically hit
-- Distracted - this inverse of Vigilance is a debuff that causes Exposed to be retained between rounds
+- Agility (buff: inverse of Paralysis) allows the bearer to shrug off 2 Stagger per turn
+- Lucky & Unlucky (buff/debuff pair) double/halve your chance to crit
+- Distracted (debuff: inverse of Vigilance) causes Exposed to be retained between rounds
 ### Other Changes
+- New command: `/share-seed`
 - Fixed Celestial Knight Insiginia triggering on turns the player is stunned
-- New challenge: Into the Deep End - Start the delve fighting an Artifact Guardian
-- New command: `/share-seed` lets players share the seed of their completed adventure with others
 - Mechabee Barrel Rolls now add Agility to user on crit instead of more Evade
-- Changed the Starry Knight's moveset ||to focus on Exposed and Distracted instead of Frail||
-- Fixed a few crashes when looking up items
-- Exposed: increased bonus to 100%, fixed a bug where it wasn't decrementing on hit
+- Changed the Starry Knight's moveset ||to add Exposed and Distracted instead of Frail||
+- Fixed some crashes when looking up items
+- Exposed: increased bonus to 100%, fixed a bug where it didn't decrement on hit
+- Manual Manual now increases stat growths by 10% instead of 1 level per combat
 
 ## Prophets of the Labyrinth v0.14.0:
 This update has a systems focus: making damage mitigation less situational by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content and balance such as: a new final boss, the Chemist rework, adding more AoE with the Blasting gear variant, and a few new artifacts.

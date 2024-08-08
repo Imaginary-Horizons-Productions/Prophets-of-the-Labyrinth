@@ -404,7 +404,7 @@ Adds Vigilance to user
 - all Barriers (Wind)
 
 ### Wise
-Increases levels gained after battle by 1
+Increases stats gained by level up
 
 **Available on**
 - Chainmail (Earth)
