@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Wise Chainmail",
-	"Gain @{maxHP} Max HP. Gain 10% more stats from leveling up.",
+	"Passive: Gain @{maxHP} Max HP and 10% more stats from leveling up.",
 	"N/A",
 	"Trinket",
 	"Untyped",

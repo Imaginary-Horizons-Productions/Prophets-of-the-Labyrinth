@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Wolf Ring",
-	"Gain @{poise} Poise",
+	"Passive: Gain @{poise} Poise",
 	"N/A",
 	"Trinket",
 	"Untyped",

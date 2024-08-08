@@ -1,9 +1,9 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.15.0:
-After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more differences between archetypes so picking party composition is a more interesting decision, a step toward getting to a place where it may vary based on labyrinth choice as well. Predicts are now unique combinations of information, as opposed to fully unique types of information. For example, multiple different archetypes will be able to predcit HP, but only the Hemomancer will be able to predict both HP and Speed.
+After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.
 ### Detective
 - Predict: Elements & Modifiers
-- Added **Flanking Pistol**: damage rewards for coordinating with allies
+- Added **Flanking Pistol**: damage reward for coordinating
 - Added **Urgent Sabotage Kit**: priority improves the party's chance to get mileage out of the debuffs
 - Fixed Pistol reporting the wrong ally getting Powered Up
 ### Hemomancer
@@ -20,6 +20,11 @@ After the systems focus in v0.14, this update is looping back to give some love 
 - Predict: Modifiers & Stagger
 - Fate-Sealing Censor → **Staggering Censor**: to add Stun potential
 - Flanking Corrosion → **Fate-Sealing Corrosion**: Ritualist doesn't have a speed predict for Exposed
+### New Content
+- Artifacts: Floating Multiplier, Peacock Charm, Best-in-Class Hammer
+- Gear: Shoulder Throw, Goad Futility, Evasive Shoulder Throw, Sabotaging Cauldron Stir, Corrosive Cauldron Stir, Bouncing Medicine, Cleansing Medicine, Soothing Medicine, Distracting Poison Torrent
+- Challenge: Into the Deep End
+- Modifiers: Agility (buff: inverse of Paralysis, allows the bearer to shrug off 2 Stagger per turn), Lucky & Unlucky (buff/debuff pair, double/halve your chance to crit), Distracted (debuff: inverse of Vigilance, causes Exposed to be retained between rounds)
 ### Artifact Elements
 Some artifacts are now associated with an element and will only available when a party member has that element (Untyped always available).
 - Fire: Best-in-Class Hammer
@@ -28,10 +33,6 @@ Some artifacts are now associated with an element and will only available when a
 - Wind: Hawk Tailfeather
 - Light: Hammerspace Holster
 - Darkness: Enchanted Map
-### New Content
-- Artifacts: Floating Multiplier, Peacock Charm, Best-in-Class Hammer
-- Gear: Shoulder Throw, Goad Futility, Evasive Shoulder Throw, Sabotaging Cauldron Stir, Corrosive Cauldron Stir, Bouncing Medicine, Cleansing Medicine, Soothing Medicine, Distracting Poison Torrent
-- Challenge: Into the Deep End
 ### Changed Gear
 - Removed starting gear from drop pool
 - Increased Hunter's gear's reward to 30g per kill
@@ -45,10 +46,7 @@ Some artifacts are now associated with an element and will only available when a
 - **Infinite Regenerations** Light → Fire: Regen is Fire-style
 - **Spears** Wind → Earth: Stagger is Earth-style
 - **Wise Chainmail** now increases stat growths by 10% instead of 1 level per combat
-### New Modifiers
-- Agility (buff: inverse of Paralysis) allows the bearer to shrug off 2 Stagger per turn
-- Lucky & Unlucky (buff/debuff pair) double/halve your chance to crit
-- Distracted (debuff: inverse of Vigilance) causes Exposed to be retained between rounds
+- Cursed gear now has negative base cost
 ### Other Changes
 - New command: `/share-seed`
 - Fixed Celestial Knight Insiginia triggering on turns the player is stunned
@@ -57,6 +55,7 @@ Some artifacts are now associated with an element and will only available when a
 - Fixed some crashes when looking up items
 - Exposed: increased bonus to 100%, fixed a bug where it didn't decrement on hit
 - Manual Manual now increases stat growths by 10% instead of 1 level per combat
+- Reduced crit rate gained from levelup from 1 to 0.25
 
 ## Prophets of the Labyrinth v0.14.0:
 This update has a systems focus: making damage mitigation less situational by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content and balance such as: a new final boss, the Chemist rework, adding more AoE with the Blasting gear variant, and a few new artifacts.

@@ -20,51 +20,54 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Common: [
 				"Blood Aegis",
-				"Life Drain"
-			],
-			Rare: [
+				"Power from Wrath",
 				"Toxic Blood Aegis",
 				"Furious Life Drain",
 				"Thirsting Life Drain"
+			],
+			Rare: [
 			]
 		},
 		Earth: {
 			Cursed: [
 			],
 			Common: [
+				"Certain Victory",
 				"Goad Futility",
 				"Pistol",
-				"Sabotage Kit",
-				"Spear"
-			],
-			Rare: [
+				"Spear",
+				"Hunter's Certain Victory",
+				"Lethal Certain Victory",
+				"Reckless Certain Victory",
 				"Flanking Pistol",
 				"Urgent Sabotage Kit",
 				"Lethal Spear",
 				"Reactive Spear",
 				"Sweeping Spear",
+			],
+			Rare: [
 			]
 		},
 		Fire: {
 			Cursed: [
 			],
 			Common: [
-				"Battleaxe",
-				"Censer",
-				"Corrosion",
 				"Firecracker",
 				"Infinite Regeneration",
-				"Shortsword"
-			],
-			Rare: [
+				"Shortsword",
 				"Furious Battleaxe",
 				"Reactive Battleaxe",
 				"Staggering Censer",
 				"Fate-Sealing Corrosion",
 				"Midas's Firecracker",
+				"Toxic Firecracker",
 				"Discounted Infinite Regeneration",
 				"Fate-Sealing Infinite Regeneration",
-				"Lethal Shortsword"
+				"Accelerating Shortsword",
+				"Lethal Shortsword",
+				"Toxic Shortsword"
+			],
+			Rare: [
 			]
 		},
 		Light: {
@@ -72,46 +75,51 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Common: [
 				"Shoulder Throw",
-				"War Cry"
-			],
-			Rare: [
+				"War Cry",
 				"Evasive Shoulder Throw",
 				"Charging War Cry",
 				"Slowing War Cry",
 				"Tormenting War Cry"
+			],
+			Rare: [
 			]
 		},
 		Water: {
 			Cursed: [
 			],
 			Common: [
-				"Cauldron Stir",
-				"Medicine",
-				"Poison Torrent"
-			],
-			Rare: [
+				"Blood Aegis",
+				"Charging Blood Aegis",
+				"Reinforced Blood Aegis",
+				"Toxic Blood Aegis",
 				"Corrosive Cauldron Stir",
 				"Sabotaging Cauldron Stir",
 				"Bouncing Medicine",
 				"Cleansing Medicine",
 				"Soothing Medicine",
-				"Distracting Poison Torrent"
+				"Distracting Poison Torrent",
+				"Harmful Poison Torrent"
+			],
+			Rare: [
 			]
 		},
 		Wind: {
 			Cursed: [
 			],
 			Common: [
-				"Bow"
+				"Unstoppable Bow",
+				"Slowing Daggers"
 			],
 			Rare: [
-				"Unstoppable Bow"
 			]
 		},
 		Untyped: {
 			Cursed: [
 			],
 			Common: [
+				"Cursed Tome",
+				"Cursed Blade",
+				"Wise Chainmail"
 			],
 			Rare: [
 			]

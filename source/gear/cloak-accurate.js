@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes/index.js');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accurate Cloak",
-	"Gain @{critRate} Crit Rate; gain @{mod0Stacks} @{mod0} when used in combat",
+	"Gain @{mod0Stacks} @{mod0}. Passive: Gain @{critRate} Crit Rate",
 	"@{mod0} +@{bonus}",
 	"Armor",
 	"Wind",
