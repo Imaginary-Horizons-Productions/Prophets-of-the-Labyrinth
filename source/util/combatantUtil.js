@@ -117,8 +117,7 @@ function dealModifierDamage(target, modifier, adventure) {
 	}
 
 	target.hp -= pendingDamage;
-	const modifierEmoji = getModifierEmoji(modifier);
-	let resultText = ` **${getNames([target], adventure)[0]}** takes ${pendingDamage} ${modifierEmoji ?? modifier} damage!${downedCheck(target, adventure)}`;
+	let resultText = ` **${getNames([target], adventure)[0]}** takes ${pendingDamage} ${getModifierEmoji(modifier)} damage!${downedCheck(target, adventure)}`;
 
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
