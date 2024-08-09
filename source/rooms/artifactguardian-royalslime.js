@@ -4,7 +4,7 @@ const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 module.exports = new RoomTemplate("A Slimy Throneroom",
 	"@{adventure}",
 	"Artifact Guardian",
-	"A long hall of wavy mirrors sits silently between the party and the door... until a bunch of shadows step out of the mirror and attack the party!",
+	"Off to the side of the room lays a knocked over thone and crown. As the party approaches it, slime gushes from the ceiling, engulfing the objects. The slime collects stands itself up into a teardrop shape, suspending the throne inside it and the crown atop it, then begins rolling in the direction of the party.",
 	[
 		new ResourceTemplate("3", "internal", "levelsGained"),
 		new ResourceTemplate("1", "loot", "artifact"),
