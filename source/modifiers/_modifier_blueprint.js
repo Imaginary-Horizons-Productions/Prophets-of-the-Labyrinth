@@ -2,7 +2,7 @@ const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("name",
 	"description",
-	null,
+	"emoji markdown",
 	true,
 	false,
 	1

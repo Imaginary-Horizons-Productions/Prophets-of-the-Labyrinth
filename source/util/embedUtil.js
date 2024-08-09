@@ -406,11 +406,8 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 			}
 			const modifierButton = new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
 				.setLabel(`${modifierName} x ${delver.modifiers[modifierName]}`)
-				.setStyle(style);
-			const modifierEmoji = getModifierEmoji(modifierName);
-			if (modifierEmoji) {
-				modifierButton.setEmoji(modifierEmoji);
-			}
+				.setStyle(style)
+				.setEmoji(getModifierEmoji(modifierName));
 			actionRow.push(modifierButton);
 		}
 		if (modifiers.length > 4) {
