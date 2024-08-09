@@ -2,8 +2,8 @@ const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Wind Weakness",
 	"Suffer weakness to Wind damage for @{stackCount} rounds.",
-	null,
+	"<:WindWeakness:1271513945433313301>",
 	false,
 	true,
 	1
-).setInverse("Wind Weakness");
+).setInverse("Wind Absorb");
