@@ -12,7 +12,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		Light: [],
 		Water: [],
 		Wind: [],
-		Untyped: []
+		Untyped: ["Placebo"]
 	},
 	{
 		Darkness: {

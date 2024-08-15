@@ -3,7 +3,7 @@ const { ButtonWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { modifiersToString } = require('../util/combatantUtil');
 const { randomAuthorTip } = require('../util/embedUtil');
-const { isBuff, isDebuff, getModifierDescription } = require('../modifiers/_modifierDictionary');
+const { isBuff, isDebuff, getModifierDescription, getModifierEmoji } = require('../modifiers/_modifierDictionary');
 
 const mainId = "modifier";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -31,7 +31,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				embeds: [
 					new EmbedBuilder().setColor(styleColor)
 						.setAuthor(randomAuthorTip())
-						.setTitle(`${modifierName} x ${delver.modifiers[modifierName]}`)
+						.setTitle(`${modifierName} x ${delver.modifiers[modifierName]} ${getModifierEmoji(modifierName)}`)
 						.setDescription(getModifierDescription(modifierName, delver, adventure))
 						.addFields({ name: "Category", value: `${buff ? "Buff" : debuff ? "Debuff" : "Modifier"}` })
 				], ephemeral: true

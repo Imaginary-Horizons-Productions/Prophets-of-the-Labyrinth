@@ -69,9 +69,7 @@ function generateCombatRoomBuilder(extraButtons) {
 		} else {
 			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
 
-			/** @type {number} didn't want to allow numbers as history entries generally or convert to and from string; see checkEndCombat in adventureOrcustrator */
-			const baseLevels = adventure.room.history.baseLevels[0];
-			roomEmbed.addFields({ name: "Level-Up!", value: `Everyone gains ${baseLevels} levels.` }, { name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
+			roomEmbed.addFields({ name: "Level-Up!", value: `Everyone gains ${adventure.room.resources.levelsGained.count ?? 0} levels.` }, { name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
 			return {
 				embeds: [roomEmbed],
 				components: [generateLootRow(adventure), generateRoutingRow(adventure)]

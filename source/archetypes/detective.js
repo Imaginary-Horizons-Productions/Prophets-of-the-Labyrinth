@@ -1,5 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
-const { getCombatantWeaknesses, getNames } = require("../util/combatantUtil");
+const { getCombatantWeaknesses, getNames, modifiersToString } = require("../util/combatantUtil");
 const { getEmoji, getResistances } = require("../util/elementUtil");
 
 module.exports = new ArchetypeTemplate("Detective",

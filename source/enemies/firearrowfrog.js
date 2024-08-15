@@ -55,7 +55,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	effect: (targets, user, isCrit, adventure) => {
 		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 		if (isCrit) {
-			addStagger(targets, "elementMatchFoe");
+			changeStagger(targets, "elementMatchFoe");
 		}
 		if (slowedTargets.length > 0) {
 			return `${joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed")}.`;

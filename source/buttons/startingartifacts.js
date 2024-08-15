@@ -20,7 +20,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const options = [];
 
 		// This randomizer is separate from the Adventure method because it doesn't advance the rnIndex so that players can't reroll starting artifacts by pushing the button again
-		let start = parseInt(interaction.user.id) % adventure.rnTable.length;
+		// Based on Discord snowflake generation, the bits from 22 to 27 refer to the ms out of 64 ms interals a user created their account on
+		let start = Number(BigInt(interaction.user.id) >> 22n & 63n);
 		const artifactsRolledSoFar = new Set();
 		let artifactBulletList = "";
 		const playerArtifactCollection = Object.values(playerProfile.artifacts);

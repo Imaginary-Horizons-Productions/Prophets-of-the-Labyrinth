@@ -682,7 +682,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 		}
 
 		for (const delver of adventure.delvers) {
-			levelUp(delver, baseLevelsGained, adventure);
+			levelUp(delver, adventure.room.resources.levelsGained.count ?? 0, adventure);
 		}
 
 		// Gear drops

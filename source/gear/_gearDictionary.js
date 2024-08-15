@@ -256,9 +256,11 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			.replace(/@{poise}/g, getGearProperty(gearName, "poise"))
 			.replace(/@{extraStagger}/g, `${stagger} Stagger`);
 		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
-			const modifierEmoji = getModifierEmoji(modifier.name);
-			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji)
-				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
+			if (!modifier.name.startsWith("unparsed")) {
+				const modifierEmoji = getModifierEmoji(modifier.name);
+				description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji);
+			}
+			description = description.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		})
 		return description;
 	} else {
