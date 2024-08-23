@@ -2,7 +2,7 @@ const { GearTemplate } = require("../classes");
 const { addModifier, removeModifier, changeStagger, getNames } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Soothing Floating Mist Stance",
-	"Enter a stance that increases Punch stagger by @{bonus} and grants @{mod0Stacks} @{mod0} each round (exit other stances), gain @{mod1Stacks} @{mod1} now",
+	"Enter a stance that increases Punch stagger by 2 and grants @{mod0Stacks} @{mod0} each round (exit other stances), gain @{mod1Stacks} @{mod1} now",
 	"Gain @{mod0Stacks} @{mod0} now",
 	"Technique",
 	"Light",
@@ -33,7 +33,7 @@ module.exports = new GearTemplate("Soothing Floating Mist Stance",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
+).setSidegrades("Agile Floating Mist Stance")
+	.setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
 	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Floating Mist Stance", stacks: 1 }, { name: "Regen", stacks: 2 })
-	.setBonus(2) // Punch stagger boost
 	.setDurability(10);

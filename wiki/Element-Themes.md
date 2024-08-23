@@ -152,6 +152,7 @@ Archetypes:
 ### Uncommon Variants
 
 ## Uncategorized Variants
+- Agile
 - Awesome
 - Bashing
 - Bouncing

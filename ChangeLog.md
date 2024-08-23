@@ -3,7 +3,9 @@
 ### Gear
 - Changed effect of Hunter's variant to "gain Power Up on kill"
 - Renamed Hunter's to Thief's
+- Thief's Certain Victory → **Hunter's Certain Victory**
 - Fixed a bug where Certain Victory and upgrades (except Reckless Certain Victory) was providing Power Up before dealing damage
+- New Gear: Hunter's Morning Star, Agile Floating Mist Stance
 ## Prophets of the Labyrinth v0.15.0:
 After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.
 ### Detective

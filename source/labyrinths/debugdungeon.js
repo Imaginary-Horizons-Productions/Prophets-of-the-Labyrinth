@@ -66,6 +66,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Agile Floating Mist Stance",
 				"Hunter's Morning Star"
 			],
 			Rare: [
