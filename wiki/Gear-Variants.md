@@ -19,6 +19,12 @@ Passively increases the user's Crit Rate
 - all Cloaks (Wind)
 - Cloak (Wind)
 
+### Agile
+Add Agility to user
+
+**Available on**
+- Floating Mist Stance (Light)
+
 ### Awesome
 Bonus damage if target is Stunned
 
