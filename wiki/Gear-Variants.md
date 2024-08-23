@@ -205,6 +205,7 @@ Add Lucky to the user
 
 **Available on**
 - Scutum (Fire)
+- Second Wind (Untyped)
 
 ### Midas's
 Adds Curse of Midas to target

@@ -29,6 +29,6 @@ module.exports = new GearTemplate("Cleansing Second Wind",
 		return resultText;
 	}
 ).setTargetingTags({ type: "self", team: "none", needsLivingTargets: true })
-	.setSidegrades("Soothing Second Wind")
+	.setSidegrades("Lucky Second Wind", "Soothing Second Wind")
 	.setDurability(15)
 	.setHealing(45);

@@ -137,6 +137,7 @@ for (const file of [
 	"scythe-unstoppable.js",
 	"secondwind-base.js",
 	"secondwind-cleansing.js",
+	"secondwind-lucky.js",
 	"secondwind-soothing.js",
 	"shortsword-accelerating.js",
 	"shortsword-base.js",
