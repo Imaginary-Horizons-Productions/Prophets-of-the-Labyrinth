@@ -112,11 +112,13 @@ class Adventure {
 	getBaseScore() {
 		const livesScore = this.lives * 10;
 		const goldScore = Math.floor(Math.log10(this.peakGold)) * 5;
+		const guardianScore = this.scouting.artifactGuardiansEncountered * 5;
 		const artifactMultiplier = 1 + (this.getArtifactCount("Floating Multiplier") / 4);
 		return {
 			livesScore,
 			goldScore,
-			total: Math.floor((this.score + this.depth + livesScore + goldScore) * artifactMultiplier)
+			guardianScore,
+			total: Math.floor((this.score + this.depth + livesScore + goldScore + guardianScore) * artifactMultiplier)
 		};
 	}
 
