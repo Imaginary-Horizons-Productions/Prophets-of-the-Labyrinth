@@ -19,6 +19,6 @@ module.exports = new GearTemplate("Sharpened Strong Attack",
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Staggering Weapon")
+	.setSidegrades("Staggering Strong Attack")
 	.setDurability(15)
 	.setDamage(90);
