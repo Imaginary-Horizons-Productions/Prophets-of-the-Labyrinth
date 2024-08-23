@@ -150,6 +150,7 @@ for (const file of [
 	"spear-reactive.js",
 	"spear-sweeping.js",
 	"strongattack-base.js",
+	"strongattack-flanking.js",
 	"strongattack-sharpened.js",
 	"strongattack-staggering.js",
 	"warcry-base.js",

@@ -136,6 +136,7 @@ Adds Exposed to target
 **Available on**
 - Life Drain (Darkness)
 - Pistol (Untyped)
+- Strong Attack (Untyped)
 
 ### Furious
 Increases damage proprotional to user's missing HP

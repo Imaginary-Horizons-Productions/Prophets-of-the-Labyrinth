@@ -105,7 +105,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Lucky Second Wind"
+				"Lucky Second Wind",
+				"Flanking Strong Attack"
 			],
 			Rare: [
 			]
