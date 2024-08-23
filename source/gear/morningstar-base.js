@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Morning Star",
 		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Awesome Morning Star", "Bashing Morning Star")
+	.setUpgrades("Awesome Morning Star", "Bashing Morning Star", "Hunter's Morning Star")
 	.setStagger(2)
 	.setDurability(15)
 	.setDamage(40);

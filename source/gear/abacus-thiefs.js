@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Hunter's Abacus",
+module.exports = new GearTemplate("Thief's Abacus",
 	"Deal @{damage} (+5% foe max hp) @{element} damage to a foe, gain @{bonus}g on kill",
 	"Damage x@{critMultiplier}",
 	"Trinket",

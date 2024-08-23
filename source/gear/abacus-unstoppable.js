@@ -23,6 +23,6 @@ module.exports = new GearTemplate("Unstoppable Abacus",
 		return resultText;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Hunter's Abacus", "Sharpened Abacus")
+	.setSidegrades("Thief's Abacus", "Sharpened Abacus")
 	.setDurability(15)
 	.setDamage(40);
