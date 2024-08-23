@@ -7,7 +7,7 @@ module.exports = new GearTemplate("Urgent Sabotage Kit",
 	"Afflict a foe with @{mod0Stacks} @{mod0} and @{mod1Stacks} stacks of a random weakness with priority",
 	"Slow and Weakness +@{bonus}",
 	"Weapon",
-	"Earth",
+	"Untyped",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [slow, weakness], bonus } = module.exports;
@@ -42,7 +42,7 @@ module.exports = new GearTemplate("Urgent Sabotage Kit",
 	}
 ).setSidegrades("Long Sabotage Kit", "Shattering Sabotage Kit")
 	.setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setModifiers({ name: "Slow", stacks: 2 }, { name: "unparsed random weakness", stacks: 2 })
+	.setModifiers({ name: "Slow", stacks: 2 }, { name: "unparsed random weakness", stacks: 3 })
 	.setBonus(2) // Crit Slow and Weakness stacks
 	.setDurability(15)
 	.setPriority(1)

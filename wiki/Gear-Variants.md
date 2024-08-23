@@ -107,13 +107,13 @@ Doubles number of targets
 
 **Available on**
 - Firecracker (Fire)
-- Pistol (Earth)
+- Pistol (Untyped)
 
 ### Duelist's
 Bonus damage if only one attacking target
 
 **Available on**
-- Pistol (Earth)
+- Pistol (Untyped)
 
 ### Evasive
 Adds Evade to the user
@@ -135,7 +135,7 @@ Adds Exposed to target
 
 **Available on**
 - Life Drain (Darkness)
-- Pistol (Earth)
+- Pistol (Untyped)
 
 ### Furious
 Increases damage proprotional to user's missing HP
@@ -196,7 +196,7 @@ Increased modifier stacks
 
 **Available on**
 - Cloak (Wind)
-- Sabotage Kit (Earth)
+- Sabotage Kit (Untyped)
 - Barrier (Wind)
 - Risky Mixture (Darkness)
 
@@ -261,7 +261,7 @@ Adds protection to the user
 Adds a random modifier that converts one of target's neutral elements to a weakness
 
 **Available on**
-- all Sabotage Kits (Earth)
+- all Sabotage Kits (Untyped)
 - Cauldron Stir (Water)
 
 ### Semi-Decimating
@@ -285,7 +285,7 @@ Adds Frail to target
 **Available on**
 - Corrosion (Fire)
 - Lance (Earth)
-- Sabotage Kit (Earth)
+- Sabotage Kit (Untyped)
 
 ### Slowing
 Adds Slow to target
@@ -400,7 +400,7 @@ Increased priority
 - Barrier (Wind)
 - Fever Break (Darkness)
 - Herb Basket (Earth)
-- Sabotage Kit (Earth)
+- Sabotage Kit (Untyped)
 
 ### Vexing
 Bonus damage if target has debuffs

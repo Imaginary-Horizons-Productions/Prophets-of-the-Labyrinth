@@ -4,7 +4,7 @@ const { getEmoji, getResistances } = require("../util/elementUtil");
 
 module.exports = new ArchetypeTemplate("Detective",
 	"They'll be able to assess combatant elemental affinities and modifiers. They'll also be able to induce weaknesses on foes with their Sabotage Kit.",
-	"Earth",
+	"Untyped",
 	{
 		maxHPGrowth: 25,
 		powerGrowth: 2.5,

@@ -6,7 +6,7 @@ module.exports = new GearTemplate("Double Pistol",
 	"Strike a foe for @{damage} @{element} damage, give 2 random allies @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
 	"Damage x@{critMultiplier}",
 	"Weapon",
-	"Earth",
+	"Untyped",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { damage, critMultiplier, element, modifiers: [powerUp] } = module.exports;

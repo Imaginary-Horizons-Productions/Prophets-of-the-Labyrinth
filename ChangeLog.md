@@ -1,5 +1,8 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.16.0:
+### Archetypes
+- Changed Detective to Untyped and increased duration of Sabotage Kit (and upgrades) weakness by 1
+   - The case where the Detective innately had elemental advantage against an enemy was too much more powerful than the case where the advantage was earned. Changing to Untyped both removes the innate elemental advantage case, but also makes adding Pistol triggering weakness to enemies always possible (no enemies resist Untyped).
 ### Gear
 - Changed effect of Hunter's variant to "gain Power Up on kill"
 - Renamed Hunter's to Thief's
