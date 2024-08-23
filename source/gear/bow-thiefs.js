@@ -1,7 +1,7 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Hunter's Bow",
+module.exports = new GearTemplate("Thief's Bow",
 	"Strike a foe for @{damage} @{element} damage with priority, gain @{bonus}g on kill",
 	"Damage x@{critMultiplier}",
 	"Weapon",

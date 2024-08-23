@@ -33,17 +33,9 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			],
 			Common: [
 				"Certain Victory",
-				"Goad Futility",
-				"Pistol",
-				"Spear",
 				"Hunter's Certain Victory",
 				"Lethal Certain Victory",
-				"Reckless Certain Victory",
-				"Flanking Pistol",
-				"Urgent Sabotage Kit",
-				"Lethal Spear",
-				"Reactive Spear",
-				"Sweeping Spear",
+				"Reckless Certain Victory"
 			],
 			Rare: [
 			]
@@ -74,12 +66,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Shoulder Throw",
-				"War Cry",
-				"Evasive Shoulder Throw",
-				"Charging War Cry",
-				"Slowing War Cry",
-				"Tormenting War Cry"
+				"Hunter's Morning Star"
 			],
 			Rare: [
 			]

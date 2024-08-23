@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultsSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		const addedModifiers = [];
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		if (addedPowerUp) {
@@ -28,10 +28,10 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 			addedModifiers.push("Exposed");
 		}
 		if (addedModifiers.length > 0) {
-			resultsSentences.push(`${getNames([user], adventure)[0]} is ${listifyEN(addedModifiers)}.`);
+			resultSentences.push(`${getNames([user], adventure)[0]} is ${listifyEN(addedModifiers)}.`);
 		}
-		resultsSentences.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
-		return resultsSentences.join(" ");
+		resultSentences.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
+		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Lethal Certain Victory")

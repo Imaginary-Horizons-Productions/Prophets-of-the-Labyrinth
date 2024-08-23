@@ -169,12 +169,11 @@ Passively increases the user's Max HP
 - Scarf (Untyped)
 
 ### Hunter's
-Gain gold on kill
+Gain Power Up on kill
 
 **Available on**
-- Abacus (Water)
-- Bow (Wind)
 - Certain Victory (Earth)
+- Morning Star (Light)
 
 ### Lethal
 Increased crit damage
@@ -345,6 +344,13 @@ Increased durability
 **Available on**
 - Barrier (Wind)
 - Censer (Fire)
+
+### Thief's
+Gain gold on kill
+
+**Available on**
+- Abacus (Water)
+- Bow (Wind)
 
 ### Thirsting
 Heal user's HP on kill
