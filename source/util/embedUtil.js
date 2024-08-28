@@ -196,7 +196,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
  * @param {string} guildId
  */
 function addScoreField(embed, adventure, guildId) {
-	let { livesScore, goldScore, total: finalScore } = adventure.getBaseScore();
+	let { livesScore, goldScore, guardianScore, total: finalScore } = adventure.getBaseScore();
 	let challengeMultiplier = 1;
 	Object.keys(adventure.challenges).forEach(challengeName => {
 		const challenge = getChallenge(challengeName);
@@ -221,13 +221,14 @@ function addScoreField(embed, adventure, guildId) {
 	const depthScoreLine = generateScoreline("additive", "Depth", adventure.depth);
 	const livesScoreLine = generateScoreline("additive", "Lives", livesScore);
 	const goldScoreline = generateScoreline("additive", "Gold", goldScore);
+	const guardianScoreline = generateScoreline("additive", "Artifact Guardians Defeated", guardianScore);
 	const bonusScoreline = generateScoreline("additive", "Bonus", adventure.score);
 	const challengesScoreline = generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
 	const skippedArtifactScoreline = generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
 	const artifactMultiplierScoreline = generateScoreline("multiplicative", "Floating Multiplier Bonus", 1 + (adventure.getArtifactCount("Floating Multiplier") / 4));
 	const defeatScoreline = generateScoreline("multiplicative", "Defeat", adventure.state === "defeat" ? 0.5 : 1);
 	const giveupScoreline = generateScoreline("multiplicative", "Give Up", adventure.state === "giveup" ? 0 : 1);
-	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${artifactMultiplierScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
+	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${guardianScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${artifactMultiplierScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
 	adventure.score = finalScore;
 
 	const company = getCompany(guildId);
