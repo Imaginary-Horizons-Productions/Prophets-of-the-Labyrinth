@@ -229,7 +229,7 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		const element = getGearProperty(gearName, "element");
 		if (holder) {
 			damage += holder.power + holder.getModifierStacks("Power Up");
-			damage = Math.min(damage, holder.getDamageCap());
+			damage = Math.floor(Math.min(damage, holder.getDamageCap()));
 
 			if (holder.element === element) {
 				description = description

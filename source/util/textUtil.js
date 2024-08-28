@@ -78,7 +78,7 @@ function calculateTagContent(text, tags) {
 			const countExpression = match?.[1].replace(untagged, "n");
 			if (countExpression) {
 				let parsedExpression = parseExpression(countExpression, count);
-				if (typeof parsedExpression === "number") {
+				if (typeof parsedExpression === "number" && !Number.isInteger(parsedExpression)) {
 					parsedExpression = parsedExpression.toFixed(2);
 				}
 				text = text.replace(taggedSingle, parsedExpression);
