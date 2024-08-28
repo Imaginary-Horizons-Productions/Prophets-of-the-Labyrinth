@@ -21,6 +21,7 @@ module.exports = new GearTemplate("Ice Bolt",
 		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed.")}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+	.setUpgrades("Distracting Ice Bolt")
 	.setDamage(40)
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDurability(15);

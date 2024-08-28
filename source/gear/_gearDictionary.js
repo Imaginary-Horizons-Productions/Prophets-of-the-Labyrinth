@@ -79,6 +79,7 @@ for (const file of [
 	"herbbasket-reinforced.js",
 	"herbbasket-urgent.js",
 	"icebolt-base.js",
+	"icebolt-distracting.js",
 	"infiniteregeneration-base.js",
 	"infiniteregeneration-discounted.js",
 	"infiniteregeneration-fatesealing.js",
