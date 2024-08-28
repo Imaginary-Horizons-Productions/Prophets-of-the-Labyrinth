@@ -651,7 +651,7 @@ function endRound(adventure, thread) {
 			removeModifier([combatant], { name: "Exposed", stacks: getTurnDecrement("Exposed"), force: true });
 		}
 		for (const modifier in combatant.modifiers) {
-			if (["Evade", "Exposed"].includes(modifier)) {
+			if (!["Evade", "Exposed"].includes(modifier)) {
 				removeModifier([combatant], { name: modifier, stacks: getTurnDecrement(modifier), force: true })
 			}
 		}
