@@ -100,6 +100,7 @@ Reduced base price
 Add Distracted to target
 
 **Available on**
+- Ice Bolt (Water)
 - Poison Torrent (Water)
 
 ### Double
