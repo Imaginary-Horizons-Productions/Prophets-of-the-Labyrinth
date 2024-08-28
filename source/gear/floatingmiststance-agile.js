@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, removeModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, changeStagger, getNames, enterStance } = require("../util/combatantUtil");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Agile Floating Mist Stance",
@@ -13,15 +13,14 @@ module.exports = new GearTemplate("Agile Floating Mist Stance",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		removeModifier([user], { name: "Iron Fist Stance", stacks: "all", force: true });
 		const resultFragments = [];
+		const { didAddStance, stancesRemoved } = enterStance(user, floatingMistStance);
+		if (stancesRemoved.length > 0) {
+			resultFragments.push(`exits ${listifyEN(stancesRemoved, false)}`);
+		}
 		const addedAgility = addModifier([user], agility).length > 0;
 		if (addedAgility) {
 			resultFragments.push("gains Agility");
-		}
-		const addedFloatingMistStance = addModifier([user], floatingMistStance).length > 0;
-		if (addedFloatingMistStance) {
-			resultFragments.push("enters Floating Mist Stance")
 		}
 		if (isCrit) {
 			const addedEvade = addModifier([user], displayEvade).length > 0;
@@ -31,6 +30,8 @@ module.exports = new GearTemplate("Agile Floating Mist Stance",
 		}
 		if (resultFragments.length > 0) {
 			return `${getNames([user], adventure)[0]} ${listifyEN(resultFragments)}.`;
+		} else if (didAddStance) {
+			return "";
 		} else {
 			return "But nothing happened.";
 		}

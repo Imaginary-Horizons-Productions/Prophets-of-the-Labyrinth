@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, removeModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, changeStagger, getNames, enterStance } = require("../util/combatantUtil");
+const { listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Soothing Floating Mist Stance",
 	"Enter a stance that increases Punch stagger by 2 and grants @{mod0Stacks} @{mod0} each round (exit other stances), gain @{mod1Stacks} @{mod1} now",
@@ -12,23 +13,25 @@ module.exports = new GearTemplate("Soothing Floating Mist Stance",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		let addedEvade = false;
-		if (isCrit) {
-			addedEvade = addModifier([user], displayEvade).length > 0;
+		const resultFragments = [];
+		const { didAddStance, stancesRemoved } = enterStance(user, floatingMistStance);
+		if (stancesRemoved.length > 0) {
+			resultFragments.push(`exits ${listifyEN(stancesRemoved, false)}`);
 		}
-		removeModifier([user], { name: "Iron Fist Stance", stacks: "all", force: true });
-		const addedFloatingMistStance = addModifier([user], floatingMistStance).length > 0;
 		const addedRegen = addModifier([user], regen).length > 0;
-		if (addedFloatingMistStance) {
+		if (addedRegen) {
+			resultFragments.push("gains Regen");
+		}
+		if (isCrit) {
+			const addedEvade = addModifier([user], displayEvade).length > 0;
 			if (addedEvade) {
-				return `${getNames([user], adventure)[0]} enters Floating Mist Stance, gains Regen, and prepares to Evade.`;
-			} else {
-				return `${getNames([user], adventure)[0]} enters Floating Mist Stance and gains Regen.`;
+				resultFragments.push("prepares to Evade");
 			}
-		} else if (addedRegen) {
-			return `${getNames([user], adventure)[0]} gains Regen${addedEvade ? " and prepares to Evade" : ""}.`;
-		} else if (addedEvade) {
-			return `${getNames([user], adventure)[0]} prepares to Evade.`;
+		}
+		if (resultFragments.length > 0) {
+			return `${getNames([user], adventure)[0]} ${listifyEN(resultFragments, false)}.`;
+		} else if (didAddStance) {
+			return "";
 		} else {
 			return "But nothing happened.";
 		}

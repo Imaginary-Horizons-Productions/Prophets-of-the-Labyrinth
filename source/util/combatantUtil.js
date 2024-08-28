@@ -266,6 +266,24 @@ function removeModifier(combatants, { name: modifier, stacks, force = false }) {
 	return affectedCombatants;
 }
 
+const ALL_STANCES = ["Iron Fist Stance", "Floating Mist Stance"];
+
+/** Exits all stances aside from the given one, then adds the given stance
+ * @param {Combatant} combatant
+ * @param {{name: "Iron Fist Stance" | "Floating Mist Stance", stacks: number}} stanceModifier
+ */
+function enterStance(combatant, stanceModifier) {
+	const stancesRemoved = [];
+	ALL_STANCES.filter(stanceToCheck => stanceToCheck !== stanceModifier.name).forEach(stanceToRemove => {
+		const didRemoveStance = removeModifier([combatant], { name: stanceToRemove, stacks: "all", force: true }).length > 0;
+		if (didRemoveStance) {
+			stancesRemoved.push(stanceToRemove);
+		}
+	});
+	const didAddStance = addModifier([combatant], stanceModifier).length > 0;
+	return { didAddStance, stancesRemoved };
+}
+
 /** add Stagger, negative values allowed
  * @param {Combatant[]} combatants
  * @param {number | "elementMatchAlly" | "elementMatchFoe"} value
@@ -328,6 +346,7 @@ module.exports = {
 	getNames,
 	addModifier,
 	removeModifier,
+	enterStance,
 	changeStagger,
 	addProtection,
 	modifiersToString,

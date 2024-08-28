@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, removeModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Organic Iron Fist Stance",
@@ -18,12 +18,20 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 			const foeTeam = (user.team === "delver" ? adventure.room.enemies : adventure.delvers).filter(foe => foe.hp > 0);
 			frailedTargets.concat(getNames(addModifier(foeTeam, frail), adventure));
 		}
-		removeModifier([user], { name: "Floating Mist Stance", stacks: "all", force: true });
-		const ironFistStanceAdded = addModifier([user], ironFistStance).length > 0;
-		if (ironFistStanceAdded) {
-			return `${getNames([user], adventure)} enters Iron Fist Stance.${frailedTargets.length > 0 ? ` ${joinAsStatement(false, frailedTargets, "becomes", "become", "Frail.")}` : ""}`;
-		} else if (frailedTargets.length > 0) {
-			return joinAsStatement(false, frailedTargets, "becomes", "become", "Frail.");
+		const { didAddStance, stancesRemoved } = enterStance(user, ironFistStance);
+		const resultSentences = [];
+		if (stancesRemoved.length > 0) {
+			resultSentences.push(`${getNames([user], adventure)} exits ${listifyEN(stancesRemoved, false)}.`);
+		}
+
+		if (frailedTargets.length > 0) {
+			resultSentences.push(joinAsStatement(false, frailedTargets, "becomes", "become", "Frail."));
+		}
+
+		if (resultSentences.length > 0) {
+			return resultSentences.join(" ");
+		} else if (didAddStance) {
+			return "";
 		} else {
 			return "But nothing happened.";
 		}
