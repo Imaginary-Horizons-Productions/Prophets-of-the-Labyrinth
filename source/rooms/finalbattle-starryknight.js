@@ -1,6 +1,8 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
+const enemies = [["Starry Knight", "1"]];
+
 module.exports = new RoomTemplate("Confronting the Top Celestial Knight",
 	"Light",
 	"Final Battle",
@@ -10,4 +12,4 @@ module.exports = new RoomTemplate("Confronting the Top Celestial Knight",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder(["appease"])
-).setEnemies(["Starry Knight", "1"]);
+).setEnemies(enemies);

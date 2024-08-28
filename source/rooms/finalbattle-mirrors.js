@@ -1,6 +1,8 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
+const enemies = [["@{clone}", "n"]];
+
 module.exports = new RoomTemplate("Hall of Mirrors",
 	"Untyped",
 	"Final Battle",
@@ -10,4 +12,4 @@ module.exports = new RoomTemplate("Hall of Mirrors",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).setEnemies(["@{clone}", "n"]);
+).setEnemies(enemies);
