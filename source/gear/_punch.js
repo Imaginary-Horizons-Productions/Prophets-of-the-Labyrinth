@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Punch",
 		if (totalStagger > 0) {
 			changeStagger(targets, totalStagger);
 		}
-		return `${dealDamage(targets, user, pendingDamage, false, pendingElement, adventure)}${totalStagger > 0 && user.element !== "Untyped" ? ` ${joinAsStatement(false, getNames(targets), "was", "were", "Staggered.")}` : ""}`;
+		return `${dealDamage(targets, user, pendingDamage, false, pendingElement, adventure)}${totalStagger > 0 && user.element !== "Untyped" ? ` ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}` : ""}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setDurability(Infinity)
