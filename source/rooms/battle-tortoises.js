@@ -11,4 +11,4 @@ module.exports = new RoomTemplate("Tortoise Fight",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("Geode Tortoise", "2");
+).setEnemies(["Geode Tortoise", "2"]);

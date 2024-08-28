@@ -246,7 +246,7 @@ function nextRoom(roomType, thread) {
 		}
 	}
 
-	if (Object.keys(roomTemplate.enemyList).length > 0) {
+	if (roomTemplate.enemyList.length > 0) {
 		if (roomType === "Artifact Guardian") {
 			adventure.scouting.artifactGuardiansEncountered++;
 			while (adventure.artifactGuardians.length <= adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians) {
@@ -262,8 +262,8 @@ function nextRoom(roomType, thread) {
 			adventure.scouting.bosses = Math.max(adventure.scouting.bosses - 1, 0);
 		}
 
-		for (const enemyName in roomTemplate.enemyList) {
-			for (let i = 0; i < Math.ceil(parseExpression(roomTemplate.enemyList[enemyName], adventure.delvers.length)); i++) {
+		for (const [enemyName, countExpression] of roomTemplate.enemyList) {
+			for (let i = 0; i < Math.ceil(parseExpression(countExpression, adventure.delvers.length)); i++) {
 				spawnEnemy(getEnemy(enemyName), adventure);
 			}
 		}

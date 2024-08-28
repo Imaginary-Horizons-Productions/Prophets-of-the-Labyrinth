@@ -20,4 +20,4 @@ module.exports = new RoomTemplate("name",
 			]
 		};
 	}
-).addEnemy("name", "countExpression");
+).setEnemies(["name", "countExpression"], ["name", "countExpression"]);

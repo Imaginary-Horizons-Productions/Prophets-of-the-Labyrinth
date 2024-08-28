@@ -12,4 +12,4 @@ module.exports = new RoomTemplate("A Slimy Throneroom",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("Royal Slime", "0.5*n");
+).setEnemies(["Royal Slime", "0.5*n"]);

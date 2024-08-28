@@ -11,6 +11,4 @@ module.exports = new RoomTemplate("Mechabee Fight",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("Mechabee Drone", "n*0.25")
-	.addEnemy("Mechabee Soldier", "1")
-	.addEnemy("Mechabee Drone", "n*0.25");
+).setEnemies(["Mechabee Drone", "n*0.25"], ["Mechabee Soldier", "1"], ["Mechabee Drone", "n*0.25"]);

@@ -11,6 +11,7 @@
 - New Gear: Hunter's Morning Star, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack
 ### Other Changes
 - Parties gain 5 score for each Artifact Guardian they encounter
+- Fixed a bug where not enough mechabees (both soldiers and drones) were spawning, reduced mechabee hp to compensate
 ## Prophets of the Labyrinth v0.15.0:
 After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.
 ### Detective

@@ -11,5 +11,4 @@ module.exports = new RoomTemplate("Slime Fight",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("@{adventure} Slime", "0.5*n")
-	.addEnemy("@{adventureOpposite} Ooze", "0.5*n");
+).setEnemies(["@{adventure} Slime", "0.5*n"], ["@{adventureOpposite} Ooze", "0.5*n"]);

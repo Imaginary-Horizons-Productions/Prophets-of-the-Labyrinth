@@ -7,7 +7,7 @@ const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 
 module.exports = new EnemyTemplate("Mechabee Soldier",
 	"Earth",
-	250,
+	175,
 	100,
 	"6",
 	0,

@@ -282,13 +282,13 @@ class Room {
 	 * @param {string} titleInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementEnum
 	 * @param {Record<string, string[]>} initialHistoryMap
-	 * @param {{[enemyName: string]: number}} enemyList
+	 * @param {[enemyName: string, countExpression: string][]} enemyList
 	 */
 	constructor(titleInput, elementEnum, initialHistoryMap, enemyList) {
 		this.title = titleInput;
 		this.element = elementEnum;
 		this.history = initialHistoryMap;
-		if (enemyList && Object.keys(enemyList).length > 0) {
+		if (enemyList && enemyList.length > 0) {
 			this.round = -1;
 			this.moves = [];
 			this.enemies = [];

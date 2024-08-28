@@ -11,4 +11,4 @@ module.exports = new RoomTemplate("Wild Fire-Arrow Frogs",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("Fire-Arrow Frog", "n");
+).setEnemies(["Fire-Arrow Frog", "n"]);

@@ -10,4 +10,4 @@ module.exports = new RoomTemplate("Confronting the Top Celestial Knight",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder(["appease"])
-).addEnemy("Starry Knight", "1");
+).setEnemies(["Starry Knight", "1"]);

@@ -8,7 +8,7 @@ const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 
 module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
-	200,
+	125,
 	100,
 	"6",
 	0,

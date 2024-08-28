@@ -11,6 +11,4 @@ module.exports = new RoomTemplate("Frog Ranch",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("Mechabee Soldier", "1")
-	.addEnemy("Fire-Arrow Frog", "0.5*n")
-	.addEnemy("Mechabee Soldier", "1");
+).setEnemies(["Mechabee Soldier", "1"], ["Fire-Arrow Frog", "0.5*n"], ["Mechabee Soldier", "1"]);

@@ -10,4 +10,4 @@ module.exports = new RoomTemplate("Hall of Mirrors",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("@{clone}", "n");
+).setEnemies(["@{clone}", "n"]);

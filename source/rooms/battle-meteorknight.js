@@ -11,6 +11,4 @@ module.exports = new RoomTemplate("Meteor Knight Fight",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("Earthly Knight", "0.5*n")
-	.addEnemy("Meteor Knight", "1")
-	.addEnemy("Asteroid", "0.25*n-1");
+).setEnemies(["Earthly Knight", "0.5*n"], ["Meteor Knight", "1"], ["Asteroid", "0.25*n-1"]);

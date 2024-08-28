@@ -10,4 +10,4 @@ module.exports = new RoomTemplate("A Northern Laboratory",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("Elkemist", "1");
+).setEnemies(["Elkemist", "1"]);

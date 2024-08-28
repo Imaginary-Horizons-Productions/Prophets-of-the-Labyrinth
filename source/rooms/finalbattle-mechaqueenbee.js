@@ -10,5 +10,4 @@ module.exports = new RoomTemplate("The Hexagon: Mech Mode",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("Mecha Queen: Mech Mode", "1")
-	.addEnemy("Mechabee Drone", "n");
+).setEnemies(["Mecha Queen: Mech Mode", "1"], ["Mechabee Drone", "n"]);

@@ -11,4 +11,4 @@ module.exports = new RoomTemplate("Hawk Fight",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).addEnemy("Bloodtail Hawk", "1.5*n");
+).setEnemies(["Bloodtail Hawk", "1.5*n"]);
