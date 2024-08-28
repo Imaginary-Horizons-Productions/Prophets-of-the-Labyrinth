@@ -1,6 +1,8 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
+const enemies = [["Elkemist", "1"]];
+
 module.exports = new RoomTemplate("A Northern Laboratory",
 	"Water",
 	"Final Battle",
@@ -10,4 +12,4 @@ module.exports = new RoomTemplate("A Northern Laboratory",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).setEnemies(["Elkemist", "1"]);
+).setEnemies(enemies);

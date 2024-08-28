@@ -32,8 +32,8 @@ class RoomTemplate {
 	/** @type {[enemyName: string, countExpression: string][]} */
 	enemyList = [];
 
-	/** @param {...[enemyName: string, countExpression: string]} enemyListInput */
-	setEnemies(...enemyListInput) {
+	/** @param {[enemyName: string, countExpression: string][]} enemyListInput */
+	setEnemies(enemyListInput) {
 		this.enemyList = enemyListInput;
 		return this;
 	}

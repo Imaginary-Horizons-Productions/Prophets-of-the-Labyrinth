@@ -12,8 +12,8 @@ module.exports = new RoomTemplate("Gear Merchant",
 	"Merchant",
 	"A masked figure sits in front of a rack of weapons and other gear. \"Care to trade?\"",
 	[
-		new ResourceTemplate("n", "always", "gear").setTier("?").setUIGroup(uiGroups[0]),
-		new ResourceTemplate("1", "always", "gear").setTier("Rare").setUIGroup(uiGroups[1])
+		new ResourceTemplate("n+1", "always", "gear").setTier("?").setUIGroup(uiGroups[0]),
+		new ResourceTemplate("2", "always", "gear").setTier("Rare").setUIGroup(uiGroups[1])
 	],
 	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {

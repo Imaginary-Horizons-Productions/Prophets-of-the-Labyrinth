@@ -10,7 +10,7 @@ module.exports = new RoomTemplate("Gear Buying Merchant",
 	"Merchant",
 	"A masked figure sits in front of a half-full rack of weapons and other gear. \"Care to trade?\"",
 	[
-		new ResourceTemplate("n", "always", "gear").setTier("?")
+		new ResourceTemplate("n+1", "always", "gear").setTier("?")
 	],
 	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {

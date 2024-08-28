@@ -1,6 +1,8 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
+const enemies = [["Mecha Queen: Mech Mode", "1"], ["Mechabee Drone", "n"]];
+
 module.exports = new RoomTemplate("The Hexagon: Mech Mode",
 	"Darkness",
 	"Final Battle",
@@ -10,4 +12,4 @@ module.exports = new RoomTemplate("The Hexagon: Mech Mode",
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
-).setEnemies(["Mecha Queen: Mech Mode", "1"], ["Mechabee Drone", "n"]);
+).setEnemies(enemies);
