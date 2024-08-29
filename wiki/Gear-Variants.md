@@ -30,6 +30,7 @@ Bonus damage if target is Stunned
 
 **Available on**
 - all Warhammers (Earth)
+- Ice Bolt (Water)
 - Morning Star (Light)
 
 ### Bashing
