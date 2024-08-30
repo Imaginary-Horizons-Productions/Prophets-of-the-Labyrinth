@@ -114,6 +114,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Hunter's Morning Star",
 				"Vexing Prismatic Blast",
 				"Evasive Shoulder Throw",
+				"Staggering Shoulder Throw",
 				"Charging War Cry",
 				"Slowing War Cry",
 				"Tormenting War Cry"

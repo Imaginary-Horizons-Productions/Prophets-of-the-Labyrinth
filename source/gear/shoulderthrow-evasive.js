@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Evasive Shoulder Throw",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		const pendingEvade = evade;
+		const pendingEvade = { ...evade };
 		if (isCrit) {
 			pendingEvade.stacks++;
 		}
@@ -29,16 +29,17 @@ module.exports = new GearTemplate("Evasive Shoulder Throw",
 			targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
 			const [targetName, userName] = getNames([target, user], adventure);
 			if (addedEvade) {
-				return `${targetName} is redirected into targeting themself. ${userName} prepares to evade.`;
+				return `${targetName} is redirected into targeting themself. ${userName} prepares to Evade.`;
 			} else {
 				return `${targetName} is redirected into targeting themself.`;
 			}
 		} else if (addedEvade) {
-			return `${getNames([user], adventure)[0]} prepares to evade.`;
+			return `${getNames([user], adventure)[0]} prepares to Evade.`;
 		} else {
 			return "But nothing happened.";
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+	.setSidegrades("Staggering Shoulder Throw")
 	.setDurability(10)
 	.setModifiers({ name: "Evade", stacks: 1 });
