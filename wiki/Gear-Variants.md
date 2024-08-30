@@ -184,6 +184,7 @@ Gain Power Up on kill
 **Available on**
 - Certain Victory (Earth)
 - Morning Star (Light)
+- Power from Wrath (Darkness)
 
 ### Lethal
 Increased crit damage

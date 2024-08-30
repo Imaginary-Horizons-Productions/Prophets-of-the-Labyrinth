@@ -120,6 +120,7 @@ for (const file of [
 	"poisontorrent-staggering.js",
 	"powerfromwrath-base.js",
 	"powerfromwrath-bashing.js",
+	"powerfromwrath-hunters.js",
 	"powerfromwrath-staggering.js",
 	"prismaticblast-base.js",
 	"prismaticblast-vexing.js",
