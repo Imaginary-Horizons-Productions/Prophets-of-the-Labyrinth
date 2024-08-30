@@ -21,6 +21,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Common: [
 				"Blood Aegis",
 				"Power from Wrath",
+				"Staggering Power from Wrath",
 				"Toxic Blood Aegis",
 				"Furious Life Drain",
 				"Thirsting Life Drain"
