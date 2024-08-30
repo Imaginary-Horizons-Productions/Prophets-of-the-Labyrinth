@@ -3,7 +3,7 @@ const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Staggering Censer",
-	"Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage and @{foeStagger}",
+	"Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage",
 	"Also apply @{mod0Stacks} @{mod0}",
 	"Trinket",
 	"Fire",

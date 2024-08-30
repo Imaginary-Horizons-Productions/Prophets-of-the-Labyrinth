@@ -125,7 +125,9 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {number} integer */
+	/** For description creation purposes, this stagger is assumed to always be applied. For conditional Stagger (eg on crit) use `setBonus()` instead.
+	 * @param {number} integer
+	 */
 	setStagger(integer) {
 		this.stagger = integer;
 		return this;

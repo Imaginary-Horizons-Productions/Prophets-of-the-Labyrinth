@@ -4,12 +4,12 @@ const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Fate-Sealing Corrosion",
 	"Inflict @{mod0Stacks} @{mod0} on a foe",
-	"Also inflict @{foeStagger} and @{mod1Stacks} @{mod1}",
+	"Inflict @{bonus} more Stagger and @{mod1Stacks} @{mod1}",
 	"Spell",
 	"Fire",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, modifiers: [powerDown, stasis], stagger } = module.exports;
+		const { element, modifiers: [powerDown, stasis], bonus } = module.exports;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Fate-Sealing Corrosion",
 			sentences.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
 		}
 		if (isCrit) {
-			changeStagger(targets, stagger);
+			changeStagger(targets, bonus);
 			sentences.push(joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered."));
 			const sealedTargets = addModifier(targets, stasis);
 			if (sealedTargets.length > 0) {
@@ -35,5 +35,5 @@ module.exports = new GearTemplate("Fate-Sealing Corrosion",
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Harmful Corrosion", "Shattering Corrosion")
 	.setModifiers({ name: "Power Down", stacks: 20 }, { name: "Stasis", stacks: 1 })
-	.setStagger(2)
+	.setBonus(2) // Crit Stagger
 	.setDurability(15);

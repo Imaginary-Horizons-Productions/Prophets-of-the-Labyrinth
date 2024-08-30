@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Awesome Morning Star",
-	"Strike a foe applying @{foeStagger} and @{damage} (+@{bonus} if foe is stunned) @{element} damage",
+	"Strike a foe for @{damage} (+@{bonus} if foe is stunned) @{element} damage",
 	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Light",

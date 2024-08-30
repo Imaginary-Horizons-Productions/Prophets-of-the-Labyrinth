@@ -2,7 +2,7 @@ const { GearTemplate, Move } = require('../classes/index.js');
 const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Battleaxe",
-	"Strike a foe for @{damage} (+@{bonus} if after foe) @{element} damage, gain @{mod0Stacks} @{mod0}",
+	"Strike a foe for @{damage} (x@{bonus} if after foe) @{element} damage, gain @{mod0Stacks} @{mod0}",
 	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Fire",
@@ -14,7 +14,7 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 		const targetMove = adventure.room.moves.find(move => move.userReference.team === targets[0].team && move.userReference.index === adventure.getCombatantIndex(targets[0]));
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
-			pendingDamage += bonus;
+			pendingDamage *= bonus;
 		}
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
@@ -30,4 +30,4 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 	.setModifiers({ name: "Exposed", stacks: 1 })
 	.setDurability(30)
 	.setDamage(90)
-	.setBonus(75); // damage
+	.setBonus(2); // Reactive multiplier

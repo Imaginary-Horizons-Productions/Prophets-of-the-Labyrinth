@@ -217,62 +217,60 @@ function buildGearRecord(gearName, durability) {
  * @param {Delver?} holder
  */
 function buildGearDescription(gearName, buildFullDescription, holder) {
-	if (gearExists(gearName)) {
-		/** @type {string} */
-		let description;
-		if (buildFullDescription) {
-			// return the base and crit effects of the gear with the base italicized
-			description = `*Effect:* ${getGearProperty(gearName, "description")}\n*Critical💥:* ${getGearProperty(gearName, "critDescription")}`;
-		} else {
-			// return the base effect of the gear unitalicized
-			description = getGearProperty(gearName, "description");
-		}
-
-		let damage = getGearProperty(gearName, "damage");
-		const stagger = getGearProperty(gearName, "stagger");
-		const element = getGearProperty(gearName, "element");
-		if (holder) {
-			damage += holder.power + holder.getModifierStacks("Power Up");
-			damage = Math.floor(Math.min(damage, holder.getDamageCap()));
-
-			if (holder.element === element) {
-				description = description
-					.replace(/@{foeStagger}/g, `${stagger + 2} Stagger`)
-					.replace(/@{allyStagger}/g, `${stagger + 1} Stagger`);
-			} else {
-				description = description
-					.replace(/@{foeStagger}/g, `${stagger} Stagger`)
-					.replace(/@{allyStagger}/g, `${stagger} Stagger`);
-			}
-		} else {
-			damage = `(${damage} base)`;
-			description = description
-				.replace(/@{foeStagger}/g, `(${stagger} base) Stagger`)
-				.replace(/@{allyStagger}/g, `(${stagger} base) Stagger`);
-		}
-
-		description = description.replace(/@{element}/g, getEmoji(element))
-			.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
-			.replace(/@{damage}/g, damage)
-			.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
-			.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
-			.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
-			.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
-			.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
-			.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
-			.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
-			.replace(/@{poise}/g, getGearProperty(gearName, "poise"));
-		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
-			if (!modifier.name.startsWith("unparsed")) {
-				const modifierEmoji = getModifierEmoji(modifier.name);
-				description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji);
-			}
-			description = description.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
-		})
-		return description;
-	} else {
+	if (!gearExists(gearName)) {
 		return "";
 	}
+	let totalStagger = getGearProperty(gearName, "stagger") ?? 0;
+	if (holder) {
+		if (getGearProperty(gearName, "element") === holder.element) {
+			switch (getGearProperty(gearName, "targetingTags").team) {
+				case "ally":
+					totalStagger -= 1;
+					break;
+				case "foe":
+					totalStagger += 2;
+					break;
+				case "any":
+					totalStagger = "+2 or -1";
+					break;
+			}
+		}
+	}
+	let description = "";
+	if (buildFullDescription) {
+		description = `*${totalStagger} Stagger:* ${getGearProperty(gearName, "description")}\n*Critical💥:* ${getGearProperty(gearName, "critDescription")}`;
+	} else {
+		// these descriptions get used in select option sets, which don't support markdown
+		description = `${totalStagger} Stagger: ${getGearProperty(gearName, "description")}`;
+	}
+
+	let damage = getGearProperty(gearName, "damage");
+	if (holder) {
+		damage += holder.power + holder.getModifierStacks("Power Up");
+		damage = Math.floor(Math.min(damage, holder.getDamageCap()));
+	} else {
+		damage = `(${damage} base)`;
+	}
+
+	description = description.replace(/@{damage}/g, damage)
+		.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
+		.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
+		.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
+		.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
+		.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
+		.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
+		.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
+		.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
+		.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
+		.replace(/@{poise}/g, getGearProperty(gearName, "poise"));
+	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
+		if (!modifier.name.startsWith("unparsed")) {
+			const modifierEmoji = getModifierEmoji(modifier.name);
+			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji);
+		}
+		description = description.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
+	})
+	return description;
 }
 
 module.exports = {

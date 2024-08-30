@@ -3,7 +3,7 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil'
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Poison Torrent",
-	"Inflict @{mod0Stacks} @{mod0} and @{foeStagger} on all foes",
+	"Inflict @{mod0Stacks} @{mod0}",
 	"@{mod0} x@{critMultiplier}",
 	"Spell",
 	"Water",

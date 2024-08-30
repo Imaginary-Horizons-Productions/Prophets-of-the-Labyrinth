@@ -3,7 +3,7 @@ const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil')
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Morning Star",
-	"Strike a foe applying @{foeStagger} and @{damage} @{element} damage",
+	"Strike a foe for @{damage} @{element} damage",
 	"Damage x@{critMultiplier}",
 	"Weapon",
 	"Light",
