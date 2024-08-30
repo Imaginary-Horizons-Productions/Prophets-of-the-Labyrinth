@@ -176,7 +176,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Wise Chainmail",
 				"Hearty Scarf",
 				"Surpassing Wolf Ring",
-				"Swift Wolf Ring"
+				"Swift Wolf Ring",
+				"Wise Wolf Ring"
 			]
 		}
 	},

@@ -423,7 +423,8 @@ Adds Vigilance to user
 Increases stats gained by level up
 
 **Available on**
-- Chainmail (Earth)
+- Chainmail (Untyped)
+- Wolf Ring (Untyped)
 
 ## Unnamed Variants
 - Adds Floating Mist Stance to user (all Floating Mist Stances)

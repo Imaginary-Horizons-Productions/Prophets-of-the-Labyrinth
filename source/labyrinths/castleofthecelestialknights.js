@@ -176,7 +176,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Wise Chainmail",
 				"Hearty Scarf",
 				"Surpassing Wolf Ring",
-				"Swift Wolf Ring"
+				"Swift Wolf Ring",
+				"Wise Wolf Ring"
 			]
 		}
 	},
