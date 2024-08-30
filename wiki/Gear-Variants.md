@@ -317,6 +317,7 @@ Add Stagger to target
 - all Morning Stars (Light)
 - Censer (Fire)
 - Poison Torrent (Water)
+- Shoulder Throw (Light)
 - Stong Attack (Untyped)
 
 ### Supportive
