@@ -165,7 +165,8 @@ for (const file of [
 	"warhammer-unstoppable.js",
 	"wolfring-base.js",
 	"wolfring-surpassing.js",
-	"wolfring-swift.js"
+	"wolfring-swift.js",
+	"wolfring-wise.js"
 ]) {
 	const gear = require(`./${file}`);
 	if (gear.name.toLowerCase() in GEAR) {

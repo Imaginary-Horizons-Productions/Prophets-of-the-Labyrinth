@@ -245,7 +245,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Sharpened Strong Attack",
 				"Staggering Strong Attack",
 				"Surpassing Wolf Ring",
-				"Swift Wolf Ring"
+				"Swift Wolf Ring",
+				"Wise Wolf Ring"
 			]
 		}
 	},
