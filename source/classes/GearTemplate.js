@@ -125,7 +125,7 @@ class GearTemplate {
 		return this;
 	}
 
-	/** For description creation purposes, this stagger is assumed to always be applied. For conditional Stagger (eg on crit) use `setBonus()` instead.
+	/** For description creation purposes, this stagger is separate from Same Element Stagger and is assumed to always be applied. For conditional Stagger (eg on crit) use `setBonus()` instead.
 	 * @param {number} integer
 	 */
 	setStagger(integer) {
