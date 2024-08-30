@@ -93,7 +93,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Cleansing Medicine",
 				"Soothing Medicine",
 				"Distracting Poison Torrent",
-				"Harmful Poison Torrent"
+				"Harmful Poison Torrent",
+				"Staggering Poison Torrent"
 			],
 			Rare: [
 			]

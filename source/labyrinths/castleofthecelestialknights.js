@@ -140,7 +140,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Discounted Midas Staff",
 				"Soothing Midas Staff",
 				"Distracting Poison Torrent",
-				"Harmful Poison Torrent"
+				"Harmful Poison Torrent",
+				"Staggering Poison Torrent"
 			]
 		},
 		Wind: {

@@ -117,6 +117,7 @@ for (const file of [
 	"poisontorrent-base.js",
 	"poisontorrent-distracting.js",
 	"poisontorrent-harmful.js",
+	"poisontorrent-staggering.js",
 	"powerfromwrath-base.js",
 	"prismaticblast-base.js",
 	"prismaticblast-vexing.js",
@@ -260,8 +261,7 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
 			.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
 			.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
-			.replace(/@{poise}/g, getGearProperty(gearName, "poise"))
-			.replace(/@{extraStagger}/g, `${stagger} Stagger`);
+			.replace(/@{poise}/g, getGearProperty(gearName, "poise"));
 		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 			if (!modifier.name.startsWith("unparsed")) {
 				const modifierEmoji = getModifierEmoji(modifier.name);

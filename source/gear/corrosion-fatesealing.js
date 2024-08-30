@@ -4,7 +4,7 @@ const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Fate-Sealing Corrosion",
 	"Inflict @{mod0Stacks} @{mod0} on a foe",
-	"Also inflict @{extraStagger} and @{mod1Stacks} @{mod1}",
+	"Also inflict @{foeStagger} and @{mod1Stacks} @{mod1}",
 	"Spell",
 	"Fire",
 	350,

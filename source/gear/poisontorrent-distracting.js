@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Distracting Poison Torrent",
 	"Water",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, modifiers: [poison, distracted], critMultiplier } = module.exports; //TODONOW add distracted in game logic
+		const { element, modifiers: [poison, distracted], critMultiplier } = module.exports;
 		const pendingPoison = { ...poison };
 		if (isCrit) {
 			pendingPoison.stacks *= critMultiplier;
@@ -34,6 +34,6 @@ module.exports = new GearTemplate("Distracting Poison Torrent",
 		}
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Harmful Poison Torrent")
+	.setSidegrades("Harmful Poison Torrent", "Staggering Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 }, { name: "Distracted", stacks: 2 })
 	.setDurability(15);

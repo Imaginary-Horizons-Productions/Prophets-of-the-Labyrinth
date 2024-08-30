@@ -8,7 +8,7 @@
 - Renamed Hunter's to Thief's
 - Thief's Certain Victory → **Hunter's Certain Victory**
 - Fixed a bug where Certain Victory and upgrades (except Reckless Certain Victory) was providing Power Up before dealing damage
-- New Gear: Hunter's Morning Star, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Wise Wolf Ring
+- New Gear: Hunter's Morning Star, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Wise Wolf Ring, Staggering Poison Torrent
 ### Other Changes
 - Parties gain 5 score for each Artifact Guardian they encounter
 - Fixed a bug where not enough mechabees (both soldiers and drones) were spawning, reduced mechabee hp to compensate

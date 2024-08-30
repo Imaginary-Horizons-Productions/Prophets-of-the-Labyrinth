@@ -2,14 +2,14 @@ const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
-module.exports = new GearTemplate("Poison Torrent",
-	"Inflict @{mod0Stacks} @{mod0} on all foes",
+module.exports = new GearTemplate("Staggering Poison Torrent",
+	"Inflict @{mod0Stacks} @{mod0} and @{foeStagger} on all foes",
 	"@{mod0} x@{critMultiplier}",
 	"Spell",
 	"Water",
-	200,
+	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, modifiers: [poison], critMultiplier } = module.exports;
+		const { element, modifiers: [poison], critMultiplier, stagger } = module.exports;
 		const pendingPoison = { ...poison };
 		if (isCrit) {
 			pendingPoison.stacks *= critMultiplier;
@@ -18,13 +18,11 @@ module.exports = new GearTemplate("Poison Torrent",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (poisonedTargets.length > 0) {
-			return joinAsStatement(false, poisonedTargets, "was", "were", "Poisoned.");
-		} else {
-			return "But nothing happened.";
-		}
+		changeStagger(targets, stagger);
+		return `All foes were Staggered.${poisonedTargets.length > 0 ? ` ${joinAsStatement(false, poisonedTargets, "was", "were", "Poisoned.")}` : ""}`;
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Distracting Poison Torrent", "Harmful Poison Torrent", "Staggering Poison Torrent")
+	.setSidegrades("Distracting Poison Torrent", "Harmful Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 })
-	.setDurability(15);
+	.setDurability(15)
+	.setStagger(2);
