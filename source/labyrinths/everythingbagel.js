@@ -183,7 +183,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Discounted Midas Staff",
 				"Soothing Midas Staff",
 				"Distracting Poison Torrent",
-				"Harmful Poison Torrent"
+				"Harmful Poison Torrent",
+				"Staggering Poison Torrent"
 			]
 		},
 		Wind: {
