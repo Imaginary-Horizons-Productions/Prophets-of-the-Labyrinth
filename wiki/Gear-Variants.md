@@ -38,6 +38,7 @@ Add protection to damage dealt
 
 **Available on**
 - Morning Star (Light)
+- Power from Wrath (Darkness)
 
 ### Blasting
 Also targets adjacent team members
