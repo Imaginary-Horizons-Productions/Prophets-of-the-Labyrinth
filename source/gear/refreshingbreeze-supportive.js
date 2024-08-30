@@ -3,18 +3,19 @@ const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 
-module.exports = new GearTemplate("Refreshing Breeze",
+module.exports = new GearTemplate("Supportive Refreshing Breeze",
 	"Cure a random debuff from each ally",
 	"Debuffs cured x@{critMultiplier}",
 	"Spell",
 	"Wind",
-	200,
+	350,
 	(targets, user, isCrit, adventure) => {
-		const { element } = module.exports;
-		const resultTexts = [];
+		const { element, stagger } = module.exports;
+		const resultTexts = ["All allies shrug off some Stagger."];
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
+		changeStagger(targets, stagger);
 		targets.forEach(target => {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (targetDebuffs.length > 0) {
@@ -34,12 +35,8 @@ module.exports = new GearTemplate("Refreshing Breeze",
 				}
 			}
 		})
-		if (resultTexts.length > 0) {
-			return resultTexts.join(" ");
-		} else {
-			return "No debuffs were cured on the party.";
-		}
+		return resultTexts.join(" ");
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
-	.setUpgrades("Supportive Refreshing Breeze")
-	.setDurability(15);
+	.setDurability(15)
+	.setStagger(-2);

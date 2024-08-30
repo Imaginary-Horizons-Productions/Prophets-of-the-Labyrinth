@@ -319,6 +319,12 @@ Add Stagger to target
 - Poison Torrent (Water)
 - Stong Attack (Untyped)
 
+### Supportive
+Reduces Stagger on target
+
+**Available on**
+- Refreshing Breeze (Wind)
+
 ### Surpassing
 Increases the user's damage cap
 
