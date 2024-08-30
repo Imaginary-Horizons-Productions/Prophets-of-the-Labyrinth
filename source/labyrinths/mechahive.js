@@ -162,6 +162,7 @@ module.exports = new LabyrinthTemplate("Mechahive",
 				"Guarding Inspiration",
 				"Soothing Inspiration",
 				"Sweeping Inspiration",
+				"Supportive Refreshing Breeze"
 			]
 		},
 		Untyped: {

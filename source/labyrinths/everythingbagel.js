@@ -214,6 +214,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Guarding Inspiration",
 				"Soothing Inspiration",
 				"Sweeping Inspiration",
+				"Supportive Refreshing Breeze"
 			]
 		},
 		Untyped: {
