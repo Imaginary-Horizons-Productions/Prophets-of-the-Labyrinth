@@ -292,6 +292,7 @@ Adds Frail to target
 
 **Available on**
 - Corrosion (Fire)
+- Goad Futility (Earth)
 - Lance (Earth)
 - Sabotage Kit (Untyped)
 

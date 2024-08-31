@@ -39,7 +39,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Hunter's Certain Victory",
 				"Lethal Certain Victory",
 				"Reckless Certain Victory",
-				"Flanking Goad Futility"
+				"Flanking Goad Futility",
+				"Shattering Goad Futility"
 			],
 			Rare: [
 			]
