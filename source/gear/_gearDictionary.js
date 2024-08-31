@@ -153,6 +153,7 @@ for (const file of [
 	"shortsword-toxic.js",
 	"shoulderthrow-base.js",
 	"shoulderthrow-evasive.js",
+	"shoulderthrow-harmful.js",
 	"shoulderthrow-staggering.js",
 	"spear-base.js",
 	"spear-lethal.js",
