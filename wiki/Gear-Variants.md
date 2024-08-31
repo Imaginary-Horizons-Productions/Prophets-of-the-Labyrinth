@@ -137,6 +137,7 @@ Adds Stasis to target on crit
 Adds Exposed to target
 
 **Available on**
+- Goad Futility (Earth)
 - Life Drain (Darkness)
 - Pistol (Untyped)
 - Strong Attack (Untyped)

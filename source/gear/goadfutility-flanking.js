@@ -1,14 +1,14 @@
 const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Goad Futility",
-	"Gain @{mod0Stacks} @{mod0} and intercept the target's later single target move",
+module.exports = new GearTemplate("Flanking Goad Futility",
+	"Gain @{mod0Stacks} @{mod0}, intercept the target's later single target move, and inflict @{mod2Stacks} @{mod2} on them",
 	"Inflict @{mod1Stacks} @{mod1} on the target",
 	"Technique",
 	"Earth",
-	200,
+	350,
 	([target], user, isCrit, adventure) => {
-		const { element, modifiers: [oblivious, unlucky] } = module.exports;
+		const { element, modifiers: [oblivious, unlucky, exposed] } = module.exports;
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
@@ -22,20 +22,23 @@ module.exports = new GearTemplate("Goad Futility",
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
 		const [userName, targetName] = getNames([user, target], adventure);
-		const sentences = [`${userName} gains Oblivious.`];
+		const resultSentences = [`${userName} gains Oblivious.`];
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			sentences.push(`${targetName} falls for the provocation.`);
+			resultSentences.push(`${targetName} falls for the provocation.`);
+		}
+		const addedExposed = addModifier([target], exposed).length > 0;
+		if (addedExposed) {
+			resultSentences.push(`${targetName} becomes Exposed.`);
 		}
 		if (isCrit) {
 			const addedUnlucky = addModifier([target], unlucky).length > 0;
 			if (addedUnlucky) {
-				sentences.push(`${targetName} gains Unlucky.`);
+				resultSentences.push(`${targetName} gains Unlucky.`);
 			}
 		}
-		return sentences.join(" ");
+		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Flanking Goad Futility")
-	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Unlucky", stacks: 3 })
+	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Unlucky", stacks: 3 }, { name: "Exposed", stacks: 2 })
 	.setDurability(10);
