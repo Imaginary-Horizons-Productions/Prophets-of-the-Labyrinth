@@ -1,4 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
+const { POTL_ICON_URL } = require("../constants");
 const { getNames } = require("../util/combatantUtil");
 const { generateTextBar } = require("../util/textUtil");
 
@@ -23,8 +24,7 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 		activeCombatants.forEach((combatant, index) => {
 			embed.addFields({ name: combatantNames[index], value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\nSpeed: ${combatant.getSpeed(true)}` });
 		})
-		embed.setDescription("Combatants may act out of order if they have priority or they are tied in speed.");
-		return embed.setTitle(`Martial Artist Predictions for Round ${adventure.room.round + 1}`);
+		return embed.setTitle(`Martial Artist Predictions for Round ${adventure.room.round + 1}`).setAuthor({ name: "Combatants may act out of order if they have priority or are tied in speed.", iconURL: POTL_ICON_URL });
 	},
 	(combatant) => {
 		if (combatant.isStunned) {

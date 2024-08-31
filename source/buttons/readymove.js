@@ -20,7 +20,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 		const delverArchetypeTemplate = getArchetype(delver.archetype);
-		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)).setAuthor(randomAuthorTip()), adventure)
+		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)), adventure)
+		if (!embed.data.author) {
+			embed.setAuthor(randomAuthorTip());
+		}
 		const enemyOptions = [];
 		const enemyNames = getNames(adventure.room.enemies, adventure);
 		for (let i = 0; i < adventure.room.enemies.length; i++) {

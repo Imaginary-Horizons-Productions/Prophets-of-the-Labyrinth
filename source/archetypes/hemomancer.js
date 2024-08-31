@@ -1,4 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
+const { POTL_ICON_URL } = require("../constants");
 const { getNames } = require("../util/combatantUtil");
 const { generateTextBar } = require("../util/textUtil");
 
@@ -23,8 +24,7 @@ module.exports = new ArchetypeTemplate("Hemomancer",
 		activeCombatants.forEach((combatant, index) => {
 			embed.addFields({ name: combatantNames[index], value: `${generateTextBar(combatant.hp, combatant.getMaxHP(), 16)} ${combatant.hp}/${combatant.getMaxHP()} HP${combatant.protection ? `, ${combatant.protection} Protection` : ""}\nSpeed: ${combatant.getSpeed(true)}` });
 		});
-		embed.setDescription("Combatants may act out of order if they have priority or they are tied in speed.");
-		return embed.setTitle(`Hemomancer Predictions for Round ${adventure.room.round + 1}`);
+		return embed.setTitle(`Hemomancer Predictions for Round ${adventure.room.round + 1}`).setAuthor({ name: "Combatants may act out of order if they have priority or are tied in speed.", iconURL: POTL_ICON_URL });
 	},
 	(combatant) => {
 		return `Speed: ${combatant.getSpeed(true)}`;
