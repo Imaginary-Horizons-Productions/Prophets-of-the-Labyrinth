@@ -21,6 +21,7 @@ for (const file of [
 	"inspectself.js",
 	"join.js",
 	"modifier.js",
+	"partystats.js",
 	"pillagepedestals.js",
 	"ready.js",
 	"readyitem.js",

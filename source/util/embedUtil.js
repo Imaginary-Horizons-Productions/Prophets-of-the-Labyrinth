@@ -2,7 +2,7 @@ const fs = require("fs");
 const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH } = require("../constants");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
 const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
@@ -13,7 +13,7 @@ const { isBuff, isDebuff, getModifierEmoji } = require("../modifiers/_modifierDi
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
-const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription } = require("./textUtil");
+const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
 const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
 
 const discordTips = [
@@ -414,6 +414,66 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 	return { embeds: [embed], components, ephemeral: true };
 }
 
+/** @param {Adventure} adventure */
+function generatePartyStatsPayload(adventure) {
+	const guardsScouted = adventure.artifactGuardians.slice(0, adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians);
+	const gearCapacity = adventure.getGearCapacity();
+	const embed = new EmbedBuilder().setColor(getColor(adventure.element))
+		.setAuthor(randomAuthorTip())
+		.setTitle(`Party Stats - ${adventure.name}`)
+		.setDescription(`Depth: ${adventure.depth}\nScore: ${adventure.getBaseScore().total}`)
+		.addFields([
+			{ name: `${adventure.lives} Lives Remaining`, value: "When a player runs out of HP, a life will be lost and they'll be returned to max HP. When all lives are lost, the adventure will end." },
+			{ name: `${adventure.gold} Gold`, value: `Gold is exchanged for goods and services within adventures. *Gold will be lost when an adventure ends.*\nPeak Gold: ${adventure.peakGold}` },
+			{ name: `Gear Capacity: ${gearCapacity}`, value: `Each delver can carry ${gearCapacity} pieces of gear. Gear capacity can be increased at Tanning Workshops and by the Hammerspace Holster artifact.` },
+			{ name: "Items", value: Object.keys(adventure.items).map(item => `${item} x ${adventure.items[item]}`).join("\n") || "None" },
+			{
+				name: "Scouting",
+				value: `Final Battle: ${adventure.scouting.bosses.length > 0 ? adventure.bosses[0] : "???"}\nArtifact Guardians: ${guardsScouted.length > 0 ?
+					guardsScouted.map((encounter, index) => {
+						if (index + 1 <= adventure.scouting.artifactGuardiansEncountered) {
+							return `~~${encounter}~~`;
+						} else {
+							return encounter;
+						}
+					}).join(", ") + "..." : "???"}`
+			}
+		]);
+	const challenges = Object.keys(adventure.challenges);
+	if (challenges.length) {
+		embed.addFields({ name: "Challenges", value: listifyEN(Object.keys(adventure.challenges), false) });
+	}
+	const infoSelects = [];
+	const allArtifacts = Object.keys(adventure.artifacts);
+	const artifactPages = [];
+	for (let i = 0; i < allArtifacts.length; i += MAX_SELECT_OPTIONS) {
+		artifactPages.push(allArtifacts.slice(i, i + MAX_SELECT_OPTIONS));
+	}
+	if (artifactPages.length > 0) {
+		embed.addFields({ name: "Artifacts", value: listifyEN(Object.entries(adventure.artifacts).map(entry => `${entry[0]} x ${entry[1].count}`)) })
+		infoSelects.push(...artifactPages.slice(0, MAX_MESSAGE_ACTION_ROWS).map((page, index) =>
+			new ActionRowBuilder().addComponents(
+				new StringSelectMenuBuilder().setCustomId(`artifact${SAFE_DELIMITER}${index}`)
+					.setPlaceholder(`Get details about an artifact...${artifactPages.length > 1 ? ` (Page ${index + 1})` : ""}`)
+					.setOptions(page.map(artifact => {
+						const count = adventure.getArtifactCount(artifact);
+						return {
+							label: `${artifact} x ${count}`,
+							value: `${artifact}${SAFE_DELIMITER}${count}`
+						};
+					}))
+			)
+		))
+	} else {
+		infoSelects.push(new ActionRowBuilder().addComponents(
+			new StringSelectMenuBuilder().setCustomId("artifact")
+				.setPlaceholder("No artifacts to inspect...")
+				.setDisabled(true)
+				.setOptions(EMPTY_SELECT_OPTION_SET)
+		))
+	}
+	return { embeds: [embed], components: infoSelects, ephemeral: true };
+}
 
 module.exports = {
 	randomAuthorTip,
@@ -426,5 +486,6 @@ module.exports = {
 	generateVersionEmbed,
 	generateArtifactEmbed,
 	gearToEmbedField,
-	inspectSelfPayload
+	inspectSelfPayload,
+	generatePartyStatsPayload
 };

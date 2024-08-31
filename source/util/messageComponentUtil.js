@@ -41,6 +41,10 @@ function generateCombatRoomBuilder(extraButtons) {
 		const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0);
 		if (!isCombatVictory) {
 			const buttons = [
+				new ButtonBuilder().setCustomId("partystats")
+					.setEmoji("📚")
+					.setLabel("Party Stats")
+					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder().setCustomId("inspectself")
 					.setEmoji("🔎")
 					.setLabel("Inspect Self")
