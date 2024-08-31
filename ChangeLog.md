@@ -9,11 +9,11 @@
 - Thief's Certain Victory → **Hunter's Certain Victory**
 - Fixed a bug where Certain Victory and upgrades (except Reckless Certain Victory) was providing Power Up before dealing damage
 - The Reactive variant now doubles damage instead of adding a set bonus
-- New Gear: Hunter's Morning Star, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Wise Wolf Ring, Staggering Poison Torrent, Supportive Refreshing Breeze, Staggering Shoulder Throw, Bashing Power from Wrath, Hunter's Power from Wrath, Staggering Power from Wrath
+- New Gear: Hunter's Morning Star, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Wise Wolf Ring, Staggering Poison Torrent, Supportive Refreshing Breeze, Harmful Shoulder Throw, Staggering Shoulder Throw, Bashing Power from Wrath, Hunter's Power from Wrath, Staggering Power from Wrath
 ### Other Changes
 - Parties gain 5 score for each Artifact Guardian they encounter
 - Fixed a bug where not enough mechabees (both soldiers and drones) were spawning, reduced mechabee hp to compensate
-- Predict info is now provided in the Ready a Move message (gear effects replaced, but can still be found in Inspect Self)
+- Predict info is now provided in the Ready a Move and Ready an Item messages (gear effects replaced, but can still be found in Inspect Self)
    - The challenge **Blind Avarice** has been removed; it was always sorta weird parties could drain themselves of money by clicking UI buttons accidentally
 ## Prophets of the Labyrinth v0.15.0:
 After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.

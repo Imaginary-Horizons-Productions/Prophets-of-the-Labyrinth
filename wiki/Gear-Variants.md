@@ -163,6 +163,7 @@ Deals damage to target
 **Available on**
 - Corrosion (Fire)
 - Poison Torrent (Water)
+- Shoulder Throw (Light)
 
 ### Healing
 Heal the user
