@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ThreadChannel, Message } = require("discord.js");
+const { ThreadChannel, Message, EmbedBuilder } = require("discord.js");
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
@@ -17,7 +17,7 @@ const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
 const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
-const { renderRoom, updateRoomHeader, generateRecruitEmbed } = require("../util/embedUtil");
+const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
 const { anyDieSucceeds } = require("../util/mathUtil.js");
 const { clearComponents } = require("../util/messageComponentUtil");
@@ -408,7 +408,7 @@ function newRound(adventure, thread, lastRoundText) {
 
 	thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
 		if (!checkNextRound(adventure)) {
-			updateRoomHeader(adventure, message);
+			message.edit({ embeds: message.embeds.map(embed => new EmbedBuilder(embed).setAuthor({ name: roomHeaderString(adventure), iconURL: message.client.user.displayAvatarURL() })) });
 			adventure.messageIds.battleRound = message.id;
 		} else {
 			clearComponents(message.id, thread.messages);

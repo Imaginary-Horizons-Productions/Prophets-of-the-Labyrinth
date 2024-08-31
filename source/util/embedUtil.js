@@ -291,14 +291,6 @@ function roomHeaderString(adventure) {
 	return `Lives: ${adventure.lives} - Party Gold: ${adventure.gold} - Score: ${adventure.getBaseScore().total} `;
 }
 
-/** The room header goes in the embed's author field and should contain information about the party's commonly used or important resources
- * @param {Adventure} adventure
- * @param {Message} message
- */
-function updateRoomHeader(adventure, message) {
-	return message.edit({ embeds: message.embeds.map(embed => new EmbedBuilder(embed).setAuthor({ name: roomHeaderString(adventure), iconURL: message.client.user.displayAvatarURL() })) })
-}
-
 /** The version embed lists the following: changes in the most recent update, known issues in the most recent update, and links to support the project */
 async function generateVersionEmbed() {
 	const data = await fs.promises.readFile('./ChangeLog.md', { encoding: 'utf8' });
@@ -430,7 +422,7 @@ module.exports = {
 	generateRecruitEmbed,
 	generateAdventureConfigMessage,
 	renderRoom,
-	updateRoomHeader,
+	roomHeaderString,
 	generateVersionEmbed,
 	generateArtifactEmbed,
 	gearToEmbedField,
