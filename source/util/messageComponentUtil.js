@@ -45,10 +45,6 @@ function generateCombatRoomBuilder(extraButtons) {
 					.setEmoji("🔎")
 					.setLabel("Inspect Self")
 					.setStyle(ButtonStyle.Secondary),
-				new ButtonBuilder().setCustomId("predict")
-					.setEmoji("🔮")
-					.setLabel("Predict")
-					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder().setCustomId("readymove")
 					.setEmoji("⚔")
 					.setLabel("Ready a Move")

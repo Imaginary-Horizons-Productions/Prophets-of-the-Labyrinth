@@ -5,7 +5,7 @@ const { getAdventure, checkNextRound, endRound, setAdventure } = require('../orc
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getEmoji, getColor } = require('../util/elementUtil');
-const { gearToEmbedField, randomAuthorTip } = require('../util/embedUtil');
+const { randomAuthorTip } = require('../util/embedUtil');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 const { getNames } = require('../util/combatantUtil');
 
@@ -19,12 +19,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;
 		}
-		const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
-			.setAuthor(randomAuthorTip())
-			.setTitle("Readying a Move")
-			.setDescription("Pick one option from below as your move for this round:");
+		const delverArchetypeTemplate = getArchetype(delver.archetype);
+		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)).setAuthor(randomAuthorTip()), adventure)
 		const enemyOptions = [];
-		const miniPredictBuilder = getArchetype(delver.archetype).miniPredict;
 		const enemyNames = getNames(adventure.room.enemies, adventure);
 		for (let i = 0; i < adventure.room.enemies.length; i++) {
 			const enemy = adventure.room.enemies[i];
@@ -33,7 +30,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					label: enemyNames[i],
 					value: `enemy${SAFE_DELIMITER}${i}`
 				};
-				const miniPredict = trimForSelectOptionDescription(miniPredictBuilder(enemy));
+				const miniPredict = trimForSelectOptionDescription(delverArchetypeTemplate.miniPredict(enemy));
 				if (miniPredict) {
 					optionPayload.description = miniPredict;
 				}
@@ -45,20 +42,20 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				label: ally.name,
 				value: `delver${SAFE_DELIMITER}${i}`
 			};
-			const miniPredict = trimForSelectOptionDescription(miniPredictBuilder(ally));
+			const miniPredict = trimForSelectOptionDescription(delverArchetypeTemplate.miniPredict(ally));
 			if (miniPredict) {
 				optionPayload.description = miniPredict;
 			}
 			return optionPayload;
 		});
 		const components = [];
-		const usableMoves = delver.gear.filter(gear => gear.durability > 0);
+		const usableMoves = [];
+		delver.gear.forEach(gear => { if (gear.durability > 0) { usableMoves.push(gear.name) } });
 		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
-			usableMoves.unshift({ name: "Punch", durability: Infinity });
+			usableMoves.unshift("Punch");
 		}
 		for (let i = 0; i < usableMoves.length; i++) {
-			const { name: gearName, durability } = usableMoves[i];
-			embed.addFields(gearToEmbedField(gearName, durability, delver));
+			const gearName = usableMoves[i];
 			const { type, team } = getGearProperty(gearName, "targetingTags");
 			const elementEmoji = getEmoji(getGearProperty(gearName, "element"));
 			if (type === "single" || type.startsWith("blast")) {

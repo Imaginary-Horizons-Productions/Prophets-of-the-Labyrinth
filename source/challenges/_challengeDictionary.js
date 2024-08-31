@@ -4,7 +4,6 @@ const { ChallengeTemplate, Adventure } = require("../classes");
 const CHALLENGES = {};
 
 for (const file of [
-	"blindavarice.js",
 	"cantholdallthisvalue.js",
 	"intothedeepend.js",
 	"restless.js",

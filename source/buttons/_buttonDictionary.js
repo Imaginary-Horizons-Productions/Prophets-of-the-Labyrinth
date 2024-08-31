@@ -22,7 +22,6 @@ for (const file of [
 	"join.js",
 	"modifier.js",
 	"pillagepedestals.js",
-	"predict.js",
 	"ready.js",
 	"readyitem.js",
 	"readymove.js",
