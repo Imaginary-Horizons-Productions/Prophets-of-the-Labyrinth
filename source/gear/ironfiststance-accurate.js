@@ -2,8 +2,8 @@ const { GearTemplate } = require("../classes");
 const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
-module.exports = new GearTemplate("Organic Iron Fist Stance",
-	"Gain @{mod0Stacks} @{mod0} (exit other stances), regain 1 durability each room",
+module.exports = new GearTemplate("Accurate Iron Fist Stance",
+	"Gain @{mod0Stacks} @{mod0} (exit other stances). Passive: Gain @{critRate} Crit Rate",
 	"Inflict @{mod1Stacks} @{mod1} on all enemies",
 	"Technique",
 	"Light",
@@ -41,4 +41,5 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
 	.setBonus(45) // Punch damage boost
 	.setDurability(10)
+	.setCritRate(5)
 	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's element to the bearer's and increases its damage by @{bonus} per stack" });

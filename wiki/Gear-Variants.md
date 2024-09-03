@@ -18,6 +18,7 @@ Passively increases the user's Crit Rate
 **Available on**
 - all Cloaks (Wind)
 - Cloak (Wind)
+- Iron Fist Stance (Light)
 - Scarf (Untyped)
 
 ### Agile
