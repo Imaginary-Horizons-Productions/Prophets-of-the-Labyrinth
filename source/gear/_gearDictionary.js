@@ -73,6 +73,7 @@ for (const file of [
 	"firecracker-toxic.js",
 	"floatingmiststance-agile.js",
 	"floatingmiststance-base.js",
+	"floatingmiststance-devoted.js",
 	"floatingmiststance-soothing.js",
 	"goadfutility-base.js",
 	"goadfutility-flanking.js",
