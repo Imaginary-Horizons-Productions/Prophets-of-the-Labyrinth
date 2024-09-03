@@ -149,6 +149,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			],
 			Rare: [
 				"Agile Floating Mist Stance",
+				"Devoted Floating Mist Stance",
 				"Soothing Floating Mist Stance",
 				"Organic Iron Fist Stance",
 				"Awesome Morning Star",

@@ -91,6 +91,7 @@ Can apply to allies
 **Available on**
 - Bucker (Earth)
 - Barrier (Wind)
+- Floating Mist Stance (Light)
 
 ### Discounted
 Reduced base price
