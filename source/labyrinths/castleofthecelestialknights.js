@@ -182,6 +182,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Wolf Ring"
 			],
 			Rare: [
+				"Powerful Chainmail",
 				"Wise Chainmail",
 				"Accurate Scarf",
 				"Hearty Scarf",
