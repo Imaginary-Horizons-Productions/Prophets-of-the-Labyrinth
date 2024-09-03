@@ -92,6 +92,7 @@ for (const file of [
 	"inspiration-guarding.js",
 	"inspiration-soothing.js",
 	"inspiration-sweeping.js",
+	"ironfiststance-accurate.js",
 	"ironfiststance-base.js",
 	"ironfiststance-organic.js",
 	"lance-accelerating.js",
