@@ -239,6 +239,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Wolf Ring"
 			],
 			Rare: [
+				"Powerful Chainmail",
 				"Wise Chainmail",
 				"Double Pistol",
 				"Duelist's Pistol",

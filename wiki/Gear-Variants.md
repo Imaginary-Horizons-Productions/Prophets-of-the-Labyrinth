@@ -236,6 +236,12 @@ Passively increases user's poise
 **Available on**
 - all Wolf Rings (Untyped)
 
+### Powerful
+Passively increases user's power
+
+**Available on**
+- Chainmail (Untyped)
+
 ### Reactive
 Bonus damage if user moves after target
 
