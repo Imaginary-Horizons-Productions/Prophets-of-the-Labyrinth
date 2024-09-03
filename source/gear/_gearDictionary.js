@@ -134,6 +134,7 @@ for (const file of [
 	"sabotagekit-long.js",
 	"sabotagekit-shattering.js",
 	"sabotagekit-urgent.js",
+	"scarf-accurate.js",
 	"scarf-base.js",
 	"scarf-hearty.js",
 	"scutum-base.js",

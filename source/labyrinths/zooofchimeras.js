@@ -183,6 +183,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			],
 			Rare: [
 				"Wise Chainmail",
+				"Accurate Scarf",
 				"Hearty Scarf",
 				"Surpassing Wolf Ring",
 				"Swift Wolf Ring",
