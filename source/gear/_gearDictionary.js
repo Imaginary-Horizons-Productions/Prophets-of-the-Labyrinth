@@ -262,8 +262,18 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		damage = `(${damage} base)`;
 	}
 
-	description = description.replace(/@{damage}/g, damage)
-		.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
+	return injectGearStats(description.replace(/@{damage}/g, damage), gearName);
+}
+
+function injectGearStats(text, gearName) {
+	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
+		if (!modifier.name.startsWith("unparsed")) {
+			const modifierEmoji = getModifierEmoji(modifier.name);
+			text = text.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji);
+		}
+		text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
+	})
+	return text.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
 		.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
 		.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
 		.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
@@ -273,14 +283,6 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
 		.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
 		.replace(/@{poise}/g, getGearProperty(gearName, "poise"));
-	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
-		if (!modifier.name.startsWith("unparsed")) {
-			const modifierEmoji = getModifierEmoji(modifier.name);
-			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji);
-		}
-		description = description.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
-	})
-	return description;
 }
 
 module.exports = {
@@ -288,5 +290,6 @@ module.exports = {
 	gearExists,
 	getGearProperty,
 	buildGearRecord,
-	buildGearDescription
+	buildGearDescription,
+	injectGearStats
 };

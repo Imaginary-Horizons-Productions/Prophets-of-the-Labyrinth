@@ -401,7 +401,7 @@ function newRound(adventure, thread, lastRoundText) {
 				// Persisting Round Effects
 				const floatingMistStacks = combatant.getModifierStacks("Floating Mist Stance");
 				if (floatingMistStacks > 0) {
-					addModifier([combatant], { name: "Evade", stacks: floatingMistStacks * 2 });
+					addModifier([combatant], { name: "Evade", stacks: floatingMistStacks });
 				}
 			})
 	}

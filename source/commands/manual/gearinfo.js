@@ -1,5 +1,5 @@
 const { CommandInteraction } = require("discord.js");
-const { gearExists, getGearProperty, buildGearDescription, gearNames } = require("../../gear/_gearDictionary");
+const { gearExists, getGearProperty, buildGearDescription, gearNames, injectGearStats } = require("../../gear/_gearDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getEmoji, getColor } = require("../../util/elementUtil");
 const { listifyEN } = require("../../util/textUtil");
@@ -33,6 +33,7 @@ async function executeSubcommand(interaction, ...args) {
 
 	const extraField = getGearProperty(gearName, "flavorText");
 	if (extraField) {
+		extraField.value = injectGearStats(extraField.value, gearName);
 		fields.push(extraField);
 	}
 

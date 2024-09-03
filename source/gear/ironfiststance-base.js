@@ -40,4 +40,5 @@ module.exports = new GearTemplate("Iron Fist Stance",
 	.setUpgrades("Organic Iron Fist Stance")
 	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
 	.setBonus(45) // Punch damage boost
-	.setDurability(10);
+	.setDurability(10)
+	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's element to the bearer's and increases its damage by @{bonus} per stack" });
