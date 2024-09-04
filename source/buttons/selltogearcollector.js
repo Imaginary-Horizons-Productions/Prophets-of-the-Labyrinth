@@ -61,7 +61,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					collectedIntearction.channel.send(`**${collectedIntearction.member.displayName}** sells their ${gearName} for ${price}g.`);
 				})
 
-				collector.on("end", () => {
+				collector.on("end", async (interactionCollection) => {
+					await interactionCollection.first().update({ components: [] });
 					interaction.deleteReply();
 				})
 			})

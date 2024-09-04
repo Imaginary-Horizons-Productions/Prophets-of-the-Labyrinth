@@ -9,6 +9,7 @@ for (const file of [
 	"buylife.js",
 	"buyscouting.js",
 	"challenges.js",
+	"clearstartingchallenges.js",
 	"collectartifact.js",
 	"deploy.js",
 	"elementresearch.js",

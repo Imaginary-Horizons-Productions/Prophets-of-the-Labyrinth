@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW } = require("../constants");
@@ -13,7 +13,8 @@ const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
-const { ordinalSuffixEN, generateTextBar, getNumberEmoji } = require("./textUtil");
+const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription } = require("./textUtil");
+const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -53,6 +54,88 @@ function embedTemplate() {
 			url: "https://github.com/Imaginary-Horizons-Productions"
 		})
 		.setFooter(randomFooterTip())
+}
+
+/** @param {Adventure} adventure */
+function generateRecruitEmbed(adventure) {
+	// recruit embed must be set before making thread, but cannot add leader to delvers before thread is created
+	const clampedPartySize = Math.max(adventure.delvers.length, 1);
+	const nonLeaderIds = adventure.delvers.filter(delver => delver.id !== adventure.leaderId).map(delver => delver.id);
+	const fields = [
+		{
+			name: `${clampedPartySize} Party Member${clampedPartySize === 1 ? "" : "s"}`,
+			value: `<@${adventure.leaderId}> 👑${nonLeaderIds.length > 0 ? `\n<@${nonLeaderIds.join(">\n<@")}>` : ""}`
+		}
+	];
+	const startingChallenges = Object.keys(adventure.challenges);
+	if (Object.keys(adventure.challenges).length > 0) {
+		fields.push({ name: "Challenges", value: `- ${startingChallenges.join("\n- ")}` });
+	}
+	const isAdventureCompleted = !["config", "ongoing"].includes(adventure.state);
+	if (isAdventureCompleted) {
+		fields.push({ name: "Seed", value: adventure.initialSeed });
+	}
+
+	let description = "";
+	switch (adventure.state) {
+		case "config":
+			description = "An adventure is starting!";
+			break;
+		case "ongoing":
+			description = "The adventure is on-going!";
+			break;
+		case "success":
+			description = "The party succeeded on their adventure!";
+			break;
+		case "defeat":
+		case "giveup":
+			description = "The party retreated.";
+			break;
+	}
+
+	return new EmbedBuilder().setColor(getColor(adventure.element))
+		.setAuthor({ name: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png", url: "https://github.com/Imaginary-Horizons-Productions/prophets-of-the-labyrinth" })
+		.setTitle(adventure.name)
+		.setThumbnail(isAdventureCompleted ? "https://cdn.discordapp.com/attachments/545684759276421120/734092918369026108/completion.png" : "https://cdn.discordapp.com/attachments/545684759276421120/734093574031016006/bountyboard.png")
+		.setDescription(description)
+		.addFields(fields);
+}
+
+/** @param {Adventure} adventure */
+function generateAdventureConfigMessage(adventure) {
+	const options = ["Training Weights", "Can't Hold All this Value", "Restless", "Rushing"].map(challengeName => {
+		const challenge = getChallenge(challengeName);
+		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName };
+	})
+	return {
+		content: `**${adventure.labyrinth}**\n*${getLabyrinthProperty(adventure.labyrinth, "description")}*\nParty Leader: <@${adventure.leaderId}>\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
+		components: [
+			new ActionRowBuilder().addComponents(
+				new ButtonBuilder().setCustomId("ready")
+					.setLabel("Ready!")
+					.setStyle(ButtonStyle.Success),
+				new ButtonBuilder().setCustomId("deploy")
+					.setLabel("Pick Archetype")
+					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder().setCustomId("startingartifacts")
+					.setLabel("Pick Starting Artifact")
+					.setStyle(ButtonStyle.Secondary)
+			),
+			new ActionRowBuilder().addComponents(
+				new StringSelectMenuBuilder().setCustomId("startingchallenges")
+					.setPlaceholder("Select challenge(s)...")
+					.setMinValues(1)
+					.setMaxValues(options.length)
+					.addOptions(options)
+			),
+			new ActionRowBuilder().addComponents(
+				new ButtonBuilder().setCustomId("clearstartingchallenges")
+					.setStyle(ButtonStyle.Danger)
+					.setLabel("Clear Starting Challenges")
+			)
+		],
+		flags: MessageFlags.SuppressNotifications
+	}
 }
 
 /** Derive the embeds and components that correspond with the adventure's state
@@ -141,9 +224,10 @@ function addScoreField(embed, adventure, guildId) {
 	const bonusScoreline = generateScoreline("additive", "Bonus", adventure.score);
 	const challengesScoreline = generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
 	const skippedArtifactScoreline = generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
+	const artifactMultiplierScoreline = generateScoreline("multiplicative", "Floating Multiplier Bonus", 1 + (adventure.getArtifactCount("Floating Multiplier") / 4));
 	const defeatScoreline = generateScoreline("multiplicative", "Defeat", adventure.state === "defeat" ? 0.5 : 1);
 	const giveupScoreline = generateScoreline("multiplicative", "Give Up", adventure.state === "giveup" ? 0 : 1);
-	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
+	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${artifactMultiplierScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
 	adventure.score = finalScore;
 
 	const company = getCompany(guildId);
@@ -193,7 +277,7 @@ function generateScoreline(stackType, label, value) {
 			}
 			break;
 		default:
-			console.error(new Error(`Generating scoreline with unregistered stackType: ${stackType}`));
+			console.error(new Error(`Generating scoreline with unregistered stackType: ${stackType} `));
 	}
 	return "";
 }
@@ -203,7 +287,7 @@ function generateScoreline(stackType, label, value) {
  * @returns {string} text to put in the author name field of a room embed
  */
 function roomHeaderString(adventure) {
-	return `Lives: ${adventure.lives} - Party Gold: ${adventure.gold} - Score: ${adventure.getBaseScore().total}`;
+	return `Lives: ${adventure.lives} - Party Gold: ${adventure.gold} - Score: ${adventure.getBaseScore().total} `;
 }
 
 /** The room header goes in the embed's author field and should contain information about the party's commonly used or important resources
@@ -253,7 +337,7 @@ async function generateVersionEmbed() {
  */
 function generateArtifactEmbed(artifactTemplate, count, adventure) {
 	const embed = embedTemplate()
-		.setTitle(`${getEmoji(artifactTemplate.element)} ${artifactTemplate.name} x ${count}`)
+		.setTitle(`${getEmoji(artifactTemplate.element)} ${artifactTemplate.name} x ${count} `)
 		.setDescription(artifactTemplate.dynamicDescription(count))
 		.addFields({ name: "Scaling", value: artifactTemplate.scalingDescription });
 	if (artifactTemplate.flavorText) {
@@ -278,7 +362,8 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 function gearToEmbedField(gearName, durability, holder) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability}/${maxDurability} durability)`;
+	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))
+		} ${durability} /${maxDurability} durability)`;
 	return {
 		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))}${durabilityText}`,
 		value: buildGearDescription(gearName, maxDurability !== 0, holder)
@@ -339,6 +424,8 @@ module.exports = {
 	randomAuthorTip,
 	randomFooterTip,
 	embedTemplate,
+	generateRecruitEmbed,
+	generateAdventureConfigMessage,
 	renderRoom,
 	updateRoomHeader,
 	generateVersionEmbed,

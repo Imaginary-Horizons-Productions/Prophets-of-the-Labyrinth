@@ -47,6 +47,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				message.pin();
 				adventure.state = "ongoing";
 				adventure.messageIds.utility = message.id;
+				adventure.gainArtifact("Peacock Charm", 1);
 				nextRoom("Battle", interaction.channel);
 			});
 		}

@@ -54,7 +54,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					collectedInteraction.channel.send({ content: `${collectedInteraction.user.displayName} decides to hold onto a **${artifactName}**. They'll be able to bring it on future adventures.`, ephemeral: true });
 				})
 
-				collector.on("end", () => {
+				collector.on("end", async (interactionCollection) => {
+					await interactionCollection.first().update({ components: [] });
 					interaction.deleteReply();
 				})
 			}

@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ThreadChannel, EmbedBuilder, Message } = require("discord.js");
+const { ThreadChannel, Message } = require("discord.js");
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
@@ -17,7 +17,7 @@ const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
 const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
-const { renderRoom, updateRoomHeader } = require("../util/embedUtil");
+const { renderRoom, updateRoomHeader, generateRecruitEmbed } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
@@ -310,11 +310,20 @@ function newRound(adventure, thread, lastRoundText) {
 			 * @param {number} i
 			 */
 			(combatant, i) => {
-				const boatPartsCount = adventure.getArtifactCount("Boat Parts");
-				if (boatPartsCount > 0 && adventure.room.round <= boatPartsCount + 1 && combatant.team === "delver") {
-					const boatProtection = boatPartsCount * 25 + 25;
-					addProtection([combatant], boatProtection);
-					adventure.updateArtifactStat("Protection Generated", boatProtection);
+				if (combatant.team === "delver") {
+					const boatPartsCount = adventure.getArtifactCount("Boat Parts");
+					if (boatPartsCount > 0 && adventure.room.round <= boatPartsCount + 1) {
+						const boatProtection = boatPartsCount * 25 + 25;
+						addProtection([combatant], boatProtection);
+						adventure.updateArtifactStat("Boat Parts", "Protection Generated", boatProtection);
+					}
+
+					const peacockCharmCount = adventure.getArtifactCount("Peacock Charm");
+					if (peacockCharmCount > 0) {
+						const peacockProtection = peacockCharmCount + combatant.poise - combatant.stagger;
+						addProtection([combatant], peacockProtection);
+						adventure.updateArtifactStat("Peacock Charm", "Protection Generated", peacockProtection);
+					}
 				}
 
 				// Roll Round Speed
@@ -715,14 +724,9 @@ async function fetchRecruitMessage(thread, messageId) {
 function completeAdventure(adventure, thread, endState, descriptionOverride) {
 	const { messages: messageManager } = thread;
 	fetchRecruitMessage(thread, adventure.messageIds.recruit).then(recruitMessage => {
-		const [{ data: recruitEmbed }] = recruitMessage.embeds;
 		recruitMessage.edit({
-			embeds: [
-				new EmbedBuilder(recruitEmbed)
-					.setTitle(recruitEmbed.title + ": COMPLETE!")
-					.setThumbnail("https://cdn.discordapp.com/attachments/545684759276421120/734092918369026108/completion.png")
-					.addFields({ name: "Seed", value: adventure.initialSeed })
-			], components: []
+			embeds: [generateRecruitEmbed(adventure)],
+			components: []
 		});
 	})
 	clearComponents(adventure.messageIds.battleRound, messageManager);
