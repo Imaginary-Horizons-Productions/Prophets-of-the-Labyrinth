@@ -1,4 +1,4 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate, Move } = require('../classes');
 const { addModifier, payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Charging Blood Aegis",
@@ -9,6 +9,11 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [powerUp], protection, critMultiplier, hpCost } = module.exports;
+		const paymentSentence = payHP(user, hpCost, adventure);
+		if (adventure.lives < 1) {
+			return paymentSentence;
+		}
+		const resultsSentences = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
@@ -18,20 +23,26 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		}
 		addProtection([user], pendingProtection);
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
+		if (addedPowerUp) {
+			resultsSentences.push(`${userName} is Powered Up.`);
+		}
+		const [userName, targetName] = getNames([user, target], adventure);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
 		});
-		const [userName, targetName] = getNames([user, target], adventure);
-		if (targetMove.targets.length === 1) {
+		const userMove = adventure.room.moves.find(move => {
+			const moveUser = adventure.getCombatant(move.userReference);
+			return moveUser.name === user.name && moveUser.title === user.title;
+		});
+		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			return `Gaining protection, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${userName} is Powered Up.` : ""} ${targetName} falls for the provocation.`;
-		} else {
-			return `Gaining protection, ${payHP(user, hpCost, adventure)}${addedPowerUp ? ` ${userName} is Powered Up.` : ""}`;
+			resultsSentences.push(`${targetName} falls for the provocation.`);
 		}
+		return resultsSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Reinforced Blood Aegis", "Sweeping Blood Aegis")
+	.setSidegrades("Reinforced Blood Aegis", "Toxic Blood Aegis")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)
 	.setHPCost(25)

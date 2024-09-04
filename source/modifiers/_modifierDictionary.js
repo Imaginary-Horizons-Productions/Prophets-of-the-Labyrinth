@@ -12,12 +12,18 @@ for (const file of [
 	"absorb-untyped.js",
 	"absorb-water.js",
 	"absorb-wind.js",
-	"boring.js",
+	"agility.js",
 	"curse-of-midas.js",
+	"distracted.js",
 	"evade.js",
 	"exposed.js",
 	"frail.js",
-	"lacking-rhythm.js",
+	"insult-boring.js",
+	"insult-lacking-rhythm.js",
+	"insult-smelly.js",
+	"insult-stupid.js",
+	"insult-ugly.js",
+	"lucky.js",
 	"oblivious.js",
 	"paralysis.js",
 	"poison.js",
@@ -27,12 +33,10 @@ for (const file of [
 	"quicken.js",
 	"regen.js",
 	"slow.js",
-	"smelly.js",
 	"stance-floating-mist.js",
 	"stance-iron-fist.js",
 	"stasis.js",
-	"stupid.js",
-	"ugly.js",
+	"unlucky.js",
 	"vigilance.js",
 	"weakness-darkness.js",
 	"weakness-earth.js",
@@ -65,6 +69,11 @@ function getModifierDescription(modifierName, bearer, adventure) {
 }
 
 /** @param {string} modifierName */
+function getModifierEmoji(modifierName) {
+	return MODIFIERS[modifierName].emoji;
+}
+
+/** @param {string} modifierName */
 function getTurnDecrement(modifierName) {
 	return MODIFIERS[modifierName].turnDecrement;
 }
@@ -86,6 +95,7 @@ function getInverse(modifierName) {
 
 module.exports = {
 	getModifierDescription,
+	getModifierEmoji,
 	getTurnDecrement,
 	isBuff,
 	isDebuff,

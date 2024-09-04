@@ -1,9 +1,9 @@
 const { EnemyTemplate, Combatant, Adventure } = require("../classes");
-const { isDebuff } = require("../modifiers/_modifierDictionary");
+const { isDebuff, getModifierEmoji } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
 const { dealDamage, addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
-const { listifyEN } = require("../util/textUtil");
+const { listifyEN, joinAsStatement } = require("../util/textUtil");
 
 module.exports = new EnemyTemplate("Starry Knight",
 	"Light",
@@ -16,12 +16,12 @@ module.exports = new EnemyTemplate("Starry Knight",
 ).addAction({
 	name: "Mock the Accursed",
 	element: "Light",
-	description: `Inflict ${getEmoji("Light")} damage to a single foe; increases with foe's debuffs, cursed gear, and unfinished challenges`,
+	description: `Deal ${getEmoji("Light")} damage to a single foe; increases with foe's debuffs, cursed gear, and unfinished challenges`,
 	priority: 0,
 	effect: ([target], user, isCrit, adventure) => {
 		const unfinishedChallenges = [];
 		for (const [challengeName, { duration }] of Object.entries(adventure.challenges)) {
-			// Indefinite challenges defined as "unfinished"
+			// Indefinite challenge duration defined as "unfinished"
 			if (duration !== 0) {
 				unfinishedChallenges.push(challengeName);
 			}
@@ -76,33 +76,44 @@ module.exports = new EnemyTemplate("Starry Knight",
 	needsLivingTargets: true,
 	next: "random"
 }).addAction({
-	name: "Boast",
+	name: "\"Share\" the Spotlight",
 	element: "Untyped",
-	description: "Inflict Frail and random insults on all foes, gain protection on a crit",
+	description: `Inflict ${getModifierEmoji("Exposed")} and random insults on all foes, gain protection on a crit`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
+		changeStagger(targets, "elementMatchFoe");
 		if (isCrit) {
 			addProtection([user], 100);
 		}
-		const frailedTargets = addModifier(targets, { name: "Frail", stacks: 4 });
+		const frailedTargets = addModifier(targets, { name: "Exposed", stacks: 1 });
+		const resultSentences = [joinAsStatement(false, getNames(frailedTargets, adventure), "is", "are", "Exposed.")];
 		const insultMap = {};
 		addNewRandomInsults(insultMap, targets, 1, adventure);
-		const insultEntries = Object.entries(insultMap);
-		if (frailedTargets.length === 1) {
-			if (insultEntries.length > 0) {
-				return `${frailedTargets[0]} gains Frail. ${insultEntries.map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList, false)}.`).join(" ")}`;
-			} else {
-				return `${frailedTargets[0]} gains Frail.`;
-			}
-		} else {
-			if (insultEntries.length > 0) {
-				return `${listifyEN(frailedTargets, false)} gain Frail. ${insultEntries.map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList, false)}.`).join(" ")}`;
-			} else {
-				return `${listifyEN(frailedTargets, false)} gain Frail.`;
-			}
-		}
+		resultSentences.push(Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList, false)}.`).join(" "));
+		return resultSentences.join(" ");
 	},
 	selector: selectAllFoes,
+	needsLivingTargets: true,
+	next: "random"
+}).addAction({
+	name: "Boast",
+	element: "Light",
+	description: `Inflict Distracted and ${getEmoji("Light")} damage on a single foe`,
+	priority: 0,
+	effect: (targets, user, isCrit, adventure) => {
+		changeStagger(targets, "elementMatchFoe");
+		let pendingDamage = user.getPower() + 100;
+		if (isCrit) {
+			pendingDamage *= 2;
+		}
+		const resultSentences = [dealDamage(targets, user, pendingDamage, false, "Light", adventure)];
+		const distractedTargets = addModifier(targets, { name: "Distracted", stacks: 4 });
+		if (distractedTargets.length > 0) {
+			resultSentences.push(joinAsStatement(false, getNames(distractedTargets, adventure), "is", "are", "Distracted."));
+		}
+		return resultSentences.join(" ");
+	},
+	selector: selectRandomFoe,
 	needsLivingTargets: true,
 	next: "random"
 }).setFlavorText({ name: "Insult to Injury", value: "Insult debuffs (Ugly, Stupid, Smelly, Boring, Lacking Rhythm) make the Starry Knight's Mock the Accursed more dangerous. Appease the Starry Knight to cure them all." });

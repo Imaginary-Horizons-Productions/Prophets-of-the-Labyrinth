@@ -17,4 +17,4 @@ module.exports = new ItemTemplate("Watery Potion",
 			return "But nothing happened.";
 		}
 	}
-).setFlavorText(["*Additional Note*", "Apply directly to the forehead."]);
+).setFlavorText({ name: "*Additional Note*", value: "Apply directly to the forehead." });

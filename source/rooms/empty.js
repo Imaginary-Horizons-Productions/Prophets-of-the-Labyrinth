@@ -4,6 +4,7 @@ const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new RoomTemplate("Empty Room",
 	"Untyped",
+	"Empty",
 	"This room is empty. Lucky you?",
 	[],
 	function (adventure) { return {}; },

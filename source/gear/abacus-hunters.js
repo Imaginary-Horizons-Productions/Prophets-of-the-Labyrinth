@@ -35,4 +35,4 @@ module.exports = new GearTemplate("Hunter's Abacus",
 	.setSidegrades("Sharpened Abacus", "Unstoppable Abacus")
 	.setDurability(15)
 	.setDamage(40)
-	.setBonus(15); // gold
+	.setBonus(30); // gold

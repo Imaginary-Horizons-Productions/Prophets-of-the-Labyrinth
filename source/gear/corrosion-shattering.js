@@ -34,7 +34,7 @@ module.exports = new GearTemplate("Shattering Corrosion",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Flanking Corrosion", "Harmful Corrosion")
+	.setSidegrades("Fate-Sealing Corrosion", "Harmful Corrosion")
 	.setModifiers({ name: "Power Down", stacks: 20 }, { name: "Frail", stacks: 4 })
 	.setStagger(2)
 	.setDurability(15);

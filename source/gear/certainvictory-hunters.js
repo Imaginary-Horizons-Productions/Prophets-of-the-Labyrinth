@@ -22,11 +22,11 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 			adventure.gainGold(bounty);
 			damageText += ` ${getNames([user], adventure)[0]} gains ${bounty}g of victory spoils.`;
 		}
-		return `${payHP(user, user.getModifierStacks("Power Up"), adventure)}${damageText}${addedPowerUp ? ` ${getNames([user], adventure)[0]} is Powered Up.` : ""}`;
+		return `${damageText}${addedPowerUp ? ` ${getNames([user], adventure)[0]} is Powered Up.` : ""}${payHP(user, user.getModifierStacks("Power Up"), adventure)}`;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)
 	.setDamage(40)
-	.setBonus(15);
+	.setBonus(30);

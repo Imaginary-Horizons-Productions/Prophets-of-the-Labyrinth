@@ -11,7 +11,6 @@ Adds Quicken to the user
 - Lance (Earth)
 - Midas Staff (Water)
 - Shortsword (Fire)
-- Sun Flare (Light)
 
 ### Accurate
 Passively increases the user's Crit Rate
@@ -44,6 +43,7 @@ Hits 3 random targets (from a beneficial team)
 
 **Available on**
 - all Firecrackers (Fire)
+- Medicine (Water)
 
 ### Charging
 Adds Power Up to the user
@@ -52,35 +52,49 @@ Adds Power Up to the user
 - all Bucklers (Earth)
 - all Certain Victory (Earth)
 - Blood Aegis (Darkness)
-- War Cry (Fire)
+- War Cry (Light)
 
 ### Cleansing
 Cures a random debuff on target
 
 **Available on**
 - all Refreshing Breezes (Wind)
-- Barrier (Earth)
+- Barrier (Wind)
+- Medicine (Water)
 - Second Wind (Untyped)
+
+### Confusing
+Change target's target to itself
+
+**Available on**
+- all Shoulder Throws (Light)
 
 ### Corrosive
 Adds Power Down to target
 
 **Available on**
 - all Corrosions (Fire)
+- Cauldron Stir (Water)
 
 ### Devoted
 Can apply to allies
 
 **Available on**
 - Bucker (Earth)
-- Barrier (Earth)
+- Barrier (Wind)
 
 ### Discounted
 Reduced base price
 
 **Available on**
-- Infinite Regeneration (Light)
+- Infinite Regeneration (Fire)
 - Midas Staff (Water)
+
+### Distracting
+Add Distracted to target
+
+**Available on**
+- Poison Torrent (Water)
 
 ### Double
 Doubles number of targets
@@ -101,27 +115,29 @@ Adds Evade to the user
 **Available on**
 - all Cloaks (Wind)
 - Bow (Wind)
-- Sun Flare (Light)
+- Shoulder Throw (Light)
 
 ### Fate-Sealing
 Adds Stasis to target on crit
 
 **Available on**
-- Censer (Fire)
-- Infinite Regeneration (Light)
+- Corrosion (Fire)
+- Infinite Regeneration (Fire)
 
 ### Flanking
 Adds Exposed to target
 
 **Available on**
 - Life Drain (Darkness)
-- Corrosion (Fire)
+- Pistol (Earth)
 
 ### Furious
 Increases damage proprotional to user's missing HP
 
 **Available on**
 - all Power from Wrath (Darkness)
+- Battleaxe (Fire)
+- Life Drain (Darkness)
 
 ### Guarding
 Adds protection to the target
@@ -156,9 +172,9 @@ Passively increases the user's Max HP
 Gain gold on kill
 
 **Available on**
+- Abacus (Water)
 - Bow (Wind)
 - Certain Victory (Earth)
-- Abacus (Water)
 
 ### Lethal
 Increased crit damage
@@ -167,6 +183,7 @@ Increased crit damage
 - all Daggers (Wind)
 - Certain Victory (Earth)
 - Scythe (Darkness)
+- Shortsword (Fire)
 - Spear (Wind)
 
 ### Long
@@ -175,21 +192,21 @@ Increased modifier stacks
 **Available on**
 - Cloak (Wind)
 - Sabotage Kit (Earth)
-- Barrier (Earth)
+- Barrier (Wind)
 - Risky Mixture (Darkness)
 
-### Mercurial
-Damage element matches user
+### Lucky
+Add Lucky to the user
 
 **Available on**
-- Bow (Wind)
-- Firecracker (Fire)
+- Scutum (Fire)
 
 ### Midas's
 Adds Curse of Midas to target
 
 **Available on**
 - all Midas Staves (Water)
+- Firecracker (Fire)
 
 ### Organic
 Regains durability when entering new rooms
@@ -205,17 +222,11 @@ Passively increases user's poise
 **Available on**
 - all Wolf Rings (Untyped)
 
-### Prideful
-Increased damage and change element to Untyped
-
-**Available on**
-- Battleaxe (Fire)
-
 ### Reactive
 Bonus damage if user moves after target
 
 **Available on**
-- Life Drain (Darkness)
+- Battleaxe (Fire)
 - Spear (Wind)
 - Warhammer (Earth)
 
@@ -246,6 +257,13 @@ Adds a random modifier that converts one of target's neutral elements to a weakn
 
 **Available on**
 - all Sabotage Kits (Earth)
+- Cauldron Stir (Water)
+
+### Semi-Decimating
+5% percent max hp damage
+
+**Available on**
+- all Abacuses (Water)
 
 ### Sharpened
 Increased damage
@@ -270,15 +288,16 @@ Adds Slow to target
 **Available on**
 - all Ice Bolts (Water)
 - Daggers (Wind)
-- War Cry (Fire)
+- War Cry (Light)
 - Warhammer (Earth)
 
 ### Soothing
 Adds Regen to target
 
 **Available on**
-- all Infinite Regenerations (Light)
+- all Infinite Regenerations (Fire)
 - Floating Mist Stance (Light)
+- Medicine (Water)
 - Midas Staff (Water)
 - Second Wind (Untyped)
 
@@ -287,6 +306,7 @@ Add Stagger to target
 
 **Available on**
 - all Morning Stars (Light)
+- Censer (Fire)
 - Stong Attack (Untyped)
 
 ### Surpassing
@@ -301,7 +321,6 @@ Targets whole team
 
 **Available on**
 - all Poison Torrents (Water)
-- Blood Aegis (Darkness)
 - Daggers (Wind)
 - Inspiration (Wind)
 - Scutum (Fire)
@@ -324,8 +343,7 @@ Change target's move's target to user
 Increased durability
 
 **Available on**
-- Barrier (Earth)
-- Battleaxe (Fire)
+- Barrier (Wind)
 - Censer (Fire)
 
 ### Thirsting
@@ -333,19 +351,20 @@ Heal user's HP on kill
 
 **Available on**
 - Battleaxe (Fire)
+- Life Drain (Darkness)
 
 ### Tormenting
 Increment a stack on all target's debuffs
 
 **Available on**
 - Censer (Fire)
-- Sun Flare (Light)
-- War Cry (Fire)
+- War Cry (Light)
 
 ### Toxic
 Adds Poison to target
 
 **Available on**
+- Blood Aegis (Darkness)
 - Cauldron Stir (Water)
 - Firecracker (Fire)
 - Shortsword (Fire)
@@ -355,6 +374,7 @@ Deals Unblockable damage, usable while Stunned
 
 **Available on**
 - Abacus (Water)
+- Bow (Wind)
 - Lance (Earth)
 - Scythe (Darkness)
 - Warhammer (Earth)
@@ -365,10 +385,10 @@ Increased priority
 **Available on**
 - all Bows (Wind)
 - all Sun Flares (Light)
-- Barrier (Earth)
+- Barrier (Wind)
 - Fever Break (Darkness)
 - Herb Basket (Earth)
-- Life Drain (Darkness)
+- Sabotage Kit (Earth)
 
 ### Vexing
 Bonus damage if target has debuffs
@@ -382,10 +402,9 @@ Adds Vigilance to user
 
 **Available on**
 - all Barriers (Wind)
-- Scutum (Fire)
 
 ### Wise
-Increases levels gained after battle by 1
+Increases stats gained by level up
 
 **Available on**
 - Chainmail (Earth)
@@ -394,7 +413,6 @@ Increases levels gained after battle by 1
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
 - Adds Iron Fist Stance to user (all Iron Fist Stances)
 - Double benefits from Power Up (all Lances)
-- Percent max hp damage (all Abacuses)
 - Adds Power Up to target (all Inspiration)
 - Also hits targets with Exposed (all War Cries)
 - Adds Power Up to random ally if hitting weakness (all Pistols)

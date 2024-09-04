@@ -4,6 +4,7 @@ const { generateRoutingRow } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Repair Kit, just hanging out",
 	"Earth",
+	"Event",
 	"There's a Repair Kit hanging in the middle of the room tied to the ceiling by a rope.",
 	[
 		new ResourceTemplate("1", "internal", "Repair Kit")

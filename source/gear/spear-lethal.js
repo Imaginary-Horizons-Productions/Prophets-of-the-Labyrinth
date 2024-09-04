@@ -6,7 +6,7 @@ module.exports = new GearTemplate("Lethal Spear",
 	"Strike a foe for @{damage} @{element} damage",
 	"Damage x@{critMultiplier}, also inflict @{foeStagger}",
 	"Weapon",
-	"Wind",
+	"Earth",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, stagger, damage, critMultiplier } = module.exports;

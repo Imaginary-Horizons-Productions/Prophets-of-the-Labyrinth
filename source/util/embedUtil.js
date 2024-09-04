@@ -2,14 +2,14 @@ const fs = require("fs");
 const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW } = require("../constants");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH } = require("../constants");
 
 const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
 const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
+const { isBuff, isDebuff, getModifierEmoji } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
@@ -103,7 +103,7 @@ function generateRecruitEmbed(adventure) {
 
 /** @param {Adventure} adventure */
 function generateAdventureConfigMessage(adventure) {
-	const options = ["Training Weights", "Can't Hold All this Value", "Restless", "Rushing"].map(challengeName => {
+	const options = ["Training Weights", "Can't Hold All this Value", "Restless", "Rushing", "Into the Deep End"].map(challengeName => {
 		const challenge = getChallenge(challengeName);
 		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName };
 	})
@@ -321,11 +321,11 @@ async function generateVersionEmbed() {
 
 	if (knownIssuesStart && knownIssuesStart < knownIssuesEnd) {
 		// Known Issues section found
-		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesStart))
+		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesStart).slice(0, MAX_EMBED_DESCRIPTION_LENGTH))
 			.addFields({ name: "Known Issues", value: data.slice(knownIssuesStart + 16, knownIssuesEnd) });
 	} else {
 		// Known Issues section not found
-		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesEnd));
+		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesEnd).slice(0, MAX_EMBED_DESCRIPTION_LENGTH));
 	}
 	return embed.addFields({ name: "Become a Sponsor", value: "Chip in for server costs or get premium features by sponsoring [PotL on GitHub](https://github.com/Imaginary-Horizons-Productions/Prophets-of-the-Labyrinth)" });
 }
@@ -404,9 +404,11 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 			} else {
 				style = ButtonStyle.Secondary;
 			}
-			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
+			const modifierButton = new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
 				.setLabel(`${modifierName} x ${delver.modifiers[modifierName]}`)
-				.setStyle(style))
+				.setStyle(style)
+				.setEmoji(getModifierEmoji(modifierName));
+			actionRow.push(modifierButton);
 		}
 		if (modifiers.length > 4) {
 			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}MORE`)

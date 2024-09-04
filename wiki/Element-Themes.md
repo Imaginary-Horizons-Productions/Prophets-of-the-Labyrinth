@@ -165,12 +165,11 @@ Archetypes:
 - Harmful
 - Healing
 - Long
-- Mercurial
 - Midas's
-- Prideful
 - Purifying
 - Reactive
 - Reinforced
+- Semi-Decimating
 - Sharpened
 - Shattering
 - Surpassing

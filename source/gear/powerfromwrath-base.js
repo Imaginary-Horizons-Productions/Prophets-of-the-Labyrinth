@@ -9,6 +9,7 @@ module.exports = new GearTemplate("Power from Wrath",
 	200,
 	(targets, user, isCrit, adventure) => {
 		const { element, damage, hpCost } = module.exports;
+		const paymentSentence = payHP(user, hpCost, adventure);
 		const furiousness = (user.getMaxHP() - user.hp) / user.getMaxHP() + 1;
 		let pendingDamage = (user.getPower() + damage) * furiousness;
 		if (user.element === element) {
@@ -17,7 +18,7 @@ module.exports = new GearTemplate("Power from Wrath",
 		if (isCrit) {
 			pendingDamage *= 2;
 		}
-		return `${payHP(user, hpCost, adventure)}${dealDamage(targets, user, pendingDamage, false, element, adventure)}`;
+		return `${paymentSentence}${dealDamage(targets, user, pendingDamage, false, element, adventure)}`;
 	}
 ).setTargetingTags({ type: "single", team: "enemy", needsLivingTargets: true })
 	.setDurability(15)

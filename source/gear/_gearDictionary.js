@@ -1,4 +1,5 @@
 const { BuildError, GearTemplate, Gear, Delver } = require("../classes");
+const { getModifierEmoji } = require("../modifiers/_modifierDictionary");
 const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
@@ -18,25 +19,27 @@ for (const file of [
 	"barrier-devoted.js",
 	"barrier-long.js",
 	"battleaxe-base.js",
-	"battleaxe-prideful.js",
-	"battleaxe-thick.js",
+	"battleaxe-furious.js",
+	"battleaxe-reactive.js",
 	"battleaxe-thirsting.js",
 	"bloodaegis-base.js",
 	"bloodaegis-charging.js",
 	"bloodaegis-reinforced.js",
-	"bloodaegis-sweeping.js",
+	"bloodaegis-toxic.js",
 	"bow-base.js",
 	"bow-evasive.js",
 	"bow-hunters.js",
-	"bow-mercurial.js",
+	"bow-unstoppable.js",
 	"buckler-base.js",
 	"buckler-devoted.js",
 	"buckler-guarding.js",
 	"buckler-reinforced.js",
 	"cauldronstir-base.js",
+	"cauldronstir-corrosive.js",
+	"cauldronstir-sabotaging.js",
 	"cauldronstir-toxic.js",
 	"censer-base.js",
-	"censer-fatesealing.js",
+	"censer-staggering.js",
 	"censer-thick.js",
 	"censer-tormenting.js",
 	"certainvictory-base.js",
@@ -50,7 +53,7 @@ for (const file of [
 	"cloak-base.js",
 	"cloak-long.js",
 	"corrosion-base.js",
-	"corrosion-flanking.js",
+	"corrosion-fatesealing.js",
 	"corrosion-harmful.js",
 	"corrosion-shattering.js",
 	"cursed-blade.js",
@@ -65,10 +68,11 @@ for (const file of [
 	"feverbreak-urgent.js",
 	"firecracker-base.js",
 	"firecracker-double.js",
-	"firecracker-mercurial.js",
+	"firecracker-midass.js",
 	"firecracker-toxic.js",
 	"floatingmiststance-base.js",
 	"floatingmiststance-soothing.js",
+	"goadfutility-base.js",
 	"herbbasket-base.js",
 	"herbbasket-organic.js",
 	"herbbasket-reinforced.js",
@@ -89,9 +93,12 @@ for (const file of [
 	"lance-unstoppable.js",
 	"lifedrain-base.js",
 	"lifedrain-flanking.js",
-	"lifedrain-reactive.js",
-	"lifedrain-urgent.js",
+	"lifedrain-furious.js",
+	"lifedrain-thirsting.js",
 	"medicine-base.js",
+	"medicine-bouncing.js",
+	"medicine-cleansing.js",
+	"medicine-soothing.js",
 	"midasstaff-accelerating.js",
 	"midasstaff-base.js",
 	"midasstaff-discounted.js",
@@ -102,7 +109,9 @@ for (const file of [
 	"pistol-base.js",
 	"pistol-double.js",
 	"pistol-duelists.js",
+	"pistol-flanking.js",
 	"poisontorrent-base.js",
+	"poisontorrent-distracting.js",
 	"poisontorrent-harmful.js",
 	"powerfromwrath-base.js",
 	"prismaticblast-base.js",
@@ -113,12 +122,13 @@ for (const file of [
 	"sabotagekit-base.js",
 	"sabotagekit-long.js",
 	"sabotagekit-shattering.js",
+	"sabotagekit-urgent.js",
 	"scarf-base.js",
 	"scarf-hearty.js",
 	"scutum-base.js",
 	"scutum-guarding.js",
+	"scutum-lucky.js",
 	"scutum-sweeping.js",
-	"scutum-vigilant.js",
 	"scythe-base.js",
 	"scythe-lethal.js",
 	"scythe-toxic.js",
@@ -128,7 +138,10 @@ for (const file of [
 	"secondwind-soothing.js",
 	"shortsword-accelerating.js",
 	"shortsword-base.js",
+	"shortsword-lethal.js",
 	"shortsword-toxic.js",
+	"shoulderthrow-base.js",
+	"shoulderthrow-evasive.js",
 	"spear-base.js",
 	"spear-lethal.js",
 	"spear-reactive.js",
@@ -136,10 +149,6 @@ for (const file of [
 	"strongattack-base.js",
 	"strongattack-sharpened.js",
 	"strongattack-staggering.js",
-	"sunflare-accelerating.js",
-	"sunflare-base.js",
-	"sunflare-evasive.js",
-	"sunflare-tormenting.js",
 	"warcry-base.js",
 	"warcry-charging.js",
 	"warcry-slowing.js",
@@ -247,8 +256,11 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			.replace(/@{poise}/g, getGearProperty(gearName, "poise"))
 			.replace(/@{extraStagger}/g, `${stagger} Stagger`);
 		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
-			description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifier.name)
-				.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
+			if (!modifier.name.startsWith("unparsed")) {
+				const modifierEmoji = getModifierEmoji(modifier.name);
+				description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji);
+			}
+			description = description.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		})
 		return description;
 	} else {

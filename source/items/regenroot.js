@@ -1,9 +1,10 @@
 const { ItemTemplate } = require("../classes");
+const { getModifierEmoji } = require("../modifiers/_modifierDictionary");
 const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, getNames } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Regen Root",
-	"Grants the user 5 Regen",
+	`Grants the user 5 ${getModifierEmoji("Regen")}`,
 	"Untyped",
 	30,
 	selectSelf,

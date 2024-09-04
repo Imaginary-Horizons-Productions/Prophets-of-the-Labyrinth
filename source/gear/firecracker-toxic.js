@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants.js');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN, joinAsStatement } = require('../util/textUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Toxic Firecracker",
 	"Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage",
@@ -15,14 +15,21 @@ module.exports = new GearTemplate("Toxic Firecracker",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+		const resultsSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			if (user.element === element) {
+				changeStagger(stillLivingTargets, "elementMatchFoe");
+			}
+			const poisonedTargetNames = getNames(addModifier(stillLivingTargets, poison), adventure);
+			if (poisonedTargetNames.length > 0) {
+				resultsSentences.push(joinAsStatement(false, poisonedTargetNames, "is", "are", "Poisoned."));
+			}
 		}
-		const poisonedTargetNames = getNames(addModifier(targets, poison), adventure);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, poisonedTargetNames, "is", "are", "Poisoned.")}`;
+		return resultsSentences.join(" ");
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
-	.setSidegrades("Double Firecracker", "Mercurial Firecracker")
+	.setSidegrades("Double Firecracker", "Midas's Firecracker")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)
-	.setDamage(15);
+	.setDamage(5);

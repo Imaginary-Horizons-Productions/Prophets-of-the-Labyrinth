@@ -1,13 +1,15 @@
-/** Calculates the sum of a geometric series (coefficeint + coefficient * ratio + coefficient * ratio **2...)
+/** Aggregate dice rolls into one comparison by summing geometric series (coefficeint + coefficient * ratio + coefficient * ratio **2...)
+ *
+ * Formula simplified because `r = 1 - c` for dice rolls
  * @param {number} coefficent
  * @param {number} ratio
- * @param {number} terms
+ * @param {number} extraDice
  */
-function sumGeometricSeries(coefficent, ratio, terms) {
-	return coefficent * (1 - ratio ** terms) / (1 - ratio);
+function anyDieSucceeds(successChance, extraDice) {
+	return 1 - ((1 - successChance) ** (1 + extraDice));
 };
 
 
 module.exports = {
-	sumGeometricSeries
+	anyDieSucceeds
 };

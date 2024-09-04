@@ -3,7 +3,7 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Accelerating Cloak",
-	"Gain @{critRate} Crit Rate; gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} when used in combat",
+	"Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}. Passive: Gain @{critRate} Crit Rate",
 	"@{mod0} +@{bonus} and @{mod1} +@{bonus}",
 	"Armor",
 	"Wind",

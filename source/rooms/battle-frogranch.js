@@ -3,6 +3,7 @@ const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Frog Ranch",
 	"Earth",
+	"Battle",
 	"Two Mechabee Soldiers are interrupted while escorting a set of domesticated Fire-Arrow Frogs to another pasture.",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),

@@ -19,117 +19,109 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
-				"Risky Mixture",
+				"Blood Aegis",
+				"Power from Wrath",
+				"Toxic Blood Aegis",
+				"Furious Life Drain",
+				"Thirsting Life Drain"
 			],
 			Rare: [
-				"Long Risky Mixture"
 			]
 		},
 		Earth: {
 			Cursed: [
 			],
 			Common: [
-				"Herb Basket",
-				"Lance"
+				"Certain Victory",
+				"Goad Futility",
+				"Pistol",
+				"Spear",
+				"Hunter's Certain Victory",
+				"Lethal Certain Victory",
+				"Reckless Certain Victory",
+				"Flanking Pistol",
+				"Urgent Sabotage Kit",
+				"Lethal Spear",
+				"Reactive Spear",
+				"Sweeping Spear",
 			],
 			Rare: [
-				"Organic Herb Basket",
-				"Reinforced Herb Basket",
-				"Urgent Herb Basket",
-				"Shattering Lance"
 			]
 		},
 		Fire: {
 			Cursed: [
 			],
 			Common: [
-				"Battleaxe",
-				"Censer",
-				"Corrosion",
 				"Firecracker",
-				"Scutum",
+				"Infinite Regeneration",
 				"Shortsword",
-				"War Cry"
+				"Furious Battleaxe",
+				"Reactive Battleaxe",
+				"Staggering Censer",
+				"Fate-Sealing Corrosion",
+				"Midas's Firecracker",
+				"Toxic Firecracker",
+				"Discounted Infinite Regeneration",
+				"Fate-Sealing Infinite Regeneration",
+				"Accelerating Shortsword",
+				"Lethal Shortsword",
+				"Toxic Shortsword"
 			],
 			Rare: [
-				"Prideful Battleaxe",
-				"Thick Battleaxe",
-				"Thirsting Battleaxe",
-				"Fate-Sealing Censer",
-				"Thick Censer",
-				"Tormenting Censer",
-				"Flanking Corrosion",
-				"Harmful Corrosion",
-				"Shattering Corrosion",
-				"Double Firecracker",
-				"Mercurial Firecracker",
-				"Toxic Firecracker",
-				"Guarding Scutum",
-				"Sweeping Scutum",
-				"Vigilant Scutum",
-				"Accelerating Shortsword",
-				"Toxic Shortsword",
-				"Charging War Cry",
-				"Slowing War Cry",
-				"Tormenting War Cry"
 			]
 		},
 		Light: {
 			Cursed: [
 			],
 			Common: [
-				"Morning Star",
-				"Prismatic Blast"
+				"Shoulder Throw",
+				"War Cry",
+				"Evasive Shoulder Throw",
+				"Charging War Cry",
+				"Slowing War Cry",
+				"Tormenting War Cry"
 			],
 			Rare: [
-				"Awesome Morning Star",
-				"Bashing Morning Star",
-				"Vexing Prismatic Blast"
 			]
 		},
 		Water: {
 			Cursed: [
 			],
 			Common: [
-				"Abacus",
-				"Cauldron Stir",
-				"Medicine"
+				"Blood Aegis",
+				"Charging Blood Aegis",
+				"Reinforced Blood Aegis",
+				"Toxic Blood Aegis",
+				"Corrosive Cauldron Stir",
+				"Sabotaging Cauldron Stir",
+				"Bouncing Medicine",
+				"Cleansing Medicine",
+				"Soothing Medicine",
+				"Distracting Poison Torrent",
+				"Harmful Poison Torrent"
 			],
 			Rare: [
-				"Hunter's Abacus",
-				"Sharpened Abacus",
-				"Unstoppable Abacus",
-				"Toxic Cauldron Stir"
 			]
 		},
 		Wind: {
 			Cursed: [
 			],
 			Common: [
-				"Barrier",
+				"Unstoppable Bow",
+				"Slowing Daggers"
 			],
 			Rare: [
-				"Cleansing Barrier",
-				"Devoted Barrier",
-				"Long Barrier",
 			]
 		},
 		Untyped: {
 			Cursed: [
-				"Cursed Blade",
-				"Cursed Tome"
 			],
 			Common: [
-				"Chainmail",
-				"Second Wind",
-				"Strong Attack"
+				"Cursed Tome",
+				"Cursed Blade",
+				"Wise Chainmail"
 			],
 			Rare: [
-				"Wise Chainmail",
-				"Cleansing Second Wind",
-				"Soothing Second Wind",
-				"Sharpened Strong Attack",
-				"Staggering Strong Attack"
 			]
 		}
 	},
@@ -138,7 +130,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		"Event": ["Imp Contract Faire", "The Score Beggar", "Free Gold?", "Apple Pie Wishing Well", "Twin Pedestals", "Gear Collector", "Repair Kit, just hanging out"],
 		"Battle": ["Frog Ranch", "Wild Fire-Arrow Frogs", "Meteor Knight Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
-		"Final Battle": ["Hall of Mirrors", "The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
+		"Final Battle": ["A Northern Laboratory", "Confronting the Top Celestial Knight"],
 
 		// Labyrinth Infrastructure - less customized
 		"Merchant": ["Gear Buying Merchant"],

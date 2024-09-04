@@ -19,10 +19,10 @@ const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagg
 const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
 const { renderRoom, updateRoomHeader, generateRecruitEmbed } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
+const { anyDieSucceeds } = require("../util/mathUtil.js");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression, listifyEN } = require("../util/textUtil");
-const { sumGeometricSeries } = require("../util/mathUtil");
 const { levelUp } = require("../util/delverUtil.js");
 
 /** @type {Map<string, Adventure>} */
@@ -103,7 +103,7 @@ function rollGearTier(adventure) {
 	const cloverCount = adventure.getArtifactCount("Negative-One Leaf Clover");
 	const baseUpgradeChance = 1 / 8;
 	const max = RN_TABLE_BASE ** 2;
-	const threshold = max * sumGeometricSeries(baseUpgradeChance, 1 - baseUpgradeChance, 1 + cloverCount);
+	const threshold = max * anyDieSucceeds(baseUpgradeChance, cloverCount);
 	adventure.updateArtifactStat("Negative-One Leaf Clover", "Expected Extra Rare Gear", (threshold / max) - baseUpgradeChance);
 	const roll = adventure.generateRandomNumber(max, "general");
 	if (roll >= 7 / 8 * max) {
@@ -193,7 +193,11 @@ function nextRoom(roomType, thread) {
 		adventure.room.element = adventure.element;
 	} else if (adventure.room.element === "@{adventureWeakness}") {
 		const weaknessPool = getWeaknesses(adventure.element);
-		adventure.room.element = weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "general")];
+		if (weaknessPool.length > 0) {
+			adventure.room.element = weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "general")];
+		} else {
+			adventure.room.element = "Untyped";
+		}
 	}
 
 	// Initialize Resources
@@ -232,7 +236,13 @@ function nextRoom(roomType, thread) {
 				adventure.room.addResource(resourceType, resourceType, visibility, goldCount, uiGroup);
 				break;
 			default:
-				adventure.room.addResource(resourceType, resourceType, visibility, count, uiGroup);
+				let resourceCount = count;
+				const hammerCount = adventure.getArtifactCount("Best-in-Class Hammer");
+				if (roomTemplate.primaryCategory === "Workshop" && resourceType === "roomAction" && hammerCount > 0) {
+					resourceCount += hammerCount;
+					adventure.updateArtifactStat("Best-in-Class Hammer", "Extra Room Actions", hammerCount);
+				}
+				adventure.room.addResource(resourceType, resourceType, visibility, resourceCount, uiGroup);
 		}
 	}
 
@@ -333,18 +343,29 @@ function newRound(adventure, thread, lastRoundText) {
 				removeModifier([combatant], { name: "Quicken", stacks: 1, force: true });
 
 				// Roll Critical Hit
-				const baseCritChance = combatant.getCritRate() / 100;
+				let modifierCritBonus = 1;
+				if ("Lucky" in combatant.modifiers) {
+					modifierCritBonus = 2;
+				} else if ("Unlucky" in combatant.modifiers) {
+					modifierCritBonus = 0.5;
+				}
+				const baseCritChance = combatant.getCritRate() / 100 * modifierCritBonus;
 				const max = RN_TABLE_BASE ** 2;
 				let threshold;
 				if (combatant.team === "delver") {
 					const featherCount = adventure.getArtifactCount("Hawk Tailfeather");
-					threshold = max * sumGeometricSeries(baseCritChance, 1 - baseCritChance, 1 + featherCount);
-					adventure.updateArtifactStat("Hawk Tailfeather", "Expected Extra Critical Hits", (threshold / max) - baseCritChance);
-				} else {
+					if (featherCount > 0) {
+						threshold = max * anyDieSucceeds(baseCritChance, featherCount);
+						adventure.updateArtifactStat("Hawk Tailfeather", "Expected Extra Critical Hits", (threshold / max) - baseCritChance);
+					}
+				}
+				if (threshold === undefined) {
 					threshold = max * baseCritChance;
 				}
 				const critRoll = adventure.generateRandomNumber(max, "battle");
 				combatant.crit = critRoll < threshold;
+				removeModifier([combatant], { name: "Lucky", stacks: 1, force: true });
+				removeModifier([combatant], { name: "Unlucky", stacks: 1, force: true });
 
 				// Roll Enemy Moves
 				if (teamName === "enemy") {
@@ -487,6 +508,13 @@ function resolveMove(move, adventure) {
 			const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
 			moveText += `. ${resultText}${move.type === "gear" && move.userReference.team === "delver" ? decrementDurability(move.name, user, adventure) : ""}`;
 		}
+
+		const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
+		if (insigniaCount > 0 && user.team === "delver" && move.isCrit) {
+			const insigniaHealing = insigniaCount * 15;
+			moveText += ` ${gainHealth(user, insigniaHealing, adventure)}`;
+			adventure.updateArtifactStat("Health Restored", insigniaHealing);
+		}
 	} else {
 		moveText = `💫 ${moveText} is Stunned!`;
 	}
@@ -499,12 +527,6 @@ function resolveMove(move, adventure) {
 		if (regenStacks) {
 			moveText += ` ${gainHealth(user, regenStacks * 10, adventure)}`;
 		}
-	}
-	const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
-	if (insigniaCount > 0 && user.team === "delver" && move.isCrit) {
-		const insigniaHealing = insigniaCount * 15;
-		moveText += ` ${gainHealth(user, insigniaHealing, adventure)}`;
-		adventure.updateArtifactStat("Health Restored", insigniaHealing);
 	}
 	return `${moveText}\n`;
 }
@@ -612,15 +634,24 @@ function endRound(adventure, thread) {
 				}
 			}
 		} else {
-			changeStagger([combatant], combatant.getModifierStacks("Paralysis") > 0 ? 1 : -1);
+			let staggerChange = -1;
+			if (combatant.getModifierStacks("Paralysis") > 0) {
+				staggerChange = 1;
+			} else if (combatant.getModifierStacks("Agility") > 0) {
+				staggerChange = -2;
+			}
+			changeStagger([combatant], staggerChange);
 		}
 
 		// Decrement Modifiers
 		if (!("Vigilance" in combatant.modifiers)) {
 			removeModifier([combatant], { name: "Evade", stacks: getTurnDecrement("Evade"), force: true });
 		}
+		if (!("Distracted" in combatant.modifiers)) {
+			removeModifier([combatant], { name: "Exposed", stacks: getTurnDecrement("Exposed"), force: true });
+		}
 		for (const modifier in combatant.modifiers) {
-			if (modifier !== "Evade") {
+			if (!["Evade", "Exposed"].includes(modifier)) {
 				removeModifier([combatant], { name: modifier, stacks: getTurnDecrement(modifier), force: true })
 			}
 		}
@@ -650,29 +681,8 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 			return { payload: completeAdventure(adventure, thread, "success", lastRoundText), type: "adventureSuccess" };
 		}
 
-		const baseLevelsGained = adventure.room.resources.levelsGained.count ?? 0;
-		delete adventure.room.resources.levelsGained;
-		adventure.room.history.baseLevels = [baseLevelsGained];
 		for (const delver of adventure.delvers) {
-			const manualManuallevels = adventure.getArtifactCount("Manual Manual");
-			if (manualManuallevels > 0) {
-				adventure.updateArtifactStat("Manual Manual", "Bonus Levels", manualManuallevels);
-			}
-			const gearLevelBonus = delver.gear.reduce((bonusLevels, currentGear) => {
-				if (currentGear.name.startsWith("Wise")) {
-					return bonusLevels + 1;
-				} else {
-					return bonusLevels;
-				}
-			}, 0);
-			const levelsGained = baseLevelsGained + manualManuallevels + gearLevelBonus;
-			const historyKey = `levelsGained:${levelsGained}`;
-			if (historyKey in adventure.room.history) {
-				adventure.room.history[historyKey].push(delver.name);
-			} else {
-				adventure.room.history[historyKey] = [delver.name];
-			}
-			levelUp(delver, levelsGained, adventure);
+			levelUp(delver, adventure.room.resources.levelsGained.count ?? 0, adventure);
 		}
 
 		// Gear drops

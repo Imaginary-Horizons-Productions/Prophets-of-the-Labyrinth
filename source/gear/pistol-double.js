@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Double Pistol",
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Duelist's Pistol")
+	.setSidegrades("Duelist's Pistol", "Flanking Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)
 	.setDamage(40);

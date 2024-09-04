@@ -4,6 +4,7 @@ const { generateRoutingRow } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Workshop with Black Box",
 	"@{adventure}",
+	"Workshop",
 	"In this workshop there's a black box with a gear-shaped key hole on the front. You figure it's designed to trade a piece of your gear for a Rare piece of gear.",
 	[
 		new ResourceTemplate("n", "internal", "roomAction"),

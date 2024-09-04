@@ -7,7 +7,7 @@ module.exports = new ArchetypeTemplate("Fighter",
 		maxHPGrowth: 50,
 		powerGrowth: 5,
 		speedGrowth: 1,
-		critRateGrowth: 2,
+		critRateGrowth: 0.5,
 		poiseGrowth: 0
 	},
 	["Strong Attack", "Second Wind"],

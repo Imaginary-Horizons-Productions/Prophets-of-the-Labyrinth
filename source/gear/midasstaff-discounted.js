@@ -29,6 +29,6 @@ module.exports = new GearTemplate("Discounted Midas Staff",
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Accelerating Midas Staff", "Soothing Midas Staff")
-	.setModifiers({ name: "Curse of Midas", stacks: 1 })
+	.setModifiers({ name: "Curse of Midas", stacks: 2 })
 	.setBonus(1) // Curse of Midas stacks
 	.setDurability(10);

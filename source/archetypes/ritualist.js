@@ -10,7 +10,7 @@ module.exports = new ArchetypeTemplate("Ritualist",
 		maxHPGrowth: 25,
 		powerGrowth: 2.5,
 		speedGrowth: 0.5,
-		critRateGrowth: 1,
+		critRateGrowth: 0.25,
 		poiseGrowth: 0
 	},
 	["Censer", "Corrosion"],
@@ -19,7 +19,7 @@ module.exports = new ArchetypeTemplate("Ritualist",
 		const combatantNames = getNames(eligibleCombatants, adventure);
 		eligibleCombatants.forEach((combatant, index) => {
 			const modifiersText = modifiersToString(combatant, adventure);
-			embed.addFields({ name: combatantNames[index], value: `${generateTextBar(combatant.hp, combatant.getMaxHP(), 16)} ${combatant.hp}/${combatant.getMaxHP()} HP${combatant.protection ? `, ${combatant.protection} Protection` : ""}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
+			embed.addFields({ name: combatantNames[index], value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
 		})
 		return embed.setTitle(`Ritualist Predictions for Round ${adventure.room.round}`);
 	},

@@ -26,15 +26,15 @@ module.exports = new GearTemplate("Cauldron Stir",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
+		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`;
-		} else {
-			return dealDamage(targets, user, pendingDamage, false, element, adventure);
+			resultSentences.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
 		}
+		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Toxic Cauldron Stir")
+	.setUpgrades("Corrosive Cauldron Stir", "Toxic Cauldron Stir", "Sabotaging Cauldron Stir")
 	.setDurability(15)
 	.setDamage(40);

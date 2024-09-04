@@ -1,14 +1,64 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.15.0:
-### Artifacts
-- Floating Multiplier (new): Increases the adventure's score by 25% per copy
-- Peacock Charm (new): Gain copies + your remaining poise in protection each turn
-
+After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.
+### Detective
+- Predict: Elements & Modifiers
+- Added **Flanking Pistol**: damage reward for coordinating
+- Added **Urgent Sabotage Kit**: priority improves the party's chance to get mileage out of the debuffs
+- Fixed Pistol reporting the wrong ally getting Powered Up
+### Hemomancer
+- Predict: HP & Speed
+- Urgent Life Drain → **Thirsting Life Drain**: trying to finish foes off has synergy with predicting HP
+- Reactive Life Drain → **Furious Life Drain**: to reinforce HP management as Hemomancer gameplay
+- Sweeping Blood Aegis → **Toxic Blood Aegis**: picking which foe to disrupt was important for the fun of the gear's strategy (also more Poison support)
+### Legionnaire
+- Predict: Critical Hits & Enemy Targets
+- Vigilant Scutum → **Lucky Scutum**: Vigilance applies to Evade instead of protection
+- Added **Lethal Shortsword**: crit synergy
+- Fixed a crash in **Accelerating Shortsword**
+### Ritualist
+- Predict: Modifiers & Stagger
+- Fate-Sealing Censor → **Staggering Censor**: to add Stun potential
+- Flanking Corrosion → **Fate-Sealing Corrosion**: Ritualist doesn't have a speed predict for Exposed
+### New Content
+- Artifacts: Floating Multiplier, Peacock Charm, Best-in-Class Hammer
+- Gear: Shoulder Throw, Goad Futility, Evasive Shoulder Throw, Sabotaging Cauldron Stir, Corrosive Cauldron Stir, Bouncing Medicine, Cleansing Medicine, Soothing Medicine, Distracting Poison Torrent
+- Challenge: Into the Deep End
+- Modifiers: Agility (buff: inverse of Paralysis, allows the bearer to shrug off 2 Stagger per turn), Lucky & Unlucky (buff/debuff pair, double/halve your chance to crit), Distracted (debuff: inverse of Vigilance, causes Exposed to be retained between rounds)
+### Artifact Elements
+Some artifacts are now associated with an element and will only available when a party member has that element (Untyped always available).
+- Fire: Best-in-Class Hammer
+- Water: Piggy Bank
+- Earth: Boat Parts
+- Wind: Hawk Tailfeather
+- Light: Hammerspace Holster
+- Darkness: Enchanted Map
+### Changed Gear
+- Removed starting gear from drop pool
+- Increased Hunter's gear's reward to 30g per kill
+- Removed **Sun Flares**: priority + stagger doesn't make sense when stun doesn't interact with speed
+- Prideful Battleaxe → **Furious Battleaxe**: "maintain low HP" is a more engaging ask of the player than "accept dealing Untyped damage"
+- Thick Battleaxe → **Reactive Battleaxe**: doubles down on acting after foes
+- Mercurial Bow → **Unstoppable Bow**: Mercurial was too confusing
+- Mercurial Firecracker → **Midas's Firecracker**: Mercurial was too confusing
+- Increased Curse of Midas applied by **Midas Staves** to 2: to keep this competitive with Midas's Firecracker
+- **War Cries** Fire → Light: Exposed is Light-style
+- **Infinite Regenerations** Light → Fire: Regen is Fire-style
+- **Spears** Wind → Earth: Stagger is Earth-style
+- **Wise Chainmail** now increases stat growths by 10% instead of 1 level per combat
+- Cursed gear now has negative base cost
 ### Other Changes
-- New command: `/share-seed` lets players share the seed of their completed adventure with others
+- New command: `/share-seed`
+- Fixed Celestial Knight Insiginia triggering on turns the player is stunned
+- Mechabee Barrel Rolls now add Agility to user on crit instead of more Evade
+- Changed the Starry Knight's moveset ||to add Exposed and Distracted instead of Frail||
+- Fixed some crashes when looking up items
+- Exposed: increased bonus to 100%, fixed a bug where it didn't decrement on hit
+- Manual Manual now increases stat growths by 10% instead of 1 level per combat
+- Reduced crit rate gained from levelup from 1 to 0.25
 
 ## Prophets of the Labyrinth v0.14.0:
-This update has a systems focus: making damage midigation less situation by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content and balance such as: a new final boss, the Chemist rework, adding more AoE with the Blasting gear variant, and a few new artifacts.
+This update has a systems focus: making damage mitigation less situational by having Block (now protection) expire at end of combat instead of end of turn and adding a reward for the risk of combat via combat levels. There's also new content and balance such as: a new final boss, the Chemist rework, adding more AoE with the Blasting gear variant, and a few new artifacts.
 ### Labyrinths
 Events, battles, artifact guardians, and bosses are now split among different labyrinths (Everything Bagel still has all content) to increase thematic and mechanical consistency. The current labyrinths are:
 - Mechahive - Delve into this Earth/Darkness dungeon to put a stope to the Mechaqueen's new Mech Mode and Bee Mode

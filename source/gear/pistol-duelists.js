@@ -33,7 +33,7 @@ module.exports = new GearTemplate("Duelist's Pistol",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Double Pistol")
+	.setSidegrades("Double Pistol", "Flanking Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)
 	.setDamage(40)

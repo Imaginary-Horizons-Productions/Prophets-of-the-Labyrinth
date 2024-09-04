@@ -11,12 +11,22 @@ const { gainHealth } = require("./combatantUtil");
 function levelUp(delver, levels, adventure) {
 	delver.level += levels;
 	const { maxHPGrowth, powerGrowth, speedGrowth, critRateGrowth, poiseGrowth } = getArchetype(delver.archetype);
-	delver.maxHP += maxHPGrowth * levels;
-	gainHealth(delver, maxHPGrowth * levels, adventure);
-	delver.power += powerGrowth * levels;
-	delver.speed += speedGrowth * levels;
-	delver.critRate += critRateGrowth * levels;
-	delver.poise += poiseGrowth * levels;
+	const manualGrowth = adventure.getArtifactCount("Manual Manual") * 0.1;
+	if (manualGrowth > 0) {
+		adventure.updateArtifactStat("Manual Manual", "Bonus Stats Percent", manualGrowth * 100);
+	}
+	let growthBonus = 1 + manualGrowth;
+	for (const gearName in delver.gear) {
+		if (gearName.startsWith("Wise")) {
+			growthBonus += 0.1;
+		}
+	}
+	delver.maxHP += maxHPGrowth * levels * growthBonus;
+	gainHealth(delver, maxHPGrowth * levels * growthBonus, adventure);
+	delver.power += powerGrowth * levels * growthBonus;
+	delver.speed += speedGrowth * levels * growthBonus;
+	delver.critRate += critRateGrowth * levels * growthBonus;
+	delver.poise += poiseGrowth * levels * growthBonus;
 }
 
 /** Usable for both upgrading and sidegrading gear

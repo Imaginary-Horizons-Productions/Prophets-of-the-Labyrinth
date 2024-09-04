@@ -27,24 +27,20 @@ module.exports = new GearTemplate("Toxic Cauldron Stir",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const poisonedTargets = addModifier(targets, poison);
+		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
-			if (poisonedTargets.length > 0) {
-				return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")} ${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`;
-			} else {
-				return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`;
-			}
-		} else {
-			if (poisonedTargets.length > 0) {
-				return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")}`;
-			} else {
-				return dealDamage(targets, user, pendingDamage, false, element, adventure);
-			}
+			resultSentences.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
 		}
+		const poisonedTargets = addModifier(targets, poison);
+		if (poisonedTargets.length > 0) {
+			resultSentences.push(joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned."));
+		}
+		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+	.setSidegrades("Corrosive Cauldron Stir", "Sabotaging Cauldron Stir")
 	.setDurability(15)
 	.setModifiers({ name: "Poison", stacks: 4 })
 	.setDamage(40);

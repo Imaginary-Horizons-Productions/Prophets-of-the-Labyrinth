@@ -21,13 +21,13 @@ module.exports = new GearTemplate("Pistol",
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies;
 			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
 			const addedPowerUp = addModifier([ally], powerUp).length > 0;
-			return `${damageText}${addedPowerUp ? ` ${getNames([user], adventure)[0]} was Powered Up!` : ""}`
+			return `${damageText}${addedPowerUp ? ` ${getNames([ally], adventure)[0]} was Powered Up!` : ""}`
 		} else {
 			return dealDamage(targets, user, pendingDamage, false, element, adventure);
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Double Pistol", "Duelist's Pistol")
+	.setUpgrades("Double Pistol", "Duelist's Pistol", "Flanking Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)
 	.setDamage(40);

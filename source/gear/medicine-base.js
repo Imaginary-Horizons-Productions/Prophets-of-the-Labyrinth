@@ -25,5 +25,6 @@ module.exports = new GearTemplate("Medicine",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
+	.setUpgrades("Bouncing Medicine", "Cleansing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
 	.setDurability(15);
