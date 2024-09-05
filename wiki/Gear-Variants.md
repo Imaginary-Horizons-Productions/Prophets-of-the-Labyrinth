@@ -107,6 +107,7 @@ Add Distracted to target
 **Available on**
 - Ice Bolt (Water)
 - Poison Torrent (Water)
+- Prismatic Blast (Light)
 
 ### Double
 Doubles number of targets

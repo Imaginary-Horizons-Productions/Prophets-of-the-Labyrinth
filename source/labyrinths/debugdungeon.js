@@ -79,6 +79,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Accurate Iron Fist Stance",
 				"Organic Iron Fist Stance",
 				"Hunter's Morning Star",
+				"Distracting Prismatic Blast",
 				"Harmful Shoulder Throw",
 				"Staggering Shoulder Throw"
 			],
