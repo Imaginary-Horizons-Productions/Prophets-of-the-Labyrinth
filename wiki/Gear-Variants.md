@@ -126,6 +126,7 @@ Bonus damage if only one attacking target
 Adds Evade to the user
 
 **Available on**
+- all Barriers (Wind)
 - all Cloaks (Wind)
 - Bow (Wind)
 - Shoulder Throw (Light)
@@ -271,7 +272,6 @@ Increased damage, but adds Exposed to user
 Adds protection to the user
 
 **Available on**
-- all Barriers (Light)
 - Blood Aegis (Darkness)
 - Buckler (Earth)
 - Herb Basket (Earth)
@@ -377,8 +377,8 @@ Change target's move's target to user
 Increased durability
 
 **Available on**
-- Barrier (Wind)
 - Censer (Fire)
+- Risky Mixture (Darkness)
 
 ### Thief's
 Gain gold on kill
@@ -426,7 +426,6 @@ Increased priority
 **Available on**
 - all Bows (Wind)
 - all Sun Flares (Light)
-- Barrier (Wind)
 - Fever Break (Darkness)
 - Herb Basket (Earth)
 - Sabotage Kit (Untyped)
