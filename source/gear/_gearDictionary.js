@@ -134,6 +134,7 @@ for (const file of [
 	"refreshingbreeze-supportive.js",
 	"riskymixture-base.js",
 	"riskymixture-long.js",
+	"riskymixture-midass.js",
 	"sabotagekit-base.js",
 	"sabotagekit-long.js",
 	"sabotagekit-shattering.js",
