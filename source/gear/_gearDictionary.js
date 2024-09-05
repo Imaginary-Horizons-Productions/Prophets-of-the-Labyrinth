@@ -77,6 +77,7 @@ for (const file of [
 	"floatingmiststance-soothing.js",
 	"goadfutility-base.js",
 	"goadfutility-flanking.js",
+	"goadfutility-poised.js",
 	"goadfutility-shattering.js",
 	"herbbasket-base.js",
 	"herbbasket-organic.js",

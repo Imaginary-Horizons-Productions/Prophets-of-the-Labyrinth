@@ -240,6 +240,7 @@ Passively increases user's poise
 
 **Available on**
 - all Wolf Rings (Untyped)
+- Goad Futility (Earth)
 
 ### Powerful
 Passively increases user's power
@@ -425,7 +426,6 @@ Increased priority
 
 **Available on**
 - all Bows (Wind)
-- all Sun Flares (Light)
 - Fever Break (Darkness)
 - Herb Basket (Earth)
 - Sabotage Kit (Untyped)
