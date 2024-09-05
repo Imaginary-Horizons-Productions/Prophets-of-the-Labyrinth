@@ -33,6 +33,6 @@ module.exports = new GearTemplate("Risky Mixture",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
-	.setUpgrades("Long Risky Mixture")
+	.setUpgrades("Long Risky Mixture", "Midas's Risky Mixture")
 	.setModifiers({ name: "Poison", stacks: 4 }, { name: "Regen", stacks: 4 })
 	.setDurability(15);

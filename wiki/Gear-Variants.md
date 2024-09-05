@@ -224,6 +224,7 @@ Adds Curse of Midas to target
 **Available on**
 - all Midas Staves (Water)
 - Firecracker (Fire)
+- Risky Mixture (Darkness)
 
 ### Organic
 Regains durability when entering new rooms

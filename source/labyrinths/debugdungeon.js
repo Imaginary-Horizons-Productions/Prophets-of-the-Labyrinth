@@ -26,7 +26,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Staggering Power from Wrath",
 				"Toxic Blood Aegis",
 				"Furious Life Drain",
-				"Thirsting Life Drain"
+				"Thirsting Life Drain",
+				"Midas's Risky Mixture"
 			],
 			Rare: [
 			]
