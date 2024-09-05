@@ -36,6 +36,6 @@ module.exports = new GearTemplate("Goad Futility",
 		return sentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Flanking Goad Futility", "Shattering Goad Futility")
+	.setUpgrades("Flanking Goad Futility", "Poised Goad Futility", "Shattering Goad Futility")
 	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Unlucky", stacks: 3 })
 	.setDurability(10);
