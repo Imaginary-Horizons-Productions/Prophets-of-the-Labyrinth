@@ -1,12 +1,12 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Risky Mixture",
+module.exports = new GearTemplate("Thick Risky Mixture",
 	"Inflict @{mod0Stacks} @{mod0} on a target",
 	"Apply @{mod1} instead of @{mod0}",
 	"Trinket",
 	"Darkness",
-	200,
+	350,
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [poison, regen] } = module.exports;
 		if (user.element === element) {
@@ -33,6 +33,6 @@ module.exports = new GearTemplate("Risky Mixture",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
-	.setUpgrades("Long Risky Mixture", "Midas's Risky Mixture", "Thick Risky Mixture")
+	.setSidegrades("Long Risky Mixture", "Midas's Risky Mixture")
 	.setModifiers({ name: "Poison", stacks: 4 }, { name: "Regen", stacks: 4 })
-	.setDurability(15);
+	.setDurability(30);
