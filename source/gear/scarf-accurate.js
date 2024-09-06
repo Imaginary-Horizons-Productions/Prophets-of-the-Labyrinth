@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Accurate Scarf",
 	350,
 	(targets, user, isCrit, adventure) => ""
 ).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
-	.setSidegrades("Hearty Scarf")
+	.setSidegrades("Hearty Scarf", "Wise Scarf")
 	.setDurability(0)
-	.setSpeed(2)
+	.setSpeed(5)
 	.setCritRate(5);
