@@ -240,6 +240,7 @@ Passively increases user's poise
 
 **Available on**
 - all Wolf Rings (Untyped)
+- Chainmail (Untyped)
 - Goad Futility (Earth)
 
 ### Powerful
