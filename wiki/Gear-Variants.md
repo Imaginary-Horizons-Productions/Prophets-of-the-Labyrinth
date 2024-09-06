@@ -450,6 +450,7 @@ Increases stats gained by level up
 
 **Available on**
 - Chainmail (Untyped)
+- Scarf (Untyped)
 - Wolf Ring (Untyped)
 
 ## Unnamed Variants

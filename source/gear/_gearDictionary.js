@@ -146,6 +146,7 @@ for (const file of [
 	"scarf-accurate.js",
 	"scarf-base.js",
 	"scarf-hearty.js",
+	"scarf-wise.js",
 	"scutum-base.js",
 	"scutum-guarding.js",
 	"scutum-lucky.js",

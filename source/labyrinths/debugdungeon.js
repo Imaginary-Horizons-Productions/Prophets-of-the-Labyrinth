@@ -131,6 +131,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Poised Chainmail",
 				"Powerful Chainmail",
 				"Accurate Scarf",
+				"Wise Scarf",
 				"Lucky Second Wind",
 				"Flanking Strong Attack",
 				"Wise Wolf Ring"
