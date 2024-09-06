@@ -87,6 +87,7 @@ for (const file of [
 	"icebolt-awesome.js",
 	"icebolt-base.js",
 	"icebolt-distracting.js",
+	"icebolt-unlucky.js",
 	"infiniteregeneration-base.js",
 	"infiniteregeneration-discounted.js",
 	"infiniteregeneration-fatesealing.js",

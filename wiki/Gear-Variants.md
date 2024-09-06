@@ -419,6 +419,12 @@ Adds Poison to target
 - Firecracker (Fire)
 - Shortsword (Fire)
 
+### Unlucky
+Adds Unlucky to target
+
+**Available on**
+- Ice Bolt (Water)
+
 ### Unstoppable
 Deals Unblockable damage, usable while Stunned
 

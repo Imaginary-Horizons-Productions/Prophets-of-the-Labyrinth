@@ -12,7 +12,7 @@
 - Reduced Evade generation of Floating Mist Stance to 1 Evade per stack per turn
 - Increased Speed bonus on Scarves from 2 to 5
 - Increased Regen on Infinite Regenerations from 3 to 4
-- New Gear: Hunter's Morning Star, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Wise Wolf Ring, Staggering Poison Torrent, Supportive Refreshing Breeze, Swift Refreshing Breeze, Harmful Shoulder Throw, Staggering Shoulder Throw, Bashing Power from Wrath, Hunter's Power from Wrath, Staggering Power from Wrath, Flanking Goad Futility, Poised Goad Futility, Shattering Goad Futility, Accurate Scarf, Wise Scarf, Poised Chainmail, Powerful Chainmail, Accurate Iron Fist Stance, Devoted Floating Mist Stance, Distracting Prismatic Blast, Midas's Risky Mixture, Purifying Infinite Regeneration
+- New Gear: Hunter's Morning Star, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Unlucky Ice Bolt, Wise Wolf Ring, Staggering Poison Torrent, Supportive Refreshing Breeze, Swift Refreshing Breeze, Harmful Shoulder Throw, Staggering Shoulder Throw, Bashing Power from Wrath, Hunter's Power from Wrath, Staggering Power from Wrath, Flanking Goad Futility, Poised Goad Futility, Shattering Goad Futility, Accurate Scarf, Wise Scarf, Poised Chainmail, Powerful Chainmail, Accurate Iron Fist Stance, Devoted Floating Mist Stance, Distracting Prismatic Blast, Midas's Risky Mixture, Purifying Infinite Regeneration
 ### Other Changes
 - Parties gain 5 score for each Artifact Guardian they encounter
 - Fixed a bug where not enough mechabees (both soldiers and drones) were spawning, reduced mechabee hp to compensate

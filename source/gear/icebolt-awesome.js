@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Awesome Ice Bolt",
 		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Distracting Ice Bolt")
+	.setSidegrades("Distracting Ice Bolt", "Unlucky Ice Bolt")
 	.setDamage(40)
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDurability(15)
