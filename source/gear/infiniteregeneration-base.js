@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Infinite Regeneration",
 		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
-	.setUpgrades("Discounted Infinite Regeneration", "Fate-Sealing Infinite Regeneration")
-	.setModifiers({ name: "Regen", stacks: 3 })
+	.setUpgrades("Discounted Infinite Regeneration", "Fate-Sealing Infinite Regeneration", "Purifying Infinite Regeneration")
+	.setModifiers({ name: "Regen", stacks: 4 })
 	.setHPCost(50)
 	.setDurability(10);

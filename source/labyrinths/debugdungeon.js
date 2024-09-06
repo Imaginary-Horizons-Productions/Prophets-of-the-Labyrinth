@@ -63,6 +63,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 				"Toxic Firecracker",
 				"Discounted Infinite Regeneration",
 				"Fate-Sealing Infinite Regeneration",
+				"Purifying Infinite Regeneration",
 				"Accelerating Shortsword",
 				"Lethal Shortsword",
 				"Toxic Shortsword"
