@@ -134,6 +134,7 @@ for (const file of [
 	"prismaticblast-vexing.js",
 	"refreshingbreeze-base.js",
 	"refreshingbreeze-supportive.js",
+	"refreshingbreeze-swift.js",
 	"riskymixture-base.js",
 	"riskymixture-long.js",
 	"riskymixture-midass.js",

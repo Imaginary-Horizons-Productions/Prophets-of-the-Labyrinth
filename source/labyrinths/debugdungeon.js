@@ -118,7 +118,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Common: [
 				"Unstoppable Bow",
 				"Slowing Daggers",
-				"Supportive Refreshing Breeze"
+				"Supportive Refreshing Breeze",
+				"Swift Refreshing Breeze"
 			],
 			Rare: [
 			]

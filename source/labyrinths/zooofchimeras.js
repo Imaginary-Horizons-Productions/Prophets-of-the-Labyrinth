@@ -172,7 +172,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Guarding Inspiration",
 				"Soothing Inspiration",
 				"Sweeping Inspiration",
-				"Supportive Refreshing Breeze"
+				"Supportive Refreshing Breeze",
+				"Swift Refreshing Breeze"
 			]
 		},
 		Untyped: {
