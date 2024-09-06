@@ -10,7 +10,7 @@
 - Fixed a bug where Certain Victory and upgrades (except Reckless Certain Victory) was providing Power Up before dealing damage
 - The Reactive variant now doubles damage instead of adding a set bonus
 - Reduced Evade generation of Floating Mist Stance to 1 Evade per stack per turn
-- New Gear: Hunter's Morning Star, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Wise Wolf Ring, Staggering Poison Torrent, Supportive Refreshing Breeze, Harmful Shoulder Throw, Staggering Shoulder Throw, Bashing Power from Wrath, Hunter's Power from Wrath, Staggering Power from Wrath, Flanking Goad Futility, Poised Goad Futility, Shattering Goad Futility, Accurate Scarf, Poised Chainmail, Powerful Chainmail, Accurate Iron Fist Stance, Devoted Floating Mist Stance, Distracting Prismatic Blast, Midas's Risky Mixture
+- New Gear: Hunter's Morning Star, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Wise Wolf Ring, Staggering Poison Torrent, Supportive Refreshing Breeze, Swift Refreshing Breeze, Harmful Shoulder Throw, Staggering Shoulder Throw, Bashing Power from Wrath, Hunter's Power from Wrath, Staggering Power from Wrath, Flanking Goad Futility, Poised Goad Futility, Shattering Goad Futility, Accurate Scarf, Poised Chainmail, Powerful Chainmail, Accurate Iron Fist Stance, Devoted Floating Mist Stance, Distracting Prismatic Blast, Midas's Risky Mixture
 ### Other Changes
 - Parties gain 5 score for each Artifact Guardian they encounter
 - Fixed a bug where not enough mechabees (both soldiers and drones) were spawning, reduced mechabee hp to compensate

@@ -367,6 +367,7 @@ Passively increases user's speed
 
 **Available on**
 - all Scarves (Untyped)
+- Refreshing Breeze (Wind)
 - Wolf Ring (Untyped)
 
 ### Taunting
