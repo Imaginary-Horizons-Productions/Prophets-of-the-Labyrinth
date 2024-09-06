@@ -1,14 +1,16 @@
 const { BuildError } = require("./BuildError");
 
+/** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} CombatantElement */
+
 class LabyrinthTemplate {
 	/** This read-only data class defines the contents and properties of a specific labyrinth
 	 * @param {string} nameInput
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementInput
+	 * @param {CombatantElement} elementInput
 	 * @param {string} descriptionInput
 	 * @param {number} maxDepthInput integer
 	 * @param {number[]} bossRoomDepthsInput
-	 * @param {Record<"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped", string[]} itemMap
-	 * @param {Record<"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped", Record<"Cursed" | "Common" | "Rare", string[]>>} gearMap
+	 * @param {Record<CombatantElement, string[]} itemMap
+	 * @param {Record<CombatantElement, Record<"Cursed" | "Common" | "Rare", string[]>>} gearMap
 	 * @param {Record<"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Workshop" | "Artifact Guardian" | "Treasure" | "Empty", string[]>} roomMap if a room category is rolled, it rolls again on that category
 	 */
 	constructor(nameInput, elementInput, descriptionInput, maxDepthInput, bossRoomDepthsInput, itemMap, gearMap, roomMap) {
