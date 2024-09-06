@@ -105,7 +105,8 @@ module.exports = new LabyrinthTemplate("Mechahive",
 				"Midas's Firecracker",
 				"Toxic Firecracker",
 				"Discounted Infinite Regeneration",
-				"Fate-Sealing Infinite Regeneration"
+				"Fate-Sealing Infinite Regeneration",
+				"Purifying Infinite Regeneration"
 			]
 		},
 		Light: {

@@ -249,6 +249,12 @@ Passively increases user's power
 **Available on**
 - Chainmail (Untyped)
 
+### Purifying
+Cures all debuffs on target
+
+**Available on**
+- Infinite Regeneration (Fire)
+
 ### Reactive
 Bonus damage if user moves after target
 
@@ -460,10 +466,3 @@ Increases stats gained by level up
 - Adds Power Up to target (all Inspiration)
 - Also hits targets with Exposed (all War Cries)
 - Adds Power Up to random ally if hitting weakness (all Pistols)
-
-## Planned Variants
-### Purifying
-Cures all debuffs on target
-
-**Available on**
-- (none)

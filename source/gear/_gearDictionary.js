@@ -90,6 +90,7 @@ for (const file of [
 	"infiniteregeneration-base.js",
 	"infiniteregeneration-discounted.js",
 	"infiniteregeneration-fatesealing.js",
+	"infiniteregeneration-purifying.js",
 	"inspiration-base.js",
 	"inspiration-guarding.js",
 	"inspiration-soothing.js",

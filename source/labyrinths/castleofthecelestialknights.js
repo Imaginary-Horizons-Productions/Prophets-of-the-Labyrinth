@@ -104,7 +104,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Midas's Firecracker",
 				"Toxic Firecracker",
 				"Discounted Infinite Regeneration",
-				"Fate-Sealing Infinite Regeneration"
+				"Fate-Sealing Infinite Regeneration",
+				"Purifying Infinite Regeneration"
 			]
 		},
 		Light: {

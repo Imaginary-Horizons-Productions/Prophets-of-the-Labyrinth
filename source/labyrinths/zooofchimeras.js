@@ -104,7 +104,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Midas's Firecracker",
 				"Toxic Firecracker",
 				"Discounted Infinite Regeneration",
-				"Fate-Sealing Infinite Regeneration"
+				"Fate-Sealing Infinite Regeneration",
+				"Purifying Infinite Regeneration"
 			]
 		},
 		Light: {
