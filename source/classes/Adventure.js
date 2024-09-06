@@ -5,6 +5,7 @@ const { Combatant, Delver } = require("./Combatant.js");
 const { elementsList } = require("../util/elementUtil.js");
 const { parseExpression } = require("../util/textUtil.js");
 
+/** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} CombatantElement */
 const allElements = elementsList();
 const DESCRIPTORS = ["Shining", "New", "Dusty", "Old", "Floating", "Undersea", "Future", "Intense"];
 
@@ -29,7 +30,7 @@ class Adventure {
 	id;
 	/** @type {string} */
 	name;
-	/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
+	/** @type {CombatantElement} */
 	element;
 	/** @type {"config" | "ongoing" | "success" | "defeat" | "giveup"} */
 	state = "config";
@@ -123,7 +124,7 @@ class Adventure {
 	}
 
 	/** Get an array with Untyped and all elements in the party
-	 * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")[]}
+	 * @returns {CombatantElement[]}
 	 */
 	getElementPool() {
 		const pool = ["Untyped"];
@@ -278,9 +279,9 @@ class Challenge {
 };
 
 class Room {
-	/** This read-write payload class describes a room in an adventure
+	/** This read-write instance class describes a room in an adventure
 	 * @param {string} titleInput
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementEnum
+	 * @param {CombatantElement} elementEnum
 	 * @param {Record<string, string[]>} initialHistoryMap
 	 * @param {[enemyName: string, countExpression: string][]} enemyList
 	 */
@@ -356,9 +357,9 @@ class Room {
 }
 
 class Enemy extends Combatant {
-	/** This read-only data class defines an enemy players can fight
+	/** This read-write instance class defines an enemy currently in combat
 	 * @param {string} nameInput
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
+	 * @param {CombatantElement} elementEnum
 	 * @param {number} powerInput
 	 * @param {number} speedInput
 	 * @param {number} poiseExpression
@@ -371,7 +372,7 @@ class Enemy extends Combatant {
 		super(nameInput, "enemy");
 		this.archetype = nameInput;
 		this.level = bossesBeaten;
-		/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
+		/** @type {CombatantElement} */
 		this.element = elementEnum;
 		this.power = powerInput;
 		this.speed = speedInput;
@@ -401,12 +402,10 @@ class Enemy extends Combatant {
 		}
 	}
 
-	/** @returns {number} */
 	getMaxHP() {
 		return Math.floor(this.maxHP);
 	}
 
-	/** @returns {number} */
 	getPower() {
 		return Math.floor(this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down"));
 	}
@@ -428,12 +427,10 @@ class Enemy extends Combatant {
 		return Math.floor(totalSpeed);
 	}
 
-	/** @returns {number} */
 	getCritRate() {
 		return Math.floor(this.critRate);
 	}
 
-	/** @returns {number} */
 	getPoise() {
 		return Math.floor(this.poise);
 	}

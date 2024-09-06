@@ -147,7 +147,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		"Event": ["Imp Contract Faire", "The Score Beggar", "Free Gold?", "Apple Pie Wishing Well", "Twin Pedestals", "Gear Collector", "Repair Kit, just hanging out"],
 		"Battle": ["Frog Ranch", "Wild Fire-Arrow Frogs", "Meteor Knight Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
-		"Final Battle": ["A Northern Laboratory", "Confronting the Top Celestial Knight"],
+		"Final Battle": ["Hall of Mirrors"],
 
 		// Labyrinth Infrastructure - less customized
 		"Merchant": ["Gear Buying Merchant"],
