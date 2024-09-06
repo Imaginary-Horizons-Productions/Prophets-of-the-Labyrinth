@@ -127,6 +127,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			Cursed: [
 			],
 			Common: [
+				"Poised Chainmail",
 				"Powerful Chainmail",
 				"Accurate Scarf",
 				"Lucky Second Wind",

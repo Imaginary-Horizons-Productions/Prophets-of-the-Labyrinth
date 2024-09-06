@@ -47,6 +47,7 @@ for (const file of [
 	"certainvictory-lethal.js",
 	"certainvictory-reckless.js",
 	"chainmail-base.js",
+	"chainmail-poised.js",
 	"chainmail-powerful.js",
 	"chainmail-wise.js",
 	"cloak-accelerating.js",
