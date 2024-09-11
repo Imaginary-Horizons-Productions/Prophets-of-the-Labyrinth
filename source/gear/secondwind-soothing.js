@@ -2,14 +2,14 @@ const { GearTemplate } = require('../classes');
 const { gainHealth, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Soothing Second Wind",
-	"Regain @{healing} hp and gain @{mod0Stacks} @{mod0}.",
+	"Regain @{damage} hp and gain @{mod0Stacks} @{mod0}",
 	"Healing x@{critMultiplier}",
 	"Technique",
 	"Untyped",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { healing, element, critMultiplier } = module.exports;
-		let pendingHealing = healing;
+		const { element, critMultiplier } = module.exports;
+		let pendingHealing = user.getPower();
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
@@ -20,6 +20,6 @@ module.exports = new GearTemplate("Soothing Second Wind",
 	}
 ).setTargetingTags({ type: "self", team: "none", needsLivingTargets: true })
 	.setSidegrades("Cleansing Second Wind", "Lucky Second Wind")
-	.setDurability(15)
-	.setHealing(45)
+	.setDurability(10)
+	.setDamage(0)
 	.setModifiers({ name: "Regen", stacks: 2 });

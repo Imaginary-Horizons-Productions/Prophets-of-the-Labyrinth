@@ -270,7 +270,7 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		damage += holder.power + holder.getModifierStacks("Power Up");
 		damage = Math.floor(Math.min(damage, holder.getDamageCap()));
 	} else {
-		damage = `(${damage} base)`;
+		damage = `(${damage} + power)`;
 	}
 
 	return injectGearStats(description.replace(/@{damage}/g, damage), gearName);

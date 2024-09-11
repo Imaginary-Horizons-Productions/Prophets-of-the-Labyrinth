@@ -16,7 +16,7 @@ module.exports = new GearTemplate("Punch",
 		let totalStagger = floatingMistStacks * 2;
 		let pendingDamage = user.getPower() + damage + (ironFistStacks * 45);
 		if (user.element === pendingElement) {
-			totalStagger++;
+			totalStagger += 2;
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;

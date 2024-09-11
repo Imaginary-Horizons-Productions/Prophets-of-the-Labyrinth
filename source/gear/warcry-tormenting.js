@@ -4,7 +4,7 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
-	`Inflict @{foeStagger} and duplicate debuffs on a foe and all foes with ${getModifierEmoji("Exposed")}`,
+	`Duplicate debuffs on a foe; also target all foes with ${getModifierEmoji("Exposed")}`,
 	"Stagger +@{bonus}",
 	"Technique",
 	"Light",
