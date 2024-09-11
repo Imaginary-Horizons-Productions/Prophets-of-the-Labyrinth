@@ -10,7 +10,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
 	125,
 	100,
-	"6",
+	"5",
 	0,
 	"Sting",
 	false

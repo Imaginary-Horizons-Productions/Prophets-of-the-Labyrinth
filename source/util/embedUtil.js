@@ -355,10 +355,9 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 function gearToEmbedField(gearName, durability, holder) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))
-		} ${durability} /${maxDurability} durability)`;
+	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability} /${maxDurability} durability)`;
 	return {
-		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))}${durabilityText}`,
+		name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}${durabilityText}`,
 		value: buildGearDescription(gearName, maxDurability !== 0, holder)
 	};
 }
@@ -375,6 +374,13 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
+	if (delver.getModifierStacks("Iron Fist Stance") > 0) {
+		embed.addFields(gearToEmbedField("Iron Fist Punch", Infinity, delver));
+	} else if (delver.getModifierStacks("Floating Mist Stance") > 0) {
+		embed.addFields(gearToEmbedField("Floating Mist Punch", Infinity, delver));
+	} else {
+		embed.addFields(gearToEmbedField("Punch", Infinity, delver));
+	}
 	for (let index = 0; index < gearCapacity; index++) {
 		if (delver.gear[index]) {
 			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability, delver));
@@ -407,7 +413,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}MORE`)
 				.setLabel(`${modifiers.length - 4} more...`)
 				.setStyle(ButtonStyle.Secondary)
-				.setDisabled(!["Chemist", "Ritualist"].includes(delver.archetype)))
+				.setDisabled(!["Chemist", "Ritualist", "Detective"].includes(delver.archetype)))
 		}
 		components.push(new ActionRowBuilder().addComponents(...actionRow));
 	}

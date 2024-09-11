@@ -9,10 +9,10 @@
 - Thief's Certain Victory → **Hunter's Certain Victory**
 - Fixed a bug where Certain Victory and upgrades (except Reckless Certain Victory) was providing Power Up before dealing damage
 - The Reactive variant now doubles damage instead of adding a set bonus
-- Reduced Evade generation of Floating Mist Stance to 1 Evade per stack per turn
+- Reduced Evade generation of Floating Mist Stance to 1 Evade per stack per turn, increased Stagger per stack to 3
 - Increased Speed bonus on Scarves from 2 to 5
 - Increased Regen on Infinite Regenerations from 3 to 4
-- Fixed Iron Fist Punches applying 1 Stagger instead of 1
+- Fixed Iron Fist Punches applying 1 Stagger instead of 2
 - Second Winds: durability down from 15 to 10, heals equal to user's power instead of 45 static
 - Fixed crashes in Power from Wrath
 - New Gear: Hunter's Morning Star, Accurate Iron Fist Stance, Devoted Floating Mist Stance, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Unlucky Ice Bolt, Wise Wolf Ring, Staggering Poison Torrent, Supportive Refreshing Breeze, Swift Refreshing Breeze, Harmful Shoulder Throw, Staggering Shoulder Throw, Bashing Power from Wrath, Hunter's Power from Wrath, Staggering Power from Wrath, Flanking Goad Futility, Poised Goad Futility, Shattering Goad Futility, Accurate Scarf, Wise Scarf, Poised Chainmail, Powerful Chainmail, Distracting Prismatic Blast, Midas's Risky Mixture, Purifying Infinite Regeneration
@@ -21,6 +21,7 @@
 - Fixed a bug where not enough mechabees (both soldiers and drones) were spawning, reduced mechabee hp to compensate
 - Predict info is now provided in the Ready a Move and Ready an Item messages (gear effects replaced, but can still be found in Inspect Self)
    - The challenge **Blind Avarice** has been removed; it was always sorta weird parties could drain themselves of money by clicking UI buttons accidentally
+- Reduced Mechabee Drone and Soldier poise to 5
 ## Prophets of the Labyrinth v0.15.0:
 After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.
 ### Detective

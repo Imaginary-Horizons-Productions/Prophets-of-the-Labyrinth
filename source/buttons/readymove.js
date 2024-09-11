@@ -55,12 +55,20 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const usableMoves = [];
 		delver.gear.forEach(gear => { if (gear.durability > 0) { usableMoves.push(gear.name) } });
 		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
-			usableMoves.unshift("Punch");
+			const hasFloatingMist = delver.getModifierStacks("Floating Mist Stance") > 0;
+			const hasIronFist = delver.getModifierStacks("Iron Fist Stance") > 0;
+			if (hasFloatingMist) {
+				usableMoves.unshift("Floating Mist Punch");
+			} else if (hasIronFist) {
+				usableMoves.unshift("Iron Fist Punch");
+			} else {
+				usableMoves.unshift("Punch");
+			}
 		}
 		for (let i = 0; i < usableMoves.length; i++) {
 			const gearName = usableMoves[i];
 			const { type, team } = getGearProperty(gearName, "targetingTags");
-			const elementEmoji = getEmoji(getGearProperty(gearName, "element"));
+			const elementEmoji = getEmoji(gearName === "Iron Fist Punch" ? delver.element : getGearProperty(gearName, "element"));
 			if (type === "single" || type.startsWith("blast")) {
 				// Select Menu
 				let targetOptions = [];

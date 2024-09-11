@@ -4,7 +4,7 @@ const { modifiersToString, getNames } = require("../util/combatantUtil");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Ritualist",
-	"They'll be able to assess combatant modifiers and hp levels. They'll also be able to inflict great harm on foes suffering debuffs with their Censer.",
+	"They'll be able to assess combatant modifiers and how much Stagger to Stun them. They'll also be able to inflict great harm on foes suffering debuffs with their Censer.",
 	"Fire",
 	{
 		maxHPGrowth: 25,

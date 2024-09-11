@@ -9,7 +9,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	"Earth",
 	175,
 	100,
-	"6",
+	"5",
 	0,
 	"Barrel Roll",
 	false

@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { payHP, dealDamage, changeStagger } = require('../util/combatantUtil');
+const { payHP, dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Power from Wrath",
 	"Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing hp)",
@@ -8,17 +9,23 @@ module.exports = new GearTemplate("Staggering Power from Wrath",
 	"Darkness",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, damage, hpCost } = module.exports;
-		const paymentSentence = payHP(user, hpCost, adventure);
+		const { element, damage, hpCost, stagger } = module.exports;
+		const resultSentences = [payHP(user, hpCost, adventure)];
 		const furiousness = (user.getMaxHP() - user.hp) / user.getMaxHP() + 1;
 		let pendingDamage = (user.getPower() + damage) * furiousness;
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
-		}
 		if (isCrit) {
 			pendingDamage *= 2;
 		}
-		return `${paymentSentence}${dealDamage(targets, user, pendingDamage, false, element, adventure)}`;
+		resultSentences.push(dealDamage(targets, user, pendingDamage, false, element, adventure));
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			if (user.element === element) {
+				changeStagger(stillLivingTargets, "elementMatchFoe");
+			}
+			changeStagger(stillLivingTargets, stagger);
+			resultSentences.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."));
+		}
+		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Bashing Power from Wrath", "Hunter's Power from Wrath")

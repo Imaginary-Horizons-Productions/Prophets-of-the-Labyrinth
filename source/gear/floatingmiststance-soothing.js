@@ -38,7 +38,7 @@ module.exports = new GearTemplate("Soothing Floating Mist Stance",
 	}
 ).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
 	.setSidegrades("Agile Floating Mist Stance", "Devoted Floating Mist Stance")
-	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Floating Mist Stance", stacks: 1 }, { name: "Regen", stacks: 2 })
+	.setModifiers({ name: "Evade", stacks: 1 }, { name: "Floating Mist Stance", stacks: 1 }, { name: "Regen", stacks: 2 })
 	.setDurability(10)
-	.setBonus(2) // Punch Stagger
+	.setBonus(3) // Punch Stagger
 	.setFlavorText({ name: "Floating Mist Stance", value: "Each stack increases Punch Stagger by @{bonus} and grants @{mod0Stacks} @{mod0} each round" });

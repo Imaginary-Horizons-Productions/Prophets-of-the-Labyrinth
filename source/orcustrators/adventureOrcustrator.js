@@ -455,7 +455,7 @@ function resolveMove(move, adventure) {
 			case "gear":
 				effect = getGearProperty(move.name, "effect");
 				needsLivingTargets = getGearProperty(move.name, "targetingTags").needsLivingTargets;
-				moveText = `${getEmoji(getGearProperty(move.name, "element"))} ${moveText}`;
+				moveText = `${getEmoji(move.name === "Iron Fist Punch" ? user.element : getGearProperty(move.name, "element"))} ${moveText}`;
 				if (move.userReference.team === "delver" && adventure.getArtifactCount("Crystal Shard") > 0 && getGearProperty(move.name, "category") === "Spell") {
 					adventure.updateArtifactStat("Crystal Shard", "Spells Cast", 1);
 				}
@@ -537,7 +537,7 @@ function resolveMove(move, adventure) {
  * @param {Adventure} adventure
  */
 function decrementDurability(moveName, user, adventure) {
-	if (!["Punch", "Appease", "Greed"].includes(moveName) && user.team === "delver") {
+	if (!["Punch", "Floating Mist Punch", "Iron Fist Punch", "Appease", "Greed"].includes(moveName) && user.team === "delver") {
 		const gearCategory = getGearProperty(moveName, "category");
 		if (gearCategory === "Weapon") {
 			const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");

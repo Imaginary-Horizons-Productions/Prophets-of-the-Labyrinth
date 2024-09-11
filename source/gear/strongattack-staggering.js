@@ -17,8 +17,13 @@ module.exports = new GearTemplate("Staggering Strong Attack",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		changeStagger(targets, stagger);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}`;
+		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			changeStagger(stillLivingTargets, stagger);
+			joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered.");
+		}
+		return resultSentences.join(" ");
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Strong Attack", "Sharpened Strong Attack")

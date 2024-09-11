@@ -9,7 +9,9 @@ const GEAR_NAMES = [];
 for (const file of [
 	"_appease.js",
 	"_greed.js",
-	"_punch.js",
+	"_punch-base.js",
+	"_punch-floatingmist.js",
+	"_punch-ironfist.js",
 	"abacus-base.js",
 	"abacus-sharpened.js",
 	"abacus-thiefs.js",
@@ -243,7 +245,10 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 	}
 	let totalStagger = getGearProperty(gearName, "stagger") ?? 0;
 	if (holder) {
-		if (getGearProperty(gearName, "element") === holder.element) {
+		if (gearName === "Floating Mist Punch") {
+			totalStagger += 3 * holder.getModifierStacks("Floating Mist Stance");
+		}
+		if (getGearProperty(gearName, "element") === holder.element || gearName === "Iron Fist Punch") {
 			switch (getGearProperty(gearName, "targetingTags").team) {
 				case "ally":
 					totalStagger -= 1;
@@ -268,15 +273,18 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 	let damage = getGearProperty(gearName, "damage");
 	if (holder) {
 		damage += holder.power + holder.getModifierStacks("Power Up");
+		if (gearName === "Iron Fist Punch") {
+			damage += 45 * holder.getModifierStacks("Iron Fist Stance");
+		}
 		damage = Math.floor(Math.min(damage, holder.getDamageCap()));
 	} else {
 		damage = `(${damage} + power)`;
 	}
 
-	return injectGearStats(description.replace(/@{damage}/g, damage), gearName);
+	return injectGearStats(description.replace(/@{damage}/g, damage), gearName, gearName === "Iron Fist Punch" ? holder.element : null);
 }
 
-function injectGearStats(text, gearName) {
+function injectGearStats(text, gearName, elementOverride) {
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 		if (!modifier.name.startsWith("unparsed")) {
 			const modifierEmoji = getModifierEmoji(modifier.name);
@@ -284,8 +292,12 @@ function injectGearStats(text, gearName) {
 		}
 		text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 	})
-	return text.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
-		.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
+	if (elementOverride) {
+		text = text.replace(/@{element}/g, getEmoji(elementOverride))
+	} else {
+		text = text.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
+	}
+	return text.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
 		.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
 		.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
 		.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))

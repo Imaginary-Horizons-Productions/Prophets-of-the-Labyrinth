@@ -36,5 +36,5 @@ module.exports = new GearTemplate("Floating Mist Stance",
 	.setUpgrades("Agile Floating Mist Stance", "Devoted Floating Mist Stance", "Soothing Floating Mist Stance")
 	.setModifiers({ name: "Evade", stacks: 1 }, { name: "Floating Mist Stance", stacks: 1 })
 	.setDurability(10)
-	.setBonus(2) // Punch Stagger
+	.setBonus(3) // Punch Stagger
 	.setFlavorText({ name: "Floating Mist Stance", value: "Each stack increases Punch Stagger by @{bonus} and grants @{mod0Stacks} @{mod0} each round" });
