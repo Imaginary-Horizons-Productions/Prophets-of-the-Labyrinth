@@ -4,8 +4,11 @@ const { removeModifier, changeStagger, getNames } = require('../util/combatantUt
 const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Swift Refreshing Breeze",
-	"Cure a random debuff from each ally. Passive: Gain @{speed} Speed",
-	"Debuffs cured x@{critMultiplier}",
+	[
+		["Passive", "Gain @{speed} Speed"],
+		["use", "Cure a random debuff from each ally"],
+		["Critical💥", "Debuffs cured x@{critMultiplier}"]
+	],
 	"Spell",
 	"Wind",
 	350,

@@ -3,8 +3,10 @@ const { dealDamage, changeStagger, addModifier, getNames } = require('../util/co
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Flanking Strong Attack",
-	"Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on a foe",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on a foe"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Technique",
 	"Untyped",
 	350,

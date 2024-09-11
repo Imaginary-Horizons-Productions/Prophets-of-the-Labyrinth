@@ -4,8 +4,10 @@ const { dealDamage, addModifier, changeStagger, getNames } = require("../util/co
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Tormenting Censer",
-	"Burn a foe for @{damage} (+@{bonus} if target has debuffs) @{element} damage, duplicate its debuffs",
-	"Also apply @{mod0Stacks} @{mod0}",
+	[
+		["use", "Burn a foe for @{damage} (+@{bonus} if target has debuffs) @{element} damage, duplicate its debuffs"],
+		["Critical💥", "Also apply @{mod0Stacks} @{mod0}"]
+	],
 	"Trinket",
 	"Fire",
 	350,

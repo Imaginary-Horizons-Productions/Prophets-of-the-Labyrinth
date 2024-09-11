@@ -1,8 +1,9 @@
 const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Hearty Scarf",
-	"Passive: Gain @{speed} Speed and @{maxHP} Max HP",
-	"N/A",
+	[
+		["Passive", "Gain @{speed} Speed and @{maxHP} Max HP"]
+	],
 	"Trinket",
 	"Untyped",
 	350,

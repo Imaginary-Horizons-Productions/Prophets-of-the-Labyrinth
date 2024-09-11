@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thirsting Life Drain",
-	"Strike a foe for @{damage} @{element} damage, then gain @{healing} hp (+@{bonus} on kill)",
-	"Healing x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, then gain @{healing} hp (+@{bonus} on kill)"],
+		["Critical💥", "Healing x@{critMultiplier}"]
+	],
 	"Spell",
 	"Darkness",
 	350,

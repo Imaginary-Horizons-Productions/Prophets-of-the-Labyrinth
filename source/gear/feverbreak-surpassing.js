@@ -1,11 +1,14 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, removeModifier, changeStagger } = require('../util/combatantUtil');
-const { SURPASSING_VALUE } = require('../constants');
 const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
+const { surpassingPassive } = require('./__sharedDescriptions');
 
 module.exports = new GearTemplate("Surpassing Fever Break",
-	`Deals @{element} damage to a foe, equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs. Passive: Increase your damage cap by @{bonus}`,
-	"Poison and Frail not removed",
+	[
+		surpassingPassive,
+		["use", `Deals @{element} damage to a foe, equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs`],
+		["Critical💥", "Poison and Frail not removed"]
+	],
 	"Spell",
 	"Darkness",
 	350,
@@ -37,5 +40,4 @@ module.exports = new GearTemplate("Surpassing Fever Break",
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Organic Fever Break", "Urgent Fever Break")
-	.setDurability(5)
-	.setBonus(SURPASSING_VALUE);
+	.setDurability(5);

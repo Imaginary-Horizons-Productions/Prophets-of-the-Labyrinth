@@ -3,8 +3,10 @@ const { addModifier, changeStagger, getNames, enterStance } = require("../util/c
 const { joinAsStatement, listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Iron Fist Stance",
-	"Increase Punch damage by @{bonus} and change its type to yours (exit other stances)",
-	"Inflict @{mod1Stacks} @{mod1} on all enemies",
+	[
+		["use", "Increase Punch damage by @{bonus} and change its type to yours (exit other stances)"],
+		["Critical💥", "Inflict @{mod1Stacks} @{mod1} on all enemies"]
+	],
 	"Technique",
 	"Light",
 	200,

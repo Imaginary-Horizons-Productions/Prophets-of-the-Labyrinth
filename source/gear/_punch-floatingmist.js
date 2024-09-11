@@ -3,8 +3,10 @@ const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.j
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Floating Mist Punch",
-	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Technique",
 	"Untyped",
 	0,

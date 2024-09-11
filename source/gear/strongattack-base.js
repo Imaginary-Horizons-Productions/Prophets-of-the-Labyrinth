@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Strong Attack",
-	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Technique",
 	"Untyped",
 	200,

@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sharpened Daggers",
-	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Wind",
 	350,

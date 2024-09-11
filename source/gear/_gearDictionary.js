@@ -262,12 +262,26 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			}
 		}
 	}
-	let description = "";
+	let text = "";
 	if (buildFullDescription) {
-		description = `*${totalStagger} Stagger:* ${getGearProperty(gearName, "description")}\n*Critical💥:* ${getGearProperty(gearName, "critDescription")}`;
+		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
+			if (type === "use") {
+				return `*${totalStagger} Stagger*: ${description}`;
+			} else if (!["upgradeDiff"].includes(type)) {
+				return `*${type}*: ${description}`;
+			}
+		});
+		text = descriptionTexts.join("\n");
 	} else {
 		// these descriptions get used in select option sets, which don't support markdown
-		description = `${totalStagger} Stagger: ${getGearProperty(gearName, "description")}`;
+		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
+			if (type === "use") {
+				return `${totalStagger} Stagger: ${description}`;
+			} else if (!["Critcal💥", "upgradeDiff"].includes(type)) {
+				return `${type}: ${description}`;
+			}
+		});
+		text = descriptionTexts.join(". ")
 	}
 
 	let damage = getGearProperty(gearName, "damage");
@@ -281,7 +295,7 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		damage = `(${damage} + power)`;
 	}
 
-	return injectGearStats(description.replace(/@{damage}/g, damage), gearName, gearName === "Iron Fist Punch" ? holder.element : null);
+	return injectGearStats(text.replace(/@{damage}/g, damage), gearName, gearName === "Iron Fist Punch" ? holder.element : null);
 }
 
 function injectGearStats(text, gearName, elementOverride) {

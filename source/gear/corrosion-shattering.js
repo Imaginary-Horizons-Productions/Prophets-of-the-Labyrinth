@@ -3,8 +3,10 @@ const { addModifier, changeStagger, getNames } = require("../util/combatantUtil"
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Shattering Corrosion",
-	"Inflict @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} on a foe",
-	"Inflict @{bonus} more Stagger",
+	[
+		["use", "Inflict @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} on a foe"],
+		["Critical💥", "Inflict @{bonus} more Stagger"]
+	],
 	"Spell",
 	"Fire",
 	350,

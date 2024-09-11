@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { addModifier, dealDamage, gainHealth, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thirsting Battleaxe",
-	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; heal @{healing} hp on kill",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; heal @{healing} hp on kill"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,

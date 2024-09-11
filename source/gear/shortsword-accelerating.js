@@ -3,8 +3,10 @@ const { dealDamage, addModifier, changeStagger, getNames } = require('../util/co
 const { listifyEN, joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Accelerating Shortsword",
-	"Strike a foe for @{damage} @{element} damage, then apply @{mod0Stacks} @{mod0} to the foe and @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to yourself",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, then apply @{mod0Stacks} @{mod0} to the foe and @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to yourself"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,

@@ -4,8 +4,10 @@ const { addModifier, payHP, changeStagger, getNames, removeModifier } = require(
 const { joinAsStatement, listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Purifying Infinite Regeneration",
-	"Pay @{hpCost} hp to grant an ally @{mod0Stacks} @{mod0} and cure all their debuffs",
-	"HP Cost / @{critMultiplier}",
+	[
+		["use", "Pay @{hpCost} hp to grant an ally @{mod0Stacks} @{mod0} and cure all their debuffs"],
+		["Critical💥", "HP Cost / @{critMultiplier}"]
+	],
 	"Pact",
 	"Fire",
 	350,

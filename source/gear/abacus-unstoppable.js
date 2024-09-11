@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Unstoppable Abacus",
-	"Strike a foe for @{damage} (+5% foe max hp) @{element} unblockable damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} (+5% foe max hp) @{element} unblockable damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Trinket",
 	"Water",
 	350,

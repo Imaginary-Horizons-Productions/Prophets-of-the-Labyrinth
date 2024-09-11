@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Warhammer",
-	"Strike a foe for @{damage} (+@{bonus} if foe is stunned, x@{critMultiplier} if after foe) @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} (+@{bonus} if foe is stunned, x@{critMultiplier} if after foe) @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Earth",
 	350,

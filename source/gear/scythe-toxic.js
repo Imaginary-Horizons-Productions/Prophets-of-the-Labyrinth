@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Scythe",
-	"Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp",
-	"Instant death threshold x@{critMultiplier}",
+	[
+		["use", "Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp"],
+		["Critical💥", "Instant death threshold x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Darkness",
 	350,

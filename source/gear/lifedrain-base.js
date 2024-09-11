@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Life Drain",
-	"Strike a foe for @{damage} @{element} damage, then gain @{healing} hp",
-	"Healing x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, then gain @{healing} hp"],
+		["Critical💥", "Healing x@{critMultiplier}"]
+	],
 	"Spell",
 	"Darkness",
 	200,

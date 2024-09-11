@@ -3,8 +3,10 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Inspiration",
-	"Apply @{mod0Stacks} @{mod0} to all allies",
-	"@{mod0} +@{bonus}",
+	[
+		["use", "Apply @{mod0Stacks} @{mod0} to all allies"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Spell",
 	"Wind",
 	350,

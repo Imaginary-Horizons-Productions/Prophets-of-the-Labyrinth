@@ -2,8 +2,9 @@ const { GearTemplate } = require('../classes');
 const { SURPASSING_VALUE } = require('../constants');
 
 module.exports = new GearTemplate("Surpassing Wolf Ring",
-	"Passive: Gain @{poise} Poise and increase your damage cap by @{bonus}",
-	"N/A",
+	[
+		["Passive", "Gain @{poise} Poise and increase your damage cap by @{bonus}"]
+	],
 	"Trinket",
 	"Untyped",
 	350,

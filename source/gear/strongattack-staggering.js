@@ -3,8 +3,10 @@ const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil')
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Strong Attack",
-	"Strike a foe applying @{foeStagger} and @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe applying @{foeStagger} and @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Untyped",
 	350,

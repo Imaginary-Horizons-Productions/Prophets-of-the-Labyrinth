@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Iron Fist Punch",
-	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Technique",
 	"Untyped",
 	0,

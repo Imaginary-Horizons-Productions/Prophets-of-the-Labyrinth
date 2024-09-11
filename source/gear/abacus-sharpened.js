@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sharpened Abacus",
-	"Deal @{damage} (+5% foe max hp) @{element} damage to a foe",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Deal @{damage} (+5% foe max hp) @{element} damage to a foe"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Trinket",
 	"Water",
 	350,

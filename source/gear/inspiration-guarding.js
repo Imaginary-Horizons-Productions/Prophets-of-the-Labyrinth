@@ -3,8 +3,10 @@ const { addModifier, changeStagger, addProtection, getNames } = require('../util
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Guarding Inspiration",
-	"Apply @{mod0Stacks} @{mod0} and @{protection} protection to an ally",
-	"@{mod0} +@{bonus}",
+	[
+		["use", "Apply @{mod0Stacks} @{mod0} and @{protection} protection to an ally"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Spell",
 	"Wind",
 	350,

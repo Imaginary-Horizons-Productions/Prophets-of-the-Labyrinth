@@ -3,8 +3,10 @@ const { addModifier, dealDamage, changeStagger, getNames } = require('../util/co
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Distracting Ice Bolt",
-	"Inflict @{damage} @{element} damage, @{mod0Stacks} @{mod0}, and @{mod1Stacks} @{mod1} on one foe",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Inflict @{damage} @{element} damage, @{mod0Stacks} @{mod0}, and @{mod1Stacks} @{mod1} on one foe"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Spell",
 	"Water",
 	350,

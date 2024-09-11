@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { changeStagger, addProtection } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Sweeping Scutum",
-	"Grant @{protection} protection to all allies (including yourself)",
-	"Protection x@{critMultiplier}",
+	[
+		["use", "Grant @{protection} protection to all allies (including yourself)"],
+		["Critical💥", "Protection x@{critMultiplier}"]
+	],
 	"Armor",
 	"Fire",
 	350,

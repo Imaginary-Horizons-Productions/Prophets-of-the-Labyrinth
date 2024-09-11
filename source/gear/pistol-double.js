@@ -3,8 +3,10 @@ const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, getNames
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Double Pistol",
-	"Strike a foe for @{damage} @{element} damage, give 2 random allies @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, give 2 random allies @{mod0Stacks} @{mod0} if the foe is weak to @{element}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Untyped",
 	350,

@@ -2,8 +2,10 @@ const { GearTemplate, Move } = require('../classes');
 const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Spear",
-	"Strike a foe for @{damage} (x@{critMultiplier} if after foe) @{element} damage",
-	"Inflict @{bonus} more Stagger",
+	[
+		["use", "Strike a foe for @{damage} (x@{critMultiplier} if after foe) @{element} damage"],
+		["Critical💥", "Inflict @{bonus} more Stagger"]
+	],
 	"Weapon",
 	"Earth",
 	350,

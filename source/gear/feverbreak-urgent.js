@@ -3,8 +3,10 @@ const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
 const { dealDamage, removeModifier, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Urgent Fever Break",
-	`Deals @{element} damage to a foe (with priority), equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs`,
-	"Poison and Frail not removed",
+	[
+		["use", `Deals @{element} damage to a foe (with priority), equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs`],
+		["Critical💥", "Poison and Frail not removed"]
+	],
 	"Spell",
 	"Darkness",
 	350,

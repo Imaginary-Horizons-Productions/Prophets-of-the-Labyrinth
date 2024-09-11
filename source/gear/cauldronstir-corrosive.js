@@ -16,8 +16,10 @@ const rollablePotions = [
 ];
 
 module.exports = new GearTemplate("Corrosive Cauldron Stir",
-	"Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on a foe",
-	"Add a random potion to loot",
+	[
+		["use", "Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on a foe"],
+		["Critical💥", "Add a random potion to loot"]
+	],
 	"Weapon",
 	"Water",
 	350,

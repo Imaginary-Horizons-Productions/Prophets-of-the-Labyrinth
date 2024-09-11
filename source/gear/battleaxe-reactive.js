@@ -2,8 +2,10 @@ const { GearTemplate, Move } = require('../classes/index.js');
 const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Battleaxe",
-	"Strike a foe for @{damage} (x@{bonus} if after foe) @{element} damage, gain @{mod0Stacks} @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} (x@{bonus} if after foe) @{element} damage, gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,

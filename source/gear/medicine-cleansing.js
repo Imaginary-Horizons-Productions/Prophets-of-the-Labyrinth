@@ -4,8 +4,10 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil'
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Cleansing Medicine",
-	"Grant an ally @{mod0Stacks} @{mod0} and cure them of a random debuff",
-	"@{mod0} x@{critMultiplier}",
+	[
+		["use", "Grant an ally @{mod0Stacks} @{mod0} and cure them of a random debuff"],
+		["Critical💥", "@{mod0} x@{critMultiplier}"]
+	],
 	"Trinket",
 	"Water",
 	350,

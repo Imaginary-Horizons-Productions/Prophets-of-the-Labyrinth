@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes/index.js');
 const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Furious Battleaxe",
-	"Strike a foe for @{damage} @{element} damage (increases with your missing hp), gain @{mod0Stacks} @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage (increases with your missing hp), gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,

@@ -3,8 +3,10 @@ const { addModifier, payHP, changeStagger, getNames } = require('../util/combata
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
-	"Pay @{hpCost} hp to grant an ally @{mod0Stacks} @{mod0}",
-	"HP Cost / @{critMultiplier} and grant @{mod1Stacks} @{mod1}",
+	[
+		["use", "Pay @{hpCost} hp to grant an ally @{mod0Stacks} @{mod0}"],
+		["Critical💥", "HP Cost / @{critMultiplier} and grant @{mod1Stacks} @{mod1}"]
+	],
 	"Pact",
 	"Fire",
 	350,

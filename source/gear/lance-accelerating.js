@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Accelerating Lance",
-	"Strike a foe for @{damage} @{element} damage (double increase from Power Up), then gain @{mod0Stacks} @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage (double increase from Power Up), then gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Earth",
 	350,

@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Certain Victory",
-	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; pay HP for your @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; pay HP for your @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Pact",
 	"Earth",
 	200,

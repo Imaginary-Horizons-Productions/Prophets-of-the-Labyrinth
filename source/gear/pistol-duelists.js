@@ -2,8 +2,10 @@ const { GearTemplate } = require("../classes");
 const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, getNames } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Duelist's Pistol",
-	"Strike a foe for @{damage} (+@{bonus} if only attacker) @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} (+@{bonus} if only attacker) @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Untyped",
 	350,

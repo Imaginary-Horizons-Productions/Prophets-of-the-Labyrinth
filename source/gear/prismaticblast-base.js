@@ -3,8 +3,10 @@ const { SAFE_DELIMITER } = require('../constants');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Prismatic Blast",
-	"Strike a foe and adjacent foes for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe and adjacent foes for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Spell",
 	"Light",
 	200,

@@ -2,8 +2,10 @@ const { GearTemplate, Move } = require('../classes/index.js');
 const { payHP, changeStagger, addProtection, getNames, addModifier } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Blood Aegis",
-	"Pay @{hpCost} hp; gain @{protection} protection, inflict @{mod0Stacks} @{mod0} on a foe and intercept their move",
-	"Protection x@{critMultiplier}",
+	[
+		["use", "Pay @{hpCost} hp; gain @{protection} protection, inflict @{mod0Stacks} @{mod0} on a foe and intercept their move"],
+		["Critical💥", "Protection x@{critMultiplier}"]
+	],
 	"Pact",
 	"Darkness",
 	350,

@@ -3,8 +3,10 @@ const { addModifier, changeStagger, addProtection, getNames } = require('../util
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Reinforced Buckler",
-	"Grant @{protection} protection to an ally and yourself and gain @{mod0Stacks} @{mod0}",
-	"Protection x@{critMultiplier}",
+	[
+		["use", "Grant @{protection} protection to an ally and yourself and gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Protection x@{critMultiplier}"]
+	],
 	"Armor",
 	"Earth",
 	350,

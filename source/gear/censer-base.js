@@ -3,8 +3,10 @@ const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Censer",
-	"Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage",
-	"Also apply @{mod0Stacks} @{mod0}",
+	[
+		["use", "Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage"],
+		["Critical💥", "Also apply @{mod0Stacks} @{mod0}"]
+	],
 	"Trinket",
 	"Fire",
 	200,

@@ -10,8 +10,10 @@ const rollableHerbs = [
 ];
 
 module.exports = new GearTemplate("Urgent Herb Basket",
-	"Add @{bonus} random herb to loot with priority",
-	"Herbs gathered x@{critMultiplier}",
+	[
+		["use", "Add @{bonus} random herb to loot with priority"],
+		["Critical💥", "Herbs gathered x@{critMultiplier}"]
+	],
 	"Trinket",
 	"Earth",
 	350,

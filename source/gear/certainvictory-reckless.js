@@ -3,8 +3,10 @@ const { dealDamage, addModifier, payHP, changeStagger, getNames } = require('../
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Reckless Certain Victory",
-	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}; pay HP for your @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}; pay HP for your @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Pact",
 	"Earth",
 	350,

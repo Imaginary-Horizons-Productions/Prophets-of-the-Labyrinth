@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { changeStagger, getNames } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
+const { organicPassive } = require('./__sharedDescriptions');
 
 const rollableHerbs = [
 	"Panacea",
@@ -10,8 +11,11 @@ const rollableHerbs = [
 ];
 
 module.exports = new GearTemplate("Organic Herb Basket",
-	"Add @{bonus} random herb to loot, regain 1 durability when entering a new room",
-	"Herbs gathered x@{critMultiplier}",
+	[
+		organicPassive,
+		["use", "Add @{bonus} random herb to loot"],
+		["Critical💥", "Herbs gathered x@{critMultiplier}"]
+	],
 	"Trinket",
 	"Earth",
 	350,

@@ -4,8 +4,10 @@ const { dealDamage, changeStagger, addModifier, getNames } = require('../util/co
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Distracting Prismatic Blast",
-	"Strike a foe and adjacent foes for @{damage} @{element} damage and @{mod0Stacks} @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe and adjacent foes for @{damage} @{element} damage and @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Spell",
 	"Light",
 	350,

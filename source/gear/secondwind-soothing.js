@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { gainHealth, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Soothing Second Wind",
-	"Regain @{damage} hp and gain @{mod0Stacks} @{mod0}",
-	"Healing x@{critMultiplier}",
+	[
+		["use", "Regain @{damage} hp and gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Healing x@{critMultiplier}"]
+	],
 	"Technique",
 	"Untyped",
 	350,

@@ -2,8 +2,10 @@ const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Staggering Shoulder Throw",
-	"Redirect a slower foe into targeting themself",
-	"Gain @{mod0Stacks} @{mod0}",
+	[
+		["use", "Redirect a slower foe into targeting themself"],
+		["Critical💥", "Gain @{mod0Stacks} @{mod0}"]
+	],
 	"Technique",
 	"Light",
 	350,

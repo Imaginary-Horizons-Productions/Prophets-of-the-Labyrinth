@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Soothing Midas Staff",
-	"Apply @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to a combatant",
-	"@{mod0} +@{bonus}",
+	[
+		["use", "Apply @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to a combatant"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Trinket",
 	"Water",
 	350,

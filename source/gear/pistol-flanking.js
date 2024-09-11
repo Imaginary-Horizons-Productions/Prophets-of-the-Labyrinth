@@ -3,8 +3,10 @@ const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, getNames
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Flanking Pistol",
-	"Inflict @{damage} @{element} damage and @{mod1Stacks} @{mod1} on a foe, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Inflict @{damage} @{element} damage and @{mod1Stacks} @{mod1} on a foe, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Untyped",
 	350,

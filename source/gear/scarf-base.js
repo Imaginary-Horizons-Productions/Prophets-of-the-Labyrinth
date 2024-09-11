@@ -1,8 +1,9 @@
 const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Scarf",
-	"Passive Gain @{speed} Speed",
-	"N/A",
+	[
+		["Passive", "Gain @{speed} Speed"]
+	],
 	"Trinket",
 	"Untyped",
 	200,

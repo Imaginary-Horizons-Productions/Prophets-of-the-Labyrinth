@@ -3,8 +3,10 @@ const { payHP, dealDamage, changeStagger, getNames } = require('../util/combatan
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Power from Wrath",
-	"Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing hp)",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing hp)"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Pact",
 	"Darkness",
 	350,

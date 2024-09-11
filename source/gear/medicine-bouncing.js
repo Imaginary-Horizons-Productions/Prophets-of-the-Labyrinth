@@ -4,8 +4,10 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil'
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Bouncing Medicine",
-	"Grant 3 random allies @{mod0Stacks} @{mod0}",
-	"@{mod0} x@{critMultiplier}",
+	[
+		["use", "Grant 3 random allies @{mod0Stacks} @{mod0}"],
+		["Critical💥", "@{mod0} x@{critMultiplier}"]
+	],
 	"Trinket",
 	"Water",
 	350,

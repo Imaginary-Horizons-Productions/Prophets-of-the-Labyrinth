@@ -2,8 +2,10 @@ const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shattering Goad Futility",
-	"Gain @{mod0Stacks} @{mod0}, intercept the target's later single target move, and inflict @{mod2Stacks} @{mod2} on them",
-	"Inflict @{mod1Stacks} @{mod1} on the target",
+	[
+		["use", "Gain @{mod0Stacks} @{mod0}, intercept the target's later single target move, and inflict @{mod2Stacks} @{mod2} on them"],
+		["Critical💥", "Inflict @{mod1Stacks} @{mod1} on the target"]
+	],
 	"Technique",
 	"Earth",
 	350,

@@ -3,8 +3,10 @@ const { dealDamage, addModifier, changeStagger, getNames } = require('../util/co
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing Daggers",
-	"Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Wind",
 	350,

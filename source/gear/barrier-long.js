@@ -3,8 +3,10 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Long Barrier",
-	"Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}",
-	"@{mod1} x@{critMultiplier}",
+	[
+		["use", "Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}"],
+		["Critical💥", "@{mod1} x@{critMultiplier}"]
+	],
 	"Spell",
 	"Wind",
 	350,

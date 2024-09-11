@@ -3,8 +3,7 @@ const { removeModifier, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Appease",
-	"Shrug off all insults",
-	"N/A",
+	[["use", "Shrug off all insults"]],
 	"Action",
 	"Untyped",
 	0,

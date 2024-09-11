@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { changeStagger, addProtection, addModifier, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Lucky Scutum",
-	"Grant @{protection} protection to an ally and yourself and gain @{mod0Stacks} @{mod0}",
-	"Protection x@{critMultiplier}",
+	[
+		["use", "Grant @{protection} protection to an ally and yourself and gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Protection x@{critMultiplier}"]
+	],
 	"Armor",
 	"Fire",
 	350,

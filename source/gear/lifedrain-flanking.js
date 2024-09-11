@@ -3,8 +3,10 @@ const { addModifier, dealDamage, gainHealth, changeStagger, getNames } = require
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Flanking Life Drain",
-	"Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}, then gain @{healing} hp",
-	"Healing x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}, then gain @{healing} hp"],
+		["Critical💥", "Healing x@{critMultiplier}"]
+	],
 	"Spell",
 	"Darkness",
 	350,

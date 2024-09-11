@@ -3,8 +3,10 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil'
 const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Midas's Risky Mixture",
-	"Inflict @{mod0Stacks} @{mod0} and @{mod2Stacks} @{mod2} on a target",
-	"Apply @{mod1} instead of @{mod0}",
+	[
+		["use", "Inflict @{mod0Stacks} @{mod0} and @{mod2Stacks} @{mod2} on a target"],
+		["Critical💥", "Apply @{mod1} instead of @{mod0}"]
+	],
 	"Trinket",
 	"Darkness",
 	350,

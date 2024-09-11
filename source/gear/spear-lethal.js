@@ -3,8 +3,10 @@ const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.j
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Lethal Spear",
-	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}, inflict @{stagger} more Stagger",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}, inflict @{stagger} more Stagger"]
+	],
 	"Weapon",
 	"Earth",
 	350,

@@ -4,8 +4,10 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Charging War Cry",
-	`Also target all foes with ${getModifierEmoji("Exposed")} then gain @{mod0Stacks} @{mod0}`,
-	"Stagger +@{bonus}",
+	[
+		["use", `Also target all foes with ${getModifierEmoji("Exposed")} then gain @{mod0Stacks} @{mod0}`],
+		["Critical💥", "Stagger +@{bonus}"]
+	],
 	"Technique",
 	"Light",
 	350,

@@ -1,10 +1,14 @@
 const { GearTemplate } = require("../classes");
 const { addModifier, changeStagger, getNames, enterStance } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
+const { organicPassive } = require("./__sharedDescriptions");
 
 module.exports = new GearTemplate("Organic Iron Fist Stance",
-	"Gain @{mod0Stacks} @{mod0} (exit other stances), regain 1 durability each room",
-	"Inflict @{mod1Stacks} @{mod1} on all enemies",
+	[
+		organicPassive,
+		["use", "Gain @{mod0Stacks} @{mod0} (exit other stances)"],
+		["Critical💥", "Inflict @{mod1Stacks} @{mod1} on all enemies"]
+	],
 	"Technique",
 	"Light",
 	350,

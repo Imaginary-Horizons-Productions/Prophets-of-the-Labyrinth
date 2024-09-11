@@ -2,8 +2,11 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Cursed Blade",
-	"Strike a foe for @{damage} @{element} damage. Passive: Reduced your Max HP by @{maxHP}.",
-	"Damage x@{critMultiplier}",
+	[
+		["Passive", "Reduce your Max HP by @{maxHP}"],
+		["use", "Strike a foe for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Untyped",
 	-50,

@@ -1,10 +1,14 @@
 const { GearTemplate } = require('../classes');
 const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
 const { dealDamage, removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { organicPassive } = require('./__sharedDescriptions');
 
 module.exports = new GearTemplate("Organic Fever Break",
-	`Deals @{element} damage to a foe, equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs. Regains 1 durability when entering a new room`,
-	"Poison and Frail not removed",
+	[
+		organicPassive,
+		["use", `Deals @{element} damage to a foe, equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs`],
+		["Critical💥", "Poison and Frail not removed"]
+	],
 	"Spell",
 	"Darkness",
 	350,

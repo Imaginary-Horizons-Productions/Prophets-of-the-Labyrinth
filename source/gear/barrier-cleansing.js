@@ -4,8 +4,10 @@ const { removeModifier, addModifier, changeStagger, getNames } = require('../uti
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Cleansing Barrier",
-	"Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} and cure a random debuff",
-	"@{mod1} x@{critMultiplier}",
+	[
+		["use", "Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} and cure a random debuff"],
+		["Critical💥", "@{mod1} x@{critMultiplier}"]
+	],
 	"Spell",
 	"Wind",
 	350,

@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Slowing Warhammer",
-	"Strike a foe for @{damage} (+@{bonus} if foe is stunned) @{element} damage and inflict @{mod0Stacks} @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} (+@{bonus} if foe is stunned) @{element} damage and inflict @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Earth",
 	350,

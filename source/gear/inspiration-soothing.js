@@ -3,8 +3,10 @@ const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Soothing Inspiration",
-	"Apply @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to an ally",
-	"@{mod0} +@{bonus}",
+	[
+		["use", "Apply @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to an ally"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Spell",
 	"Wind",
 	350,

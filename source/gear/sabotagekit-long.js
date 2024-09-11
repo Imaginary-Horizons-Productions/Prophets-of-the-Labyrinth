@@ -4,8 +4,10 @@ const { elementsList, getResistances } = require('../util/elementUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Long Sabotage Kit",
-	"Afflict a foe with @{mod0Stacks} @{mod0} and @{mod1Stacks} stacks of a random weakness",
-	"Slow and Weakness +@{bonus}",
+	[
+		["use", "Afflict a foe with @{mod0Stacks} @{mod0} and @{mod1Stacks} stacks of a random weakness"],
+		["Critical💥", "Slow and Weakness +@{bonus}"]
+	],
 	"Weapon",
 	"Untyped",
 	350,

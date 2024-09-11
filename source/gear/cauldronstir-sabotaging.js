@@ -15,8 +15,10 @@ const rollablePotions = [
 ];
 
 module.exports = new GearTemplate("Sabotaging Cauldron Stir",
-	"Inflict @{damage} @{element} damage and @{mod0Stacks} stacks of a random weakness on a foe",
-	"Add a random potion to loot",
+	[
+		["use", "Inflict @{damage} @{element} damage and @{mod0Stacks} stacks of a random weakness on a foe"],
+		["Critical💥", "Add a random potion to loot"]
+	],
 	"Weapon",
 	"Water",
 	350,

@@ -2,8 +2,11 @@ const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Cloak",
-	"Gain @{mod0Stacks} @{mod0}. Passive: Gain @{critRate} Crit Rate",
-	"@{mod0} +@{bonus}",
+	[
+		["Passive", "Gain @{critRate} Crit Rate"],
+		["use", "Gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Armor",
 	"Wind",
 	200,

@@ -3,8 +3,10 @@ const { dealDamage, addModifier, changeStagger, getNames } = require('../util/co
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Shattering Lance",
-	"Apply @{mod0Stacks} @{mod0} and @{damage} @{element} damage (double increase from Power Up) to a foe",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Apply @{mod0Stacks} @{mod0} and @{damage} @{element} damage (double increase from Power Up) to a foe"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Earth",
 	350,

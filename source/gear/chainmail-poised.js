@@ -1,8 +1,9 @@
 const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Poised Chainmail",
-	"Passive: Gain @{maxHP} Max HP and @{poise} Poise",
-	"N/A",
+	[
+		["Passive", "Gain @{maxHP} Max HP and @{poise} Poise"]
+	],
 	"Trinket",
 	"Untyped",
 	350,

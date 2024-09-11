@@ -4,8 +4,10 @@ const { dealDamage, addModifier, changeStagger, getNames } = require('../util/co
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Toxic Firecracker",
-	"Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,

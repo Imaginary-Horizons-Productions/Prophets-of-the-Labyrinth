@@ -10,8 +10,10 @@ const rollableHerbs = [
 ];
 
 module.exports = new GearTemplate("Reinforced Herb Basket",
-	"Gain @{protection} protection and add @{bonus} random herb to loot",
-	"Herbs gathered x@{critMultiplier}",
+	[
+		["use", "Gain @{protection} protection and add @{bonus} random herb to loot"],
+		["Critical💥", "Herbs gathered x@{critMultiplier}"]
+	],
 	"Trinket",
 	"Earth",
 	350,

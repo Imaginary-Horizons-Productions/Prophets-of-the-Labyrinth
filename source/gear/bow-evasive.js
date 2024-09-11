@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Evasive Bow",
-	"Strike a foe for @{damage} @{element} damage and gain @{mod0Stacks} @{mod0} with priority",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage and gain @{mod0Stacks} @{mod0} with priority"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Wind",
 	350,

@@ -3,8 +3,10 @@ const { addModifier, changeStagger, getNames, enterStance } = require("../util/c
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Soothing Floating Mist Stance",
-	"Gain @{mod1Stacks} @{mod1} and @{mod2Stacks} @{mod2} (exit other stances)",
-	"Gain @{mod0Stacks} @{mod0}",
+	[
+		["use", "Gain @{mod1Stacks} @{mod1} and @{mod2Stacks} @{mod2} (exit other stances)"],
+		["Critical💥", "Gain @{mod0Stacks} @{mod0}"]
+	],
 	"Technique",
 	"Light",
 	350,

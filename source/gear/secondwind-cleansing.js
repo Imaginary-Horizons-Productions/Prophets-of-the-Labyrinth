@@ -3,8 +3,10 @@ const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { gainHealth, removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Cleansing Second Wind",
-	"Regain @{damage} hp and shrug off a random debuff",
-	"Healing x@{critMultiplier}",
+	[
+		["use", "Regain @{damage} hp and shrug off a random debuff"],
+		["Critical💥", "Healing x@{critMultiplier}"]
+	],
 	"Technique",
 	"Untyped",
 	350,

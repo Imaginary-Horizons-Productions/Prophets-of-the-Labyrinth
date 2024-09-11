@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Unstoppable Scythe",
-	"Strike a foe for @{damage} @{element} unblockable damage, even while Stunned; instant death if foe is at or below @{bonus} hp",
-	"Instant death threshold x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} unblockable damage, even while Stunned; instant death if foe is at or below @{bonus} hp"],
+		["Critical💥", "Instant death threshold x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Darkness",
 	350,

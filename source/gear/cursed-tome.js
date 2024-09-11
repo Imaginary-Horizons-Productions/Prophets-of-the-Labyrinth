@@ -1,8 +1,9 @@
 const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Cursed Tome",
-	"Passive: Reduce your Poise by @{poise}.",
-	"N/A",
+	[
+		["Passive", "Reduce your Poise by @{poise}"]
+	],
 	"Pact",
 	"Untyped",
 	-50,

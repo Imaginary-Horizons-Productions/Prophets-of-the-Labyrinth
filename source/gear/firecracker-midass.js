@@ -3,8 +3,10 @@ const { SAFE_DELIMITER } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Midas's Firecracker",
-	"Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,

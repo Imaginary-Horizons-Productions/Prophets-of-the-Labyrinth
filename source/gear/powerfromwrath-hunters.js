@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { payHP, dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Hunter's Power from Wrath",
-	"Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing hp)",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing hp)"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Pact",
 	"Darkness",
 	350,
