@@ -22,4 +22,4 @@ module.exports = new GearTemplate("Appease",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false });
+).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false });

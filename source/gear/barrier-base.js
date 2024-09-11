@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Barrier",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setUpgrades("Cleansing Barrier", "Devoted Barrier", "Long Barrier")
 	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 1 })
 	.setDurability(5);

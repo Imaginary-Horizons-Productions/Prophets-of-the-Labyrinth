@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Long Barrier",
 			return "But nothing happened.";
 		}
 	}
-).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Cleansing Barrier", "Devoted Barrier")
 	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 2 }, { name: "Vigilance", stacks: 4 })
 	.setDurability(5);
