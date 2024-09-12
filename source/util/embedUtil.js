@@ -369,7 +369,9 @@ function gearToEmbedField(gearName, durability, holder) {
  * @returns {MessagePayload}
  */
 function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
-	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
+	const hasLucky = delver.getModifierStacks("Lucky") > 0;
+	const hasUnlucky = delver.getModifierStacks("Unlucky") > 0;
+	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%${hasLucky ? " x 2 (Lucky)" : hasUnlucky ? " ÷ 2 (Unlucky)" : ""}\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
