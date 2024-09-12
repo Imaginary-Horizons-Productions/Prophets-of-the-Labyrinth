@@ -1,19 +1,17 @@
 const { GearTemplate } = require("../classes");
 const { addModifier, changeStagger, getNames, enterStance } = require("../util/combatantUtil");
-const { joinAsStatement } = require("../util/textUtil");
-const { organicPassive } = require("./__sharedDescriptions");
+const { joinAsStatement, listifyEN } = require("../util/textUtil");
 
-module.exports = new GearTemplate("Organic Iron Fist Stance",
+module.exports = new GearTemplate("Lucky Iron Fist Stance",
 	[
-		organicPassive,
-		["use", "Gain @{mod0Stacks} @{mod0} (exit other stances)"],
+		["use", "Gain @{mod0Stacks} @{mod0} (exit other stances) and @{mod1Stacks} @{mod1}"],
 		["Critical💥", "Inflict @{mod1Stacks} @{mod1} on all enemies"]
 	],
 	"Technique",
 	"Light",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, modifiers: [ironFistStance, frail] } = module.exports;
+		const { element, modifiers: [ironFistStance, frail, lucky] } = module.exports;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
@@ -26,6 +24,10 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 		const resultSentences = [];
 		if (stancesRemoved.length > 0) {
 			resultSentences.push(`${getNames([user], adventure)} exits ${listifyEN(stancesRemoved, false)}.`);
+		}
+		const addedLucky = addModifier([user], lucky).length > 0;
+		if (addedLucky) {
+			resultSentences.push(`${getNames([user], adventure)} gains Lucky.`);
 		}
 
 		if (frailedTargets.length > 0) {
@@ -41,8 +43,8 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 		}
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
-	.setSidegrades("Organic Iron Fist Stance", "Lucky Iron Fist Stance")
-	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
+	.setSidegrades("Accurate Iron Fist Stance", "Organic Iron Fist Stance")
+	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 }, { name: "Lucky", stacks: 1 })
 	.setBonus(45) // Punch damage boost
 	.setDurability(10)
 	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's element to the bearer's and increases its damage by @{bonus} per stack" });

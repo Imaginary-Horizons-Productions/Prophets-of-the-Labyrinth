@@ -216,6 +216,7 @@ Increased modifier stacks
 Add Lucky to the user
 
 **Available on**
+- Iron Fist Stance (Light)
 - Scutum (Fire)
 - Second Wind (Untyped)
 
