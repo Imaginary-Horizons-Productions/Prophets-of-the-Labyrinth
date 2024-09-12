@@ -165,10 +165,10 @@ Archetypes:
 - Fate-Sealing
 - Harmful
 - Healing
-- Long
 - Lucky
 - Midas's
 - Powerful
+- Potent
 - Purifying
 - Reactive
 - Reinforced

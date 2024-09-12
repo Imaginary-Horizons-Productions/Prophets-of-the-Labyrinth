@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Cloak",
 		}
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
-	.setUpgrades("Accelerating Cloak", "Accurate Cloak", "Long Cloak")
+	.setUpgrades("Accelerating Cloak", "Accurate Cloak", "Evasive Cloak")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setBonus(1) // Evade stacks
 	.setCritRate(5)

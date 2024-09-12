@@ -1,7 +1,7 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate } = require('../classes/index.js');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Long Cloak",
+module.exports = new GearTemplate("Evasive Cloak",
 	[
 		["Passive", "Gain @{critRate} Crit Rate"],
 		["use", "Gain @{mod0Stacks} @{mod0}"],

@@ -129,6 +129,7 @@ Adds Evade to the user
 - all Barriers (Wind)
 - all Cloaks (Wind)
 - Bow (Wind)
+- Cloak (Wind)
 - Shoulder Throw (Light)
 
 ### Fate-Sealing
@@ -203,15 +204,6 @@ Increased crit damage
 - Shortsword (Fire)
 - Spear (Wind)
 
-### Long
-Increased modifier stacks
-
-**Available on**
-- Cloak (Wind)
-- Sabotage Kit (Untyped)
-- Barrier (Wind)
-- Risky Mixture (Darkness)
-
 ### Lucky
 Add Lucky to the user
 
@@ -243,6 +235,13 @@ Passively increases user's poise
 - all Wolf Rings (Untyped)
 - Chainmail (Untyped)
 - Goad Futility (Earth)
+
+### Potent
+Increased modifier stacks
+
+**Available on**
+- Sabotage Kit (Untyped)
+- Risky Mixture (Darkness)
 
 ### Powerful
 Passively increases user's power
@@ -457,6 +456,7 @@ Adds Vigilance to user
 
 **Available on**
 - all Barriers (Wind)
+- Barrier (Wind)
 
 ### Wise
 Increases stats gained by level up

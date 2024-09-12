@@ -35,6 +35,6 @@ module.exports = new GearTemplate("Barrier",
 		}
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
-	.setUpgrades("Cleansing Barrier", "Devoted Barrier", "Long Barrier")
+	.setUpgrades("Cleansing Barrier", "Devoted Barrier", "Vigilant Barrier")
 	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 1 })
 	.setDurability(5);

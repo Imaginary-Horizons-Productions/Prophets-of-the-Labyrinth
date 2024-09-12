@@ -1,8 +1,8 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate } = require('../classes/index.js');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
-module.exports = new GearTemplate("Long Barrier",
+module.exports = new GearTemplate("Vigilant Barrier",
 	[
 		["use", "Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}"],
 		["Critical💥", "@{mod1} x@{critMultiplier}"]

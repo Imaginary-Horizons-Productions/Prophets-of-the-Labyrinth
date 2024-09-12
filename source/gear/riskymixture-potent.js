@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Long Risky Mixture",
+module.exports = new GearTemplate("Potent Risky Mixture",
 	[
 		["use", "Inflict @{mod0Stacks} @{mod0} on a target"],
 		["Critical💥", "Apply @{mod1} instead of @{mod0}"]

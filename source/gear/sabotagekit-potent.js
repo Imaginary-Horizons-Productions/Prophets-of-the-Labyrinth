@@ -1,9 +1,9 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate } = require('../classes/index.js');
 const { addModifier, getCombatantWeaknesses, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
-module.exports = new GearTemplate("Long Sabotage Kit",
+module.exports = new GearTemplate("Potent Sabotage Kit",
 	[
 		["use", "Afflict a foe with @{mod0Stacks} @{mod0} and @{mod1Stacks} stacks of a random weakness"],
 		["Critical💥", "Slow and Weakness +@{bonus}"]
