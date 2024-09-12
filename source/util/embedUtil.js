@@ -358,7 +358,7 @@ function gearToEmbedField(gearName, durability, holder) {
 	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability} /${maxDurability} durability)`;
 	return {
 		name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}${durabilityText}`,
-		value: buildGearDescription(gearName, maxDurability !== 0, holder)
+		value: buildGearDescription(gearName, true, holder)
 	};
 }
 

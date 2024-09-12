@@ -1,10 +1,9 @@
 const { ArchetypeTemplate } = require("../classes");
-const { POTL_ICON_URL } = require("../constants");
 const { getNames } = require("../util/combatantUtil");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Martial Artist",
-	"They'll be able to predict the order combatants will act in and their how much Stagger to Stun them. They'll also be able enhance their Punches with various stances.",
+	"They'll be able to predict enemy moves in two rounds and how much Stagger it'll take to Stun them. They'll also be able enhance their Punches with various stances.",
 	"Light",
 	{
 		maxHPGrowth: 25,
@@ -22,9 +21,9 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 			});
 		const combatantNames = getNames(activeCombatants, adventure);
 		activeCombatants.forEach((combatant, index) => {
-			embed.addFields({ name: combatantNames[index], value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\nSpeed: ${combatant.getSpeed(true)}` });
+			embed.addFields({ name: combatantNames[index], value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}${combatant.team === "enemy" ? `\nRound ${adventure.room.round + 2} Move: ${combatant.nextAction}` : ""}` });
 		})
-		return embed.setTitle(`Martial Artist Predictions for Round ${adventure.room.round + 1}`).setAuthor({ name: "Combatants may act out of order if they have priority or are tied in speed.", iconURL: POTL_ICON_URL });
+		return embed.setTitle(`Martial Artist Predictions for Round ${adventure.room.round + 1}`);
 	},
 	(combatant) => {
 		if (combatant.isStunned) {

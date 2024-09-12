@@ -3,6 +3,8 @@
 ### Archetypes
 - Changed Detective to Untyped and increased duration of Sabotage Kit (and upgrades) weakness by 1
    - The case where the Detective innately had elemental advantage against an enemy was too much more powerful than the case where the advantage was earned. Changing to Untyped both removes the innate elemental advantage case, but also makes adding Pistol triggering weakness to enemies always possible (no enemies resist Untyped).
+- Changed Martial Artist Predict to Stagger and Enemy's next move
+   - Now that predicts are unique info combinations, the Martial Artist is no longer stuck predicting speed (which hasn't been helpful in informing Stun strategies since the mechanics were made independent) in order to be able to predict Stagger. Predicting the move in the next round (note: not the upcoming round, but the one after that) is helpful for deciding if that move is worth attempting to avoid by pushing for Stun.
 ### Gear
 - Changed effect of Hunter's variant to "gain Power Up on kill"
 - Renamed Hunter's to Thief's
