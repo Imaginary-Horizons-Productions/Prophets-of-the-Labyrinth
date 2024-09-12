@@ -100,6 +100,7 @@ for (const file of [
 	"inspiration-sweeping.js",
 	"ironfiststance-accurate.js",
 	"ironfiststance-base.js",
+	"ironfiststance-lucky.js",
 	"ironfiststance-organic.js",
 	"lance-accelerating.js",
 	"lance-base.js",
