@@ -53,20 +53,18 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		});
 		const components = [];
 		const usableMoves = [];
-		delver.gear.forEach(gear => { if (gear.durability > 0) { usableMoves.push(gear.name) } });
+		delver.gear.forEach(gear => { if (gear.durability > 0) { usableMoves.push(gear) } });
 		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
-			const hasFloatingMist = delver.getModifierStacks("Floating Mist Stance") > 0;
-			const hasIronFist = delver.getModifierStacks("Iron Fist Stance") > 0;
-			if (hasFloatingMist) {
-				usableMoves.unshift("Floating Mist Punch");
-			} else if (hasIronFist) {
-				usableMoves.unshift("Iron Fist Punch");
+			if (delver.getModifierStacks("Floating Mist Stance") > 0) {
+				usableMoves.unshift({ name: "Floating Mist Punch" });
+			} else if (delver.getModifierStacks("Iron Fist Stance") > 0) {
+				usableMoves.unshift({ name: "Iron Fist Punch" });
 			} else {
-				usableMoves.unshift("Punch");
+				usableMoves.unshift({ name: "Punch" });
 			}
 		}
 		for (let i = 0; i < usableMoves.length; i++) {
-			const gearName = usableMoves[i];
+			const { name: gearName, durability } = usableMoves[i];
 			const { type, team } = getGearProperty(gearName, "targetingTags");
 			const elementEmoji = getEmoji(gearName === "Iron Fist Punch" ? delver.element : getGearProperty(gearName, "element"));
 			if (type === "single" || type.startsWith("blast")) {
@@ -81,14 +79,14 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 				components.push(new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${i}`)
-						.setPlaceholder(`${elementEmoji} Use ${gearName} on...`)
+						.setPlaceholder(`${elementEmoji} Use ${gearName} ${durability ? `(${durability} durability) ` : ""}on...`)
 						.addOptions(targetOptions)
 				));
 			} else {
 				// Button
 				components.push(new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${i}`)
-						.setLabel(`Use ${gearName}`)
+						.setLabel(`Use ${gearName}${durability ? ` (${durability} durability)` : ""}`)
 						.setEmoji(elementEmoji)
 						.setStyle(ButtonStyle.Secondary)
 				));
