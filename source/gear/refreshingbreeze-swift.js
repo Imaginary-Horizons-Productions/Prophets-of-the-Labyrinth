@@ -44,6 +44,6 @@ module.exports = new GearTemplate("Swift Refreshing Breeze",
 		}
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
-	.setSidegrades("Supportive Refreshing Breeze")
+	.setSidegrades("Accelerating Refreshing Breeze", "Supportive Refreshing Breeze")
 	.setDurability(15)
 	.setSpeed(2);

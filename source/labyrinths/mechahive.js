@@ -175,6 +175,7 @@ module.exports = new LabyrinthTemplate("Mechahive",
 				"Guarding Inspiration",
 				"Soothing Inspiration",
 				"Sweeping Inspiration",
+				"Accelerating Refreshing Breeze",
 				"Supportive Refreshing Breeze",
 				"Swift Refreshing Breeze"
 			]
