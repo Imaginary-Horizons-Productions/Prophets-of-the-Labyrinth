@@ -176,6 +176,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Guarding Inspiration",
 				"Soothing Inspiration",
 				"Sweeping Inspiration",
+				"Accelerating Refreshing Breeze",
 				"Supportive Refreshing Breeze",
 				"Swift Refreshing Breeze"
 			]

@@ -10,6 +10,7 @@ Adds Quicken to the user
 - Cloak (Wind)
 - Lance (Earth)
 - Midas Staff (Water)
+- Refreshing Breeze (Wind)
 - Shortsword (Fire)
 
 ### Accurate
