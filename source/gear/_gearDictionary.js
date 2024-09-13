@@ -136,6 +136,7 @@ for (const file of [
 	"powerfromwrath-staggering.js",
 	"prismaticblast-base.js",
 	"prismaticblast-distracting.js",
+	"prismaticblast-flanking.js",
 	"prismaticblast-vexing.js",
 	"refreshingbreeze-accelerating.js",
 	"refreshingbreeze-base.js",

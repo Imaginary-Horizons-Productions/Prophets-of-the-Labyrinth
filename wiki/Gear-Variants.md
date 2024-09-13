@@ -147,6 +147,7 @@ Adds Exposed to target
 - Goad Futility (Earth)
 - Life Drain (Darkness)
 - Pistol (Untyped)
+- Prismatic Blast (Light)
 - Strong Attack (Untyped)
 
 ### Furious

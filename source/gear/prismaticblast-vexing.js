@@ -39,7 +39,7 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 		}
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe", needsLivingTargets: true })
-	.setSidegrades("Distracting Prismatic Blast")
+	.setSidegrades("Distracting Prismatic Blast", "Flanking Prismatic Blast")
 	.setDurability(15)
 	.setBonus(50) // vexing damage
 	.setDamage(40);
