@@ -2,10 +2,11 @@ const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
+const { swiftPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Swift Refreshing Breeze",
 	[
-		["Passive", "Gain @{speed} Speed"],
+		swiftPassive,
 		["use", "Cure a random debuff from each ally"],
 		["Critical💥", "Debuffs cured x@{critMultiplier}"]
 	],

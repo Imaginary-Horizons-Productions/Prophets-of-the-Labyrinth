@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { changeStagger, getNames } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
-const { organicPassive } = require('./__sharedDescriptions');
+const { organicPassive } = require('./descriptions/passives');
 
 const rollableHerbs = [
 	"Panacea",

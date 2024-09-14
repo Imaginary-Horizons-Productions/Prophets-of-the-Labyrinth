@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, removeModifier, changeStagger } = require('../util/combatantUtil');
 const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
-const { surpassingPassive } = require('./__sharedDescriptions');
+const { surpassingPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Surpassing Fever Break",
 	[

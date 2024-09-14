@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
 const { dealDamage, removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
-const { organicPassive } = require('./__sharedDescriptions');
+const { organicPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Organic Fever Break",
 	[

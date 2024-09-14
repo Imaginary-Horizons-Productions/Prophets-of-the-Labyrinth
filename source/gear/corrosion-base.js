@@ -4,7 +4,7 @@ const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Corrosion",
 	[
-		["Passive", "Inflict @{mod0Stacks} @{mod0} on a foe"],
+		["use", "Inflict @{mod0Stacks} @{mod0} on a foe"],
 		["Critical💥", "Inflict @{bonus} more Stagger"]
 	],
 	"Spell",

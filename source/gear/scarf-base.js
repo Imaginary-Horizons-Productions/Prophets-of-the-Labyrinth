@@ -1,8 +1,9 @@
 const { GearTemplate } = require('../classes');
+const { swiftPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Scarf",
 	[
-		["Passive", "Gain @{speed} Speed"]
+		swiftPassive
 	],
 	"Trinket",
 	"Untyped",

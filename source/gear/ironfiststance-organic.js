@@ -1,7 +1,7 @@
 const { GearTemplate } = require("../classes");
 const { addModifier, changeStagger, getNames, enterStance } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
-const { organicPassive } = require("./__sharedDescriptions");
+const { organicPassive } = require("./descriptions/passives");
 
 module.exports = new GearTemplate("Organic Iron Fist Stance",
 	[
