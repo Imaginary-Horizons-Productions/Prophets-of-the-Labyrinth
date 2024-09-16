@@ -50,7 +50,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	}).addAction({
 		name: "Heavy Pockets",
 		element: "Untyped",
-		description: "Inflict Slow on all foes",
+		description: "Inflict @e{Slow} on all foes",
 		priority: 0,
 		effect: (targets, user, isCrit, adventure) => {
 			let stacks = 2;

@@ -3,7 +3,7 @@ const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, getNames } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Strength Spinach",
-	"Grants the user 50 Power Up",
+	"Grants the user 50 @e{Power Up}",
 	"Untyped",
 	30,
 	selectSelf,

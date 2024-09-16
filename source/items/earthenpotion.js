@@ -4,7 +4,7 @@ const { addModifier, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new ItemTemplate("Earthen Potion",
-	"Grants the user 3 Earth Absorb",
+	"Grants the user 3 @e{Earth Absorb}",
 	"Untyped",
 	30,
 	selectSelf,

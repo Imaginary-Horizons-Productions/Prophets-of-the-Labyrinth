@@ -3,7 +3,7 @@ const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, getNames } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Stasis Quartz",
-	"Grants the user 1 Stasis",
+	"Grants the user 1 @e{Stasis}",
 	"Untyped",
 	30,
 	selectSelf,

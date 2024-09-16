@@ -1,5 +1,5 @@
 const { BuildError, GearTemplate, Gear, Delver } = require("../classes");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
@@ -304,8 +304,7 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 function injectGearStats(text, gearName, elementOverride) {
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 		if (!modifier.name.startsWith("unparsed")) {
-			const modifierEmoji = getModifierEmoji(modifier.name);
-			text = text.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji);
+			text = text.replace(new RegExp(`@{mod${index}}`, "g"), getApplicationEmojiMarkdown(modifier.name));
 		}
 		text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 	})

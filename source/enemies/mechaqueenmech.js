@@ -1,5 +1,4 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
@@ -36,7 +35,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 }).addAction({
 	name: "Formation Protocol",
 	element: "Untyped",
-	description: `Gain protection and grant Quicken and ${getModifierEmoji("Power Up")} to all lower ranking mechabees`,
+	description: `Gain protection and grant @e{Quicken} and @e{Power Up} to all lower ranking mechabees`,
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);

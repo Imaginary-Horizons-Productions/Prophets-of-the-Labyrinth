@@ -4,17 +4,18 @@ const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyl
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
-const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
-const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
-
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { isBuff, isDebuff, getModifierEmoji } = require("../modifiers/_modifierDictionary");
+const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
+const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
 const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
-const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
+const { getApplicationEmojiMarkdown, parseApplicationEmojiMarkdownTag } = require("./graphicsUtil");
+
+const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
+const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -108,7 +109,7 @@ function generateAdventureConfigMessage(adventure) {
 		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName };
 	})
 	return {
-		content: `**${adventure.labyrinth}**\n*${getLabyrinthProperty(adventure.labyrinth, "description")}*\nParty Leader: <@${adventure.leaderId}>\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
+		content: `**${adventure.labyrinth}**\n*${parseApplicationEmojiMarkdownTag(getLabyrinthProperty(adventure.labyrinth, "description"))}*\nParty Leader: <@${adventure.leaderId}>\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
 		components: [
 			new ActionRowBuilder().addComponents(
 				new ButtonBuilder().setCustomId("ready")
@@ -408,7 +409,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 			const modifierButton = new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
 				.setLabel(`${modifierName} x ${delver.modifiers[modifierName]}`)
 				.setStyle(style)
-				.setEmoji(getModifierEmoji(modifierName));
+				.setEmoji(getApplicationEmojiMarkdown(modifierName));
 			actionRow.push(modifierButton);
 		}
 		if (modifiers.length > 4) {

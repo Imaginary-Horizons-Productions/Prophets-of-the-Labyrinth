@@ -1,6 +1,7 @@
 const { Combatant, Adventure } = require("../classes");
-const { getInverse, getModifierDescription, isBuff, isDebuff, getModifierEmoji } = require("../modifiers/_modifierDictionary");
+const { getInverse, getModifierDescription, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getWeaknesses, getResistances, elementsList } = require("./elementUtil.js");
+const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 
 /**
  * @param {Combatant} target
@@ -117,7 +118,7 @@ function dealModifierDamage(target, modifier, adventure) {
 	}
 
 	target.hp -= pendingDamage;
-	let resultText = ` **${getNames([target], adventure)[0]}** takes ${pendingDamage} ${getModifierEmoji(modifier)} damage!${downedCheck(target, adventure)}`;
+	let resultText = ` **${getNames([target], adventure)[0]}** takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`;
 
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {

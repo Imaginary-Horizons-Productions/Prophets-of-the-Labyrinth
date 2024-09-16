@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { isBuff, isDebuff, getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
+const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary.js");
 const { dealDamage, addModifier, removeModifier, changeStagger, addProtection } = require("../util/combatantUtil");
 const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { listifyEN } = require("../util/textUtil.js");
@@ -43,7 +43,7 @@ module.exports = new EnemyTemplate("Elkemist",
 }).addAction({
 	name: "Trouble",
 	element: "Water",
-	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from ${getModifierEmoji("Power Up")}) and gain a small amount of Progress`,
+	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from @e{Power Up}) and gain a small amount of @e{Progress}`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 75 + user.getModifierStacks("Power Up");
@@ -109,4 +109,4 @@ module.exports = new EnemyTemplate("Elkemist",
 	selector: selectAllFoes,
 	needsLivingTargets: false,
 	next: "random"
-}).setFlavorText({ name: "Progress", value: `Each time the Elkemist reaches 100 Progress, it'll gain a large amount of ${getModifierEmoji("Power Up")}. Stun the Elkemist to reduce its Progress.` });
+}).setFlavorText({ name: "Progress", value: `Each time the Elkemist reaches 100 @e{Progress}, it'll gain a large amount of @e{Power Up}. Stun the Elkemist to reduce its @e{Progress}.` });

@@ -1,5 +1,5 @@
 const { EnemyTemplate, Combatant, Adventure } = require("../classes");
-const { isDebuff, getModifierEmoji } = require("../modifiers/_modifierDictionary");
+const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
 const { dealDamage, addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
@@ -78,7 +78,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "\"Share\" the Spotlight",
 	element: "Untyped",
-	description: `Inflict ${getModifierEmoji("Exposed")} and random insults on all foes, gain protection on a crit`,
+	description: `Inflict @e{Exposed} and random insults on all foes, gain protection on a crit`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger(targets, "elementMatchFoe");
@@ -98,7 +98,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "Boast",
 	element: "Light",
-	description: `Inflict Distracted and ${getEmoji("Light")} damage on a single foe`,
+	description: `Inflict @e{Distracted} and ${getEmoji("Light")} damage on a single foe`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger(targets, "elementMatchFoe");
@@ -116,7 +116,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
 	next: "random"
-}).setFlavorText({ name: "Insult to Injury", value: "Insult debuffs (Ugly, Stupid, Smelly, Boring, Lacking Rhythm) make the Starry Knight's Mock the Accursed more dangerous. Appease the Starry Knight to cure them all." });
+}).setFlavorText({ name: "Insult to Injury", value: "Insult debuffs (@e{Ugly}, @e{Stupid}, @e{Smelly}, @e{Boring}, @e{Lacking Rhythm}) make the Starry Knight's Mock the Accursed more dangerous. Appease the Starry Knight to cure them all." });
 
 /** avoid grouping addModifier by insult, since delvers want to know how many insults they've gained, thus we want to group by delver
  * @param {Record<string, string[]>} insultMap

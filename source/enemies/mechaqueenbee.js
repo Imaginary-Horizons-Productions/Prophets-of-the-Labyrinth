@@ -1,5 +1,4 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
@@ -57,7 +56,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 }).addAction({
 	name: "Formation Protocol",
 	element: "Untyped",
-	description: `Gain protection and grant Quicken and ${getModifierEmoji("Power Up")} to all lower ranking mechabees`,
+	description: `Gain protection and grant @e{Quicken} and @e{Power Up} to all lower ranking mechabees`,
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
@@ -102,7 +101,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 }).addAction({
 	name: "V.E.N.O.Missile",
 	element: "Untyped",
-	description: `Inflict ${getModifierEmoji("Poison")} on a single foe`,
+	description: `Inflict @e{Poison} on a single foe`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger(targets, "elementMatchFoe");

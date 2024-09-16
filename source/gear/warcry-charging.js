@@ -1,11 +1,10 @@
 const { GearTemplate } = require('../classes');
-const { getModifierEmoji } = require('../modifiers/_modifierDictionary.js');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Charging War Cry",
 	[
-		["use", `Also target all foes with ${getModifierEmoji("Exposed")} then gain @{mod0Stacks} @{mod0}`],
+		["use", `Also target all foes with @{mod1} then gain @{mod0Stacks} @{mod0}`],
 		["Critical💥", "Stagger +@{bonus}"]
 	],
 	"Technique",
@@ -44,7 +43,7 @@ module.exports = new GearTemplate("Charging War Cry",
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Slowing War Cry", "Tormenting War Cry")
-	.setModifiers({ name: "Power Up", stacks: 25 })
+	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Exposed", stacks: 0 })
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks
 	.setDurability(15)
