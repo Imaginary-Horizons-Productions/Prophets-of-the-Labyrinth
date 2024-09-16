@@ -29,4 +29,4 @@ module.exports = new GearTemplate("Lucky Second Wind",
 	.setSidegrades("Cleansing Second Wind", "Soothing Second Wind")
 	.setModifiers({ name: "Lucky", stacks: 1 })
 	.setDurability(10)
-	.setPower(0);
+	.setDamage(0);

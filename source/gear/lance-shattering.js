@@ -4,7 +4,7 @@ const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Shattering Lance",
 	[
-		["use", "Apply @{mod0Stacks} @{mod0} and @{damage} @{element} damage (double increase from Power Up) to a foe"],
+		["use", "Apply @{mod0Stacks} @{mod0} and @{damage} @{element} damage (double increase from @{mod1}) to a foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
@@ -28,6 +28,6 @@ module.exports = new GearTemplate("Shattering Lance",
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Lance", "Unstoppable Lance")
-	.setModifiers({ name: "Frail", stacks: 4 })
+	.setModifiers({ name: "Frail", stacks: 4 }, { name: "Power Up", stacks: 0 })
 	.setDurability(15)
 	.setDamage(40);

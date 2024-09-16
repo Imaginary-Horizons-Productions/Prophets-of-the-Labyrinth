@@ -3,7 +3,7 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Unstoppable Lance",
 	[
-		["use", "Strike a foe for @{damage} @{element} unblockable damage (double increase from Power Up), even while Stunned"],
+		["use", "Strike a foe for @{damage} @{element} unblockable damage (double increase from @{mod0}), even while Stunned"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
@@ -22,5 +22,6 @@ module.exports = new GearTemplate("Unstoppable Lance",
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Lance", "Shattering Lance")
+	.setModifiers({ name: "Power Up", stacks: 0 })
 	.setDurability(15)
 	.setDamage(40);
