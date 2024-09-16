@@ -5,145 +5,97 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 	"This labyrinth contains whatever the devs were testing most recently. Balance not guaranteed!",
 	5,
 	[5],
+	Object.fromEntries(["Darkness", "Earth", "Fire", "Light", "Water", "Wind", "Untyped"].map(element => [element, [
+		"Placebo"
+	]])),
 	{
-		Darkness: [],
-		Earth: [],
-		Fire: [],
-		Light: [],
-		Water: [],
-		Wind: [],
-		Untyped: ["Placebo"]
-	},
-	{
-		Darkness: {
-			Cursed: [
-			],
-			Common: [
-				"Blood Aegis",
-				"Power from Wrath",
-				"Bashing Power from Wrath",
-				"Hunter's Power from Wrath",
-				"Staggering Power from Wrath",
-				"Toxic Blood Aegis",
-				"Furious Life Drain",
-				"Thirsting Life Drain",
-				"Midas's Risky Mixture",
-				"Thick Risky Mixture",
-			],
-			Rare: [
-			]
-		},
-		Earth: {
-			Cursed: [
-			],
-			Common: [
-				"Certain Victory",
-				"Hunter's Certain Victory",
-				"Lethal Certain Victory",
-				"Reckless Certain Victory",
-				"Flanking Goad Futility",
-				"Poised Goad Futility",
-				"Shattering Goad Futility"
-			],
-			Rare: [
-			]
-		},
-		Fire: {
-			Cursed: [
-			],
-			Common: [
-				"Firecracker",
-				"Infinite Regeneration",
-				"Shortsword",
-				"Furious Battleaxe",
-				"Reactive Battleaxe",
-				"Staggering Censer",
-				"Fate-Sealing Corrosion",
-				"Midas's Firecracker",
-				"Toxic Firecracker",
-				"Discounted Infinite Regeneration",
-				"Fate-Sealing Infinite Regeneration",
-				"Purifying Infinite Regeneration",
-				"Accelerating Shortsword",
-				"Lethal Shortsword",
-				"Toxic Shortsword"
-			],
-			Rare: [
-			]
-		},
-		Light: {
-			Cursed: [
-			],
-			Common: [
-				"Floating Mist Stance",
-				"Agile Floating Mist Stance",
-				"Devoted Floating Mist Stance",
-				"Soothing Floating Mist Stance",
-				"Iron Fist Stance",
-				"Accurate Iron Fist Stance",
-				"Lucky Iron Fist Stance",
-				"Organic Iron Fist Stance",
-				"Hunter's Morning Star",
-				"Distracting Prismatic Blast",
-				"Flanking Prismatic Blast",
-				"Harmful Shoulder Throw",
-				"Staggering Shoulder Throw"
-			],
-			Rare: [
-			]
-		},
-		Water: {
-			Cursed: [
-			],
-			Common: [
-				"Blood Aegis",
-				"Charging Blood Aegis",
-				"Reinforced Blood Aegis",
-				"Toxic Blood Aegis",
-				"Corrosive Cauldron Stir",
-				"Sabotaging Cauldron Stir",
-				"Ice Bolt",
-				"Awesome Ice Bolt",
-				"Distracting Ice Bolt",
-				"Unlucky Ice Bolt",
-				"Bouncing Medicine",
-				"Cleansing Medicine",
-				"Soothing Medicine",
-				"Distracting Poison Torrent",
-				"Harmful Poison Torrent",
-				"Staggering Poison Torrent"
-			],
-			Rare: [
-			]
-		},
-		Wind: {
-			Cursed: [
-			],
-			Common: [
-				"Unstoppable Bow",
-				"Slowing Daggers",
-				"Accelerating Refreshing Breeze",
-				"Supportive Refreshing Breeze",
-				"Swift Refreshing Breeze"
-			],
-			Rare: [
-			]
-		},
-		Untyped: {
-			Cursed: [
-			],
-			Common: [
-				"Poised Chainmail",
-				"Powerful Chainmail",
-				"Accurate Scarf",
-				"Wise Scarf",
-				"Lucky Second Wind",
-				"Flanking Strong Attack",
-				"Wise Wolf Ring"
-			],
-			Rare: [
-			]
-		}
+		Darkness: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+			"Blood Aegis",
+			"Power from Wrath",
+			"Bashing Power from Wrath",
+			"Hunter's Power from Wrath",
+			"Staggering Power from Wrath",
+			"Toxic Blood Aegis",
+			"Furious Life Drain",
+			"Thirsting Life Drain",
+			"Midas's Risky Mixture",
+			"Thick Risky Mixture",
+		]])),
+		Earth: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+			"Certain Victory",
+			"Hunter's Certain Victory",
+			"Lethal Certain Victory",
+			"Reckless Certain Victory",
+			"Flanking Goad Futility",
+			"Poised Goad Futility",
+			"Shattering Goad Futility"
+		]])),
+		Fire: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+			"Firecracker",
+			"Infinite Regeneration",
+			"Shortsword",
+			"Furious Battleaxe",
+			"Reactive Battleaxe",
+			"Staggering Censer",
+			"Fate-Sealing Corrosion",
+			"Midas's Firecracker",
+			"Toxic Firecracker",
+			"Discounted Infinite Regeneration",
+			"Fate-Sealing Infinite Regeneration",
+			"Purifying Infinite Regeneration",
+			"Accelerating Shortsword",
+			"Lethal Shortsword",
+			"Toxic Shortsword"
+		]])),
+		Light: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+			"Floating Mist Stance",
+			"Agile Floating Mist Stance",
+			"Devoted Floating Mist Stance",
+			"Soothing Floating Mist Stance",
+			"Iron Fist Stance",
+			"Accurate Iron Fist Stance",
+			"Lucky Iron Fist Stance",
+			"Organic Iron Fist Stance",
+			"Hunter's Morning Star",
+			"Distracting Prismatic Blast",
+			"Flanking Prismatic Blast",
+			"Harmful Shoulder Throw",
+			"Staggering Shoulder Throw"
+		]])),
+		Water: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+			"Blood Aegis",
+			"Charging Blood Aegis",
+			"Reinforced Blood Aegis",
+			"Toxic Blood Aegis",
+			"Corrosive Cauldron Stir",
+			"Sabotaging Cauldron Stir",
+			"Ice Bolt",
+			"Awesome Ice Bolt",
+			"Distracting Ice Bolt",
+			"Unlucky Ice Bolt",
+			"Bouncing Medicine",
+			"Cleansing Medicine",
+			"Soothing Medicine",
+			"Distracting Poison Torrent",
+			"Harmful Poison Torrent",
+			"Staggering Poison Torrent"
+		]])),
+		Wind: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+			"Unstoppable Bow",
+			"Slowing Daggers",
+			"Accelerating Refreshing Breeze",
+			"Supportive Refreshing Breeze",
+			"Swift Refreshing Breeze"
+		]])),
+		Untyped: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+			"Poised Chainmail",
+			"Powerful Chainmail",
+			"Accurate Scarf",
+			"Wise Scarf",
+			"Lucky Second Wind",
+			"Flanking Strong Attack",
+			"Wise Wolf Ring"
+		]]))
 	},
 	{
 		// Labyrinth Particulars - more customized
