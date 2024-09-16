@@ -26,8 +26,8 @@ function getApplicationEmojiMarkdown(emojiName) {
  * @param {string} text
  */
 function parseApplicationEmojiMarkdownTag(text) {
-	for (const match of text.matchAll(/@e{(\w+)}/g)) {
-		text = text.replace(/@e{(\w+)}/, getApplicationEmojiMarkdown(match[1]));
+	for (const match of text.matchAll(/@e{([\w\s]+)}/g)) {
+		text = text.replace(/@e{([\w\s]+)}/, getApplicationEmojiMarkdown(match[1]));
 	}
 	return text;
 }
