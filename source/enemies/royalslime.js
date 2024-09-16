@@ -71,7 +71,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 }).addAction({
 	name: "Goop Deluge",
 	element: "Untyped",
-	description: "Slow all foes",
+	description: "Inflict @e{Slow} on all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });

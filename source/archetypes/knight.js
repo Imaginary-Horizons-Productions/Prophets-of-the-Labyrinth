@@ -1,10 +1,9 @@
 const { ArchetypeTemplate } = require("../classes");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary");
 const { getNames } = require("../util/combatantUtil");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Knight",
-	`They'll be able to predict who enemies are targeting with which moves. They'll gain ${getModifierEmoji("Power Up")} for protecting allies with their Buckler too.`,
+	`They'll be able to predict who enemies are targeting with which moves. They'll gain @e{Power Up} for protecting allies with their Buckler too.`,
 	"Earth",
 	{
 		maxHPGrowth: 25,

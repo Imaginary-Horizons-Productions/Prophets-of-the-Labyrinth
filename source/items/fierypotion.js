@@ -4,7 +4,7 @@ const { addModifier } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new ItemTemplate("Fiery Potion",
-	"Grants the user 3 Fire Absorb",
+	"Grants the user 3 @e{Fire Absorb}",
 	"Untyped",
 	30,
 	selectSelf,

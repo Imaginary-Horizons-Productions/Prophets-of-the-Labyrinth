@@ -1,11 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { isDebuff, getModifierEmoji } = require('../modifiers/_modifierDictionary.js');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
+const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
 	[
-		["use", `Duplicate debuffs on a foe; also target all foes with ${getModifierEmoji("Exposed")}`],
+		["use", `Duplicate debuffs on a foe; also target all foes with @{mod0}`],
 		["Critical💥", "Stagger +@{bonus}"]
 	],
 	"Technique",
@@ -52,6 +52,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")
+	.setModifiers({ name: "Exposed", stacks: 0 })
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks
 	.setDurability(15)

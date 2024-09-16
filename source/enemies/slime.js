@@ -30,7 +30,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 }).addAction({
 	name: "Goop Spray",
 	element: "Untyped",
-	description: "Slow a single foe",
+	description: "Inflict @e{Slow} on a single foe",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });

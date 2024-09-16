@@ -6,6 +6,7 @@ const { getEmoji } = require('../util/elementUtil');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SKIP_INTERACTION_HANDLING } = require('../constants');
+const { parseApplicationEmojiMarkdownTag } = require('../util/graphicsUtil');
 
 const mainId = "deploy";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -56,7 +57,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				setAdventure(adventure);
 
 				// Send confirmation text
-				interaction.channel.send(`**${interaction.user.displayName}** ${isSwitching ? "has switched to" : "will be playing as"} **${archetype}**. ${getArchetype(archetype).description}`);
+				interaction.channel.send(`**${interaction.user.displayName}** ${isSwitching ? "has switched to" : "will be playing as"} **${archetype}**. ${parseApplicationEmojiMarkdownTag(getArchetype(archetype).description)}`);
 			})
 
 			collector.on("end", () => {

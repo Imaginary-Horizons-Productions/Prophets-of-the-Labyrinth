@@ -1,11 +1,10 @@
 const { GearTemplate } = require('../classes');
-const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
 const { dealDamage, removeModifier, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Urgent Fever Break",
 	[
-		["use", `Deals @{element} damage to a foe (with priority), equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs`],
-		["Critical💥", "Poison and Frail not removed"]
+		["use", `Deal @{element} damage to a foe (with priority), equal to pending damage from @{mod0} and @{mod1}, then remove those debuffs`],
+		["Critical💥", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Spell",
 	"Darkness",
@@ -38,5 +37,6 @@ module.exports = new GearTemplate("Urgent Fever Break",
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Organic Fever Break", "Surpassing Fever Break")
+	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frail", stacks: 0 })
 	.setDurability(5)
 	.setPriority(1);

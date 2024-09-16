@@ -4,7 +4,6 @@ const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../s
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement, listifyEN } = require("../util/textUtil.js");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 
 module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
@@ -17,7 +16,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 ).addAction({
 	name: "Sting",
 	element: "Darkness",
-	description: `Inflict minor ${getEmoji("Darkness")} damage and ${getModifierEmoji("Poison")} on a single foe`,
+	description: `Inflict minor ${getEmoji("Darkness")} damage and @e{Poison} on a single foe`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 10;

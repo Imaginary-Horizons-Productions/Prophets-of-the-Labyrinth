@@ -3,6 +3,7 @@ const { itemExists, itemNames, getItem } = require("../../items/_itemDictionary"
 const { embedTemplate } = require("../../util/embedUtil");
 const { getAdventure } = require("../../orcustrators/adventureOrcustrator");
 const { getColor } = require("../../util/elementUtil");
+const { parseApplicationEmojiMarkdownTag } = require("../../util/graphicsUtil");
 
 /**
  * @param {CommandInteraction} interaction
@@ -18,7 +19,7 @@ async function executeSubcommand(interaction, ...args) {
 	const { name: nameInTitleCaps, element, description, flavorText } = getItem(itemName);
 	const embed = embedTemplate().setColor(getColor(element))
 		.setTitle(nameInTitleCaps)
-		.setDescription(description);
+		.setDescription(parseApplicationEmojiMarkdownTag(description));
 	const adventure = getAdventure(interaction.channelId);
 	if (adventure) {
 		const numberHeld = adventure?.items[itemName] || 0;

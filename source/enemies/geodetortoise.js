@@ -2,7 +2,6 @@ const { EnemyTemplate } = require("../classes");
 const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",
 	"Earth",
@@ -31,7 +30,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 }).addAction({
 	name: "Crystallize",
 	element: "Untyped",
-	description: `Gain protection and ${getModifierEmoji("Power Up")}`,
+	description: `Gain protection and @e{Power Up}`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let addedPowerUp = false;

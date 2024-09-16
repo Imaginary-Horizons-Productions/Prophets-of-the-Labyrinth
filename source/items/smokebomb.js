@@ -3,7 +3,7 @@ const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, getNames } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Smoke Bomb",
-	"Grants the user 2 Evade",
+	"Grants the user 2 @e{Evade}",
 	"Untyped",
 	30,
 	selectSelf,
