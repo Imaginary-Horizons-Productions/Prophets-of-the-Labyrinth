@@ -22,7 +22,7 @@ function levelUp(delver, levels, adventure) {
 		}
 	}
 	delver.maxHP += maxHPGrowth * levels * growthBonus;
-	gainHealth(delver, maxHPGrowth * levels * growthBonus, adventure);
+	gainHealth(delver, Math.floor(maxHPGrowth * levels * growthBonus), adventure);
 	delver.power += powerGrowth * levels * growthBonus;
 	delver.speed += speedGrowth * levels * growthBonus;
 	delver.critRate += critRateGrowth * levels * growthBonus;

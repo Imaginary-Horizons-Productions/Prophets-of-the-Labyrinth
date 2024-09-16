@@ -288,17 +288,19 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 	}
 
 	let damage = getGearProperty(gearName, "damage");
-	if (holder) {
-		damage += holder.power + holder.getModifierStacks("Power Up");
-		if (gearName === "Iron Fist Punch") {
-			damage += 45 * holder.getModifierStacks("Iron Fist Stance");
+	if (damage !== undefined) {
+		if (holder) {
+			damage += holder.getPower();
+			if (gearName === "Iron Fist Punch") {
+				damage += 45 * holder.getModifierStacks("Iron Fist Stance");
+			}
+			text = text.replace(/@{damage}/g, Math.floor(Math.min(damage, holder.getDamageCap())));
+		} else {
+			text = text.replace(/@{damage}/g, `(${damage} + power)`);
 		}
-		damage = Math.floor(Math.min(damage, holder.getDamageCap()));
-	} else {
-		damage = `(${damage} + power)`;
 	}
 
-	return injectGearStats(text.replace(/@{damage}/g, damage), gearName, gearName === "Iron Fist Punch" ? holder.element : null);
+	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.element : null);
 }
 
 function injectGearStats(text, gearName, elementOverride) {

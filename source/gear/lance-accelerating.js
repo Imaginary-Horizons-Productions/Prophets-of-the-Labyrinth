@@ -3,7 +3,7 @@ const { dealDamage, addModifier, changeStagger, getNames } = require('../util/co
 
 module.exports = new GearTemplate("Accelerating Lance",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage (double increase from Power Up), then gain @{mod0Stacks} @{mod0}"],
+		["use", "Strike a foe for @{damage} @{element} damage (double increase from @{mod1}), then gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
@@ -23,6 +23,6 @@ module.exports = new GearTemplate("Accelerating Lance",
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Shattering Lance", "Unstoppable Lance")
-	.setModifiers({ name: "Quicken", stacks: 1 })
+	.setModifiers({ name: "Quicken", stacks: 1 }, { name: "Power Up", stacks: 0 })
 	.setDurability(15)
 	.setDamage(40);
