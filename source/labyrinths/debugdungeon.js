@@ -1,5 +1,7 @@
 const { LabyrinthTemplate } = require("../classes");
 
+const RARITIES = ["Cursed", "Common", "Rare"];
+
 module.exports = new LabyrinthTemplate("Debug Dungeon",
 	"Untyped",
 	"This labyrinth contains whatever the devs were testing most recently. Balance not guaranteed!",
@@ -9,7 +11,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		"Placebo"
 	]])),
 	{
-		Darkness: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+		Darkness: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Blood Aegis",
 			"Power from Wrath",
 			"Bashing Power from Wrath",
@@ -21,7 +23,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Midas's Risky Mixture",
 			"Thick Risky Mixture",
 		]])),
-		Earth: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+		Earth: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Certain Victory",
 			"Hunter's Certain Victory",
 			"Lethal Certain Victory",
@@ -30,7 +32,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Poised Goad Futility",
 			"Shattering Goad Futility"
 		]])),
-		Fire: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+		Fire: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Firecracker",
 			"Infinite Regeneration",
 			"Shortsword",
@@ -47,7 +49,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Lethal Shortsword",
 			"Toxic Shortsword"
 		]])),
-		Light: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+		Light: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Floating Mist Stance",
 			"Agile Floating Mist Stance",
 			"Devoted Floating Mist Stance",
@@ -62,7 +64,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Harmful Shoulder Throw",
 			"Staggering Shoulder Throw"
 		]])),
-		Water: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+		Water: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Blood Aegis",
 			"Charging Blood Aegis",
 			"Reinforced Blood Aegis",
@@ -80,14 +82,14 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Harmful Poison Torrent",
 			"Staggering Poison Torrent"
 		]])),
-		Wind: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+		Wind: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Unstoppable Bow",
 			"Slowing Daggers",
 			"Accelerating Refreshing Breeze",
 			"Supportive Refreshing Breeze",
 			"Swift Refreshing Breeze"
 		]])),
-		Untyped: Object.fromEntries(["Cursed", "Common", "Rare"].map(rarity => [rarity, [
+		Untyped: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Poised Chainmail",
 			"Powerful Chainmail",
 			"Accurate Scarf",
