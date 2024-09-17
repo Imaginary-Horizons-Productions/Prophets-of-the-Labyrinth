@@ -156,6 +156,7 @@ Archetypes:
 - Awesome
 - Bashing
 - Bouncing
+- Centering
 - Cleansing
 - Corrosive
 - Devoted

@@ -134,14 +134,13 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 		},
 		Water: {
 			Cursed: [
-				"Cursed Blade",
-				"Cursed Tome"
 			],
 			Common: [
 				"Abacus",
 				"Ice Bolt",
 				"Midas Staff",
-				"Poison Torrent",
+				"Omamori",
+				"Poison Torrent"
 			],
 			Rare: [
 				"Sharpened Abacus",
@@ -153,6 +152,9 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Accelerating Midas Staff",
 				"Discounted Midas Staff",
 				"Soothing Midas Staff",
+				"Centering Omamori",
+				"Cleansing Omamori",
+				"Devoted Omamori",
 				"Distracting Poison Torrent",
 				"Harmful Poison Torrent",
 				"Staggering Poison Torrent"
@@ -184,6 +186,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 		},
 		Untyped: {
 			Cursed: [
+				"Cursed Blade",
+				"Cursed Tome"
 			],
 			Common: [
 				"Chainmail",
