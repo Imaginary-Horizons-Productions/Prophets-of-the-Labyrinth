@@ -56,6 +56,12 @@ Hits 3 random targets (from a beneficial team)
 - all Firecrackers (Fire)
 - Medicine (Water)
 
+### Centering
+Relieve Stagger on user
+
+**Available on**
+- Omamori (Water)
+
 ### Charging
 Adds Power Up to the user
 
@@ -72,6 +78,7 @@ Cures a random debuff on target
 - all Refreshing Breezes (Wind)
 - Barrier (Wind)
 - Medicine (Water)
+- Omamori (Water)
 - Second Wind (Untyped)
 
 ### Confusing
@@ -94,6 +101,7 @@ Can apply to allies
 - Bucker (Earth)
 - Barrier (Wind)
 - Floating Mist Stance (Light)
+- Omamori (Water)
 
 ### Discounted
 Reduced base price
@@ -162,6 +170,7 @@ Increases damage proprotional to user's missing HP
 Adds protection to the target
 
 **Available on**
+- all Omamori (Water)
 - Buckler (Earth)
 - Inspiration (Wind)
 - Scutum (Fire)
@@ -210,6 +219,7 @@ Increased crit damage
 Add Lucky to the user
 
 **Available on**
+- all Omamori (Water)
 - Iron Fist Stance (Light)
 - Scutum (Fire)
 - Second Wind (Untyped)
