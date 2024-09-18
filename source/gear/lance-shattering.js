@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Shattering Lance",
 		}
 		const frailedTargets = addModifier(targets, frail);
 		if (frailedTargets.length > 0) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(frailedTargets), "becomes", "become", "Frail.")}`;
+			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(frailedTargets, adventure), "becomes", "become", "Frail.")}`;
 		} else {
 			return dealDamage(targets, user, pendingDamage, false, element, adventure);
 		}

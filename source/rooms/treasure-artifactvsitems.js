@@ -7,6 +7,7 @@ const { getItem } = require("../items/_itemDictionary");
 const { EMPTY_SELECT_OPTION_SET, SAFE_DELIMITER } = require("../constants");
 const { trimForSelectOptionDescription, listifyEN } = require("../util/textUtil");
 const { generateRoutingRow } = require("../util/messageComponentUtil");
+const { injectApplicationEmojiName } = require("../util/graphicsUtil");
 
 module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 	"@{adventure}",
@@ -35,7 +36,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 							option.description = trimForSelectOptionDescription(getArtifact(name).dynamicDescription(count));
 							break;
 						case "item":
-							option.description = trimForSelectOptionDescription(getItem(name).description);
+							option.description = trimForSelectOptionDescription(injectApplicationEmojiName(getItem(name).description));
 							break;
 					}
 					options.push(option)

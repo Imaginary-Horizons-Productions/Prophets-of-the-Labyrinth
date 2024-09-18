@@ -17,24 +17,31 @@ function getApplicationEmojiMarkdown(emojiName) {
 	if (sanitizedName in emojiDictionary) {
 		return `<:${sanitizedName}:${emojiDictionary[sanitizedName]}>`;
 	} else {
-		console.error(new Error(`Attempted to create mention for unregistered application emoji: ${emojiName}`));
+		console.error(new Error(`Attempted to create markdown for unregistered application emoji: ${emojiName}`));
 		return emojiName;
 	}
 }
 
+const applicationEmojiPlaceholderRegExp = /@e{([\w\s]+)}/g;
+
 /** Converts `@e{emojiName}` into the specified application emoji, used for places where inline injection via `getApplicationEmojiMarkdown()` can't be used (eg template config that is loaded before `client.on("Ready")`)
  * @param {string} text
  */
-function parseApplicationEmojiMarkdownTag(text) {
-	for (const match of text.matchAll(/@e{([\w\s]+)}/g)) {
-		text = text.replace(/@e{([\w\s]+)}/, getApplicationEmojiMarkdown(match[1]));
-	}
-	return text;
+function injectApplicationEmojiMarkdown(text) {
+	return text.replace(applicationEmojiPlaceholderRegExp, (_, group1) => getApplicationEmojiMarkdown(group1));
+}
+
+/** Converts `@e{emojiName}` into the emoji's name as a string, used for places where inline injection via `getApplicationEmojiMarkdown()` can't be used (eg template config that is loaded before `client.on("Ready")`) and markdown is not accepted
+ * @param {string} text
+ */
+function injectApplicationEmojiName(text) {
+	return text.replace(applicationEmojiPlaceholderRegExp, (_, group1) => group1);
 }
 
 module.exports = {
 	setApplicationEmojiDictionary,
 	sanitizeEmojiName,
 	getApplicationEmojiMarkdown,
-	parseApplicationEmojiMarkdownTag
+	injectApplicationEmojiMarkdown,
+	injectApplicationEmojiName
 }

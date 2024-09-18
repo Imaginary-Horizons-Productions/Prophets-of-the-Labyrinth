@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Furious Battleaxe",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [exposed], damage, critMultiplier } = module.exports;
-		const furiousness = ((user.getMaxHP() - user.hp) / user.getMaxHP() + 1) / 2;
+		const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
 		let pendingDamage = (user.getPower() + damage) * furiousness;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");

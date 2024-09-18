@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Sweeping Spear",
 		if (isCrit) {
 			changeStagger(targets, stagger);
 		}
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${isCrit ? ` ${joinAsStatement(false, getNames(targets), "was", "were", "Staggered.")}` : ""}`;
+		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${isCrit ? ` ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}` : ""}`;
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Spear", "Reactive Spear")

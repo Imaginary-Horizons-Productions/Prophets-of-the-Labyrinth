@@ -14,7 +14,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		const artifact = getArtifact(artifactName);
 		const embed = new EmbedBuilder().setColor(getColor(artifact.element))
 			.setTitle(`${getEmoji(artifact.element)} ${artifactName} x ${artifactCount}`)
-			.setDescription(artifact.dynamicDescription(artifactCount))
+			.setDescription(artifact.dynamicDescription(Number(artifactCount)))
 			.addFields({ name: "Scaling", value: artifact.scalingDescription })
 			.setFooter(randomFooterTip());
 		if (artifact.flavorText) {

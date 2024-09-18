@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 	(targets, user, isCrit, adventure) => {
 		const { element, damage, hpCost, modifiers: [powerUp] } = module.exports;
 		const resultSentences = [payHP(user, hpCost, adventure)];
-		const furiousness = (user.getMaxHP() - user.hp) / user.getMaxHP() + 1;
+		const furiousness = 2 - user.hp / user.getMaxHP();
 		let pendingDamage = (user.getPower() + damage) * furiousness;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");

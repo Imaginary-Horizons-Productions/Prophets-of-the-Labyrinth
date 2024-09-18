@@ -6,6 +6,7 @@ const { getColor } = require('../util/elementUtil');
 const { getItem } = require('../items/_itemDictionary');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
+const { injectApplicationEmojiName } = require('../util/graphicsUtil');
 
 const mainId = "readyitem";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -28,7 +29,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setPlaceholder("Pick an item...")
 						.addOptions(Object.keys(adventure.items).slice(0, MAX_SELECT_OPTIONS).reduce((options, item) => options.concat({
 							label: `${item} (Held: ${adventure.items[item]})`,
-							description: trimForSelectOptionDescription(getItem(item).description),
+							description: trimForSelectOptionDescription(injectApplicationEmojiName(getItem(item).description)),
 							value: item
 						}), [])))
 			],

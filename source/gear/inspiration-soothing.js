@@ -22,11 +22,11 @@ module.exports = new GearTemplate("Soothing Inspiration",
 		const sentences = [];
 		const poweredUpTargets = addModifier(targets, pendingPowerUp);
 		if (poweredUpTargets.length > 0) {
-			sentences.push(joinAsStatement(false, getNames(poweredUpTargets), "is", "are", "Powered Up."));
+			sentences.push(joinAsStatement(false, getNames(poweredUpTargets, adventure), "is", "are", "Powered Up."));
 		}
 		const regenedTargets = addModifier(targets, regen);
 		if (regenedTargets.length > 0) {
-			sentences.push(joinAsStatement(false, getNames(regenedTargets), "gains", "gain", "Regen."));
+			sentences.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", "Regen."));
 		}
 		if (sentences.length > 0) {
 			return sentences.join(" ");

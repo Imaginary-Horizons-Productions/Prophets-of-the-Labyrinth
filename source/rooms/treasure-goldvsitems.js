@@ -6,6 +6,7 @@ const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getItem } = require("../items/_itemDictionary");
 const { trimForSelectOptionDescription, listifyEN } = require("../util/textUtil");
 const { generateRoutingRow } = require("../util/messageComponentUtil");
+const { injectApplicationEmojiName } = require("../util/graphicsUtil");
 
 module.exports = new RoomTemplate("Treasure! Gold or Items?",
 	"@{adventure}",
@@ -35,7 +36,7 @@ module.exports = new RoomTemplate("Treasure! Gold or Items?",
 					}
 
 					if (type === "item") {
-						option.description = trimForSelectOptionDescription(getItem(name).description);
+						option.description = trimForSelectOptionDescription(injectApplicationEmojiName(getItem(name).description));
 					}
 					options.push(option)
 				}

@@ -3,7 +3,7 @@ const { getEnemy, enemyNames } = require("../../enemies/_enemyDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getEmoji } = require("../../util/elementUtil");
 const { listifyEN } = require("../../util/textUtil");
-const { parseApplicationEmojiMarkdownTag } = require("../../util/graphicsUtil");
+const { injectApplicationEmojiMarkdown } = require("../../util/graphicsUtil");
 
 /**
  * @param {CommandInteraction} interaction
@@ -26,10 +26,10 @@ async function executeSubcommand(interaction, ...args) {
 	}
 	enemyFields.push({
 		name: "Actions",
-		value: Object.values(enemyTemplate.actions).map(action => `- **${action.name}** ${getEmoji(action.element)} ${parseApplicationEmojiMarkdownTag(action.description)}`).join("\n")
+		value: Object.values(enemyTemplate.actions).map(action => `- **${action.name}** ${getEmoji(action.element)} ${injectApplicationEmojiMarkdown(action.description)}`).join("\n")
 	})
 	if (enemyTemplate.flavorText) {
-		enemyFields.push({ name: enemyTemplate.flavorText.name, value: parseApplicationEmojiMarkdownTag(enemyTemplate.flavorText.value) });
+		enemyFields.push({ name: enemyTemplate.flavorText.name, value: injectApplicationEmojiMarkdown(enemyTemplate.flavorText.value) });
 	}
 	enemyEmbed.addFields(enemyFields)
 	interaction.reply({ embeds: [enemyEmbed], ephemeral: true });
