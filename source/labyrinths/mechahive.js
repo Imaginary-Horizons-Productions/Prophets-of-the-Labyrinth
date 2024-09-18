@@ -94,6 +94,7 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			Common: [
 				"Battleaxe",
 				"Firecracker",
+				"Heat Mirage",
 				"Infinite Regeneration"
 			],
 			Rare: [
@@ -103,6 +104,9 @@ module.exports = new LabyrinthTemplate("Mechahive",
 				"Double Firecracker",
 				"Midas's Firecracker",
 				"Toxic Firecracker",
+				"Evasive Heat Mirage",
+				"Unlucky Heat Mirage",
+				"Vigilant Heat Mirage",
 				"Discounted Infinite Regeneration",
 				"Fate-Sealing Infinite Regeneration",
 				"Purifying Infinite Regeneration"
