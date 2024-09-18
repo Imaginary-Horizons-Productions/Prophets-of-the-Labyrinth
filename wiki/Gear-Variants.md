@@ -137,8 +137,10 @@ Adds Evade to the user
 **Available on**
 - all Barriers (Wind)
 - all Cloaks (Wind)
+- all Heat Mirages (Fire)
 - Bow (Wind)
 - Cloak (Wind)
+- Heat Mirage (Fire)
 - Shoulder Throw (Light)
 
 ### Fate-Sealing
@@ -393,6 +395,7 @@ Change target's move's target to user
 
 **Available on**
 - all Blood Aegis (Darkness)
+- all Heat Mirages (Fire)
 
 ### Thick
 Increased durability
@@ -435,6 +438,7 @@ Adds Poison to target
 Adds Unlucky to target
 
 **Available on**
+- Heat Mirage (Fire)
 - Ice Bolt (Water)
 
 ### Unstoppable
@@ -469,6 +473,7 @@ Adds Vigilance to user
 **Available on**
 - all Barriers (Wind)
 - Barrier (Wind)
+- Heat Mirage (Fire)
 
 ### Wise
 Increases stats gained by level up

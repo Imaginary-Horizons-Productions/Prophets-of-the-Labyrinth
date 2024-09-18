@@ -11,12 +11,16 @@ module.exports = new GearTemplate("Vigilant Barrier",
 	"Wind",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, modifiers: [evade, vigilance, critVigilance] } = module.exports;
+		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;
+		const pendingVigilance = { ...vigilance };
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
+		if (isCrit) {
+			pendingVigilance.stacks *= critMultiplier;
+		}
 		const addedModifiers = [];
-		const addedVigilance = addModifier([user], isCrit ? critVigilance : vigilance).length > 0;
+		const addedVigilance = addModifier([user], pendingVigilance).length > 0;
 		if (addedVigilance) {
 			addedModifiers.push("Vigilance");
 		}
@@ -32,5 +36,5 @@ module.exports = new GearTemplate("Vigilant Barrier",
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Cleansing Barrier", "Devoted Barrier")
-	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 2 }, { name: "Vigilance", stacks: 4 })
+	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 2 })
 	.setDurability(5);
