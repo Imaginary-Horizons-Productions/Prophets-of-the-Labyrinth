@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Guarding Scutum",
 		addProtection([target], targetProtection);
 		addProtection([user], selfProtection);
 		const [targetName, userName] = getNames([target, user], adventure);
-		return `${targetName} and ${userName} gain protection.`;
+		return [`${targetName} and ${userName} gain protection.`];
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Lucky Scutum", "Sweeping Scutum")

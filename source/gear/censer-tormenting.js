@@ -1,7 +1,7 @@
 const { GearTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil");
-const { listifyEN } = require("../util/textUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new GearTemplate("Tormenting Censer",
 	[
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 		for (const modifier in target.modifiers) {
 			if (isDebuff(modifier)) {
 				addModifier([target], { name: modifier, stacks: 1 });
-				debuffs.push(modifier);
+				debuffs.push(getApplicationEmojiMarkdown(modifier));
 			}
 		}
 		if (user.element === element) {
@@ -27,14 +27,14 @@ module.exports = new GearTemplate("Tormenting Censer",
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			pendingDamage += bonus;
 		}
-		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
 			const addedSlow = addModifier([target], slow).length > 0;
 			if (addedSlow) {
-				return `${damageText} ${getNames([target], adventure)[0]} is Slowed${debuffs.length > 0 ? ` and they gain ${listifyEN(debuffs, false)}` : ""}.`;
+				resultLines.push(`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Slow")}${debuffs.join("")}.`);
 			}
 		}
-		return `${damageText}${debuffs.length > 0 ? `${getNames([target], adventure)[0]}'s gains ${listifyEN(debuffs, false)}.` : ""}`;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Staggering Censer", "Thick Censer")

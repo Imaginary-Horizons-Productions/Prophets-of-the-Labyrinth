@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes/index.js');
 const { SAFE_DELIMITER } = require('../constants.js');
-const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger, addModifier, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Midas's Firecracker",
 	[
@@ -16,11 +17,16 @@ module.exports = new GearTemplate("Midas's Firecracker",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(stillLivingTargets, "elementMatchFoe");
 		}
-		const cursedTargetnames = getNames(addModifier(targets, curse), adventure);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, cursedTargetnames, "is", "are", "afflicted with Curse of Midas.")}`;
+		const cursedTargets = addModifier(stillLivingTargets, curse);
+		if (cursedTargets.length > 0) {
+			resultLines.push(joinAsStatement(false, getNames(cursedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Curse of Midas")}.`));
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Firecracker", "Toxic Firecracker")

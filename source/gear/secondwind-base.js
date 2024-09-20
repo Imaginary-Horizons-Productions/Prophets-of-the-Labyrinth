@@ -3,7 +3,7 @@ const { gainHealth, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Second Wind",
 	[
-		["use", "Regain @{damage} hp"],
+		["use", "Regain @{damage} HP"],
 		["Critical💥", "Healing x@{critMultiplier}"]
 	],
 	"Technique",
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Second Wind",
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		return gainHealth(user, pendingHealing, adventure);
+		return [gainHealth(user, pendingHealing, adventure)];
 	}
 ).setTargetingTags({ type: "self", team: "none", needsLivingTargets: true })
 	.setUpgrades("Cleansing Second Wind", "Lucky Second Wind", "Soothing Second Wind")

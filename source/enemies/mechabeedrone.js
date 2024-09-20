@@ -3,7 +3,8 @@ const { dealDamage, addModifier, changeStagger, getNames } = require("../util/co
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
-const { joinAsStatement, listifyEN } = require("../util/textUtil.js");
+const { joinAsStatement } = require("../util/textUtil.js");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 
 module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
@@ -22,7 +23,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		let damage = user.getPower() + 10;
 		changeStagger(targets, "elementMatchFoe");
 		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 });
-		return `${dealDamage(targets, user, damage, false, user.element, adventure)} ${joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")}`;
+		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, getNames(poisonedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -36,19 +37,19 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		const addedModifiers = [];
 		const addedEvade = addModifier([user], { name: "Evade", stacks: 2 }).length > 0;
 		if (addedEvade) {
-			addedModifiers.push("Evade");
+			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 		}
 		if (isCrit) {
 			const addedAgility = addModifier([user], { name: "Agility", stacks: 1 }).length > 0;
 			if (addedAgility) {
-				addedModifiers.push("Agility");
+				addedModifiers.push(getApplicationEmojiMarkdown("Agility"));
 			}
 		}
 		changeStagger([user], "elementMatchAlly");
 		if (addedModifiers.length > 0) {
-			return `It gains ${listifyEN(addedModifiers, false)}.`;
+			return [`${getNames([user], adventure)[0]} gains ${addedModifiers.join("")}.`]
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	},
 	selector: selectSelf,
@@ -61,7 +62,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		spawnEnemy(module.exports, adventure);
-		return "Another mechabee arrives.";
+		return ["Another mechabee arrives."];
 	},
 	selector: selectNone,
 	needsLivingTargets: false,

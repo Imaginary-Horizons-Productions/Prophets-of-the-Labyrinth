@@ -4,7 +4,7 @@ const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Power from Wrath",
 	[
-		["use", "Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing hp)"],
+		["use", "Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing HP)"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",
@@ -12,22 +12,24 @@ module.exports = new GearTemplate("Staggering Power from Wrath",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, damage, hpCost, stagger } = module.exports;
-		const resultSentences = [payHP(user, hpCost, adventure)];
-		const furiousness = 2 - user.hp / user.getMaxHP();
-		let pendingDamage = (user.getPower() + damage) * furiousness;
-		if (isCrit) {
-			pendingDamage *= 2;
-		}
-		resultSentences.push(dealDamage(targets, user, pendingDamage, false, element, adventure));
-		const stillLivingTargets = targets.filter(target => target.hp > 0);
-		if (stillLivingTargets.length > 0) {
-			if (user.element === element) {
-				changeStagger(stillLivingTargets, "elementMatchFoe");
+		const resultLines = [payHP(user, hpCost, adventure)];
+		if (adventure.lives > 0) {
+			const furiousness = 2 - user.hp / user.getMaxHP();
+			let pendingDamage = (user.getPower() + damage) * furiousness;
+			if (isCrit) {
+				pendingDamage *= 2;
 			}
-			changeStagger(stillLivingTargets, stagger);
-			resultSentences.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."));
+			resultLines.push(...dealDamage(targets, user, pendingDamage, false, element, adventure));
+			const stillLivingTargets = targets.filter(target => target.hp > 0);
+			if (stillLivingTargets.length > 0) {
+				if (user.element === element) {
+					changeStagger(stillLivingTargets, "elementMatchFoe");
+				}
+				changeStagger(stillLivingTargets, stagger);
+				resultLines.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."));
+			}
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Bashing Power from Wrath", "Hunter's Power from Wrath")

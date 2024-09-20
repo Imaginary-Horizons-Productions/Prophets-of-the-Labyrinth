@@ -1,9 +1,11 @@
+const { bold } = require("discord.js");
 const { EnemyTemplate, Combatant, Adventure } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
 const { dealDamage, addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
-const { listifyEN, joinAsStatement } = require("../util/textUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
+const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new EnemyTemplate("Starry Knight",
 	"Light",
@@ -47,7 +49,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 			pendingDamage *= 2;
 		}
 		if (unfinishedChallenges.length > 0) {
-			return `"Ha! You didn't finish **${unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")]}**. ${dealDamage([target], user, pendingDamage, false, "Light", adventure)}"`;
+			return [`"Ha! You didn't finish ${bold(unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")])}."`, ...dealDamage([target], user, pendingDamage, false, "Light", adventure)];
 		} else {
 			return dealDamage([target], user, pendingDamage, false, "Light", adventure);
 		}
@@ -65,16 +67,12 @@ module.exports = new EnemyTemplate("Starry Knight",
 		const insultMap = {};
 		changeStagger(targets, "elementMatchFoe");
 		addNewRandomInsults(insultMap, targets, isCrit ? 2 : 1, adventure);
-		const insultEntries = Object.entries(insultMap);
-		if (insultEntries.length > 0) {
-			return `"Fear not! I have enough Star Power to take you all on!" ${dealDamage(targets, user, pendingDamage, false, "Light", adventure)} ${Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList, false)}.`).join(" ")}`;
-		} else {
-			return `"Fear not! I have enough Star Power to take you all on!" ${dealDamage(targets, user, pendingDamage, false, "Light", adventure)}`;
-		}
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${insultList.join("")}.`));
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: true,
-	next: "random"
+	next: "random",
+	combatFlavor: "\"Fear not! I have enough Star Power to take you all on!\""
 }).addAction({
 	name: "\"Share\" the Spotlight",
 	element: "Untyped",
@@ -86,11 +84,10 @@ module.exports = new EnemyTemplate("Starry Knight",
 			addProtection([user], 100);
 		}
 		const frailedTargets = addModifier(targets, { name: "Exposed", stacks: 1 });
-		const resultSentences = [joinAsStatement(false, getNames(frailedTargets, adventure), "is", "are", "Exposed.")];
+		const resultLines = [joinAsStatement(false, getNames(frailedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`)];
 		const insultMap = {};
 		addNewRandomInsults(insultMap, targets, 1, adventure);
-		resultSentences.push(Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${listifyEN(insultList, false)}.`).join(" "));
-		return resultSentences.join(" ");
+		return resultLines.concat(Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${insultList.join("")}.`));
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: true,
@@ -106,12 +103,12 @@ module.exports = new EnemyTemplate("Starry Knight",
 		if (isCrit) {
 			pendingDamage *= 2;
 		}
-		const resultSentences = [dealDamage(targets, user, pendingDamage, false, "Light", adventure)];
+		const resultLines = dealDamage(targets, user, pendingDamage, false, "Light", adventure);
 		const distractedTargets = addModifier(targets, { name: "Distracted", stacks: 4 });
 		if (distractedTargets.length > 0) {
-			resultSentences.push(joinAsStatement(false, getNames(distractedTargets, adventure), "is", "are", "Distracted."));
+			resultLines.push(joinAsStatement(false, getNames(distractedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Distracted")}.`));
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
@@ -138,9 +135,9 @@ function addNewRandomInsults(insultMap, combatants, count, adventure) {
 			const didAddInsult = addModifier([combatant], { name: rolledInsult, stacks: 1 }).length > 0;
 			if (didAddInsult) {
 				if (combatantName in insultMap) {
-					insultMap[combatantName].push(rolledInsult);
+					insultMap[combatantName].push(getApplicationEmojiMarkdown(rolledInsult));
 				} else {
-					insultMap[combatantName] = [rolledInsult];
+					insultMap[combatantName] = [getApplicationEmojiMarkdown(rolledInsult)];
 				}
 				availableInsults.splice(insultIndex, 1);
 			}

@@ -1,9 +1,10 @@
 const { GearTemplate, Move } = require('../classes');
 const { addModifier, payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Charging Blood Aegis",
 	[
-		["use", "Pay @{hpCost} hp; gain @{protection} protection, @{mod0Stacks} @{mod0}, intercept a later single target move"],
+		["use", "Pay @{hpCost} HP; gain @{protection} protection, @{mod0Stacks} @{mod0}, intercept a later single target move"],
 		["Critical💥", "Protection x@{critMultiplier}"]
 	],
 	"Pact",
@@ -13,9 +14,9 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		const { element, modifiers: [powerUp], protection, critMultiplier, hpCost } = module.exports;
 		const paymentSentence = payHP(user, hpCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
 		}
-		const resultsSentences = [`Gaining protection, ${paymentSentence}`];
+		const resultLines = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
@@ -26,7 +27,7 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		addProtection([user], pendingProtection);
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		if (addedPowerUp) {
-			resultsSentences.push(`${userName} is Powered Up.`);
+			resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
 		}
 		const [userName, targetName] = getNames([user, target], adventure);
 		const targetMove = adventure.room.moves.find(move => {
@@ -39,9 +40,9 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultsSentences.push(`${targetName} falls for the provocation.`);
+			resultLines.push(`${targetName} falls for the provocation.`);
 		}
-		return resultsSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reinforced Blood Aegis", "Toxic Blood Aegis")

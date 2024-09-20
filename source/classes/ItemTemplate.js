@@ -8,7 +8,7 @@ class ItemTemplate {
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementLabel
 	 * @param {number} costInput
 	 * @param {(self, adventure: Adventure) => CombatantReference[]} selectTargetsFunction
-	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} effectFunction
+	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string[]} effectFunction
 	 */
 	constructor(nameInput, descriptionInput, elementLabel, costInput, selectTargetsFunction, needsLivingTargetsInput, effectFunction) {
 		this.name = nameInput;

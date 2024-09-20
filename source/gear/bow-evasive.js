@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Evasive Bow",
 	[
@@ -18,8 +19,12 @@ module.exports = new GearTemplate("Evasive Bow",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const addedEvade = addModifier([user], evade).length > 0;
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${addedEvade ? `${getNames([user], adventure)[0]} is ready to Evade.` : ""}`;
+		if (addedEvade) {
+			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Evade")}.`);
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Thief's Bow", "Unstoppable Bow")

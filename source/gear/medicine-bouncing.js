@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Bouncing Medicine",
@@ -22,9 +23,9 @@ module.exports = new GearTemplate("Bouncing Medicine",
 		}
 		const regenedTargets = addModifier(targets, pendingRegen);
 		if (regenedTargets.length > 0) {
-			return joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", "Regen.");
+			return [joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`)];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "ally", needsLivingTargets: true })

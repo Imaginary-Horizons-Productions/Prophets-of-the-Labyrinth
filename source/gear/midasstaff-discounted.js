@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Discounted Midas Staff",
 	[
@@ -24,9 +25,9 @@ module.exports = new GearTemplate("Discounted Midas Staff",
 		}
 		const addedCurse = addModifier([target], pendingCurse).length > 0;
 		if (addedCurse) {
-			return `${getNames([target], adventure)[0]} gains Curse of Midas.`;
+			return [`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Curse of Midas")}.`];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })

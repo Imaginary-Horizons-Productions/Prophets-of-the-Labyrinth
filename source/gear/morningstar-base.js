@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Morning Star",
 			pendingDamage *= critMultiplier;
 		}
 		changeStagger(targets, stagger);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}`;
+		return [...dealDamage(targets, user, pendingDamage, false, element, adventure), joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")];
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Awesome Morning Star", "Bashing Morning Star", "Hunter's Morning Star")

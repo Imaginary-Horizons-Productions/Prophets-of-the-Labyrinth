@@ -16,12 +16,13 @@ module.exports = new GearTemplate("Spear",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		if (isCrit) {
-			changeStagger(targets, bonus);
-			resultText += ` ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}`;
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (isCrit & stillLivingTargets.length > 0) {
+			changeStagger(stillLivingTargets, bonus);
+			resultLines.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."));
 		}
-		return resultText;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Lethal Spear", "Reactive Spear", "Sweeping Spear")

@@ -1,7 +1,7 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
 const { addModifier } = require("../util/combatantUtil");
-const { getEmoji } = require("../util/elementUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new ItemTemplate("Fiery Potion",
 	"Grants the user 3 @e{Fire Absorb}",
@@ -12,9 +12,9 @@ module.exports = new ItemTemplate("Fiery Potion",
 	(targets, user, isCrit, adventure) => {
 		const addedAbsorb = addModifier([user], { name: "Fire Absorb", stacks: 3 }).length > 0;
 		if (addedAbsorb) {
-			return `${getNames([user], adventure)[0]} now absorbs ${getEmoji("Fire")} damage.`;
+			return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Fire Absorb")}.`];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setFlavorText({ name: "*Additional Notes*", value: "*Not to be confused with __Explosive Potion__. DO NOT apply to enemies.*" });

@@ -37,7 +37,7 @@ class EnemyTemplate {
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
 	}
-	/** @type {Record<string, {name: string, element: CombatantElement | "@{adventure}" | "@{adventureOpposite}", priority: number, effect: (targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string, selector: (self: Combatant, adventure: Adventure) => CombatantReference[], next: (actionName: string) => string}>} */
+	/** @type {Record<string, {name: string, element: CombatantElement | "@{adventure}" | "@{adventureOpposite}", priority: number, effect: (targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string, selector: (self: Combatant, adventure: Adventure) => CombatantReference[], next: string, combatFlavor?: string }>} */
 	actions = {};
 	/** @type {[modifierName: string]: number} */
 	startingModifiers = {};
@@ -65,10 +65,11 @@ class EnemyTemplate {
 	 * @param {CombatantElement | "@{adventure}" | "@{adventureOpposite}"} actionsInput.element
 	 * @param {string} actionsInput.description
 	 * @param {number} actionsInput.priority
-	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} actionsInput.effect
+	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string[]} actionsInput.effect
 	 * @param {(self: Combatant, adventure: Adventure) => CombatantReference[]} actionsInput.selector
 	 * @param {boolean} actionsInput.needsLivingTargets Only enemies stay at 0 hp without game over, so only true if it can target an enemy
 	 * @param {string} actionsInput.next
+	 * @param {?string} actionsInput.combatFlavor
 	 */
 	addAction(actionsInput) {
 		this.actions[actionsInput.name] = actionsInput;

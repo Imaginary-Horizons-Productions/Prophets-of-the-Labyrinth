@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Accelerating Lance",
 	[
@@ -18,8 +19,12 @@ module.exports = new GearTemplate("Accelerating Lance",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const addedQuicken = addModifier([user], quicken).length > 0;
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${addedQuicken ? ` ${getNames([user], adventure)[0]} is Quickened.` : ""}`;
+		if (addedQuicken) {
+			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Quickened")}.`);
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Shattering Lance", "Unstoppable Lance")

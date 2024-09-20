@@ -7,7 +7,7 @@ module.exports = new GearTemplate("Hearty Scarf",
 	"Trinket",
 	"Untyped",
 	350,
-	(targets, user, isCrit, adventure) => ""
+	(targets, user, isCrit, adventure) => []
 ).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
 	.setSidegrades("Accurate Scarf", "Wise Scarf")
 	.setDurability(0)

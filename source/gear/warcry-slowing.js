@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing War Cry",
 	[
@@ -33,7 +34,7 @@ module.exports = new GearTemplate("Slowing War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
-		let resultText = `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
+		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
 		const slowedTargets = [];
 		changeStagger(targetArray, pendingStaggerStacks);
 		addModifier(targetArray, slow).forEach((addedSlow, index) => {
@@ -41,12 +42,8 @@ module.exports = new GearTemplate("Slowing War Cry",
 				slowedTargets.push(getNames([targetArray[index]], adventure)[0]);
 			}
 		})
-		if (slowedTargets.length > 1) {
-			resultText += ` ${listifyEN(slowedTargets), false} are Slowed.`;
-		} else if (slowedTargets.length > 0) {
-			resultText += ` ${slowedTargets[0]} is Slowed.`;
-		}
-		return resultText;
+		resultLines.push(joinAsStatement(false, slowedTargets, "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`));
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Tormenting War Cry")

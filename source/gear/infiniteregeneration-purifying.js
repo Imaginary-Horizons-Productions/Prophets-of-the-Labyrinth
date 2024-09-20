@@ -1,11 +1,12 @@
 const { GearTemplate } = require('../classes/index.js');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 const { addModifier, payHP, changeStagger, getNames, removeModifier } = require('../util/combatantUtil.js');
-const { joinAsStatement, listifyEN } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Purifying Infinite Regeneration",
 	[
-		["use", "Pay @{hpCost} hp to grant an ally @{mod0Stacks} @{mod0} and cure all their debuffs"],
+		["use", "Pay @{hpCost} HP to grant an ally @{mod0Stacks} @{mod0} and cure all their debuffs"],
 		["Critical💥", "HP Cost / @{critMultiplier}"]
 	],
 	"Pact",
@@ -24,10 +25,10 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		const resultSentences = [paymentSentence];
+		const resultLines = [paymentSentence];
 		const regenedTargets = addModifier(targets, regen);
 		if (regenedTargets.length > 0) {
-			resultSentences.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", "Regen."));
+			resultLines.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
 		}
 		const targetNames = getNames(targets, adventure);
 		for (let i = 0; i < targets.length; i++) {
@@ -37,13 +38,13 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 				if (isDebuff(modifier)) {
 					const didRemoveDebuff = removeModifier([target], { name: modifier, stacks: "all" }).length > 0;
 					if (didRemoveDebuff) {
-						curedDebuffs.push(modifier);
+						curedDebuffs.push(getApplicationEmojiMarkdown(modifier));
 					}
 				}
 			})
-			resultSentences.push(`${targetNames[i]} is cured of ${listifyEN(curedDebuffs)}.`);
+			resultLines.push(`${targetNames[i]} is cured of ${curedDebuffs.join("")}.`);
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Discounted Infinite Regeneration", "Fate-Sealing Infinite Regeneration")

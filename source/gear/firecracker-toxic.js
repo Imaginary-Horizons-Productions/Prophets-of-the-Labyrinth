@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants.js');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Toxic Firecracker",
@@ -17,7 +18,7 @@ module.exports = new GearTemplate("Toxic Firecracker",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultsSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
 			if (user.element === element) {
@@ -25,10 +26,10 @@ module.exports = new GearTemplate("Toxic Firecracker",
 			}
 			const poisonedTargetNames = getNames(addModifier(stillLivingTargets, poison), adventure);
 			if (poisonedTargetNames.length > 0) {
-				resultsSentences.push(joinAsStatement(false, poisonedTargetNames, "is", "are", "Poisoned."));
+				resultLines.push(joinAsStatement(false, poisonedTargetNames, "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`));
 			}
 		}
-		return resultsSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Firecracker", "Midas's Firecracker")

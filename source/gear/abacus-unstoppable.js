@@ -3,7 +3,7 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Unstoppable Abacus",
 	[
-		["use", "Strike a foe for @{damage} (+5% foe max hp) @{element} unblockable damage"],
+		["use", "Strike a foe for @{damage} (+5% foe max HP) @{element} unblockable damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Trinket",
@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Unstoppable Abacus",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;
-		let resultText = "";
+		const resultLines = [];
 		targets.forEach(target => {
 			let pendingDamage = user.getPower() + damage + (0.05 * target.getMaxHP());
 			if (user.element === element) {
@@ -20,9 +20,9 @@ module.exports = new GearTemplate("Unstoppable Abacus",
 			if (isCrit) {
 				pendingDamage *= critMultiplier;
 			}
-			resultText += dealDamage([target], user, pendingDamage, true, element, adventure);
+			resultLines.push(...dealDamage([target], user, pendingDamage, true, element, adventure));
 		})
-		return resultText;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Thief's Abacus", "Sharpened Abacus")

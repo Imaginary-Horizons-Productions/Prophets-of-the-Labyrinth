@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
-const { listifyEN } = require('../util/textUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Midas's Risky Mixture",
 	[
@@ -19,26 +19,26 @@ module.exports = new GearTemplate("Midas's Risky Mixture",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const resultFragments = [];
+		const addedModifiers = [];
 		if (isCrit) {
 			const addedRegen = addModifier([target], regen).length > 0;
 			if (addedRegen) {
-				resultFragments.push("gains Regen");
+				addedModifiers.push(getApplicationEmojiMarkdown("Regen"));
 			}
 		} else {
 			const addedPoison = addModifier([target], poison).length > 0;
 			if (addedPoison) {
-				resultFragments.push("was Poisoned");
+				addedModifiers.push(getApplicationEmojiMarkdown("Poison"));
 			}
 		}
 		const addedCurse = addModifier([target], curseOfMidas).length > 0;
 		if (addedCurse) {
-			resultFragments.push("gains Curse of Midas");
+			addedModifiers.push(getApplicationEmojiMarkdown("Curse of Midas"));
 		}
-		if (resultFragments.length > 0) {
-			return `${getNames([target], adventure)[0]} ${listifyEN(resultFragments, false)}.`;
+		if (addedModifiers.length > 0) {
+			return [`${getNames([target], adventure)[0]} ${addedModifiers.join("")}.`];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })

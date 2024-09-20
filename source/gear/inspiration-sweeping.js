@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Sweeping Inspiration",
 	[
@@ -21,13 +22,7 @@ module.exports = new GearTemplate("Sweeping Inspiration",
 			changeStagger(targets, "elementMatchAlly");
 		}
 
-		if (poweredUpTargets.length > 1) {
-			return `${listifyEN(poweredUpTargets, false)} are Powered Up.`;
-		} else if (poweredUpTargets.length === 1) {
-			return `${poweredUpTargets[0]} is Powered Up.`;
-		} else {
-			return "But nothing happened.";
-		}
+		return [joinAsStatement(false, poweredUpTargets, "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)];
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Inspiration", "Soothing Inspiration")

@@ -1,10 +1,11 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Discounted Infinite Regeneration",
 	[
-		["use", "Pay @{hpCost} hp to grant an ally @{mod0Stacks} @{mod0}"],
+		["use", "Pay @{hpCost} HP to grant an ally @{mod0Stacks} @{mod0}"],
 		["Critical💥", "HP Cost / @{critMultiplier}"]
 	],
 	"Pact",
@@ -23,12 +24,12 @@ module.exports = new GearTemplate("Discounted Infinite Regeneration",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		const resultSentences = [paymentSentence];
+		const resultLines = [paymentSentence];
 		const regenedTargets = addModifier(targets, regen);
 		if (regenedTargets.length > 0) {
-			resultSentences.push(joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "Regen."));
+			resultLines.push(joinAsStatement(false, getNames(targets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Infinite Regeneration", "Purifying Infinite Regeneration")

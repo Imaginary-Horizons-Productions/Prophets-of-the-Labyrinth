@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Shortsword",
@@ -16,22 +17,16 @@ module.exports = new GearTemplate("Shortsword",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const addedExposedUser = addModifier([user], exposed).length > 0;
-		if (addedExposedUser) {
-			resultText += ` ${getNames([user], adventure)} is Exposed.`;
-		}
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
-		if (stillLivingTargets.length > 0) {
-			if (user.element === element) {
-				changeStagger(stillLivingTargets, "elementMatchFoe");
-			}
-			const exposedTargets = addModifier(stillLivingTargets, exposed);
-			if (exposedTargets.length > 0) {
-				resultText += ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}`;
-			}
+		if (user.element === element) {
+			changeStagger(stillLivingTargets, "elementMatchFoe");
 		}
-		return resultText;
+		const exposedTargets = addModifier([user, ...stillLivingTargets], exposed);
+		if (exposedTargets.length > 0) {
+			resultLines.push(joinAsStatement(false, getNames(exposedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Accelerating Shortsword", "Lethal Shortsword", "Toxic Shortsword")

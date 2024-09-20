@@ -25,7 +25,7 @@ module.exports = new RoomTemplate("Imp Contract Faire",
 
 		if (adventure.room.history["HP Donor"].length < 1) {
 			shareEmoji = "❤️";
-			shareLabel = "Share HP [-50g, -100 hp, +100 hp for everyone else]";
+			shareLabel = "Share HP [-50g, -100 HP, +100 HP for everyone else]";
 			isShareDisabled = adventure.gold < 50;
 		} else {
 			shareEmoji = "✔️";

@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { addModifier, changeStagger, getNames, enterStance } = require("../util/combatantUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Floating Mist Stance",
@@ -15,24 +16,26 @@ module.exports = new GearTemplate("Floating Mist Stance",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		const resultFragments = [];
 		const { didAddStance, stancesRemoved } = enterStance(user, floatingMistStance);
-		if (stancesRemoved.length > 0) {
-			resultFragments.push(`exits ${listifyEN(stancesRemoved, false)}`);
+		const addedModifiers = [];
+		if (didAddStance) {
+			addedModifiers.push(getApplicationEmojiMarkdown("Floating Mist Stance"));
 		}
 		if (isCrit) {
 			const addedEvade = addModifier([user], displayEvade).length > 0;
 			if (addedEvade) {
-				resultFragments.push("prepares to Evade");
+				addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 			}
 		}
-		if (resultFragments.length > 0) {
-			return `${getNames([user], adventure)[0]} ${listifyEN(resultFragments)}.`;
-		} else if (didAddStance) {
-			return "";
-		} else {
-			return "But nothing happened.";
+
+		const userEffects = [];
+		if (addedModifiers.length > 0) {
+			userEffects.push(`gains ${addedModifiers.join("")}`);
 		}
+		if (stancesRemoved.length > 0) {
+			userEffects.push(`exits ${stancesRemoved.map(stance => getApplicationEmojiMarkdown(stance)).join("")}`);
+		}
+		return [`${getNames([user], adventure)[0]} ${listifyEN(userEffects, false)}.`];
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setUpgrades("Agile Floating Mist Stance", "Devoted Floating Mist Stance", "Soothing Floating Mist Stance")

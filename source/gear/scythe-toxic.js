@@ -1,9 +1,10 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Toxic Scythe",
 	[
-		["use", "Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} hp"],
+		["use", "Strike a foe applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage; instant death if foe is at or below @{bonus} HP"],
 		["Critical💥", "Instant death threshold x@{critMultiplier}"]
 	],
 	"Weapon",
@@ -20,11 +21,15 @@ module.exports = new GearTemplate("Toxic Scythe",
 			pendingHPThreshold *= critMultiplier;
 		}
 		if (target.hp > pendingHPThreshold) {
+			const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 			const addedPoison = addModifier([target], poison).length > 0;
-			return `${dealDamage([target], user, pendingDamage, false, element, adventure)}${addedPoison ? ` ${getNames([target], adventure)[0]} is Poisoned.` : ""}`;
+			if (addedPoison) {
+				resultLines.push(`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Poison")}.`);
+			}
+			return resultLines;
 		} else {
 			target.hp = 0;
-			return `${getNames([target], adventure)[0]} meets the reaper.`;
+			return [`${getNames([target], adventure)[0]} meets the reaper.`];
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

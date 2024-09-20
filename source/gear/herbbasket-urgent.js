@@ -29,9 +29,9 @@ module.exports = new GearTemplate("Urgent Herb Basket",
 		const randomHerb = rollableHerbs[adventure.generateRandomNumber(rollableHerbs.length, "battle")];
 		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
 		if (isCrit) {
-			return `${getNames([user], adventure)[0]} gathers a double-batch of ${randomHerb}.`;
+			return [`${getNames([user], adventure)[0]} gathers a double-batch of ${randomHerb}.`];
 		} else {
-			return `${getNames([user], adventure)[0]} gathers a batch of ${randomHerb}.`;
+			return [`${getNames([user], adventure)[0]} gathers a batch of ${randomHerb}.`];
 		}
 	}
 ).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })

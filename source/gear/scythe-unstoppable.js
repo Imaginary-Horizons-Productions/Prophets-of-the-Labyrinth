@@ -3,7 +3,7 @@ const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.j
 
 module.exports = new GearTemplate("Unstoppable Scythe",
 	[
-		["use", "Strike a foe for @{damage} @{element} unblockable damage, even while Stunned; instant death if foe is at or below @{bonus} hp"],
+		["use", "Strike a foe for @{damage} @{element} unblockable damage, even while Stunned; instant death if foe is at or below @{bonus} HP"],
 		["Critical💥", "Instant death threshold x@{critMultiplier}"]
 	],
 	"Weapon",
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Unstoppable Scythe",
 			return dealDamage([target], user, pendingDamage, true, element, adventure);
 		} else {
 			target.hp = 0;
-			return `${getNames([target], adventure)[0]} meets the reaper.`;
+			return [`${getNames([target], adventure)[0]} meets the reaper.`];
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

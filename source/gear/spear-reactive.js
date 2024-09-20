@@ -21,12 +21,12 @@ module.exports = new GearTemplate("Reactive Spear",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit) {
 			changeStagger([target], bonus);
-			resultText += ` ${getNames([target], adventure)[0]} is Staggered.`;
+			resultLines.push(`${getNames([target], adventure)[0]} is Staggered.`);
 		}
-		return resultText;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Spear", "Sweeping Spear")

@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, getNames } = require("../util/combatantUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new GearTemplate("Duelist's Pistol",
 	[
@@ -24,15 +25,16 @@ module.exports = new GearTemplate("Duelist's Pistol",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
+		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (getCombatantWeaknesses(target).includes(element)) {
-			const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
-			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies;
+			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
 			const addedPowerUp = addModifier([ally], powerUp).length > 0;
-			return `${damageText}${addedPowerUp ? ` ${getNames([ally], adventure)[0]} was Powered Up!` : ""}`;
-		} else {
-			return dealDamage([target], user, pendingDamage, false, element, adventure);
+			if (addedPowerUp) {
+				resultLines.push(`${getNames([ally], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}!`);
+			}
 		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Pistol", "Flanking Pistol")

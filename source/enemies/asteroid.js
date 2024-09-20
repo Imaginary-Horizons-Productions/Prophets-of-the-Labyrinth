@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Asteroid",
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");
-		return `${dealDamage(targets, user, damage, false, user.element, adventure)} ${dealDamage([user], user, recoilDmg, true, "Untyped", adventure)}`;
+		return dealDamage(targets, user, damage, false, user.element, adventure).concat(dealDamage([user], user, recoilDmg, true, "Untyped", adventure));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
@@ -31,7 +31,7 @@ module.exports = new EnemyTemplate("Asteroid",
 }).addAction({
 	name: "Bolide Burst",
 	element: "Earth",
-	description: `Sacrifice self to attack all combatants with ${getEmoji("Earth")} damage equal to its remaining hp`,
+	description: `Sacrifice self to attack all combatants with ${getEmoji("Earth")} damage equal to its remaining HP`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + user.hp;
@@ -40,7 +40,7 @@ module.exports = new EnemyTemplate("Asteroid",
 		}
 		user.hp = 0;
 		changeStagger(targets, "elementMatchFoe");
-		return `${dealDamage(targets, user, damage, false, user.element, adventure)} ${getNames([user], adventure)[0]} is downed.`;
+		return [...dealDamage(targets, user, damage, false, user.element, adventure), `${getNames([user], adventure)[0]} is downed.`];
 	},
 	selector: selectAllOtherCombatants,
 	needsLivingTargets: true,

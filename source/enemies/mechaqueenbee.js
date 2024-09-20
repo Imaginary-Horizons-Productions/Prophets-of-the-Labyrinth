@@ -1,6 +1,7 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil.js");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
@@ -28,11 +29,12 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);
-		return "She gains protection and demands reinforcements!";
+		return [`${getNames([user], adventure)[0]} gains protection.`];
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: "V.E.N.O.Missile"
+	next: "V.E.N.O.Missile",
+	combatFlavor: "The Queen demands reinforcements!"
 }).addAction({
 	name: "Assault Protocol",
 	element: "Untyped",
@@ -48,11 +50,12 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);
-		return "She gains protection and orders a full-on attack!";
+		return [`${getNames([user], adventure)[0]} gains protection.`];
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: "V.E.N.O.Missile"
+	next: "V.E.N.O.Missile",
+	combatFlavor: "The Queen orders a full-on attack!"
 }).addAction({
 	name: "Formation Protocol",
 	element: "Untyped",
@@ -63,11 +66,12 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 		const quickenedTargets = addModifier(filteredTargets, { name: "Quicken", stacks: 3 });
 		const poweredUpTargets = addModifier(filteredTargets, { name: "Power Up", stacks: 3 });
 		addProtection([user], isCrit ? 60 : 30);
-		return `She gains protection and tunes the flight formation to be more efficient! ${joinAsStatement(false, getNames(quickenedTargets, adventure), "is", "are", "Quickened. ")}${joinAsStatement(false, getNames(poweredUpTargets, adventure), "is", "are", "Powered Up.")}`;
+		return [`${getNames([user], adventure)[0]} gains protection.`, joinAsStatement(false, getNames(quickenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Quickened")}.`), joinAsStatement(false, getNames(poweredUpTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)];
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
-	next: "V.E.N.O.Missile"
+	next: "V.E.N.O.Missile",
+	combatFlavor: "The Queen personally optimizes the flight formation."
 }).addAction({
 	name: "Sacrifice Protocol",
 	element: "Untyped",
@@ -79,13 +83,13 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 			const targetMove = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === parseInt(target.id));
 			targetMove.name = "Self-Destruct";
 			targetMove.targets = selectAllFoes(target, adventure);
-			return "She gains protection and employs desperate measures!";
 		}
-		return "She gains protection."
+		return [`${getNames([user], adventure)[0]} gains protection.`];
 	},
 	selector: selectRandomOtherAlly,
 	needsLivingTargets: true,
-	next: "V.E.N.O.Missile"
+	next: "V.E.N.O.Missile",
+	combatFlavor: "The Queen employs desperate measures!"
 }).addAction({
 	name: "Deploy Drone",
 	element: "Untyped",
@@ -93,7 +97,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		spawnEnemy(drone, adventure);
-		return "Another mechabee arrives.";
+		return ["Another mechabee arrives."];
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
@@ -107,9 +111,9 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 		changeStagger(targets, "elementMatchFoe");
 		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 5 : 3 });;
 		if (poisonedTargets.length > 0) {
-			return joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.");
+			return [joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	},
 	selector: selectRandomFoe,

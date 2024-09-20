@@ -15,24 +15,20 @@ module.exports = new GearTemplate("Fate-Sealing Corrosion",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const sentences = [];
+		const resultLines = [];
 		const poweredDownTargets = addModifier(targets, powerDown);
 		if (poweredDownTargets.length > 0) {
-			sentences.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
+			resultLines.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
 		}
 		if (isCrit) {
 			changeStagger(targets, bonus);
-			sentences.push(joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered."));
+			resultLines.push(joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered."));
 			const sealedTargets = addModifier(targets, stasis);
 			if (sealedTargets.length > 0) {
-				sentences.push(joinAsStatement(false, getNames(sealedTargets, adventure), "enters", "enter", "Stasis."));
+				resultLines.push(joinAsStatement(false, getNames(sealedTargets, adventure), "enters", "enter", "Stasis."));
 			}
 		}
-		if (sentences.length > 0) {
-			return sentences.join(" ");
-		} else {
-			return "But nothing happened.";
-		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Harmful Corrosion", "Shattering Corrosion")

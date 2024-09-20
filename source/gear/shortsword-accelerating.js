@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN, joinAsStatement } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Accelerating Shortsword",
 	[
@@ -16,30 +17,22 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const selfModifiers = [];
-		const addedExposedUser = addModifier([user], exposed).length > 0;
-		if (addedExposedUser) {
-			selfModifiers.push("Exposed");
-		}
-		const addedQuicken = addModifier([user], quicken).length > 0;
-		if (addedQuicken) {
-			selfModifiers.push("Quickened");
-		}
-		if (selfModifiers.length > 0) {
-			resultText += ` ${getNames([user], adventure)[0]} is ${listifyEN(selfModifiers, false)}.`;
-		}
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
 			if (user.element === element) {
 				changeStagger(targets, "elementMatchFoe");
 			}
-			const exposedTargets = addModifier(stillLivingTargets, exposed);
-			if (exposedTargets.length > 0) {
-				resultText += ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}`;
-			}
 		}
-		return resultText;
+		const exposedTargets = addModifier([user, ...stillLivingTargets], exposed);
+		if (exposedTargets.length > 0) {
+			resultLines.push(joinAsStatement(false, getNames(exposedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
+		}
+		const addedQuicken = addModifier([user], quicken).length > 0;
+		if (addedQuicken) {
+			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Quicken")}.`);
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Shortsword", "Toxic Shortsword")

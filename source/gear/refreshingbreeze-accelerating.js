@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, getNames, addModifier } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { listifyEN, joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Accelerating Refreshing Breeze",
@@ -13,11 +14,12 @@ module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [quicken] } = module.exports;
-		const resultTexts = [];
+		const resultLines = [];
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		targets.forEach(target => {
+		const targetNames = getNames(targets, adventure);
+		targets.forEach((target, targetIndex) => {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
@@ -32,19 +34,15 @@ module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 					}
 				}
 				if (removedDebuffs.length > 0) {
-					resultTexts.push(`${getNames([target], adventure)[0]} is cured of ${listifyEN(removedDebuffs)}.`)
+					resultLines.push(`${targetNames[targetIndex]} is cured of ${removedDebuffs.map(debuff => getApplicationEmojiMarkdown(debuff)).join("")}.`)
 				}
 			}
 		})
 		const quickenedTargets = addModifier(targets, quicken);
 		if (quickenedTargets.length > 0) {
-			resultTexts.push(joinAsStatement(false, getNames(quickenedTargets, adventure), "gains", "gain", "Quicken."));
+			resultLines.push(joinAsStatement(false, getNames(quickenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Quicken")}.`));
 		}
-		if (resultTexts.length > 0) {
-			return resultTexts.join(" ");
-		} else {
-			return "But nothing happened.";
-		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Supportive Refreshing Breeze", "Swift Refreshing Breeze")

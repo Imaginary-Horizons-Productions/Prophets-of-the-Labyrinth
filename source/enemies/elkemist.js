@@ -1,9 +1,10 @@
 const { EnemyTemplate } = require("../classes");
 const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary.js");
-const { dealDamage, addModifier, removeModifier, changeStagger, addProtection } = require("../util/combatantUtil");
+const { dealDamage, addModifier, removeModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
 const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 
 module.exports = new EnemyTemplate("Elkemist",
 	"Water",
@@ -25,22 +26,24 @@ module.exports = new EnemyTemplate("Elkemist",
 		} else {
 			addModifier([user], { name: "Progress", stacks: 45 + adventure.generateRandomNumber(31, "battle") });
 		}
+		const userName = getNames([user], adventure)[0];
+		const resultLines = [`${userName} gains protection.`];
 		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
-		let removedDebuff = null;
 		if (targetDebuffs.length > 0) {
 			const rolledDebuff = targetDebuffs[adventure.generateRandomNumber(targetDebuffs.length, "battle")];
 			const wasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (wasRemoved) {
-				removedDebuff = rolledDebuff;
+				resultLines.push(`${userName} is cured of ${rolledDebuff}.`);
 			}
 		}
 		addProtection([user], 100);
-		return `It gathers some materials${removedDebuff ? ` and cures itself of ${removedDebuff}` : ""}, fortifying its laboratory to gain protection.`;
+		return resultLines;
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: "random"
-}).addAction({
+	next: "random",
+	combatFlavor: "It gathers some materials to fortify its lab."
+}).addAction({ //TODONOW finish
 	name: "Trouble",
 	element: "Water",
 	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from @e{Power Up}) and gain a small amount of @e{Progress}`,
@@ -52,11 +55,12 @@ module.exports = new EnemyTemplate("Elkemist",
 		}
 		addModifier([user], { name: "Progress", stacks: 15 + adventure.generateRandomNumber(16, "battle") });
 		changeStagger(targets, "elementMatchFoe");
-		return `An obstacle to potion progress is identified and mitigated; ${dealDamage(targets, user, damage, false, user.element, adventure)}`;
+		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: "random"
+	next: "random",
+	combatFlavor: "An obstacle to potion progress is identified and mitigated!"
 }).addAction({
 	name: "Boil",
 	element: "Fire",
@@ -101,9 +105,9 @@ module.exports = new EnemyTemplate("Elkemist",
 		addModifier([user], { name: "Progress", stacks: progressGained });
 
 		if (affectedDelvers.size > 0) {
-			return `It cackles as it transmutes buffs on ${listifyEN([...affectedDelvers], false)} to Fire Weakness.`;
+			return [`Buffs on ${listifyEN([...affectedDelvers], false)} are transmuted to ${getApplicationEmojiMarkdown("Fire Weakness")}.`];
 		} else {
-			return "It's disappointed it wasn't able to transmute any buffs.";
+			return [];
 		}
 	},
 	selector: selectAllFoes,

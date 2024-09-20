@@ -1,5 +1,6 @@
 const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier, getNames, dealDamage } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Harmful Shoulder Throw",
 	[
@@ -14,7 +15,7 @@ module.exports = new GearTemplate("Harmful Shoulder Throw",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		const resultSentences = [dealDamage([target], user, damage, false, element, adventure)];
+		const resultLines = dealDamage([target], user, damage, false, element, adventure);
 		if (target.hp > 0) {
 			const targetMove = adventure.room.moves.find(move => {
 				const moveUser = adventure.getCombatant(move.userReference);
@@ -26,16 +27,16 @@ module.exports = new GearTemplate("Harmful Shoulder Throw",
 			});
 			if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 				targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
-				resultSentences.push(`${getNames([target], adventure)[0]} is redirected into targeting themself.`);
+				resultLines.push(`${getNames([target], adventure)[0]} is redirected into targeting themself.`);
 			}
 		}
 		if (isCrit) {
 			const addedEvade = addModifier([user], evade).length > 0;
 			if (addedEvade) {
-				resultSentences.push(`${getNames([user], adventure)[0]} prepares to Evade.`);
+				resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Evade")}.`);
 			}
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Shoulder Throw", "Staggering Shoulder Throw")

@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Flanking Pistol",
@@ -19,20 +20,20 @@ module.exports = new GearTemplate("Flanking Pistol",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		if (targets.some(target => getCombatantWeaknesses(target).includes(element))) {
-			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies;
+			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
 			const addedPowerUp = addModifier([ally], powerUp).length > 0;
 			if (addedPowerUp) {
-				resultSentences.push(`${getNames([ally], adventure)[0]} was Powered Up!`);
+				resultLines.push(`${getNames([ally], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}!`);
 			}
 		}
 		const exposedTargets = addModifier(targets, exposed);
 		if (exposedTargets.length > 0) {
-			resultSentences.push(joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed."));
+			resultLines.push(joinAsStatement(false, getNames(exposedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Pistol", "Duelist's Pistol")

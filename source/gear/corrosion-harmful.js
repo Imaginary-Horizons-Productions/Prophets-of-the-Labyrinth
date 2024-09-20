@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Harmful Corrosion",
@@ -16,15 +17,16 @@ module.exports = new GearTemplate("Harmful Corrosion",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		if (isCrit) {
 			changeStagger(targets, bonus);
+			resultLines.push(joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered."));
 		}
 		const poweredDownTargets = addModifier(targets, powerDown);
 		if (poweredDownTargets.length > 0) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(targets, adventure), "is", "are", "Powered Down")}${isCrit ? " and Staggered" : ""}.`;
-		} else {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${isCrit ? ` ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}` : ""}`;
+			resultLines.push(joinAsStatement(false, getNames(targets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Power Down")}.`));
 		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Corrosion", "Shattering Corrosion")

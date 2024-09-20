@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Inspiration",
@@ -21,9 +22,9 @@ module.exports = new GearTemplate("Inspiration",
 		}
 		const poweredUpTargets = addModifier(targets, pendingPowerUp);
 		if (poweredUpTargets.length > 0) {
-			return joinAsStatement(false, getNames(poweredUpTargets, adventure), "is", "are", "Powered Up.");
+			return [joinAsStatement(false, getNames(poweredUpTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })

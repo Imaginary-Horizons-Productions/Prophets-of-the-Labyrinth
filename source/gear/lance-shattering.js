@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Shattering Lance",
@@ -19,12 +20,13 @@ module.exports = new GearTemplate("Shattering Lance",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const frailedTargets = addModifier(targets, frail);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		const frailedTargets = addModifier(stillLivingTargets, frail);
 		if (frailedTargets.length > 0) {
-			return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(frailedTargets, adventure), "becomes", "become", "Frail.")}`;
-		} else {
-			return dealDamage(targets, user, pendingDamage, false, element, adventure);
+			resultLines.push(joinAsStatement(false, getNames(frailedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Frail")}.`));
 		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Lance", "Unstoppable Lance")

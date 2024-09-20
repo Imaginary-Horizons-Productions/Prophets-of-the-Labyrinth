@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { addModifier, changeStagger, getNames, enterStance } = require("../util/combatantUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { joinAsStatement, listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Lucky Iron Fist Stance",
@@ -15,32 +16,38 @@ module.exports = new GearTemplate("Lucky Iron Fist Stance",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		const frailedTargets = [];
-		if (isCrit) {
-			const foeTeam = (user.team === "delver" ? adventure.room.enemies : adventure.delvers).filter(foe => foe.hp > 0);
-			frailedTargets.concat(getNames(addModifier(foeTeam, frail), adventure));
-		}
 		const { didAddStance, stancesRemoved } = enterStance(user, ironFistStance);
-		const resultSentences = [];
-		if (stancesRemoved.length > 0) {
-			resultSentences.push(`${getNames([user], adventure)} exits ${listifyEN(stancesRemoved, false)}.`);
+		const addedBuffs = [];
+		if (didAddStance) {
+			addedBuffs.push(getApplicationEmojiMarkdown("Iron Fist Stance"));
 		}
 		const addedLucky = addModifier([user], lucky).length > 0;
 		if (addedLucky) {
-			resultSentences.push(`${getNames([user], adventure)} gains Lucky.`);
+			addedBuffs.push(getApplicationEmojiMarkdown("Lucky"));
 		}
 
-		if (frailedTargets.length > 0) {
-			resultSentences.push(joinAsStatement(false, frailedTargets, "becomes", "become", "Frail."));
+		const userEffects = [];
+		if(addedBuffs.length > 0) {
+			userEffects.push(`gains ${addedBuffs.join("")}`);
+		}
+		if (stancesRemoved.length > 0) {
+			userEffects.push(`exits ${stancesRemoved.map(stance => getApplicationEmojiMarkdown(stance)).join("")}`);
 		}
 
-		if (resultSentences.length > 0) {
-			return resultSentences.join(" ");
-		} else if (didAddStance) {
-			return "";
-		} else {
-			return "But nothing happened.";
+		const resultLines = [];
+		if (userEffects.length > 0) {
+			resultLines.push(`${getNames([user], adventure)[0]} ${listifyEN(userEffects, false)}.`);
 		}
+
+		if (isCrit) {
+			const foeTeam = user.team === "delver" ? adventure.room.enemies.filter(foe => foe.hp > 0) : adventure.delvers;
+			const frailedTargets = addModifier(foeTeam, frail);
+			if (frailedTargets.length > 0) {
+				resultLines.push(joinAsStatement(false, getNames(frailedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Frail")}.`));
+			}
+		}
+
+		return resultLines;
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Accurate Iron Fist Stance", "Organic Iron Fist Stance")

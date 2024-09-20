@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { removeModifier, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Appease",
 	[["use", "Shrug off all insults"]],
@@ -12,13 +12,13 @@ module.exports = new GearTemplate("Appease",
 		for (const insult of ["Boring", "Lacking Rhythm", "Smelly", "Stupid", "Ugly"]) {
 			const insultRemoved = removeModifier([user], { name: insult, stacks: "all", force: true }).length > 0;
 			if (insultRemoved) {
-				curedInsults.push(insult);
+				curedInsults.push(getApplicationEmojiMarkdown(insult));
 			}
 		}
 		if (curedInsults.length > 0) {
-			return `${getNames([user], adventure)[0]} shrugs off ${listifyEN(curedInsults, false)}.`;
+			return [`${getNames([user], adventure)[0]} shrugs off ${curedInsults.join("")}.`];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false });

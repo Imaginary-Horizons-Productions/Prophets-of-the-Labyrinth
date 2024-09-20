@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { changeStagger, addProtection, addModifier, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Lucky Scutum",
 	[
@@ -19,9 +20,13 @@ module.exports = new GearTemplate("Lucky Scutum",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([target, user], pendingProtection);
-		const addedLucky = addModifier([user], lucky).length > 0;
 		const [targetName, userName] = getNames([target, user], adventure);
-		return `${targetName} and ${userName} gain protection.${addedLucky ? ` ${userName} gains Lucky.` : ""}`;
+		const resultLines = [`${targetName} and ${userName} gain protection.`];
+		const addedLucky = addModifier([user], lucky).length > 0;
+		if (addedLucky) {
+			resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Lucky")}.`);
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")

@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { addModifier, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Greed",
@@ -12,9 +13,9 @@ module.exports = new GearTemplate("Greed",
 		const poweredUpTargets = addModifier(targets.filter(target => target.archetype === "Treasure Elemental"), powerUp);
 		const affectedTargets = addModifier(poweredUpTargets, midas);
 		if (affectedTargets.length > 0) {
-			return joinAsStatement(false, getNames(affectedTargets, adventure), "gains", "gain", "Curse of Midas and Power Up.");
+			return [joinAsStatement(false, getNames(affectedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Curse of Midas")}${getApplicationEmojiMarkdown("Power Up")}.`)];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })

@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Distracting Poison Torrent",
@@ -19,21 +20,17 @@ module.exports = new GearTemplate("Distracting Poison Torrent",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const resultSentences = [];
+		const resultLines = [];
 		const poisonedTargets = getNames(addModifier(targets, pendingPoison), adventure);
 		if (poisonedTargets.length > 1) {
-			resultSentences.push(joinAsStatement(false, poisonedTargets, "was", "were", "Poisoned."));
+			resultLines.push(joinAsStatement(false, poisonedTargets, "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`));
 		}
 		const distractedTargets = getNames(addModifier(targets, distracted), adventure);
 		if (distractedTargets.length > 1) {
-			resultSentences.push(joinAsStatement(false, distractedTargets, "is", "are", "Distracted."));
+			resultLines.push(joinAsStatement(false, distractedTargets, "gains", "gain", `${getApplicationEmojiMarkdown("Distracted")}.`));
 		}
 
-		if (resultSentences.length > 0) {
-			return resultSentences.join(" ");
-		} else {
-			return "But nothing happened.";
-		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Harmful Poison Torrent", "Staggering Poison Torrent")

@@ -3,7 +3,7 @@ const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.j
 
 module.exports = new GearTemplate("Thief's Abacus",
 	[
-		["use", "Deal @{damage} (+5% foe max hp) @{element} damage to a foe, gain @{bonus}g on kill"],
+		["use", "Deal @{damage} (+5% foe max HP) @{element} damage to a foe, gain @{bonus}g on kill"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Trinket",
@@ -14,14 +14,14 @@ module.exports = new GearTemplate("Thief's Abacus",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		let resultText = "";
+		const resultLines = [];
 		let hunts = 0;
 		targets.forEach(target => {
 			let pendingDamage = user.getPower() + damage + (0.05 * target.getMaxHP());
 			if (isCrit) {
 				pendingDamage *= critMultiplier;
 			}
-			resultText += dealDamage([target], user, pendingDamage, false, element, adventure);
+			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));
 			if (target.hp < 1) {
 				hunts++;
 			}
@@ -29,9 +29,9 @@ module.exports = new GearTemplate("Thief's Abacus",
 		const totalGold = bonusBounty * hunts;
 		if (totalGold > 0) {
 			adventure.gainGold(totalGold);
-			resultText += ` ${getNames([user], adventure)} harvests ${totalGold}g of alchemical reagents.`;
+			resultLines.push(`${getNames([user], adventure)} harvests ${totalGold}g of alchemical reagents.`);
 		}
-		return resultText;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Abacus", "Unstoppable Abacus")

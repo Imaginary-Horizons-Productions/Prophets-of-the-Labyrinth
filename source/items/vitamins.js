@@ -12,6 +12,6 @@ module.exports = new ItemTemplate("Vitamins",
 		const gains = 50;
 		user.maxHP += gains;
 		gainHealth(user, gains, adventure);
-		return "How healthy!";
+		return ["How healthy!"];
 	}
 ).setFlavorText({ name: "*Additional Notes*", value: "*Make sure to consume exactly the right number so your HP isn't divisible by 4*" });

@@ -2,6 +2,7 @@ const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Fire-Arrow Frog",
@@ -20,7 +21,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	effect: (targets, user, isCrit, adventure) => {
 		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 6 : 3 });
 		let damage = user.getPower() + 20;
-		return `${joinAsStatement(true, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")} ${dealDamage(targets, user, damage, false, user.element, adventure)}`;
+		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(true, getNames(poisonedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -38,9 +39,9 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		const addedEvade = addModifier([user], { name: "Evade", stacks }).length > 0;
 		changeStagger([user], "elementMatchAlly");
 		if (addedEvade) {
-			return "It's prepared to Evade.";
+			return `${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Evade")}.`;
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	},
 	selector: selectSelf,
@@ -57,9 +58,9 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 			changeStagger(targets, "elementMatchFoe");
 		}
 		if (slowedTargets.length > 0) {
-			return `${joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed")}.`;
+			return [joinAsStatement(false, getNames(slowedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	},
 	selector: selectRandomFoe,

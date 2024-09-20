@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Poison Torrent",
@@ -21,9 +22,9 @@ module.exports = new GearTemplate("Poison Torrent",
 			changeStagger(targets, "elementMatchFoe");
 		}
 		if (poisonedTargets.length > 0) {
-			return joinAsStatement(false, poisonedTargets, "was", "were", "Poisoned.");
+			return [joinAsStatement(false, poisonedTargets, "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })

@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing Daggers",
@@ -16,7 +17,7 @@ module.exports = new GearTemplate("Slowing Daggers",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
 			if (user.element === element) {
@@ -24,10 +25,10 @@ module.exports = new GearTemplate("Slowing Daggers",
 			}
 			const slowedTargets = addModifier(stillLivingTargets, slow);
 			if (slowedTargets.length > 0) {
-				resultSentences.push(joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed."));
+				resultLines.push(joinAsStatement(false, getNames(slowedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`));
 			}
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")

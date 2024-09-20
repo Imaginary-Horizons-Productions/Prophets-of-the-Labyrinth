@@ -19,13 +19,14 @@ module.exports = new GearTemplate("Thick Censer",
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			pendingDamage += bonus;
 		}
-		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
 			const addedSlow = addModifier([target], slow).length > 0;
-			return `${damageText}${addedSlow ? ` ${getNames([target], adventure)[0]} is Slowed.` : ""}`;
-		} else {
-			return damageText;
+			if (addedSlow) {
+				resultLines.push(`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Slow")}.`);
+			}
 		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Staggering Censer", "Tormenting Censor")

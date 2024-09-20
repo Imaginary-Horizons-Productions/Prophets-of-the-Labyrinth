@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
-const { listifyEN } = require('../util/textUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { swiftPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Swift Refreshing Breeze",
@@ -15,7 +15,7 @@ module.exports = new GearTemplate("Swift Refreshing Breeze",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element } = module.exports;
-		const resultTexts = [];
+		const resultLines = [];
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
@@ -29,20 +29,16 @@ module.exports = new GearTemplate("Swift Refreshing Breeze",
 					const rolledDebuff = targetDebuffs[debuffIndex];
 					const wasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
 					if (wasRemoved) {
-						removedDebuffs.push(rolledDebuff);
+						removedDebuffs.push(getApplicationEmojiMarkdown(rolledDebuff));
 						targetDebuffs.splice(debuffIndex, 1);
 					}
 				}
 				if (removedDebuffs.length > 0) {
-					resultTexts.push(`${getNames([target], adventure)[0]} is cured of ${listifyEN(removedDebuffs)}.`)
+					resultLines.push(`${getNames([target], adventure)[0]} is cured of ${removedDebuffs.join("")}.`)
 				}
 			}
 		})
-		if (resultTexts.length > 0) {
-			return resultTexts.join(" ");
-		} else {
-			return "No debuffs were cured on the party.";
-		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Accelerating Refreshing Breeze", "Supportive Refreshing Breeze")

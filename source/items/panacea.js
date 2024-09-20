@@ -1,7 +1,7 @@
 const { ItemTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { removeModifier, getNames } = require("../util/combatantUtil");
-const { listifyEN } = require("../util/textUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new ItemTemplate("Panacea",
 	"Cure the user of up to 2 random debuffs",
@@ -20,15 +20,15 @@ module.exports = new ItemTemplate("Panacea",
 			const rolledDebuff = userDebuffs[debuffIndex];
 			const wasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (wasRemoved) {
-				removedDebuffs.push(rolledDebuff);
+				removedDebuffs.push(getApplicationEmojiMarkdown(rolledDebuff));
 				userDebuffs.splice(debuffIndex, 1);
 			}
 		}
 
 		if (removedDebuffs.length > 1) {
-			return `${getNames([user], adventure)[0]} is cured of ${listifyEN(removedDebuffs)}.`;
+			return `${getNames([user], adventure)[0]} is cured of ${removedDebuffs.join("")}.`;
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 );

@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes/index.js');
 const { addModifier, getCombatantWeaknesses, changeStagger, getNames } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Shattering Sabotage Kit",
@@ -25,25 +26,25 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		const debuffTexts = [];
+		const debuffs = [];
 		const addedSlow = addModifier([target], pendingSlow).length > 0;
 		if (addedSlow) {
-			debuffTexts.push("is Slowed");
+			debuffs.push(getApplicationEmojiMarkdown("Slow"));
 		}
 		if (weaknessPool.length > 0) {
 			const addedWeakness = addModifier([target], pendingWeakness).length > 0;
 			if (addedWeakness) {
-				debuffTexts.push(`gains ${pendingWeakness.name}`);
+				debuffs.push(getApplicationEmojiMarkdown(pendingWeakness.name));
 			}
 		}
 		const addedFrail = addModifier([target], frail).length > 0;
 		if (addedFrail) {
-			debuffTexts.push("becomes Frail");
+			debuffs.push(getApplicationEmojiMarkdown("Frail"));
 		}
-		if (debuffTexts.length > 0) {
-			return `${getNames([target], adventure)[0]} ${listifyEN(debuffTexts, false)}.`;
+		if (debuffs.length > 0) {
+			return [`${getNames([target], adventure)[0]} ${debuffs.join("")}.`];
 		} else {
-			return "But nothing happend.";
+			return [];
 		}
 	}
 ).setSidegrades("Potent Sabotage Kit", "Urget Sabotage Kit")

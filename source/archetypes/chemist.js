@@ -3,7 +3,7 @@ const { modifiersToString, getNames } = require("../util/combatantUtil.js");
 const { generateTextBar } = require("../util/textUtil.js");
 
 module.exports = new ArchetypeTemplate("Chemist",
-	"They'll be able to assess combatant modifiers and hp levels. They'll also be able to make items with their Cauldron Stir.",
+	"They'll be able to assess combatant modifiers and HP levels. They'll also be able to make items with their Cauldron Stir.",
 	"Water",
 	{
 		maxHPGrowth: 25,

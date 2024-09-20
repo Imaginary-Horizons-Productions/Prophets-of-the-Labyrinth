@@ -1,9 +1,10 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, dealDamage, gainHealth, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Thirsting Battleaxe",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; heal @{healing} hp on kill"],
+		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; heal @{healing} HP on kill"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
@@ -18,16 +19,19 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedExposed = addModifier([user], exposed).length > 0;
-		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		let killCount = 0;
 		targets.forEach(target => {
 			if (target.hp < 1) {
 				killCount++
 			}
 		})
-		resultText += gainHealth(user, healing * killCount, adventure);
-		return `${resultText}${addedExposed ? ` ${getNames([user], adventure)[0]} is Exposed.` : ""}`;
+		resultLines.push(gainHealth(user, healing * killCount, adventure));
+		const addedExposed = addModifier([user], exposed).length > 0;
+		if (addedExposed) {
+			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Furious Battleaxe", "Reactive Battleaxe")

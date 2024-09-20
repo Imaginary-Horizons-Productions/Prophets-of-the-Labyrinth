@@ -9,7 +9,7 @@ class GearTemplate {
 	 * @param {"Weapon" | "Armor" | "Spell" | "Pact" | "Trinket" | "Technique" | "Action"} categoryInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementInput
 	 * @param {number} costInput
-	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} effectInput
+	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string[]} effectInput
 	 */
 	constructor(nameInput, descriptionTuples, categoryInput, elementInput, costInput, effectInput) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");

@@ -20,8 +20,12 @@ module.exports = new GearTemplate("Flanking Prismatic Blast",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const exposedTargets = addModifier(targets, exposed);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${exposedTargets.length > 0 ? ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}` : ""}`;
+		if (exposedTargets.length > 0) {
+			resultLines.push(joinAsStatement(false, getNames(exposedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Distracting Prismatic Blast", "Vexing Prismatic Blast")

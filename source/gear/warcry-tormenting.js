@@ -1,7 +1,8 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
 	[
@@ -34,21 +35,22 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
-		const tormentTexts = "";
+		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
 		changeStagger(targetArray, pendingStaggerStacks);
-		targetArray.forEach(target => {
+		const targetNames = getNames(targetArray, adventure);
+		targetArray.forEach((target, i) => {
 			const debuffs = [];
 			for (const modifier in target.modifiers) {
 				if (isDebuff(modifier)) {
 					addModifier([target], { name: modifier, stacks: 1 });
-					debuffs.push(modifier);
+					debuffs.push(getApplicationEmojiMarkdown(modifier));
 				}
 			}
 			if (debuffs.length > 0) {
-				tormentTexts += ` ${getNames([target], adventure)[0]} gains ${listifyEN(debuffs, false)}.`;
+				resultLines.push(`${targetNames[i]} gains ${debuffs.join("")}.`);
 			}
 		})
-		return `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.${tormentTexts}`;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")

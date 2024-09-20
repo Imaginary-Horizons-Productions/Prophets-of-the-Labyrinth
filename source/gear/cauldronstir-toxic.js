@@ -29,17 +29,17 @@ module.exports = new GearTemplate("Toxic Cauldron Stir",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
-			resultSentences.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
+			resultLines.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
 		}
 		const poisonedTargets = addModifier(targets, poison);
 		if (poisonedTargets.length > 0) {
-			resultSentences.push(joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned."));
+			resultLines.push(joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned."));
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Corrosive Cauldron Stir", "Sabotaging Cauldron Stir")

@@ -2,6 +2,7 @@ const { EnemyTemplate } = require("../classes");
 const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",
 	"Earth",
@@ -41,7 +42,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		} else {
 			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 25 }).length > 0;
 		}
-		return `It gains protection${addedPowerUp ? ` and is Powered Up` : ""}.`;
+		return [`It gains protection${addedPowerUp ? ` and ${getApplicationEmojiMarkdown("Power Up")}` : ""}.`];
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,

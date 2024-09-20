@@ -4,7 +4,7 @@ const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Flanking Life Drain",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}, then gain @{healing} hp"],
+		["use", "Strike a foe for @{damage} @{element} damage and inflict @{mod0Stacks} @{mod0}, then gain @{healing} HP"],
 		["Critical💥", "Healing x@{critMultiplier}"]
 	],
 	"Spell",
@@ -20,9 +20,15 @@ module.exports = new GearTemplate("Flanking Life Drain",
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		const resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const exposedTargets = addModifier(targets, exposed);
-		return `${resultText}${exposedTargets.length > 0 ? ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}` : ""} ${gainHealth(user, pendingHealing, adventure)}`;
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		resultLines.push(gainHealth(user, pendingHealing, adventure));
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		const exposedTargets = addModifier(stillLivingTargets, exposed);
+		if (exposedTargets.length > 0) {
+			resultLines.push(joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed."));
+		}
+
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Furios Life Drain", "Thirsting Life Drain")

@@ -28,11 +28,11 @@ module.exports = new GearTemplate("Sabotaging Cauldron Stir",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
-			resultSentences.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
+			resultLines.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
 		}
 		const targetNames = getNames(targets, adventure);
 		for (let i = 0; i < targets.length; i++) {
@@ -42,11 +42,11 @@ module.exports = new GearTemplate("Sabotaging Cauldron Stir",
 			if (weaknessPool.length > 0) {
 				const addedWeakness = addModifier(targets, { name: `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`, stacks: weakness.stacks }).length > 0;
 				if (addedWeakness) {
-					resultSentences.push(`${targetNames[i]} gains ${pendingWeakness.name}`);
+					resultLines.push(`${targetNames[i]} gains ${pendingWeakness.name}`);
 				}
 			}
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setModifiers({ name: "unparsed random weakness", stacks: 2 })

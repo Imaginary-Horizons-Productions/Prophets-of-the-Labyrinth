@@ -1,5 +1,6 @@
 const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Flanking Goad Futility",
 	[
@@ -24,22 +25,22 @@ module.exports = new GearTemplate("Flanking Goad Futility",
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
 		const [userName, targetName] = getNames([user, target], adventure);
-		const resultSentences = [`${userName} gains Oblivious.`];
+		const resultLines = [`${userName} gains ${getApplicationEmojiMarkdown("Oblivious")}.`];
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultSentences.push(`${targetName} falls for the provocation.`);
+			resultLines.push(`${targetName} falls for the provocation.`);
 		}
 		const addedExposed = addModifier([target], exposed).length > 0;
 		if (addedExposed) {
-			resultSentences.push(`${targetName} becomes Exposed.`);
+			resultLines.push(`${targetName} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
 		}
 		if (isCrit) {
 			const addedUnlucky = addModifier([target], unlucky).length > 0;
 			if (addedUnlucky) {
-				resultSentences.push(`${targetName} gains Unlucky.`);
+				resultLines.push(`${targetName} gains ${getApplicationEmojiMarkdown("Unlucky")}.`);
 			}
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Poised Goad Futility", "Shattering Goad Futility")

@@ -13,13 +13,18 @@ module.exports = new GearTemplate("Sweeping Spear",
 	(targets, user, isCrit, adventure) => {
 		const { element, stagger, damage } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			if (user.element === element) {
+				changeStagger(stillLivingTargets, "elementMatchFoe");
+			}
+			if (isCrit) {
+				changeStagger(stillLivingTargets, stagger);
+				resultLines.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."));
+			}
 		}
-		if (isCrit) {
-			changeStagger(targets, stagger);
-		}
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${isCrit ? ` ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}` : ""}`;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Spear", "Reactive Spear")

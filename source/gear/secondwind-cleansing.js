@@ -1,10 +1,11 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { gainHealth, removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Cleansing Second Wind",
 	[
-		["use", "Regain @{damage} hp and shrug off a random debuff"],
+		["use", "Regain @{damage} HP and shrug off a random debuff"],
 		["Critical💥", "Healing x@{critMultiplier}"]
 	],
 	"Technique",
@@ -19,16 +20,16 @@ module.exports = new GearTemplate("Cleansing Second Wind",
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		let resultText = gainHealth(user, pendingHealing, adventure);
+		const resultLines = [gainHealth(user, pendingHealing, adventure)];
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (userDebuffs.length > 0) {
 			const rolledDebuff = userDebuffs[adventure.generateRandomNumber(userDebuffs.length, "battle")];
 			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (debuffWasRemoved) {
-				resultText += ` ${getNames([user], adventure)[0]} shrugs off ${rolledDebuff}.`;
+				resultLines.push(`${getNames([user], adventure)[0]} shrugs off ${getApplicationEmojiMarkdown(rolledDebuff)}.`);
 			}
 		}
-		return resultText;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "self", team: "none", needsLivingTargets: true })
 	.setSidegrades("Lucky Second Wind", "Soothing Second Wind")

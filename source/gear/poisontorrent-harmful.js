@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Harmful Poison Torrent",
@@ -17,7 +18,7 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 		if (isCrit) {
 			pendingPoison.stacks *= critMultiplier;
 		}
-		const resultsSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
 			if (user.element === element) {
@@ -25,10 +26,10 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 			}
 			const poisonedTargets = getNames(addModifier(stillLivingTargets, pendingPoison), adventure);
 			if (poisonedTargets.length > 0) {
-				resultsSentences.push(joinAsStatement(false, poisonedTargets, "was", "were", "Poisoned."));
+				resultLines.push(joinAsStatement(false, poisonedTargets, "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`));
 			}
 		}
-		return resultsSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Distracting Poison Torrent", "Staggering Poison Torrent")

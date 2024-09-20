@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Corrosion",
@@ -15,18 +16,17 @@ module.exports = new GearTemplate("Corrosion",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
-			changeStagger(targets, bonus);
-		}
 		const poweredDownTargets = addModifier(targets, powerDown);
 		const targetNames = getNames(targets, adventure);
+		const resultLines = [];
 		if (poweredDownTargets.length > 0) {
-			return `${joinAsStatement(false, targetNames, "is", "are", "Powered Down")}${isCrit ? " and Staggered" : ""}.`;
-		} else if (isCrit) {
-			return joinAsStatement(false, targetNames, "was", "were", "Staggered.");
-		} else {
-			return "But nothing happened.";
+			resultLines.push(joinAsStatement(false, targetNames, "gains", "gain", `${getApplicationEmojiMarkdown("Power Down")}.`));
 		}
+		if (isCrit) {
+			changeStagger(targets, bonus);
+			resultLines.push(joinAsStatement(false, targetNames, "was", "were", "Staggered."));
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Fate-Sealing Corrosion", "Harmful Corrosion", "Shattering Corrosion")

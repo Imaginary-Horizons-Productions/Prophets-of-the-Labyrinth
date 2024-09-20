@@ -18,7 +18,7 @@ module.exports = new GearTemplate("name",
 		if (isCrit) {
 
 		}
-		return ""; // see style guide for conventions on result texts
+		return []; // see style guide for conventions on result texts
 	}
 ).setTargetingTags({ type: "", team: "", needsLivingTargets: true })
 	.setDurability();

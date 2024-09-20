@@ -1,5 +1,6 @@
 const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Shoulder Throw",
 	[
@@ -14,10 +15,7 @@ module.exports = new GearTemplate("Shoulder Throw",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		let addedEvade = false;
-		if (isCrit) {
-			addedEvade = addModifier([user], evade).length > 0;
-		}
+		const resultLines = [];
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -26,19 +24,18 @@ module.exports = new GearTemplate("Shoulder Throw",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
+		const [targetName, userName] = getNames([target, user], adventure);
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
-			const [targetName, userName] = getNames([target, user], adventure);
-			if (addedEvade) {
-				return `${targetName} is redirected into targeting themself. ${userName} prepares to Evade.`;
-			} else {
-				return `${targetName} is redirected into targeting themself.`;
-			}
-		} else if (addedEvade) {
-			return `${getNames([user], adventure)[0]} prepares to Evade.`;
-		} else {
-			return "But nothing happened.";
+			resultLines.push(`${targetName} is redirected into targeting themself.`);
 		}
+		if (isCrit) {
+			const addedEvade = addModifier([user], evade).length > 0;
+			if (addedEvade) {
+				resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Evade")}.`);
+			}
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Evasive Shoulder Throw", "Harmful Shoulder Throw", "Staggering Shoulder Throw")

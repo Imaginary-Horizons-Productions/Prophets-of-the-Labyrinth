@@ -3,7 +3,7 @@ const { dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil
 
 module.exports = new GearTemplate("Life Drain",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage, then gain @{healing} hp"],
+		["use", "Strike a foe for @{damage} @{element} damage, then gain @{healing} HP"],
 		["Critical💥", "Healing x@{critMultiplier}"]
 	],
 	"Spell",
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Life Drain",
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${gainHealth(user, pendingHealing, adventure)}`;
+		return [...dealDamage(targets, user, pendingDamage, false, element, adventure), gainHealth(user, pendingHealing, adventure)];
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Flanking Life Drain", "Furious Life Drain", "Thirsting Life Drain")

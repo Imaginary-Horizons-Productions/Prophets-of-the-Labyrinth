@@ -1,7 +1,7 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, getNames } = require("../util/combatantUtil");
-const { getEmoji } = require("../util/elementUtil");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new ItemTemplate("Inky Potion",
 	"Grants the user 3 @e{Darkness Absorb}",
@@ -12,9 +12,9 @@ module.exports = new ItemTemplate("Inky Potion",
 	(targets, user, isCrit, adventure) => {
 		const addedAbsorb = addModifier([user], { name: "Darkness Absorb", stacks: 3 }).length > 0;
 		if (addedAbsorb) {
-			return `${getNames([user], adventure)[0]} now absorbs ${getEmoji("Darkness")} damage.`;
+			return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Darkness Absorb")}.`];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 );

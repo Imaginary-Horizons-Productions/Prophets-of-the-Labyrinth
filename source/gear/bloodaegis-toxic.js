@@ -1,9 +1,10 @@
 const { GearTemplate, Move } = require('../classes/index.js');
 const { payHP, changeStagger, addProtection, getNames, addModifier } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Toxic Blood Aegis",
 	[
-		["use", "Pay @{hpCost} hp; gain @{protection} protection, inflict @{mod0Stacks} @{mod0} on a foe and intercept their move"],
+		["use", "Pay @{hpCost} HP; gain @{protection} protection, inflict @{mod0Stacks} @{mod0} on a foe and intercept their move"],
 		["Critical💥", "Protection x@{critMultiplier}"]
 	],
 	"Pact",
@@ -13,9 +14,9 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 		const { element, modifiers: [poison], protection, critMultiplier, hpCost } = module.exports;
 		const paymentSentence = payHP(user, hpCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
 		}
-		const resultsSentences = [`Gaining protection, ${paymentSentence}`];
+		const resultLines = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
@@ -35,11 +36,11 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 		const addedPoison = addModifier([target], poison).length > 0;
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultsSentences.push(`${getNames([target], adventure)[0]} falls for the provocation${addedPoison ? ` and is Poisoned` : ""}.`);
+			resultLines.push(`${getNames([target], adventure)[0]} falls for the provocation${addedPoison ? ` and gains ${getApplicationEmojiMarkdown("Poison")}` : ""}.`);
 		} else if (addedPoison) {
-			resultsSentences.push(`${getNames([target], adventure)[0]} is Poisoned.`);
+			resultLines.push(`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Poison")}.`);
 		}
-		return resultsSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Charging Blood Aegis", "Reinforced Blood Aegis")

@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Thief's Bow",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		let hunts = 0;
 		targets.forEach(target => {
 			if (target.hp < 1) {
@@ -28,9 +28,9 @@ module.exports = new GearTemplate("Thief's Bow",
 		const totalGold = bonusBounty * hunts;
 		if (totalGold > 0) {
 			adventure.gainGold(totalGold);
-			resultText += ` ${getNames([user], adventure)[0]} forages ${totalGold}g of hunting trophies.`;
+			resultLines.push(`${getNames([user], adventure)[0]} forages ${totalGold}g of hunting trophies.`);
 		}
-		return resultText;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Evasive Bow", "Unstoppable Bow")

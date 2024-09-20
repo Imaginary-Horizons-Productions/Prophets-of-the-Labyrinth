@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 			nonDebuffedDamage *= critMultiplier;
 		}
 		if (debuffedTargets.length > 0 && nondebuffedTargets.length > 0) {
-			return `${dealDamage(debuffedTargets, user, debuffedDamage, false, element, adventure)} ${dealDamage(nondebuffedTargets, user, nonDebuffedDamage, false, element, adventure)}`;
+			return dealDamage(debuffedTargets, user, debuffedDamage, false, element, adventure).concat(dealDamage(nondebuffedTargets, user, nonDebuffedDamage, false, element, adventure));
 		} else if (debuffedTargets.length > 0) {
 			return dealDamage(debuffedTargets, user, debuffedDamage, false, element, adventure);
 		} else {

@@ -17,28 +17,29 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		const frailedTargets = [];
-		if (isCrit) {
-			const foeTeam = (user.team === "delver" ? adventure.room.enemies : adventure.delvers).filter(foe => foe.hp > 0);
-			frailedTargets.concat(getNames(addModifier(foeTeam, frail), adventure));
-		}
 		const { didAddStance, stancesRemoved } = enterStance(user, ironFistStance);
-		const resultSentences = [];
+		const userEffects = [];
+		if (didAddStance) {
+			userEffects.push(`gains ${getApplicationEmojiMarkdown("Iron Fist Stance")}`);
+		}
 		if (stancesRemoved.length > 0) {
-			resultSentences.push(`${getNames([user], adventure)} exits ${listifyEN(stancesRemoved, false)}.`);
+			userEffects.push(`exits ${stancesRemoved.map(stance => getApplicationEmojiMarkdown(stance)).join("")}`);
 		}
 
-		if (frailedTargets.length > 0) {
-			resultSentences.push(joinAsStatement(false, frailedTargets, "becomes", "become", "Frail."));
+		const resultLines = [];
+		if (userEffects.length > 0) {
+			resultLines.push(`${getNames([user], adventure)[0]} ${listifyEN(userEffects, false)}.`);
 		}
 
-		if (resultSentences.length > 0) {
-			return resultSentences.join(" ");
-		} else if (didAddStance) {
-			return "";
-		} else {
-			return "But nothing happened.";
+		if (isCrit) {
+			const foeTeam = user.team === "delver" ? adventure.room.enemies.filter(foe => foe.hp > 0) : adventure.delvers;
+			const frailedTargets = addModifier(foeTeam, frail);
+			if (frailedTargets.length > 0) {
+				resultLines.push(joinAsStatement(false, getNames(frailedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Frail")}.`));
+			}
 		}
+
+		return resultLines;
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Organic Iron Fist Stance", "Lucky Iron Fist Stance")

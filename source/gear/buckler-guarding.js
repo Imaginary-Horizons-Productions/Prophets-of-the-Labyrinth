@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, addProtection, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Guarding Buckler",
@@ -22,7 +23,11 @@ module.exports = new GearTemplate("Guarding Buckler",
 		addProtection(targets, pendingProtection);
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		const [userName, ...targetNames] = getNames([user, ...targets], adventure);
-		return `${joinAsStatement(false, targetNames, "gains", "gain", "protection.")}${addedPowerUp ? ` ${userName} is Powered Up.` : ""}`;
+		const resultLines = [joinAsStatement(false, targetNames, "gains", "gain", "protection.")];
+		if (addedPowerUp) {
+			resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Devoted Buckler", "Reinforced Buckler")

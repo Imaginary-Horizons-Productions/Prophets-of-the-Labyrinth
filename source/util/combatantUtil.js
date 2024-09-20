@@ -1,6 +1,7 @@
+const { italic, bold } = require("discord.js");
 const { Combatant, Adventure } = require("../classes");
 const { getInverse, getModifierDescription, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
-const { getWeaknesses, getResistances, elementsList } = require("./elementUtil.js");
+const { getWeaknesses, getResistances, elementsList, getEmoji } = require("./elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 
 /**
@@ -13,10 +14,10 @@ function downedCheck(target, adventure) {
 		if (target.team === "delver") {
 			target.hp = target.getMaxHP();
 			adventure.lives = Math.max(adventure.lives - 1, 0);
-			return ` *${targetName} was downed*${adventure.lives > 0 ? " and revived" : ""}.`;
+			return ` ${bold(`${targetName} was downed`)}${adventure.lives > 0 ? " and revived" : ""}.`;
 		} else {
 			target.hp = 0;
-			return ` *${targetName} was downed*.`;
+			return ` ${bold(`${targetName} was downed`)}.`;
 		}
 	} else {
 		return "";
@@ -33,7 +34,7 @@ function downedCheck(target, adventure) {
  */
 function dealDamage(targets, assailant, damage, isUnblockable, element, adventure) {
 	const previousLifeCount = adventure.lives;
-	const resultTexts = [];
+	const results = [];
 	const targetNames = getNames(targets, adventure);
 	targets.forEach((target, index) => {
 		if (target.hp > 0) { // Skip if target is downed (necessary for multi-hit moves hitting same target)
@@ -68,32 +69,31 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 					}
 					pendingDamage = Math.min(pendingDamage, assailant.getDamageCap());
 					target.hp -= pendingDamage;
-					let damageText = ` **${targetName}** takes ${pendingDamage} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}`;
+					results.push(`${targetName} takes ${pendingDamage} ${getEmoji(element)} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}${downedCheck(target, adventure)}`);
 					if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
-						adventure.gainGold(Math.floor(pendingDamage / 10));
-						damageText += ` Gold scatters about the room.`;
+						const midasGold = pendingDamage / 10;
+						adventure.gainGold(Math.floor(midasGold));
+						results.push(`Loot: +${midasGold}g`)
 					}
-					damageText += downedCheck(target, adventure);
-					resultTexts.push(damageText);
 				} else {
 					removeModifier([target], { name: "Evade", stacks: 1, force: true });
-					resultTexts.push(` ${targetName} evades the attack!`);
+					results.push(`${targetName} evades the attack!`);
 				}
 			} else {
-				resultTexts.push(` ${gainHealth(target, damage, adventure)}`);
+				results.push(gainHealth(target, damage, adventure, "Elemental Absorption"));
 			}
 		}
 	})
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
-			resultTexts.push(`***${adventure.lives} lives remain.***`);
+			results.push(bold(italic(`${adventure.lives} lives remain.`)) );
 		} else if (adventure.lives === 1) {
-			resultTexts.push(`***${adventure.lives} life remains.***`);
+			results.push(bold(italic(`${adventure.lives} life remains.`)));
 		} else {
-			resultTexts.push(`***GAME OVER***`);
+			results.push(bold(italic("GAME OVER")));
 		}
 	}
-	return resultTexts.join(" ");
+	return results;
 }
 
 const MODIFIER_DAMAGE_PER_STACK = {
@@ -118,18 +118,18 @@ function dealModifierDamage(target, modifier, adventure) {
 	}
 
 	target.hp -= pendingDamage;
-	let resultText = ` **${getNames([target], adventure)[0]}** takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`;
+	const resultLines = [`${bold(getNames([target], adventure)[0])} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`];
 
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
-			resultText += `***${adventure.lives} lives remain.***`;
+			resultLines.push(bold(italic(`${adventure.lives} lives remain.`)));
 		} else if (adventure.lives === 1) {
-			resultText += `***${adventure.lives} life remains.***`;
+			resultLines.push(bold(italic(`${adventure.lives} life remains.`)));
 		} else {
-			resultText += `***GAME OVER***`;
+			resultLines.push(bold(italic("GAME OVER")));
 		}
 	}
-	return resultText;
+	return resultLines;
 }
 
 /**
@@ -141,14 +141,14 @@ function payHP(user, damage, adventure) {
 	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
 	const userName = getNames([user], adventure)[0];
-	let resultText = ` **${userName}** pays ${damage} HP.${downedCheck(user, adventure)}`;
+	let resultText = ` ${userName} pays ${damage} HP.${downedCheck(user, adventure)}`;
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
-			resultText += ` ***${adventure.lives} lives remain.***`;
+			resultText += ` ${bold(italic(`${adventure.lives} lives remain.`))}`;
 		} else if (adventure.lives === 1) {
-			resultText += ` ***${adventure.lives} life remains.***`;
+			resultText += ` ${bold(italic(`${adventure.lives} life remains.`))}`;
 		} else {
-			resultText += ` ***GAME OVER***`;
+			resultText += ` ${bold(italic("GAME OVER"))}`;
 		}
 	}
 	return resultText;
@@ -158,8 +158,9 @@ function payHP(user, damage, adventure) {
  * @param {Combatant} combatant
  * @param {number} healing
  * @param {Adventure} adventure
+ * @param {?string} source
  */
-function gainHealth(combatant, healing, adventure) {
+function gainHealth(combatant, healing, adventure, source) {
 	combatant.hp += healing;
 	const loopholeCount = adventure.getArtifactCount("Health Insurance Loophole");
 	let loopholeGold = 0;
@@ -174,9 +175,9 @@ function gainHealth(combatant, healing, adventure) {
 	}
 
 	if (combatant.hp === maxHP) {
-		return `${getNames([combatant], adventure)[0]} was fully healed${loopholeGold > 0 ? ` (${loopholeGold} gold gained)` : ""}!`;
+		return `${getNames([combatant], adventure)[0]} was fully healed${loopholeGold > 0 ? ` (${loopholeGold} gold gained)` : ""}${source ? ` from ${source}` : ""}!`;
 	} else {
-		return `${getNames([combatant], adventure)[0]} *gained ${healing} hp*.`
+		return `${getNames([combatant], adventure)[0]} ${italic(`gained ${healing} HP`)}${source ? ` from ${source}` : ""}.`;
 	}
 }
 

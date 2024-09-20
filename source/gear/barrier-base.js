@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN, joinAsStatement } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Barrier",
 	[
@@ -22,16 +23,16 @@ module.exports = new GearTemplate("Barrier",
 		const addedModifiers = [];
 		const addedVigilance = addModifier([user], pendingVigilance).length > 0;
 		if (addedVigilance) {
-			addedModifiers.push("Vigilance");
+			addedModifiers.push(getApplicationEmojiMarkdown("Vigilance"));
 		}
 		const addedEvade = addModifier([user], evade).length > 0;
 		if (addedEvade) {
-			addedModifiers.push("Evade");
+			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 		}
 		if (addedModifiers.length > 0) {
-			return joinAsStatement(false, getNames([user], adventure), "gains", "gain", `${listifyEN(addedModifiers, false)}.`);
+			return joinAsStatement(false, getNames([user], adventure), "gains", "gain", `${addedModifiers.join("")}.`);
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })

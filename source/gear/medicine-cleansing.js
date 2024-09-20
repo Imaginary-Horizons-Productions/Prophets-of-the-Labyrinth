@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Cleansing Medicine",
@@ -21,7 +22,10 @@ module.exports = new GearTemplate("Cleansing Medicine",
 			pendingRegen.stacks *= critMultiplier;
 		}
 		const regenedTargets = addModifier(targets, pendingRegen);
-		const cureSentences = [];
+		const resultLines = [];
+		if (regenedTargets.length > 0) {
+			resultLines.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
+		}
 		const targetNames = getNames(targets, adventure);
 		for (let i = 0; i < targets.length; i++) {
 			const target = targets[i];
@@ -30,22 +34,12 @@ module.exports = new GearTemplate("Cleansing Medicine",
 				const rolledDebuff = debuffs[adventure.generateRandomNumber(debuffs.length, "battle")];
 				const debuffWasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
 				if (debuffWasRemoved) {
-					cureSentences.push(`${targetNames[i]} is cured of ${rolledDebuff}.`);
+					resultLines.push(`${targetNames[i]} is cured of ${rolledDebuff}.`);
 				}
 			}
 		}
 
-		if (regenedTargets.length > 0) {
-			if (cureSentences.length > 0) {
-				return `${joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", "Regen.")} ${cureSentences.join(" ")}`;
-			} else {
-				return joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", "Regen.");
-			}
-		} else if (cureSentences.length > 0) {
-			return cureSentences.join(" ");
-		} else {
-			return "But nothing happened.";
-		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Bouncing Medicine", "Soothing Medicine")

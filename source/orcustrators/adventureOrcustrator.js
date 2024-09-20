@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ThreadChannel, Message, EmbedBuilder } = require("discord.js");
+const { ThreadChannel, Message, EmbedBuilder, italic } = require("discord.js");
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
@@ -16,7 +16,7 @@ const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = requ
 const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
 const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
-const { getWeaknesses, getEmoji, getOpposite } = require("../util/elementUtil");
+const { getWeaknesses } = require("../util/elementUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
 const { anyDieSucceeds } = require("../util/mathUtil.js");
@@ -429,33 +429,30 @@ function resolveMove(move, adventure) {
 		return "";
 	}
 
-	let moveText = `**${getNames([user], adventure)[0]}** `;
+	let headline = `**${getNames([user], adventure)[0]}** `;
+	const results = [];
 	if (!user.isStunned || move.name.startsWith("Unstoppable")) {
 		if (move.isCrit) {
-			moveText = `💥${moveText}`;
+			headline = `💥${headline}`;
 		}
 
 		let effect;
 		let needsLivingTargets = false;
+		let combatFlavor;
 		switch (move.type) {
 			case "action":
 				if (move.userReference.team !== "delver") {
 					const action = getEnemy(user.archetype).actions[move.name];
-					let parsedElement = action.element;
-					if (parsedElement === "@{adventure}") {
-						parsedElement = adventure.element;
-					} else if (parsedElement === "@{adventureOpposite}") {
-						parsedElement = getOpposite(adventure.element);
-					}
 					effect = action.effect;
 					needsLivingTargets = action.needsLivingTargets;
-					moveText = `${getEmoji(parsedElement)} ${moveText}`;
+					if (action.combatFlavor) {
+						combatFlavor = action.combatFlavor;
+					}
 				}
 				break;
 			case "gear":
 				effect = getGearProperty(move.name, "effect");
 				needsLivingTargets = getGearProperty(move.name, "targetingTags").needsLivingTargets;
-				moveText = `${getEmoji(move.name === "Iron Fist Punch" ? user.element : getGearProperty(move.name, "element"))} ${moveText}`;
 				if (move.userReference.team === "delver" && adventure.getArtifactCount("Crystal Shard") > 0 && getGearProperty(move.name, "category") === "Spell") {
 					adventure.updateArtifactStat("Crystal Shard", "Spells Cast", 1);
 				}
@@ -468,17 +465,16 @@ function resolveMove(move, adventure) {
 						isPlacebo = (placeboDillution - 1) === adventure.generateRandomNumber(placeboDillution, "battle");
 					}
 				}
-				const { effect: itemEffect, element, needsLivingTargets: needsLivingTargetsInput } = getItem(isPlacebo ? "Placebo" : move.name);
+				const { effect: itemEffect, needsLivingTargets: needsLivingTargetsInput } = getItem(isPlacebo ? "Placebo" : move.name);
 				effect = itemEffect;
 				if (move.userReference.team !== "enemy") {
 					adventure.decrementItem(move.name, 1);
 				}
 				needsLivingTargets = needsLivingTargetsInput;
-				moveText = `${getEmoji(element)} ${moveText}`;
 				break;
 		}
 
-		moveText += `used ${move.name}`;
+		headline += `used ${move.name}`;
 		if (needsLivingTargets) {
 			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference));
 			const livingTargets = [];
@@ -491,44 +487,59 @@ function resolveMove(move, adventure) {
 				}
 			}
 			if (livingTargets.length > 0) {
-				let deadTargetText = "";
 				if (deadTargets.length > 0) {
-					deadTargetText += ` ${listifyEN(getNames(deadTargets, adventure), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`
+					results.push(`${listifyEN(getNames(deadTargets, adventure), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 				}
 
-				const resultText = effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
-				moveText += `. ${resultText}${deadTargetText}${move.type === "gear" && move.userReference.team === "delver" ? decrementDurability(move.name, user, adventure) : ""}`;
+				headline += ".";
+				results.push(...effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure));
+				if (move.type === "gear" && move.userReference.team === "delver") {
+					const breakText = decrementDurability(move.name, user, adventure);
+					if (breakText) {
+						results.push(breakText);
+					}
+				}
 			} else if (targets.length === 1) {
-				moveText += `, but ${getNames([targets[0]], adventure)[0]} was already dead!`;
+				headline += `, but ${getNames([targets[0]], adventure)[0]} was already dead!`;
 			} else {
-				moveText += `, but all targets were already dead!`;
+				headline += `, but all targets were already dead!`;
 			}
 		} else {
+			headline += ".";
 			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
-			const resultText = effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure);
-			moveText += `. ${resultText}${move.type === "gear" && move.userReference.team === "delver" ? decrementDurability(move.name, user, adventure) : ""}`;
+			results.push(...effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure));
+			if (move.type === "gear" && move.userReference.team === "delver") {
+				const breakText = decrementDurability(move.name, user, adventure);
+				if (breakText) {
+					results.push(breakText);
+				}
+			}
+		}
+
+		if (combatFlavor) {
+			headline += ` ${italic(combatFlavor)}`;
 		}
 
 		const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
 		if (insigniaCount > 0 && user.team === "delver" && move.isCrit) {
 			const insigniaHealing = insigniaCount * 15;
-			moveText += ` ${gainHealth(user, insigniaHealing, adventure)}`;
+			results.push(gainHealth(user, insigniaHealing, adventure, "their Celestial Knight Insigina"));
 			adventure.updateArtifactStat("Health Restored", insigniaHealing);
 		}
 	} else {
-		moveText = `💫 ${moveText} is Stunned!`;
+		headline = `💫 ${headline} is Stunned!`;
 	}
 
 	// Poison/Regen
 	if ("Poison" in user.modifiers) {
-		moveText += ` ${dealModifierDamage(user, "Poison", adventure)}`;
+		results.push(...dealModifierDamage(user, "Poison", adventure));
 	} else {
 		const regenStacks = user.getModifierStacks("Regen");
 		if (regenStacks) {
-			moveText += ` ${gainHealth(user, regenStacks * 10, adventure)}`;
+			results.push(gainHealth(user, regenStacks * 10, adventure, "Regen"));
 		}
 	}
-	return `${moveText}\n`;
+	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${currentLine}`, "")}\n`;
 }
 
 /**
@@ -555,7 +566,7 @@ function decrementDurability(moveName, user, adventure) {
 		const gear = user.gear.find(gear => gear.name === moveName);
 		gear.durability--;
 		if (gear.durability < 1) {
-			return ` The ${moveName} broke!`;
+			return `${getNames([user], adventure)[0]}'s ${moveName} broke!`;
 		}
 	}
 	return "";
@@ -620,7 +631,7 @@ function endRound(adventure, thread) {
 			}
 
 			if ("Frail" in combatant.modifiers) {
-				lastRoundText += dealModifierDamage(combatant, "Frail", adventure);
+				lastRoundText += dealModifierDamage(combatant, "Frail", adventure).join("\n-# ");
 				removeModifier([combatant], { name: "Frail", stacks: "all" });
 
 				const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);

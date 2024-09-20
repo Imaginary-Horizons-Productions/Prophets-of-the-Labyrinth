@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Censer",
 	[
@@ -19,13 +20,14 @@ module.exports = new GearTemplate("Censer",
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			pendingDamage += bonus;
 		}
-		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
 			const addedSlow = addModifier([target], slow).length > 0;
-			return `${damageText}${addedSlow ? ` ${getNames([target], adventure)[0]} is Slowed.` : ""}`;
-		} else {
-			return damageText;
+			if (addedSlow) {
+				resultLines.push(` ${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Slow")}.`);
+			}
 		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Staggering Censer", "Thick Censer", "Tormenting Censor")

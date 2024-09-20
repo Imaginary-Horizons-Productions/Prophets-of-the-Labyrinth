@@ -13,29 +13,31 @@ module.exports = new GearTemplate("Organic Fever Break",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element } = module.exports;
-		const funnelCount = adventure.getArtifactCount("Spiral Funnel");
-		const damagesByTargets = targets.map(target => {
-			const poisons = target.getModifierStacks("Poison");
-			const frails = target.getModifierStacks("Frail");
-			return [target, (10 + 5 * funnelCount) * (poisons ** 2 + poisons) / 2 + (20 + 5 * funnelCount) * frails];
-		});
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const removedDebuffs = {};
-		if (!isCrit) {
-			getNames(removeModifier(targets, { name: "Poison", stacks: "all" })).forEach(curedName => {
-				removedDebuffs[curedName] = ["Poison"];
-			})
-			getNames(removeModifier([target], { name: "Frail", stacks: "all" })).forEach(curedName => {
-				if (curedName in removedDebuffs) {
-					removedDebuffs[curedName].push("Frail");
-				} else {
-					removedDebuffs[curedName] = ["Frail"];
+		const funnelCount = adventure.getArtifactCount("Spiral Funnel");
+		const resultLines = [];
+		const targetNames = getNames(targets, adventure);
+		targets.forEach(target => {
+			const poisons = target.getModifierStacks("Poison");
+			const frails = target.getModifierStacks("Frail");
+			const pendingDamage = (10 + 5 * funnelCount) * (poisons ** 2 + poisons) / 2 + (20 + 5 * funnelCount) * frails;
+			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));
+			if (!isCrit) {
+				const removedDebuffs = [];
+				const curedPoison = removeModifier(targets, { name: "Poison", stacks: "all" });
+				if (curedPoison) {
+					removedDebuffs.push(getApplicationEmojiMarkdown("Poison"));
 				}
-			})
-		}
-		return `${damagesByTargets.map(([target, pendingDamage]) => dealDamage([target], user, pendingDamage, false, element, adventure)).join(" ")} ${Object.entries(removedDebuffs).map(([name, debuffs]) => `${name} is cured of ${listifyEN(debuffs)}.`).join(" ")}`;
+				const curedFrail = removeModifier(targets, { name: "Frail", stacks: "all" });
+				if (curedFrail) {
+					removedDebuffs.push(getApplicationEmojiMarkdown("Frail"));
+				}
+				resultLines.push(`${targetNames[i]} is cured of ${removedDebuffs.join("")}.`);
+			}
+		})
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Surpassing Fever Break", "Urgent Fever Break")

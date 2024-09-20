@@ -16,16 +16,16 @@ module.exports = new GearTemplate("Floating Mist Punch",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
 			if (user.element === element) {
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
 			changeStagger(stillLivingTargets, user.getModifierStacks("Floating Mist Stance") * 3);
-			resultSentences.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."));
+			resultLines.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."));
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setDurability(Infinity)

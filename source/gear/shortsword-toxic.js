@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Toxic Shortsword",
 	[
@@ -16,10 +16,10 @@ module.exports = new GearTemplate("Toxic Shortsword",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		const addedExposedUser = addModifier([user], exposed).length > 0;
 		if (addedExposedUser) {
-			resultText += ` ${getNames([user], adventure)[0]} is Exposed.`;
+			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
 		}
 		const targetDebuffs = [];
 		if (target.hp > 0) {
@@ -28,17 +28,17 @@ module.exports = new GearTemplate("Toxic Shortsword",
 			}
 			const addedPoison = addModifier([target], poison).length > 0;
 			if (addedPoison) {
-				targetDebuffs.push("Poisoned");
+				targetDebuffs.push(getApplicationEmojiMarkdown("Poison"));
 			}
 			const addedExposedTarget = addModifier([target], exposed).length > 0;
 			if (addedExposedTarget) {
-				targetDebuffs.push("Exposed");
+				targetDebuffs.push(getApplicationEmojiMarkdown("Exposed"));
 			}
 			if (targetDebuffs.length > 0) {
-				resultText += ` ${getNames([target], adventure)[0]} is ${listifyEN(targetDebuffs, false)}.`;
+				resultLines.push(`${getNames([target], adventure)[0]} gains ${targetDebuffs.join("")}.`);
 			}
 		}
-		return resultText;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Shortsword", "Lethal Shortsword")

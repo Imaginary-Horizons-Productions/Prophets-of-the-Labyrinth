@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Charging War Cry",
 	[
@@ -34,12 +35,12 @@ module.exports = new GearTemplate("Charging War Cry",
 			pendingStaggerStacks += bonus;
 		}
 		changeStagger(targetArray, pendingStaggerStacks);
-		let resultText = `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
+		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
 		const addedPowerUp = addModifier([user], powerup).length > 0;
 		if (addedPowerUp) {
-			resultText += ` ${getNames([user], adventure)[0]} is Powered Up.`;
+			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
 		}
-		return resultText;
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Slowing War Cry", "Tormenting War Cry")

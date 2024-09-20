@@ -19,16 +19,16 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultSentences = [dealDamage([target], user, pendingDamage, false, element, adventure)];
+		const resultLines = [dealDamage([target], user, pendingDamage, false, element, adventure)];
 		if (target.hp < 1) {
 			pendingPowerUp.stacks += huntersPowerUp.stacks;
 		}
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		if (addedPowerUp) {
-			resultSentences.push(`${getNames([user], adventure)[0]} is Powered Up.`);
+			resultLines.push(`${getNames([user], adventure)[0]} is Powered Up.`);
 		}
-		resultSentences.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
-		return resultSentences.join(" ");
+		resultLines.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")

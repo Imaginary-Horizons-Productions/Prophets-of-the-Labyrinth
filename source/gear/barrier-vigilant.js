@@ -29,9 +29,9 @@ module.exports = new GearTemplate("Vigilant Barrier",
 			addedModifiers.push("Evade");
 		}
 		if (addedModifiers.length > 0) {
-			return `${getNames([user], adventure)[0]} gains ${listifyEN(addedModifiers)}.`;
+			return [`${getNames([user], adventure)[0]} gains ${listifyEN(addedModifiers)}.`];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })

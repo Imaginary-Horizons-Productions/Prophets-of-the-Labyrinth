@@ -3,6 +3,7 @@ const { dealDamage, addModifier, changeStagger } = require("../util/combatantUti
 const { selectRandomFoe, selectAllCombatants } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
@@ -39,10 +40,10 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		let results = [];
 		for (const target of targets) {
 			const pendingDamage = (isCrit ? 2 : 1) * ((target.protection > 0 ? 0 : bonusDamage) + baseDamage);
-			results.push(dealDamage([target], user, pendingDamage, false, user.element, adventure));
+			results.push(...dealDamage([target], user, pendingDamage, false, user.element, adventure));
 		}
 		changeStagger(targets, "elementMatchFoe");
-		return results.join(" ");
+		return results;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
@@ -61,7 +62,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		if (!(empowered.length > 0 || protected.length > 0)) {
 			return "But nothing happened.";
 		}
-		return `${joinAsStatement(empowered.map(c => c.name), false, "was", "were", "Powered Up!") + joinAsStatement(protected.map(c => c.name), false, "was", "were", "Protected.")}`;
+		return [joinAsStatement(empowered.map(c => c.name), false, "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}!`), joinAsStatement(protected.map(c => c.name), false, "gains", "gain", "protection.")];
 	},
 	selector: selectAllCombatants,
 	needsLivingTargets: true,

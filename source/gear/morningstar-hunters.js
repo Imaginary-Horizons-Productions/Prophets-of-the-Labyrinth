@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger, getNames, addModifier } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Hunter's Morning Star",
@@ -20,17 +21,16 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 			pendingDamage *= critMultiplier;
 		}
 		changeStagger(targets, stagger);
-		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
-		const originalTargetCount = targets.length;
-		targets = targets.filter(target => target.hp > 0);
-		if (targets.length < originalTargetCount) {
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length < targets.length) {
 			const addedPowerUp = addModifier([user], powerUp).length > 0;
 			if (addedPowerUp) {
-				resultSentences.push(`${getNames([user], adventure)[0]} was Powered Up.`);
+				resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
 			}
 		}
-		resultSentences.push(joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered."))
-		return resultSentences.join(" ");
+		resultLines.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."))
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Awesome Morning Star", "Bashing Morning Star")

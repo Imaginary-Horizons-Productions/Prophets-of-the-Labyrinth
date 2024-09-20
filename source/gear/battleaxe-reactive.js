@@ -1,5 +1,6 @@
 const { GearTemplate, Move } = require('../classes/index.js');
 const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Reactive Battleaxe",
 	[
@@ -24,8 +25,12 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const addedExposed = addModifier([user], exposed).length > 0;
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${addedExposed ? ` ${getNames([user], adventure)[0]} is Exposed.` : ""}`;
+		if (addedExposed) {
+			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Furious Battleaxe", "Thirsting Battleaxe")

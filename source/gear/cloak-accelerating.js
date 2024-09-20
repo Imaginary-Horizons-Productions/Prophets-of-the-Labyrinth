@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { accuratePassive } = require('./descriptions/passives.js');
 
 module.exports = new GearTemplate("Accelerating Cloak",
@@ -26,16 +26,16 @@ module.exports = new GearTemplate("Accelerating Cloak",
 		const results = [];
 		const addedEvade = addModifier([user], pendingEvade).length > 0;
 		if (addedEvade) {
-			results.push("prepared to Evade");
+			results.push(getApplicationEmojiMarkdown("Evade"));
 		}
 		const addedQuicken = addModifier([user], pendingQuicken).length > 0;
 		if (addedQuicken) {
-			results.push("Quickened");
+			results.push(getApplicationEmojiMarkdown("Quicken"));
 		}
 		if (results.length > 0) {
-			return `${getNames([user], adventure)[0]} is ${listifyEN(results)}.`;
+			return [`${getNames([user], adventure)[0]} gains ${results.join("")}.`];
 		} else {
-			return "But nothing happened.";
+			return [];
 		}
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })

@@ -1,5 +1,6 @@
 const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Heat Mirage",
 	[
@@ -18,11 +19,11 @@ module.exports = new GearTemplate("Heat Mirage",
 		if (isCrit) {
 			pendingEvade.stacks *= critMultiplier;
 		}
-		const resultSentences = [];
+		const resultLines = [];
 		const [userName, targetName] = getNames([user, target], adventure);
 		const addedEvade = addModifier([user], pendingEvade).length > 0;
 		if (addedEvade) {
-			resultSentences.push(`${userName} prepares to Evade.`);
+			resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Evade")}.`);
 		}
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
@@ -34,13 +35,9 @@ module.exports = new GearTemplate("Heat Mirage",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultSentences.push(`${targetName} falls for the provocation.`);
+			resultLines.push(`${targetName} falls for the provocation.`);
 		}
-		if (resultSentences.length > 0) {
-			return resultSentences.join(" ");
-		} else {
-			return "But nothing happened.";
-		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Evasive Heat Mirage", "Unlucky Heat Mirage", "Vigilant Heat Mirage")

@@ -11,6 +11,6 @@ module.exports = new ItemTemplate("Protection Potion",
 	false,
 	(targets, user, isCrit, adventure) => {
 		addProtection(targets, 50);
-		return joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "protection.");
+		return [joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "protection.")];
 	}
 );
