@@ -12,7 +12,7 @@ module.exports = new ItemTemplate("Smoke Bomb",
 	(targets, user, isCrit, adventure) => {
 		const addedEvade = addModifier([user], { name: "Evade", stacks: 2 }).length > 0;
 		if (addedEvade) {
-			return `${getNames([user], adventure)[0]} prepares to ${getApplicationEmojiMarkdown("Evade")}.`;
+			return [`${getNames([user], adventure)[0]} prepares to ${getApplicationEmojiMarkdown("Evade")}.`];
 		} else {
 			return [];
 		}

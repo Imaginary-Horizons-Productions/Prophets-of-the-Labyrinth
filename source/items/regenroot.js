@@ -12,7 +12,7 @@ module.exports = new ItemTemplate("Regen Root",
 	(targets, user, isCrit, adventure) => {
 		const addedRegen = addModifier([user], { name: "Regen", stacks: 5 }).length > 0;
 		if (addedRegen) {
-			return `${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Regen")}.`;
+			return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Regen")}.`];
 		} else {
 			return [];
 		}

@@ -26,7 +26,7 @@ module.exports = new ItemTemplate("Panacea",
 		}
 
 		if (removedDebuffs.length > 1) {
-			return `${getNames([user], adventure)[0]} is cured of ${removedDebuffs.join("")}.`;
+			return [`${getNames([user], adventure)[0]} is cured of ${removedDebuffs.join("")}.`];
 		} else {
 			return [];
 		}

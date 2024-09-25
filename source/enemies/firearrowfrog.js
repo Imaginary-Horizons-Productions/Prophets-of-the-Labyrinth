@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		const addedEvade = addModifier([user], { name: "Evade", stacks }).length > 0;
 		changeStagger([user], "elementMatchAlly");
 		if (addedEvade) {
-			return `${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Evade")}.`;
+			return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Evade")}.`];
 		} else {
 			return [];
 		}

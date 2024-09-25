@@ -11,6 +11,6 @@ module.exports = new ItemTemplate("Stasis Quartz",
 	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier([user], { name: "Stasis", stacks: 1 });
-		return `${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Stasis")}.`;
+		return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Stasis")}.`];
 	}
 );

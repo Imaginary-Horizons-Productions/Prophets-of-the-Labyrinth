@@ -491,7 +491,6 @@ function resolveMove(move, adventure) {
 					results.push(`${listifyEN(getNames(deadTargets, adventure), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 				}
 
-				headline += ".";
 				results.push(...effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure));
 				if (move.type === "gear" && move.userReference.team === "delver") {
 					const breakText = decrementDurability(move.name, user, adventure);
@@ -505,7 +504,6 @@ function resolveMove(move, adventure) {
 				headline += `, but all targets were already dead!`;
 			}
 		} else {
-			headline += ".";
 			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
 			results.push(...effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure));
 			if (move.type === "gear" && move.userReference.team === "delver") {
