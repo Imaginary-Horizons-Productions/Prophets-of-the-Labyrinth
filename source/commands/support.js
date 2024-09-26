@@ -1,8 +1,9 @@
+const { InteractionContextType } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { embedTemplate } = require('../util/embedUtil');
 
 const mainId = "support";
-module.exports = new CommandWrapper(mainId, "List ways to support PotL", null, false, true, 3000,
+module.exports = new CommandWrapper(mainId, "List ways to support PotL", null, false, [InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel], 3000,
 	(interaction) => {
 		interaction.reply({
 			embeds: [

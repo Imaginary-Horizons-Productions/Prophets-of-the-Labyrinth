@@ -1,10 +1,10 @@
-const { PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits, InteractionContextType } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { listifyEN } = require('../util/textUtil');
 
 const mainId = "share-seed";
-module.exports = new CommandWrapper(mainId, "Recommend this seed and Labyrinth to someone", PermissionFlagsBits.SendMessages, false, false, 300000,
+module.exports = new CommandWrapper(mainId, "Recommend this seed and Labyrinth to someone", PermissionFlagsBits.SendMessages, false, [InteractionContextType.Guild], 300000,
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure) {

@@ -1,4 +1,4 @@
-const { PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits, InteractionContextType } = require('discord.js');
 const { CommandWrapper } = require('../../classes');
 const { getAdventure } = require('../../orcustrators/adventureOrcustrator');
 const { createSubcommandMappings } = require('../../util/fileUtil');
@@ -8,7 +8,7 @@ const { slashData: subcommandSlashData, executeDictionary: subcommandExecuteDict
 	"partystats.js",
 	"inspectself.js"
 ]);
-module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000,
+module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.SendMessagesInThreads, false, [InteractionContextType.Guild], 3000,
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure) {
