@@ -224,7 +224,7 @@ function addModifier(combatants, { name: modifier, stacks: pendingStacks, force 
 		resultLines.push(joinAsStatement(false, affectedCombatants, "gains", "gain", `${getApplicationEmojiMarkdown(modifier)}.`));
 	}
 	if (obliviousCombatants.length > 0) {
-		obliviousCombatants.push(joinAsStatement(false, obliviousCombatants, "is", "are", `oblivious to ${getApplicationEmojiMarkdown(modifier)}.`));
+		resultLines.push(joinAsStatement(false, obliviousCombatants, "is", "are", `oblivious to ${getApplicationEmojiMarkdown(modifier)}.`));
 	}
 	return resultLines;
 }
