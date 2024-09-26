@@ -1,7 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
 const { addModifier } = require("../util/combatantUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new ItemTemplate("Watery Potion",
 	"Grants the user 3 @e{Water Absorb}",
@@ -10,11 +9,6 @@ module.exports = new ItemTemplate("Watery Potion",
 	selectSelf,
 	false,
 	(targets, user, isCrit, adventure) => {
-		const addedAbsorb = addModifier([user], { name: "Water Absorb", stacks: 3 }).length > 0;
-		if (addedAbsorb) {
-			return [`${user.name} gains ${getApplicationEmojiMarkdown("Water Absorb")}.`];
-		} else {
-			return [];
-		}
+		return addModifier([user], { name: "Water Absorb", stacks: 3 });
 	}
 ).setFlavorText({ name: "*Additional Note*", value: "Apply directly to the forehead." });

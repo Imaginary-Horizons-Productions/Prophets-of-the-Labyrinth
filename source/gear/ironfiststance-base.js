@@ -1,7 +1,7 @@
 const { GearTemplate } = require("../classes");
 const { addModifier, changeStagger, enterStance } = require("../util/combatantUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
-const { joinAsStatement, listifyEN } = require("../util/textUtil");
+const { listifyEN } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Iron Fist Stance",
 	[
@@ -32,10 +32,7 @@ module.exports = new GearTemplate("Iron Fist Stance",
 
 		if (isCrit) {
 			const foeTeam = user.team === "delver" ? adventure.room.enemies.filter(foe => foe.hp > 0) : adventure.delvers;
-			const frailedTargets = addModifier(foeTeam, frail);
-			if (frailedTargets.length > 0) {
-				resultLines.push(joinAsStatement(false, frailedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Frail")}.`));
-			}
+			resultLines.push(...addModifier(foeTeam, frail));
 		}
 
 		return resultLines;

@@ -1,8 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Distracting Prismatic Blast",
 	[
@@ -21,12 +19,7 @@ module.exports = new GearTemplate("Distracting Prismatic Blast",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const distractedTargets = addModifier(targets, distracted);
-		if (distractedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, distractedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Distracted")}.`));
-		}
-		return resultLines;
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(addModifier(targets, distracted));
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Prismatic Blast", "Vexing Prismatic Blast")

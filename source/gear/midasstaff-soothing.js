@@ -23,12 +23,14 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const addedCurse = addModifier([target], pendingCurse).length > 0;
+		const addedCurse = target.getModifierStacks("Oblivious") < 1;
+		addModifier([target], pendingCurse);
 		const addedModifiers = [];
 		if (addedCurse) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Curse of Midas"));
 		}
-		const addedRegen = addModifier([target], regen).length > 0;
+		const addedRegen = target.getModifierStacks("Oblivious") < 1;
+		addModifier([target], regen);
 		if (addedRegen) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Regen"));
 		}

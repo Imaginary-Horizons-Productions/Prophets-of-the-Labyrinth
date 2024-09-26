@@ -26,12 +26,14 @@ module.exports = new GearTemplate("Sabotage Kit",
 			changeStagger([target], "elementMatchFoe");
 		}
 		const debuffs = [];
-		const addedSlow = addModifier([target], pendingSlow).length > 0;
+		const addedSlow = target.getModifierStacks("Oblivious") < 1;
+		addModifier([target], pendingSlow);
 		if (addedSlow) {
 			debuffs.push(getApplicationEmojiMarkdown("Slow"));
 		}
 		if (weaknessPool.length > 0) {
-			const addedWeakness = addModifier([target], pendingWeakness).length > 0;
+			const addedWeakness = target.getModifierStacks("Oblivious") < 1;
+			addModifier([target], pendingWeakness);
 			if (addedWeakness) {
 				debuffs.push(getApplicationEmojiMarkdown(pendingWeakness.name));
 			}

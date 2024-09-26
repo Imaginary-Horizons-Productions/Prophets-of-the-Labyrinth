@@ -11,27 +11,20 @@ module.exports = new GearTemplate("Fate-Sealing Corrosion",
 	"Fire",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, modifiers: [powerDown, stasis], bonus } = module.exports;
+		const { element, modifiers: [powerDown, retain], bonus } = module.exports;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const resultLines = [];
-		const poweredDownTargets = addModifier(targets, powerDown);
-		if (poweredDownTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, poweredDownTargets.map(target => target.name), "is", "are", "Powered Down."));
-		}
+		const resultLines = addModifier(targets, powerDown);
 		if (isCrit) {
 			changeStagger(targets, bonus);
-			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
-			const sealedTargets = addModifier(targets, stasis);
-			if (sealedTargets.length > 0) {
-				resultLines.push(joinAsStatement(false, sealedTargets.map(target => target.name), "enters", "enter", "Stasis."));
-			}
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."),
+				...addModifier(targets, retain));
 		}
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Harmful Corrosion", "Shattering Corrosion")
-	.setModifiers({ name: "Power Down", stacks: 20 }, { name: "Stasis", stacks: 1 })
+	.setModifiers({ name: "Power Down", stacks: 20 }, { name: "Retain", stacks: 1 })
 	.setBonus(2) // Crit Stagger
 	.setDurability(15);

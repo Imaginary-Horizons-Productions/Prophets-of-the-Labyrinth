@@ -33,12 +33,13 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
-		const addedPoison = addModifier([target], poison).length > 0;
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
+			const addedPoison = target.getModifierStacks("Oblivious") < 1;
+			addModifier([target], poison);
 			resultLines.push(`${target.name} falls for the provocation${addedPoison ? ` and gains ${getApplicationEmojiMarkdown("Poison")}` : ""}.`);
-		} else if (addedPoison) {
-			resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Poison")}.`);
+		} else {
+			resultLines.push(...addModifier([target], poison));
 		}
 		return resultLines;
 	}

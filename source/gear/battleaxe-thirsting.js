@@ -27,11 +27,7 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 			}
 		})
 		resultLines.push(gainHealth(user, healing * killCount, adventure));
-		const addedExposed = addModifier([user], exposed).length > 0;
-		if (addedExposed) {
-			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
-		}
-		return resultLines;
+		return resultLines.concat(addModifier([user], exposed));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Furious Battleaxe", "Reactive Battleaxe")

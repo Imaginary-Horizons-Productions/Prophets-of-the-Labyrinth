@@ -23,8 +23,10 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const addedCurse = addModifier([target], pendingCurse).length > 0;
-		const addedQuicken = addModifier([user], quicken).length > 0;
+		const addedCurse = target.getModifierStacks("Oblivious") < 1;
+		addModifier([target], pendingCurse);
+		const addedQuicken = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], quicken);
 		const resultLines = [];
 		if (target.name === user.name) {
 			const userEffects = [];

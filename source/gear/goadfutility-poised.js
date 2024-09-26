@@ -1,6 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Poised Goad Futility",
 	[
@@ -16,7 +15,7 @@ module.exports = new GearTemplate("Poised Goad Futility",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		addModifier([user], oblivious);
+		const resultLines = addModifier([user], oblivious);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -25,16 +24,12 @@ module.exports = new GearTemplate("Poised Goad Futility",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
-		const resultLines = [`${user.name} gains ${getApplicationEmojiMarkdown("Oblivious")}.`];
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		if (isCrit) {
-			const addedUnlucky = addModifier([target], unlucky).length > 0;
-			if (addedUnlucky) {
-				resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Unlucky")}.`);
-			}
+			resultLines.push(...addModifier([target], unlucky));
 		}
 		return resultLines;
 	}

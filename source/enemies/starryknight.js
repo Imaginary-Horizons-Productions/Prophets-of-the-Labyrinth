@@ -5,7 +5,6 @@ const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents")
 const { dealDamage, addModifier, changeStagger, addProtection } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
-const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new EnemyTemplate("Starry Knight",
 	"Light",
@@ -83,8 +82,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		if (isCrit) {
 			addProtection([user], 100);
 		}
-		const frailedTargets = addModifier(targets, { name: "Exposed", stacks: 1 });
-		const resultLines = [joinAsStatement(false, frailedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`)];
+		const resultLines = addModifier(targets, { name: "Exposed", stacks: 1 });
 		const insultMap = {};
 		addNewRandomInsults(insultMap, targets, 1, adventure);
 		return resultLines.concat(Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${insultList.join("")}.`));
@@ -103,12 +101,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		if (isCrit) {
 			pendingDamage *= 2;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, "Light", adventure);
-		const distractedTargets = addModifier(targets, { name: "Distracted", stacks: 4 });
-		if (distractedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, distractedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Distracted")}.`));
-		}
-		return resultLines;
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(addModifier(targets, { name: "Distracted", stacks: 4 }));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
@@ -130,7 +123,8 @@ function addNewRandomInsults(insultMap, combatants, count, adventure) {
 			}
 			const insultIndex = adventure.generateRandomNumber(availableInsults.length, "battle");
 			const rolledInsult = availableInsults[insultIndex];
-			const didAddInsult = addModifier([combatant], { name: rolledInsult, stacks: 1 }).length > 0;
+			const didAddInsult = combatant.getModifierStacks("Oblivious") < 1;
+			addModifier([combatant], { name: rolledInsult, stacks: 1 });
 			if (didAddInsult) {
 				if (combatant.name in insultMap) {
 					insultMap[combatant.name].push(getApplicationEmojiMarkdown(rolledInsult));

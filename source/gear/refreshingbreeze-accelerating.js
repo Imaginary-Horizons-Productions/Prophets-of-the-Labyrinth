@@ -2,7 +2,6 @@ const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { listifyEN, joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 	[
@@ -26,7 +25,8 @@ module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 				for (let i = 0; i < debuffsToRemove; i++) {
 					const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
 					const rolledDebuff = targetDebuffs[debuffIndex];
-					const wasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
+					const wasRemoved = target.getModifierStacks("Retain") < 1;
+					removeModifier([target], { name: rolledDebuff, stacks: "all" });
 					if (wasRemoved) {
 						removedDebuffs.push(rolledDebuff);
 						targetDebuffs.splice(debuffIndex, 1);
@@ -37,11 +37,7 @@ module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 				}
 			}
 		}
-		const quickenedTargets = addModifier(targets, quicken);
-		if (quickenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, quickenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Quicken")}.`));
-		}
-		return resultLines;
+		return resultLines.concat(addModifier(targets, quicken));
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Supportive Refreshing Breeze", "Swift Refreshing Breeze")

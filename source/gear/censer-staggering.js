@@ -1,7 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Staggering Censer",
 	[
@@ -23,10 +22,7 @@ module.exports = new GearTemplate("Staggering Censer",
 		changeStagger([target], stagger);
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			const addedSlow = addModifier([target], slow).length > 0;
-			if (addedSlow) {
-				resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Slow")}.`);
-			}
+			resultLines.push(...addModifier([target], slow));
 		}
 		return resultLines;
 	}

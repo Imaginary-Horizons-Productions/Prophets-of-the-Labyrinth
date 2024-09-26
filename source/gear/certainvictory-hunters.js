@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, payHP, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Hunter's Certain Victory",
 	[
@@ -20,15 +19,11 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = [dealDamage([target], user, pendingDamage, false, element, adventure)];
+		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (target.hp < 1) {
 			pendingPowerUp.stacks += huntersPowerUp.stacks;
 		}
-		const addedPowerUp = addModifier([user], powerUp).length > 0;
-		if (addedPowerUp) {
-			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
-		}
-		resultLines.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
+		resultLines.push(...addModifier([user], powerUp).length, payHP(user, user.getModifierStacks("Power Up"), adventure));
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

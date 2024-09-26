@@ -18,7 +18,8 @@ module.exports = new ItemTemplate("Panacea",
 		for (let i = 0; i < debuffsToRemove; i++) {
 			const debuffIndex = adventure.generateRandomNumber(userDebuffs.length, "battle");
 			const rolledDebuff = userDebuffs[debuffIndex];
-			const wasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
+			const wasRemoved = user.getModifierStacks("Retain") < 1;
+			removeModifier([user], { name: rolledDebuff, stacks: "all" });
 			if (wasRemoved) {
 				removedDebuffs.push(getApplicationEmojiMarkdown(rolledDebuff));
 				userDebuffs.splice(debuffIndex, 1);

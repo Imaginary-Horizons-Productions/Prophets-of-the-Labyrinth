@@ -1,6 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Staggering Shoulder Throw",
 	[
@@ -29,10 +28,7 @@ module.exports = new GearTemplate("Staggering Shoulder Throw",
 			resultLines.push(`${target.name} is redirected into targeting themself.`);
 		}
 		if (isCrit) {
-			const addedEvade = addModifier([user], evade).length > 0;
-			if (addedEvade) {
-				resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`);
-			}
+			resultLines.push(...addModifier([user], evade));
 		}
 		return resultLines;
 	}

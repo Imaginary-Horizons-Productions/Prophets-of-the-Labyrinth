@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { gainHealth, changeStagger, addModifier } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Soothing Second Wind",
 	[
@@ -19,12 +18,7 @@ module.exports = new GearTemplate("Soothing Second Wind",
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		const resultLines = [gainHealth(user, pendingHealing, adventure)];
-		const addedRegen = addModifier([user], regen).length > 0;
-		if (addedRegen) {
-			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Regen")}.`);
-		}
-		return resultLines;
+		return [gainHealth(user, pendingHealing, adventure), ...addModifier([user], regen)];
 	}
 ).setTargetingTags({ type: "self", team: "none", needsLivingTargets: true })
 	.setSidegrades("Cleansing Second Wind", "Lucky Second Wind")

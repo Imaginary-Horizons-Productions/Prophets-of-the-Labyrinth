@@ -3,8 +3,6 @@ const { dealDamage, addModifier, changeStagger } = require("../util/combatantUti
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 
 module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
@@ -22,8 +20,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 10;
 		changeStagger(targets, "elementMatchFoe");
-		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 });
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, poisonedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
+		return dealDamage(targets, user, damage, false, user.element, adventure).concat(addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 }));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -34,23 +31,12 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	description: "Gain Evade, gain Agility on Critical Hit",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const addedModifiers = [];
-		const addedEvade = addModifier([user], { name: "Evade", stacks: 2 }).length > 0;
-		if (addedEvade) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
-		}
+		const resultLines = addModifier([user], { name: "Evade", stacks: 2 });
 		if (isCrit) {
-			const addedAgility = addModifier([user], { name: "Agility", stacks: 1 }).length > 0;
-			if (addedAgility) {
-				addedModifiers.push(getApplicationEmojiMarkdown("Agility"));
-			}
+			resultLines.push(...addModifier([user], { name: "Agility", stacks: 1 }));
 		}
 		changeStagger([user], "elementMatchAlly");
-		if (addedModifiers.length > 0) {
-			return [`${user.name} gains ${addedModifiers.join("")}.`]
-		} else {
-			return [];
-		}
+		return resultLines;
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,

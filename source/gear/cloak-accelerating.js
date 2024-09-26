@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { accuratePassive } = require('./descriptions/passives.js');
 
 module.exports = new GearTemplate("Accelerating Cloak",
@@ -23,20 +22,7 @@ module.exports = new GearTemplate("Accelerating Cloak",
 			pendingEvade.stacks += bonus;
 			pendingQuicken.stacks += bonus;
 		}
-		const results = [];
-		const addedEvade = addModifier([user], pendingEvade).length > 0;
-		if (addedEvade) {
-			results.push(getApplicationEmojiMarkdown("Evade"));
-		}
-		const addedQuicken = addModifier([user], pendingQuicken).length > 0;
-		if (addedQuicken) {
-			results.push(getApplicationEmojiMarkdown("Quicken"));
-		}
-		if (results.length > 0) {
-			return [`${user.name} gains ${results.join("")}.`];
-		} else {
-			return [];
-		}
+		return addModifier([user], pendingEvade).concat(addModifier([user], pendingQuicken));
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Accurate Cloak", "Evasive Cloak")

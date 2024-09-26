@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Poison Torrent",
 	[
@@ -21,12 +19,7 @@ module.exports = new GearTemplate("Staggering Poison Torrent",
 			changeStagger(targets, "elementMatchFoe");
 		}
 		changeStagger(targets, stagger);
-		const resultLines = ["All foes were Staggered."];
-		const poisonedTargets = addModifier(targets, pendingPoison);
-		if (poisonedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, poisonedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`));
-		}
-		return resultLines;
+		return ["All foes were Staggered.", ...addModifier(targets, pendingPoison)];
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Distracting Poison Torrent", "Harmful Poison Torrent")

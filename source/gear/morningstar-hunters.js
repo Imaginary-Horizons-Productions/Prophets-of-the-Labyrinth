@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Hunter's Morning Star",
@@ -24,10 +23,7 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length < targets.length) {
-			const addedPowerUp = addModifier([user], powerUp).length > 0;
-			if (addedPowerUp) {
-				resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
-			}
+			resultLines.push(...addModifier([user], powerUp));
 		}
 		resultLines.push(joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered."))
 		return resultLines;

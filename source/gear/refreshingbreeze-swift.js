@@ -27,7 +27,8 @@ module.exports = new GearTemplate("Swift Refreshing Breeze",
 				for (let i = 0; i < debuffsToRemove; i++) {
 					const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
 					const rolledDebuff = targetDebuffs[debuffIndex];
-					const wasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
+					const wasRemoved = target.getModifierStacks("Retain") < 1;
+					removeModifier([target], { name: rolledDebuff, stacks: "all" });
 					if (wasRemoved) {
 						removedDebuffs.push(getApplicationEmojiMarkdown(rolledDebuff));
 						targetDebuffs.splice(debuffIndex, 1);

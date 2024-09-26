@@ -20,11 +20,13 @@ module.exports = new GearTemplate("Vigilant Heat Mirage",
 			pendingEvade.stacks *= critMultiplier;
 		}
 		const userResults = [];
-		const addedEvade = addModifier([user], pendingEvade).length > 0;
+		const addedEvade = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], pendingEvade);
 		if (addedEvade) {
 			userResults.push(getApplicationEmojiMarkdown("Evade"));
 		}
-		const addedVigilance = addModifier([user], vigilance).length > 0;
+		const addedVigilance = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], vigilance);
 		if (addedVigilance) {
 			userResults.push(getApplicationEmojiMarkdown("Vigilance"));
 		}

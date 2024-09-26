@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { payHP, dealDamage, changeStagger } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Hunter's Power from Wrath",
 	[
@@ -25,10 +24,7 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 			resultLines.push(...dealDamage(targets, user, pendingDamage, false, element, adventure));
 			const stillLivingTargets = targets.filter(target => target.hp > 0);
 			if (stillLivingTargets.length < targets.length) {
-				const addedPowerUp = addModifier([user], powerUp).length > 0;
-				if (addedPowerUp) {
-					resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
-				}
+				resultLines.push(...addModifier([user], powerUp));
 			}
 		}
 		return resultLines;

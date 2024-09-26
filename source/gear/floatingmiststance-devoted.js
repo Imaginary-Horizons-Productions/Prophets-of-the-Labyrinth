@@ -22,7 +22,8 @@ module.exports = new GearTemplate("Devoted Floating Mist Stance",
 			addedModifiers.push(getApplicationEmojiMarkdown("Floating Mist Stance"));
 		}
 		if (isCrit) {
-			const addedEvade = addModifier([target], displayEvade).length > 0;
+			const addedEvade = target.getModifierStacks("Oblivious") < 1;
+			addModifier([target], displayEvade);
 			if (addedEvade) {
 				addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 			}

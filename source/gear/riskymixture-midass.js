@@ -21,17 +21,20 @@ module.exports = new GearTemplate("Midas's Risky Mixture",
 		}
 		const addedModifiers = [];
 		if (isCrit) {
-			const addedRegen = addModifier([target], regen).length > 0;
+			const addedRegen = target.getModifierStacks("Oblivious") < 1;
+			addModifier([target], regen);
 			if (addedRegen) {
 				addedModifiers.push(getApplicationEmojiMarkdown("Regen"));
 			}
 		} else {
-			const addedPoison = addModifier([target], poison).length > 0;
+			const addedPoison = target.getModifierStacks("Oblivious") < 1;
+			addModifier([target], poison);
 			if (addedPoison) {
 				addedModifiers.push(getApplicationEmojiMarkdown("Poison"));
 			}
 		}
-		const addedCurse = addModifier([target], curseOfMidas).length > 0;
+		const addedCurse = target.getModifierStacks("Oblivious") < 1;
+		addModifier([target], curseOfMidas);
 		if (addedCurse) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Curse of Midas"));
 		}

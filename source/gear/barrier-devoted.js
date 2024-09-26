@@ -21,11 +21,13 @@ module.exports = new GearTemplate("Devoted Barrier",
 			pendingVigilance.stacks *= critMultiplier;
 		}
 		const addedModifiers = [];
-		const addedVigilance = addModifier(targets, vigilance).length > 0;
+		const addedVigilance = targets[0].getModifierStacks("Oblivious") < 1;
+		addModifier(targets, vigilance);
 		if (addedVigilance) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Vigilance"));
 		}
-		const addedEvade = addModifier(targets, evade).length > 0;
+		const addedEvade = targets[0].getModifierStacks("Oblivious") < 1;
+		addModifier(targets, evade);
 		if (addedEvade) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 		}

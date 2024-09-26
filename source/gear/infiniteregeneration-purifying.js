@@ -2,7 +2,6 @@ const { GearTemplate } = require('../classes/index.js');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 const { addModifier, payHP, changeStagger, removeModifier } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Purifying Infinite Regeneration",
 	[
@@ -25,16 +24,13 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		const resultLines = [paymentSentence];
-		const regenedTargets = addModifier(targets, regen);
-		if (regenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, regenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
-		}
+		const resultLines = [paymentSentence, ...addModifier(targets, regen)];
 		for (const target of targets) {
 			const curedDebuffs = [];
 			Object.keys(target.modifiers).forEach(modifier => {
 				if (isDebuff(modifier)) {
-					const didRemoveDebuff = removeModifier([target], { name: modifier, stacks: "all" }).length > 0;
+					const didRemoveDebuff = target.getModifierStacks("Retain") < 1;
+					removeModifier([target], { name: modifier, stacks: "all" });
 					if (didRemoveDebuff) {
 						curedDebuffs.push(getApplicationEmojiMarkdown(modifier));
 					}

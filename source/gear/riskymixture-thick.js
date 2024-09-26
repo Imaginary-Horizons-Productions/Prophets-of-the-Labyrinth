@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Thick Risky Mixture",
 	[
@@ -20,17 +19,10 @@ module.exports = new GearTemplate("Thick Risky Mixture",
 			}
 		}
 		if (isCrit) {
-			const addedRegen = addModifier([target], regen).length > 0;
-			if (addedRegen) {
-				return [`${target.name} gains ${getApplicationEmojiMarkdown("Regen")}.`];
-			}
+			return addModifier([target], regen);
 		} else {
-			const addedPoison = addModifier([target], poison).length > 0;
-			if (addedPoison) {
-				return [`${target.name} gains ${getApplicationEmojiMarkdown("Poison")}.`];
-			}
+			return addModifier([target], poison);
 		}
-		return [];
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Potent Risky Mixture", "Midas's Risky Mixture")

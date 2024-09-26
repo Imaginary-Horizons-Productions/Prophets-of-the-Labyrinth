@@ -20,15 +20,7 @@ module.exports = new GearTemplate("Shattering Corrosion",
 			changeStagger(targets, bonus);
 			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 		}
-		const poweredDownTargets = addModifier(targets, powerDown);
-		if (poweredDownTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, poweredDownTargets.map(target => target.name), "is", "are", "Powered Down."));
-		}
-		const frailedTargets = addModifier(targets, frail);
-		if (frailedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, frailedTargets.map(target => target.name), "becomes", "become", "Frail."));
-		}
-		return resultLines;
+		return resultLines.concat(addModifier(targets, powerDown), addModifier(targets, frail));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Corrosion", "Harmful Corrosion")

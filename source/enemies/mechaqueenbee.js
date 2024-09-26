@@ -1,7 +1,6 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, changeStagger, addProtection } = require("../util/combatantUtil.js");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
@@ -63,10 +62,12 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
-		const quickenedTargets = addModifier(filteredTargets, { name: "Quicken", stacks: 3 });
-		const poweredUpTargets = addModifier(filteredTargets, { name: "Power Up", stacks: 3 });
 		addProtection([user], isCrit ? 60 : 30);
-		return [`${user.name} gains protection.`, joinAsStatement(false, quickenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Quickened")}.`), joinAsStatement(false, poweredUpTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)];
+		return [
+			`${user.name} gains protection.`,
+			...addModifier(filteredTargets, { name: "Quicken", stacks: 3 }),
+			...addModifier(filteredTargets, { name: "Power Up", stacks: 3 })
+		];
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
@@ -109,12 +110,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger(targets, "elementMatchFoe");
-		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 5 : 3 });;
-		if (poisonedTargets.length > 0) {
-			return [joinAsStatement(false, poisonedTargets.map(target => target.name), "is", "are", "Poisoned.")];
-		} else {
-			return [];
-		}
+		return addModifier(targets, { name: "Poison", stacks: isCrit ? 5 : 3 });;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

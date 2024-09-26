@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, dealDamage, changeStagger } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Distracting Ice Bolt",
 	[
@@ -20,16 +18,7 @@ module.exports = new GearTemplate("Distracting Ice Bolt",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const slowedTargets = addModifier(targets, slow);
-		if (slowedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`));
-		}
-		const distractedTargets = addModifier(targets, distracted);
-		if (distractedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, distractedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Distracted")}.`));
-		}
-		return resultLines;
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(addModifier(targets, slow), addModifier(targets, distracted));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Awesome Ice Bolt", "Unlucky Ice Bolt")

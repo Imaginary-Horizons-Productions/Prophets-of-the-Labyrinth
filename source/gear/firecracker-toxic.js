@@ -1,8 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants.js');
 const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Toxic Firecracker",
 	[
@@ -24,10 +22,7 @@ module.exports = new GearTemplate("Toxic Firecracker",
 			if (user.element === element) {
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
-			const poisonedTargets = addModifier(stillLivingTargets, poison);
-			if (poisonedTargets.length > 0) {
-				resultLines.push(joinAsStatement(false, poisonedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`));
-			}
+			resultLines.push(...addModifier(stillLivingTargets, poison));
 		}
 		return resultLines;
 	}

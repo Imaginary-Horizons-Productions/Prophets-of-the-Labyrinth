@@ -20,11 +20,7 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 		if (isCrit) {
 			pendingEvade.stacks *= critMultiplier;
 		}
-		const resultLines = [];
-		const addedEvade = addModifier([user], pendingEvade).length > 0;
-		if (addedEvade) {
-			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`);
-		}
+		const resultLines = addModifier([user], pendingEvade);
 		const targetEffects = [];
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
@@ -38,7 +34,8 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			target.push("falls for the provocation");
 		}
-		const addedUnlucky = addModifier([target], unlucky).length > 0;
+		const addedUnlucky = target.getModifierStacks("Oblivious") < 1;
+		addModifier([target], unlucky);
 		if (addedUnlucky) {
 			targetEffects.push(`gains ${getApplicationEmojiMarkdown("Unlucky")}`);
 		}
