@@ -19,7 +19,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 ).addAction({
 	name: "Damping Wallop",
 	element: "Earth",
-	description: `Inflict ${getEmoji("Earth")} damage and remove a buff`,
+	description: `Inflict ${getEmoji("Earth")} damage and remove a random buff`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 75;
@@ -27,16 +27,13 @@ module.exports = new EnemyTemplate("Earthly Knight",
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");
-		let resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
+		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
 		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
 			if (targetBuffs.length > 0) {
 				const buffIndex = adventure.generateRandomNumber(targetBuffs.length, "battle");
 				const rolledBuff = targetBuffs[buffIndex];
-				const wasRemoved = removeModifier([target], { name: rolledBuff, stacks: "all" }).length > 0;
-				if (wasRemoved) {
-					resultLines.push(`${target.name} lost ${rolledBuff}.`);
-				}
+				resultLines.push(...removeModifier([target], { name: rolledBuff, stacks: "all" }));
 			}
 		}
 		return resultLines;

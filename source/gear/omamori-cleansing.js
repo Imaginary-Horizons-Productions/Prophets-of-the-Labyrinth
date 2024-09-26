@@ -23,7 +23,8 @@ module.exports = new GearTemplate("Cleansing Omamori",
 		}
 		addProtection([user], protection);
 		const gainedEffects = ["protection"];
-		const addedLucky = addModifier([user], pendingLucky).length > 0;
+		const addedLucky = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], pendingLucky);
 		if (addedLucky) {
 			gainedEffects.push(getApplicationEmojiMarkdown("Lucky"));
 		}
@@ -36,7 +37,8 @@ module.exports = new GearTemplate("Cleansing Omamori",
 		const debuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (debuffs.length > 0) {
 			const rolledDebuff = debuffs[adventure.generateRandomNumber(debuffs.length, "battle")];
-			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
+			const debuffWasRemoved = user.getModifierStacks("Retain") < 1;
+			removeModifier([user], { name: rolledDebuff, stacks: "all" });
 			if (debuffWasRemoved) {
 				userEffects.push(`is cured of ${rolledDebuff}`);
 			}

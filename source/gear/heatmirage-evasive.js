@@ -1,6 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Evasive Heat Mirage",
 	[
@@ -19,11 +18,7 @@ module.exports = new GearTemplate("Evasive Heat Mirage",
 		if (isCrit) {
 			pendingEvade.stacks *= critMultiplier;
 		}
-		const resultLines = [];
-		const addedEvade = addModifier([user], pendingEvade).length > 0;
-		if (addedEvade) {
-			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`);
-		}
+		const resultLines = addModifier([user], pendingEvade);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;

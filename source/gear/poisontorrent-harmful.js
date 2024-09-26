@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, dealDamage, changeStagger } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Harmful Poison Torrent",
 	[
@@ -24,10 +22,7 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 			if (user.element === element) {
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
-			const poisonedTargets = addModifier(stillLivingTargets, pendingPoison);
-			if (poisonedTargets.length > 0) {
-				resultLines.push(joinAsStatement(false, poisonedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`));
-			}
+			resultLines.push(...addModifier(stillLivingTargets, pendingPoison));
 		}
 		return resultLines;
 	}

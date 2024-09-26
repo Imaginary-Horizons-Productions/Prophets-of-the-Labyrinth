@@ -26,17 +26,20 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 			changeStagger([target], "elementMatchFoe");
 		}
 		const debuffs = [];
-		const addedSlow = addModifier([target], pendingSlow).length > 0;
+		const addedSlow = target.getModifierStacks("Oblivious") < 1;
+		addModifier([target], pendingSlow);
 		if (addedSlow) {
 			debuffs.push(getApplicationEmojiMarkdown("Slow"));
 		}
 		if (weaknessPool.length > 0) {
-			const addedWeakness = addModifier([target], pendingWeakness).length > 0;
+			const addedWeakness = target.getModifierStacks("Oblivious") < 1;
+			addModifier([target], pendingWeakness);
 			if (addedWeakness) {
 				debuffs.push(getApplicationEmojiMarkdown(pendingWeakness.name));
 			}
 		}
-		const addedFrail = addModifier([target], frail).length > 0;
+		const addedFrail = target.getModifierStacks("Oblivious") < 1;
+		addModifier([target], frail);
 		if (addedFrail) {
 			debuffs.push(getApplicationEmojiMarkdown("Frail"));
 		}

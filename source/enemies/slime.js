@@ -1,8 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("@{adventure} Slime",
 	"@{adventure}",
@@ -34,15 +32,10 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	description: "Inflict @e{Slow} on a single foe",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 		if (isCrit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (slowedTargets.length > 0) {
-			return [joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
-		} else {
-			return [];
-		}
+		return addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

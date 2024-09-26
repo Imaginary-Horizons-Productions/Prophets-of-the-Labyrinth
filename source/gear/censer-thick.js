@@ -21,10 +21,7 @@ module.exports = new GearTemplate("Thick Censer",
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			const addedSlow = addModifier([target], slow).length > 0;
-			if (addedSlow) {
-				resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Slow")}.`);
-			}
+			resultLines.push(...addModifier([target], slow));
 		}
 		return resultLines;
 	}

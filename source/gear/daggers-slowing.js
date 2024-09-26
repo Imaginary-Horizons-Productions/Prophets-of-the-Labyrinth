@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing Daggers",
 	[
@@ -23,10 +21,7 @@ module.exports = new GearTemplate("Slowing Daggers",
 			if (user.element === element) {
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
-			const slowedTargets = addModifier(stillLivingTargets, slow);
-			if (slowedTargets.length > 0) {
-				resultLines.push(joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`));
-			}
+			resultLines.push(...addModifier(stillLivingTargets, slow));
 		}
 		return resultLines;
 	}

@@ -1,9 +1,8 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier, changeStagger } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger, addProtection } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectAllCombatants } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
@@ -54,15 +53,13 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	description: `Grant @e{Power Up} to all combatants (friend and foe); Protects non-delvers on crit`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const empowered = addModifier(targets, { name: "Power Up", stacks: 20 });
-		let protected = [];
+		const resultLines = addModifier(targets, { name: "Power Up", stacks: 20 });
 		if (isCrit) {
-			protected = addModifier(adventure.room.enemies.filter(c => c.hp > 0), { name: "protection", stacks: 50 });
+			const livingEnemies = adventure.room.enemies.filter(c => c.hp > 0);
+			addProtection(livingEnemies, 50);
+			resultLines.push(joinAsStatement(false, livingEnemies.map(enemy => enemy.name), "gains", "gain", "protection."));
 		}
-		if (!(empowered.length > 0 || protected.length > 0)) {
-			return "But nothing happened.";
-		}
-		return [joinAsStatement(empowered.map(c => c.name), false, "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}!`), joinAsStatement(protected.map(c => c.name), false, "gains", "gain", "protection.")];
+		return resultLines;
 	},
 	selector: selectAllCombatants,
 	needsLivingTargets: true,

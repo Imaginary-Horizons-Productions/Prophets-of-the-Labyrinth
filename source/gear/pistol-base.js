@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Pistol",
 	[
@@ -23,10 +22,7 @@ module.exports = new GearTemplate("Pistol",
 		if (targets.some(target => getCombatantWeaknesses(target).includes(element))) {
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
-			const addedPowerUp = addModifier([ally], powerUp).length > 0;
-			if (addedPowerUp) {
-				resultLines.push(`${ally.name} gains ${getApplicationEmojiMarkdown("Power Up")}!`);
-			}
+			resultLines.push(...addModifier([ally], powerUp));
 		}
 		return resultLines;
 	}

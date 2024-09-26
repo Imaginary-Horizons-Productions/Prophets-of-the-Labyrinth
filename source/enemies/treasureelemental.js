@@ -2,8 +2,6 @@ const { EnemyTemplate } = require("../classes");
 const { selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Treasure Elemental",
 	"Earth",
@@ -58,12 +56,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			if (isCrit) {
 				stacks *= 2;
 			}
-			const slowedTargets = addModifier(targets, { name: "Slow", stacks });
-			if (slowedTargets.length > 0) {
-				return [joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
-			} else {
-				return [];
-			}
+			return addModifier(targets, { name: "Slow", stacks });
 		},
 		selector: selectAllFoes,
 		needsLivingTargets: false,

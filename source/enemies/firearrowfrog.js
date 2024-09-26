@@ -2,8 +2,6 @@ const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	"Fire",
@@ -19,9 +17,8 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	description: `Inflict minor ${getEmoji("Fire")} damage and @e{Poison} on a single foe`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 6 : 3 });
 		let damage = user.getPower() + 20;
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(true, poisonedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
+		return dealDamage(targets, user, damage, false, user.element, adventure).concat(addModifier(targets, { name: "Poison", stacks: isCrit ? 6 : 3 }));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -36,13 +33,8 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		if (isCrit) {
 			stacks *= 3;
 		}
-		const addedEvade = addModifier([user], { name: "Evade", stacks }).length > 0;
 		changeStagger([user], "elementMatchAlly");
-		if (addedEvade) {
-			return [`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`];
-		} else {
-			return [];
-		}
+		return addModifier([user], { name: "Evade", stacks }).length > 0;
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
@@ -53,15 +45,10 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	description: "Slow a single foe",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 		if (isCrit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (slowedTargets.length > 0) {
-			return [joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
-		} else {
-			return [];
-		}
+		return addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

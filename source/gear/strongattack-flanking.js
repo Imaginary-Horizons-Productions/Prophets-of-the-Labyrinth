@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Flanking Strong Attack",
 	[
@@ -20,12 +18,7 @@ module.exports = new GearTemplate("Flanking Strong Attack",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const addedExposed = addModifier(targets, exposed).length > 0;
-		if (addedExposed) {
-			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
-		}
-		return resultLines;
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(addModifier(targets, exposed));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sharpened Strong Attack", "Staggering Strong Attack")

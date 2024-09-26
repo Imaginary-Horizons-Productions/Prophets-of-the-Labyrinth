@@ -3,6 +3,7 @@ const { Combatant, Adventure } = require("../classes");
 const { getInverse, getModifierDescription, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getWeaknesses, getResistances, elementsList, getEmoji } = require("./elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
+const { joinAsStatement } = require("./textUtil.js");
 
 /**
  * @param {Combatant} target
@@ -183,10 +184,11 @@ function gainHealth(combatant, healing, adventure, source) {
  * @param {string} modifierData.name
  * @param {number} modifierData.stacks removes all if not parsable to an integer
  * @param {boolean} modifierData.force whether to ignore the Oblivious check
- * @returns {Combatant[]} the affected combatants (as opposed to being prevented by Oblivious)
  */
 function addModifier(combatants, { name: modifier, stacks: pendingStacks, force = false }) {
 	const affectedCombatants = [];
+	const obliviousCombatants = [];
+	const resultLines = [];
 	for (const combatant of combatants) {
 		// Oblivious only blocks buffs and debuffs
 		if (force || !("Oblivious" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
@@ -209,13 +211,22 @@ function addModifier(combatants, { name: modifier, stacks: pendingStacks, force 
 			if (combatant.getModifierStacks("Progress") >= 100) {
 				combatant.modifiers.Progress = 0;
 				addModifier([combatant], { name: "Power Up", stacks: 100, force: false });
+				resultLines.push(`Eureka! ${combatant.name}'s ${getApplicationEmojiMarkdown("Progress")} yields ${getApplicationEmojiMarkdown("Power Up")}!`);
+			} else {
+				affectedCombatants.push(combatant.name);
 			}
-			affectedCombatants.push(combatant);
 		} else {
 			removeModifier([combatant], { name: "Oblivious", stacks: 1, force: true });
+			obliviousCombatants.push(combatant.name);
 		}
 	}
-	return affectedCombatants;
+	if (affectedCombatants.length > 0) {
+		resultLines.push(joinAsStatement(false, affectedCombatants, "gains", "gain", `${getApplicationEmojiMarkdown(modifier)}.`));
+	}
+	if (obliviousCombatants.length > 0) {
+		resultLines.push(joinAsStatement(false, obliviousCombatants, "is", "are", `oblivious to ${getApplicationEmojiMarkdown(modifier)}.`));
+	}
+	return resultLines;
 }
 
 /** After decrementing a modifier's stacks, delete the modifier's entry in the object
@@ -223,14 +234,14 @@ function addModifier(combatants, { name: modifier, stacks: pendingStacks, force 
  * @param {object} modifierData
  * @param {string} modifierData.name
  * @param {number} modifierData.stacks removes all if not parsable to an integer
- * @param {boolean} modifierData.force whether to ignore the Stasis check (eg buffs/debuffs consuming themselves)
- * @returns {Combatant[]} if the modifier was decremented (as opposed to being prevented by Stasis)
+ * @param {boolean} modifierData.force whether to ignore the Retain check (eg buffs/debuffs consuming themselves)
  */
 function removeModifier(combatants, { name: modifier, stacks, force = false }) {
 	const affectedCombatants = [];
+	const retainingCombatants = [];
 	for (const combatant of combatants) {
-		// Stasis only protects buffs and debuffs
-		if (force || !("Stasis" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
+		// Retain only protects buffs and debuffs
+		if (force || !("Retain" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
 			const didHaveModifier = modifier in combatant.modifiers;
 			if (isNaN(parseInt(stacks)) || stacks >= combatant.modifiers[modifier]) {
 				delete combatant.modifiers[modifier];
@@ -238,13 +249,21 @@ function removeModifier(combatants, { name: modifier, stacks, force = false }) {
 				combatant.modifiers[modifier] -= stacks;
 			}
 			if (didHaveModifier) {
-				affectedCombatants.push(combatant);
+				affectedCombatants.push(combatant.name);
 			}
 		} else {
-			removeModifier([combatant], { name: "Stasis", stacks: 1, force: true });
+			removeModifier([combatant], { name: "Retain", stacks: 1, force: true });
+			retainingCombatants.push(combatant.name);
 		}
 	}
-	return affectedCombatants;
+	const resultLines = [];
+	if (affectedCombatants.length > 0) {
+		resultLines.push(joinAsStatement(false, affectedCombatants, "loses", "lose", `${getApplicationEmojiMarkdown(modifier)}.`));
+	}
+	if (retainingCombatants.length > 0) {
+		resultLines.push(joinAsStatement(false, retainingCombatants, "retains", "retain", `${getApplicationEmojiMarkdown(modifier)}.`));
+	}
+	return resultLines;
 }
 
 const ALL_STANCES = ["Iron Fist Stance", "Floating Mist Stance"];
@@ -256,13 +275,13 @@ const ALL_STANCES = ["Iron Fist Stance", "Floating Mist Stance"];
 function enterStance(combatant, stanceModifier) {
 	const stancesRemoved = [];
 	ALL_STANCES.filter(stanceToCheck => stanceToCheck !== stanceModifier.name).forEach(stanceToRemove => {
-		const didRemoveStance = removeModifier([combatant], { name: stanceToRemove, stacks: "all", force: true }).length > 0;
-		if (didRemoveStance) {
+		if (stanceToRemove in combatant.modifiers) {
+			removeModifier([combatant], { name: stanceToRemove, stacks: "all", force: true });
 			stancesRemoved.push(stanceToRemove);
 		}
 	});
-	const didAddStance = addModifier([combatant], stanceModifier).length > 0;
-	return { didAddStance, stancesRemoved };
+	addModifier([combatant], stanceModifier);
+	return { didAddStance: combatant.getModifierStacks("Oblivious") < 1, stancesRemoved };
 }
 
 /** add Stagger, negative values allowed

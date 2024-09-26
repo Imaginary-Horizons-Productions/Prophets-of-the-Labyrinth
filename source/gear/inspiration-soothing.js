@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Soothing Inspiration",
 	[
@@ -20,16 +18,7 @@ module.exports = new GearTemplate("Soothing Inspiration",
 		if (isCrit) {
 			pendingPowerUp.stacks += bonus;
 		}
-		const resultLines = [];
-		const poweredUpTargets = addModifier(targets, pendingPowerUp);
-		if (poweredUpTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, poweredUpTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`));
-		}
-		const regenedTargets = addModifier(targets, regen);
-		if (regenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, regenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
-		}
-		return resultLines;
+		return addModifier(targets, pendingPowerUp).concat(addModifier(targets, regen));
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Inspiration", "Sweeping Inspiration")

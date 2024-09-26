@@ -21,19 +21,16 @@ module.exports = new EnemyTemplate("Elkemist",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger([user], "elementMatchAlly");
-		if (isCrit) {
-			addModifier([user], { name: "Progress", stacks: 60 + adventure.generateRandomNumber(46, "battle") });
-		} else {
-			addModifier([user], { name: "Progress", stacks: 45 + adventure.generateRandomNumber(31, "battle") });
-		}
 		const resultLines = [`${user.name} gains protection.`];
+		if (isCrit) {
+			resultLines.push(...addModifier([user], { name: "Progress", stacks: 60 + adventure.generateRandomNumber(46, "battle") }));
+		} else {
+			resultLines.push(...addModifier([user], { name: "Progress", stacks: 45 + adventure.generateRandomNumber(31, "battle") }));
+		}
 		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (targetDebuffs.length > 0) {
 			const rolledDebuff = targetDebuffs[adventure.generateRandomNumber(targetDebuffs.length, "battle")];
-			const wasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
-			if (wasRemoved) {
-				resultLines.push(`${user.name} is cured of ${rolledDebuff}.`);
-			}
+			resultLines.push(...removeModifier([user], { name: rolledDebuff, stacks: "all" }));
 		}
 		addProtection([user], 100);
 		return resultLines;
@@ -42,7 +39,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	needsLivingTargets: false,
 	next: "random",
 	combatFlavor: "It gathers some materials to fortify its lab."
-}).addAction({ //TODONOW finish
+}).addAction({
 	name: "Trouble",
 	element: "Water",
 	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from @e{Power Up}) and gain a small amount of @e{Progress}`,
@@ -52,9 +49,9 @@ module.exports = new EnemyTemplate("Elkemist",
 		if (isCrit) {
 			damage *= 2;
 		}
-		addModifier([user], { name: "Progress", stacks: 15 + adventure.generateRandomNumber(16, "battle") });
 		changeStagger(targets, "elementMatchFoe");
-		return dealDamage(targets, user, damage, false, user.element, adventure);
+		return dealDamage(targets, user, damage, false, user.element, adventure)
+			.concat(addModifier([user], { name: "Progress", stacks: 15 + adventure.generateRandomNumber(16, "battle") }));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -90,24 +87,23 @@ module.exports = new EnemyTemplate("Elkemist",
 			for (let modifier in target.modifiers) {
 				if (isBuff(modifier)) {
 					const buffStackCount = target.modifiers[modifier];
-					const removedBuff = removeModifier([target], { name: modifier, stacks: "all" }).length > 0;
-					if (removedBuff) {
+					const existingRetainStacks = target.getModifierStacks("Retain");
+					removeModifier([target], { name: modifier, stacks: "all" });
+					if (existingRetainStacks < 1) {
 						progressGained += 5;
-						const addedWeakness = addModifier([target], { name: "Fire Weakness", stacks: buffStackCount }).length > 0;
-						if (addedWeakness && !affectedDelvers.has(target.name)) {
+						addModifier([target], { name: "Fire Weakness", stacks: buffStackCount });
+						if (!affectedDelvers.has(target.name)) {
 							affectedDelvers.add(target.name);
 						}
 					}
 				}
 			}
 		}
-		addModifier([user], { name: "Progress", stacks: progressGained });
-
+		const resultLines = addModifier([user], { name: "Progress", stacks: progressGained });
 		if (affectedDelvers.size > 0) {
-			return [`Buffs on ${listifyEN([...affectedDelvers], false)} are transmuted to ${getApplicationEmojiMarkdown("Fire Weakness")}.`];
-		} else {
-			return [];
+			resultLines.push(`Buffs on ${listifyEN([...affectedDelvers], false)} are transmuted to ${getApplicationEmojiMarkdown("Fire Weakness")}.`);
 		}
+		return resultLines;
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,

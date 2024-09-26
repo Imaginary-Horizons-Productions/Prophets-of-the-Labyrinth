@@ -25,11 +25,13 @@ module.exports = new GearTemplate("Surpassing Fever Break",
 			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));
 			if (!isCrit) {
 				const removedDebuffs = [];
-				const curedPoison = removeModifier(targets, { name: "Poison", stacks: "all" });
+				const curedPoison = targets[0].getModifierStacks("Retain") < 1;
+				removeModifier(targets, { name: "Poison", stacks: "all" });
 				if (curedPoison) {
 					removedDebuffs.push(getApplicationEmojiMarkdown("Poison"));
 				}
-				const curedFrail = removeModifier(targets, { name: "Frail", stacks: "all" });
+				const curedFrail = targets[0].getModifierStacks("Retain") < 1;
+				removeModifier(targets, { name: "Frail", stacks: "all" });
 				if (curedFrail) {
 					removedDebuffs.push(getApplicationEmojiMarkdown("Frail"));
 				}

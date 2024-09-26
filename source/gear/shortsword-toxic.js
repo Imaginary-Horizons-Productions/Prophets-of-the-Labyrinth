@@ -16,21 +16,19 @@ module.exports = new GearTemplate("Toxic Shortsword",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
-		const addedExposedUser = addModifier([user], exposed).length > 0;
-		if (addedExposedUser) {
-			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
-		}
+		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure).concat(addModifier([user], exposed));
 		const targetDebuffs = [];
 		if (target.hp > 0) {
 			if (user.element === element) {
 				changeStagger([target], "elementMatchFoe");
 			}
-			const addedPoison = addModifier([target], poison).length > 0;
+			const addedPoison = target.getModifierStacks("Oblivious") < 1;
+			addModifier([target], poison);
 			if (addedPoison) {
 				targetDebuffs.push(getApplicationEmojiMarkdown("Poison"));
 			}
-			const addedExposedTarget = addModifier([target], exposed).length > 0;
+			const addedExposedTarget = target.getModifierStacks("Oblivious") < 1;
+			addModifier([target], exposed);
 			if (addedExposedTarget) {
 				targetDebuffs.push(getApplicationEmojiMarkdown("Exposed"));
 			}

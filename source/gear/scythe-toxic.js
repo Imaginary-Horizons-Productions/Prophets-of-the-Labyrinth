@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, dealDamage, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Toxic Scythe",
 	[
@@ -21,12 +20,7 @@ module.exports = new GearTemplate("Toxic Scythe",
 			pendingHPThreshold *= critMultiplier;
 		}
 		if (target.hp > pendingHPThreshold) {
-			const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
-			const addedPoison = addModifier([target], poison).length > 0;
-			if (addedPoison) {
-				resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Poison")}.`);
-			}
-			return resultLines;
+			return dealDamage([target], user, pendingDamage, false, element, adventure).concat(addModifier([target], poison));
 		} else {
 			target.hp = 0;
 			return [`${target.name} meets the reaper.`];

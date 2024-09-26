@@ -1,8 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { addModifier, changeStagger } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Cleansing Medicine",
 	[
@@ -21,19 +19,12 @@ module.exports = new GearTemplate("Cleansing Medicine",
 		if (isCrit) {
 			pendingRegen.stacks *= critMultiplier;
 		}
-		const regenedTargets = addModifier(targets, pendingRegen);
-		const resultLines = [];
-		if (regenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, regenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
-		}
+		const resultLines = addModifier(targets, pendingRegen);
 		for (const target of targets) {
 			const debuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (debuffs.length > 0) {
 				const rolledDebuff = debuffs[adventure.generateRandomNumber(debuffs.length, "battle")];
-				const debuffWasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
-				if (debuffWasRemoved) {
-					resultLines.push(`${target.name} is cured of ${rolledDebuff}.`);
-				}
+				resultLines.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 			}
 		}
 

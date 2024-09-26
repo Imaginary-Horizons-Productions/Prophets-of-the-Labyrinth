@@ -20,11 +20,13 @@ module.exports = new GearTemplate("Barrier",
 			pendingVigilance.stacks *= critMultiplier;
 		}
 		const addedModifiers = [];
-		const addedVigilance = addModifier([user], pendingVigilance).length > 0;
+		const addedVigilance = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], pendingVigilance);
 		if (addedVigilance) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Vigilance"));
 		}
-		const addedEvade = addModifier([user], evade).length > 0;
+		const addedEvade = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], evade);
 		if (addedEvade) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 		}

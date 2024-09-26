@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { addModifier, changeStagger } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Vigilant Barrier",
 	[
@@ -20,16 +20,18 @@ module.exports = new GearTemplate("Vigilant Barrier",
 			pendingVigilance.stacks *= critMultiplier;
 		}
 		const addedModifiers = [];
-		const addedVigilance = addModifier([user], pendingVigilance).length > 0;
+		const addedVigilance = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], pendingVigilance);
 		if (addedVigilance) {
-			addedModifiers.push("Vigilance");
+			addedModifiers.push(getApplicationEmojiMarkdown("Vigilance"));
 		}
-		const addedEvade = addModifier([user], evade).length > 0;
+		const addedEvade = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], evade);
 		if (addedEvade) {
-			addedModifiers.push("Evade");
+			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 		}
 		if (addedModifiers.length > 0) {
-			return [`${user.name} gains ${listifyEN(addedModifiers)}.`];
+			return [`${user.name} gains ${addedModifiers.join("")}.`];
 		} else {
 			return [];
 		}

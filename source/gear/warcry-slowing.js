@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing War Cry",
@@ -33,11 +32,8 @@ module.exports = new GearTemplate("Slowing War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
-		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
 		changeStagger(targetArray, pendingStaggerStacks);
-		const slowedTargets = addModifier(targetArray, slow);
-		resultLines.push(joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`));
-		return resultLines;
+		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered."), ...addModifier(targetArray, slow)];
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Tormenting War Cry")

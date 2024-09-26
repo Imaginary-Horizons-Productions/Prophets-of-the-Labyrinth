@@ -144,7 +144,7 @@ Adds Evade to the user
 - Shoulder Throw (Light)
 
 ### Fate-Sealing
-Adds Stasis to target on crit
+Adds Retain to target on crit
 
 **Available on**
 - Corrosion (Fire)

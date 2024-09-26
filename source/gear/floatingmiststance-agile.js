@@ -21,12 +21,14 @@ module.exports = new GearTemplate("Agile Floating Mist Stance",
 		if (didAddStance) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Floating Mist Stance"));
 		}
-		const addedAgility = addModifier([user], agility).length > 0;
+		const addedAgility = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], agility);
 		if (addedAgility) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Agility"));
 		}
 		if (isCrit) {
-			const addedEvade = addModifier([user], displayEvade).length > 0;
+			const addedEvade = user.getModifierStacks("Oblivious") < 1;
+			addModifier([user], displayEvade);
 			if (addedEvade) {
 				addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 			}

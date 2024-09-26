@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Shortsword",
 	[
@@ -22,11 +20,7 @@ module.exports = new GearTemplate("Shortsword",
 		if (user.element === element) {
 			changeStagger(stillLivingTargets, "elementMatchFoe");
 		}
-		const exposedTargets = addModifier([user, ...stillLivingTargets], exposed);
-		if (exposedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, exposedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
-		}
-		return resultLines;
+		return resultLines.concat(addModifier([user, ...stillLivingTargets], exposed));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Accelerating Shortsword", "Lethal Shortsword", "Toxic Shortsword")

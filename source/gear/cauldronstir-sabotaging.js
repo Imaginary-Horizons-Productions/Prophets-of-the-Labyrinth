@@ -38,10 +38,7 @@ module.exports = new GearTemplate("Sabotaging Cauldron Stir",
 			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 			const weaknessPool = elementsList(ineligibleWeaknesses);
 			if (weaknessPool.length > 0) {
-				const addedWeakness = addModifier(targets, { name: `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`, stacks: weakness.stacks }).length > 0;
-				if (addedWeakness) {
-					resultLines.push(`${target.name} gains ${pendingWeakness.name}`);
-				}
+				resultLines.push(...addModifier(targets, { name: `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`, stacks: weakness.stacks }));
 			}
 		}
 		return resultLines;

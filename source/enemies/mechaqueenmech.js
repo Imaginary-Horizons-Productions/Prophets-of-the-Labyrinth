@@ -40,10 +40,12 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
-		const quickenedTargets = addModifier(filteredTargets, { name: "Quicken", stacks: 3 });
-		const poweredUpTargets = addModifier(filteredTargets, { name: "Power Up", stacks: 3 });
 		addProtection([user], isCrit ? 60 : 30);
-		return [`${user.name} gains protection.`, joinAsStatement(false, quickenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Quickened")}.`), joinAsStatement(false, poweredUpTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)];
+		return [
+			`${user.name} gains protection.`,
+			...addModifier(filteredTargets, { name: "Quicken", stacks: 3 }),
+			...addModifier(filteredTargets, { name: "Power Up", stacks: 3 })
+		];
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,

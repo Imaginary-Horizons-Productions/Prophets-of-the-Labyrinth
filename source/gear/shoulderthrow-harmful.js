@@ -1,6 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
 const { changeStagger, addModifier, dealDamage } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Harmful Shoulder Throw",
 	[
@@ -31,10 +30,7 @@ module.exports = new GearTemplate("Harmful Shoulder Throw",
 			}
 		}
 		if (isCrit) {
-			const addedEvade = addModifier([user], evade).length > 0;
-			if (addedEvade) {
-				resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`);
-			}
+			resultLines.push(...addModifier([user], evade));
 		}
 		return resultLines;
 	}

@@ -14,13 +14,6 @@ module.exports = new GearTemplate("Tormenting Censer",
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [slow], damage, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		const debuffs = [];
-		for (const modifier in target.modifiers) {
-			if (isDebuff(modifier)) {
-				addModifier([target], { name: modifier, stacks: 1 });
-				debuffs.push(getApplicationEmojiMarkdown(modifier));
-			}
-		}
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
@@ -28,11 +21,22 @@ module.exports = new GearTemplate("Tormenting Censer",
 			pendingDamage += bonus;
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
-		if (isCrit && target.hp > 0) {
-			const addedSlow = addModifier([target], slow).length > 0;
-			if (addedSlow) {
-				resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Slow")}${debuffs.join("")}.`);
+		if (target.hp > 0) {
+			const debuffs = [];
+			if (isCrit) {
+				const addedSlow = target.getModifierStacks("Oblivious") < 1;
+				addModifier([target], slow);
+				if (addedSlow) {
+					debuffs.push(getApplicationEmojiMarkdown("Slow"));
+				}
 			}
+			for (const modifier in target.modifiers) {
+				if (isDebuff(modifier)) {
+					addModifier([target], { name: modifier, stacks: 1 });
+					debuffs.push(getApplicationEmojiMarkdown(modifier));
+				}
+			}
+			resultLines.push(`${target.name} gains ${debuffs.join("")}.`);
 		}
 		return resultLines;
 	}

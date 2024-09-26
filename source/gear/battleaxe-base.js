@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, dealDamage, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Battleaxe",
 	[
@@ -19,12 +18,7 @@ module.exports = new GearTemplate("Battleaxe",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const addedExposed = addModifier([user], exposed).length > 0;
-		if (addedExposed) {
-			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
-		}
-		return resultLines;
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(addModifier([user], exposed));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Furious Battleaxe", "Reactive Battleaxe", "Thirsting Battleaxe")

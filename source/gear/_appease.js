@@ -10,10 +10,10 @@ module.exports = new GearTemplate("Appease",
 	(targets, user, isCrit, adventure) => {
 		const curedInsults = [];
 		for (const insult of ["Boring", "Lacking Rhythm", "Smelly", "Stupid", "Ugly"]) {
-			const insultRemoved = removeModifier([user], { name: insult, stacks: "all", force: true }).length > 0;
-			if (insultRemoved) {
+			if (insult in user.modifiers) {
 				curedInsults.push(getApplicationEmojiMarkdown(insult));
 			}
+			removeModifier([user], { name: insult, stacks: "all", force: true });
 		}
 		if (curedInsults.length > 0) {
 			return [`${user.name} shrugs off ${curedInsults.join("")}.`];

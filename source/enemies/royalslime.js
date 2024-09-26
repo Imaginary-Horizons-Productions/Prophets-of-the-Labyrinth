@@ -2,8 +2,6 @@ const { EnemyTemplate } = require("../classes");
 const { selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Royal Slime",
 	"@{adventure}",
@@ -21,12 +19,12 @@ module.exports = new EnemyTemplate("Royal Slime",
 	effect: (targets, user, isCrit, adventure) => {
 		const elementPool = elementsList(["Untyped", user.element]);
 		user.element = elementPool[adventure.generateRandomNumber(elementPool.length, "battle")];
-		let addedAbsorb = false;
+		const addedAbsorb = user.getModifierStacks("Oblivious") < 1;
 		if (isCrit) {
-			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 5 }).length > 0;
+			addModifier([user], { name: `${user.element} Absorb`, stacks: 5 });
 			changeStagger([user], "elementMatchAlly");
 		} else {
-			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 3 }).length > 0;
+			addModifier([user], { name: `${user.element} Absorb`, stacks: 3 });
 		}
 		if (addedAbsorb) {
 			return [`${user.name}'s elemental alignment has changed.`];
@@ -75,15 +73,10 @@ module.exports = new EnemyTemplate("Royal Slime",
 	description: "Inflict @e{Slow} on all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 		if (isCrit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (slowedTargets.length > 0) {
-			return [joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
-		} else {
-			return [];
-		}
+		return addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,

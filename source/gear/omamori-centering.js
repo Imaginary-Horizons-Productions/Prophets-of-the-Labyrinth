@@ -24,7 +24,8 @@ module.exports = new GearTemplate("Centering Omamori",
 		}
 		addProtection([user], protection);
 		const gainedEffects = ["protection"];
-		const addedLucky = addModifier([user], pendingLucky).length > 0;
+		const addedLucky = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], pendingLucky);
 		if (addedLucky) {
 			gainedEffects.push(getApplicationEmojiMarkdown("Lucky"));
 		}

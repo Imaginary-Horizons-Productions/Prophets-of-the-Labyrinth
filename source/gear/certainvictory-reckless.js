@@ -19,13 +19,15 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const addedModifiers = [];
-		const addedPowerUp = addModifier([user], powerUp).length > 0;
+		const addedPowerUp = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], powerUp);
 		if (addedPowerUp) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Power Up"));
 		}
-		const addedExposed = addModifier([user], exposed).length > 0;
+		const addedExposed = user.getModifierStacks("Oblivious") < 1;
+		addModifier([user], exposed);
 		if (addedExposed) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Exposed"));
 		}
