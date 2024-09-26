@@ -15,6 +15,9 @@ commandFiles.forEach(filename => {
 		[InteractionContextType.Guild]: "Servers",
 		[InteractionContextType.PrivateChannel]: "Group DMs"
 	}
+	if (command.premiumCommand) {
+		text += `> 💎 Premium Command 💎\n\n`
+	}
 	text += `> Usable in: ${listifyEN(command.builder.contexts.map(context => contextDictionary[context]))}\n\n`;
 	if (command.cooldown === 1000) {
 		text += `> Cooldown: 1 second\n\n`;
