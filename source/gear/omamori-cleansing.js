@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { changeStagger, addProtection, getNames, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addProtection, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { listifyEN } = require('../util/textUtil');
 
@@ -41,7 +41,7 @@ module.exports = new GearTemplate("Cleansing Omamori",
 				userEffects.push(`is cured of ${rolledDebuff}`);
 			}
 		}
-		return [`${getNames([user], adventure)[0]} ${listifyEN(userEffects, false)}.`];
+		return [`${user.name} ${listifyEN(userEffects, false)}.`];
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Centering Omamori", "Devoted Omamori")

@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, changeStagger, getNames, enterStance } = require("../util/combatantUtil");
+const { addModifier, changeStagger, enterStance } = require("../util/combatantUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { listifyEN } = require("../util/textUtil");
 
@@ -39,7 +39,7 @@ module.exports = new GearTemplate("Soothing Floating Mist Stance",
 		if (stancesRemoved.length > 0) {
 			userEffects.push(`exits ${stancesRemoved.map(stance => getApplicationEmojiMarkdown(stance)).join("")}`);
 		}
-		return [`${getNames([user], adventure)[0]} ${listifyEN(userEffects, false)}.`];
+		return [`${user.name} ${listifyEN(userEffects, false)}.`];
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Agile Floating Mist Stance", "Devoted Floating Mist Stance")

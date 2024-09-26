@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, dealDamage, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Toxic Scythe",
@@ -24,12 +24,12 @@ module.exports = new GearTemplate("Toxic Scythe",
 			const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 			const addedPoison = addModifier([target], poison).length > 0;
 			if (addedPoison) {
-				resultLines.push(`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Poison")}.`);
+				resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Poison")}.`);
 			}
 			return resultLines;
 		} else {
 			target.hp = 0;
-			return [`${getNames([target], adventure)[0]} meets the reaper.`];
+			return [`${target.name} meets the reaper.`];
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

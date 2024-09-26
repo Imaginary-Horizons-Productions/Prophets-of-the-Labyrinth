@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { removeModifier, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { removeModifier, addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Cleansing Barrier",
@@ -29,17 +29,16 @@ module.exports = new GearTemplate("Cleansing Barrier",
 		if (addedEvade) {
 			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 		}
-		const userName = getNames([user], adventure)[0];
 		const resultLines = [];
 		if (addedModifiers.length > 0) {
-			resultLines.push(`${userName} gains ${addedModifiers.join("")}.`);
+			resultLines.push(`${user.name} gains ${addedModifiers.join("")}.`);
 		}
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (userDebuffs.length > 0) {
 			const rolledDebuff = userDebuffs[adventure.generateRandomNumber(userDebuffs.length, "battle")];
 			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (debuffWasRemoved) {
-				resultLines.push(`${userName} shrugs off ${rolledDebuff}.`);
+				resultLines.push(`${user.name} shrugs off ${rolledDebuff}.`);
 			}
 		}
 		return resultLines;

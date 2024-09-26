@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, addProtection, getNames } = require('../util/combatantUtil');
+const { addModifier, changeStagger, addProtection } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -21,10 +21,10 @@ module.exports = new GearTemplate("Buckler",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection(targets, pendingProtection);
-		const resultLines = [joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "protection.")];
+		const resultLines = [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")];
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		if (addedPowerUp) {
-			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
 		}
 		return resultLines;
 	}

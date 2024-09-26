@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { SAFE_DELIMITER } = require('../constants.js');
-const { dealDamage, changeStagger, addModifier, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Midas's Firecracker",
@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Midas's Firecracker",
 		}
 		const cursedTargets = addModifier(stillLivingTargets, curse);
 		if (cursedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(cursedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Curse of Midas")}.`));
+			resultLines.push(joinAsStatement(false, cursedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Curse of Midas")}.`));
 		}
 		return resultLines;
 	}

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { dealDamage, changeStagger } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Strong Attack",
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Staggering Strong Attack",
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
 			changeStagger(stillLivingTargets, stagger);
-			joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered.");
+			joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered.");
 		}
 		return resultLines;
 	}

@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			let damage = user.getPower() + 100;
 			addProtection([user], isCrit ? 100 : 50);
 			changeStagger([user], "elementMatchAlly");
-			return dealDamage(targets, user, damage, false, user.element, adventure).concat([`${getNames([user], adventure)[0]} gains protection.`]);
+			return dealDamage(targets, user, damage, false, user.element, adventure).concat([`${user.name} gains protection.`]);
 		},
 		selector: selectRandomFoe,
 		needsLivingTargets: false,
@@ -60,7 +60,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			}
 			const slowedTargets = addModifier(targets, { name: "Slow", stacks });
 			if (slowedTargets.length > 0) {
-				return [joinAsStatement(false, getNames(slowedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
+				return [joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
 			} else {
 				return [];
 			}

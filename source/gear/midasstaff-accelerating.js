@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Accelerating Midas Staff",
@@ -23,11 +23,10 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const [targetName, userName] = getNames([target, user], adventure);
 		const addedCurse = addModifier([target], pendingCurse).length > 0;
 		const addedQuicken = addModifier([user], quicken).length > 0;
 		const resultLines = [];
-		if (targetName === userName) {
+		if (target.name === user.name) {
 			const userEffects = [];
 			if (addedCurse) {
 				userEffects.push(getApplicationEmojiMarkdown("Curse of Midas"));
@@ -35,13 +34,13 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 			if (addedQuicken) {
 				userEffects.push(getApplicationEmojiMarkdown("Quicken"));
 			}
-			resultLines.push(`${userName} gains ${userEffects.join("")}.`);
+			resultLines.push(`${user.name} gains ${userEffects.join("")}.`);
 		} else {
 			if (addedCurse) {
-				resultLines.push(`${targetName} gains ${getApplicationEmojiMarkdown("Curse of Midas")}.`);
+				resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Curse of Midas")}.`);
 			}
 			if (addedQuicken) {
-				resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Quickened")}.`);
+				resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Quickened")}.`);
 			}
 		}
 		return resultLines;

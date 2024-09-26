@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Soothing Midas Staff",
@@ -33,7 +33,7 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 			addedModifiers.push(getApplicationEmojiMarkdown("Regen"));
 		}
 		if (addedModifiers.length > 0) {
-			return [`${getNames([target], adventure)[0]} gains ${addedModifiers.join("")}.`];
+			return [`${target.name} gains ${addedModifiers.join("")}.`];
 		} else {
 			return [];
 		}

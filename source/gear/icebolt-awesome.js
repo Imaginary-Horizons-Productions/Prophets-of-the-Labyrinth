@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { addModifier, dealDamage, changeStagger } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Awesome Ice Bolt",
 		targets.forEach(target => resultLines.push(...dealDamage([target], user, target.isStunned ? stunnedDamage : pendingDamage, false, element, adventure)));
 		const slowedTargets = addModifier(targets, slow);
 		if (slowedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(slowedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`));
+			resultLines.push(joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`));
 		}
 		return resultLines;
 	}

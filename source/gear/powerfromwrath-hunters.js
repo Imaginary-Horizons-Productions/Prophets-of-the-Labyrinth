@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 			if (stillLivingTargets.length < targets.length) {
 				const addedPowerUp = addModifier([user], powerUp).length > 0;
 				if (addedPowerUp) {
-					resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
+					resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
 				}
 			}
 		}

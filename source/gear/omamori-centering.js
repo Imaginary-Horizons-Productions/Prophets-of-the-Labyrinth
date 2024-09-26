@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { changeStagger, addProtection, getNames, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addProtection, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { listifyEN } = require('../util/textUtil');
 
@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Centering Omamori",
 		if (hadStagger) {
 			userEffects.push("shrugs off some Stagger");
 		}
-		return [`${getNames([user], adventure)[0]} ${listifyEN(userEffects)}.`];
+		return [`${user.name} ${listifyEN(userEffects)}.`];
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Cleansing Omamori", "Devoted Omamori")

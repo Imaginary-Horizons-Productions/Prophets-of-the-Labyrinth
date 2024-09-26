@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { dealDamage, removeModifier, changeStagger } = require('../util/combatantUtil');
 const { organicPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Organic Fever Break",
@@ -18,8 +18,7 @@ module.exports = new GearTemplate("Organic Fever Break",
 		}
 		const funnelCount = adventure.getArtifactCount("Spiral Funnel");
 		const resultLines = [];
-		const targetNames = getNames(targets, adventure);
-		targets.forEach(target => {
+		for (const target of targets) {
 			const poisons = target.getModifierStacks("Poison");
 			const frails = target.getModifierStacks("Frail");
 			const pendingDamage = (10 + 5 * funnelCount) * (poisons ** 2 + poisons) / 2 + (20 + 5 * funnelCount) * frails;
@@ -34,9 +33,9 @@ module.exports = new GearTemplate("Organic Fever Break",
 				if (curedFrail) {
 					removedDebuffs.push(getApplicationEmojiMarkdown("Frail"));
 				}
-				resultLines.push(`${targetNames[i]} is cured of ${removedDebuffs.join("")}.`);
+				resultLines.push(`${target.name} is cured of ${removedDebuffs.join("")}.`);
 			}
-		})
+		}
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

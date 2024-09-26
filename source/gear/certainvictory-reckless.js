@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { dealDamage, addModifier, payHP, changeStagger } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Reckless Certain Victory",
 	[
@@ -23,14 +23,14 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 		const addedModifiers = [];
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		if (addedPowerUp) {
-			addedModifiers.push("Powered Up");
+			addedModifiers.push(getApplicationEmojiMarkdown("Power Up"));
 		}
 		const addedExposed = addModifier([user], exposed).length > 0;
 		if (addedExposed) {
-			addedModifiers.push("Exposed");
+			addedModifiers.push(getApplicationEmojiMarkdown("Exposed"));
 		}
 		if (addedModifiers.length > 0) {
-			resultLines.push(`${getNames([user], adventure)[0]} is ${listifyEN(addedModifiers)}.`);
+			resultLines.push(`${user.name} gains ${addedModifiers.join("")}.`);
 		}
 		resultLines.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
 		return resultLines;

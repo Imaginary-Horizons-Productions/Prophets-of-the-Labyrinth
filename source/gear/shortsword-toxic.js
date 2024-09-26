@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Toxic Shortsword",
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Toxic Shortsword",
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		const addedExposedUser = addModifier([user], exposed).length > 0;
 		if (addedExposedUser) {
-			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
 		}
 		const targetDebuffs = [];
 		if (target.hp > 0) {
@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Toxic Shortsword",
 				targetDebuffs.push(getApplicationEmojiMarkdown("Exposed"));
 			}
 			if (targetDebuffs.length > 0) {
-				resultLines.push(`${getNames([target], adventure)[0]} gains ${targetDebuffs.join("")}.`);
+				resultLines.push(`${target.name} gains ${targetDebuffs.join("")}.`);
 			}
 		}
 		return resultLines;

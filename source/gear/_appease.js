@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { removeModifier, getNames } = require('../util/combatantUtil.js');
+const { removeModifier } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Appease",
@@ -16,7 +16,7 @@ module.exports = new GearTemplate("Appease",
 			}
 		}
 		if (curedInsults.length > 0) {
-			return [`${getNames([user], adventure)[0]} shrugs off ${curedInsults.join("")}.`];
+			return [`${user.name} shrugs off ${curedInsults.join("")}.`];
 		} else {
 			return [];
 		}

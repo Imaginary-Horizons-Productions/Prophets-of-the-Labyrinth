@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { accuratePassive } = require('./descriptions/passives.js');
 
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Evasive Cloak",
 		}
 		const addedEvade = addModifier([user], pendingEvade).length > 0;
 		if (addedEvade) {
-			return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Evade")}.`];
+			return [`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`];
 		} else {
 			return [];
 		}

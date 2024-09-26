@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
@@ -15,16 +15,15 @@ module.exports = new GearTemplate("Charging War Cry",
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
-			targetSet.add(getNames([initialTarget], adventure)[0]);
+			targetSet.add(initialTarget.name);
 			targetArray.push(initialTarget);
 		}
-		adventure.room.enemies.forEach(enemy => {
-			const enemyName = getNames([enemy], adventure)[0];
-			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemyName)) {
-				targetSet.add(enemyName);
+		for (const enemy of adventure.room.enemies) {
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.name)) {
+				targetSet.add(enemy.name);
 				targetArray.push(enemy);
 			}
-		})
+		}
 
 		const { element, modifiers: [powerup], stagger, bonus } = module.exports;
 		let pendingStaggerStacks = stagger;
@@ -38,7 +37,7 @@ module.exports = new GearTemplate("Charging War Cry",
 		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
 		const addedPowerUp = addModifier([user], powerup).length > 0;
 		if (addedPowerUp) {
-			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
 		}
 		return resultLines;
 	}

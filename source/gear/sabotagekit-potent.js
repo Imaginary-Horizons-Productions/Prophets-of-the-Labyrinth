@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier, getCombatantWeaknesses, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
@@ -37,7 +37,7 @@ module.exports = new GearTemplate("Potent Sabotage Kit",
 			}
 		}
 		if (debuffs.length > 0) {
-			return [`${getNames([target], adventure)[0]} gains ${debuffs.join("")}.`];
+			return [`${target.name} gains ${debuffs.join("")}.`];
 		} else {
 			return [];
 		}

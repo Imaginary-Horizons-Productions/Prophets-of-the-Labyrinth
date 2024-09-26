@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
@@ -22,7 +22,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		let damage = user.getPower() + 10;
 		changeStagger(targets, "elementMatchFoe");
 		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 });
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, getNames(poisonedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
+		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, poisonedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -46,7 +46,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		}
 		changeStagger([user], "elementMatchAlly");
 		if (addedModifiers.length > 0) {
-			return [`${getNames([user], adventure)[0]} gains ${addedModifiers.join("")}.`]
+			return [`${user.name} gains ${addedModifiers.join("")}.`]
 		} else {
 			return [];
 		}
@@ -63,7 +63,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		let damage = user.getPower() + 40;
 		changeStagger(targets, "elementMatchFoe");
 		const paralyzedTargets = addModifier(targets, { name: "Paralysis", stacks: isCrit ? 5 : 3 });
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, getNames(paralyzedTargets, adventure), "is", "are", "Paralyzed.")];
+		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, paralyzedTargets.map(target => target.name), "is", "are", "Paralyzed.")];
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,

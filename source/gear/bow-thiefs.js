@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thief's Bow",
 	[
@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Thief's Bow",
 		const totalGold = bonusBounty * hunts;
 		if (totalGold > 0) {
 			adventure.gainGold(totalGold);
-			resultLines.push(`${getNames([user], adventure)[0]} forages ${totalGold}g of hunting trophies.`);
+			resultLines.push(`${user.name} forages ${totalGold}g of hunting trophies.`);
 		}
 		return resultLines;
 	}

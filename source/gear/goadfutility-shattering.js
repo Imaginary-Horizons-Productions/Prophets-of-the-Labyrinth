@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Shattering Goad Futility",
@@ -24,20 +24,19 @@ module.exports = new GearTemplate("Shattering Goad Futility",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
-		const [userName, targetName] = getNames([user, target], adventure);
-		const resultLines = [`${userName} gains ${getApplicationEmojiMarkdown("Oblivious")}.`];
+		const resultLines = [`${user.name} gains ${getApplicationEmojiMarkdown("Oblivious")}.`];
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultLines.push(`${targetName} falls for the provocation.`);
+			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		const addedFrail = addModifier([target], frail).length > 0;
 		if (addedFrail) {
-			resultLines.push(`${targetName} gains ${getApplicationEmojiMarkdown("Frail")}.`);
+			resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Frail")}.`);
 		}
 		if (isCrit) {
 			const addedUnlucky = addModifier([target], unlucky).length > 0;
 			if (addedUnlucky) {
-				resultLines.push(`${targetName} gains ${getApplicationEmojiMarkdown("Unlucky")}.`);
+				resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Unlucky")}.`);
 			}
 		}
 		return resultLines;

@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectAllAllies } = require("../shared/actionComponents");
-const { addProtection, getNames } = require("../util/combatantUtil");
+const { addProtection } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new ItemTemplate("Protection Potion",
@@ -11,6 +11,6 @@ module.exports = new ItemTemplate("Protection Potion",
 	false,
 	(targets, user, isCrit, adventure) => {
 		addProtection(targets, 50);
-		return [joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "protection.")];
+		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")];
 	}
 );

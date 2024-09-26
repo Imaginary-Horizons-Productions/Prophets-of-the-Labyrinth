@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { removeModifier, changeStagger } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Refreshing Breeze",
@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 					}
 				}
 				if (removedDebuffs.length > 0) {
-					resultLines.push(`${getNames([target], adventure)[0]} is cured of ${removedDebuffs.join("")}.`)
+					resultLines.push(`${target.name} is cured of ${removedDebuffs.join("")}.`)
 				}
 			}
 		})

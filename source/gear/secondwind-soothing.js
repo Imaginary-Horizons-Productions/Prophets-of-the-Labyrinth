@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { gainHealth, changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { gainHealth, changeStagger, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Soothing Second Wind",
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Soothing Second Wind",
 		const resultLines = [gainHealth(user, pendingHealing, adventure)];
 		const addedRegen = addModifier([user], regen).length > 0;
 		if (addedRegen) {
-			resultLines.push(`${getNames([user], adventure)} gains ${getApplicationEmojiMarkdown("Regen")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Regen")}.`);
 		}
 		return resultLines;
 	}

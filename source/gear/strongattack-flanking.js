@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Flanking Strong Attack",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const addedExposed = addModifier(targets, exposed).length > 0;
 		if (addedExposed) {
-			resultLines.push(joinAsStatement(false, getNames(targets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
 		}
 		return resultLines;
 	}

@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier, getNames, dealDamage } = require('../util/combatantUtil');
+const { changeStagger, addModifier, dealDamage } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Harmful Shoulder Throw",
@@ -27,13 +27,13 @@ module.exports = new GearTemplate("Harmful Shoulder Throw",
 			});
 			if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 				targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
-				resultLines.push(`${getNames([target], adventure)[0]} is redirected into targeting themself.`);
+				resultLines.push(`${target.name} is redirected into targeting themself.`);
 			}
 		}
 		if (isCrit) {
 			const addedEvade = addModifier([user], evade).length > 0;
 			if (addedEvade) {
-				resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Evade")}.`);
+				resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`);
 			}
 		}
 		return resultLines;

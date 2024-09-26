@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 			changeStagger(targets, "elementMatchFoe");
 		}
 		if (slowedTargets.length > 0) {
-			return [joinAsStatement(false, getNames(slowedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Slowed")}.`)];
+			return [joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slowed")}.`)];
 		} else {
 			return [];
 		}

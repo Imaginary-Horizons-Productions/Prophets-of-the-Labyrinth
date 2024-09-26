@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, payHP, changeStagger } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Hunter's Certain Victory",
 	[
@@ -25,7 +26,7 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 		}
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		if (addedPowerUp) {
-			resultLines.push(`${getNames([user], adventure)[0]} is Powered Up.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
 		}
 		resultLines.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
 		return resultLines;

@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { addModifier, changeStagger } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Bouncing Medicine",
 		}
 		const regenedTargets = addModifier(targets, pendingRegen);
 		if (regenedTargets.length > 0) {
-			return [joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`)];
+			return [joinAsStatement(false, regenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`)];
 		} else {
 			return [];
 		}

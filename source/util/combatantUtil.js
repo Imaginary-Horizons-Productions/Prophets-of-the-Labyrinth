@@ -10,14 +10,13 @@ const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
  */
 function downedCheck(target, adventure) {
 	if (target.hp <= 0) {
-		const targetName = getNames([target], adventure)[0];
 		if (target.team === "delver") {
 			target.hp = target.getMaxHP();
 			adventure.lives = Math.max(adventure.lives - 1, 0);
-			return ` ${bold(`${targetName} was downed`)}${adventure.lives > 0 ? " and revived" : ""}.`;
+			return ` ${bold(`${target.name} was downed`)}${adventure.lives > 0 ? " and revived" : ""}.`;
 		} else {
 			target.hp = 0;
-			return ` ${bold(`${targetName} was downed`)}.`;
+			return ` ${bold(`${target.name} was downed`)}.`;
 		}
 	} else {
 		return "";
@@ -35,10 +34,8 @@ function downedCheck(target, adventure) {
 function dealDamage(targets, assailant, damage, isUnblockable, element, adventure) {
 	const previousLifeCount = adventure.lives;
 	const results = [];
-	const targetNames = getNames(targets, adventure);
-	targets.forEach((target, index) => {
+	for (const target of targets) {
 		if (target.hp > 0) { // Skip if target is downed (necessary for multi-hit moves hitting same target)
-			const targetName = targetNames[index];
 			if (!(`${element} Absorb` in target.modifiers)) {
 				if (!("Evade" in target.modifiers) || isUnblockable) {
 					let pendingDamage = damage;
@@ -69,7 +66,7 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 					}
 					pendingDamage = Math.min(pendingDamage, assailant.getDamageCap());
 					target.hp -= pendingDamage;
-					results.push(`${targetName} takes ${pendingDamage} ${getEmoji(element)} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}${downedCheck(target, adventure)}`);
+					results.push(`${target.name} takes ${pendingDamage} ${getEmoji(element)} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}${downedCheck(target, adventure)}`);
 					if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
 						const midasGold = pendingDamage / 10;
 						adventure.gainGold(Math.floor(midasGold));
@@ -77,16 +74,16 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 					}
 				} else {
 					removeModifier([target], { name: "Evade", stacks: 1, force: true });
-					results.push(`${targetName} evades the attack!`);
+					results.push(`${target.name} evades the attack!`);
 				}
 			} else {
 				results.push(gainHealth(target, damage, adventure, "Elemental Absorption"));
 			}
 		}
-	})
+	}
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
-			results.push(bold(italic(`${adventure.lives} lives remain.`)) );
+			results.push(bold(italic(`${adventure.lives} lives remain.`)));
 		} else if (adventure.lives === 1) {
 			results.push(bold(italic(`${adventure.lives} life remains.`)));
 		} else {
@@ -118,7 +115,7 @@ function dealModifierDamage(target, modifier, adventure) {
 	}
 
 	target.hp -= pendingDamage;
-	const resultLines = [`${bold(getNames([target], adventure)[0])} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`];
+	const resultLines = [`${bold(target.name)} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`];
 
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
@@ -140,8 +137,7 @@ function dealModifierDamage(target, modifier, adventure) {
 function payHP(user, damage, adventure) {
 	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
-	const userName = getNames([user], adventure)[0];
-	let resultText = ` ${userName} pays ${damage} HP.${downedCheck(user, adventure)}`;
+	let resultText = ` ${user.name} pays ${damage} HP.${downedCheck(user, adventure)}`;
 	if (adventure.lives < previousLifeCount) {
 		if (adventure.lives > 1) {
 			resultText += ` ${bold(italic(`${adventure.lives} lives remain.`))}`;
@@ -175,27 +171,10 @@ function gainHealth(combatant, healing, adventure, source) {
 	}
 
 	if (combatant.hp === maxHP) {
-		return `${getNames([combatant], adventure)[0]} was fully healed${loopholeGold > 0 ? ` (${loopholeGold} gold gained)` : ""}${source ? ` from ${source}` : ""}!`;
+		return `${combatant.name} was fully healed${loopholeGold > 0 ? ` (${loopholeGold} gold gained)` : ""}${source ? ` from ${source}` : ""}!`;
 	} else {
-		return `${getNames([combatant], adventure)[0]} ${italic(`gained ${healing} HP`)}${source ? ` from ${source}` : ""}.`;
+		return `${combatant.name} ${italic(`gained ${healing} HP`)}${source ? ` from ${source}` : ""}.`;
 	}
-}
-
-/**
- * @param {Combatant[]} combatants
- * @param {Adventure} adventure
- */
-function getNames(combatants, adventure) {
-	const generatedNames = [];
-	for (const combatant of combatants) {
-		if (combatant.team === "enemy" && adventure.room.enemyIdMap[combatant.name] > 1) {
-			generatedNames.push(`${combatant.name} ${combatant.id}`);
-		} else {
-			generatedNames.push(combatant.name);
-		}
-	}
-
-	return generatedNames;
 }
 
 /** Checks if adding the modifier inverts exisiting modifiers, increments the (remaining) stacks, then checks if stacks exceed a trigger threshold
@@ -345,7 +324,6 @@ module.exports = {
 	dealModifierDamage,
 	payHP,
 	gainHealth,
-	getNames,
 	addModifier,
 	removeModifier,
 	enterStance,

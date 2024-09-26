@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ThreadChannel, Message, EmbedBuilder, italic } = require("discord.js");
+const { ThreadChannel, Message, EmbedBuilder, italic, bold } = require("discord.js");
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
@@ -15,7 +15,7 @@ const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
 
-const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
+const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection } = require("../util/combatantUtil");
 const { getWeaknesses } = require("../util/elementUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
@@ -54,7 +54,7 @@ async function loadAdventures() {
 					if (adventure.room.enemies) {
 						const castEnemies = [];
 						for (let enemy of adventure.room.enemies) {
-							castEnemies.push(Object.assign(new Enemy(), enemy));
+							castEnemies.push(Object.assign(new Enemy(enemy.name), enemy));
 						}
 						adventure.room.enemies = castEnemies;
 					}
@@ -429,7 +429,7 @@ function resolveMove(move, adventure) {
 		return "";
 	}
 
-	let headline = `**${getNames([user], adventure)[0]}** `;
+	let headline = `${bold(user.name)} `;
 	const results = [];
 	if (!user.isStunned || move.name.startsWith("Unstoppable")) {
 		if (move.isCrit) {
@@ -488,7 +488,7 @@ function resolveMove(move, adventure) {
 			}
 			if (livingTargets.length > 0) {
 				if (deadTargets.length > 0) {
-					results.push(`${listifyEN(getNames(deadTargets, adventure), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
+					results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 				}
 
 				results.push(...effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure));
@@ -499,7 +499,7 @@ function resolveMove(move, adventure) {
 					}
 				}
 			} else if (targets.length === 1) {
-				headline += `, but ${getNames([targets[0]], adventure)[0]} was already dead!`;
+				headline += `, but ${targets[0].name} was already dead!`;
 			} else {
 				headline += `, but all targets were already dead!`;
 			}
@@ -564,7 +564,7 @@ function decrementDurability(moveName, user, adventure) {
 		const gear = user.gear.find(gear => gear.name === moveName);
 		gear.durability--;
 		if (gear.durability < 1) {
-			return `${getNames([user], adventure)[0]}'s ${moveName} broke!`;
+			return `${user.name}'s ${moveName} broke!`;
 		}
 	}
 	return "";

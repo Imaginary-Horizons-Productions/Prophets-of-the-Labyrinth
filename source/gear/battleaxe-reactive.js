@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes/index.js');
-const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, dealDamage, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Reactive Battleaxe",
@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const addedExposed = addModifier([user], exposed).length > 0;
 		if (addedExposed) {
-			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
 		}
 		return resultLines;
 	}

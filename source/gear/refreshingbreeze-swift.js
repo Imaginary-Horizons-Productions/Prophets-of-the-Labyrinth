@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { removeModifier, changeStagger } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { swiftPassive } = require('./descriptions/passives');
 
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Swift Refreshing Breeze",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		targets.forEach(target => {
+		for (const target of targets) {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
@@ -34,10 +34,10 @@ module.exports = new GearTemplate("Swift Refreshing Breeze",
 					}
 				}
 				if (removedDebuffs.length > 0) {
-					resultLines.push(`${getNames([target], adventure)[0]} is cured of ${removedDebuffs.join("")}.`)
+					resultLines.push(`${target.name} is cured of ${removedDebuffs.join("")}.`)
 				}
 			}
-		})
+		}
 		return resultLines;
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })

@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, getNames } = require("../util/combatantUtil");
+const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger } = require("../util/combatantUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new GearTemplate("Duelist's Pistol",
@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Duelist's Pistol",
 			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
 			const addedPowerUp = addModifier([ally], powerUp).length > 0;
 			if (addedPowerUp) {
-				resultLines.push(`${getNames([ally], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}!`);
+				resultLines.push(`${ally.name} gains ${getApplicationEmojiMarkdown("Power Up")}!`);
 			}
 		}
 		return resultLines;

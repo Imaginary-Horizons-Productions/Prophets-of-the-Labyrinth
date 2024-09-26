@@ -12,7 +12,7 @@ module.exports = new ItemTemplate("Fiery Potion",
 	(targets, user, isCrit, adventure) => {
 		const addedAbsorb = addModifier([user], { name: "Fire Absorb", stacks: 3 }).length > 0;
 		if (addedAbsorb) {
-			return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Fire Absorb")}.`];
+			return [`${user.name} gains ${getApplicationEmojiMarkdown("Fire Absorb")}.`];
 		} else {
 			return [];
 		}

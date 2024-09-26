@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, payHP, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Discounted Infinite Regeneration",
 		const resultLines = [paymentSentence];
 		const regenedTargets = addModifier(targets, regen);
 		if (regenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(targets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
 		}
 		return resultLines;
 	}

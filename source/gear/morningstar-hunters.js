@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, getNames, addModifier } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -26,10 +26,10 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 		if (stillLivingTargets.length < targets.length) {
 			const addedPowerUp = addModifier([user], powerUp).length > 0;
 			if (addedPowerUp) {
-				resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
+				resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
 			}
 		}
-		resultLines.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."))
+		resultLines.push(joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered."))
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

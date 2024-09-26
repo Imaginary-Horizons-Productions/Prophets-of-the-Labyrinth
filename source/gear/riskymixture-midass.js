@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { addModifier, changeStagger } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Midas's Risky Mixture",
@@ -36,7 +36,7 @@ module.exports = new GearTemplate("Midas's Risky Mixture",
 			addedModifiers.push(getApplicationEmojiMarkdown("Curse of Midas"));
 		}
 		if (addedModifiers.length > 0) {
-			return [`${getNames([target], adventure)[0]} ${addedModifiers.join("")}.`];
+			return [`${target.name} gains ${addedModifiers.join("")}.`];
 		} else {
 			return [];
 		}

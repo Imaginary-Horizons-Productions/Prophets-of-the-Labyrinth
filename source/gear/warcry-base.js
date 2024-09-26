@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { changeStagger, getNames } = require('../util/combatantUtil');
+const { changeStagger } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("War Cry",
@@ -14,16 +14,15 @@ module.exports = new GearTemplate("War Cry",
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
-			targetSet.add(getNames([initialTarget], adventure)[0]);
+			targetSet.add(initialTarget.name);
 			targetArray.push(initialTarget);
 		}
-		adventure.room.enemies.forEach(enemy => {
-			const enemyName = getNames([enemy], adventure)[0];
-			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemyName)) {
-				targetSet.add(enemyName);
+		for (const enemy of adventure.room.enemies) {
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.name)) {
+				targetSet.add(enemy.name);
 				targetArray.push(enemy);
 			}
-		})
+		}
 
 		const { element, stagger, bonus } = module.exports;
 		let pendingStaggerStacks = stagger;

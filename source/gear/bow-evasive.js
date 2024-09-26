@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Evasive Bow",
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Evasive Bow",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const addedEvade = addModifier([user], evade).length > 0;
 		if (addedEvade) {
-			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Evade")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`);
 		}
 		return resultLines;
 	}

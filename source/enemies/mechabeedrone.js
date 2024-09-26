@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		let damage = user.getPower() + 10;
 		changeStagger(targets, "elementMatchFoe");
 		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 });
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, getNames(poisonedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
+		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, poisonedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -47,7 +47,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		}
 		changeStagger([user], "elementMatchAlly");
 		if (addedModifiers.length > 0) {
-			return [`${getNames([user], adventure)[0]} gains ${addedModifiers.join("")}.`]
+			return [`${user.name} gains ${addedModifiers.join("")}.`]
 		} else {
 			return [];
 		}

@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, removeModifier, changeStagger, getNames } = require("../util/combatantUtil.js");
+const { dealDamage, removeModifier, changeStagger } = require("../util/combatantUtil.js");
 const { isBuff } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
@@ -28,16 +28,14 @@ module.exports = new EnemyTemplate("Earthly Knight",
 		}
 		changeStagger(targets, "elementMatchFoe");
 		let resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
-		const targetNames = getNames(targets, adventure);
-		for (let i = 0; i < targets.length; i++) {
-			const target = targets[i];
+		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
 			if (targetBuffs.length > 0) {
 				const buffIndex = adventure.generateRandomNumber(targetBuffs.length, "battle");
 				const rolledBuff = targetBuffs[buffIndex];
 				const wasRemoved = removeModifier([target], { name: rolledBuff, stacks: "all" }).length > 0;
 				if (wasRemoved) {
-					resultLines.push(`${targetNames[i]} lost ${rolledBuff}.`);
+					resultLines.push(`${target.name} lost ${rolledBuff}.`);
 				}
 			}
 		}
@@ -57,7 +55,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 			damage *= 2;
 		}
 		changeStagger(targets, 2);
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, getNames(targets), "is", "are", "Staggered.")];
+		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered.")];
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: true,

@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
@@ -29,7 +29,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 3 }).length > 0;
 		}
 		if (addedAbsorb) {
-			return [`${getNames([user], adventure)[0]}'s elemental alignment has changed.`];
+			return [`${user.name}'s elemental alignment has changed.`];
 		} else {
 			return [];
 		}
@@ -80,7 +80,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 			changeStagger(targets, "elementMatchFoe");
 		}
 		if (slowedTargets.length > 0) {
-			return [joinAsStatement(false, getNames(slowedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
+			return [joinAsStatement(false, slowedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
 		} else {
 			return [];
 		}

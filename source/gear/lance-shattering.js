@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Shattering Lance",
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		const frailedTargets = addModifier(stillLivingTargets, frail);
 		if (frailedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(frailedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Frail")}.`));
+			resultLines.push(joinAsStatement(false, frailedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Frail")}.`));
 		}
 		return resultLines;
 	}

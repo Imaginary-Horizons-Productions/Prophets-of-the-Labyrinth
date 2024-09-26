@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier, getNames } = require('../util/combatantUtil.js');
+const { addModifier } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
@@ -13,7 +13,7 @@ module.exports = new GearTemplate("Greed",
 		const poweredUpTargets = addModifier(targets.filter(target => target.archetype === "Treasure Elemental"), powerUp);
 		const affectedTargets = addModifier(poweredUpTargets, midas);
 		if (affectedTargets.length > 0) {
-			return [joinAsStatement(false, getNames(affectedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Curse of Midas")}${getApplicationEmojiMarkdown("Power Up")}.`)];
+			return [joinAsStatement(false, affectedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Curse of Midas")}${getApplicationEmojiMarkdown("Power Up")}.`)];
 		} else {
 			return [];
 		}

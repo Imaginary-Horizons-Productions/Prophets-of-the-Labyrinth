@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { accuratePassive } = require('./descriptions/passives.js');
 
@@ -33,7 +33,7 @@ module.exports = new GearTemplate("Accelerating Cloak",
 			results.push(getApplicationEmojiMarkdown("Quicken"));
 		}
 		if (results.length > 0) {
-			return [`${getNames([user], adventure)[0]} gains ${results.join("")}.`];
+			return [`${user.name} gains ${results.join("")}.`];
 		} else {
 			return [];
 		}

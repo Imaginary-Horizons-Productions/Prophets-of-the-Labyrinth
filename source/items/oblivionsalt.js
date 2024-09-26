@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier, getNames } = require("../util/combatantUtil");
+const { addModifier } = require("../util/combatantUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new ItemTemplate("Salt of Oblivion",
@@ -11,6 +11,6 @@ module.exports = new ItemTemplate("Salt of Oblivion",
 	false,
 	(targets, user, isCrit, adventure) => {
 		addModifier([user], { name: "Oblivious", stacks: 1 });
-		return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Oblivious")}.`];
+		return [`${user.name} gains ${getApplicationEmojiMarkdown("Oblivious")}.`];
 	}
 );

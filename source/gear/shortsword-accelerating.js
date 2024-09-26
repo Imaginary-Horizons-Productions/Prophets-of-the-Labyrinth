@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
@@ -26,11 +26,11 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 		}
 		const exposedTargets = addModifier([user, ...stillLivingTargets], exposed);
 		if (exposedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(exposedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
+			resultLines.push(joinAsStatement(false, exposedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
 		}
 		const addedQuicken = addModifier([user], quicken).length > 0;
 		if (addedQuicken) {
-			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Quicken")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Quicken")}.`);
 		}
 		return resultLines;
 	}

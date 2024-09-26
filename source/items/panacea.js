@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
-const { removeModifier, getNames } = require("../util/combatantUtil");
+const { removeModifier } = require("../util/combatantUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new ItemTemplate("Panacea",
@@ -26,7 +26,7 @@ module.exports = new ItemTemplate("Panacea",
 		}
 
 		if (removedDebuffs.length > 1) {
-			return [`${getNames([user], adventure)[0]} is cured of ${removedDebuffs.join("")}.`];
+			return [`${user.name} is cured of ${removedDebuffs.join("")}.`];
 		} else {
 			return [];
 		}

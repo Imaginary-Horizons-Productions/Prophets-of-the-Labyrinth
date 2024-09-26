@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier, getNames } = require("../util/combatantUtil");
+const { addModifier } = require("../util/combatantUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new ItemTemplate("Strength Spinach",
@@ -12,7 +12,7 @@ module.exports = new ItemTemplate("Strength Spinach",
 	(targets, user, isCrit, adventure) => {
 		const addedPowerUp = addModifier([user], { name: "Power Up", stacks: 50 }).length > 0;
 		if (addedPowerUp) {
-			return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}.`];
+			return [`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`];
 		} else {
 			return [];
 		}

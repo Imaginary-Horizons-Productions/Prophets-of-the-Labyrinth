@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { removeModifier, changeStagger, getNames, addModifier } = require('../util/combatantUtil');
+const { removeModifier, changeStagger, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { listifyEN, joinAsStatement } = require('../util/textUtil');
 
@@ -18,8 +18,7 @@ module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		const targetNames = getNames(targets, adventure);
-		targets.forEach((target, targetIndex) => {
+		for (const target of targets) {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
@@ -34,13 +33,13 @@ module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 					}
 				}
 				if (removedDebuffs.length > 0) {
-					resultLines.push(`${targetNames[targetIndex]} is cured of ${removedDebuffs.map(debuff => getApplicationEmojiMarkdown(debuff)).join("")}.`)
+					resultLines.push(`${target.name} is cured of ${removedDebuffs.map(debuff => getApplicationEmojiMarkdown(debuff)).join("")}.`)
 				}
 			}
-		})
+		}
 		const quickenedTargets = addModifier(targets, quicken);
 		if (quickenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(quickenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Quicken")}.`));
+			resultLines.push(joinAsStatement(false, quickenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Quicken")}.`));
 		}
 		return resultLines;
 	}

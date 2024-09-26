@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { listifyEN, joinAsStatement } = require('../util/textUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Devoted Barrier",
 	[
@@ -30,7 +30,7 @@ module.exports = new GearTemplate("Devoted Barrier",
 			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 		}
 		if (addedModifiers.length > 0) {
-			return joinAsStatement(false, getNames(targets, adventure), "gains", "gain", `${addedModifiers.join("")}.`);
+			return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", `${addedModifiers.join("")}.`)];
 		} else {
 			return [];
 		}

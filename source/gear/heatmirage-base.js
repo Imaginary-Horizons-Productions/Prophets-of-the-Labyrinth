@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Heat Mirage",
@@ -20,10 +20,9 @@ module.exports = new GearTemplate("Heat Mirage",
 			pendingEvade.stacks *= critMultiplier;
 		}
 		const resultLines = [];
-		const [userName, targetName] = getNames([user, target], adventure);
 		const addedEvade = addModifier([user], pendingEvade).length > 0;
 		if (addedEvade) {
-			resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Evade")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`);
 		}
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
@@ -35,7 +34,7 @@ module.exports = new GearTemplate("Heat Mirage",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultLines.push(`${targetName} falls for the provocation.`);
+			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		return resultLines;
 	}

@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { dealDamage, changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Flanking Prismatic Blast",
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Flanking Prismatic Blast",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const exposedTargets = addModifier(targets, exposed);
 		if (exposedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(exposedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
+			resultLines.push(joinAsStatement(false, exposedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
 		}
 		return resultLines;
 	}

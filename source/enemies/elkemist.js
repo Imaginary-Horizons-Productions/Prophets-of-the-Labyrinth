@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary.js");
-const { dealDamage, addModifier, removeModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
+const { dealDamage, addModifier, removeModifier, changeStagger, addProtection } = require("../util/combatantUtil");
 const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
@@ -26,14 +26,13 @@ module.exports = new EnemyTemplate("Elkemist",
 		} else {
 			addModifier([user], { name: "Progress", stacks: 45 + adventure.generateRandomNumber(31, "battle") });
 		}
-		const userName = getNames([user], adventure)[0];
-		const resultLines = [`${userName} gains protection.`];
+		const resultLines = [`${user.name} gains protection.`];
 		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (targetDebuffs.length > 0) {
 			const rolledDebuff = targetDebuffs[adventure.generateRandomNumber(targetDebuffs.length, "battle")];
 			const wasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (wasRemoved) {
-				resultLines.push(`${userName} is cured of ${rolledDebuff}.`);
+				resultLines.push(`${user.name} is cured of ${rolledDebuff}.`);
 			}
 		}
 		addProtection([user], 100);

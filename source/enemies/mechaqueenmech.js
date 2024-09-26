@@ -27,7 +27,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);
-		return [`${getNames([user], adventure)[0]} gains protection.`];
+		return [`${user.name} gains protection.`];
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
@@ -43,7 +43,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		const quickenedTargets = addModifier(filteredTargets, { name: "Quicken", stacks: 3 });
 		const poweredUpTargets = addModifier(filteredTargets, { name: "Power Up", stacks: 3 });
 		addProtection([user], isCrit ? 60 : 30);
-		return [`${getNames([user], adventure)[0]} gains protection.`, joinAsStatement(false, getNames(quickenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Quickened")}.`), joinAsStatement(false, getNames(poweredUpTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)];
+		return [`${user.name} gains protection.`, joinAsStatement(false, quickenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Quickened")}.`), joinAsStatement(false, poweredUpTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)];
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
@@ -64,7 +64,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);
-		return [`${getNames([user], adventure)[0]} gains protection.`];
+		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -82,7 +82,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 			targetMove.name = "Self-Destruct";
 			targetMove.targets = selectAllFoes(target, adventure);
 		}
-		return [`${getNames([user], adventure)[0]} gains protection.`];
+		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomOtherAlly,
 	needsLivingTargets: true,

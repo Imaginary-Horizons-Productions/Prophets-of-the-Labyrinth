@@ -2,7 +2,7 @@ const { bold } = require("discord.js");
 const { EnemyTemplate, Combatant, Adventure } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
-const { dealDamage, addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
+const { dealDamage, addModifier, changeStagger, addProtection } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { joinAsStatement } = require("../util/textUtil");
@@ -84,7 +84,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 			addProtection([user], 100);
 		}
 		const frailedTargets = addModifier(targets, { name: "Exposed", stacks: 1 });
-		const resultLines = [joinAsStatement(false, getNames(frailedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`)];
+		const resultLines = [joinAsStatement(false, frailedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`)];
 		const insultMap = {};
 		addNewRandomInsults(insultMap, targets, 1, adventure);
 		return resultLines.concat(Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${insultList.join("")}.`));
@@ -106,7 +106,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, "Light", adventure);
 		const distractedTargets = addModifier(targets, { name: "Distracted", stacks: 4 });
 		if (distractedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(distractedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Distracted")}.`));
+			resultLines.push(joinAsStatement(false, distractedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Distracted")}.`));
 		}
 		return resultLines;
 	},
@@ -122,8 +122,7 @@ module.exports = new EnemyTemplate("Starry Knight",
  * @param {Adventure} adventure
  */
 function addNewRandomInsults(insultMap, combatants, count, adventure) {
-	const combatantNames = getNames(combatants, adventure);
-	combatants.forEach((combatant, index) => {
+	combatants.forEach(combatant => {
 		const availableInsults = ["Ugly", "Stupid", "Smelly", "Boring", "Lacking Rhythm"].filter(insult => !(insult in combatant.modifiers));
 		for (let i = 0; i < count; i++) {
 			if (availableInsults.length < 1) {
@@ -131,13 +130,12 @@ function addNewRandomInsults(insultMap, combatants, count, adventure) {
 			}
 			const insultIndex = adventure.generateRandomNumber(availableInsults.length, "battle");
 			const rolledInsult = availableInsults[insultIndex];
-			const combatantName = combatantNames[index];
 			const didAddInsult = addModifier([combatant], { name: rolledInsult, stacks: 1 }).length > 0;
 			if (didAddInsult) {
-				if (combatantName in insultMap) {
-					insultMap[combatantName].push(getApplicationEmojiMarkdown(rolledInsult));
+				if (combatant.name in insultMap) {
+					insultMap[combatant.name].push(getApplicationEmojiMarkdown(rolledInsult));
 				} else {
-					insultMap[combatantName] = [getApplicationEmojiMarkdown(rolledInsult)];
+					insultMap[combatant.name] = [getApplicationEmojiMarkdown(rolledInsult)];
 				}
 				availableInsults.splice(insultIndex, 1);
 			}

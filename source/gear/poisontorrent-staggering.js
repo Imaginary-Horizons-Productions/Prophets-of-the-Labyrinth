@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { addModifier, changeStagger } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -22,9 +22,9 @@ module.exports = new GearTemplate("Staggering Poison Torrent",
 		}
 		changeStagger(targets, stagger);
 		const resultLines = ["All foes were Staggered."];
-		const poisonedTargets = getNames(addModifier(targets, pendingPoison), adventure);
+		const poisonedTargets = addModifier(targets, pendingPoison);
 		if (poisonedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, poisonedTargets, "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`));
+			resultLines.push(joinAsStatement(false, poisonedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`));
 		}
 		return resultLines;
 	}

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { addModifier, changeStagger } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Thick Risky Mixture",
@@ -22,12 +22,12 @@ module.exports = new GearTemplate("Thick Risky Mixture",
 		if (isCrit) {
 			const addedRegen = addModifier([target], regen).length > 0;
 			if (addedRegen) {
-				return [`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Regen")}.`];
+				return [`${target.name} gains ${getApplicationEmojiMarkdown("Regen")}.`];
 			}
 		} else {
 			const addedPoison = addModifier([target], poison).length > 0;
 			if (addedPoison) {
-				return [`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Poison")}.`];
+				return [`${target.name} gains ${getApplicationEmojiMarkdown("Poison")}.`];
 			}
 		}
 		return [];

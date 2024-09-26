@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { addModifier, payHP, changeStagger, getNames, removeModifier } = require('../util/combatantUtil.js');
+const { addModifier, payHP, changeStagger, removeModifier } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
@@ -28,11 +28,9 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 		const resultLines = [paymentSentence];
 		const regenedTargets = addModifier(targets, regen);
 		if (regenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
+			resultLines.push(joinAsStatement(false, regenedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
 		}
-		const targetNames = getNames(targets, adventure);
-		for (let i = 0; i < targets.length; i++) {
-			const target = targets[i];
+		for (const target of targets) {
 			const curedDebuffs = [];
 			Object.keys(target.modifiers).forEach(modifier => {
 				if (isDebuff(modifier)) {
@@ -42,7 +40,7 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 					}
 				}
 			})
-			resultLines.push(`${targetNames[i]} is cured of ${curedDebuffs.join("")}.`);
+			resultLines.push(`${target.name} is cured of ${curedDebuffs.join("")}.`);
 		}
 		return resultLines;
 	}

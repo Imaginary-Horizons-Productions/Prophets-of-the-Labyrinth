@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, addProtection } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
@@ -22,9 +22,9 @@ module.exports = new GearTemplate("Guarding Inspiration",
 		}
 		const poweredUpTargets = addModifier(targets, pendingPowerUp);
 		addProtection(targets, protection);
-		const resultLines = [joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "protection.")];
+		const resultLines = [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")];
 		if (poweredUpTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, poweredUpTargets, "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`));
+			resultLines.push(joinAsStatement(false, poweredUpTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`));
 		}
 		return resultLines;
 	}

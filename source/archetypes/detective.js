@@ -1,5 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
-const { getCombatantWeaknesses, getNames, modifiersToString } = require("../util/combatantUtil");
+const { getCombatantWeaknesses, modifiersToString } = require("../util/combatantUtil");
 const { getEmoji, getResistances } = require("../util/elementUtil");
 
 module.exports = new ArchetypeTemplate("Detective",
@@ -15,12 +15,11 @@ module.exports = new ArchetypeTemplate("Detective",
 	["Pistol", "Sabotage Kit"],
 	(embed, adventure) => {
 		const eligibleCombatants = adventure.room.enemies.filter(combatant => combatant.hp > 0).concat(adventure.delvers);
-		const combatantNames = getNames(eligibleCombatants, adventure);
-		eligibleCombatants.forEach((combatant, index) => {
+		eligibleCombatants.forEach(combatant => {
 			const weaknesses = getCombatantWeaknesses(combatant);
 			const resistances = getResistances(combatant.element);
 			const modifiersText = modifiersToString(combatant, adventure);
-			embed.addFields({ name: `${combatantNames[index]} ${getEmoji(combatant.element)}`, value: `Weaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
+			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.element)}`, value: `Weaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
 		});
 		return embed.setTitle(`Detective Predictions for Round ${adventure.room.round}`);
 	},

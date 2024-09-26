@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { listifyEN } = require('../util/textUtil');
 
@@ -21,10 +21,9 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 			pendingEvade.stacks *= critMultiplier;
 		}
 		const resultLines = [];
-		const [userName, targetName] = getNames([user, target], adventure);
 		const addedEvade = addModifier([user], pendingEvade).length > 0;
 		if (addedEvade) {
-			resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Evade")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Evade")}.`);
 		}
 		const targetEffects = [];
 		const targetMove = adventure.room.moves.find(move => {
@@ -44,7 +43,7 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 			targetEffects.push(`gains ${getApplicationEmojiMarkdown("Unlucky")}`);
 		}
 		if (targetEffects.length > 0) {
-			resultLines.push(`${targetName} ${listifyEN(targetEffects)}.`);
+			resultLines.push(`${target.name} ${listifyEN(targetEffects)}.`);
 		}
 		return resultLines;
 	}

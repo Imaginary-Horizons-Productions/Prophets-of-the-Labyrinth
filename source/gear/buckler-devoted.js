@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, addProtection, getNames } = require('../util/combatantUtil');
+const { addModifier, changeStagger, addProtection } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -22,10 +22,9 @@ module.exports = new GearTemplate("Devoted Buckler",
 		}
 		addProtection(targets, pendingProtection);
 		const poweredUpTargets = addModifier(targets, powerUp);
-		const targetNames = getNames(targets, adventure);
-		const resultLines = [joinAsStatement(false, targetNames, "gains", "gain", "protection.")];
+		const resultLines = [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")];
 		if (poweredUpTargets.length > 0) {
-			resultLines.push(`${joinAsStatement(false, getNames(poweredUpTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)}`)
+			resultLines.push(`${joinAsStatement(false, poweredUpTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)}`)
 		}
 		return resultLines;
 	}

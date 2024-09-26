@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { addModifier, payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
+const { addModifier, payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Charging Blood Aegis",
@@ -27,9 +27,8 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		addProtection([user], pendingProtection);
 		const addedPowerUp = addModifier([user], powerUp).length > 0;
 		if (addedPowerUp) {
-			resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
+			resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Power Up")}.`);
 		}
-		const [userName, targetName] = getNames([user, target], adventure);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -40,7 +39,7 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultLines.push(`${targetName} falls for the provocation.`);
+			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		return resultLines;
 	}

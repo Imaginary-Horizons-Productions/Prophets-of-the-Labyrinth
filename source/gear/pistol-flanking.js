@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
@@ -26,12 +26,12 @@ module.exports = new GearTemplate("Flanking Pistol",
 			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
 			const addedPowerUp = addModifier([ally], powerUp).length > 0;
 			if (addedPowerUp) {
-				resultLines.push(`${getNames([ally], adventure)[0]} gains ${getApplicationEmojiMarkdown("Power Up")}!`);
+				resultLines.push(`${ally.name} gains ${getApplicationEmojiMarkdown("Power Up")}!`);
 			}
 		}
 		const exposedTargets = addModifier(targets, exposed);
 		if (exposedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(exposedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
+			resultLines.push(joinAsStatement(false, exposedTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
 		}
 		return resultLines;
 	}

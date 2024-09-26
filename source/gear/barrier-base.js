@@ -1,7 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Barrier",
 	[
@@ -30,7 +29,7 @@ module.exports = new GearTemplate("Barrier",
 			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
 		}
 		if (addedModifiers.length > 0) {
-			return joinAsStatement(false, getNames([user], adventure), "gains", "gain", `${addedModifiers.join("")}.`);
+			return [`${user.name} gains ${addedModifiers.join("")}.`];
 		} else {
 			return [];
 		}

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Vigilant Barrier",
@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Vigilant Barrier",
 			addedModifiers.push("Evade");
 		}
 		if (addedModifiers.length > 0) {
-			return [`${getNames([user], adventure)[0]} gains ${listifyEN(addedModifiers)}.`];
+			return [`${user.name} gains ${listifyEN(addedModifiers)}.`];
 		} else {
 			return [];
 		}

@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { gainHealth, removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { gainHealth, removeModifier, changeStagger } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
 module.exports = new GearTemplate("Cleansing Second Wind",
@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Cleansing Second Wind",
 			const rolledDebuff = userDebuffs[adventure.generateRandomNumber(userDebuffs.length, "battle")];
 			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (debuffWasRemoved) {
-				resultLines.push(`${getNames([user], adventure)[0]} shrugs off ${getApplicationEmojiMarkdown(rolledDebuff)}.`);
+				resultLines.push(`${user.name} shrugs off ${getApplicationEmojiMarkdown(rolledDebuff)}.`);
 			}
 		}
 		return resultLines;

@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, changeStagger } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Shattering Corrosion",
@@ -15,19 +15,18 @@ module.exports = new GearTemplate("Shattering Corrosion",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const targetNames = getNames(targets, adventure);
 		const resultLines = [];
 		if (isCrit) {
 			changeStagger(targets, bonus);
-			resultLines.push(joinAsStatement(false, targetNames, "was", "were", "Staggered."));
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 		}
 		const poweredDownTargets = addModifier(targets, powerDown);
 		if (poweredDownTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
+			resultLines.push(joinAsStatement(false, poweredDownTargets.map(target => target.name), "is", "are", "Powered Down."));
 		}
 		const frailedTargets = addModifier(targets, frail);
 		if (frailedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(frailedTargets, adventure), "becomes", "become", "Frail."));
+			resultLines.push(joinAsStatement(false, frailedTargets.map(target => target.name), "becomes", "become", "Frail."));
 		}
 		return resultLines;
 	}

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thief's Abacus",
 	[
@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Thief's Abacus",
 		const totalGold = bonusBounty * hunts;
 		if (totalGold > 0) {
 			adventure.gainGold(totalGold);
-			resultLines.push(`${getNames([user], adventure)} harvests ${totalGold}g of alchemical reagents.`);
+			resultLines.push(`${user.name} harvests ${totalGold}g of alchemical reagents.`);
 		}
 		return resultLines;
 	}

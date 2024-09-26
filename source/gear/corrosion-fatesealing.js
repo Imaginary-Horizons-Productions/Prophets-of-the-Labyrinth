@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, changeStagger } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Fate-Sealing Corrosion",
@@ -18,14 +18,14 @@ module.exports = new GearTemplate("Fate-Sealing Corrosion",
 		const resultLines = [];
 		const poweredDownTargets = addModifier(targets, powerDown);
 		if (poweredDownTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
+			resultLines.push(joinAsStatement(false, poweredDownTargets.map(target => target.name), "is", "are", "Powered Down."));
 		}
 		if (isCrit) {
 			changeStagger(targets, bonus);
-			resultLines.push(joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered."));
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 			const sealedTargets = addModifier(targets, stasis);
 			if (sealedTargets.length > 0) {
-				resultLines.push(joinAsStatement(false, getNames(sealedTargets, adventure), "enters", "enter", "Stasis."));
+				resultLines.push(joinAsStatement(false, sealedTargets.map(target => target.name), "enters", "enter", "Stasis."));
 			}
 		}
 		return resultLines;

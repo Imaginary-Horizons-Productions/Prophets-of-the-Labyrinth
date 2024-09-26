@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Slowing Warhammer",
@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Slowing Warhammer",
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure)
 		const addedSlow = addModifier([target], slow).length > 0;
 		if (addedSlow) {
-			resultLines.push(`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Slow")}.`);
+			resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Slow")}.`);
 		}
 		return resultLines;
 	}

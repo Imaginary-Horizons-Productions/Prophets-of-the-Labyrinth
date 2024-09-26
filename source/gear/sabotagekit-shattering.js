@@ -1,8 +1,7 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier, getCombatantWeaknesses, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Shattering Sabotage Kit",
 	[
@@ -42,7 +41,7 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 			debuffs.push(getApplicationEmojiMarkdown("Frail"));
 		}
 		if (debuffs.length > 0) {
-			return [`${getNames([target], adventure)[0]} ${debuffs.join("")}.`];
+			return [`${target.name} gains ${debuffs.join("")}.`];
 		} else {
 			return [];
 		}

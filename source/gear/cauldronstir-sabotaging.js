@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, getNames, addModifier } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
 
 const rollablePotions = [
 	"Protection Potion",
@@ -32,17 +32,15 @@ module.exports = new GearTemplate("Sabotaging Cauldron Stir",
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
-			resultLines.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
+			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
-		const targetNames = getNames(targets, adventure);
-		for (let i = 0; i < targets.length; i++) {
-			const target = targets[i];
+		for (const target of targets) {
 			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 			const weaknessPool = elementsList(ineligibleWeaknesses);
 			if (weaknessPool.length > 0) {
 				const addedWeakness = addModifier(targets, { name: `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`, stacks: weakness.stacks }).length > 0;
 				if (addedWeakness) {
-					resultLines.push(`${targetNames[i]} gains ${pendingWeakness.name}`);
+					resultLines.push(`${target.name} gains ${pendingWeakness.name}`);
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier, getNames } = require("../util/combatantUtil");
+const { addModifier } = require("../util/combatantUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new ItemTemplate("Smoke Bomb",
@@ -12,7 +12,7 @@ module.exports = new ItemTemplate("Smoke Bomb",
 	(targets, user, isCrit, adventure) => {
 		const addedEvade = addModifier([user], { name: "Evade", stacks: 2 }).length > 0;
 		if (addedEvade) {
-			return [`${getNames([user], adventure)[0]} prepares to ${getApplicationEmojiMarkdown("Evade")}.`];
+			return [`${user.name} prepares to ${getApplicationEmojiMarkdown("Evade")}.`];
 		} else {
 			return [];
 		}

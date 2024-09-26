@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const { MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, GAME_VERSION } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
-const { elementsList } = require("../util/elementUtil.js");
+const { elementsList, getOpposite } = require("../util/elementUtil.js");
 const { parseExpression } = require("../util/textUtil.js");
 
 /** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} CombatantElement */
@@ -360,46 +360,76 @@ class Enemy extends Combatant {
 	/** This read-write instance class defines an enemy currently in combat
 	 * @param {string} nameInput
 	 * @param {CombatantElement} elementEnum
+	 * @param {boolean} shouldRandomizeHP
+	 * @param {number} hpInput
 	 * @param {number} powerInput
 	 * @param {number} speedInput
 	 * @param {number} poiseExpression
 	 * @param {number} critRateInput
 	 * @param {string} firstActionName
 	 * @param {{[modifierName]: number}} startingModifiersShallowCopy
-	 * @param {number} delverCount
+	 * @param {Adventure} adventure
 	 */
-	constructor(nameInput, bossesBeaten, elementEnum, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, delverCount) {
-		super(nameInput, "enemy");
+	constructor(nameInput, elementEnum, shouldRandomizeHP, hpInput, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, adventure) {
+		// allows parameterless class casting on load without crashing
+		if (elementEnum === undefined) {
+			super(nameInput, "enemy");
+			return;
+		}
+
+		if (nameInput !== "@{clone}") {
+			const parsedName = nameInput.replace(/@{adventure}/g, adventure.element).replace(/@{adventureOpposite}/g, getOpposite(adventure.element));
+			super(parsedName, "enemy");
+			if (adventure.room.enemyIdMap[this.name]) {
+				adventure.room.enemyIdMap[this.name]++;
+				this.id = adventure.room.enemyIdMap[this.name];
+				this.name = `${parsedName} ${this.id}`;
+			} else {
+				adventure.room.enemyIdMap[this.name] = 1;
+				this.id = 1;
+			}
+			if (this.id === 2) { // id is omitted from enemy name until a second of the same type is spawned
+				const predecessor = adventure.room.enemies.find(enemy => enemy.archetype === nameInput);
+				predecessor.name = `${parsedName} 1`;
+			}
+			let hpPercent = 85 + 15 * adventure.delvers.length;
+			if (shouldRandomizeHP) {
+				hpPercent += 10 * (2 - adventure.generateRandomNumber(5, "battle"));
+			}
+			const pendingHP = Math.ceil(hpInput * hpPercent / 100);
+			this.hp = pendingHP;
+			this.maxHP = pendingHP;
+			switch (elementEnum) {
+				case "@{adventure}":
+					/** @type {CombatantElement} */
+					this.element = adventure.element;
+					break;
+				case "@{adventureOpposite}":
+					this.element = getOpposite(adventure.element);
+					break;
+				default:
+					this.element = elementEnum;
+			}
+			this.nextAction = firstActionName;
+			this.modifiers = startingModifiersShallowCopy;
+			this.power = powerInput;
+			this.speed = speedInput;
+			this.poise = parseExpression(poiseExpression, adventure.delvers.length);
+			this.critRate = critRateInput;
+		} else { // Mirror Clones
+			const counterpart = adventure.delvers[adventure.room.enemies.length];
+			super(`Mirror ${counterpart.archetype}`, "enemy");
+			const pendingHP = hpInput + counterpart.gear.reduce((totalMaxHP, currentGear) => totalMaxHP + currentGear.maxHP, 0);
+			this.hp = pendingHP;
+			this.maxHP = pendingHP;
+			this.element = counterpart.element;
+			this.power = powerInput + counterpart.gear.reduce((totalPower, currentGear) => totalPower + currentGear.power, 0);
+			this.speed = speedInput + counterpart.gear.reduce((totalSpeed, currentGear) => totalSpeed + currentGear.speed, 0);
+			this.poise = parseExpression(poiseExpression, adventure.delvers.length) + counterpart.gear.reduce((totalPoise, currentGear) => totalPoise + currentGear.poise, 0);
+			this.critRate = critRateInput + counterpart.gear.reduce((totalCritRate, currentGear) => totalCritRate + currentGear.critRate, 0);
+		}
 		this.archetype = nameInput;
-		this.level = bossesBeaten;
-		/** @type {CombatantElement} */
-		this.element = elementEnum;
-		this.power = powerInput;
-		this.speed = speedInput;
-		if (poiseExpression && delverCount) { // allows parameterless class casting on load without crashing
-			this.poise = parseExpression(poiseExpression, delverCount);
-		}
-		this.critRate = critRateInput;
-		this.nextAction = firstActionName;
-		this.modifiers = startingModifiersShallowCopy;
-	}
-
-	/** @param {number} integer */
-	setHP(integer) {
-		this.hp = integer;
-		this.maxHP = integer;
-		return this;
-	}
-
-	/** @param {Adventure} adventure */
-	setId(adventure) {
-		if (adventure.room.enemyIdMap[this.name]) {
-			adventure.room.enemyIdMap[this.name]++;
-			this.id = adventure.room.enemyIdMap[this.name];
-		} else {
-			adventure.room.enemyIdMap[this.name] = 1;
-			this.id = 1;
-		}
+		this.level = adventure.scouting.bossesEncountered;
 	}
 
 	getMaxHP() {

@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, changeStagger } = require("../util/combatantUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
@@ -17,14 +17,13 @@ module.exports = new GearTemplate("Corrosion",
 			changeStagger(targets, "elementMatchFoe");
 		}
 		const poweredDownTargets = addModifier(targets, powerDown);
-		const targetNames = getNames(targets, adventure);
 		const resultLines = [];
 		if (poweredDownTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, targetNames, "gains", "gain", `${getApplicationEmojiMarkdown("Power Down")}.`));
+			resultLines.push(joinAsStatement(false, poweredDownTargets.map(target => target.name), "gains", "gain", `${getApplicationEmojiMarkdown("Power Down")}.`));
 		}
 		if (isCrit) {
 			changeStagger(targets, bonus);
-			resultLines.push(joinAsStatement(false, targetNames, "was", "were", "Staggered."));
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 		}
 		return resultLines;
 	}
