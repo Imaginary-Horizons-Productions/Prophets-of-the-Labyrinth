@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Midas's Risky Mixture",
 	[
@@ -19,30 +18,13 @@ module.exports = new GearTemplate("Midas's Risky Mixture",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const addedModifiers = [];
+		const receipts = addModifier([target], curseOfMidas);
 		if (isCrit) {
-			const addedRegen = target.getModifierStacks("Oblivious") < 1;
-			addModifier([target], regen);
-			if (addedRegen) {
-				addedModifiers.push(getApplicationEmojiMarkdown("Regen"));
-			}
+			receipts.unshift(...addModifier([target], regen));
 		} else {
-			const addedPoison = target.getModifierStacks("Oblivious") < 1;
-			addModifier([target], poison);
-			if (addedPoison) {
-				addedModifiers.push(getApplicationEmojiMarkdown("Poison"));
-			}
+			receipts.unshift(...addModifier([target], poison));
 		}
-		const addedCurse = target.getModifierStacks("Oblivious") < 1;
-		addModifier([target], curseOfMidas);
-		if (addedCurse) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Curse of Midas"));
-		}
-		if (addedModifiers.length > 0) {
-			return [`${target.name} gains ${addedModifiers.join("")}.`];
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Potent Risky Mixture", "Thick Risky Mixture")

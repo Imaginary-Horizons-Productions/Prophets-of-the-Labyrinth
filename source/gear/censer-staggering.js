@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Staggering Censer",
 	[
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Staggering Censer",
 		changeStagger([target], stagger);
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			resultLines.push(...addModifier([target], slow));
+			resultLines.push(...generateModifierResultLines(addModifier([target], slow)));
 		}
 		return resultLines;
 	}

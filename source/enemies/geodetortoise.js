@@ -34,15 +34,15 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	description: `Gain protection and @e{Power Up}`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const addedPowerUp = user.getModifierStacks("Oblivious") < 1;
+		let addedPowerUp = false;
 		addProtection([user], 25);
 		if (isCrit) {
-			addModifier([user], { name: "Power Up", stacks: 50 });
+			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 50 }).some(receipt => receipt.succeeded.size > 0);
 			changeStagger([user], "elementMatchAlly");
 		} else {
-			addModifier([user], { name: "Power Up", stacks: 25 });
+			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 25 }).some(receipt => receipt.succeeded.size > 0);
 		}
-		return [`${user.name} gains protection${addedPowerUp ? ` and ${getApplicationEmojiMarkdown("Power Up")}` : ""}.`];
+		return [`${user.name} gains protection${addedPowerUp ? ` and ${getApplicationEmojiMarkdown("Power Up")}` : ` but was oblivious to ${getApplicationEmojiMarkdown("Power Up")}`}.`];
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,

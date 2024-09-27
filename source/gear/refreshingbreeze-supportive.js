@@ -1,7 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { removeModifier, changeStagger } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
+const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Supportive Refreshing Breeze",
 	[
@@ -13,32 +12,28 @@ module.exports = new GearTemplate("Supportive Refreshing Breeze",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, stagger } = module.exports;
-		const resultLines = ["All allies shrug off some Stagger."];
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
 		changeStagger(targets, stagger);
+		const resultLines = ["All allies shrug off some Stagger."];
+		const receipts = [];
 		for (const target of targets) {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
-				const removedDebuffs = [];
 				for (let i = 0; i < debuffsToRemove; i++) {
 					const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
 					const rolledDebuff = targetDebuffs[debuffIndex];
-					const wasRemoved = target.getModifierStacks("Retain") < 1;
-					removeModifier([target], { name: rolledDebuff, stacks: "all" });
-					if (wasRemoved) {
-						removedDebuffs.push(getApplicationEmojiMarkdown(rolledDebuff));
+					const [removalReceipt] = removeModifier([target], { name: rolledDebuff, stacks: "all" });
+					receipts.push(removalReceipt);
+					if (removalReceipt.succeeded.size > 0) {
 						targetDebuffs.splice(debuffIndex, 1);
 					}
 				}
-				if (removedDebuffs.length > 0) {
-					resultLines.push(`${target.name} is cured of ${removedDebuffs.join("")}.`)
-				}
 			}
 		}
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Accelerating Refreshing Breeze", "Swift Refreshing Breeze")

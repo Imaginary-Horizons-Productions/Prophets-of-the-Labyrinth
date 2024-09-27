@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Poison Torrent",
 	[
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Poison Torrent",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		return addModifier(targets, pendingPoison);
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPoison)));
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Distracting Poison Torrent", "Harmful Poison Torrent", "Staggering Poison Torrent")

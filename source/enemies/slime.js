@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
 module.exports = new EnemyTemplate("@{adventure} Slime",
 	"@{adventure}",
@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 		if (isCrit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		return addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

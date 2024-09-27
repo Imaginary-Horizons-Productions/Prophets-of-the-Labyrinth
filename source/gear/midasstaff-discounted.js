@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Discounted Midas Staff",
 	[
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Discounted Midas Staff",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		return addModifier([target], pendingCurse);
+		return generateModifierResultLines(addModifier([target], pendingCurse));
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Accelerating Midas Staff", "Soothing Midas Staff")

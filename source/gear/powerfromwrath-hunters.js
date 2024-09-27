@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { payHP, dealDamage, changeStagger } = require('../util/combatantUtil');
+const { payHP, dealDamage, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Hunter's Power from Wrath",
 	[
@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 			resultLines.push(...dealDamage(targets, user, pendingDamage, false, element, adventure));
 			const stillLivingTargets = targets.filter(target => target.hp > 0);
 			if (stillLivingTargets.length < targets.length) {
-				resultLines.push(...addModifier([user], powerUp));
+				resultLines.push(...generateModifierResultLines(addModifier([user], powerUp)));
 			}
 		}
 		return resultLines;

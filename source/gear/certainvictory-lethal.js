@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, payHP, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, payHP, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Lethal Certain Victory",
 	[
@@ -18,11 +18,10 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		return [
-			...dealDamage(targets, user, pendingDamage, false, element, adventure),
-			...addModifier([user], powerUp),
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(
+			...generateModifierResultLines(addModifier([user], powerUp)),
 			payHP(user, user.getModifierStacks("Power Up"), adventure)
-		];
+		);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Reckless Certain Victory")

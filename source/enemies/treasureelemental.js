@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
 
 module.exports = new EnemyTemplate("Treasure Elemental",
@@ -56,7 +56,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			if (isCrit) {
 				stacks *= 2;
 			}
-			return addModifier(targets, { name: "Slow", stacks });
+			return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks })));
 		},
 		selector: selectAllFoes,
 		needsLivingTargets: false,

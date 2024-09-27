@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil');
+const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Medicine",
 	[
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Medicine",
 		if (isCrit) {
 			pendingRegen.stacks *= critMultiplier;
 		}
-		return addModifier(targets, pendingRegen);
+		return generateModifierResultLines(addModifier(targets, pendingRegen));
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Bouncing Medicine", "Cleansing Medicine", "Soothing Medicine")

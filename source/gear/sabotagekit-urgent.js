@@ -1,7 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Urgent Sabotage Kit",
 	[
@@ -15,9 +14,6 @@ module.exports = new GearTemplate("Urgent Sabotage Kit",
 		const { element, modifiers: [slow, weakness], bonus } = module.exports;
 		const pendingSlow = { ...slow };
 		const pendingWeakness = { stacks: weakness.stacks };
-		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
-		const weaknessPool = elementsList(ineligibleWeaknesses);
-		pendingWeakness.name = `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`;
 		if (isCrit) {
 			pendingSlow.stacks += bonus;
 			pendingWeakness.stacks += bonus;
@@ -25,24 +21,14 @@ module.exports = new GearTemplate("Urgent Sabotage Kit",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		const debuffs = [];
-		const addedSlow = target.getModifierStacks("Oblivious") < 1;
-		addModifier([target], pendingSlow);
-		if (addedSlow) {
-			debuffs.push(getApplicationEmojiMarkdown("Slow"));
-		}
+		const receipts = addModifier([target], pendingSlow);
+		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
+		const weaknessPool = elementsList(ineligibleWeaknesses);
 		if (weaknessPool.length > 0) {
-			const addedWeakness = target.getModifierStacks("Oblivious") < 1;
-			addModifier([target], pendingWeakness);
-			if (addedWeakness) {
-				debuffs.push(getApplicationEmojiMarkdown(pendingWeakness.name));
-			}
+			pendingWeakness.name = `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`;
+			receipts.unshift(...addModifier([target], pendingWeakness));
 		}
-		if (debuffs.length > 0) {
-			return [`${target.name} gains ${debuffs.join("")}.`];
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setSidegrades("Potent Sabotage Kit", "Shattering Sabotage Kit")
 	.setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

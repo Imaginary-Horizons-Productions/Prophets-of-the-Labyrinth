@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Evasive Shoulder Throw",
 	[
@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Evasive Shoulder Throw",
 			targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
 			resultLines.push(`${target.name} is redirected into targeting themself.`);
 		}
-		return resultLines.concat(addModifier([user], pendingEvade));
+		return resultLines.concat(generateModifierResultLines(addModifier([user], pendingEvade)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Harmful Shoulder Throw", "Staggering Shoulder Throw")

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, payHP, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, payHP, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Certain Victory",
 	[
@@ -23,8 +23,7 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 		if (target.hp < 1) {
 			pendingPowerUp.stacks += huntersPowerUp.stacks;
 		}
-		resultLines.push(...addModifier([user], powerUp).length, payHP(user, user.getModifierStacks("Power Up"), adventure));
-		return resultLines;
+		return resultLines.concat(...generateModifierResultLines(addModifier([user], powerUp)), payHP(user, user.getModifierStacks("Power Up"), adventure));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")

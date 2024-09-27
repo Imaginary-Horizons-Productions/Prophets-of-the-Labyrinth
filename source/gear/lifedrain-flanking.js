@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, dealDamage, gainHealth, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Flanking Life Drain",
 	[
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Flanking Life Drain",
 		resultLines.push(gainHealth(user, pendingHealing, adventure));
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
-			resultLines.push(...addModifier(stillLivingTargets, exposed));
+			resultLines.push(...generateModifierResultLines(addModifier(stillLivingTargets, exposed)));
 		}
 
 		return resultLines;

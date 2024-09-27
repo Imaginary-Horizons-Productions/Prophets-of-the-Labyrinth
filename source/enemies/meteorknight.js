@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier, changeStagger, addProtection } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectAllCombatants } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
@@ -53,7 +53,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	description: `Grant @e{Power Up} to all combatants (friend and foe); Protects non-delvers on crit`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const resultLines = addModifier(targets, { name: "Power Up", stacks: 20 });
+		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Power Up", stacks: 20 })));
 		if (isCrit) {
 			const livingEnemies = adventure.room.enemies.filter(c => c.hp > 0);
 			addProtection(livingEnemies, 50);

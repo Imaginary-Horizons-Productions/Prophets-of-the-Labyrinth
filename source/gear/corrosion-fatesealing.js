@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, changeStagger } = require("../util/combatantUtil");
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Fate-Sealing Corrosion",
@@ -15,13 +15,14 @@ module.exports = new GearTemplate("Fate-Sealing Corrosion",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const resultLines = addModifier(targets, powerDown);
+		const resultLines = [];
+		const receipts = addModifier(targets, powerDown);
 		if (isCrit) {
 			changeStagger(targets, bonus);
-			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."),
-				...addModifier(targets, retain));
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
+			receipts.push(...addModifier(targets, retain));
 		}
-		return resultLines;
+		return generateModifierResultLines(combineModifierReceipts(receipts)).concat(resultLines);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Harmful Corrosion", "Shattering Corrosion")

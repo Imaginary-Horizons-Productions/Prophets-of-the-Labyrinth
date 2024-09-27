@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier, dealDamage } = require('../util/combatantUtil');
+const { changeStagger, addModifier, dealDamage, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Harmful Shoulder Throw",
 	[
@@ -30,7 +30,7 @@ module.exports = new GearTemplate("Harmful Shoulder Throw",
 			}
 		}
 		if (isCrit) {
-			resultLines.push(...addModifier([user], evade));
+			resultLines.push(...generateModifierResultLines(addModifier([user], evade)));
 		}
 		return resultLines;
 	}

@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
 
 module.exports = new EnemyTemplate("Fire-Arrow Frog",
@@ -18,7 +18,8 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 20;
-		return dealDamage(targets, user, damage, false, user.element, adventure).concat(addModifier(targets, { name: "Poison", stacks: isCrit ? 6 : 3 }));
+		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
+		return resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: isCrit ? 6 : 3 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -34,7 +35,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 			stacks *= 3;
 		}
 		changeStagger([user], "elementMatchAlly");
-		return addModifier([user], { name: "Evade", stacks }).length > 0;
+		return generateModifierResultLines(addModifier([user], { name: "Evade", stacks }));
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
@@ -48,7 +49,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		if (isCrit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		return addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

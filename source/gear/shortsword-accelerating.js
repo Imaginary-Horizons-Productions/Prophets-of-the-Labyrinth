@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Shortsword",
 	[
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 				changeStagger(targets, "elementMatchFoe");
 			}
 		}
-		return resultLines.concat(addModifier([user, ...stillLivingTargets], exposed), addModifier([user], quicken));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed), addModifier([user], quicken))));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Shortsword", "Toxic Shortsword")

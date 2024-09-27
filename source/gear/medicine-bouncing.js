@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { addModifier, changeStagger } = require('../util/combatantUtil');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Bouncing Medicine",
 	[
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Bouncing Medicine",
 		if (isCrit) {
 			pendingRegen.stacks *= critMultiplier;
 		}
-		return addModifier(targets, pendingRegen);
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingRegen)));
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "ally", needsLivingTargets: true })
 	.setSidegrades("Cleansing Medicine", "Soothing Medicine")

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Soothing Inspiration",
 	[
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Soothing Inspiration",
 		if (isCrit) {
 			pendingPowerUp.stacks += bonus;
 		}
-		return addModifier(targets, pendingPowerUp).concat(addModifier(targets, regen));
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPowerUp).concat(addModifier(targets, regen))));
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Inspiration", "Sweeping Inspiration")

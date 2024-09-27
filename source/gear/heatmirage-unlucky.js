@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { listifyEN } = require('../util/textUtil');
 
@@ -20,8 +20,7 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 		if (isCrit) {
 			pendingEvade.stacks *= critMultiplier;
 		}
-		const resultLines = addModifier([user], pendingEvade);
-		const targetEffects = [];
+		const resultLines = generateModifierResultLines(addModifier([user], pendingEvade));
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -30,14 +29,16 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
+		const targetEffects = [];
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			target.push("falls for the provocation");
+			targetEffects.push("falls for the provocation");
 		}
-		const addedUnlucky = target.getModifierStacks("Oblivious") < 1;
-		addModifier([target], unlucky);
+		const addedUnlucky = addModifier([target], unlucky).some(receipt => receipt.succeeded.size > 0);
 		if (addedUnlucky) {
 			targetEffects.push(`gains ${getApplicationEmojiMarkdown("Unlucky")}`);
+		} else {
+			targetEffects.push(`is oblivious to ${getApplicationEmojiMarkdown("Unlucky")}`);
 		}
 		if (targetEffects.length > 0) {
 			resultLines.push(`${target.name} ${listifyEN(targetEffects)}.`);
