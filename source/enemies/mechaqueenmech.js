@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, addProtection, combineModifierReceipts } = require("../util/combatantUtil.js");
+const { addModifier, dealDamage, changeStagger, addProtection, combineModifierReceipts, generateModifierResultLines } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 
 const drone = require("./mechabeedrone.js")
