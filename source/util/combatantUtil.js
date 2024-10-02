@@ -4,6 +4,7 @@ const { getInverse, getModifierDescription, isBuff, isDebuff } = require("../mod
 const { getWeaknesses, getResistances, elementsList, getEmoji } = require("./elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 const { listifyEN } = require("./textUtil.js");
+const { areSetContentsCongruent } = require("./mathUtil.js");
 
 /**
  * @param {Combatant} target
@@ -14,7 +15,7 @@ function downedCheck(target, adventure) {
 		if (target.team === "delver") {
 			target.hp = target.getMaxHP();
 			adventure.lives = Math.max(adventure.lives - 1, 0);
-			return ` ${bold(`${target.name} was downed`)}${adventure.lives > 0 ? " and revived" : ""}.`;
+			return ` ${bold(`${target.name} was downed ${adventure.lives > 0 ? " and revived" : ""}.`)}`;
 		} else {
 			target.hp = 0;
 			return ` ${bold(`${target.name} was downed`)}.`;
@@ -22,6 +23,23 @@ function downedCheck(target, adventure) {
 	} else {
 		return "";
 	}
+}
+
+/**
+ * @param {number} previousLives
+ * @param {number} currentLives
+ */
+function livesCheck(previousLives, currentLives) {
+	if (currentLives < previousLives) {
+		if (currentLives > 1) {
+			return italic(`${currentLives} LIVES REMAIN`);
+		} else if (currentLives === 1) {
+			return italic(`${currentLives} LIFE REMAINS`);
+		} else {
+			return italic("GAME OVER");
+		}
+	}
+	return null;
 }
 
 /**
@@ -82,14 +100,9 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 			}
 		}
 	}
-	if (adventure.lives < previousLifeCount) {
-		if (adventure.lives > 1) {
-			results.push(bold(italic(`${adventure.lives} lives remain.`)));
-		} else if (adventure.lives === 1) {
-			results.push(bold(italic(`${adventure.lives} life remains.`)));
-		} else {
-			results.push(bold(italic("GAME OVER")));
-		}
+	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
+	if (lifeLine) {
+		results.push(lifeLine);
 	}
 	return results;
 }
@@ -116,16 +129,11 @@ function dealModifierDamage(target, modifier, adventure) {
 	}
 
 	target.hp -= pendingDamage;
-	const resultLines = [`${bold(target.name)} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`];
+	const resultLines = [`${target.name} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`];
 
-	if (adventure.lives < previousLifeCount) {
-		if (adventure.lives > 1) {
-			resultLines.push(bold(italic(`${adventure.lives} lives remain.`)));
-		} else if (adventure.lives === 1) {
-			resultLines.push(bold(italic(`${adventure.lives} life remains.`)));
-		} else {
-			resultLines.push(bold(italic("GAME OVER")));
-		}
+	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
+	if (lifeLine) {
+		resultLines.push(lifeLine);
 	}
 	return resultLines;
 }
@@ -139,14 +147,9 @@ function payHP(user, damage, adventure) {
 	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
 	let resultText = ` ${user.name} pays ${damage} HP.${downedCheck(user, adventure)}`;
-	if (adventure.lives < previousLifeCount) {
-		if (adventure.lives > 1) {
-			resultText += ` ${bold(italic(`${adventure.lives} lives remain.`))}`;
-		} else if (adventure.lives === 1) {
-			resultText += ` ${bold(italic(`${adventure.lives} life remains.`))}`;
-		} else {
-			resultText += ` ${bold(italic("GAME OVER"))}`;
-		}
+	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
+	if (lifeLine) {
+		resultText += ` ${lifeLine}`;
 	}
 	return resultText;
 }
@@ -265,7 +268,7 @@ function enterStance(combatant, stanceModifier) {
 function combineModifierReceipts(receipts) {
 	// Consolidate by name
 	// eg "Combatant gains X" + "Combatant gains Y" = "Combatant gains XY"
-	for (let i = 1; i < receipts.length; i++) {
+	for (let i = 0; i < receipts.length; i++) {
 		const heldReceipt = receipts[i];
 		for (let j = i + 1; j < receipts.length; j++) {
 			const checkingReceipt = receipts[j];
@@ -279,7 +282,7 @@ function combineModifierReceipts(receipts) {
 
 	// Consolidate by modifier sets
 	// eg "X gains ModifierSet" + "Y gains ModifierSet" = "X and Y gain ModifierSet"
-	for (let i = 1; i < receipts.length; i++) {
+	for (let i = 0; i < receipts.length; i++) {
 		const heldReceipt = receipts[i];
 		for (let j = i + 1; j < receipts.length; j++) {
 			const checkingReceipt = receipts[j];
