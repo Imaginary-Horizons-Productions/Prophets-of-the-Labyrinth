@@ -2,7 +2,7 @@ const { bold } = require("discord.js");
 const { EnemyTemplate, Combatant, Adventure } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
-const { dealDamage, addModifier, changeStagger, addProtection } = require("../util/combatantUtil");
+const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
@@ -63,10 +63,9 @@ module.exports = new EnemyTemplate("Starry Knight",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let pendingDamage = user.getPower() + 50 * targets.length;
-		const insultMap = {};
 		changeStagger(targets, "elementMatchFoe");
-		addNewRandomInsults(insultMap, targets, isCrit ? 2 : 1, adventure);
-		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${insultList.join("")}.`));
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure)
+			.concat(combineModifierReceipts(addNewRandomInsults(targets, isCrit ? 2 : 1, adventure)));
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: true,
@@ -82,10 +81,8 @@ module.exports = new EnemyTemplate("Starry Knight",
 		if (isCrit) {
 			addProtection([user], 100);
 		}
-		const resultLines = addModifier(targets, { name: "Exposed", stacks: 1 });
-		const insultMap = {};
-		addNewRandomInsults(insultMap, targets, 1, adventure);
-		return resultLines.concat(Object.entries(insultMap).map(([combatantName, insultList]) => `${combatantName} gains ${insultList.join("")}.`));
+		const receipts = addModifier(targets, { name: "Exposed", stacks: 1 }).concat(addNewRandomInsults(targets, 1, adventure));
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: true,
@@ -101,7 +98,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		if (isCrit) {
 			pendingDamage *= 2;
 		}
-		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(addModifier(targets, { name: "Distracted", stacks: 4 }));
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Distracted", stacks: 4 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
@@ -114,8 +111,9 @@ module.exports = new EnemyTemplate("Starry Knight",
  * @param {number} count
  * @param {Adventure} adventure
  */
-function addNewRandomInsults(insultMap, combatants, count, adventure) {
-	combatants.forEach(combatant => {
+function addNewRandomInsults(combatants, count, adventure) {
+	const receipts = [];
+	for (const combatant of combatants) {
 		const availableInsults = ["Ugly", "Stupid", "Smelly", "Boring", "Lacking Rhythm"].filter(insult => !(insult in combatant.modifiers));
 		for (let i = 0; i < count; i++) {
 			if (availableInsults.length < 1) {
@@ -124,7 +122,7 @@ function addNewRandomInsults(insultMap, combatants, count, adventure) {
 			const insultIndex = adventure.generateRandomNumber(availableInsults.length, "battle");
 			const rolledInsult = availableInsults[insultIndex];
 			const didAddInsult = combatant.getModifierStacks("Oblivious") < 1;
-			addModifier([combatant], { name: rolledInsult, stacks: 1 });
+			receipts.push(...addModifier([combatant], { name: rolledInsult, stacks: 1 }));
 			if (didAddInsult) {
 				if (combatant.name in insultMap) {
 					insultMap[combatant.name].push(getApplicationEmojiMarkdown(rolledInsult));
@@ -134,5 +132,6 @@ function addNewRandomInsults(insultMap, combatants, count, adventure) {
 				availableInsults.splice(insultIndex, 1);
 			}
 		}
-	})
+	}
+	return receipts;
 }

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Slowing Daggers",
 	[
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Slowing Daggers",
 			if (user.element === element) {
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
-			resultLines.push(...addModifier(stillLivingTargets, slow));
+			resultLines.push(...generateModifierResultLines(addModifier(stillLivingTargets, slow)));
 		}
 		return resultLines;
 	}

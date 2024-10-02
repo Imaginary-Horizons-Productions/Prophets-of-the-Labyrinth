@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Evasive Heat Mirage",
 	[
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Evasive Heat Mirage",
 		if (isCrit) {
 			pendingEvade.stacks *= critMultiplier;
 		}
-		const resultLines = addModifier([user], pendingEvade);
+		const resultLines = generateModifierResultLines(addModifier([user], pendingEvade));
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;

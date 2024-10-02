@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Poised Goad Futility",
 	[
@@ -15,7 +15,8 @@ module.exports = new GearTemplate("Poised Goad Futility",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		const resultLines = addModifier([user], oblivious);
+		const resultLines = [];
+		const receipts = addModifier([user], oblivious);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -29,9 +30,9 @@ module.exports = new GearTemplate("Poised Goad Futility",
 			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		if (isCrit) {
-			resultLines.push(...addModifier([target], unlucky));
+			receipts.push(...addModifier([target], unlucky));
 		}
-		return resultLines;
+		return generateModifierResultLines(receipts).concat(resultLines);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Goad Futility", "Shattering Goad Futility")

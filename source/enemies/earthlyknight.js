@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, removeModifier, changeStagger } = require("../util/combatantUtil.js");
+const { dealDamage, removeModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil.js");
 const { isBuff } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
@@ -33,7 +33,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 			if (targetBuffs.length > 0) {
 				const buffIndex = adventure.generateRandomNumber(targetBuffs.length, "battle");
 				const rolledBuff = targetBuffs[buffIndex];
-				resultLines.push(...removeModifier([target], { name: rolledBuff, stacks: "all" }));
+				resultLines.push(...generateModifierResultLines(removeModifier([target], { name: rolledBuff, stacks: "all" })));
 			}
 		}
 		return resultLines;

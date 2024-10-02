@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, changeStagger } = require('../util/combatantUtil');
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Harmful Poison Torrent",
 	[
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 			if (user.element === element) {
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
-			resultLines.push(...addModifier(stillLivingTargets, pendingPoison));
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, pendingPoison))));
 		}
 		return resultLines;
 	}

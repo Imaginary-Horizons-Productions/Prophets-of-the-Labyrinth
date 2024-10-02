@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes/index.js');
-const { payHP, changeStagger, addProtection, addModifier } = require('../util/combatantUtil.js');
+const { payHP, changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Toxic Blood Aegis",
@@ -35,11 +35,10 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			const addedPoison = target.getModifierStacks("Oblivious") < 1;
-			addModifier([target], poison);
+			const addedPoison = addModifier([target], poison).some(receipt => receipt.succeeded.size > 0);
 			resultLines.push(`${target.name} falls for the provocation${addedPoison ? ` and gains ${getApplicationEmojiMarkdown("Poison")}` : ""}.`);
 		} else {
-			resultLines.push(...addModifier([target], poison));
+			resultLines.push(...generateModifierResultLines(addModifier([target], poison)));
 		}
 		return resultLines;
 	}

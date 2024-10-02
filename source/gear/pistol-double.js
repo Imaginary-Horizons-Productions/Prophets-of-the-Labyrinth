@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Double Pistol",
 	[
@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Double Pistol",
 			for (let i = 0; i < 2; i++) {
 				selectedAllies.push(allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")]);
 			}
-			resultLines.push(...addModifier(selectedAllies, powerUp));
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(selectedAllies, powerUp))));
 		}
 		return resultLines;
 	}

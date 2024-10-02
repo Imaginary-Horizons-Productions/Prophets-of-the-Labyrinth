@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Harmful Corrosion",
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Harmful Corrosion",
 			changeStagger(targets, bonus);
 			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 		}
-		return resultLines.concat(addModifier(targets, powerDown));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, powerDown))));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Corrosion", "Shattering Corrosion")

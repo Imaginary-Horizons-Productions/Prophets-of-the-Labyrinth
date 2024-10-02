@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Hunter's Morning Star",
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length < targets.length) {
-			resultLines.push(...addModifier([user], powerUp));
+			resultLines.push(...generateModifierResultLines(addModifier([user], powerUp)));
 		}
 		resultLines.push(joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered."))
 		return resultLines;

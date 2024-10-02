@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil.js");
+const { addModifier, dealDamage, changeStagger, addProtection, combineModifierReceipts, generateModifierResultLines } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 
 const drone = require("./mechabeedrone.js")
@@ -41,11 +41,8 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	effect: (targets, user, isCrit, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
 		addProtection([user], isCrit ? 60 : 30);
-		return [
-			`${user.name} gains protection.`,
-			...addModifier(filteredTargets, { name: "Quicken", stacks: 3 }),
-			...addModifier(filteredTargets, { name: "Power Up", stacks: 3 })
-		];
+		const receipts = addModifier(filteredTargets, { name: "Quicken", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Power Up", stacks: 3 }));
+		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,

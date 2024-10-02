@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil');
+const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Thick Risky Mixture",
 	[
@@ -19,9 +19,9 @@ module.exports = new GearTemplate("Thick Risky Mixture",
 			}
 		}
 		if (isCrit) {
-			return addModifier([target], regen);
+			return generateModifierResultLines(addModifier([target], regen));
 		} else {
-			return addModifier([target], poison);
+			return generateModifierResultLines(addModifier([target], poison));
 		}
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })

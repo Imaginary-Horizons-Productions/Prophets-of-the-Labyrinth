@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants.js');
-const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Firecracker",
 	[
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Toxic Firecracker",
 			if (user.element === element) {
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
-			resultLines.push(...addModifier(stillLivingTargets, poison));
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, poison))));
 		}
 		return resultLines;
 	}

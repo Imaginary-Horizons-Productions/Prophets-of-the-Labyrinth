@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { addModifier, payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
+const { addModifier, payHP, changeStagger, addProtection, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Charging Blood Aegis",
 	[
@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([user], pendingProtection);
-		resultLines.push(...addModifier([user], powerUp));
+		resultLines.push(...generateModifierResultLines(addModifier([user], powerUp)));
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;

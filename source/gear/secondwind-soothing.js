@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { gainHealth, changeStagger, addModifier } = require('../util/combatantUtil');
+const { gainHealth, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Soothing Second Wind",
 	[
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Soothing Second Wind",
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		return [gainHealth(user, pendingHealing, adventure), ...addModifier([user], regen)];
+		return [gainHealth(user, pendingHealing, adventure), ...generateModifierResultLines(addModifier([user], regen))];
 	}
 ).setTargetingTags({ type: "self", team: "none", needsLivingTargets: true })
 	.setSidegrades("Cleansing Second Wind", "Lucky Second Wind")

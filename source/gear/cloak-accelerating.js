@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { accuratePassive } = require('./descriptions/passives.js');
 
 module.exports = new GearTemplate("Accelerating Cloak",
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Accelerating Cloak",
 			pendingEvade.stacks += bonus;
 			pendingQuicken.stacks += bonus;
 		}
-		return addModifier([user], pendingEvade).concat(addModifier([user], pendingQuicken));
+		return generateModifierResultLines(combineModifierReceipts(addModifier([user], pendingEvade).concat(addModifier([user], pendingQuicken))));
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Accurate Cloak", "Evasive Cloak")

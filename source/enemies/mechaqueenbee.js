@@ -1,8 +1,7 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
-const { addModifier, changeStagger, addProtection } = require("../util/combatantUtil.js");
+const { addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 const drone = require("./mechabeedrone.js")
 
@@ -63,11 +62,8 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	effect: (targets, user, isCrit, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
 		addProtection([user], isCrit ? 60 : 30);
-		return [
-			`${user.name} gains protection.`,
-			...addModifier(filteredTargets, { name: "Quicken", stacks: 3 }),
-			...addModifier(filteredTargets, { name: "Power Up", stacks: 3 })
-		];
+		const receipts = addModifier(filteredTargets, { name: "Quicken", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Power Up", stacks: 3 }));
+		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
@@ -110,7 +106,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger(targets, "elementMatchFoe");
-		return addModifier(targets, { name: "Poison", stacks: isCrit ? 5 : 3 });;
+		return generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: isCrit ? 5 : 3 }));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

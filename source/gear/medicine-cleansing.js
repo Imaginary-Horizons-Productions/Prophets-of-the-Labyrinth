@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { addModifier, changeStagger } = require('../util/combatantUtil');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Cleansing Medicine",
 	[
@@ -19,16 +19,16 @@ module.exports = new GearTemplate("Cleansing Medicine",
 		if (isCrit) {
 			pendingRegen.stacks *= critMultiplier;
 		}
-		const resultLines = addModifier(targets, pendingRegen);
+		const receipts = addModifier(targets, pendingRegen);
 		for (const target of targets) {
 			const debuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (debuffs.length > 0) {
 				const rolledDebuff = debuffs[adventure.generateRandomNumber(debuffs.length, "battle")];
-				resultLines.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
+				receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 			}
 		}
 
-		return resultLines;
+		return generateModifierResultLines(receipts);
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Bouncing Medicine", "Soothing Medicine")

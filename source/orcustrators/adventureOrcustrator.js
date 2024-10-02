@@ -537,7 +537,7 @@ function resolveMove(move, adventure) {
 			results.push(gainHealth(user, regenStacks * 10, adventure, "Regen"));
 		}
 	}
-	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${currentLine}`, "")}\n`;
+	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
 }
 
 /**

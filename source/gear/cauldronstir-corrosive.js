@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 const rollablePotions = [
 	"Protection Potion",
@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Corrosive Cauldron Stir",
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
 
-		return resultLines.concat(addModifier(targets, powerdown));
+		return resultLines.concat(generateModifierResultLines(addModifier(targets, powerdown)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sabotaging Cauldron Stir", "Toxic Cauldron Stir")

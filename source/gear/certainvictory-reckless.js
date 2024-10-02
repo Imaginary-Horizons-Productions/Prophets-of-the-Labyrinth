@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, payHP, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { dealDamage, addModifier, payHP, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reckless Certain Victory",
 	[
@@ -20,22 +19,8 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 			pendingDamage *= critMultiplier;
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const addedModifiers = [];
-		const addedPowerUp = user.getModifierStacks("Oblivious") < 1;
-		addModifier([user], powerUp);
-		if (addedPowerUp) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Power Up"));
-		}
-		const addedExposed = user.getModifierStacks("Oblivious") < 1;
-		addModifier([user], exposed);
-		if (addedExposed) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Exposed"));
-		}
-		if (addedModifiers.length > 0) {
-			resultLines.push(`${user.name} gains ${addedModifiers.join("")}.`);
-		}
-		resultLines.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
-		return resultLines;
+		const receipts = addModifier([user], powerUp).concat(addModifier([user], exposed));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts), payHP(user, user.getModifierStacks("Power Up"), adventure)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Lethal Certain Victory")

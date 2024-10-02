@@ -1,8 +1,7 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
 	[
@@ -36,19 +35,15 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		}
 		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
 		changeStagger(targetArray, pendingStaggerStacks);
+		const receipts = [];
 		for (const target of targetArray) {
-			const debuffs = [];
 			for (const modifier in target.modifiers) {
 				if (isDebuff(modifier)) {
-					addModifier([target], { name: modifier, stacks: 1 });
-					debuffs.push(getApplicationEmojiMarkdown(modifier));
+					receipts.push(...addModifier([target], { name: modifier, stacks: 1 }));
 				}
 			}
-			if (debuffs.length > 0) {
-				resultLines.push(`${target.name} gains ${debuffs.join("")}.`);
-			}
 		}
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")

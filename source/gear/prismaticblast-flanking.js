@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Flanking Prismatic Blast",
 	[
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Flanking Prismatic Blast",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(addModifier(targets, exposed));
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, exposed))));
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Distracting Prismatic Blast", "Vexing Prismatic Blast")

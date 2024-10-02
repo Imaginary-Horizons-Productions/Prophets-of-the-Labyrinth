@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier } = require('../util/combatantUtil.js');
+const { addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Greed",
 	[["use", "Add @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to all Treasure Elementals with priority"]],
@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Greed",
 	(targets, user, isCrit, adventure) => {
 		const { modifiers: [midas, powerUp] } = module.exports;
 		const affectedTargets = targets.filter(target => target.archetype === "Treasure Elemental");
-		return addModifier(affectedTargets, powerUp).concat(addModifier(affectedTargets, midas));
+		return generateModifierResultLines(combineModifierReceipts(addModifier(affectedTargets, powerUp).concat(addModifier(affectedTargets, midas))));
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
 	.setModifiers({ name: "Curse of Midas", stacks: 1 }, { name: "Power Up", stacks: 20 });

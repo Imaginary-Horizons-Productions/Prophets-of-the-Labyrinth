@@ -1,7 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { addModifier, payHP, changeStagger, removeModifier } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { addModifier, payHP, changeStagger, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Purifying Infinite Regeneration",
 	[
@@ -24,21 +23,16 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		const resultLines = [paymentSentence, ...addModifier(targets, regen)];
+		const resultLines = [paymentSentence];
+		const receipts = addModifier(targets, regen);
 		for (const target of targets) {
-			const curedDebuffs = [];
 			Object.keys(target.modifiers).forEach(modifier => {
 				if (isDebuff(modifier)) {
-					const didRemoveDebuff = target.getModifierStacks("Retain") < 1;
-					removeModifier([target], { name: modifier, stacks: "all" });
-					if (didRemoveDebuff) {
-						curedDebuffs.push(getApplicationEmojiMarkdown(modifier));
-					}
+					receipts.push(...removeModifier([target], { name: modifier, stacks: "all" })) ;
 				}
 			})
-			resultLines.push(`${target.name} is cured of ${curedDebuffs.join("")}.`);
 		}
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Discounted Infinite Regeneration", "Fate-Sealing Infinite Regeneration")

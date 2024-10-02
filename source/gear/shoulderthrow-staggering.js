@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Staggering Shoulder Throw",
 	[
@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Staggering Shoulder Throw",
 			resultLines.push(`${target.name} is redirected into targeting themself.`);
 		}
 		if (isCrit) {
-			resultLines.push(...addModifier([user], evade));
+			resultLines.push(...generateModifierResultLines(addModifier([user], evade)));
 		}
 		return resultLines;
 	}

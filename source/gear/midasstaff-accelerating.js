@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Midas Staff",
 	[
@@ -23,29 +22,8 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const addedCurse = target.getModifierStacks("Oblivious") < 1;
-		addModifier([target], pendingCurse);
-		const addedQuicken = user.getModifierStacks("Oblivious") < 1;
-		addModifier([user], quicken);
-		const resultLines = [];
-		if (target.name === user.name) {
-			const userEffects = [];
-			if (addedCurse) {
-				userEffects.push(getApplicationEmojiMarkdown("Curse of Midas"));
-			}
-			if (addedQuicken) {
-				userEffects.push(getApplicationEmojiMarkdown("Quicken"));
-			}
-			resultLines.push(`${user.name} gains ${userEffects.join("")}.`);
-		} else {
-			if (addedCurse) {
-				resultLines.push(`${target.name} gains ${getApplicationEmojiMarkdown("Curse of Midas")}.`);
-			}
-			if (addedQuicken) {
-				resultLines.push(`${user.name} gains ${getApplicationEmojiMarkdown("Quickened")}.`);
-			}
-		}
-		return resultLines;
+		const receipts = addModifier([target], pendingCurse).concat(addModifier([user], quicken));
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Discounted Midas Staff", "Soothing Midas Staff")

@@ -1,9 +1,10 @@
 const { italic, bold } = require("discord.js");
-const { Combatant, Adventure } = require("../classes");
+const { Combatant, Adventure, ModifierReceipt } = require("../classes");
 const { getInverse, getModifierDescription, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getWeaknesses, getResistances, elementsList, getEmoji } = require("./elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
-const { joinAsStatement } = require("./textUtil.js");
+const { listifyEN } = require("./textUtil.js");
+const { areSetContentsCongruent } = require("./mathUtil.js");
 
 /**
  * @param {Combatant} target
@@ -14,7 +15,7 @@ function downedCheck(target, adventure) {
 		if (target.team === "delver") {
 			target.hp = target.getMaxHP();
 			adventure.lives = Math.max(adventure.lives - 1, 0);
-			return ` ${bold(`${target.name} was downed`)}${adventure.lives > 0 ? " and revived" : ""}.`;
+			return ` ${bold(`${target.name} was downed ${adventure.lives > 0 ? " and revived" : ""}.`)}`;
 		} else {
 			target.hp = 0;
 			return ` ${bold(`${target.name} was downed`)}.`;
@@ -22,6 +23,23 @@ function downedCheck(target, adventure) {
 	} else {
 		return "";
 	}
+}
+
+/**
+ * @param {number} previousLives
+ * @param {number} currentLives
+ */
+function livesCheck(previousLives, currentLives) {
+	if (currentLives < previousLives) {
+		if (currentLives > 1) {
+			return italic(`${currentLives} LIVES REMAIN`);
+		} else if (currentLives === 1) {
+			return italic(`${currentLives} LIFE REMAINS`);
+		} else {
+			return italic("GAME OVER");
+		}
+	}
+	return null;
 }
 
 /**
@@ -82,14 +100,9 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 			}
 		}
 	}
-	if (adventure.lives < previousLifeCount) {
-		if (adventure.lives > 1) {
-			results.push(bold(italic(`${adventure.lives} lives remain.`)));
-		} else if (adventure.lives === 1) {
-			results.push(bold(italic(`${adventure.lives} life remains.`)));
-		} else {
-			results.push(bold(italic("GAME OVER")));
-		}
+	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
+	if (lifeLine) {
+		results.push(lifeLine);
 	}
 	return results;
 }
@@ -116,16 +129,11 @@ function dealModifierDamage(target, modifier, adventure) {
 	}
 
 	target.hp -= pendingDamage;
-	const resultLines = [`${bold(target.name)} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`];
+	const resultLines = [`${target.name} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`];
 
-	if (adventure.lives < previousLifeCount) {
-		if (adventure.lives > 1) {
-			resultLines.push(bold(italic(`${adventure.lives} lives remain.`)));
-		} else if (adventure.lives === 1) {
-			resultLines.push(bold(italic(`${adventure.lives} life remains.`)));
-		} else {
-			resultLines.push(bold(italic("GAME OVER")));
-		}
+	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
+	if (lifeLine) {
+		resultLines.push(lifeLine);
 	}
 	return resultLines;
 }
@@ -139,14 +147,9 @@ function payHP(user, damage, adventure) {
 	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
 	let resultText = ` ${user.name} pays ${damage} HP.${downedCheck(user, adventure)}`;
-	if (adventure.lives < previousLifeCount) {
-		if (adventure.lives > 1) {
-			resultText += ` ${bold(italic(`${adventure.lives} lives remain.`))}`;
-		} else if (adventure.lives === 1) {
-			resultText += ` ${bold(italic(`${adventure.lives} life remains.`))}`;
-		} else {
-			resultText += ` ${bold(italic("GAME OVER"))}`;
-		}
+	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
+	if (lifeLine) {
+		resultText += ` ${lifeLine}`;
 	}
 	return resultText;
 }
@@ -186,9 +189,7 @@ function gainHealth(combatant, healing, adventure, source) {
  * @param {boolean} modifierData.force whether to ignore the Oblivious check
  */
 function addModifier(combatants, { name: modifier, stacks: pendingStacks, force = false }) {
-	const affectedCombatants = [];
-	const obliviousCombatants = [];
-	const resultLines = [];
+	const receipts = [];
 	for (const combatant of combatants) {
 		// Oblivious only blocks buffs and debuffs
 		if (force || !("Oblivious" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
@@ -207,26 +208,13 @@ function addModifier(combatants, { name: modifier, stacks: pendingStacks, force 
 				}
 			}
 
-			// Trigger threshold: Progress
-			if (combatant.getModifierStacks("Progress") >= 100) {
-				combatant.modifiers.Progress = 0;
-				addModifier([combatant], { name: "Power Up", stacks: 100, force: false });
-				resultLines.push(`Eureka! ${combatant.name}'s ${getApplicationEmojiMarkdown("Progress")} yields ${getApplicationEmojiMarkdown("Power Up")}!`);
-			} else {
-				affectedCombatants.push(combatant.name);
-			}
+			receipts.push(new ModifierReceipt(combatant.name, "add", [getApplicationEmojiMarkdown(modifier)], []));
 		} else {
 			removeModifier([combatant], { name: "Oblivious", stacks: 1, force: true });
-			obliviousCombatants.push(combatant.name);
+			receipts.push(new ModifierReceipt(combatant.name, "add", [], [getApplicationEmojiMarkdown(modifier)]));
 		}
 	}
-	if (affectedCombatants.length > 0) {
-		resultLines.push(joinAsStatement(false, affectedCombatants, "gains", "gain", `${getApplicationEmojiMarkdown(modifier)}.`));
-	}
-	if (obliviousCombatants.length > 0) {
-		resultLines.push(joinAsStatement(false, obliviousCombatants, "is", "are", `oblivious to ${getApplicationEmojiMarkdown(modifier)}.`));
-	}
-	return resultLines;
+	return receipts;
 }
 
 /** After decrementing a modifier's stacks, delete the modifier's entry in the object
@@ -237,8 +225,7 @@ function addModifier(combatants, { name: modifier, stacks: pendingStacks, force 
  * @param {boolean} modifierData.force whether to ignore the Retain check (eg buffs/debuffs consuming themselves)
  */
 function removeModifier(combatants, { name: modifier, stacks, force = false }) {
-	const affectedCombatants = [];
-	const retainingCombatants = [];
+	const receipts = [];
 	for (const combatant of combatants) {
 		// Retain only protects buffs and debuffs
 		if (force || !("Retain" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
@@ -249,21 +236,14 @@ function removeModifier(combatants, { name: modifier, stacks, force = false }) {
 				combatant.modifiers[modifier] -= stacks;
 			}
 			if (didHaveModifier) {
-				affectedCombatants.push(combatant.name);
+				receipts.push(new ModifierReceipt(combatant.name, "remove", [getApplicationEmojiMarkdown(modifier)], []));
 			}
 		} else {
 			removeModifier([combatant], { name: "Retain", stacks: 1, force: true });
-			retainingCombatants.push(combatant.name);
+			receipts.push(new ModifierReceipt(combatant.name, "remove", [], [getApplicationEmojiMarkdown(modifier)]))
 		}
 	}
-	const resultLines = [];
-	if (affectedCombatants.length > 0) {
-		resultLines.push(joinAsStatement(false, affectedCombatants, "loses", "lose", `${getApplicationEmojiMarkdown(modifier)}.`));
-	}
-	if (retainingCombatants.length > 0) {
-		resultLines.push(joinAsStatement(false, retainingCombatants, "retains", "retain", `${getApplicationEmojiMarkdown(modifier)}.`));
-	}
-	return resultLines;
+	return receipts;
 }
 
 const ALL_STANCES = ["Iron Fist Stance", "Floating Mist Stance"];
@@ -273,15 +253,98 @@ const ALL_STANCES = ["Iron Fist Stance", "Floating Mist Stance"];
  * @param {{name: "Iron Fist Stance" | "Floating Mist Stance", stacks: number}} stanceModifier
  */
 function enterStance(combatant, stanceModifier) {
-	const stancesRemoved = [];
+	const receipts = [];
 	ALL_STANCES.filter(stanceToCheck => stanceToCheck !== stanceModifier.name).forEach(stanceToRemove => {
 		if (stanceToRemove in combatant.modifiers) {
-			removeModifier([combatant], { name: stanceToRemove, stacks: "all", force: true });
-			stancesRemoved.push(stanceToRemove);
+			receipts.push(...removeModifier([combatant], { name: stanceToRemove, stacks: "all", force: true }));
 		}
 	});
-	addModifier([combatant], stanceModifier);
-	return { didAddStance: combatant.getModifierStacks("Oblivious") < 1, stancesRemoved };
+	return receipts.concat(addModifier([combatant], stanceModifier));
+}
+
+/**  Consolidation convention set by game design as "name then modifier set" to minimize the number of lines required to describe all changes to a specific combatant
+ * @param {ModifierReceipt[]} receipts
+ */
+function combineModifierReceipts(receipts) {
+	// Consolidate by name
+	// eg "Combatant gains X" + "Combatant gains Y" = "Combatant gains XY"
+	for (let i = 0; i < receipts.length; i++) {
+		const heldReceipt = receipts[i];
+		for (let j = i + 1; j < receipts.length; j++) {
+			const checkingReceipt = receipts[j];
+			if (heldReceipt.type === checkingReceipt.type && areSetContentsCongruent(heldReceipt.combatantNames, checkingReceipt.combatantNames)) {
+				heldReceipt.combineModifierSets(checkingReceipt);
+				receipts.splice(j, 1);
+				j--;
+			}
+		}
+	}
+
+	// Consolidate by modifier sets
+	// eg "X gains ModifierSet" + "Y gains ModifierSet" = "X and Y gain ModifierSet"
+	for (let i = 0; i < receipts.length; i++) {
+		const heldReceipt = receipts[i];
+		for (let j = i + 1; j < receipts.length; j++) {
+			const checkingReceipt = receipts[j];
+			if (heldReceipt.type === checkingReceipt.type && areSetContentsCongruent(heldReceipt.succeeded, checkingReceipt.succeeded) && areSetContentsCongruent(heldReceipt.failed, checkingReceipt.failed)) {
+				heldReceipt.combineCombatantNames(checkingReceipt);
+				receipts.splice(j, 1);
+				j--;
+			}
+		}
+	}
+	return receipts;
+}
+
+/**
+ * @param {ModifierReceipt[]} receipts
+ */
+function generateModifierResultLines(receipts) {
+	const resultLines = [];
+	for (const receipt of receipts) {
+		if (receipt.type === "add") {
+			const addedFragments = [];
+			if (receipt.succeeded.size > 0) {
+				if (receipt.combatantNames.size > 1) {
+					addedFragments.push(`gain ${[...receipt.succeeded].join("")}`);
+				} else {
+					addedFragments.push(`gains ${[...receipt.succeeded].join("")}`);
+				}
+			}
+			if (receipt.failed.size > 0) {
+				if (receipt.combatantNames.size > 1) {
+					addedFragments.push(`were oblivious to ${[...receipt.failed].join("")}`);
+				} else {
+					addedFragments.push(`was oblivious to ${[...receipt.failed].join("")}`);
+				}
+			}
+
+			if (addedFragments.length > 0) {
+				resultLines.push(`${listifyEN([...receipt.combatantNames])} ${listifyEN(addedFragments)}.`);
+			}
+		} else {
+			const removedFragments = [];
+			if (receipt.succeeded.size > 0) {
+				if (receipt.combatantNames.size > 1) {
+					removedFragments.push(`loses ${[...receipt.succeeded].join("")}`);
+				} else {
+					removedFragments.push(`lose ${[...receipt.succeeded].join("")}`);
+				}
+			}
+			if (receipt.failed.size > 0) {
+				if (receipt.combatantNames.size > 1) {
+					removedFragments.push(`retain ${[...receipt.failed].join("")}`);
+				} else {
+					removedFragments.push(`retains ${[...receipt.failed].join("")}`);
+				}
+			}
+
+			if (removedFragments.length > 0) {
+				resultLines.push(`${listifyEN([...receipt.combatantNames])} ${listifyEN(removedFragments)}.`);
+			}
+		}
+	}
+	return resultLines;
 }
 
 /** add Stagger, negative values allowed
@@ -346,6 +409,8 @@ module.exports = {
 	addModifier,
 	removeModifier,
 	enterStance,
+	combineModifierReceipts,
+	generateModifierResultLines,
 	changeStagger,
 	addProtection,
 	modifiersToString,

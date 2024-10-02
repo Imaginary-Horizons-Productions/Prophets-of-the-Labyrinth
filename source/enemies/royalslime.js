@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
 
 module.exports = new EnemyTemplate("Royal Slime",
@@ -19,12 +19,12 @@ module.exports = new EnemyTemplate("Royal Slime",
 	effect: (targets, user, isCrit, adventure) => {
 		const elementPool = elementsList(["Untyped", user.element]);
 		user.element = elementPool[adventure.generateRandomNumber(elementPool.length, "battle")];
-		const addedAbsorb = user.getModifierStacks("Oblivious") < 1;
+		let addedAbsorb = false;
 		if (isCrit) {
-			addModifier([user], { name: `${user.element} Absorb`, stacks: 5 });
+			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 5 }).some(receipt => receipt.succeeded.size > 0);
 			changeStagger([user], "elementMatchAlly");
 		} else {
-			addModifier([user], { name: `${user.element} Absorb`, stacks: 3 });
+			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 3 }).some(receipt => receipt.succeeded.size > 0);
 		}
 		if (addedAbsorb) {
 			return [`${user.name}'s elemental alignment has changed.`];
@@ -76,7 +76,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		if (isCrit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		return addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 })));
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,

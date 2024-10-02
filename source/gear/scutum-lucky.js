@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { changeStagger, addProtection, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Lucky Scutum",
 	[
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Lucky Scutum",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([target, user], pendingProtection);
-		return [`${target.name} and ${user.name} gain protection.`, ...addModifier([user], lucky)];
+		return [`${target.name} and ${user.name} gain protection.`, ...generateModifierResultLines(addModifier([user], lucky))];
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")

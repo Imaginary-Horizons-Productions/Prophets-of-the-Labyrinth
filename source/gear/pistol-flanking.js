@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Flanking Pistol",
 	[
@@ -19,12 +19,13 @@ module.exports = new GearTemplate("Flanking Pistol",
 			changeStagger(targets, "elementMatchFoe");
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const receipts = addModifier(targets, exposed);
 		if (targets.some(target => getCombatantWeaknesses(target).includes(element))) {
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
-			resultLines.push(...addModifier([ally], powerUp));
+			receipts.push(...addModifier([ally], powerUp));
 		}
-		return resultLines.concat(addModifier(targets, exposed));
+		return resultLines.concat(generateModifierResultLines(receipts));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Pistol", "Duelist's Pistol")

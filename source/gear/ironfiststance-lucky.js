@@ -1,7 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, changeStagger, enterStance } = require("../util/combatantUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
-const { listifyEN } = require("../util/textUtil");
+const { addModifier, changeStagger, enterStance, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Lucky Iron Fist Stance",
 	[
@@ -16,36 +14,14 @@ module.exports = new GearTemplate("Lucky Iron Fist Stance",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		const { didAddStance, stancesRemoved } = enterStance(user, ironFistStance);
-		const addedBuffs = [];
-		if (didAddStance) {
-			addedBuffs.push(getApplicationEmojiMarkdown("Iron Fist Stance"));
-		}
-		const addedLucky = user.getModifierStacks("Oblivious") < 1;
-		addModifier([user], lucky);
-		if (addedLucky) {
-			addedBuffs.push(getApplicationEmojiMarkdown("Lucky"));
-		}
-
-		const userEffects = [];
-		if (addedBuffs.length > 0) {
-			userEffects.push(`gains ${addedBuffs.join("")}`);
-		}
-		if (stancesRemoved.length > 0) {
-			userEffects.push(`exits ${stancesRemoved.map(stance => getApplicationEmojiMarkdown(stance)).join("")}`);
-		}
-
-		const resultLines = [];
-		if (userEffects.length > 0) {
-			resultLines.push(`${user.name} ${listifyEN(userEffects, false)}.`);
-		}
-
+		const receipts = enterStance(user, ironFistStance);
+		receipts.push(...addModifier([user], lucky));
 		if (isCrit) {
 			const foeTeam = user.team === "delver" ? adventure.room.enemies.filter(foe => foe.hp > 0) : adventure.delvers;
-			resultLines.push(...addModifier(foeTeam, frail));
+			receipts.push(...addModifier(foeTeam, frail));
 		}
 
-		return resultLines;
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Accurate Iron Fist Stance", "Organic Iron Fist Stance")

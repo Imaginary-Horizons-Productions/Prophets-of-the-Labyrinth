@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger } = require('../util/combatantUtil');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shattering Lance",
 	[
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Shattering Lance",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
-			resultLines.push(...addModifier(stillLivingTargets, frail));
+			resultLines.push(...generateModifierResultLines(addModifier(stillLivingTargets, frail)));
 		}
 		return resultLines;
 	}

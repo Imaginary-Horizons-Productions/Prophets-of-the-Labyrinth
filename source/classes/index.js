@@ -10,7 +10,7 @@ const { GearTemplate } = require("./GearTemplate");
 const { ButtonWrapper, CommandWrapper, SelectWrapper } = require("./InteractionWrapper");
 const { ItemTemplate } = require("./ItemTemplate");
 const { LabyrinthTemplate } = require("./LabyrinthTemplate");
-const { ModifierTemplate } = require("./ModifierTemplate");
+const { ModifierTemplate, ModifierReceipt } = require("./ModifierTemplate");
 const { CombatantReference, Move } = require("./Move");
 const { Player } = require("./Player");
 const { ResourceTemplate, RoomTemplate } = require("./RoomTemplate");
@@ -35,6 +35,7 @@ module.exports = {
 	ItemTemplate,
 	LabyrinthTemplate,
 	ModifierTemplate,
+	ModifierReceipt,
 	Move,
 	Player,
 	ResourceTemplate,
