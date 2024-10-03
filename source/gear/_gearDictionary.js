@@ -1,4 +1,4 @@
-const { BuildError, GearTemplate, Gear, Delver } = require("../classes");
+const { BuildError, GearTemplate, Gear, Delver, Adventure } = require("../classes");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { getEmoji } = require("../util/elementUtil");
 
@@ -238,11 +238,16 @@ function getGearProperty(gearName, propertyName) {
 
 /**
  * @param {string} gearName
- * @param {number | "max"} durability
+ * @param {Adventure} adventure
  */
-function buildGearRecord(gearName, durability) {
+function buildGearRecord(gearName, adventure) {
 	const template = GEAR[gearName.toLowerCase()];
-	return new Gear(gearName, durability === "max" ? template.maxDurability : durability, template.maxHP, template.power, template.speed, template.critRate, template.poise);
+	let durability = template.maxDurability;
+	const shoddyPenalty = adventure.getChallengeIntensity("Shoddy Craftsmanship");
+	if (shoddyPenalty) {
+		durability = Math.ceil(durability * (100 - shoddyPenalty) / 100);
+	}
+	return new Gear(gearName, durability, template.maxHP, template.power, template.speed, template.critRate, template.poise);
 }
 
 /**

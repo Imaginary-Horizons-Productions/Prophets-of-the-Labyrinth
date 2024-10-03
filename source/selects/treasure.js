@@ -52,7 +52,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 
 					const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 					const discardedName = delver.gear[gearIndex].name;
-					delver.gear.splice(gearIndex, 1, buildGearRecord(name, "max"));
+					delver.gear.splice(gearIndex, 1, buildGearRecord(name, adventure));
 					collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 						adventure.room.decrementResource(name, 1);
 						adventure.room.history["Treasure picked"].push(name);
@@ -86,7 +86,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				}
 				break;
 			case "gear":
-				delver.gear.push(buildGearRecord(name, "max"));
+				delver.gear.push(buildGearRecord(name, adventure));
 				if (adventure.room.resources[name].count > 1) {
 					adventure.room.resources[name].count--;
 				} else {

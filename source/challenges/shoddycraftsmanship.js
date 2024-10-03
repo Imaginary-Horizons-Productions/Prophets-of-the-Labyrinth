@@ -1,12 +1,12 @@
 const { ChallengeTemplate } = require("../classes");
 
-module.exports = new ChallengeTemplate("Unlabelled Placebos",
-	"Items only have a 1/@{intensity} chance of having their effect for @{duration} rooms. Afterwards gain @{reward} gold.",
-	2,
+module.exports = new ChallengeTemplate("Shoddy Craftsmanship",
+	`For the next @{duration} rooms, gear you acquire has reduced durability reduced by @{intensity}%. Afterwards gain @{reward} gold.`,
+	25,
 	true,
 	true
-).setDuration(3)
-	.setScoreMultiplier(1.1)
+).setDuration(5)
+	.setScoreMultiplier(1.2)
 	.setReward(250)
 	.setCompleteEffect(
 		function (adventure, thread) {

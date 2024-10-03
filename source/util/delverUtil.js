@@ -1,6 +1,6 @@
 const { getArchetype } = require("../archetypes/_archetypeDictionary");
-const { Delver, Adventure } = require("../classes");
-const { getGearProperty, buildGearRecord } = require("../gear/_gearDictionary");
+const { Delver, Adventure, Gear } = require("../classes");
+const { getGearProperty } = require("../gear/_gearDictionary");
 const { gainHealth } = require("./combatantUtil");
 
 /**
@@ -41,7 +41,7 @@ function transformGear(delver, index, oldGearName, newGearName) {
 	if (durabilityDifference > 0) {
 		delver.gear[index].durability += durabilityDifference;
 	}
-	delver.gear.splice(index, 1, buildGearRecord(newGearName, Math.min(upgradeDurability, delver.gear[index].durability)));
+	delver.gear.splice(index, 1, new Gear(newGearName, Math.min(upgradeDurability, delver.gear[index].durability), getGearProperty(newGearName, "maxHp"), getGearProperty(newGearName, "maxHp"), getGearProperty(newGearName, "speed"), getGearProperty(newGearName, "critRate"), getGearProperty(newGearName, "poise")));
 }
 
 module.exports = {
