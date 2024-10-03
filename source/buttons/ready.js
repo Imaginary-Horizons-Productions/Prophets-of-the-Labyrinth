@@ -3,6 +3,7 @@ const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { buildGearRecord } = require('../gear/_gearDictionary');
 const { getAdventure, nextRoom, fetchRecruitMessage, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { commandMention } = require('../util/textUtil');
+const { bold } = require('discord.js');
 
 const mainId = "ready";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -23,7 +24,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		delver.isReady = !delver.isReady;
 		if (!adventure.delvers.every(delver => delver.isReady)) {
 			setAdventure(adventure);
-			interaction.reply({ content: `**${interaction.member.displayName}** is ${delver.isReady ? "" : "no longer "}ready!` })
+			interaction.reply({ content: `${bold(interaction.member.displayName)} is ${delver.isReady ? "" : "no longer "}ready!` })
 		} else {
 			// Clear components from recruitment, start, and deploy messages
 			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(recruitMessage => {
@@ -39,7 +40,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const archetypeTemplate = getArchetype(delver.archetype);
 				delver.element = archetypeTemplate.element;
 				delver.gear = archetypeTemplate.startingGear.map(gearName => {
-					return buildGearRecord(gearName, "max");
+					return buildGearRecord(gearName, adventure);
 				});
 			})
 

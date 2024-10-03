@@ -10,14 +10,18 @@ class ChallengeTemplate {
 	 * @param {string} descriptionInput
 	 * @param {number} intensityInput
 	 */
-	constructor(nameInput, descriptionInput, intensityInput) {
+	constructor(nameInput, descriptionInput, intensityInput, isStartingChallenge, isRollableChallenge) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
 		if (!intensityInput) throw new BuildError("Falsy intensityInput");
+		if (!(typeof isStartingChallenge === "boolean")) throw new BuildError("Non-boolean isStartingChallenge");
+		if (!(typeof isRollableChallenge === "boolean")) throw new BuildError("Non-boolean isRollableChallenge");
 
 		this.name = nameInput;
 		this.description = descriptionInput;
 		this.intensity = intensityInput;
+		this.startingChallenge = isStartingChallenge;
+		this.rollableChallenge = isRollableChallenge;
 	}
 	/** @type {number | null} */
 	duration = null;

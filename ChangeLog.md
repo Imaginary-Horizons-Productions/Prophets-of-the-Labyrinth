@@ -28,6 +28,7 @@
 - Reduced Mechabee Drone and Soldier poise to 5
 - Protection gained from Boat Parts no longer scales from more copies of Boat Parts
 - Renamed the modifier "Stasis" to "Retain"
+- Added Challenge: "Shoddy Craftsmanship" - For the next 5 rooms, gear you acquire has reduced durability reduced by 25%. Afterwards gain 250 gold.
 ## Prophets of the Labyrinth v0.15.0:
 After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.
 ### Detective
