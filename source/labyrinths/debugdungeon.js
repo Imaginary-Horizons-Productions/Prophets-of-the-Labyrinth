@@ -109,7 +109,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 	},
 	{
 		// Labyrinth Particulars - more customized
-		"Event": ["Imp Contract Faire", "The Score Beggar", "Free Gold?", "Apple Pie Wishing Well", "Twin Pedestals", "Gear Collector", "Repair Kit, just hanging out"],
+		"Event": ["Door 1 or Door 2?"],
 		"Battle": ["Frog Ranch", "Wild Fire-Arrow Frogs", "Meteor Knight Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
 		"Final Battle": ["Hall of Mirrors"],
