@@ -213,7 +213,7 @@ module.exports = new LabyrinthTemplate("Mechahive",
 	},
 	{
 		// Labyrinth Particulars - more customized
-		"Event": ["Twin Pedestals", "Imp Contract Faire", "Free Gold?", "The Score Beggar", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Free Gold?", "The Score Beggar", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
 		"Battle": ["Frog Ranch", "Mechabee Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
 		"Final Battle": ["The Hexagon: Bee Mode", "The Hexagon: Mech Mode"],

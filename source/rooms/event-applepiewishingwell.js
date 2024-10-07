@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require("discord.js");
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { generateRoutingRow } = require("../util/messageComponentUtil");
 const { EMPTY_SELECT_OPTION_SET } = require("../constants");
 
