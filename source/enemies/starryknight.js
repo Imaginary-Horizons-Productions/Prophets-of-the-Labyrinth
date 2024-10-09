@@ -121,9 +121,9 @@ function addNewRandomInsults(combatants, count, adventure) {
 			}
 			const insultIndex = adventure.generateRandomNumber(availableInsults.length, "battle");
 			const rolledInsult = availableInsults[insultIndex];
-			const didAddInsult = combatant.getModifierStacks("Oblivious") < 1;
-			receipts.push(...addModifier([combatant], { name: rolledInsult, stacks: 1 }));
-			if (didAddInsult) {
+			const [receipt] = addModifier([combatant], { name: rolledInsult, stacks: 1 });
+			receipts.push(receipt);
+			if (receipt.succeeded.size > 0) {
 				if (combatant.name in insultMap) {
 					insultMap[combatant.name].push(getApplicationEmojiMarkdown(rolledInsult));
 				} else {
