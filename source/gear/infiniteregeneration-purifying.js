@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 		}
 		const paymentSentence = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
 		}
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");

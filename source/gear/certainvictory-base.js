@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Certain Victory",
 			pendingDamage *= critMultiplier;
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(
-			...generateModifierResultLines(addModifier([user], powerUp)),
+			generateModifierResultLines(addModifier([user], powerUp)),
 			payHP(user, user.getModifierStacks("Power Up"), adventure)
 		);
 	}

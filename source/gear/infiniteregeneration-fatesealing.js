@@ -14,7 +14,7 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 		let pendingHPCost = hpCost;
 		const paymentSentence = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
 		}
 		const resultLines = [paymentSentence];
 		const receipts = addModifier(targets, regen);

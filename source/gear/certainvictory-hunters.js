@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 		if (target.hp < 1) {
 			pendingPowerUp.stacks += huntersPowerUp.stacks;
 		}
-		return resultLines.concat(...generateModifierResultLines(addModifier([user], powerUp)), payHP(user, user.getModifierStacks("Power Up"), adventure));
+		return resultLines.concat(generateModifierResultLines(addModifier([user], powerUp)), payHP(user, user.getModifierStacks("Power Up"), adventure));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")
