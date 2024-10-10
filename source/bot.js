@@ -82,7 +82,7 @@ client.on(Events.ClientReady, () => {
 		// Upload Slash Commands
 		(() => {
 			try {
-				new REST({ version: 9 }).setToken(require(authPath).token).put(
+				new REST({ version: 10 }).setToken(require(authPath).token).put(
 					Routes.applicationCommands(client.user.id),
 					{ body: slashData }
 				).then(commands => {
