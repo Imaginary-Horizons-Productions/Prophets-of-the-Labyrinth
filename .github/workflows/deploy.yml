@@ -32,7 +32,11 @@ jobs:
         run: node source/scripts/updateWiki.js
 
       - name: Push Changes to Repo
-        run: git add .; git commit -m "updated commands page on wiki" && git push origin main || true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "update wiki/Commands.md" && git push origin main || true
 
       - name: Push Wiki Changes
         uses: Andrew-Chen-Wang/github-wiki-action@v4.4.0
