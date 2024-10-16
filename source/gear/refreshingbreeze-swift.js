@@ -2,6 +2,7 @@ const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
 const { swiftPassive } = require('./descriptions/passives');
+const { SAFE_DELIMITER } = require('../constants.js');
 
 module.exports = new GearTemplate("Swift Refreshing Breeze",
 	[

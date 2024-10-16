@@ -1,6 +1,5 @@
 const { EnemyTemplate } = require("../classes");
 const { SAFE_DELIMITER } = require("../constants");
-const { rnConfig } = require("../gear/pistol-double");
 const { selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");

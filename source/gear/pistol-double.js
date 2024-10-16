@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
+const { SAFE_DELIMITER } = require('../constants.js');
 
 module.exports = new GearTemplate("Double Pistol",
 	[

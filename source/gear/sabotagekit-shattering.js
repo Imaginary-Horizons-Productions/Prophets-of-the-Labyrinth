@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
+const { SAFE_DELIMITER } = require('../constants.js');
 const { addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 

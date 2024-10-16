@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { gainHealth, removeModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
+const { SAFE_DELIMITER } = require('../constants.js');
 
 module.exports = new GearTemplate("Cleansing Second Wind",
 	[

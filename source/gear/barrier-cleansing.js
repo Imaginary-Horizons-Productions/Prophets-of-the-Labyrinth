@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
+const { SAFE_DELIMITER } = require('../constants.js');
 
 module.exports = new GearTemplate("Cleansing Barrier",
 	[

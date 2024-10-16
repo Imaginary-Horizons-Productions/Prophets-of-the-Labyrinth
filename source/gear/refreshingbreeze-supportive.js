@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
+const { SAFE_DELIMITER } = require('../constants.js');
 
 module.exports = new GearTemplate("Supportive Refreshing Breeze",
 	[

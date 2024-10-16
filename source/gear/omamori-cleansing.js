@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { changeStagger, addProtection, addModifier, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
+const { SAFE_DELIMITER } = require('../constants.js');
 
 module.exports = new GearTemplate("Cleansing Omamori",
 	[
