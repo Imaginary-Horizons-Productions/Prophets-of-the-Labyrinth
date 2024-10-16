@@ -12,7 +12,7 @@ const rollablePotions = [
 	"Inky Potion",
 	"Watery Potion",
 	"Windy Potion"
-];
+]; // TODO rollables
 
 module.exports = new GearTemplate("Cauldron Stir",
 	[

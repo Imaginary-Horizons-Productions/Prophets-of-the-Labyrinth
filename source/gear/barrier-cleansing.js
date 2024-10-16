@@ -36,7 +36,7 @@ module.exports = new GearTemplate("Cleansing Barrier",
 		}
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (userDebuffs.length > 0) {
-			const rolledDebuff = userDebuffs[adventure.generateRandomNumber(userDebuffs.length, "battle")];
+			const rolledDebuff = userDebuffs[user.roundRns[`Cleansing Barrier${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length];
 			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (debuffWasRemoved) {
 				resultLines.push(`${userName} shrugs off ${rolledDebuff}.`);
@@ -47,4 +47,5 @@ module.exports = new GearTemplate("Cleansing Barrier",
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Devoted Barrier", "Vigilant Barrier")
 	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 1 })
-	.setDurability(5);
+	.setDurability(5)
+	.setRnConfig({ debuffs: 1 });

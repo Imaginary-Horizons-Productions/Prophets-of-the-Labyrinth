@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Potent Sabotage Kit",
 		const pendingWeakness = { stacks: weakness.stacks };
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 		const weaknessPool = elementsList(ineligibleWeaknesses);
-		pendingWeakness.name = `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`;
+		pendingWeakness.name = `${weaknessPool[user.roundRns[`Potent Sabotage Kit${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
 		if (isCrit) {
 			pendingSlow.stacks += bonus;
 			pendingWeakness.stacks += bonus;
@@ -47,4 +47,5 @@ module.exports = new GearTemplate("Potent Sabotage Kit",
 	.setModifiers({ name: "Slow", stacks: 3 }, { name: "unparsed random weakness", stacks: 4 })
 	.setBonus(2) // Crit Slow and Weakness stacks
 	.setDurability(15)
-	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" });
+	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" })
+	.setRnConfig({ "weaknesses": 1 });

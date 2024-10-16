@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Swift Refreshing Breeze",
 				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
 				const removedDebuffs = [];
 				for (let i = 0; i < debuffsToRemove; i++) {
-					const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
+					const debuffIndex = user.roundRns[`Swift Refreshing Breeze${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 					const rolledDebuff = targetDebuffs[debuffIndex];
 					const wasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
 					if (wasRemoved) {
@@ -43,4 +43,5 @@ module.exports = new GearTemplate("Swift Refreshing Breeze",
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Accelerating Refreshing Breeze", "Supportive Refreshing Breeze")
 	.setDurability(15)
-	.setSpeed(2);
+	.setSpeed(2)
+	.setRnConfig({ debuffs: 1 });

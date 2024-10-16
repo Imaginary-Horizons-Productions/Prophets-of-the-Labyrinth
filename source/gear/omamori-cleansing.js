@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Cleansing Omamori",
 
 		const debuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (debuffs.length > 0) {
-			const rolledDebuff = debuffs[adventure.generateRandomNumber(debuffs.length, "battle")];
+			const rolledDebuff = debuffs[user.roundRns[`Cleansing Omamori${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
 			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (debuffWasRemoved) {
 				userEffects.push(`is cured of ${rolledDebuff}`);
@@ -47,4 +47,5 @@ module.exports = new GearTemplate("Cleansing Omamori",
 	.setSidegrades("Centering Omamori", "Devoted Omamori")
 	.setModifiers({ name: "Lucky", stacks: 2 })
 	.setProtection(50)
-	.setDurability(10);
+	.setDurability(10)
+	.setRnConfig({ debuffs: 1 });

@@ -31,4 +31,5 @@ module.exports = new GearTemplate("Bouncing Medicine",
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "ally", needsLivingTargets: true })
 	.setSidegrades("Cleansing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
-	.setDurability(15);
+	.setDurability(15)
+	.setRnConfig({ "allies": 3 });

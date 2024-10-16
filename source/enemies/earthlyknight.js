@@ -7,6 +7,7 @@ const { spawnEnemy } = require("../util/roomUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
 const asteroid = require("./asteroid.js");
+const { SAFE_DELIMITER } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Earthly Knight",
 	"Earth",
@@ -33,8 +34,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 			const target = targets[i];
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
 			if (targetBuffs.length > 0) {
-				const buffIndex = adventure.generateRandomNumber(targetBuffs.length, "battle");
-				const rolledBuff = targetBuffs[buffIndex];
+				const rolledBuff = targetBuffs[user.roundRns[`Damping Wallop${SAFE_DELIMITER}buffs`][0]];
 				const wasRemoved = removeModifier([target], { name: rolledBuff, stacks: "all" }).length > 0;
 				if (wasRemoved) {
 					resultLines.push(`${targetNames[i]} lost ${rolledBuff}.`);
@@ -45,7 +45,8 @@ module.exports = new EnemyTemplate("Earthly Knight",
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
-	next: "random"
+	next: "random",
+	rnConfig: { "buffs": 1 }
 }).addAction({
 	name: "Tremor Smash",
 	element: "Earth",

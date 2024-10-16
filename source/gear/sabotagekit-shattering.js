@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 		const pendingWeakness = { stacks: weakness.stacks };
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 		const weaknessPool = elementsList(ineligibleWeaknesses);
-		pendingWeakness.name = `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`;
+		pendingWeakness.name = `${weaknessPool[user.roundRns[`Shattering Sabotage Kit${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
 		if (isCrit) {
 			pendingSlow.stacks += bonus;
 			pendingWeakness.stacks += bonus;
@@ -52,4 +52,5 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 	.setModifiers({ name: "Slow", stacks: 2 }, { name: "unparsed random weakness", stacks: 3 }, { name: "Frail", stacks: 4 })
 	.setBonus(2) // Crit Slow and Weakness stacks
 	.setDurability(15)
-	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" });
+	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" })
+	.setRnConfig({ "weaknesses": 1 });

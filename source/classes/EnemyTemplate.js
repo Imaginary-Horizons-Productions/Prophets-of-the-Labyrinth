@@ -70,6 +70,7 @@ class EnemyTemplate {
 	 * @param {boolean} actionsInput.needsLivingTargets Only enemies stay at 0 hp without game over, so only true if it can target an enemy
 	 * @param {string} actionsInput.next
 	 * @param {?string} actionsInput.combatFlavor
+	 * @param {Record<string,number|Record<string,number>>} actionsInput.rnConfig
 	 */
 	addAction(actionsInput) {
 		this.actions[actionsInput.name] = actionsInput;

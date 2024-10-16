@@ -30,6 +30,8 @@ class Combatant {
 	roundSpeed = 0;
 	/** @type {{[modifierName: string]: number}} */
 	modifiers = {};
+	/** @type {Record<string, number[]>} */
+	roundRns = {};
 
 	/** @returns {number} */
 	getMaxHP() { throw new Error(`getMaxHP not implemented in child class ${this.constructor.name}`) }

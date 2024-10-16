@@ -1,4 +1,6 @@
 const { EnemyTemplate } = require("../classes");
+const { SAFE_DELIMITER } = require("../constants");
+const { rnConfig } = require("../gear/pistol-double");
 const { selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
@@ -20,7 +22,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		const elementPool = elementsList(["Untyped", user.element]);
-		user.element = elementPool[adventure.generateRandomNumber(elementPool.length, "battle")];
+		user.element = elementPool[user.roundRns[`Element Shift${SAFE_DELIMITER}elements`][0] % elementPool.length];
 		let addedAbsorb = false;
 		if (isCrit) {
 			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 5 }).length > 0;
@@ -36,7 +38,8 @@ module.exports = new EnemyTemplate("Royal Slime",
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: "random"
+	next: "random",
+	rnConfig: { "elements": 1 }
 }).addAction({
 	name: "Rolling Tackle",
 	element: "@{adventure}",

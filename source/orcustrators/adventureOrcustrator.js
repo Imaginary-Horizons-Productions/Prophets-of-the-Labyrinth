@@ -13,10 +13,9 @@ const { getEnemy } = require("../enemies/_enemyDictionary");
 const { getGearProperty } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
-const { getTurnDecrement } = require("../modifiers/_modifierDictionary");
-
-const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
-const { getWeaknesses } = require("../util/elementUtil");
+const { getTurnDecrement, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
+const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getNames, getCombatantWeaknesses } = require("../util/combatantUtil");
+const { getWeaknesses, elementsList, getEmoji, getResistances } = require("../util/elementUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { ensuredPathSave } = require("../util/fileUtil");
 const { anyDieSucceeds } = require("../util/mathUtil.js");
@@ -24,6 +23,7 @@ const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression, listifyEN } = require("../util/textUtil");
 const { levelUp } = require("../util/delverUtil.js");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();
@@ -299,6 +299,215 @@ function endRoom(roomType, thread) {
 	nextRoom(roomType, thread);
 }
 
+const rnsConcerningTargets = new Set(["weaknesses", "buffs", "debuffs"]);
+
+/**
+ * Cache the random result of a move, onto the roundRns of a combatant
+ * @param {Adventure} adventure 
+ * @param {Combatant} user 
+ * @param {"foes" | "allies" | "elements" | string} moveName 
+ * @param {Record<string, number|Record<string,number>>} config 
+ */
+function cacheRoundRn(adventure, user, moveName, config) {
+	for (const key in config) {
+		const roundRnKeyname = `${moveName}${SAFE_DELIMITER}${key}`;
+		switch (key) {
+			case "foes":
+				const enemyPoolSize = user.team !== "delver" ? adventure.delvers.length : adventure.room.enemies.filter(enemy => enemy.hp > 0).length;
+				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(enemyPoolSize, "battle"))
+				break;
+			case "allies":
+				const allyPoolSize = user.team === "delver" ? adventure.delvers.length : adventure.room.enemies.filter(enemy => enemy.hp > 0).length;
+				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(allyPoolSize, "battle"))
+				break;
+			case "elements":
+			case "elementsNoUntyped":
+			case "weaknesses":
+				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(7, "battle"))
+				break;
+			// assuming 256 (2 rn table digits) is a large enough bound on de/buffs
+			case "buffs":
+			case "debuffs":
+				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(256, "battle"))
+				break;
+			case "progress":
+				user.roundRns[roundRnKeyname] ??= [config.base + user.crit ? config.crit : 0 + adventure.generateRandomNumber(config.random + 1, "battle")]  // reminder: user.crit is hacky
+			default:
+				const keyAsInt = parseInt(key);
+				if (keyAsInt !== NaN) {
+					user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(keyAsInt, "battle"))
+				}
+				else {
+					console.error(`Invalid config key ${key} for cacheRoundRn`);
+					user.roundRns[roundRnKeyname] ??= [];
+				}
+		}
+	}
+	return user.roundRns;
+}
+
+/**
+ * Given a target (or lackthereof) for a random-concerned-move and user, return a predicted outcome. 
+ * @param {Adventure} adventure 
+ * @param {Combatant} user 
+ * @param {Combatant} target 
+ * @param {string} moveName 
+ * @param {"foes" | "allies" | "elements" | string} key 
+ * @returns {string}
+ */
+function predictRoundRnTargeted(adventure, user, target, moveName, key) {
+	const roundRnKeyname = `${moveName}${SAFE_DELIMITER}${key}`;
+	switch (key) {
+		case "foes":
+			const enemyPool = user.team !== "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
+			return `${user.name}'s ${moveName} will affect ${listifyEN(user.roundRns[roundRnKeyname].map(rn => enemyPool[rn % enemyPool.length].name), false)}`;
+		case "allies":
+			const allyPool = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
+			return `${user.name}'s ${moveName} will affect ${listifyEN(user.roundRns[roundRnKeyname].map(rn => allyPool[rn % allyPool.length].name), false)}`;
+		case "elements":
+			const elements = elementsList([])
+			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(elements[rn % elements.length])).join("")} on ${target.name}`;
+		case "elementsNoUntyped":
+			const elementsNoUntyped = elementsList(["Untyped"])
+			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(elementsNoUntyped[rn % elementsNoUntyped.length])).join("")} on ${target.name}`;
+		case "weaknesses":
+			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
+			const weaknessPool = elementsList(ineligibleWeaknesses);
+			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${weaknessPool[rn % weaknessPool.length]} Weakness`)).join("")} on ${target.name}`; //TODO confirm merge fixes for getnames
+		case "buffs":
+			return predictRemovedModifiers(target, user, moveName, roundRnKeyname, true);
+		case "debuffs":
+			return predictRemovedModifiers(target, user, moveName, roundRnKeyname, false);
+		case "progress":
+			let pendingProgress = user.getModifierStacks("Progress") + user.roundRns[roundRnKeyname][0];
+			return pendingProgress > 100 ? "yeh" : "nah"; //TODO english
+		default:
+			console.error(`Invalid config key ${key} for predictRoundRnTargeted`);
+	}
+	return "";
+}
+
+/**
+ * Precalculate outcomes of current enemy moves and possible delver move-choices (against possible targets), and return array of possible predict-texts 
+ * @param {Adventure} adventure 
+ */
+function predictRoundRnOutcomes(adventure) {
+	let outcomes = [];
+	// tabulate outcomes
+	// enemy moves
+	for (const move of adventure.room.moves) {
+		const user = move.userReference;
+		if (user.team === "enemy") {
+			const combatant = adventure.getCombatant(user);
+			const enemy = getEnemy(combatant.archetype);
+			const moveReference = enemy.actions[move.name];
+			if (moveReference.rnConfig) {
+				for (key in moveReference.rnConfig) {
+					if (move.targets.length > 0) {
+						const targetCombatants = move.targets.map(moveTarget => adventure.getCombatant(moveTarget));
+						if (move.name === "Bubble") {
+							let totalBuffsRemoved = targetCombatants.reduce((removedCount, combatant) => removedCount + Math.max(0, Object.keys(combatant.modifiers).filter(modifier => isBuff(modifier)).length - combatant.getModifierStacks("Retain")), 0);
+							let pendingProgress = user.getModifierStacks("Progress") + (move.isCrit ? 10 : 0) + user.roundRns[`Bubble${SAFE_DELIMITER}progress`][2] + totalBuffsRemoved * 5;
+							outcomes.push(pendingProgress > 100 ? "yeh" : "nah"); //TODO english
+						}
+						else {
+							for (const targetCombatant of targetCombatants) {
+								outcomes.push(predictRoundRnTargeted(adventure, combatant, targetCombatant, move.name, key));
+							}
+						}
+
+					}
+					else {
+						outcomes.push(predictRoundRnTargeted(adventure, combatant, null, move.name, key));
+					}
+				}
+			}
+		}
+	}
+	// delver equipment
+	for (const delver of adventure.delvers) {
+		for (const gear of delver.gear) {
+			let rnConfig = getGearProperty(gear.name, "rnConfig")
+			let targetingTags = getGearProperty(gear.name, "targetingTags")
+			if (rnConfig) {
+				for (key in rnConfig) {
+					if (rnsConcerningTargets.has(key)) {
+						outcomes.push(...predictRoundRnPossibleTargets(adventure, delver, targetingTags, gear.name, key));
+					}
+					else {
+						outcomes.push(predictRoundRnTargeted(adventure, delver, null, gear.name, key));
+					}
+				}
+			}
+		}
+		// items
+		if ("Panacea" in adventure.items) {
+			if (Object.keys(delver.modifiers).filter(modifier => isDebuff(modifier)).length > 2) {
+				outcomes.push(predictRoundRnTargeted(adventure, delver, delver, "Panacea", "debuffs"))
+			}
+		}
+	}
+	return outcomes;
+}
+
+/**
+ * Given a move and delver BUT NOT THE TARGET for a random-concerned-move that depends on targets, return a predicted outcome. 
+ * @param {Adventure} adventure 
+ * @param {Combatant} user 
+ * @param {"foes" | "allies" | "elements" | string} targetingTags 
+ * @param {"foes" | "allies" | "elements" | string} moveName 
+ * @param {Record<string, number>} config 
+ * @returns {string[]}
+ */
+function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName, key) {
+	const liveEnemies = adventure.room.enemies.filter(e => e.hp > 0);
+	let targetCombatants = [];
+	let results = [];
+	switch (targetingTags.team) {
+		case "ally":
+			if (targetingTags.type === "self") {
+				targetCombatants = [user];
+			}
+			else {
+				targetCombatants = user.team === "delver" ? adventure.delvers : liveEnemies;
+			}
+			break;
+		case "foe":
+			targetCombatants = user.team !== "delver" ? adventure.delvers : liveEnemies;
+			break;
+		case "any":
+			targetCombatants = adventure.delvers.concat(liveEnemies);
+			break;
+		case "none":
+			break;
+	}
+	for (const targetCombatant of targetCombatants) {
+		results.push(predictRoundRnTargeted(adventure, user, targetCombatant, moveName, key));
+	}
+	return results;
+}
+
+
+
+/**
+ * Simulate the (consecutive) removal of modifiers by the indices indicated by the roundRnKey
+ * @param {Combatant} target 
+ * @param {Combatant} user 
+ * @param {string} moveName 
+ * @param {string} roundRnKeyname 
+ * @param {boolean} isBuffs 
+ * @returns 
+ */
+function predictRemovedModifiers(target, user, moveName, roundRnKeyname, isBuffs) {
+	let popped = [];
+	const simMods = Object.keys(target.modifiers).filter(modifier => isBuffs ? isBuff(modifier) : isDebuff(modifier));
+	for (idx of user.roundRns[roundRnKeyname]) {
+		const modIdx = idx % simMods.length;
+		popped.push(getApplicationEmojiMarkdown(...simMods.splice(modIdx, 1)));
+	}
+	return `${user.name}'s ${moveName} will remove ${popped.join("")} from ${target.name}`;
+}
+
 /** Cleans up previous combat round, generates events for current round, and sends room message
  * @param {Adventure} adventure
  * @param {ThreadChannel} thread
@@ -320,6 +529,7 @@ function newRound(adventure, thread, lastRoundText) {
 			 * @param {number} i
 			 */
 			(combatant, i) => {
+				combatant.roundRns = {};
 				if (combatant.team === "delver") {
 					const boatPartsCount = adventure.getArtifactCount("Boat Parts");
 					if (boatPartsCount > 0 && adventure.room.round <= boatPartsCount + 1) {
@@ -334,6 +544,11 @@ function newRound(adventure, thread, lastRoundText) {
 						addProtection([combatant], peacockProtection);
 						adventure.updateArtifactStat("Peacock Charm", "Protection Generated", peacockProtection);
 					}
+					// (pre-/) roll for delver gear rn's for this round
+					combatant.gear.forEach(gear => {
+						let rnConfig = getGearProperty(gear.name, "rnConfig");
+						if (rnConfig) { cacheRoundRn(adventure, combatant, gear.name, rnConfig) }
+					})
 				}
 
 				// Roll Round Speed
@@ -388,7 +603,11 @@ function newRound(adventure, thread, lastRoundText) {
 							move.addTarget(new CombatantReference(team, index));
 						});
 						adventure.room.moves.push(move);
-						combatant.nextAction = enemyTemplate.actions[actionName].next;
+						if (enemyTemplate.actions[actionName].rnConfig) {
+							// (pre-/) roll for enemy move rn's for this round
+							cacheRoundRn(adventure, combatant, actionName, enemyTemplate.actions[actionName].rnConfig);
+						}
+						combatant.nextAction = enemyTemplate.actions[combatant.nextAction].next;
 					} else {
 						adventure.room.moves.push(
 							new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
@@ -406,6 +625,15 @@ function newRound(adventure, thread, lastRoundText) {
 			})
 	}
 
+	// generate rn prediction outcomes and splice x random outcomes to keep
+	const allOutcomes = predictRoundRnOutcomes(adventure);
+	const numChosenOutcomes = 5;
+	adventure.room.detectivePredicts = [];
+	for (let i = 0; i < numChosenOutcomes; i++) {
+		if (allOutcomes.length > 0) {
+			adventure.room.detectivePredicts.push(...allOutcomes.splice(adventure.generateRandomNumber(allOutcomes.length, "battle"), 1));
+		}
+	}
 	thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
 		if (!checkNextRound(adventure)) {
 			message.edit({ embeds: message.embeds.map(embed => new EmbedBuilder(embed).setAuthor({ name: roomHeaderString(adventure), iconURL: message.client.user.displayAvatarURL() })) });
@@ -776,5 +1004,6 @@ module.exports = {
 	endRound,
 	checkNextRound,
 	fetchRecruitMessage,
-	completeAdventure
+	completeAdventure,
+	cacheRoundRn
 };

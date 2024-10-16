@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Cleansing Second Wind",
 		const resultLines = [gainHealth(user, pendingHealing, adventure)];
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (userDebuffs.length > 0) {
-			const rolledDebuff = userDebuffs[adventure.generateRandomNumber(userDebuffs.length, "battle")];
+			const rolledDebuff = userDebuffs[user.roundRns[`Cleansing Second Wind${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length];
 			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
 			if (debuffWasRemoved) {
 				resultLines.push(`${getNames([user], adventure)[0]} shrugs off ${getApplicationEmojiMarkdown(rolledDebuff)}.`);
@@ -34,4 +34,5 @@ module.exports = new GearTemplate("Cleansing Second Wind",
 ).setTargetingTags({ type: "self", team: "none", needsLivingTargets: true })
 	.setSidegrades("Lucky Second Wind", "Soothing Second Wind")
 	.setDurability(10)
-	.setDamage(0);
+	.setDamage(0)
+	.setRnConfig({ debuffs: 1 });
