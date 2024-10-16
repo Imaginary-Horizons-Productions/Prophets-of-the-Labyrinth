@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Flanking Pistol",
 		const receipts = addModifier(targets, exposed);
 		if (targets.some(target => getCombatantWeaknesses(target).includes(element))) {
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
-			const ally = allyTeam[user.roundRns[`Pistol${SAFE_DELIMITER}allies`][0] % allyTeam.length];
+			const ally = allyTeam[user.roundRns[`Flanking Pistol${SAFE_DELIMITER}allies`][0] % allyTeam.length];
 			receipts.push(...addModifier([ally], powerUp));
 		}
 		return resultLines.concat(generateModifierResultLines(receipts));
