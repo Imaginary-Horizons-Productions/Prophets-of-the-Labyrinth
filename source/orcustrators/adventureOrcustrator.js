@@ -357,6 +357,7 @@ function cacheRoundRn(adventure, user, moveName, config) {
  */
 function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 	const roundRnKeyname = `${moveName}${SAFE_DELIMITER}${key}`;
+	let targetModifiers = null;
 	switch (key) {
 		case "foes":
 			const enemyPool = user.team !== "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
@@ -375,9 +376,14 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			const weaknessPool = elementsList(ineligibleWeaknesses);
 			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${weaknessPool[rn % weaknessPool.length]} Weakness`)).join("")} on ${target.name}`; //TODO confirm merge fixes for getnames
 		case "buffs":
-			return predictRemovedModifiers(target, user, moveName, roundRnKeyname, true);
+			targetModifiers = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
 		case "debuffs":
-			return predictRemovedModifiers(target, user, moveName, roundRnKeyname, false);
+			targetModifiers ??= Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
+			let pendingRemoves = user.roundRns[roundRnKeyname].length;
+			if (targetModifiers.length <= pendingRemoves ) {
+				return null;
+			}
+			return predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers);
 		case "progress":
 			let pendingProgress = user.getModifierStacks("Progress") + user.roundRns[roundRnKeyname][0];
 			return pendingProgress > 100 ? "yeh" : "nah"; //TODO english
@@ -482,7 +488,10 @@ function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName,
 			break;
 	}
 	for (const targetCombatant of targetCombatants) {
-		results.push(predictRoundRnTargeted(adventure, user, targetCombatant, moveName, key));
+		const rnOutcome = predictRoundRnTargeted(adventure, user, targetCombatant, moveName, key);
+		if(rnOutcome) {
+			results.push(rnOutcome);
+		}
 	}
 	return results;
 }
@@ -498,12 +507,13 @@ function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName,
  * @param {boolean} isBuffs 
  * @returns 
  */
-function predictRemovedModifiers(target, user, moveName, roundRnKeyname, isBuffs) {
+function predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers) {
 	let popped = [];
-	const simMods = Object.keys(target.modifiers).filter(modifier => isBuffs ? isBuff(modifier) : isDebuff(modifier));
 	for (idx of user.roundRns[roundRnKeyname]) {
-		const modIdx = idx % simMods.length;
-		popped.push(getApplicationEmojiMarkdown(...simMods.splice(modIdx, 1)));
+		const modIdx = idx % targetModifiers.length;
+		const modArr = targetModifiers.splice(modIdx, 1);
+		console.log(targetModifiers);
+		popped.push(getApplicationEmojiMarkdown(...modArr));
 	}
 	return `${user.name}'s ${moveName} will remove ${popped.join("")} from ${target.name}`;
 }
@@ -607,7 +617,7 @@ function newRound(adventure, thread, lastRoundText) {
 							// (pre-/) roll for enemy move rn's for this round
 							cacheRoundRn(adventure, combatant, actionName, enemyTemplate.actions[actionName].rnConfig);
 						}
-						combatant.nextAction = enemyTemplate.actions[combatant.nextAction].next;
+						combatant.nextAction = enemyTemplate.actions[actionName].next;
 					} else {
 						adventure.room.moves.push(
 							new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
