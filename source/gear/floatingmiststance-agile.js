@@ -1,7 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, changeStagger, getNames, enterStance } = require("../util/combatantUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
-const { listifyEN } = require("../util/textUtil");
+const { addModifier, changeStagger, enterStance, combineModifierReceipts, generateModifierResultLines } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Agile Floating Mist Stance",
 	[
@@ -16,29 +14,11 @@ module.exports = new GearTemplate("Agile Floating Mist Stance",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		const { didAddStance, stancesRemoved } = enterStance(user, floatingMistStance);
-		const addedModifiers = [];
-		if (didAddStance) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Floating Mist Stance"));
-		}
-		const addedAgility = addModifier([user], agility).length > 0;
-		if (addedAgility) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Agility"));
-		}
+		const receipts = enterStance(user, floatingMistStance).concat(addModifier([user], agility));
 		if (isCrit) {
-			const addedEvade = addModifier([user], displayEvade).length > 0;
-			if (addedEvade) {
-				addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
-			}
+			receipts.push(...addModifier([user], displayEvade));
 		}
-		const userEffects = [];
-		if (addedModifiers.length > 0) {
-			userEffects.push(`gains ${addedModifiers.join("")}`);
-		}
-		if (stancesRemoved.length > 0) {
-			userEffects.push(`exits ${stancesRemoved.map(stance => getApplicationEmojiMarkdown(stance)).join("")}`);
-		}
-		return [`${getNames([user], adventure)[0]} ${listifyEN(userEffects, false)}.`];
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Devoted Floating Mist Stance", "Soothing Floating Mist Stance")

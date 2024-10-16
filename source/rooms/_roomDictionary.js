@@ -16,6 +16,7 @@ for (const file of [
 	"empty.js",
 	"event-applepiewishingwell.js",
 	"event-artifactdupe.js",
+	"event-door1ordoor2.js",
 	"event-freegoldonfire.js",
 	"event-freerepairkit.js",
 	"event-gearcollector.js",

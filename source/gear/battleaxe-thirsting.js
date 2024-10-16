@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, gainHealth, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { addModifier, dealDamage, gainHealth, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thirsting Battleaxe",
 	[
@@ -27,11 +26,7 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 			}
 		})
 		resultLines.push(gainHealth(user, healing * killCount, adventure));
-		const addedExposed = addModifier([user], exposed).length > 0;
-		if (addedExposed) {
-			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Exposed")}.`);
-		}
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(addModifier([user], exposed)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Furious Battleaxe", "Reactive Battleaxe")

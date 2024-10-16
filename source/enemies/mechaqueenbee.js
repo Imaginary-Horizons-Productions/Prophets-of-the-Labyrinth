@@ -1,9 +1,7 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
-const { addModifier, changeStagger, addProtection, getNames } = require("../util/combatantUtil.js");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
+const { addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 const drone = require("./mechabeedrone.js")
 
@@ -29,7 +27,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);
-		return [`${getNames([user], adventure)[0]} gains protection.`];
+		return [`${user.name} gains protection.`];
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
@@ -50,7 +48,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);
-		return [`${getNames([user], adventure)[0]} gains protection.`];
+		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -63,10 +61,9 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
-		const quickenedTargets = addModifier(filteredTargets, { name: "Quicken", stacks: 3 });
-		const poweredUpTargets = addModifier(filteredTargets, { name: "Power Up", stacks: 3 });
 		addProtection([user], isCrit ? 60 : 30);
-		return [`${getNames([user], adventure)[0]} gains protection.`, joinAsStatement(false, getNames(quickenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Quickened")}.`), joinAsStatement(false, getNames(poweredUpTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)];
+		const receipts = addModifier(filteredTargets, { name: "Quicken", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Power Up", stacks: 3 }));
+		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
@@ -84,7 +81,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 			targetMove.name = "Self-Destruct";
 			targetMove.targets = selectAllFoes(target, adventure);
 		}
-		return [`${getNames([user], adventure)[0]} gains protection.`];
+		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomOtherAlly,
 	needsLivingTargets: true,
@@ -109,12 +106,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger(targets, "elementMatchFoe");
-		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 5 : 3 });;
-		if (poisonedTargets.length > 0) {
-			return [joinAsStatement(false, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")];
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: isCrit ? 5 : 3 }));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

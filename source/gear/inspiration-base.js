@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Inspiration",
 	[
@@ -20,12 +18,7 @@ module.exports = new GearTemplate("Inspiration",
 		if (isCrit) {
 			pendingPowerUp.stacks += bonus;
 		}
-		const poweredUpTargets = addModifier(targets, pendingPowerUp);
-		if (poweredUpTargets.length > 0) {
-			return [joinAsStatement(false, getNames(poweredUpTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`)];
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPowerUp)));
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Guarding Inspiration", "Soothing Inspiration", "Sweeping Inspiration")

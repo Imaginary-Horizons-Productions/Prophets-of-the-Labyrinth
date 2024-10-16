@@ -1,7 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
+const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Refreshing Breeze",
 	[
@@ -16,27 +15,23 @@ module.exports = new GearTemplate("Refreshing Breeze",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		const resultLines = [];
+		const receipts = [];
 		targets.forEach(target => {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
-				const removedDebuffs = [];
 				for (let i = 0; i < debuffsToRemove; i++) {
 					const debuffIndex = user.roundRns[`Refreshing Breeze${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 					const rolledDebuff = targetDebuffs[debuffIndex];
-					const wasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
-					if (wasRemoved) {
-						removedDebuffs.push(getApplicationEmojiMarkdown(rolledDebuff));
+					const [removalReceipt] = removeModifier([target], { name: rolledDebuff, stacks: "all" });
+					receipts.push(removalReceipt);
+					if (removalReceipt.succeeded.size > 0) {
 						targetDebuffs.splice(debuffIndex, 1);
 					}
 				}
-				if (removedDebuffs.length > 0) {
-					resultLines.push(`${getNames([target], adventure)[0]} is cured of ${removedDebuffs.join("")}.`)
-				}
 			}
 		})
-		return resultLines;
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Accelerating Refereshing Breeze", "Supportive Refreshing Breeze", "Swift Refreshing Breeze")

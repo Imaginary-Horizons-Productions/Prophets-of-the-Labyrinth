@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Shattering Corrosion",
@@ -15,21 +15,12 @@ module.exports = new GearTemplate("Shattering Corrosion",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const targetNames = getNames(targets, adventure);
 		const resultLines = [];
 		if (isCrit) {
 			changeStagger(targets, bonus);
-			resultLines.push(joinAsStatement(false, targetNames, "was", "were", "Staggered."));
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 		}
-		const poweredDownTargets = addModifier(targets, powerDown);
-		if (poweredDownTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
-		}
-		const frailedTargets = addModifier(targets, frail);
-		if (frailedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(frailedTargets, adventure), "becomes", "become", "Frail."));
-		}
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, powerDown).concat(addModifier(targets, frail)))));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Corrosion", "Harmful Corrosion")

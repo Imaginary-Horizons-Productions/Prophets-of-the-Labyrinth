@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, bold } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
 const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, checkNextRound, endRound, setAdventure, cacheRoundRn } = require('../orcustrators/adventureOrcustrator');
@@ -7,7 +7,6 @@ const { getGearProperty } = require('../gear/_gearDictionary');
 const { getEmoji, getColor } = require('../util/elementUtil');
 const { randomAuthorTip } = require('../util/embedUtil');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
-const { getNames } = require('../util/combatantUtil');
 
 const mainId = "readymove";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -25,12 +24,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			embed.setAuthor(randomAuthorTip());
 		}
 		const enemyOptions = [];
-		const enemyNames = getNames(adventure.room.enemies, adventure);
 		for (let i = 0; i < adventure.room.enemies.length; i++) {
 			const enemy = adventure.room.enemies[i];
 			if (enemy.hp > 0) {
 				const optionPayload = {
-					label: enemyNames[i],
+					label: enemy.name,
 					value: `enemy${SAFE_DELIMITER}${i}`
 				};
 				const miniPredict = trimForSelectOptionDescription(delverArchetypeTemplate.miniPredict(enemy));
@@ -216,8 +214,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					}
 					adventure.room.moves.push(newMove);
 
-					const targets = getNames(targetIndices.map(index => adventure.getCombatant({ team: targetTeam, index })), adventure).map(name => `**${name}**`);
-					confirmationText = `**${collectedInteraction.member.displayName}** ${overwritten ? "switches to ready" : "readies"} **${moveName}** to use on ${listifyEN(targets, false)}.`;
+					const targets = targetIndices.map(index => bold(adventure.getCombatant({ team: targetTeam, index }).name));
+					confirmationText = `${bold(collectedInteraction.member.displayName)} ${overwritten ? "switches to ready" : "readies"} ${bold(moveName)} to use on ${listifyEN(targets, false)}.`;
 				}
 				collectedInteraction.channel.send(confirmationText).then(() => {
 					setAdventure(adventure);

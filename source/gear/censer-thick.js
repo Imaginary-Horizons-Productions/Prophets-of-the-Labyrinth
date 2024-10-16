@@ -1,6 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
-const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Thick Censer",
 	[
@@ -21,10 +21,7 @@ module.exports = new GearTemplate("Thick Censer",
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			const addedSlow = addModifier([target], slow).length > 0;
-			if (addedSlow) {
-				resultLines.push(`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Slow")}.`);
-			}
+			resultLines.push(...generateModifierResultLines(addModifier([target], slow)));
 		}
 		return resultLines;
 	}

@@ -9,7 +9,24 @@ function anyDieSucceeds(successChance, extraDice) {
 	return 1 - ((1 - successChance) ** (1 + extraDice));
 };
 
+/**
+ * @param {Set} firstSet
+ * @param {Set} secondSet
+ */
+function areSetContentsCongruent(firstSet, secondSet) {
+	if (firstSet.size !== secondSet.size) {
+		return false;
+	}
+
+	for (const element of firstSet) {
+		if (!secondSet.has(element)) {
+			return false;
+		}
+	}
+	return true;
+}
 
 module.exports = {
-	anyDieSucceeds
+	anyDieSucceeds,
+	areSetContentsCongruent
 };

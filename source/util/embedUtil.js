@@ -4,7 +4,7 @@ const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyl
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
-const { getChallenge } = require("../challenges/_challengeDictionary");
+const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
 const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
 const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
@@ -104,7 +104,7 @@ function generateRecruitEmbed(adventure) {
 
 /** @param {Adventure} adventure */
 function generateAdventureConfigMessage(adventure) {
-	const options = ["Training Weights", "Can't Hold All this Value", "Restless", "Rushing", "Into the Deep End"].map(challengeName => {
+	const options = getStartingChallenges().map(challengeName => {
 		const challenge = getChallenge(challengeName);
 		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName };
 	})

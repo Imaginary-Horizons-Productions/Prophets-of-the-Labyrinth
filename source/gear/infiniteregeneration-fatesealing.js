@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
+const { addModifier, payHP, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	[
@@ -14,30 +12,23 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [regen, stasis], hpCost, critMultiplier } = module.exports;
 		let pendingHPCost = hpCost;
-		let stasisedTargets = [];
-		if (isCrit) {
-			pendingHPCost /= critMultiplier;
-			stasisedTargets = addModifier(targets, stasis);
-		}
 		const paymentSentence = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
+		}
+		const resultLines = [paymentSentence];
+		const receipts = addModifier(targets, regen);
+		if (isCrit) {
+			pendingHPCost /= critMultiplier;
+			receipts.push(...addModifier(targets, stasis));
 		}
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		const resultLines = [paymentSentence];
-		const regenedTargets = addModifier(targets, regen);
-		if (regenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
-		}
-		if (stasisedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(stasisedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Stasis")}.`));
-		}
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Discounted Infinite Regeneration", "Purifying Infinite Regeneration")
-	.setModifiers({ name: "Regen", stacks: 4 }, { name: "Stasis", stacks: 1 })
+	.setModifiers({ name: "Regen", stacks: 4 }, { name: "Retain", stacks: 1 })
 	.setHPCost(50)
 	.setDurability(10);

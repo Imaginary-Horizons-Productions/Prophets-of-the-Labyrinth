@@ -1,5 +1,5 @@
 const { MAX_SET_TIMEOUT } = require("../constants");
-const { Interaction, ButtonInteraction, PermissionFlagsBits, CommandInteraction, SlashCommandBuilder, AnySelectMenuInteraction } = require("discord.js");
+const { Interaction, ButtonInteraction, PermissionFlagsBits, CommandInteraction, SlashCommandBuilder, AnySelectMenuInteraction, InteractionContextType } = require("discord.js");
 const { BuildError } = require("./BuildError.js");
 
 class InteractionWrapper {
@@ -62,18 +62,18 @@ class CommandWrapper extends InteractionWrapper {
 	 * @param {string} descriptionInput
 	 * @param {PermissionFlagsBits | null} defaultMemberPermission
 	 * @param {boolean} isPremiumCommand
-	 * @param {boolean} allowInDMsInput
+	 * @param {InteractionContextType[]} contextEnums
 	 * @param {number} cooldownInMS
 	 * @param {(interaction: CommandInteraction) => void} executeFunction
 	 */
-	constructor(mainIdInput, descriptionInput, defaultMemberPermission, isPremiumCommand, allowInDMsInput, cooldownInMS, executeFunction) {
+	constructor(mainIdInput, descriptionInput, defaultMemberPermission, isPremiumCommand, contextEnums, cooldownInMS, executeFunction) {
 		super(mainIdInput, cooldownInMS, executeFunction);
 		this.premiumCommand = isPremiumCommand;
 		this.autocomplete = {};
 		this.builder = new SlashCommandBuilder()
 			.setName(mainIdInput)
 			.setDescription(descriptionInput)
-			.setDMPermission(allowInDMsInput);
+			.setContexts(contextEnums);
 		if (defaultMemberPermission) {
 			this.builder.setDefaultMemberPermissions(defaultMemberPermission);
 		}

@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, getNames, addModifier } = require('../util/combatantUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 const rollablePotions = [
 	"Protection Potion",
@@ -33,15 +32,10 @@ module.exports = new GearTemplate("Corrosive Cauldron Stir",
 		if (isCrit) {
 			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
-			resultLines.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
+			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
 
-		const poweredDownTargets = addModifier(targets, powerdown);
-		if (poweredDownTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
-		}
-
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(addModifier(targets, powerdown)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Sabotaging Cauldron Stir", "Toxic Cauldron Stir")

@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { listifyEN, joinAsStatement } = require('../util/textUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Devoted Barrier",
 	[
@@ -20,20 +18,7 @@ module.exports = new GearTemplate("Devoted Barrier",
 		if (isCrit) {
 			pendingVigilance.stacks *= critMultiplier;
 		}
-		const addedModifiers = [];
-		const addedVigilance = addModifier(targets, vigilance).length > 0;
-		if (addedVigilance) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Vigilance"));
-		}
-		const addedEvade = addModifier(targets, evade).length > 0;
-		if (addedEvade) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
-		}
-		if (addedModifiers.length > 0) {
-			return joinAsStatement(false, getNames(targets, adventure), "gains", "gain", `${addedModifiers.join("")}.`);
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, vigilance).concat(addModifier(targets, evade))));
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Cleansing Barrier", "Vigilant Barrier")

@@ -1,8 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Bouncing Medicine",
 	[
@@ -21,12 +19,7 @@ module.exports = new GearTemplate("Bouncing Medicine",
 		if (isCrit) {
 			pendingRegen.stacks *= critMultiplier;
 		}
-		const regenedTargets = addModifier(targets, pendingRegen);
-		if (regenedTargets.length > 0) {
-			return [joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`)];
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingRegen)));
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "ally", needsLivingTargets: true })
 	.setSidegrades("Cleansing Medicine", "Soothing Medicine")

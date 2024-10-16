@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
+const { addModifier, payHP, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Discounted Infinite Regeneration",
 	[
@@ -19,17 +17,12 @@ module.exports = new GearTemplate("Discounted Infinite Regeneration",
 		}
 		const paymentSentence = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
 		}
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		const resultLines = [paymentSentence];
-		const regenedTargets = addModifier(targets, regen);
-		if (regenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(targets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
-		}
-		return resultLines;
+		return [paymentSentence, ...generateModifierResultLines(addModifier(targets, regen))];
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Infinite Regeneration", "Purifying Infinite Regeneration")

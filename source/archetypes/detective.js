@@ -1,6 +1,6 @@
 const { ArchetypeTemplate } = require("../classes");
 const { POTL_ICON_URL } = require("../constants");
-const { getCombatantWeaknesses, getNames } = require("../util/combatantUtil");
+const { getCombatantWeaknesses } = require("../util/combatantUtil");
 const { getEmoji, getResistances } = require("../util/elementUtil");
 
 module.exports = new ArchetypeTemplate("Detective",
@@ -16,11 +16,10 @@ module.exports = new ArchetypeTemplate("Detective",
 	["Pistol", "Sabotage Kit"],
 	(embed, adventure) => {
 		const eligibleCombatants = adventure.room.enemies.filter(combatant => combatant.hp > 0).concat(adventure.delvers);
-		const combatantNames = getNames(eligibleCombatants, adventure);
-		eligibleCombatants.forEach((combatant, index) => {
+		eligibleCombatants.forEach(combatant => {
 			const weaknesses = getCombatantWeaknesses(combatant);
 			const resistances = getResistances(combatant.element);
-			embed.addFields({ name: `${combatantNames[index]} ${getEmoji(combatant.element)}`, value: `Weaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}` })
+			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.element)}`, value: `Weaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}` })
 		});
 		if (adventure.room.detectivePredicts.length > 0) {
 			embed.addFields({ name: "Random Outcomes", value: `- ${adventure.room.detectivePredicts.join("\n- ")}` });

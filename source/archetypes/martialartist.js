@@ -1,5 +1,4 @@
 const { ArchetypeTemplate } = require("../classes");
-const { getNames } = require("../util/combatantUtil");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Martial Artist",
@@ -19,9 +18,8 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 			.sort((first, second) => {
 				return second.getSpeed(true) - first.getSpeed(true);
 			});
-		const combatantNames = getNames(activeCombatants, adventure);
-		activeCombatants.forEach((combatant, index) => {
-			embed.addFields({ name: combatantNames[index], value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}${combatant.team === "enemy" ? `\nRound ${adventure.room.round + 2} Move: ${combatant.nextAction}` : ""}` });
+		activeCombatants.forEach(combatant => {
+			embed.addFields({ name: combatant.name, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}${combatant.team === "enemy" ? `\nRound ${adventure.room.round + 2} Move: ${combatant.nextAction}` : ""}` });
 		})
 		return embed.setTitle(`Martial Artist Predictions for Round ${adventure.room.round + 1}`);
 	},

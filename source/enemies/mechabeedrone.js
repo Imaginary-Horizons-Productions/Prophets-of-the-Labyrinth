@@ -1,10 +1,8 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 
 module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
@@ -22,8 +20,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 10;
 		changeStagger(targets, "elementMatchFoe");
-		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 });
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, getNames(poisonedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Poison")}.`)];
+		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -31,26 +28,15 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 }).addAction({
 	name: "Barrel Roll",
 	element: "Untyped",
-	description: "Gain Evade, gain Agility on Critical Hit",
+	description: "Gain @e{Evade}, gain @e{Agility} on Critical Hit",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const addedModifiers = [];
-		const addedEvade = addModifier([user], { name: "Evade", stacks: 2 }).length > 0;
-		if (addedEvade) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
-		}
+		const receipts = addModifier([user], { name: "Evade", stacks: 2 });
 		if (isCrit) {
-			const addedAgility = addModifier([user], { name: "Agility", stacks: 1 }).length > 0;
-			if (addedAgility) {
-				addedModifiers.push(getApplicationEmojiMarkdown("Agility"));
-			}
+			receipts.push(...addModifier([user], { name: "Agility", stacks: 1 }));
 		}
 		changeStagger([user], "elementMatchAlly");
-		if (addedModifiers.length > 0) {
-			return [`${getNames([user], adventure)[0]} gains ${addedModifiers.join("")}.`]
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(receipts);
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,

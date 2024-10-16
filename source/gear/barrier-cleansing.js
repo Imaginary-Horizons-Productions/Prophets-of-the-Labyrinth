@@ -1,7 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { removeModifier, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { removeModifier, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Cleansing Barrier",
 	[
@@ -20,29 +19,13 @@ module.exports = new GearTemplate("Cleansing Barrier",
 		if (isCrit) {
 			pendingVigilance.stacks *= critMultiplier;
 		}
-		const addedModifiers = [];
-		const addedVigilance = addModifier([user], pendingVigilance).length > 0;
-		if (addedVigilance) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Vigilance"));
-		}
-		const addedEvade = addModifier([user], evade).length > 0;
-		if (addedEvade) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Evade"));
-		}
-		const userName = getNames([user], adventure)[0];
-		const resultLines = [];
-		if (addedModifiers.length > 0) {
-			resultLines.push(`${userName} gains ${addedModifiers.join("")}.`);
-		}
+		const receipts = addModifier([user], pendingVigilance).concat(addModifier([user], evade));
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (userDebuffs.length > 0) {
 			const rolledDebuff = userDebuffs[user.roundRns[`Cleansing Barrier${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length];
-			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
-			if (debuffWasRemoved) {
-				resultLines.push(`${userName} shrugs off ${rolledDebuff}.`);
-			}
+			receipts.push(...removeModifier([user], { name: rolledDebuff, stacks: "all" }));
 		}
-		return resultLines;
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Devoted Barrier", "Vigilant Barrier")

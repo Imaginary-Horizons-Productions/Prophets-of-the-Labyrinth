@@ -1,3 +1,4 @@
+const { InteractionContextType } = require('discord.js');
 const { CommandWrapper } = require('../../classes');
 const { createSubcommandMappings } = require('../../util/fileUtil');
 
@@ -9,7 +10,7 @@ const { slashData: subcommandSlashData, executeDictionary: subcommandExecuteDict
 	"gearinfo.js",
 	"iteminfo.js"
 ]);
-module.exports = new CommandWrapper(mainId, "Get information about how to play or game entities", null, false, true, 3000,
+module.exports = new CommandWrapper(mainId, "Get information about how to play or game entities", null, false, [InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel], 3000,
 	(interaction) => {
 		subcommandExecuteDictionary[interaction.options.getSubcommand()](interaction);
 	}

@@ -1,8 +1,6 @@
 const { EnemyTemplate } = require("../classes");
 const { selectRandomFoe } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
 module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	"@{adventureOpposite}",
@@ -18,15 +16,10 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	description: "Inflict @e{Slow} on a single foe",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const slowedTargets = addModifier(targets, { name: "Slow", stacks: 3 });
 		if (isCrit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (slowedTargets.length > 0) {
-			return [joinAsStatement(false, getNames(slowedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Slowed")}.`)];
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: 3 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

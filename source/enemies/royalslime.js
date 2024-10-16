@@ -2,10 +2,8 @@ const { EnemyTemplate } = require("../classes");
 const { SAFE_DELIMITER } = require("../constants");
 const { rnConfig } = require("../gear/pistol-double");
 const { selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Royal Slime",
 	"@{adventure}",
@@ -25,13 +23,13 @@ module.exports = new EnemyTemplate("Royal Slime",
 		user.element = elementPool[user.roundRns[`Element Shift${SAFE_DELIMITER}elements`][0] % elementPool.length];
 		let addedAbsorb = false;
 		if (isCrit) {
-			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 5 }).length > 0;
+			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 5 }).some(receipt => receipt.succeeded.size > 0);
 			changeStagger([user], "elementMatchAlly");
 		} else {
-			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 3 }).length > 0;
+			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 3 }).some(receipt => receipt.succeeded.size > 0);
 		}
 		if (addedAbsorb) {
-			return [`${getNames([user], adventure)[0]}'s elemental alignment has changed.`];
+			return [`${user.name}'s elemental alignment has changed.`];
 		} else {
 			return [];
 		}
@@ -78,15 +76,10 @@ module.exports = new EnemyTemplate("Royal Slime",
 	description: "Inflict @e{Slow} on all foes",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 		if (isCrit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (slowedTargets.length > 0) {
-			return [joinAsStatement(false, getNames(slowedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`)];
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 })));
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,

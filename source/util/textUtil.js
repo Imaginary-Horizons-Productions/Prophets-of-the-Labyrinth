@@ -41,11 +41,6 @@ function generateTextBar(numerator, denominator, barLength) {
 	return bar;
 }
 
-/** @param {string?} tag */
-function generateRuntimeTemplateStringRegExp(tag) {
-	return new RegExp(`@{${tag ?? "[a-zA-Z]+"}}`, "g");
-};
-
 const operationMap = {
 	'+': (first, second) => first + second,
 	'~': (first, second) => first - second,
@@ -178,7 +173,6 @@ function joinAsStatement(shouldListifyExclusively, entities, singularVerb, plura
 module.exports = {
 	getNumberEmoji,
 	generateTextBar,
-	generateRuntimeTemplateStringRegExp,
 	parseExpression,
 	calculateTagContent,
 	ordinalSuffixEN,

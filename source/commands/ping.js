@@ -1,9 +1,9 @@
-const { PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits, InteractionContextType } = require('discord.js');
 const { CommandWrapper, Adventure } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 
 const mainId = "ping";
-module.exports = new CommandWrapper(mainId, "Remind delvers to input their vote or move", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000,
+module.exports = new CommandWrapper(mainId, "Remind delvers to input their vote or move", PermissionFlagsBits.SendMessagesInThreads, false, [InteractionContextType.Guild], 3000,
 	/** Remind delvers to input their vote or move */
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);

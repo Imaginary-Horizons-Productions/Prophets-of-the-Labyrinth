@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Lethal Spear",
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Lethal Spear",
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		if (targets.some(target => target.hp > 0)) {
-			resultLines.push(joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered."));
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 		}
 		return resultLines;
 	}

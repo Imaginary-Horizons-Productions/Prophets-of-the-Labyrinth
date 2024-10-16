@@ -1,9 +1,10 @@
+const { InteractionContextType } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { GAME_VERSION } = require('../constants');
 const { embedTemplate } = require('../util/embedUtil');
 
 const mainId = "about";
-module.exports = new CommandWrapper(mainId, "Get info and contributors to PotL", null, false, true, 3000,
+module.exports = new CommandWrapper(mainId, "Get info and contributors to PotL", null, false, [InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel], 3000,
 	(interaction) => {
 		interaction.reply({
 			embeds: [

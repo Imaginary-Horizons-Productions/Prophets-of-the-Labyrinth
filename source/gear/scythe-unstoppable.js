@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Unstoppable Scythe",
 	[
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Unstoppable Scythe",
 			return dealDamage([target], user, pendingDamage, true, element, adventure);
 		} else {
 			target.hp = 0;
-			return [`${getNames([target], adventure)[0]} meets the reaper.`];
+			return [`${target.name} meets the reaper.`];
 		}
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })

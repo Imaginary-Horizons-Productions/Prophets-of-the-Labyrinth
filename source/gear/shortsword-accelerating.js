@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Shortsword",
 	[
@@ -24,15 +22,7 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 				changeStagger(targets, "elementMatchFoe");
 			}
 		}
-		const exposedTargets = addModifier([user, ...stillLivingTargets], exposed);
-		if (exposedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(exposedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Exposed")}.`));
-		}
-		const addedQuicken = addModifier([user], quicken).length > 0;
-		if (addedQuicken) {
-			resultLines.push(`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Quicken")}.`);
-		}
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed), addModifier([user], quicken))));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Lethal Shortsword", "Toxic Shortsword")

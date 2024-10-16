@@ -1,8 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { addModifier, payHP, changeStagger, getNames, removeModifier } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
+const { addModifier, payHP, changeStagger, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Purifying Infinite Regeneration",
 	[
@@ -20,31 +18,21 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 		}
 		const paymentSentence = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
 		}
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
 		const resultLines = [paymentSentence];
-		const regenedTargets = addModifier(targets, regen);
-		if (regenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
-		}
-		const targetNames = getNames(targets, adventure);
-		for (let i = 0; i < targets.length; i++) {
-			const target = targets[i];
-			const curedDebuffs = [];
+		const receipts = addModifier(targets, regen);
+		for (const target of targets) {
 			Object.keys(target.modifiers).forEach(modifier => {
 				if (isDebuff(modifier)) {
-					const didRemoveDebuff = removeModifier([target], { name: modifier, stacks: "all" }).length > 0;
-					if (didRemoveDebuff) {
-						curedDebuffs.push(getApplicationEmojiMarkdown(modifier));
-					}
+					receipts.push(...removeModifier([target], { name: modifier, stacks: "all" })) ;
 				}
 			})
-			resultLines.push(`${targetNames[i]} is cured of ${curedDebuffs.join("")}.`);
 		}
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Discounted Infinite Regeneration", "Fate-Sealing Infinite Regeneration")

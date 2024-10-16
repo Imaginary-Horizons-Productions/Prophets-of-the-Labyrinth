@@ -1,8 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { changeStagger, addProtection, getNames, addModifier } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { listifyEN } = require('../util/textUtil');
+const { changeStagger, addProtection, addModifier, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Cleansing Omamori",
 	[
@@ -22,26 +20,13 @@ module.exports = new GearTemplate("Cleansing Omamori",
 			pendingLucky.stacks *= critMultiplier;
 		}
 		addProtection([user], protection);
-		const gainedEffects = ["protection"];
-		const addedLucky = addModifier([user], pendingLucky).length > 0;
-		if (addedLucky) {
-			gainedEffects.push(getApplicationEmojiMarkdown("Lucky"));
-		}
-
-		const userEffects = [];
-		if (gainedEffects.length > 0) {
-			userEffects.push(`gains ${listifyEN(gainedEffects, false)}`);
-		}
-
+		const receipts = addModifier([user], pendingLucky);
 		const debuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (debuffs.length > 0) {
 			const rolledDebuff = debuffs[user.roundRns[`Cleansing Omamori${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
-			const debuffWasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
-			if (debuffWasRemoved) {
-				userEffects.push(`is cured of ${rolledDebuff}`);
-			}
+			receipts.push(...removeModifier([user], { name: rolledDebuff, stacks: "all" }));
 		}
-		return [`${getNames([user], adventure)[0]} ${listifyEN(userEffects, false)}.`];
+		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Centering Omamori", "Devoted Omamori")

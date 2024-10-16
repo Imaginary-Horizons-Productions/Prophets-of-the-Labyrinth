@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 const { accuratePassive } = require('./descriptions/passives.js');
 
 module.exports = new GearTemplate("Accurate Cloak",
@@ -21,12 +20,7 @@ module.exports = new GearTemplate("Accurate Cloak",
 		if (isCrit) {
 			pendingEvade.stacks += bonus;
 		}
-		const addedEvade = addModifier([user], pendingEvade).length > 0;
-		if (addedEvade) {
-			return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Evade")}.`];
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(addModifier([user], pendingEvade));
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
 	.setSidegrades("Accelerating Cloak", "Evasive Cloak")

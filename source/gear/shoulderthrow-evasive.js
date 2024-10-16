@@ -1,6 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Evasive Shoulder Throw",
 	[
@@ -28,16 +27,11 @@ module.exports = new GearTemplate("Evasive Shoulder Throw",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
-		const [targetName, userName] = getNames([target, user], adventure);
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
-			resultLines.push(`${targetName} is redirected into targeting themself.`);
+			resultLines.push(`${target.name} is redirected into targeting themself.`);
 		}
-		const addedEvade = addModifier([user], pendingEvade).length > 0;
-		if (addedEvade) {
-			resultLines.push(`${userName} gains ${getApplicationEmojiMarkdown("Evade")}.`);
-		}
-		return resultLines;
+		return resultLines.concat(generateModifierResultLines(addModifier([user], pendingEvade)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Harmful Shoulder Throw", "Staggering Shoulder Throw")

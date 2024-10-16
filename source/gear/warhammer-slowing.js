@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Slowing Warhammer",
 	[
@@ -22,12 +21,7 @@ module.exports = new GearTemplate("Slowing Warhammer",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure)
-		const addedSlow = addModifier([target], slow).length > 0;
-		if (addedSlow) {
-			resultLines.push(`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Slow")}.`);
-		}
-		return resultLines;
+		return dealDamage([target], user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier([target], slow)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Warhammer", "Unstoppable Warhammer")

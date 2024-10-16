@@ -1,10 +1,10 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, InteractionContextType } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 
 const mainId = "invite";
-module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", PermissionFlagsBits.SendMessagesInThreads, false, false, 3000,
+module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", PermissionFlagsBits.SendMessagesInThreads, false, [InteractionContextType.Guild], 3000,
 	/** Invite a friend to an adventure */
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);

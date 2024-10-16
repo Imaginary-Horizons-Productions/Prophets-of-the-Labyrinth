@@ -1,6 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Goad Futility",
 	[
@@ -15,7 +14,8 @@ module.exports = new GearTemplate("Goad Futility",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		addModifier([user], oblivious);
+		const resultLines = [];
+		const receipts = addModifier([user], oblivious);
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -24,19 +24,14 @@ module.exports = new GearTemplate("Goad Futility",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
-		const [userName, targetName] = getNames([user, target], adventure);
-		const sentences = [`${userName} gains ${getApplicationEmojiMarkdown("Oblivious")}.`];
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			sentences.push(`${targetName} falls for the provocation.`);
+			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		if (isCrit) {
-			const addedUnlucky = addModifier([target], unlucky).length > 0;
-			if (addedUnlucky) {
-				sentences.push(`${targetName} gains ${getApplicationEmojiMarkdown("Unlucky")}.`);
-			}
+			receipts.push(...addModifier([target], unlucky));
 		}
-		return sentences;
+		return generateModifierResultLines(receipts).concat(resultLines);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Flanking Goad Futility", "Poised Goad Futility", "Shattering Goad Futility")

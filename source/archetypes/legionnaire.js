@@ -1,5 +1,4 @@
 const { ArchetypeTemplate } = require("../classes");
-const { getNames } = require("../util/combatantUtil");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Legionnaire",
@@ -15,15 +14,14 @@ module.exports = new ArchetypeTemplate("Legionnaire",
 	["Shortsword", "Scutum"],
 	(embed, adventure) => {
 		const eligibleCombatants = adventure.room.enemies.filter(combatant => combatant.hp > 0).concat(adventure.delvers);
-		const combatantNames = getNames(eligibleCombatants, adventure);
-		eligibleCombatants.forEach((combatant, index) => {
+		eligibleCombatants.forEach(combatant => {
 			const individualIndex = adventure.getCombatantIndex(combatant);
 			const move = adventure.room.moves.find(move => move.userReference.team === combatant.team && move.userReference.index === individualIndex);
 			let targetNames = null;
 			if (move) {
-				targetNames = getNames(move.targets.map(targetReference => adventure.getCombatant(targetReference)), adventure);
+				targetNames = move.targets.map(targetReference => adventure.getCombatant(targetReference).name);
 			}
-			embed.addFields({ name: combatantNames[index], value: `Targets: ${targetNames === null ? "undecided" : (listifyEN(targetNames, false) || "none")}\nCritical Hit: ${combatant.crit ? "💥" : "🚫"}` });
+			embed.addFields({ name: combatant.name, value: `Targets: ${targetNames === null ? "undecided" : (listifyEN(targetNames, false) || "none")}\nCritical Hit: ${combatant.crit ? "💥" : "🚫"}` });
 		})
 		return embed.setTitle(`Legionnaire Predictions for Round ${adventure.room.round + 1}`);
 	},

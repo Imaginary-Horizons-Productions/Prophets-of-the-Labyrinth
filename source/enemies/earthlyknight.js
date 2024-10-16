@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, removeModifier, changeStagger, getNames } = require("../util/combatantUtil.js");
+const { dealDamage, removeModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil.js");
 const { isBuff } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
@@ -20,7 +20,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 ).addAction({
 	name: "Damping Wallop",
 	element: "Earth",
-	description: `Inflict ${getEmoji("Earth")} damage and remove a buff`,
+	description: `Inflict ${getEmoji("Earth")} damage and remove a random buff`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 75;
@@ -28,17 +28,12 @@ module.exports = new EnemyTemplate("Earthly Knight",
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");
-		let resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
-		const targetNames = getNames(targets, adventure);
-		for (let i = 0; i < targets.length; i++) {
-			const target = targets[i];
+		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
+		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
 			if (targetBuffs.length > 0) {
 				const rolledBuff = targetBuffs[user.roundRns[`Damping Wallop${SAFE_DELIMITER}buffs`][0]];
-				const wasRemoved = removeModifier([target], { name: rolledBuff, stacks: "all" }).length > 0;
-				if (wasRemoved) {
-					resultLines.push(`${targetNames[i]} lost ${rolledBuff}.`);
-				}
+				resultLines.push(...generateModifierResultLines(removeModifier([target], { name: rolledBuff, stacks: "all" })));
 			}
 		}
 		return resultLines;
@@ -58,7 +53,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 			damage *= 2;
 		}
 		changeStagger(targets, 2);
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, getNames(targets), "is", "are", "Staggered.")];
+		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered.")];
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: true,

@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Unlucky Ice Bolt",
 	[
@@ -20,16 +18,7 @@ module.exports = new GearTemplate("Unlucky Ice Bolt",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const slowedTargets = addModifier(targets, slow);
-		if (slowedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(slowedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`));
-		}
-		const unluckyTargets = addModifier(targets, unlucky);
-		if (unluckyTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(unluckyTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Unlucky")}.`));
-		}
-		return resultLines;
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow).concat(addModifier(targets, unlucky)))));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Awesome Ice Bolt", "Distracting Ice Bolt")

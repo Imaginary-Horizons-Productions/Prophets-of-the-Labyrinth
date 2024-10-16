@@ -1,7 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier, getNames } = require("../util/combatantUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
+const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Glowing Potion",
 	"Grants the user 3 @e{Light Absorb}",
@@ -10,11 +9,6 @@ module.exports = new ItemTemplate("Glowing Potion",
 	selectSelf,
 	false,
 	(targets, user, isCrit, adventure) => {
-		const addedAbsorb = addModifier([user], { name: "Light Absorb", stacks: 3 }).length > 0;
-		if (addedAbsorb) {
-			return [`${getNames([user], adventure)[0]} gains ${getApplicationEmojiMarkdown("Light Absorb")}.`];
-		} else {
-			return [];
-		}
+		return generateModifierResultLines(addModifier([user], { name: "Light Absorb", stacks: 3 }));
 	}
 );

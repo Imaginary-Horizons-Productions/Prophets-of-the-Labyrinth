@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing War Cry",
@@ -15,16 +14,15 @@ module.exports = new GearTemplate("Slowing War Cry",
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
-			targetSet.add(getNames([initialTarget], adventure)[0]);
+			targetSet.add(initialTarget.name);
 			targetArray.push(initialTarget);
 		}
-		adventure.room.enemies.forEach(enemy => {
-			const enemyName = getNames([enemy], adventure)[0];
-			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemyName)) {
-				targetSet.add(enemyName);
+		for (const enemy of adventure.room.enemies) {
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.name)) {
+				targetSet.add(enemy.name);
 				targetArray.push(enemy);
 			}
-		})
+		}
 
 		const { element, modifiers: [slow], stagger, bonus } = module.exports;
 		let pendingStaggerStacks = stagger;
@@ -34,16 +32,8 @@ module.exports = new GearTemplate("Slowing War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
-		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
-		const slowedTargets = [];
 		changeStagger(targetArray, pendingStaggerStacks);
-		addModifier(targetArray, slow).forEach((addedSlow, index) => {
-			if (addedSlow) {
-				slowedTargets.push(getNames([targetArray[index]], adventure)[0]);
-			}
-		})
-		resultLines.push(joinAsStatement(false, slowedTargets, "gains", "gain", `${getApplicationEmojiMarkdown("Slow")}.`));
-		return resultLines;
+		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered."), ...generateModifierResultLines(combineModifierReceipts(addModifier(targetArray, slow))) ];
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Tormenting War Cry")

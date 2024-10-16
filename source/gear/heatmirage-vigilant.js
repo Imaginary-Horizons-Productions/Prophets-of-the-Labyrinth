@@ -1,6 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
+const { changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vigilant Heat Mirage",
 	[
@@ -19,20 +18,8 @@ module.exports = new GearTemplate("Vigilant Heat Mirage",
 		if (isCrit) {
 			pendingEvade.stacks *= critMultiplier;
 		}
-		const resultLines = [];
-		const [userName, targetName] = getNames([user, target], adventure);
-		const userResults = [];
-		const addedEvade = addModifier([user], pendingEvade).length > 0;
-		if (addedEvade) {
-			userResults.push(getApplicationEmojiMarkdown("Evade"));
-		}
-		const addedVigilance = addModifier([user], vigilance).length > 0;
-		if (addedVigilance) {
-			userResults.push(getApplicationEmojiMarkdown("Vigilance"));
-		}
-		if (userResults.length > 0) {
-			resultLines.push(`${userName} gains ${userResults.join("")}.`);
-		}
+		const receipts = addModifier([user], pendingEvade).concat(addModifier([user], vigilance));
+		const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -43,7 +30,7 @@ module.exports = new GearTemplate("Vigilant Heat Mirage",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultLines.push(`${targetName} falls for the provocation.`);
+			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		return resultLines;
 	}

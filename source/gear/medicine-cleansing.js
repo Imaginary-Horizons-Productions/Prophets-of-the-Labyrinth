@@ -1,9 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Cleansing Medicine",
 	[
@@ -22,25 +20,16 @@ module.exports = new GearTemplate("Cleansing Medicine",
 		if (isCrit) {
 			pendingRegen.stacks *= critMultiplier;
 		}
-		const regenedTargets = addModifier(targets, pendingRegen);
-		const resultLines = [];
-		if (regenedTargets.length > 0) {
-			resultLines.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
-		}
-		const targetNames = getNames(targets, adventure);
-		for (let i = 0; i < targets.length; i++) {
-			const target = targets[i];
+		const receipts = addModifier(targets, pendingRegen);
+		for (const target of targets) {
 			const debuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (debuffs.length > 0) {
 				const rolledDebuff = debuffs[user.roundRns[`Cleansing Medicine${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
-				const debuffWasRemoved = removeModifier([target], { name: rolledDebuff, stacks: "all" }).length > 0;
-				if (debuffWasRemoved) {
-					resultLines.push(`${targetNames[i]} is cured of ${rolledDebuff}.`);
-				}
+				receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 			}
 		}
 
-		return resultLines;
+		return generateModifierResultLines(receipts);
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Bouncing Medicine", "Soothing Medicine")

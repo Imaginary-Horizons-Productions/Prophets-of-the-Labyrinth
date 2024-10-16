@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
+const { payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Blood Aegis",
 	[
@@ -34,7 +34,7 @@ module.exports = new GearTemplate("Blood Aegis",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultLines.push(`${getNames([target], adventure)[0]} falls for the provocation.`);
+			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		return resultLines;
 	}

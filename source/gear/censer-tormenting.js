@@ -1,7 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
-const { dealDamage, addModifier, changeStagger, getNames } = require("../util/combatantUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Tormenting Censer",
 	[
@@ -14,13 +13,6 @@ module.exports = new GearTemplate("Tormenting Censer",
 	([target], user, isCrit, adventure) => {
 		const { element, modifiers: [slow], damage, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		const debuffs = [];
-		for (const modifier in target.modifiers) {
-			if (isDebuff(modifier)) {
-				addModifier([target], { name: modifier, stacks: 1 });
-				debuffs.push(getApplicationEmojiMarkdown(modifier));
-			}
-		}
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
@@ -28,11 +20,17 @@ module.exports = new GearTemplate("Tormenting Censer",
 			pendingDamage += bonus;
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
-		if (isCrit && target.hp > 0) {
-			const addedSlow = addModifier([target], slow).length > 0;
-			if (addedSlow) {
-				resultLines.push(`${getNames([target], adventure)[0]} gains ${getApplicationEmojiMarkdown("Slow")}${debuffs.join("")}.`);
+		if (target.hp > 0) {
+			const receipts = [];
+			if (isCrit) {
+				receipts.push(...addModifier([target], slow));
 			}
+			for (const modifier in target.modifiers) {
+				if (isDebuff(modifier)) {
+					receipts.push(...addModifier([target], { name: modifier, stacks: 1 }));
+				}
+			}
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(receipts)));
 		}
 		return resultLines;
 	}

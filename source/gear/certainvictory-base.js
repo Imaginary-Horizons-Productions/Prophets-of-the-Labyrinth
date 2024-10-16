@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, payHP, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Certain Victory",
 	[
@@ -18,13 +18,10 @@ module.exports = new GearTemplate("Certain Victory",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
-		const addedPowerUp = addModifier([user], powerUp).length > 0;
-		if (addedPowerUp) {
-			resultLines.push(`${getNames([user], adventure)[0]} is Powered Up.`);
-		}
-		resultLines.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
-		return resultLines;
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(
+			generateModifierResultLines(addModifier([user], powerUp)),
+			payHP(user, user.getModifierStacks("Power Up"), adventure)
+		);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Hunter's Certain Victory", "Lethal Certain Victory", "Reckless Certain Victory")

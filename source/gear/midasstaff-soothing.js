@@ -1,6 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Soothing Midas Staff",
 	[
@@ -23,20 +22,8 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const addedCurse = addModifier([target], pendingCurse).length > 0;
-		const addedModifiers = [];
-		if (addedCurse) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Curse of Midas"));
-		}
-		const addedRegen = addModifier([target], regen).length > 0;
-		if (addedRegen) {
-			addedModifiers.push(getApplicationEmojiMarkdown("Regen"));
-		}
-		if (addedModifiers.length > 0) {
-			return [`${getNames([target], adventure)[0]} gains ${addedModifiers.join("")}.`];
-		} else {
-			return [];
-		}
+		const receipts = addModifier([target], pendingCurse).concat(addModifier([target], regen));
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Accelerating Midas Staff", "Discounted Midas Staff")

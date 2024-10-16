@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Floating Mist Punch",
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Floating Mist Punch",
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
 			changeStagger(stillLivingTargets, user.getModifierStacks("Floating Mist Stance") * 3);
-			resultLines.push(joinAsStatement(false, getNames(stillLivingTargets, adventure), "was", "were", "Staggered."));
+			resultLines.push(joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered."));
 		}
 		return resultLines;
 	}

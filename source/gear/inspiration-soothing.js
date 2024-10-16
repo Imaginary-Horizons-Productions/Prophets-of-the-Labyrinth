@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Soothing Inspiration",
 	[
@@ -20,16 +18,7 @@ module.exports = new GearTemplate("Soothing Inspiration",
 		if (isCrit) {
 			pendingPowerUp.stacks += bonus;
 		}
-		const sentences = [];
-		const poweredUpTargets = addModifier(targets, pendingPowerUp);
-		if (poweredUpTargets.length > 0) {
-			sentences.push(joinAsStatement(false, getNames(poweredUpTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}.`));
-		}
-		const regenedTargets = addModifier(targets, regen);
-		if (regenedTargets.length > 0) {
-			sentences.push(joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Regen")}.`));
-		}
-		return sentences;
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPowerUp).concat(addModifier(targets, regen))));
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Inspiration", "Sweeping Inspiration")

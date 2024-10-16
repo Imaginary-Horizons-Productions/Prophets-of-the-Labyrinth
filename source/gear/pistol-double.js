@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
+const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Double Pistol",
 	[
@@ -27,10 +25,7 @@ module.exports = new GearTemplate("Double Pistol",
 			for (let i = 0; i < 2; i++) {
 				selectedAllies.push(allyTeam[user.roundRns[`Double Pistol${SAFE_DELIMITER}allies`][i] % allyTeam.length]);
 			}
-			const poweredUpAllies = addModifier(selectedAllies, powerUp);
-			if (poweredUpAllies.length > 0) {
-				resultLines.push(joinAsStatement(false, getNames(poweredUpAllies, adventure), "gains", "gain", `${getApplicationEmojiMarkdown("Power Up")}!`));
-			}
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(selectedAllies, powerUp))));
 		}
 		return resultLines;
 	}

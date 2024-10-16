@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, changeStagger, getNames } = require("../util/combatantUtil.js");
+const { dealDamage, changeStagger } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectAllOtherCombatants } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 
@@ -40,7 +40,7 @@ module.exports = new EnemyTemplate("Asteroid",
 		}
 		user.hp = 0;
 		changeStagger(targets, "elementMatchFoe");
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), `${getNames([user], adventure)[0]} is downed.`];
+		return [...dealDamage(targets, user, damage, false, user.element, adventure), `${user.name} is downed.`];
 	},
 	selector: selectAllOtherCombatants,
 	needsLivingTargets: true,

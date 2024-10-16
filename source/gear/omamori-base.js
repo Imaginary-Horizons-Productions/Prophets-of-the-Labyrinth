@@ -1,7 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { changeStagger, addProtection, getNames, addModifier } = require('../util/combatantUtil');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
-const { listifyEN } = require('../util/textUtil');
+const { changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Omamori",
 	[
@@ -21,12 +19,7 @@ module.exports = new GearTemplate("Omamori",
 			pendingLucky.stacks *= critMultiplier;
 		}
 		addProtection([user], protection);
-		const gainedEffects = ["protection"];
-		const addedLucky = addModifier([user], pendingLucky).length > 0;
-		if (addedLucky) {
-			gainedEffects.push(getApplicationEmojiMarkdown("Lucky"));
-		}
-		return [`${getNames([user], adventure)[0]} gains ${listifyEN(gainedEffects)}.`];
+		return [`${user.name} gains protection.`].concat(generateModifierResultLines(addModifier([user], pendingLucky)));
 	}
 ).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Centering Omamori", "Cleansing Omamori", "Devoted Omamori")
