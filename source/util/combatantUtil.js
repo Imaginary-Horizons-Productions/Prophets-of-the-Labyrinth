@@ -5,6 +5,7 @@ const { getWeaknesses, getResistances, elementsList, getEmoji } = require("./ele
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 const { listifyEN } = require("./textUtil.js");
 const { areSetContentsCongruent } = require("./mathUtil.js");
+const { ZERO_WIDTH_WHITESPACE } = require("../constants");
 
 /**
  * @param {Combatant} target
@@ -15,10 +16,10 @@ function downedCheck(target, adventure) {
 		if (target.team === "delver") {
 			target.hp = target.getMaxHP();
 			adventure.lives = Math.max(adventure.lives - 1, 0);
-			return ` ${bold(`${target.name} was downed ${adventure.lives > 0 ? " and revived" : ""}.`)}`;
+			return ` ${bold(`${target.name} was downed ${adventure.lives > 0 ? " and revived" : ""}.`)}${ZERO_WIDTH_WHITESPACE}`; // need ZWW for md format nesting
 		} else {
 			target.hp = 0;
-			return ` ${bold(`${target.name} was downed`)}.`;
+			return ` ${bold(`${target.name} was downed`)}.${ZERO_WIDTH_WHITESPACE}`;
 		}
 	} else {
 		return "";
