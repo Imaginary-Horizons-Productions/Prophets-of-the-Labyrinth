@@ -124,16 +124,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 							newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", i));
 						}
 					} else if (type.startsWith("random")) {
-						const targetCount = Number(type.split(SAFE_DELIMITER)[1]);
-						let poolSize = 0;
+						const targetCount = Number(type.split(SAFE_DELIMITER)[1]) + adventure.getArtifactCount("Loaded Dice");
 						if (team === "ally") {
-							poolSize = adventure.delvers.length;
 							targetText = `${targetCount} random all${targetCount === 1 ? "y" : "ies"}`;
 						} else if (team === "foe") {
-							poolSize = adventure.room.enemies.length;
 							targetText = `${targetCount} random enem${targetCount === 1 ? "y" : "ies"}`;
 						}
-						const { [`${moveName}_allies`]: cachedAllies, [`${moveName}_foes`]: cachedFoes } = cacheRoundRn(adventure, delver, moveName, getGearProperty(moveName, "rnConfig"))
+						const { [`${moveName}${SAFE_DELIMITER}allies`]: cachedAllies, [`${moveName}${SAFE_DELIMITER}foes`]: cachedFoes } = cacheRoundRn(adventure, delver, moveName, getGearProperty(moveName, "rnConfig"));
 						if (cachedAllies) {
 							for (let i = 0; i < cachedAllies.length; i++) {
 								newMove.addTarget(new CombatantReference("delver", cachedAllies[i]));

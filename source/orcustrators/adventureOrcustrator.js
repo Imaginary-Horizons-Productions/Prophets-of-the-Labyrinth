@@ -305,64 +305,92 @@ const rnsConcerningTargets = new Set(["weaknesses", "buffs", "debuffs"]);
 
 /**
  * Cache the random result of a move, onto the roundRns of a combatant
- * @param {Adventure} adventure 
- * @param {Combatant} user 
- * @param {"foes" | "allies" | "elements" | string} moveName 
- * @param {Record<string, number|Record<string,number>>} config 
+ * @param {Adventure} adventure
+ * @param {Combatant} user
+ * @param {"foes" | "allies" | "elements" | string} moveName
+ * @param {Record<string, number|Record<string,number>>} config
  */
 function cacheRoundRn(adventure, user, moveName, config) {
 	for (const key in config) {
 		const roundRnKeyname = `${moveName}${SAFE_DELIMITER}${key}`;
-		switch (key) {
-			case "foes":
-				const enemyPoolSize = user.team !== "delver" ? adventure.delvers.length : adventure.room.enemies.filter(enemy => enemy.hp > 0).length;
-				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(enemyPoolSize, "battle"))
-				break;
-			case "allies":
-				const allyPoolSize = user.team === "delver" ? adventure.delvers.length : adventure.room.enemies.filter(enemy => enemy.hp > 0).length;
-				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(allyPoolSize, "battle"))
-				break;
-			case "elements":
-			case "elementsNoUntyped":
-			case "weaknesses":
-				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(7, "battle"))
-				break;
-			// assuming 256 (2 rn table digits) is a large enough bound on de/buffs
-			case "buffs":
-			case "debuffs":
-				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(256, "battle"))
-				break;
-			case "progress":
-				user.roundRns[roundRnKeyname] ??= [config.progress.base + user.crit ? config.progress.crit : 0 + adventure.generateRandomNumber(config.progress.random + 1, "battle")]  // reminder: user.crit is hacky
-				break;
-			case "herbs":
-				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(rollableHerbs.length, "battle"))
-				break;
-			case "potions":
-				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(rollablePotions.length, "battle"))
-				break;
-			default:
-				const keyAsInt = parseInt(key);
-				if (keyAsInt !== NaN) {
-					user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(keyAsInt, "battle"))
-				}
-				else {
-					console.error(`Invalid config key ${key} for cacheRoundRn`);
-					user.roundRns[roundRnKeyname] ??= [];
-				}
+		if (!(roundRnKeyname in user.roundRns)) {
+			let rnCount = config[key];
+			switch (key) {
+				case "foes":
+					if (user.team === "delver") {
+						rnCount += adventure.getArtifactCount("Loaded Dice");
+						const livingEnemyIndices = [];
+						adventure.room.enemies.forEach((enemy, i) => {
+							if (enemy.hp > 0) {
+								livingEnemyIndices.push(i);
+							}
+						})
+						user.roundRns[roundRnKeyname] = [];
+						for (let i = 0; i < rnCount; i++) {
+							user.roundRns[roundRnKeyname].push(livingEnemyIndices[adventure.generateRandomNumber(livingEnemyIndices.length, "battle")]);
+						}
+					} else {
+						user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(adventure.delvers.length, "battle"))
+					}
+					break;
+				case "allies":
+					if (user.team === "delver") {
+						rnCount += adventure.getArtifactCount("Loaded Dice");
+						user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(adventure.delvers.length, "battle"))
+					} else {
+						const livingEnemyIndices = [];
+						adventure.room.enemies.forEach((enemy, i) => {
+							if (enemy.hp > 0) {
+								livingEnemyIndices.push(i);
+							}
+						})
+						user.roundRns[roundRnKeyname] = [];
+						for (let i = 0; i < rnCount; i++) {
+							user.roundRns[roundRnKeyname].push(livingEnemyIndices[adventure.generateRandomNumber(livingEnemyIndices.length, "battle")]);
+						}
+					}
+					break;
+				case "elements":
+				case "elementsNoUntyped":
+				case "weaknesses":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(7, "battle"))
+					break;
+				// assuming 256 (2 rn table digits) is a large enough bound on de/buffs
+				case "buffs":
+				case "debuffs":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(256, "battle"))
+					break;
+				case "progress":
+					user.roundRns[roundRnKeyname] = [config.progress.base + user.crit ? config.progress.crit : 0 + adventure.generateRandomNumber(config.progress.random + 1, "battle")]  // reminder: user.crit is hacky
+					break;
+				case "herbs":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(rollableHerbs.length, "battle"))
+					break;
+				case "potions":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(rollablePotions.length, "battle"))
+					break;
+				default:
+					const keyAsInt = parseInt(key);
+					if (keyAsInt !== NaN) {
+						user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(keyAsInt, "battle"))
+					}
+					else {
+						console.error(`Invalid config key ${key} for cacheRoundRn`);
+						user.roundRns[roundRnKeyname] = [];
+					}
+			}
 		}
 	}
 	return user.roundRns;
 }
 
 /**
- * Given a target (or lackthereof) for a random-concerned-move and user, return a predicted outcome. 
- * @param {Adventure} adventure 
- * @param {Combatant} user 
- * @param {Combatant} target 
- * @param {string} moveName 
- * @param {"foes" | "allies" | "elements" | string} key 
- * @returns {string}
+ * Given a target (or lackthereof) for a random-concerned-move and user, return a predicted outcome.
+ * @param {Adventure} adventure
+ * @param {Combatant} user
+ * @param {Combatant} target
+ * @param {string} moveName
+ * @param {"foes" | "allies" | "elements" | string} key
  */
 function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 	const roundRnKeyname = `${moveName}${SAFE_DELIMITER}${key}`;
@@ -389,10 +417,9 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 		case "debuffs":
 			targetModifiers ??= Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			let pendingRemoves = user.roundRns[roundRnKeyname].length;
-			if (targetModifiers.length <= pendingRemoves) {
-				return null;
+			if (targetModifiers.length > pendingRemoves) {
+				return predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers);
 			}
-			return predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers);
 		case "progress":
 			let pendingProgress = user.getModifierStacks("Progress") + user.roundRns[roundRnKeyname][0];
 			return `The Elkemist ${pendingProgress > 100 ? "will" : "won't"} reach an epiphany this round.`;
@@ -403,12 +430,12 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 		default:
 			console.error(`Invalid config key ${key} for predictRoundRnTargeted`);
 	}
-	return "";
+	return null;
 }
 
 /**
- * Precalculate outcomes of current enemy moves and possible delver move-choices (against possible targets), and return array of possible predict-texts 
- * @param {Adventure} adventure 
+ * Precalculate outcomes of current enemy moves and possible delver move-choices (against possible targets), and return array of possible predict-texts
+ * @param {Adventure} adventure
  */
 function predictRoundRnOutcomes(adventure) {
 	let outcomes = [];
@@ -487,12 +514,12 @@ function predictRoundRnOutcomes(adventure) {
 }
 
 /**
- * Given a move and delver BUT NOT THE TARGET for a random-concerned-move that depends on targets, return a predicted outcome. 
- * @param {Adventure} adventure 
- * @param {Combatant} user 
- * @param {"foes" | "allies" | "elements" | string} targetingTags 
- * @param {"foes" | "allies" | "elements" | string} moveName 
- * @param {Record<string, number>} config 
+ * Given a move and delver BUT NOT THE TARGET for a random-concerned-move that depends on targets, return a predicted outcome.
+ * @param {Adventure} adventure
+ * @param {Combatant} user
+ * @param {"foes" | "allies" | "elements" | string} targetingTags
+ * @param {"foes" | "allies" | "elements" | string} moveName
+ * @param {Record<string, number>} config
  * @returns {string[]}
  */
 function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName, key) {
@@ -530,12 +557,12 @@ function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName,
 
 /**
  * Simulate the (consecutive) removal of modifiers by the indices indicated by the roundRnKey
- * @param {Combatant} target 
- * @param {Combatant} user 
- * @param {string} moveName 
- * @param {string} roundRnKeyname 
- * @param {boolean} isBuffs 
- * @returns 
+ * @param {Combatant} target
+ * @param {Combatant} user
+ * @param {string} moveName
+ * @param {string} roundRnKeyname
+ * @param {boolean} isBuffs
+ * @returns
  */
 function predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers) {
 	let popped = [];
@@ -586,7 +613,9 @@ function newRound(adventure, thread, lastRoundText) {
 					// (pre-/) roll for delver gear rn's for this round
 					combatant.gear.forEach(gear => {
 						let rnConfig = getGearProperty(gear.name, "rnConfig");
-						if (rnConfig) { cacheRoundRn(adventure, combatant, gear.name, rnConfig) }
+						if (rnConfig) {
+							cacheRoundRn(adventure, combatant, gear.name, rnConfig);
+						};
 					})
 					if ("Panacea" in adventure.items) {
 						cacheRoundRn(adventure, combatant, "Panacea", { debuffs: 2 })
@@ -660,10 +689,12 @@ function newRound(adventure, thread, lastRoundText) {
 						let counterpart = adventure.getCombatant(new CombatantReference("delver", i))
 						counterpart.gear.forEach(gear => {
 							let rnConfig = getGearProperty(gear.name, "rnConfig");
-							if (rnConfig) { cacheRoundRn(adventure, combatant, gear.name, rnConfig) }
+							if (rnConfig) {
+								cacheRoundRn(adventure, combatant, gear.name, rnConfig);
+							}
 						})
 						if ("Panacea" in adventure.items) {
-							cacheRoundRn(adventure, combatant, "Panacea", { debuffs: 2 })
+							cacheRoundRn(adventure, combatant, "Panacea", { debuffs: 2 });
 						}
 					}
 				}
@@ -731,9 +762,17 @@ function resolveMove(move, adventure) {
 				break;
 			case "gear":
 				effect = getGearProperty(move.name, "effect");
-				needsLivingTargets = getGearProperty(move.name, "targetingTags").needsLivingTargets;
-				if (move.userReference.team === "delver" && adventure.getArtifactCount("Crystal Shard") > 0 && getGearProperty(move.name, "category") === "Spell") {
-					adventure.updateArtifactStat("Crystal Shard", "Spells Cast", 1);
+				const targetingTags = getGearProperty(move.name, "targetingTags");
+				needsLivingTargets = targetingTags.needsLivingTargets;
+				if (move.userReference.team === "delver") {
+					if (adventure.getArtifactCount("Crystal Shard") > 0 && getGearProperty(move.name, "category") === "Spell") {
+						adventure.updateArtifactStat("Crystal Shard", "Spells Cast", 1);
+					}
+
+					const loadedDiceCount = adventure.getArtifactCount("Loaded Dice");
+					if (loadedDiceCount > 0 && targetingTags.type.startsWith("random")) {
+						adventure.updateArtifactStat("Loaded Dice", "Extra Targets", loadedDiceCount);
+					}
 				}
 				break;
 			case "item":
