@@ -3,7 +3,7 @@ const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getArtifact, artifactNames } = require('../artifacts/_artifactDictionary');
-const { RN_TABLE_BASE, SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
+const { RN_TABLE_BASE, SKIP_INTERACTION_HANDLING, SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require('../constants');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
 
 const mainId = "startingartifacts";
@@ -50,14 +50,19 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			start = (start + 1) % adventure.rnTable.length;
 		}
 
+		const artifactSelect = new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${SAFE_DELIMITER}add`)
+			.setPlaceholder("Select an artifact...");
+		if (options.length > 0) {
+			artifactSelect.addOptions(options);
+		} else {
+			artifactSelect.addOptions(EMPTY_SELECT_OPTION_SET)
+				.setDisabled(true);
+		}
+
 		interaction.reply({
 			content: `You can bring 1 of the following artifacts on this adventure (if you've collected that artifact from a previous adventure):${artifactBulletList}\nEach player will have a different set of artifacts to select from.`,
 			components: [
-				new ActionRowBuilder().addComponents(
-					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${SAFE_DELIMITER}add`)
-						.setPlaceholder("Select an artifact...")
-						.addOptions(options)
-				),
+				new ActionRowBuilder().addComponents(artifactSelect),
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${SAFE_DELIMITER}clear`)
 						.setStyle(ButtonStyle.Danger)

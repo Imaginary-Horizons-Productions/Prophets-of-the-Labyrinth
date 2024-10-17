@@ -2,7 +2,7 @@ const fs = require("fs");
 const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET } = require("../constants");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
@@ -384,7 +384,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 	} else {
 		embed.addFields(gearToEmbedField("Punch", Infinity, delver));
 	}
-	for (let index = 0; index < gearCapacity; index++) {
+	for (let index = 0; index < Math.min(Math.max(delver.gear.length, gearCapacity), MAX_EMBED_FIELD_COUNT); index++) {
 		if (delver.gear[index]) {
 			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability, delver));
 		} else {

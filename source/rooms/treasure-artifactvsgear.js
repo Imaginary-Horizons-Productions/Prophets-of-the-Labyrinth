@@ -45,7 +45,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 				embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
 				components: [
 					new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}treasure`)
+						new StringSelectMenuBuilder().setCustomId("treasure")
 							.setPlaceholder(hasOptions ? "Pick 1 treasure to take..." : "No treasure")
 							.setOptions(hasOptions ? options : EMPTY_SELECT_OPTION_SET)
 							.setDisabled(!hasOptions)
@@ -58,7 +58,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 				embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
 				components: [
 					new ActionRowBuilder().addComponents(
-						new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}treasure`)
+						new StringSelectMenuBuilder().setCustomId("treasure")
 							.setPlaceholder(`Picked: ${listifyEN(adventure.room.history["Treasure picked"], false)}`)
 							.setOptions(EMPTY_SELECT_OPTION_SET)
 							.setDisabled(true)
