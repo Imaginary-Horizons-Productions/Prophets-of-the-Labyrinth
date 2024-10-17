@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Corrosive Cauldron Stir",
 		}
 		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (isCrit) {
-			const rolledPotion = rollablePotions[user.roundRns[`Cauldron Stir${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+			const rolledPotion = rollablePotions[user.roundRns[`Corrosive Cauldron Stir${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
