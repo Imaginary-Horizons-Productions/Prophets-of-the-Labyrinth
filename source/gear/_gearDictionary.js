@@ -334,6 +334,7 @@ function injectGearStats(text, gearName, elementOverride) {
 		.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
 		.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
 		.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
+		.replace(/@{power}/g, getGearProperty(gearName, "power"))
 		.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
 		.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
 		.replace(/@{poise}/g, getGearProperty(gearName, "poise"));

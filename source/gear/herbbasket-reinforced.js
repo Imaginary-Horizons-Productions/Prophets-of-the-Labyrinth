@@ -1,13 +1,8 @@
 const { GearTemplate } = require('../classes');
 const { changeStagger, addProtection } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
-
-const rollableHerbs = [
-	"Panacea",
-	"Quick Pepper",
-	"Regen Root",
-	"Strength Spinach"
-];
+const { SAFE_DELIMITER } = require('../constants');
+const { rollableHerbs } = require('../shared/herbs');
 
 module.exports = new GearTemplate("Reinforced Herb Basket",
 	[
@@ -27,7 +22,7 @@ module.exports = new GearTemplate("Reinforced Herb Basket",
 			changeStagger([user], "elementMatchAlly");
 		}
 		addProtection([user], protection);
-		const randomHerb = rollableHerbs[adventure.generateRandomNumber(rollableHerbs.length, "battle")];
+		const randomHerb = rollableHerbs[user.roundRns[`Reinforced Herb Basket${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
 		if (isCrit) {
 			return [`${user.name} gains protection and gathers a double-batch of ${randomHerb}.`];
@@ -40,4 +35,5 @@ module.exports = new GearTemplate("Reinforced Herb Basket",
 	.setBonus(1) // Herb count
 	.setProtection(75)
 	.setDurability(15)
-	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) });
+	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
+	.setRnConfig({ herbs: 1 });

@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { SAFE_DELIMITER } = require('../constants');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
@@ -23,7 +24,7 @@ module.exports = new GearTemplate("Cleansing Medicine",
 		for (const target of targets) {
 			const debuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (debuffs.length > 0) {
-				const rolledDebuff = debuffs[adventure.generateRandomNumber(debuffs.length, "battle")];
+				const rolledDebuff = debuffs[user.roundRns[`Cleansing Medicine${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
 				receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 			}
 		}
@@ -33,4 +34,5 @@ module.exports = new GearTemplate("Cleansing Medicine",
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Bouncing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
-	.setDurability(15);
+	.setDurability(15)
+	.setRnConfig({ debuffs: 1 });

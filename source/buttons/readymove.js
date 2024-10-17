@@ -1,7 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, bold } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
 const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, SKIP_INTERACTION_HANDLING } = require('../constants');
-const { getAdventure, checkNextRound, endRound, setAdventure } = require('../orcustrators/adventureOrcustrator');
+const { getAdventure, checkNextRound, endRound, setAdventure, cacheRoundRn } = require('../orcustrators/adventureOrcustrator');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getEmoji, getColor } = require('../util/elementUtil');
@@ -133,8 +133,16 @@ module.exports = new ButtonWrapper(mainId, 3000,
 							poolSize = adventure.room.enemies.length;
 							targetText = `${targetCount} random enem${targetCount === 1 ? "y" : "ies"}`;
 						}
-						for (let i = 0; i < targetCount; i++) {
-							newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", adventure.generateRandomNumber(poolSize, "battle")));
+						const { [`${moveName}_allies`]: cachedAllies, [`${moveName}_foes`]: cachedFoes } = cacheRoundRn(adventure, delver, moveName, getGearProperty(moveName, "rnConfig"))
+						if (cachedAllies) {
+							for (let i = 0; i < cachedAllies.length; i++) {
+								newMove.addTarget(new CombatantReference("delver", cachedAllies[i]));
+							}
+						}
+						if (cachedFoes) {
+							for (let i = 0; i < cachedFoes.length; i++) {
+								newMove.addTarget(new CombatantReference("enemy", cachedFoes[i]));
+							}
 						}
 					} else if (type === "self") {
 						newMove.addTarget(new CombatantReference("delver", userIndex));

@@ -30,4 +30,5 @@ module.exports = new GearTemplate("Midas's Firecracker",
 	.setSidegrades("Double Firecracker", "Toxic Firecracker")
 	.setModifiers({ name: "Curse of Midas", stacks: 1 })
 	.setDurability(15)
-	.setDamage(5);
+	.setDamage(5)
+	.setRnConfig({ "foes": 3 });

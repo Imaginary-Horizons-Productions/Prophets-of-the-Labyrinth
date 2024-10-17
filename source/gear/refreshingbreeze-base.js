@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
+const { SAFE_DELIMITER } = require('../constants.js');
 
 module.exports = new GearTemplate("Refreshing Breeze",
 	[
@@ -21,7 +22,7 @@ module.exports = new GearTemplate("Refreshing Breeze",
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
 				for (let i = 0; i < debuffsToRemove; i++) {
-					const debuffIndex = adventure.generateRandomNumber(targetDebuffs.length, "battle");
+					const debuffIndex = user.roundRns[`Refreshing Breeze${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 					const rolledDebuff = targetDebuffs[debuffIndex];
 					const [removalReceipt] = removeModifier([target], { name: rolledDebuff, stacks: "all" });
 					receipts.push(removalReceipt);
@@ -35,4 +36,5 @@ module.exports = new GearTemplate("Refreshing Breeze",
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Accelerating Refereshing Breeze", "Supportive Refreshing Breeze", "Swift Refreshing Breeze")
-	.setDurability(15);
+	.setDurability(15)
+	.setRnConfig({ debuffs: 1 });

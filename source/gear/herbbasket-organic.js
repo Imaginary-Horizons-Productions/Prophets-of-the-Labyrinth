@@ -2,13 +2,8 @@ const { GearTemplate } = require('../classes');
 const { changeStagger } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 const { organicPassive } = require('./descriptions/passives');
-
-const rollableHerbs = [
-	"Panacea",
-	"Quick Pepper",
-	"Regen Root",
-	"Strength Spinach"
-];
+const { SAFE_DELIMITER } = require('../constants');
+const { rollableHerbs } = require('../shared/herbs');
 
 module.exports = new GearTemplate("Organic Herb Basket",
 	[
@@ -28,7 +23,7 @@ module.exports = new GearTemplate("Organic Herb Basket",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		const randomHerb = rollableHerbs[adventure.generateRandomNumber(rollableHerbs.length, "battle")];
+		const randomHerb = rollableHerbs[user.roundRns[`Organic Herb Basket${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
 		if (isCrit) {
 			return [`${user.name} gathers a double-batch of ${randomHerb}.`];
@@ -40,4 +35,5 @@ module.exports = new GearTemplate("Organic Herb Basket",
 	.setSidegrades("Reinforced Herb Basket", "Urgent Herb Basket")
 	.setBonus(1) // Herb count
 	.setDurability(15)
-	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) });
+	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
+	.setRnConfig({ herbs: 1 });

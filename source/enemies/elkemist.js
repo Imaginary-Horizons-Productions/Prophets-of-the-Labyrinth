@@ -5,6 +5,7 @@ const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/action
 const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
+const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new EnemyTemplate("Elkemist",
 	"Water",
@@ -22,16 +23,11 @@ module.exports = new EnemyTemplate("Elkemist",
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger([user], "elementMatchAlly");
 		const resultLines = [`${user.name} gains protection.`];
-		if (isCrit) {
-			const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: 60 + adventure.generateRandomNumber(46, "battle") });
-			progressCheck(user, wrappedProgressReceipt, resultLines);
-		} else {
-			const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: 45 + adventure.generateRandomNumber(31, "battle") });
-			progressCheck(user, wrappedProgressReceipt, resultLines);
-		}
+		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Toil${SAFE_DELIMITER}progress`][0] });
+		progressCheck(user, wrappedProgressReceipt, resultLines);
 		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (targetDebuffs.length > 0) {
-			const rolledDebuff = targetDebuffs[adventure.generateRandomNumber(targetDebuffs.length, "battle")];
+			const rolledDebuff = targetDebuffs[user.roundRns[`Toil${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length];
 			resultLines.concat(generateModifierResultLines(removeModifier([user], { name: rolledDebuff, stacks: "all" })));
 		}
 		addProtection([user], 100);
@@ -40,7 +36,8 @@ module.exports = new EnemyTemplate("Elkemist",
 	selector: selectSelf,
 	needsLivingTargets: false,
 	next: "random",
-	combatFlavor: "It gathers some materials to fortify its lab."
+	combatFlavor: "It gathers some materials to fortify its lab.",
+	rnConfig: { "debuffs": 1, "progress": { base: 30, crit: 15, random: 15 } }
 }).addAction({
 	name: "Trouble",
 	element: "Water",
@@ -53,14 +50,15 @@ module.exports = new EnemyTemplate("Elkemist",
 		}
 		changeStagger(targets, "elementMatchFoe");
 		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
-		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: 15 + adventure.generateRandomNumber(16, "battle") });
+		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Trouble${SAFE_DELIMITER}progress`][0] });
 		progressCheck(user, wrappedProgressReceipt, resultLines);
 		return resultLines;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
 	next: "random",
-	combatFlavor: "An obstacle to potion progress is identified and mitigated!"
+	combatFlavor: "An obstacle to potion progress is identified and mitigated!",
+	rnConfig: { "progress": { base: 30, crit: 15, random: 15 } }
 }).addAction({
 	name: "Boil",
 	element: "Fire",
@@ -75,17 +73,15 @@ module.exports = new EnemyTemplate("Elkemist",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: "random"
+	next: "random",
 }).addAction({
 	name: "Bubble",
 	element: "Untyped",
 	description: `Converts all foe buffs to @e{Fire Weakness} and gain @e{Progress} per buff removed`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		let progressGained = adventure.generateRandomNumber(16, "battle");
-		if (isCrit) {
-			progressGained += 10;
-		}
+		const resultLines = [];
+		let progressGained = user.roundRns[`Bubble${SAFE_DELIMITER}progress`][0];
 		const removalReceipts = [];
 		for (const target of targets) {
 			for (let modifier in target.modifiers) {
@@ -114,7 +110,8 @@ module.exports = new EnemyTemplate("Elkemist",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: "random"
+	next: "random",
+	rnConfig: { "progress": { base: 0, crit: 15, random: 15 } }
 }).setFlavorText({ name: "Progress", value: `Each time the Elkemist reaches 100 @e{Progress}, it'll gain a large amount of @e{Power Up}. Stun the Elkemist to reduce its @e{Progress}.` });
 
 /**

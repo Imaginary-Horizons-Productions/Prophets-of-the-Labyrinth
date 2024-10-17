@@ -41,7 +41,7 @@ function transformGear(delver, index, oldGearName, newGearName) {
 	if (durabilityDifference > 0) {
 		delver.gear[index].durability += durabilityDifference;
 	}
-	delver.gear.splice(index, 1, new Gear(newGearName, Math.min(upgradeDurability, delver.gear[index].durability), getGearProperty(newGearName, "maxHp"), getGearProperty(newGearName, "maxHp"), getGearProperty(newGearName, "speed"), getGearProperty(newGearName, "critRate"), getGearProperty(newGearName, "poise")));
+	delver.gear.splice(index, 1, new Gear(newGearName, Math.min(upgradeDurability, delver.gear[index].durability), getGearProperty(newGearName, "maxHP"), getGearProperty(newGearName, "power"), getGearProperty(newGearName, "speed"), getGearProperty(newGearName, "critRate"), getGearProperty(newGearName, "poise")));
 }
 
 module.exports = {

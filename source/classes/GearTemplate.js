@@ -56,6 +56,8 @@ class GearTemplate {
 	poise = 0;
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
+	/** @type  {Record<string, number>} */
+	rnConfig;
 
 	/** @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} tagObject */
 	setTargetingTags(tagObject) {
@@ -174,6 +176,12 @@ class GearTemplate {
 	/** @param {import("discord.js").EmbedField} fieldObject */
 	setFlavorText(fieldObject) {
 		this.flavorText = fieldObject;
+		return this;
+	}
+
+	/** @param {Record<string, number|Record<string,number>>} rnConfig */
+	setRnConfig(rnConfig) {
+		this.rnConfig = rnConfig;
 		return this;
 	}
 };

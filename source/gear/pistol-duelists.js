@@ -1,5 +1,6 @@
 const { GearTemplate } = require("../classes");
 const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines } = require("../util/combatantUtil");
+const { SAFE_DELIMITER } = require('../constants.js');
 
 module.exports = new GearTemplate("Duelist's Pistol",
 	[
@@ -27,7 +28,7 @@ module.exports = new GearTemplate("Duelist's Pistol",
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (getCombatantWeaknesses(target).includes(element)) {
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
-			const ally = allyTeam[adventure.generateRandomNumber(allyTeam.length, "battle")];
+			const ally = allyTeam[user.roundRns[`Duelist's Pistol${SAFE_DELIMITER}allies`][0] % allyTeam.length];
 			resultLines.push(...generateModifierResultLines(addModifier([ally], powerUp)));
 		}
 		return resultLines;
@@ -37,4 +38,5 @@ module.exports = new GearTemplate("Duelist's Pistol",
 	.setModifiers({ name: "Power Up", stacks: 30 })
 	.setDurability(15)
 	.setDamage(40)
-	.setBonus(75);
+	.setBonus(75)
+	.setRnConfig({ "allies": 1 });

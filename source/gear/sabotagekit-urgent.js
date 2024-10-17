@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
+const { SAFE_DELIMITER } = require('../constants.js');
 const { addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 
@@ -25,7 +26,7 @@ module.exports = new GearTemplate("Urgent Sabotage Kit",
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 		const weaknessPool = elementsList(ineligibleWeaknesses);
 		if (weaknessPool.length > 0) {
-			pendingWeakness.name = `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`;
+			pendingWeakness.name = `${weaknessPool[user.roundRns[`Urgent Sabotage Kit${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
 			receipts.unshift(...addModifier([target], pendingWeakness));
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts));
@@ -36,4 +37,5 @@ module.exports = new GearTemplate("Urgent Sabotage Kit",
 	.setBonus(2) // Crit Slow and Weakness stacks
 	.setDurability(15)
 	.setPriority(1)
-	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" });
+	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" })
+	.setRnConfig({ "weaknesses": 1 });
