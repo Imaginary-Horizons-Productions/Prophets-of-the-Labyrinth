@@ -9,6 +9,8 @@ class ChallengeTemplate {
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
 	 * @param {number} intensityInput
+	 * @param {boolean} isStartingChallenge
+	 * @param {boolean} isRollableChallenge
 	 */
 	constructor(nameInput, descriptionInput, intensityInput, isStartingChallenge, isRollableChallenge) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
