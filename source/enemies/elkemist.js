@@ -37,7 +37,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	needsLivingTargets: false,
 	next: "random",
 	combatFlavor: "It gathers some materials to fortify its lab.",
-	rnConfig: { "debuff": 1, "progress": { base: 30, crit: 15, random: 15 } }
+	rnConfig: { "debuffs": 1, "progress": { base: 30, crit: 15, random: 15 } }
 }).addAction({
 	name: "Trouble",
 	element: "Water",
@@ -80,6 +80,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	description: `Converts all foe buffs to @e{Fire Weakness} and gain @e{Progress} per buff removed`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
+		const resultLines = [];
 		let progressGained = user.roundRns[`Bubble${SAFE_DELIMITER}progress`][0];
 		const removalReceipts = [];
 		for (const target of targets) {

@@ -1,18 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
-
-const rollablePotions = [
-	"Protection Potion",
-	"Clear Potion",
-	"Earthen Potion",
-	"Explosive Potion",
-	"Fiery Potion",
-	"Glowing Potion",
-	"Health Potion",
-	"Inky Potion",
-	"Watery Potion",
-	"Windy Potion"
-];
+const { SAFE_DELIMITER } = require('../constants');
+const { rollablePotions } = require('../shared/potions');
 
 module.exports = new GearTemplate("Sabotaging Cauldron Stir",
 	[
@@ -30,7 +19,7 @@ module.exports = new GearTemplate("Sabotaging Cauldron Stir",
 		}
 		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (isCrit) {
-			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
+			const rolledPotion = rollablePotions[user.roundRns[`Sabotaging Cauldron Stir${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
@@ -38,7 +27,8 @@ module.exports = new GearTemplate("Sabotaging Cauldron Stir",
 			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 			const weaknessPool = elementsList(ineligibleWeaknesses);
 			if (weaknessPool.length > 0) {
-				resultLines.push(...generateModifierResultLines(addModifier(targets, { name: `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`, stacks: weakness.stacks })));
+				pendingWeakness.name = `${weaknessPool[user.roundRns[`Sabotaging Cauldron Stir${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
+				resultLines.push(...generateModifierResultLines(addModifier(targets, { name: pendingWeakness, stacks: weakness.stacks })));
 			}
 		}
 		return resultLines;
@@ -47,4 +37,5 @@ module.exports = new GearTemplate("Sabotaging Cauldron Stir",
 	.setModifiers({ name: "unparsed random weakness", stacks: 2 })
 	.setSidegrades("Corrosive Cauldron Stir", "Toxic Cauldron Stir")
 	.setDurability(15)
-	.setDamage(40);
+	.setDamage(40)
+	.setRnConfig({ potions: 1, weaknesses: 1});

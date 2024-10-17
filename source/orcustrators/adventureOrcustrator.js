@@ -24,6 +24,8 @@ const { spawnEnemy } = require("../util/roomUtil");
 const { parseExpression, listifyEN } = require("../util/textUtil");
 const { levelUp } = require("../util/delverUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
+const { rollableHerbs } = require("../shared/herbs");
+const { rollablePotions } = require("../shared/potions");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();
@@ -331,7 +333,14 @@ function cacheRoundRn(adventure, user, moveName, config) {
 				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(256, "battle"))
 				break;
 			case "progress":
-				user.roundRns[roundRnKeyname] ??= [config.base + user.crit ? config.crit : 0 + adventure.generateRandomNumber(config.random + 1, "battle")]  // reminder: user.crit is hacky
+				user.roundRns[roundRnKeyname] ??= [config.progress.base + user.crit ? config.progress.crit : 0 + adventure.generateRandomNumber(config.progress.random + 1, "battle")]  // reminder: user.crit is hacky
+				break;
+			case "herbs":
+				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(rollableHerbs.length, "battle"))
+				break;
+			case "potions":
+				user.roundRns[roundRnKeyname] ??= Array(config[key]).fill(null).map(() => adventure.generateRandomNumber(rollablePotions.length, "battle"))
+				break;
 			default:
 				const keyAsInt = parseInt(key);
 				if (keyAsInt !== NaN) {
@@ -374,19 +383,23 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 		case "weaknesses":
 			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 			const weaknessPool = elementsList(ineligibleWeaknesses);
-			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${weaknessPool[rn % weaknessPool.length]} Weakness`)).join("")} on ${target.name}`; //TODO confirm merge fixes for getnames
+			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${weaknessPool[rn % weaknessPool.length]} Weakness`)).join("")} on ${target.name}`;
 		case "buffs":
 			targetModifiers = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
 		case "debuffs":
 			targetModifiers ??= Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			let pendingRemoves = user.roundRns[roundRnKeyname].length;
-			if (targetModifiers.length <= pendingRemoves ) {
+			if (targetModifiers.length <= pendingRemoves) {
 				return null;
 			}
 			return predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers);
 		case "progress":
 			let pendingProgress = user.getModifierStacks("Progress") + user.roundRns[roundRnKeyname][0];
-			return pendingProgress > 100 ? "yeh" : "nah"; //TODO english
+			return `The Elkemist ${pendingProgress > 100 ? "will" : "won't"} reach an epiphany this round.`;
+		case "herbs":
+			return `${user.name}'s ${moveName} produces a ${rollableHerbs[user.roundRns[roundRnKeyname][0] % rollableHerbs.length]}`;
+		case "potions":
+			return `${user.name}'s ${moveName} produces a ${rollablePotions[user.roundRns[roundRnKeyname][0] % rollablePotions.length]}`;
 		default:
 			console.error(`Invalid config key ${key} for predictRoundRnTargeted`);
 	}
@@ -407,31 +420,39 @@ function predictRoundRnOutcomes(adventure) {
 			const combatant = adventure.getCombatant(user);
 			const enemy = getEnemy(combatant.archetype);
 			const moveReference = enemy.actions[move.name];
-			if (moveReference.rnConfig) {
+			if (moveReference?.rnConfig) {
 				for (key in moveReference.rnConfig) {
 					if (move.targets.length > 0) {
 						const targetCombatants = move.targets.map(moveTarget => adventure.getCombatant(moveTarget));
 						if (move.name === "Bubble") {
 							let totalBuffsRemoved = targetCombatants.reduce((removedCount, combatant) => removedCount + Math.max(0, Object.keys(combatant.modifiers).filter(modifier => isBuff(modifier)).length - combatant.getModifierStacks("Retain")), 0);
-							let pendingProgress = user.getModifierStacks("Progress") + (move.isCrit ? 10 : 0) + user.roundRns[`Bubble${SAFE_DELIMITER}progress`][2] + totalBuffsRemoved * 5;
-							outcomes.push(pendingProgress > 100 ? "yeh" : "nah"); //TODO english
+							let pendingProgress = combatant.getModifierStacks("Progress") + (move.isCrit ? 10 : 0) + combatant.roundRns[`Bubble${SAFE_DELIMITER}progress`][2] + totalBuffsRemoved * 5;
+							outcomes.push(`The Elkemist ${pendingProgress > 100 ? "will" : "won't"} reach an epiphany this round.`);
 						}
 						else {
 							for (const targetCombatant of targetCombatants) {
-								outcomes.push(predictRoundRnTargeted(adventure, combatant, targetCombatant, move.name, key));
+								const outcome = predictRoundRnTargeted(adventure, combatant, targetCombatant, move.name, key);
+								if (outcome) { outcomes.push(outcome) };
 							}
 						}
 
 					}
 					else {
-						outcomes.push(predictRoundRnTargeted(adventure, combatant, null, move.name, key));
+						const outcome = predictRoundRnTargeted(adventure, combatant, null, move.name, key);
+						if (outcome) { outcomes.push(outcome) };
 					}
 				}
 			}
 		}
 	}
 	// delver equipment
-	for (const delver of adventure.delvers) {
+	for (let i = 0; i < adventure.delvers.length; i++) {
+		let delver = adventure.delvers[i];
+		let counterpart = adventure.getCombatant(new CombatantReference("enemy", i));
+		let isCloneAlive = false
+		if (counterpart) {
+			isCloneAlive = counterpart.hp > 0 && counterpart.archetype === "@{clone}"
+		}
 		for (const gear of delver.gear) {
 			let rnConfig = getGearProperty(gear.name, "rnConfig")
 			let targetingTags = getGearProperty(gear.name, "targetingTags")
@@ -439,9 +460,15 @@ function predictRoundRnOutcomes(adventure) {
 				for (key in rnConfig) {
 					if (rnsConcerningTargets.has(key)) {
 						outcomes.push(...predictRoundRnPossibleTargets(adventure, delver, targetingTags, gear.name, key));
+						if (isCloneAlive) {
+							outcomes.push(...predictRoundRnPossibleTargets(adventure, counterpart, targetingTags, gear.name, key));
+						}
 					}
 					else {
 						outcomes.push(predictRoundRnTargeted(adventure, delver, null, gear.name, key));
+						if (isCloneAlive) {
+							outcomes.push(predictRoundRnTargeted(adventure, counterpart, null, gear.name, key));
+						}
 					}
 				}
 			}
@@ -450,6 +477,9 @@ function predictRoundRnOutcomes(adventure) {
 		if ("Panacea" in adventure.items) {
 			if (Object.keys(delver.modifiers).filter(modifier => isDebuff(modifier)).length > 2) {
 				outcomes.push(predictRoundRnTargeted(adventure, delver, delver, "Panacea", "debuffs"))
+				if (isCloneAlive) {
+					outcomes.push(predictRoundRnTargeted(adventure, counterpart, counterpart, "Panacea", "debuffs"))
+				}
 			}
 		}
 	}
@@ -489,7 +519,7 @@ function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName,
 	}
 	for (const targetCombatant of targetCombatants) {
 		const rnOutcome = predictRoundRnTargeted(adventure, user, targetCombatant, moveName, key);
-		if(rnOutcome) {
+		if (rnOutcome) {
 			results.push(rnOutcome);
 		}
 	}
@@ -512,7 +542,6 @@ function predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetM
 	for (idx of user.roundRns[roundRnKeyname]) {
 		const modIdx = idx % targetModifiers.length;
 		const modArr = targetModifiers.splice(modIdx, 1);
-		console.log(targetModifiers);
 		popped.push(getApplicationEmojiMarkdown(...modArr));
 	}
 	return `${user.name}'s ${moveName} will remove ${popped.join("")} from ${target.name}`;
@@ -559,6 +588,9 @@ function newRound(adventure, thread, lastRoundText) {
 						let rnConfig = getGearProperty(gear.name, "rnConfig");
 						if (rnConfig) { cacheRoundRn(adventure, combatant, gear.name, rnConfig) }
 					})
+					if ("Panacea" in adventure.items) {
+						cacheRoundRn(adventure, combatant, "Panacea", { debuffs: 2 })
+					}
 				}
 
 				// Roll Round Speed
@@ -624,6 +656,15 @@ function newRound(adventure, thread, lastRoundText) {
 								.setName("@{clone}")
 								.setSpeedByCombatant(combatant)
 						);
+						// (pre-/) roll for clones' use of delver gear rn's for this round
+						let counterpart = adventure.getCombatant(new CombatantReference("delver", i))
+						counterpart.gear.forEach(gear => {
+							let rnConfig = getGearProperty(gear.name, "rnConfig");
+							if (rnConfig) { cacheRoundRn(adventure, combatant, gear.name, rnConfig) }
+						})
+						if ("Panacea" in adventure.items) {
+							cacheRoundRn(adventure, combatant, "Panacea", { debuffs: 2 })
+						}
 					}
 				}
 

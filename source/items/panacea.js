@@ -1,6 +1,7 @@
 const { ItemTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { removeModifier, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
+const { SAFE_DELIMITER } = require('../constants.js');
 
 module.exports = new ItemTemplate("Panacea",
 	"Cure the user of up to 2 random debuffs",
@@ -15,7 +16,7 @@ module.exports = new ItemTemplate("Panacea",
 		const debuffsToRemove = Math.min(userDebuffs.length, 2);
 		const receipts = [];
 		for (let i = 0; i < debuffsToRemove; i++) {
-			const debuffIndex = adventure.generateRandomNumber(userDebuffs.length, "battle");
+			const debuffIndex = user.roundRns[`Panacea${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length;
 			const rolledDebuff = userDebuffs[debuffIndex];
 			const [removalReceipt] = removeModifier([user], { name: rolledDebuff, stacks: "all" });
 			receipts.push(removalReceipt);
