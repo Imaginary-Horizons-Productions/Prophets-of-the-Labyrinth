@@ -20,7 +20,6 @@ module.exports = new EnemyTemplate("name",
 		return [];
 	},
 	needsLivingTargets: false,
-	next: (actionName) => {
-		return "";
-	}
+	next: "",
+	combatFlavor: "(should mostly be omitted except for boss actions)"
 });

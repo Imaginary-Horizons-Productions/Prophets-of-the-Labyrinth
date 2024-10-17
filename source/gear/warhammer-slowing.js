@@ -1,9 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Slowing Warhammer",
-	"Strike a foe for @{damage} (+@{bonus} if foe is currently stunned) @{element} damage and inflict @{mod0Stacks} @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} (+@{bonus} if foe is stunned) @{element} damage and inflict @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Earth",
 	350,
@@ -19,12 +21,7 @@ module.exports = new GearTemplate("Slowing Warhammer",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		let resultText = dealDamage([target], user, pendingDamage, false, element, adventure)
-		const addedSlow = addModifier([target], slow).length > 0;
-		if (addedSlow) {
-			resultText += ` ${getNames([target], adventure)[0]} is Slowed.`;
-		}
-		return resultText;
+		return dealDamage([target], user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier([target], slow)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Warhammer", "Unstoppable Warhammer")

@@ -2,7 +2,7 @@ const { CommandInteraction } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 const { elementsList, getWeaknesses, getResistances, getEmoji, getOpposite } = require("../../util/elementUtil");
 const { listifyEN } = require("../../util/textUtil");
-const { getModifierEmoji } = require("../../modifiers/_modifierDictionary");
+const { getApplicationEmojiMarkdown } = require("../../util/graphicsUtil");
 
 const matchingElementStaggerField = { name: "Matching Element Stagger", value: "When a combatant makes a move that matches their element, their target gets a bonus effect. If the target is an ally, they are relieved of 1 Stagger. If the target is an enemy, they suffer 2 additional Stagger. Check the page on Stagger to learn more about Stagger and Stun." };
 const allElements = elementsList();
@@ -57,7 +57,7 @@ async function executeSubcommand(interaction, ...args) {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Damage Cap")
-						.setDescription(`The maximum amount of damage that can be done in one shot after protection is 500. This cap is raised by 50 when leveling up and by 1 for each stack of ${getModifierEmoji("Power Up")} a user has.`)
+						.setDescription(`The maximum amount of damage that can be done in one shot after protection is 500. This cap is raised by 50 when leveling up and by 1 for each stack of ${getApplicationEmojiMarkdown("Power Up")} a user has.`)
 				],
 				ephemeral: true
 			});

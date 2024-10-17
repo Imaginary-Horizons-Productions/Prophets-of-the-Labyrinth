@@ -1,8 +1,7 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Regen",
-	"Gain @{stackCount*10} hp after the bearer's turn. Lose @{roundDecrement} stack per round.",
-	"<:Regen:1266117153518653451>",
+	"Gain @{stackCount*10} HP after the bearer's turn. Lose @{roundDecrement} stack per round.",
 	true,
 	false,
 	1

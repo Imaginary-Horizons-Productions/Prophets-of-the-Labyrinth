@@ -1,10 +1,12 @@
 const { GearTemplate } = require('../classes');
 const { isDebuff } = require('../modifiers/_modifierDictionary.js');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Censer",
-	"Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage",
-	"Also apply @{mod0Stacks} @{mod0}",
+	[
+		["use", "Burn a foe for @{damage} (+@{bonus} if target has any debuffs) @{element} damage"],
+		["Critical💥", "Also apply @{mod0Stacks} @{mod0}"]
+	],
 	"Trinket",
 	"Fire",
 	200,
@@ -17,13 +19,11 @@ module.exports = new GearTemplate("Censer",
 		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
 			pendingDamage += bonus;
 		}
-		const damageText = dealDamage([target], user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (isCrit && target.hp > 0) {
-			const addedSlow = addModifier([target], slow).length > 0;
-			return `${damageText}${addedSlow ? ` ${getNames([target], adventure)[0]} is Slowed.` : ""}`;
-		} else {
-			return damageText;
+			resultLines.push(...generateModifierResultLines(addModifier([target], slow)));
 		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setUpgrades("Staggering Censer", "Thick Censer", "Tormenting Censor")

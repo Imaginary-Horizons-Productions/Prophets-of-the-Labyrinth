@@ -2,19 +2,20 @@ const fs = require("fs");
 const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH } = require("../constants");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
 
-const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
-const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
-
-const { getChallenge } = require("../challenges/_challengeDictionary");
+const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { isBuff, isDebuff, getModifierEmoji } = require("../modifiers/_modifierDictionary");
+const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
+const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
-const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription } = require("./textUtil");
-const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
+const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
+const { getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require("./graphicsUtil");
+
+const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
+const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -103,12 +104,12 @@ function generateRecruitEmbed(adventure) {
 
 /** @param {Adventure} adventure */
 function generateAdventureConfigMessage(adventure) {
-	const options = ["Training Weights", "Can't Hold All this Value", "Restless", "Rushing", "Into the Deep End"].map(challengeName => {
+	const options = getStartingChallenges().map(challengeName => {
 		const challenge = getChallenge(challengeName);
 		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName };
 	})
 	return {
-		content: `**${adventure.labyrinth}**\n*${getLabyrinthProperty(adventure.labyrinth, "description")}*\nParty Leader: <@${adventure.leaderId}>\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
+		content: `**${adventure.labyrinth}**\n*${injectApplicationEmojiMarkdown(getLabyrinthProperty(adventure.labyrinth, "description"))}*\nParty Leader: <@${adventure.leaderId}>\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
 		components: [
 			new ActionRowBuilder().addComponents(
 				new ButtonBuilder().setCustomId("ready")
@@ -196,7 +197,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
  * @param {string} guildId
  */
 function addScoreField(embed, adventure, guildId) {
-	let { livesScore, goldScore, total: finalScore } = adventure.getBaseScore();
+	let { livesScore, goldScore, guardianScore, total: finalScore } = adventure.getBaseScore();
 	let challengeMultiplier = 1;
 	Object.keys(adventure.challenges).forEach(challengeName => {
 		const challenge = getChallenge(challengeName);
@@ -221,13 +222,14 @@ function addScoreField(embed, adventure, guildId) {
 	const depthScoreLine = generateScoreline("additive", "Depth", adventure.depth);
 	const livesScoreLine = generateScoreline("additive", "Lives", livesScore);
 	const goldScoreline = generateScoreline("additive", "Gold", goldScore);
+	const guardianScoreline = generateScoreline("additive", "Artifact Guardians Defeated", guardianScore);
 	const bonusScoreline = generateScoreline("additive", "Bonus", adventure.score);
 	const challengesScoreline = generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
 	const skippedArtifactScoreline = generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
 	const artifactMultiplierScoreline = generateScoreline("multiplicative", "Floating Multiplier Bonus", 1 + (adventure.getArtifactCount("Floating Multiplier") / 4));
 	const defeatScoreline = generateScoreline("multiplicative", "Defeat", adventure.state === "defeat" ? 0.5 : 1);
 	const giveupScoreline = generateScoreline("multiplicative", "Give Up", adventure.state === "giveup" ? 0 : 1);
-	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${artifactMultiplierScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
+	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${guardianScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${artifactMultiplierScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
 	adventure.score = finalScore;
 
 	const company = getCompany(guildId);
@@ -288,14 +290,6 @@ function generateScoreline(stackType, label, value) {
  */
 function roomHeaderString(adventure) {
 	return `Lives: ${adventure.lives} - Party Gold: ${adventure.gold} - Score: ${adventure.getBaseScore().total} `;
-}
-
-/** The room header goes in the embed's author field and should contain information about the party's commonly used or important resources
- * @param {Adventure} adventure
- * @param {Message} message
- */
-function updateRoomHeader(adventure, message) {
-	return message.edit({ embeds: message.embeds.map(embed => new EmbedBuilder(embed).setAuthor({ name: roomHeaderString(adventure), iconURL: message.client.user.displayAvatarURL() })) })
 }
 
 /** The version embed lists the following: changes in the most recent update, known issues in the most recent update, and links to support the project */
@@ -362,11 +356,10 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 function gearToEmbedField(gearName, durability, holder) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))
-		} ${durability} /${maxDurability} durability)`;
+	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability} /${maxDurability} durability)`;
 	return {
-		name: `${gearName} ${getEmoji(getGearProperty(gearName, "element"))}${durabilityText}`,
-		value: buildGearDescription(gearName, maxDurability !== 0, holder)
+		name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}${durabilityText}`,
+		value: buildGearDescription(gearName, true, holder)
 	};
 }
 
@@ -377,12 +370,21 @@ function gearToEmbedField(gearName, durability, holder) {
  * @returns {MessagePayload}
  */
 function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
-	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
+	const hasLucky = delver.getModifierStacks("Lucky") > 0;
+	const hasUnlucky = delver.getModifierStacks("Unlucky") > 0;
+	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%${hasLucky ? " x 2 (Lucky)" : hasUnlucky ? " ÷ 2 (Unlucky)" : ""}\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
 	const embed = new EmbedBuilder().setColor(getColor(delver.element))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
-	for (let index = 0; index < gearCapacity; index++) {
+	if (delver.getModifierStacks("Iron Fist Stance") > 0) {
+		embed.addFields(gearToEmbedField("Iron Fist Punch", Infinity, delver));
+	} else if (delver.getModifierStacks("Floating Mist Stance") > 0) {
+		embed.addFields(gearToEmbedField("Floating Mist Punch", Infinity, delver));
+	} else {
+		embed.addFields(gearToEmbedField("Punch", Infinity, delver));
+	}
+	for (let index = 0; index < Math.min(Math.max(delver.gear.length, gearCapacity), MAX_EMBED_FIELD_COUNT); index++) {
 		if (delver.gear[index]) {
 			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability, delver));
 		} else {
@@ -407,20 +409,80 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 			const modifierButton = new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
 				.setLabel(`${modifierName} x ${delver.modifiers[modifierName]}`)
 				.setStyle(style)
-				.setEmoji(getModifierEmoji(modifierName));
+				.setEmoji(getApplicationEmojiMarkdown(modifierName));
 			actionRow.push(modifierButton);
 		}
 		if (modifiers.length > 4) {
 			actionRow.push(new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}MORE`)
 				.setLabel(`${modifiers.length - 4} more...`)
 				.setStyle(ButtonStyle.Secondary)
-				.setDisabled(!["Chemist", "Ritualist"].includes(delver.archetype)))
+				.setDisabled(!["Chemist", "Ritualist", "Detective"].includes(delver.archetype)))
 		}
 		components.push(new ActionRowBuilder().addComponents(...actionRow));
 	}
 	return { embeds: [embed], components, ephemeral: true };
 }
 
+/** @param {Adventure} adventure */
+function generatePartyStatsPayload(adventure) {
+	const guardsScouted = adventure.artifactGuardians.slice(0, adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians);
+	const gearCapacity = adventure.getGearCapacity();
+	const embed = new EmbedBuilder().setColor(getColor(adventure.element))
+		.setAuthor(randomAuthorTip())
+		.setTitle(`Party Stats - ${adventure.name}`)
+		.setDescription(`Depth: ${adventure.depth}\nScore: ${adventure.getBaseScore().total}`)
+		.addFields([
+			{ name: `${adventure.lives} Lives Remaining`, value: "When a player runs out of HP, a life will be lost and they'll be returned to max HP. When all lives are lost, the adventure will end." },
+			{ name: `${adventure.gold} Gold`, value: `Gold is exchanged for goods and services within adventures. *Gold will be lost when an adventure ends.*\nPeak Gold: ${adventure.peakGold}` },
+			{ name: `Gear Capacity: ${gearCapacity}`, value: `Each delver can carry ${gearCapacity} pieces of gear. Gear capacity can be increased at Tanning Workshops and by the Hammerspace Holster artifact.` },
+			{ name: "Items", value: Object.keys(adventure.items).map(item => `${item} x ${adventure.items[item]}`).join("\n") || "None" },
+			{
+				name: "Scouting",
+				value: `Final Battle: ${adventure.scouting.bosses.length > 0 ? adventure.bosses[0] : "???"}\nArtifact Guardians: ${guardsScouted.length > 0 ?
+					guardsScouted.map((encounter, index) => {
+						if (index + 1 <= adventure.scouting.artifactGuardiansEncountered) {
+							return `~~${encounter}~~`;
+						} else {
+							return encounter;
+						}
+					}).join(", ") + "..." : "???"}`
+			}
+		]);
+	const challenges = Object.keys(adventure.challenges);
+	if (challenges.length) {
+		embed.addFields({ name: "Challenges", value: listifyEN(Object.keys(adventure.challenges), false) });
+	}
+	const infoSelects = [];
+	const allArtifacts = Object.keys(adventure.artifacts);
+	const artifactPages = [];
+	for (let i = 0; i < allArtifacts.length; i += MAX_SELECT_OPTIONS) {
+		artifactPages.push(allArtifacts.slice(i, i + MAX_SELECT_OPTIONS));
+	}
+	if (artifactPages.length > 0) {
+		embed.addFields({ name: "Artifacts", value: listifyEN(Object.entries(adventure.artifacts).map(entry => `${entry[0]} x ${entry[1].count}`)) })
+		infoSelects.push(...artifactPages.slice(0, MAX_MESSAGE_ACTION_ROWS).map((page, index) =>
+			new ActionRowBuilder().addComponents(
+				new StringSelectMenuBuilder().setCustomId(`artifact${SAFE_DELIMITER}${index}`)
+					.setPlaceholder(`Get details about an artifact...${artifactPages.length > 1 ? ` (Page ${index + 1})` : ""}`)
+					.setOptions(page.map(artifact => {
+						const count = adventure.getArtifactCount(artifact);
+						return {
+							label: `${artifact} x ${count}`,
+							value: `${artifact}${SAFE_DELIMITER}${count}`
+						};
+					}))
+			)
+		))
+	} else {
+		infoSelects.push(new ActionRowBuilder().addComponents(
+			new StringSelectMenuBuilder().setCustomId("artifact")
+				.setPlaceholder("No artifacts to inspect...")
+				.setDisabled(true)
+				.setOptions(EMPTY_SELECT_OPTION_SET)
+		))
+	}
+	return { embeds: [embed], components: infoSelects, ephemeral: true };
+}
 
 module.exports = {
 	randomAuthorTip,
@@ -429,9 +491,10 @@ module.exports = {
 	generateRecruitEmbed,
 	generateAdventureConfigMessage,
 	renderRoom,
-	updateRoomHeader,
+	roomHeaderString,
 	generateVersionEmbed,
 	generateArtifactEmbed,
 	gearToEmbedField,
-	inspectSelfPayload
+	inspectSelfPayload,
+	generatePartyStatsPayload
 };

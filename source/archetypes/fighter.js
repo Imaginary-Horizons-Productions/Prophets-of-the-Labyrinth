@@ -20,7 +20,7 @@ module.exports = new ArchetypeTemplate("Fighter",
 			"¯\\_(ツ)\_/¯",
 			`This delve into ${adventure.name} is exciting!`,
 			`I *think* it's <t:${Math.floor(Date.now() / 1000)}:t>.`,
-			`It's high noon... (<t:${Math.floor(new Date().setHours(12, 0, 0) / 1000)}:R>)`
+			`It's high noon... (<t:${Math.floor(new Date().setHours(12, 0, 0) / 1000)}:R> for the server)`
 		);
 		if (adventure.delvers.length > 1) {
 			descriptions.push(`I'm so happy to have my ${adventure.delvers.length - 1} good friends with me.`);

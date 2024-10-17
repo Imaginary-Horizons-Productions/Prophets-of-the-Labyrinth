@@ -1,9 +1,11 @@
 const { GearTemplate, Move } = require('../classes');
-const { changeStagger, addModifier, getNames } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shoulder Throw",
-	"Redirect a slower foe into targeting themself",
-	"Gain @{mod0Stacks} @{mod0}",
+	[
+		["use", "Redirect a slower foe into targeting themself"],
+		["Critical💥", "Gain @{mod0Stacks} @{mod0}"]
+	],
 	"Technique",
 	"Light",
 	200,
@@ -12,10 +14,7 @@ module.exports = new GearTemplate("Shoulder Throw",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		let addedEvade = false;
-		if (isCrit) {
-			addedEvade = addModifier([user], evade).length > 0;
-		}
+		const resultLines = [];
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -26,19 +25,14 @@ module.exports = new GearTemplate("Shoulder Throw",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
-			const [targetName, userName] = getNames([target, user], adventure);
-			if (addedEvade) {
-				return `${targetName} is redirected into targeting themself. ${userName} prepares to evade.`;
-			} else {
-				return `${targetName} is redirected into targeting themself.`;
-			}
-		} else if (addedEvade) {
-			return `${getNames([user], adventure)[0]} prepares to evade.`;
-		} else {
-			return "But nothing happened.";
+			resultLines.push(`${target.name} is redirected into targeting themself.`);
 		}
+		if (isCrit) {
+			resultLines.push(...generateModifierResultLines(addModifier([user], evade)));
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Evasive Shoulder Throw")
+	.setUpgrades("Evasive Shoulder Throw", "Harmful Shoulder Throw", "Staggering Shoulder Throw")
 	.setDurability(10)
 	.setModifiers({ name: "Evade", stacks: 1 });

@@ -1,9 +1,13 @@
 const { GearTemplate } = require('../classes/index.js');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
+const { accuratePassive } = require('./descriptions/passives.js');
 
 module.exports = new GearTemplate("Accurate Cloak",
-	"Gain @{mod0Stacks} @{mod0}. Passive: Gain @{critRate} Crit Rate",
-	"@{mod0} +@{bonus}",
+	[
+		accuratePassive,
+		["use", "Gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Armor",
 	"Wind",
 	350,
@@ -16,15 +20,10 @@ module.exports = new GearTemplate("Accurate Cloak",
 		if (isCrit) {
 			pendingEvade.stacks += bonus;
 		}
-		const addedEvade = addModifier([user], pendingEvade).length > 0;
-		if (addedEvade) {
-			return `${getNames([user], adventure)[0]} is prepared to Evade.`;
-		} else {
-			return "But nothing happened.";
-		}
+		return generateModifierResultLines(addModifier([user], pendingEvade));
 	}
-).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
-	.setSidegrades("Accelerating Cloak", "Long Cloak")
+).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+	.setSidegrades("Accelerating Cloak", "Evasive Cloak")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setBonus(1) // Evade stacks
 	.setCritRate(10)

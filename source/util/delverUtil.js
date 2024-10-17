@@ -1,6 +1,6 @@
 const { getArchetype } = require("../archetypes/_archetypeDictionary");
-const { Delver, Adventure } = require("../classes");
-const { getGearProperty, buildGearRecord } = require("../gear/_gearDictionary");
+const { Delver, Adventure, Gear } = require("../classes");
+const { getGearProperty } = require("../gear/_gearDictionary");
 const { gainHealth } = require("./combatantUtil");
 
 /**
@@ -22,7 +22,7 @@ function levelUp(delver, levels, adventure) {
 		}
 	}
 	delver.maxHP += maxHPGrowth * levels * growthBonus;
-	gainHealth(delver, maxHPGrowth * levels * growthBonus, adventure);
+	gainHealth(delver, Math.floor(maxHPGrowth * levels * growthBonus), adventure);
 	delver.power += powerGrowth * levels * growthBonus;
 	delver.speed += speedGrowth * levels * growthBonus;
 	delver.critRate += critRateGrowth * levels * growthBonus;
@@ -41,7 +41,7 @@ function transformGear(delver, index, oldGearName, newGearName) {
 	if (durabilityDifference > 0) {
 		delver.gear[index].durability += durabilityDifference;
 	}
-	delver.gear.splice(index, 1, buildGearRecord(newGearName, Math.min(upgradeDurability, delver.gear[index].durability)));
+	delver.gear.splice(index, 1, new Gear(newGearName, Math.min(upgradeDurability, delver.gear[index].durability), getGearProperty(newGearName, "maxHP"), getGearProperty(newGearName, "power"), getGearProperty(newGearName, "speed"), getGearProperty(newGearName, "critRate"), getGearProperty(newGearName, "poise")));
 }
 
 module.exports = {

@@ -1,9 +1,11 @@
-const { EnemyTemplate } = require("../classes");
-const { isBuff, isDebuff, getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
-const { dealDamage, addModifier, removeModifier, changeStagger, addProtection } = require("../util/combatantUtil");
+const { EnemyTemplate, ModifierReceipt, Enemy } = require("../classes");
+const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary.js");
+const { dealDamage, addModifier, removeModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
+const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new EnemyTemplate("Elkemist",
 	"Water",
@@ -16,47 +18,47 @@ module.exports = new EnemyTemplate("Elkemist",
 ).addAction({
 	name: "Toil",
 	element: "Untyped",
-	description: "Gains protection, cures a random debuff, and grants a large amount of Progress",
+	description: "Gains protection, cures a random debuff, and grants a large amount of @e{Progress}",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		changeStagger([user], "elementMatchAlly");
-		if (isCrit) {
-			addModifier([user], { name: "Progress", stacks: 60 + adventure.generateRandomNumber(46, "battle") });
-		} else {
-			addModifier([user], { name: "Progress", stacks: 45 + adventure.generateRandomNumber(31, "battle") });
-		}
+		const resultLines = [`${user.name} gains protection.`];
+		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Toil${SAFE_DELIMITER}progress`][0] });
+		progressCheck(user, wrappedProgressReceipt, resultLines);
 		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
-		let removedDebuff = null;
 		if (targetDebuffs.length > 0) {
-			const rolledDebuff = targetDebuffs[adventure.generateRandomNumber(targetDebuffs.length, "battle")];
-			const wasRemoved = removeModifier([user], { name: rolledDebuff, stacks: "all" }).length > 0;
-			if (wasRemoved) {
-				removedDebuff = rolledDebuff;
-			}
+			const rolledDebuff = targetDebuffs[user.roundRns[`Toil${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length];
+			resultLines.concat(generateModifierResultLines(removeModifier([user], { name: rolledDebuff, stacks: "all" })));
 		}
 		addProtection([user], 100);
-		return `It gathers some materials${removedDebuff ? ` and cures itself of ${removedDebuff}` : ""}, fortifying its laboratory to gain protection.`;
+		return resultLines;
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
-	next: "random"
+	next: "random",
+	combatFlavor: "It gathers some materials to fortify its lab.",
+	rnConfig: { "debuffs": 1, "progress": { base: 30, crit: 15, random: 15 } }
 }).addAction({
 	name: "Trouble",
 	element: "Water",
-	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from ${getModifierEmoji("Power Up")}) and gain a small amount of Progress`,
+	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from @e{Power Up}) and gain a small amount of @e{Progress}`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let damage = user.getPower() + 75 + user.getModifierStacks("Power Up");
 		if (isCrit) {
 			damage *= 2;
 		}
-		addModifier([user], { name: "Progress", stacks: 15 + adventure.generateRandomNumber(16, "battle") });
 		changeStagger(targets, "elementMatchFoe");
-		return `An obstacle to potion progress is identified and mitigated; ${dealDamage(targets, user, damage, false, user.element, adventure)}`;
+		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
+		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Trouble${SAFE_DELIMITER}progress`][0] });
+		progressCheck(user, wrappedProgressReceipt, resultLines);
+		return resultLines;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: "random"
+	next: "random",
+	combatFlavor: "An obstacle to potion progress is identified and mitigated!",
+	rnConfig: { "progress": { base: 30, crit: 15, random: 15 } }
 }).addAction({
 	name: "Boil",
 	element: "Fire",
@@ -71,42 +73,58 @@ module.exports = new EnemyTemplate("Elkemist",
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: "random"
+	next: "random",
 }).addAction({
 	name: "Bubble",
 	element: "Untyped",
-	description: "Converts all foe buffs to Fire Weakness and gain Progress per buff removed",
+	description: `Converts all foe buffs to @e{Fire Weakness} and gain @e{Progress} per buff removed`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		let progressGained = adventure.generateRandomNumber(16, "battle");
-		const affectedDelvers = new Set();
-		if (isCrit) {
-			progressGained += 10;
-		}
+		const resultLines = [];
+		let progressGained = user.roundRns[`Bubble${SAFE_DELIMITER}progress`][0];
+		const removalReceipts = [];
 		for (const target of targets) {
 			for (let modifier in target.modifiers) {
 				if (isBuff(modifier)) {
 					const buffStackCount = target.modifiers[modifier];
-					const removedBuff = removeModifier([target], { name: modifier, stacks: "all" }).length > 0;
-					if (removedBuff) {
+					const receipt = removeModifier([target], { name: modifier, stacks: "all" })[0];
+					removalReceipts.push(receipt);
+					if (receipt.succeeded.size > 0) {
 						progressGained += 5;
-						const addedWeakness = addModifier([target], { name: "Fire Weakness", stacks: buffStackCount }).length > 0;
-						if (addedWeakness && !affectedDelvers.has(target.name)) {
-							affectedDelvers.add(target.name);
-						}
+						addModifier([target], { name: "Fire Weakness", stacks: buffStackCount });
 					}
 				}
 			}
 		}
-		addModifier([user], { name: "Progress", stacks: progressGained });
-
-		if (affectedDelvers.size > 0) {
-			return `It cackles as it transmutes buffs on ${listifyEN([...affectedDelvers], false)} to Fire Weakness.`;
-		} else {
-			return "It's disappointed it wasn't able to transmute any buffs.";
-		}
+		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: progressGained });
+		progressCheck(user, wrappedProgressReceipt, resultLines);
+		combineModifierReceipts(removalReceipts).forEach(receipt => {
+			if (receipt.succeeded.size > 0) {
+				resultLines.push(`Buffs on ${listifyEN([...receipt.combatantNames])} are transmuted into ${getApplicationEmojiMarkdown("Fire Weakness")}.`);
+			}
+			if (receipt.failed.size > 0) {
+				resultLines.push(`Buffs on ${listifyEN([...receipt.combatantNames])} were retained.`);
+			}
+		})
+		return resultLines;
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: false,
-	next: "random"
-}).setFlavorText({ name: "Progress", value: `Each time the Elkemist reaches 100 Progress, it'll gain a large amount of ${getModifierEmoji("Power Up")}. Stun the Elkemist to reduce its Progress.` });
+	next: "random",
+	rnConfig: { "progress": { base: 0, crit: 15, random: 15 } }
+}).setFlavorText({ name: "Progress", value: `Each time the Elkemist reaches 100 @e{Progress}, it'll gain a large amount of @e{Power Up}. Stun the Elkemist to reduce its @e{Progress}.` });
+
+/**
+ * @param {Enemy} elkemist
+ * @param {ModifierReceipt[]} wrappedProgressReceipt
+ * @param {string[]} resultLines
+ */
+function progressCheck(elkemist, wrappedProgressReceipt, resultLines) {
+	if (elkemist.getModifierStacks("Progress") >= 100) {
+		elkemist.modifiers.Progress = 0;
+		addModifier([elkemist], { name: "Power Up", stacks: 100, force: false });
+		resultLines.push(`Eureka! ${elkemist.name}'s ${getApplicationEmojiMarkdown("Progress")} yields ${getApplicationEmojiMarkdown("Power Up")}!`);
+	} else {
+		resultLines.push(...generateModifierResultLines(wrappedProgressReceipt));
+	}
+}

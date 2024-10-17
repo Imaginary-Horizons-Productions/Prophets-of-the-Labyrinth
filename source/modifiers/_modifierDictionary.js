@@ -1,4 +1,5 @@
 const { Adventure, ModifierTemplate, BuildError, Combatant } = require("../classes");
+const { sanitizeEmojiName } = require("../util/graphicsUtil");
 const { calculateTagContent } = require("../util/textUtil");
 
 /** @type {Record<string, ModifierTemplate>} */
@@ -32,10 +33,10 @@ for (const file of [
 	"progress.js",
 	"quicken.js",
 	"regen.js",
+	"retain.js",
 	"slow.js",
 	"stance-floating-mist.js",
 	"stance-iron-fist.js",
-	"stasis.js",
 	"unlucky.js",
 	"vigilance.js",
 	"weakness-darkness.js",
@@ -54,6 +55,14 @@ for (const file of [
 	MODIFIERS[modifier.name] = modifier;
 }
 
+/** @returns {[name: string, attachment: string][]} */
+function getModifierEmojiFileTuples() {
+	return Object.keys(MODIFIERS).map(modifierName => {
+		const sanitizedName = sanitizeEmojiName(modifierName);
+		return [sanitizedName, `./source/images/modifierEmoji/${sanitizedName}.png`];
+	})
+}
+
 /**
  * @param {string} modifierName
  * @param {Combatant} bearer
@@ -66,11 +75,6 @@ function getModifierDescription(modifierName, bearer, adventure) {
 		{ tag: 'funnelCount', count: adventure.getArtifactCount("Spiral Funnel") },
 		{ tag: 'roundDecrement', count: getTurnDecrement(modifierName) }
 	]);
-}
-
-/** @param {string} modifierName */
-function getModifierEmoji(modifierName) {
-	return MODIFIERS[modifierName].emoji;
 }
 
 /** @param {string} modifierName */
@@ -94,8 +98,8 @@ function getInverse(modifierName) {
 }
 
 module.exports = {
+	getModifierEmojiFileTuples,
 	getModifierDescription,
-	getModifierEmoji,
 	getTurnDecrement,
 	isBuff,
 	isDebuff,

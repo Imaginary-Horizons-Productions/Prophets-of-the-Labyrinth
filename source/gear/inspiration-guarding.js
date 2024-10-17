@@ -1,10 +1,12 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Guarding Inspiration",
-	"Apply @{mod0Stacks} @{mod0} and @{protection} protection to an ally",
-	"@{mod0} +@{bonus}",
+	[
+		["use", "Apply @{mod0Stacks} @{mod0} and @{protection} protection to an ally"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Spell",
 	"Wind",
 	350,
@@ -17,13 +19,8 @@ module.exports = new GearTemplate("Guarding Inspiration",
 		if (isCrit) {
 			pendingPowerUp.stacks += bonus;
 		}
-		const poweredUpTargets = addModifier(targets, pendingPowerUp);
 		addProtection(targets, protection);
-		if (poweredUpTargets.length > 0) {
-			return `${joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "protection.")} ${joinAsStatement(false, poweredUpTargets, "is", "are", "Powered Up.")}`;
-		} else {
-			return joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "protection.");
-		}
+		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."), ...generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPowerUp)))];
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Soothing Inspiration", "Sweeping Inspiration")

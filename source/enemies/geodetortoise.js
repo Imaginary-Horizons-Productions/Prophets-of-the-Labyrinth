@@ -2,7 +2,7 @@ const { EnemyTemplate } = require("../classes");
 const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",
 	"Earth",
@@ -31,18 +31,18 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 }).addAction({
 	name: "Crystallize",
 	element: "Untyped",
-	description: `Gain protection and ${getModifierEmoji("Power Up")}`,
+	description: `Gain protection and @e{Power Up}`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		let addedPowerUp = false;
 		addProtection([user], 25);
 		if (isCrit) {
-			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 50 }).length > 0;
+			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 50 }).some(receipt => receipt.succeeded.size > 0);
 			changeStagger([user], "elementMatchAlly");
 		} else {
-			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 25 }).length > 0;
+			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 25 }).some(receipt => receipt.succeeded.size > 0);
 		}
-		return `It gains protection${addedPowerUp ? ` and is Powered Up` : ""}.`;
+		return [`${user.name} gains protection${addedPowerUp ? ` and ${getApplicationEmojiMarkdown("Power Up")}` : ` but was oblivious to ${getApplicationEmojiMarkdown("Power Up")}`}.`];
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,

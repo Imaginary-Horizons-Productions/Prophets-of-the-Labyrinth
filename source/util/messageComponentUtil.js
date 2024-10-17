@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder, StringSelectMenuBuilder } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
@@ -41,13 +41,13 @@ function generateCombatRoomBuilder(extraButtons) {
 		const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0);
 		if (!isCombatVictory) {
 			const buttons = [
+				new ButtonBuilder().setCustomId("partystats")
+					.setEmoji("📚")
+					.setLabel("Party Stats")
+					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder().setCustomId("inspectself")
 					.setEmoji("🔎")
 					.setLabel("Inspect Self")
-					.setStyle(ButtonStyle.Secondary),
-				new ButtonBuilder().setCustomId("predict")
-					.setEmoji("🔮")
-					.setLabel("Predict")
 					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder().setCustomId("readymove")
 					.setEmoji("⚔")
@@ -103,12 +103,12 @@ function generateLootRow(adventure) {
 	}
 	if (options.length > 0) {
 		return new ActionRowBuilder().addComponents(
-			new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}loot`)
+			new StringSelectMenuBuilder().setCustomId("loot")
 				.setPlaceholder("Take some of the spoils of combat...")
 				.setOptions(options))
 	} else {
 		return new ActionRowBuilder().addComponents(
-			new StringSelectMenuBuilder().setCustomId(`treasure${SAFE_DELIMITER}loot`)
+			new StringSelectMenuBuilder().setCustomId("loot")
 				.setPlaceholder("No loot")
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 				.setDisabled(true)

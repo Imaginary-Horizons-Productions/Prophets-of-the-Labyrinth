@@ -1,4 +1,38 @@
 # Prophets of the Labyrinth Change Log
+## Prophets of the Labyrinth v0.16.0:
+### Archetypes
+- Changed Detective to Untyped, increased duration of Sabotage Kit (and upgrades) weakness by 1, changed predict to weaknesses and random outcomes (no longer modifiers)
+   - The case where the Detective innately had elemental advantage against an enemy was too much more powerful than the case where the advantage was earned. Changing to Untyped both removes the innate elemental advantage case, but also makes adding Pistol triggering weakness to enemies always possible (no enemies resist Untyped).
+   - In the effort to make random outcomes stable for bouncing moves, the system became compatible with being able to have random outcomes be recorded by predicts
+- Changed Martial Artist Predict to Stagger and Enemy's next move
+   - Now that predicts are unique info combinations, the Martial Artist is no longer stuck predicting speed (which hasn't been helpful in informing Stun strategies since the mechanics were made independent) in order to be able to predict Stagger. Predicting the move in the next round (note: not the upcoming round, but the one after that) is helpful for deciding if that move is worth attempting to avoid by pushing for Stun.
+### Gear
+- Changed effect of Hunter's variant to "gain Power Up on kill"
+- Renamed Hunter's to Thief's
+- Thief's Certain Victory → **Hunter's Certain Victory**
+- Fixed a bug where Certain Victory and upgrades (except Reckless Certain Victory) was providing Power Up before dealing damage
+- The Reactive variant now doubles damage instead of adding a set bonus
+- Reduced Evade generation of Floating Mist Stance to 1 Evade per stack per turn, increased Stagger per stack to 3
+- Increased Speed bonus on Scarves from 2 to 5
+- Increased Regen on Infinite Regenerations from 3 to 4
+- Fixed Iron Fist Punches applying 1 Stagger instead of 2
+- Second Winds: durability down from 15 to 10, heals equal to user's power instead of 45 static
+- Fixed crashes in Power from Wrath
+- Renamed "Long" variants to "Potent"; "Long Barrier" renamed to "Vigilant Barrier", "Long Cloak" renamed to "Evasive Cloak"
+- Fixed "Power from Wrath" and "Furious" scaling in the wrong direction
+- New Gear: Hunter's Morning Star, Accurate Iron Fist Stance, Lucky Iron Fist Stance, Devoted Floating Mist Stance, Agile Floating Mist Stance, Lucky Second Wind, Flanking Strong Attack, Distracting Ice Bolt, Awesome Ice Bolt, Unlucky Ice Bolt, Wise Wolf Ring, Staggering Poison Torrent, Accelerating Refreshing Breeze, Supportive Refreshing Breeze, Swift Refreshing Breeze, Harmful Shoulder Throw, Staggering Shoulder Throw, Bashing Power from Wrath, Hunter's Power from Wrath, Staggering Power from Wrath, Flanking Goad Futility, Poised Goad Futility, Shattering Goad Futility, Accurate Scarf, Wise Scarf, Poised Chainmail, Powerful Chainmail, Distracting Prismatic Blast, Flanking Prismatic Blast, Midas's Risky Mixture, Purifying Infinite Regeneration, Omamori, Centering Omamori, Cleansing Omamori, Devoted Omamori, Heat Mirage, Evasive Heat Mirage, Unlucky Heat Mirage, Vigilant Heat Mirage
+### Other Changes
+- Parties gain 5 score for each Artifact Guardian they encounter
+- Fixed a bug where not enough mechabees (both soldiers and drones) were spawning, reduced mechabee hp to compensate
+- Predict info is now provided in the Ready a Move and Ready an Item messages (gear effects replaced, but can still be found in Inspect Self)
+   - The challenge **Blind Avarice** has been removed; it was always sorta weird parties could drain themselves of money by clicking UI buttons accidentally
+- Reduced Mechabee Drone and Soldier poise to 5
+- Protection gained from Boat Parts no longer scales from more copies of Boat Parts
+- Renamed the modifier "Stasis" to "Retain"
+- Added Challenge: "Shoddy Craftsmanship" - For the next 5 rooms, gear you acquire has reduced durability reduced by 25%. Afterwards gain 250 gold.
+- Added new Event room: Door 1 or Door 2?
+- Tuned Elekmist actions' progress values
+- Added Artifact: Loaded Dice
 ## Prophets of the Labyrinth v0.15.0:
 After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.
 ### Detective

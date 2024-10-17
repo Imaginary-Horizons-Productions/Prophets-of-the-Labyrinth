@@ -10,6 +10,7 @@ Adds Quicken to the user
 - Cloak (Wind)
 - Lance (Earth)
 - Midas Staff (Water)
+- Refreshing Breeze (Wind)
 - Shortsword (Fire)
 
 ### Accurate
@@ -18,12 +19,21 @@ Passively increases the user's Crit Rate
 **Available on**
 - all Cloaks (Wind)
 - Cloak (Wind)
+- Iron Fist Stance (Light)
+- Scarf (Untyped)
+
+### Agile
+Add Agility to user
+
+**Available on**
+- Floating Mist Stance (Light)
 
 ### Awesome
 Bonus damage if target is Stunned
 
 **Available on**
 - all Warhammers (Earth)
+- Ice Bolt (Water)
 - Morning Star (Light)
 
 ### Bashing
@@ -31,6 +41,7 @@ Add protection to damage dealt
 
 **Available on**
 - Morning Star (Light)
+- Power from Wrath (Darkness)
 
 ### Blasting
 Also targets adjacent team members
@@ -44,6 +55,12 @@ Hits 3 random targets (from a beneficial team)
 **Available on**
 - all Firecrackers (Fire)
 - Medicine (Water)
+
+### Centering
+Relieve Stagger on user
+
+**Available on**
+- Omamori (Water)
 
 ### Charging
 Adds Power Up to the user
@@ -61,6 +78,7 @@ Cures a random debuff on target
 - all Refreshing Breezes (Wind)
 - Barrier (Wind)
 - Medicine (Water)
+- Omamori (Water)
 - Second Wind (Untyped)
 
 ### Confusing
@@ -82,6 +100,8 @@ Can apply to allies
 **Available on**
 - Bucker (Earth)
 - Barrier (Wind)
+- Floating Mist Stance (Light)
+- Omamori (Water)
 
 ### Discounted
 Reduced base price
@@ -94,31 +114,37 @@ Reduced base price
 Add Distracted to target
 
 **Available on**
+- Ice Bolt (Water)
 - Poison Torrent (Water)
+- Prismatic Blast (Light)
 
 ### Double
 Doubles number of targets
 
 **Available on**
 - Firecracker (Fire)
-- Pistol (Earth)
+- Pistol (Untyped)
 
 ### Duelist's
 Bonus damage if only one attacking target
 
 **Available on**
-- Pistol (Earth)
+- Pistol (Untyped)
 
 ### Evasive
 Adds Evade to the user
 
 **Available on**
+- all Barriers (Wind)
 - all Cloaks (Wind)
+- all Heat Mirages (Fire)
 - Bow (Wind)
+- Cloak (Wind)
+- Heat Mirage (Fire)
 - Shoulder Throw (Light)
 
 ### Fate-Sealing
-Adds Stasis to target on crit
+Adds Retain to target on crit
 
 **Available on**
 - Corrosion (Fire)
@@ -128,8 +154,11 @@ Adds Stasis to target on crit
 Adds Exposed to target
 
 **Available on**
+- Goad Futility (Earth)
 - Life Drain (Darkness)
-- Pistol (Earth)
+- Pistol (Untyped)
+- Prismatic Blast (Light)
+- Strong Attack (Untyped)
 
 ### Furious
 Increases damage proprotional to user's missing HP
@@ -143,6 +172,7 @@ Increases damage proprotional to user's missing HP
 Adds protection to the target
 
 **Available on**
+- all Omamori (Water)
 - Buckler (Earth)
 - Inspiration (Wind)
 - Scutum (Fire)
@@ -153,6 +183,7 @@ Deals damage to target
 **Available on**
 - Corrosion (Fire)
 - Poison Torrent (Water)
+- Shoulder Throw (Light)
 
 ### Healing
 Heal the user
@@ -169,12 +200,12 @@ Passively increases the user's Max HP
 - Scarf (Untyped)
 
 ### Hunter's
-Gain gold on kill
+Gain Power Up on kill
 
 **Available on**
-- Abacus (Water)
-- Bow (Wind)
 - Certain Victory (Earth)
+- Morning Star (Light)
+- Power from Wrath (Darkness)
 
 ### Lethal
 Increased crit damage
@@ -186,20 +217,14 @@ Increased crit damage
 - Shortsword (Fire)
 - Spear (Wind)
 
-### Long
-Increased modifier stacks
-
-**Available on**
-- Cloak (Wind)
-- Sabotage Kit (Earth)
-- Barrier (Wind)
-- Risky Mixture (Darkness)
-
 ### Lucky
 Add Lucky to the user
 
 **Available on**
+- all Omamori (Water)
+- Iron Fist Stance (Light)
 - Scutum (Fire)
+- Second Wind (Untyped)
 
 ### Midas's
 Adds Curse of Midas to target
@@ -207,6 +232,7 @@ Adds Curse of Midas to target
 **Available on**
 - all Midas Staves (Water)
 - Firecracker (Fire)
+- Risky Mixture (Darkness)
 
 ### Organic
 Regains durability when entering new rooms
@@ -221,6 +247,27 @@ Passively increases user's poise
 
 **Available on**
 - all Wolf Rings (Untyped)
+- Chainmail (Untyped)
+- Goad Futility (Earth)
+
+### Potent
+Increased modifier stacks
+
+**Available on**
+- Sabotage Kit (Untyped)
+- Risky Mixture (Darkness)
+
+### Powerful
+Passively increases user's power
+
+**Available on**
+- Chainmail (Untyped)
+
+### Purifying
+Cures all debuffs on target
+
+**Available on**
+- Infinite Regeneration (Fire)
 
 ### Reactive
 Bonus damage if user moves after target
@@ -247,7 +294,6 @@ Increased damage, but adds Exposed to user
 Adds protection to the user
 
 **Available on**
-- all Barriers (Light)
 - Blood Aegis (Darkness)
 - Buckler (Earth)
 - Herb Basket (Earth)
@@ -256,7 +302,7 @@ Adds protection to the user
 Adds a random modifier that converts one of target's neutral elements to a weakness
 
 **Available on**
-- all Sabotage Kits (Earth)
+- all Sabotage Kits (Untyped)
 - Cauldron Stir (Water)
 
 ### Semi-Decimating
@@ -279,8 +325,9 @@ Adds Frail to target
 
 **Available on**
 - Corrosion (Fire)
+- Goad Futility (Earth)
 - Lance (Earth)
-- Sabotage Kit (Earth)
+- Sabotage Kit (Untyped)
 
 ### Slowing
 Adds Slow to target
@@ -307,7 +354,16 @@ Add Stagger to target
 **Available on**
 - all Morning Stars (Light)
 - Censer (Fire)
+- Poison Torrent (Water)
+- Power from Wrath (Darkness)
+- Shoulder Throw (Light)
 - Stong Attack (Untyped)
+
+### Supportive
+Reduces Stagger on target
+
+**Available on**
+- Refreshing Breeze (Wind)
 
 ### Surpassing
 Increases the user's damage cap
@@ -331,6 +387,7 @@ Passively increases user's speed
 
 **Available on**
 - all Scarves (Untyped)
+- Refreshing Breeze (Wind)
 - Wolf Ring (Untyped)
 
 ### Taunting
@@ -338,13 +395,21 @@ Change target's move's target to user
 
 **Available on**
 - all Blood Aegis (Darkness)
+- all Heat Mirages (Fire)
 
 ### Thick
 Increased durability
 
 **Available on**
-- Barrier (Wind)
 - Censer (Fire)
+- Risky Mixture (Darkness)
+
+### Thief's
+Gain gold on kill
+
+**Available on**
+- Abacus (Water)
+- Bow (Wind)
 
 ### Thirsting
 Heal user's HP on kill
@@ -369,6 +434,13 @@ Adds Poison to target
 - Firecracker (Fire)
 - Shortsword (Fire)
 
+### Unlucky
+Adds Unlucky to target
+
+**Available on**
+- Heat Mirage (Fire)
+- Ice Bolt (Water)
+
 ### Unstoppable
 Deals Unblockable damage, usable while Stunned
 
@@ -384,11 +456,9 @@ Increased priority
 
 **Available on**
 - all Bows (Wind)
-- all Sun Flares (Light)
-- Barrier (Wind)
 - Fever Break (Darkness)
 - Herb Basket (Earth)
-- Sabotage Kit (Earth)
+- Sabotage Kit (Untyped)
 
 ### Vexing
 Bonus damage if target has debuffs
@@ -402,12 +472,16 @@ Adds Vigilance to user
 
 **Available on**
 - all Barriers (Wind)
+- Barrier (Wind)
+- Heat Mirage (Fire)
 
 ### Wise
 Increases stats gained by level up
 
 **Available on**
-- Chainmail (Earth)
+- Chainmail (Untyped)
+- Scarf (Untyped)
+- Wolf Ring (Untyped)
 
 ## Unnamed Variants
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
@@ -416,10 +490,3 @@ Increases stats gained by level up
 - Adds Power Up to target (all Inspiration)
 - Also hits targets with Exposed (all War Cries)
 - Adds Power Up to random ally if hitting weakness (all Pistols)
-
-## Planned Variants
-### Purifying
-Cures all debuffs on target
-
-**Available on**
-- (none)

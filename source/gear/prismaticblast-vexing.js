@@ -3,8 +3,10 @@ const { SAFE_DELIMITER } = require('../constants');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vexing Prismatic Blast",
-	"Strike a foe and adjacent foes for @{damage} @{element} damage (+@{bonus} if target has any debuffs)",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe and adjacent foes for @{damage} @{element} damage (+@{bonus} if target has any debuffs)"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Spell",
 	"Light",
 	350,
@@ -29,7 +31,7 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 			nonDebuffedDamage *= critMultiplier;
 		}
 		if (debuffedTargets.length > 0 && nondebuffedTargets.length > 0) {
-			return `${dealDamage(debuffedTargets, user, debuffedDamage, false, element, adventure)} ${dealDamage(nondebuffedTargets, user, nonDebuffedDamage, false, element, adventure)}`;
+			return dealDamage(debuffedTargets, user, debuffedDamage, false, element, adventure).concat(dealDamage(nondebuffedTargets, user, nonDebuffedDamage, false, element, adventure));
 		} else if (debuffedTargets.length > 0) {
 			return dealDamage(debuffedTargets, user, debuffedDamage, false, element, adventure);
 		} else {
@@ -37,6 +39,7 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 		}
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe", needsLivingTargets: true })
+	.setSidegrades("Distracting Prismatic Blast", "Flanking Prismatic Blast")
 	.setDurability(15)
 	.setBonus(50) // vexing damage
 	.setDamage(40);

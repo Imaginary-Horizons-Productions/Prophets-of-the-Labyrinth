@@ -1,9 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Soothing Midas Staff",
-	"Apply @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to a combatant",
-	"@{mod0} +@{bonus}",
+	[
+		["use", "Apply @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to a combatant"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Trinket",
 	"Water",
 	350,
@@ -20,15 +22,8 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const addedCurse = addModifier([target], pendingCurse).length > 0;
-		const addedRegen = addModifier([target], regen).length > 0;
-		if (addedCurse) {
-			return `${getNames([target], adventure)[0]} gains Curse of Midas${addedRegen ? ` and Regen` : ""}.`;
-		} else if (addedRegen) {
-			return `${getNames([target], adventure)[0]} gains Regen.`;
-		} else {
-			return "But nothing happened.";
-		}
+		const receipts = addModifier([target], pendingCurse).concat(addModifier([target], regen));
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Accelerating Midas Staff", "Discounted Midas Staff")

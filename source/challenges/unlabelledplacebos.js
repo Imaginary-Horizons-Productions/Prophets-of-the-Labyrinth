@@ -2,7 +2,9 @@ const { ChallengeTemplate } = require("../classes");
 
 module.exports = new ChallengeTemplate("Unlabelled Placebos",
 	"Items only have a 1/@{intensity} chance of having their effect for @{duration} rooms. Afterwards gain @{reward} gold.",
-	2
+	2,
+	true,
+	true
 ).setDuration(3)
 	.setScoreMultiplier(1.1)
 	.setReward(250)

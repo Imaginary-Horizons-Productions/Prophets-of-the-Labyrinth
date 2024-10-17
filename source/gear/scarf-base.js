@@ -1,13 +1,15 @@
 const { GearTemplate } = require('../classes');
+const { swiftPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Scarf",
-	"Gain @{speed} Speed",
-	"N/A",
+	[
+		swiftPassive
+	],
 	"Trinket",
 	"Untyped",
 	200,
-	(targets, user, isCrit, adventure) => ""
+	(targets, user, isCrit, adventure) => []
 ).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
-	.setUpgrades("Hearty Scarf")
+	.setUpgrades("Accurate Scarf", "Hearty Scarf", "Wise Scarf")
 	.setDurability(0)
-	.setSpeed(2);
+	.setSpeed(5);

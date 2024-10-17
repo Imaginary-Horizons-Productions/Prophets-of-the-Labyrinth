@@ -1,9 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Evasive Bow",
-	"Strike a foe for @{damage} @{element} damage and gain @{mod0Stacks} @{mod0} with priority",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage and gain @{mod0Stacks} @{mod0} with priority"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Wind",
 	350,
@@ -16,11 +18,10 @@ module.exports = new GearTemplate("Evasive Bow",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedEvade = addModifier([user], evade).length > 0;
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${addedEvade ? `${getNames([user], adventure)[0]} is ready to Evade.` : ""}`;
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier([user], evade)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Hunter's Bow", "Unstoppable Bow")
+	.setSidegrades("Thief's Bow", "Unstoppable Bow")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setDurability(15)
 	.setDamage(40)

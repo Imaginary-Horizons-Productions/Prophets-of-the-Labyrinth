@@ -2,25 +2,31 @@ const { GearTemplate } = require('../classes');
 const { payHP, dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Power from Wrath",
-	"Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing hp)",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing HP)"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Pact",
 	"Darkness",
 	200,
 	(targets, user, isCrit, adventure) => {
 		const { element, damage, hpCost } = module.exports;
-		const paymentSentence = payHP(user, hpCost, adventure);
-		const furiousness = (user.getMaxHP() - user.hp) / user.getMaxHP() + 1;
-		let pendingDamage = (user.getPower() + damage) * furiousness;
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+		const resultLines = [payHP(user, hpCost, adventure)];
+		if (adventure.lives > 0) {
+			const furiousness = 2 - user.hp / user.getMaxHP();
+			let pendingDamage = (user.getPower() + damage) * furiousness;
+			if (user.element === element) {
+				changeStagger(targets, "elementMatchFoe");
+			}
+			if (isCrit) {
+				pendingDamage *= 2;
+			}
+			resultLines.push(...dealDamage(targets, user, pendingDamage, false, element, adventure));
 		}
-		if (isCrit) {
-			pendingDamage *= 2;
-		}
-		return `${paymentSentence}${dealDamage(targets, user, pendingDamage, false, element, adventure)}`;
+		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "enemy", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+	.setUpgrades("Bashing Power from Wrath", "Hunter's Power from Wrath", "Staggering Power from Wrath")
 	.setDurability(15)
 	.setHPCost(40)
 	.setDamage(40);

@@ -1,9 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Risky Mixture",
-	"Inflict @{mod0Stacks} @{mod0} on a target",
-	"Apply @{mod1} instead of @{mod0}",
+	[
+		["use", "Inflict @{mod0Stacks} @{mod0} on a target"],
+		["Critical💥", "Apply @{mod1} instead of @{mod0}"]
+	],
 	"Trinket",
 	"Darkness",
 	200,
@@ -17,22 +19,12 @@ module.exports = new GearTemplate("Risky Mixture",
 			}
 		}
 		if (isCrit) {
-			const addedRegen = addModifier([target], regen).length > 0;
-			if (addedRegen) {
-				return `${getNames([target], adventure)[0]} gains Regen.`;
-			} else {
-				return "But nothing happened.";
-			}
+			return generateModifierResultLines(addModifier([target], regen));
 		} else {
-			const addedPoison = addModifier([target], poison).length > 0;
-			if (addedPoison) {
-				return `${getNames([target], adventure)[0]} was Poisoned.`;
-			} else {
-				return "But nothing happened.";
-			}
+			return generateModifierResultLines(addModifier([target], poison));
 		}
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
-	.setUpgrades("Long Risky Mixture")
+	.setUpgrades("Midas's Risky Mixture", "Potent Risky Mixture", "Thick Risky Mixture")
 	.setModifiers({ name: "Poison", stacks: 4 }, { name: "Regen", stacks: 4 })
 	.setDurability(15);

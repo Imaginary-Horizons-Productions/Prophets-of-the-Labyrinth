@@ -1,9 +1,11 @@
 const { GearTemplate, Move } = require('../classes');
-const { addModifier, payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
+const { addModifier, payHP, changeStagger, addProtection, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Charging Blood Aegis",
-	"Pay @{hpCost} hp; gain @{protection} protection, @{mod0Stacks} @{mod0}, intercept a later single target move",
-	"Protection x@{critMultiplier}",
+	[
+		["use", "Pay @{hpCost} HP; gain @{protection} protection, @{mod0Stacks} @{mod0}, intercept a later single target move"],
+		["Critical💥", "Protection x@{critMultiplier}"]
+	],
 	"Pact",
 	"Darkness",
 	350,
@@ -11,9 +13,9 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		const { element, modifiers: [powerUp], protection, critMultiplier, hpCost } = module.exports;
 		const paymentSentence = payHP(user, hpCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
 		}
-		const resultsSentences = [`Gaining protection, ${paymentSentence}`];
+		const resultLines = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
@@ -22,11 +24,7 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([user], pendingProtection);
-		const addedPowerUp = addModifier([user], powerUp).length > 0;
-		if (addedPowerUp) {
-			resultsSentences.push(`${userName} is Powered Up.`);
-		}
-		const [userName, targetName] = getNames([user, target], adventure);
+		resultLines.push(...generateModifierResultLines(addModifier([user], powerUp)));
 		const targetMove = adventure.room.moves.find(move => {
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === target.name && moveUser.title === target.title;
@@ -37,9 +35,9 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultsSentences.push(`${targetName} falls for the provocation.`);
+			resultLines.push(`${target.name} falls for the provocation.`);
 		}
-		return resultsSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reinforced Blood Aegis", "Toxic Blood Aegis")

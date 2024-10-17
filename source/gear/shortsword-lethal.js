@@ -1,32 +1,26 @@
 const { GearTemplate } = require('../classes/index.js');
-const { dealDamage, addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { joinAsStatement } = require('../util/textUtil.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Lethal Shortsword",
-	"Strike a foe for @{damage} @{element} damage, then apply @{mod0Stacks} @{mod0} to both the foe and yourself",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, then apply @{mod0Stacks} @{mod0} to both the foe and yourself"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element, modifiers: [exposed], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
-		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		const addedExposedUser = addModifier([user], exposed).length > 0;
-		if (addedExposedUser) {
-			resultText += ` ${getNames([user], adventure)} is Exposed.`;
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (user.element === element) {
+			changeStagger(stillLivingTargets, "elementMatchFoe");
 		}
-		const exposedTargets = addModifier(targets.filter(target => target.hp > 0), exposed);
-		if (exposedTargets.length > 0) {
-			resultText += ` ${joinAsStatement(false, getNames(exposedTargets, adventure), "is", "are", "Exposed.")}`;
-		}
-		return resultText;
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed))));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Accelerating Shortsword", "Toxic Shortsword")

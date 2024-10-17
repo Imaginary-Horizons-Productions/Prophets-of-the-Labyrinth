@@ -1,10 +1,12 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, addProtection, getNames } = require('../util/combatantUtil');
+const { addModifier, changeStagger, addProtection, generateModifierResultLines } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Buckler",
-	"Grant an ally @{protection} protection and gain @{mod0Stacks} @{mod0}",
-	"Protection x@{critMultiplier}",
+	[
+		["use", "Grant an ally @{protection} protection and gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Protection x@{critMultiplier}"]
+	],
 	"Armor",
 	"Earth",
 	200,
@@ -18,8 +20,7 @@ module.exports = new GearTemplate("Buckler",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection(targets, pendingProtection);
-		const addedPowerUp = addModifier([user], powerUp).length > 0;
-		return `${joinAsStatement(false, getNames(targets, adventure), "gains", "gain", "protection.")}${addedPowerUp ? ` ${getNames([user], adventure)[0]} is Powered Up.` : ""}`;
+		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."), ...generateModifierResultLines(addModifier([user], powerUp))];
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setUpgrades("Devoted Buckler", "Guarding Buckler", "Reinforced Buckler")

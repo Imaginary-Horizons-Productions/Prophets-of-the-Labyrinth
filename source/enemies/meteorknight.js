@@ -1,9 +1,8 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier, changeStagger } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectAllCombatants } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
@@ -40,10 +39,10 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		let results = [];
 		for (const target of targets) {
 			const pendingDamage = (isCrit ? 2 : 1) * ((target.protection > 0 ? 0 : bonusDamage) + baseDamage);
-			results.push(dealDamage([target], user, pendingDamage, false, user.element, adventure));
+			results.push(...dealDamage([target], user, pendingDamage, false, user.element, adventure));
 		}
 		changeStagger(targets, "elementMatchFoe");
-		return results.join(" ");
+		return results;
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
@@ -51,18 +50,16 @@ module.exports = new EnemyTemplate("Meteor Knight",
 }).addAction({
 	name: "Freefall Flare-Up",
 	element: "Untyped",
-	description: `Grant ${getModifierEmoji("Power Up")} to all combatants (friend and foe); Protects non-delvers on crit`,
+	description: `Grant @e{Power Up} to all combatants (friend and foe); Protects non-delvers on crit`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const empowered = addModifier(targets, { name: "Power Up", stacks: 20 });
-		let protected = [];
+		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Power Up", stacks: 20 })));
 		if (isCrit) {
-			protected = addModifier(adventure.room.enemies.filter(c => c.hp > 0), { name: "protection", stacks: 50 });
+			const livingEnemies = adventure.room.enemies.filter(c => c.hp > 0);
+			addProtection(livingEnemies, 50);
+			resultLines.push(joinAsStatement(false, livingEnemies.map(enemy => enemy.name), "gains", "gain", "protection."));
 		}
-		if (!(empowered.length > 0 || protected.length > 0)) {
-			return "But nothing happened.";
-		}
-		return `${joinAsStatement(empowered.map(c => c.name), false, "was", "were", "Powered Up!") + joinAsStatement(protected.map(c => c.name), false, "was", "were", "Protected.")}`;
+		return resultLines;
 	},
 	selector: selectAllCombatants,
 	needsLivingTargets: true,

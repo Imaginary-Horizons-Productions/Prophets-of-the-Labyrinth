@@ -1,11 +1,12 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Bouncing Medicine",
-	"Grant 3 random allies @{mod0Stacks} @{mod0}",
-	"@{mod0} x@{critMultiplier}",
+	[
+		["use", "Grant 3 random allies @{mod0Stacks} @{mod0}"],
+		["Critical💥", "@{mod0} x@{critMultiplier}"]
+	],
 	"Trinket",
 	"Water",
 	350,
@@ -18,14 +19,10 @@ module.exports = new GearTemplate("Bouncing Medicine",
 		if (isCrit) {
 			pendingRegen.stacks *= critMultiplier;
 		}
-		const regenedTargets = addModifier(targets, pendingRegen);
-		if (regenedTargets.length > 0) {
-			return joinAsStatement(false, getNames(regenedTargets, adventure), "gains", "gain", "Regen.");
-		} else {
-			return "But nothing happened.";
-		}
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingRegen)));
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "ally", needsLivingTargets: true })
 	.setSidegrades("Cleansing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
-	.setDurability(15);
+	.setDurability(15)
+	.setRnConfig({ "allies": 3 });

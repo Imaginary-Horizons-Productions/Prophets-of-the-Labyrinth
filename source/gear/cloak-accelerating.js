@@ -1,10 +1,13 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
+const { accuratePassive } = require('./descriptions/passives.js');
 
 module.exports = new GearTemplate("Accelerating Cloak",
-	"Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}. Passive: Gain @{critRate} Crit Rate",
-	"@{mod0} +@{bonus} and @{mod1} +@{bonus}",
+	[
+		accuratePassive,
+		["use", "Gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}"],
+		["Critical💥", "@{mod0} +@{bonus} and @{mod1} +@{bonus}"]
+	],
 	"Armor",
 	"Wind",
 	350,
@@ -19,23 +22,10 @@ module.exports = new GearTemplate("Accelerating Cloak",
 			pendingEvade.stacks += bonus;
 			pendingQuicken.stacks += bonus;
 		}
-		const results = [];
-		const addedEvade = addModifier([user], pendingEvade).length > 0;
-		if (addedEvade) {
-			results.push("prepared to Evade");
-		}
-		const addedQuicken = addModifier([user], pendingQuicken).length > 0;
-		if (addedQuicken) {
-			results.push("Quickened");
-		}
-		if (results.length > 0) {
-			return `${getNames([user], adventure)[0]} is ${listifyEN(results)}.`;
-		} else {
-			return "But nothing happened.";
-		}
+		return generateModifierResultLines(combineModifierReceipts(addModifier([user], pendingEvade).concat(addModifier([user], pendingQuicken))));
 	}
-).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
-	.setSidegrades("Accurate Cloak", "Long Cloak")
+).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+	.setSidegrades("Accurate Cloak", "Evasive Cloak")
 	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Quicken", stacks: 1 })
 	.setBonus(1) // Evade stacks
 	.setCritRate(5)

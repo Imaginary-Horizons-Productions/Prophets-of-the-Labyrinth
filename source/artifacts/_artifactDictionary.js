@@ -26,6 +26,7 @@ for (const file of [
 	"hammerspaceholster.js",
 	"hawktailfeather.js",
 	"healthinsuranceloophole.js",
+	"loadeddice.js",
 	"manualmanual.js",
 	"negativeoneleafclover.js",
 	"oilpainting.js",
@@ -58,9 +59,24 @@ function rollArtifact(adventure) {
 	return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 }
 
+/**
+ * @param {Adventure} adventure
+ * @param {string[]} exclusions
+ */
+function rollArtifactWithExclusions(adventure, exclusions = []) {
+	/** @type {string[]} */
+	const artifactPool = adventure.getElementPool().reduce((artifacts, element) => artifacts.concat(ROLL_TABLE[element]), []).filter(artifact => !exclusions.includes(artifact));
+	if (artifactPool.length > 0) {
+		return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
+	} else {
+		return null;
+	}
+}
+
 module.exports = {
 	artifactNames: ARTIFACT_NAMES,
 	getArtifact,
 	getArtifactCounts,
-	rollArtifact
+	rollArtifact,
+	rollArtifactWithExclusions
 };

@@ -1,9 +1,11 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, removeModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, changeStagger, enterStance, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Floating Mist Stance",
-	"Enter a stance that increases Punch stagger by @{bonus} and grants @{mod0Stacks} @{mod0} each round (exit other stances)",
-	"Gain @{mod0Stacks} @{mod0} now",
+	[
+		["use", "Enter a stance that increases Punch stagger by 2 and grants @{mod0Stacks} @{mod0} each round (exit other stances)"],
+		["Critical💥", "Gain @{mod0Stacks} @{mod0} now"]
+	],
 	"Technique",
 	"Light",
 	200,
@@ -12,20 +14,15 @@ module.exports = new GearTemplate("Floating Mist Stance",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		let addedEvade = false;
+		const receipts = enterStance(user, floatingMistStance);
 		if (isCrit) {
-			addedEvade = addModifier([user], displayEvade).length > 0;
+			receipts.push(...addModifier([user], displayEvade));
 		}
-		removeModifier([user], { name: "Iron Fist Stance", stacks: "all", force: true });
-		const addedFloatingMistStance = addModifier([user], floatingMistStance).length > 0;
-		if (addedFloatingMistStance) {
-			return `${getNames([user], adventure)[0]} enters Floating Mist Stance${addedEvade ? " and prepares to Evade" : ""}.`;
-		} else {
-			return "But nothing happened.";
-		}
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
-).setUpgrades("Soothing Floating Mist Stance")
-	.setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
-	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Floating Mist Stance", stacks: 1 })
-	.setBonus(2) // Punch stagger boost
-	.setDurability(10);
+).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+	.setUpgrades("Agile Floating Mist Stance", "Devoted Floating Mist Stance", "Soothing Floating Mist Stance")
+	.setModifiers({ name: "Evade", stacks: 1 }, { name: "Floating Mist Stance", stacks: 1 })
+	.setDurability(10)
+	.setBonus(3) // Punch Stagger
+	.setFlavorText({ name: "Floating Mist Stance", value: "Each stack increases Punch Stagger by @{bonus} and grants @{mod0Stacks} @{mod0} each round" });

@@ -1,9 +1,7 @@
 const { EnemyTemplate } = require("../classes");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	"Fire",
@@ -16,12 +14,12 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 ).addAction({
 	name: "Venom Cannon",
 	element: "Fire",
-	description: `Inflict minor ${getEmoji("Fire")} damage and ${getModifierEmoji("Poison")} on a single foe`,
+	description: `Inflict minor ${getEmoji("Fire")} damage and @e{Poison} on a single foe`,
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const poisonedTargets = addModifier(targets, { name: "Poison", stacks: isCrit ? 6 : 3 });
 		let damage = user.getPower() + 20;
-		return `${joinAsStatement(true, getNames(poisonedTargets, adventure), "is", "are", "Poisoned.")} ${dealDamage(targets, user, damage, false, user.element, adventure)}`;
+		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
+		return resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: isCrit ? 6 : 3 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -36,13 +34,8 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		if (isCrit) {
 			stacks *= 3;
 		}
-		const addedEvade = addModifier([user], { name: "Evade", stacks }).length > 0;
 		changeStagger([user], "elementMatchAlly");
-		if (addedEvade) {
-			return "It's prepared to Evade.";
-		} else {
-			return "But nothing happened.";
-		}
+		return generateModifierResultLines(addModifier([user], { name: "Evade", stacks }));
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
@@ -53,15 +46,10 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	description: "Slow a single foe",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
-		const slowedTargets = addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 });
 		if (isCrit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (slowedTargets.length > 0) {
-			return `${joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed")}.`;
-		} else {
-			return "But nothing happened.";
-		}
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

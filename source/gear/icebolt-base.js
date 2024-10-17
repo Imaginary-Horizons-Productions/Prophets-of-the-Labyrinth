@@ -1,10 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Ice Bolt",
-	"Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on one foe",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on one foe"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Spell",
 	"Water",
 	200,
@@ -17,10 +18,10 @@ module.exports = new GearTemplate("Ice Bolt",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const slowedTargets = addModifier(targets, slow);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed.")}`;
+		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow))));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+	.setUpgrades("Awesome Ice Bolt", "Distracting Ice Bolt", "Unlucky Ice Bolt")
 	.setDamage(40)
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDurability(15);

@@ -60,7 +60,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				const tradedGearName = delver.gear[gearIndex].name;
 				adventure.room.history["Traded for box"].push(tradedGearName);
-				delver.gear.splice(gearIndex, 1, buildGearRecord(blackBoxResource.name, "max"));
+				delver.gear.splice(gearIndex, 1, buildGearRecord(blackBoxResource.name, adventure));
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 					roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
 				})

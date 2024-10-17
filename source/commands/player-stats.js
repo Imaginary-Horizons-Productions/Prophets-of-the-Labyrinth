@@ -5,9 +5,10 @@ const { isSponsor } = require('../util/fileUtil');
 const { getArtifactCounts } = require('../artifacts/_artifactDictionary');
 const { getCompany } = require('../orcustrators/companyOrcustrator');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
+const { InteractionContextType } = require('discord.js');
 
 const mainId = "player-stats";
-module.exports = new CommandWrapper(mainId, "Get the overall PotL stats for a user", null, false, false, 3000,
+module.exports = new CommandWrapper(mainId, "Get the overall PotL stats for a user", null, false, [InteractionContextType.Guild], 3000,
 	(interaction) => {
 		const user = interaction.options.getUser("user") || interaction.user;
 		const { guildId } = interaction;

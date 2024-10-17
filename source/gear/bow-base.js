@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Bow",
-	"Strike a foe for @{damage} @{element} damage with priority",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage with priority"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Wind",
 	200,
@@ -19,7 +21,7 @@ module.exports = new GearTemplate("Bow",
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Evasive Bow", "Hunter's Bow", "Unstoppable Bow")
+	.setUpgrades("Evasive Bow", "Thief's Bow", "Unstoppable Bow")
 	.setDurability(15)
 	.setDamage(40)
 	.setPriority(1);

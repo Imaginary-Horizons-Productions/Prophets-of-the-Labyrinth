@@ -1,20 +1,45 @@
 const fs = require('fs');
 const { commandFiles } = require('../commands/_commandDictionary.js');
 const { CommandWrapper } = require('../classes');
-const { SlashCommandSubcommandBuilder, PermissionsBitField } = require('discord.js');
+const { SlashCommandSubcommandBuilder, PermissionsBitField, InteractionContextType } = require('discord.js');
+const { listifyEN } = require('../util/textUtil.js');
 
 let text = "";
 
 commandFiles.forEach(filename => {
 	/** @type {CommandWrapper} */
 	const command = require(`./../commands/${filename}`);
-	text += `### /${command.mainId}\n${command.builder.default_member_permissions ? `> Permission Level: ${new PermissionsBitField(command.builder.default_member_permissions).toArray().join(", ")}\n` : ""}\n> Usable in DMs: ${command.builder.dm_permission}\n\n> Cooldown: ${command.cooldown / 1000} second(s)\n\n${command.builder.description}\n`;
+	text += `## /${command.mainId}\n`;
+	const contextDictionary = {
+		[InteractionContextType.BotDM]: "DMs",
+		[InteractionContextType.Guild]: "Servers",
+		[InteractionContextType.PrivateChannel]: "Group DMs"
+	}
+	if (command.premiumCommand) {
+		text += `> 💎 Premium Command 💎\n\n`
+	}
+	text += `> Usable in: ${listifyEN(command.builder.contexts.map(context => contextDictionary[context]))}\n\n`;
+	if (command.cooldown === 1000) {
+		text += `> Cooldown: 1 second\n\n`;
+	} else {
+		text += `> Cooldown: ${command.cooldown / 1000} seconds\n\n`
+	}
+	if (command.builder.default_member_permissions) {
+		text += `> Permission Level: ${new PermissionsBitField(command.builder.default_member_permissions).toArray().join(", ")}\n\n`;
+	}
+	if (!command.builder.options[0] || !(command.builder.options[0] instanceof SlashCommandSubcommandBuilder)) {
+		text += `${command.builder.description}\n`;
+	}
 	for (const optionData of command.builder.options) {
-		let optionName = "#### ";
+		let optionName = "### ";
 		if (optionData instanceof SlashCommandSubcommandBuilder) {
 			optionName += `/${command.mainId} ${optionData.name}\n`;
 		} else {
-			optionName += `${optionData.name}${optionData.required ? "" : " (optional)"}\n`;
+			if (optionData.required) {
+				optionName += `${optionData.name}\n`;
+			} else {
+				optionName += `${optionData.name} (optional)\n`;
+			}
 		}
 		text += optionName;
 		if (optionData.choices?.length > 0) {

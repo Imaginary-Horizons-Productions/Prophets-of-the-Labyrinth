@@ -1,9 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { changeStagger, addProtection, addModifier, getNames } = require('../util/combatantUtil');
+const { changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Lucky Scutum",
-	"Grant @{protection} protection to an ally and yourself and gain @{mod0Stacks} @{mod0}",
-	"Protection x@{critMultiplier}",
+	[
+		["use", "Grant @{protection} protection to an ally and yourself and gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Protection x@{critMultiplier}"]
+	],
 	"Armor",
 	"Fire",
 	350,
@@ -17,9 +19,7 @@ module.exports = new GearTemplate("Lucky Scutum",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([target, user], pendingProtection);
-		const addedLucky = addModifier([user], lucky).length > 0;
-		const [targetName, userName] = getNames([target, user], adventure);
-		return `${targetName} and ${userName} gain protection.${addedLucky ? ` ${userName} gains Lucky.` : ""}`;
+		return [`${target.name} and ${user.name} gain protection.`, ...generateModifierResultLines(addModifier([user], lucky))];
 	}
 ).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")

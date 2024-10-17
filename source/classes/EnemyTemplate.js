@@ -3,10 +3,12 @@ const { BuildError } = require("./BuildError");
 const { Combatant } = require("./Combatant");
 const { CombatantReference } = require("./Move");
 
+/** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} CombatantElement */
+
 class EnemyTemplate {
 	/**
 	 * @param {string} nameInput
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{clone}"} elementEnum
+	 * @param {CombatantElement | "@{adventure}" | "@{adventureOpposite}" | "@{custom}"} elementEnum
 	 * @param {number} maxHPInput
 	 * @param {number} speedInput
 	 * @param {string} poiseExpressionInput expression, where n = delver count, that parses to number of Stagger to Stun
@@ -35,7 +37,7 @@ class EnemyTemplate {
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
 	}
-	/** @type {Record<string, {name: string, element: "Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}", priority: number, effect: (targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string, selector: (self: Combatant, adventure: Adventure) => CombatantReference[], next: (actionName: string) => string}>} */
+	/** @type {Record<string, {name: string, element: CombatantElement | "@{adventure}" | "@{adventureOpposite}", priority: number, effect: (targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string, selector: (self: Combatant, adventure: Adventure) => CombatantReference[], next: string, combatFlavor?: string }>} */
 	actions = {};
 	/** @type {[modifierName: string]: number} */
 	startingModifiers = {};
@@ -60,13 +62,15 @@ class EnemyTemplate {
 	/** Set the name, effect, target selector, and move selector of an enemy attack
 	 * @param {object} actionsInput
 	 * @param {string} actionsInput.name
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}"} actionsInput.element
+	 * @param {CombatantElement | "@{adventure}" | "@{adventureOpposite}"} actionsInput.element
 	 * @param {string} actionsInput.description
 	 * @param {number} actionsInput.priority
-	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} actionsInput.effect
+	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string[]} actionsInput.effect
 	 * @param {(self: Combatant, adventure: Adventure) => CombatantReference[]} actionsInput.selector
 	 * @param {boolean} actionsInput.needsLivingTargets Only enemies stay at 0 hp without game over, so only true if it can target an enemy
 	 * @param {string} actionsInput.next
+	 * @param {?string} actionsInput.combatFlavor
+	 * @param {Record<string,number|Record<string,number>>} actionsInput.rnConfig
 	 */
 	addAction(actionsInput) {
 		this.actions[actionsInput.name] = actionsInput;

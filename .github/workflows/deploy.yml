@@ -6,6 +6,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4.1.6
@@ -24,21 +26,19 @@ jobs:
           folder: '.'
 
       - name: Setup npm
-        run: npm ci && node source/scripts/initialize.js
+        run: npm ci --omit dev && node source/scripts/initialize.js
 
       - name: Update Commands
         run: node source/scripts/updateWiki.js
 
       - name: Push Changes to Repo
-        run: git add .; git commit -m "updated commands page on wiki" && git push origin main || true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "update wiki/Commands.md" && git push origin main || true
 
       - name: Push Wiki Changes
-        uses: Andrew-Chen-Wang/github-wiki-action@v3
-        env:
-          # Make sure you have that / at the end. We use rsync
-          # WIKI_DIR's default is wiki/
-          WIKI_DIR: wiki/
-          GH_TOKEN: ${{ secrets.SECRET_WITH_REPO_ACCESS }}
-          GH_MAIL: ${{ secrets.WIKI_EMAIL }}
-          GH_NAME: ${{ github.repository_owner }}
-          EXCLUDED_FILES: "a/ b.md"
+        uses: Andrew-Chen-Wang/github-wiki-action@v4.4.0
+        with:
+          path: wiki

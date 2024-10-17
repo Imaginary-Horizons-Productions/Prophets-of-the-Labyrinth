@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes/index.js');
 const { dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thirsting Life Drain",
-	"Strike a foe for @{damage} @{element} damage, then gain @{healing} hp (+@{bonus} on kill)",
-	"Healing x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, then gain @{healing} HP (+@{bonus} on kill)"],
+		["Critical💥", "Healing x@{critMultiplier}"]
+	],
 	"Spell",
 	"Darkness",
 	350,
@@ -15,12 +17,13 @@ module.exports = new GearTemplate("Thirsting Life Drain",
 		if (user.element === element) {
 			changeStagger(targetsLivingAtMoveStart, "elementMatchFoe");
 		}
-		let damageText = dealDamage(targetsLivingAtMoveStart, user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targetsLivingAtMoveStart, user, pendingDamage, false, element, adventure);
 		pendingHealing += targetsLivingAtMoveStart.reduce((count, target) => target.hp < 1 ? count + 1 : count, 0) * bonus;
 		if (isCrit) {
 			pendingHealing *= critMultiplier;
 		}
-		return `${damageText} ${gainHealth(user, pendingHealing, adventure)}`;
+		resultLines.push(gainHealth(user, pendingHealing, adventure));
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Flanking Life Drain", "Furious Life Drain")

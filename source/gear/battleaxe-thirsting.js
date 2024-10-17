@@ -1,9 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, gainHealth, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, dealDamage, gainHealth, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thirsting Battleaxe",
-	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; heal @{healing} hp on kill",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0}; heal @{healing} HP on kill"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,
@@ -16,16 +18,15 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const addedExposed = addModifier([user], exposed).length > 0;
-		let resultText = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		let killCount = 0;
 		targets.forEach(target => {
 			if (target.hp < 1) {
 				killCount++
 			}
 		})
-		resultText += gainHealth(user, healing * killCount, adventure);
-		return `${resultText}${addedExposed ? ` ${getNames([user], adventure)[0]} is Exposed.` : ""}`;
+		resultLines.push(gainHealth(user, healing * killCount, adventure));
+		return resultLines.concat(generateModifierResultLines(addModifier([user], exposed)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Furious Battleaxe", "Reactive Battleaxe")

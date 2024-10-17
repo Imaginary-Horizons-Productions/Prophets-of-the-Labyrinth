@@ -1,13 +1,15 @@
 const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Hearty Scarf",
-	"Gain @{speed} Speed and @{maxHP} Max HP",
-	"N/A",
+	[
+		["Passive", "Gain @{speed} Speed and @{maxHP} Max HP"]
+	],
 	"Trinket",
 	"Untyped",
 	350,
-	(targets, user, isCrit, adventure) => ""
+	(targets, user, isCrit, adventure) => []
 ).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
+	.setSidegrades("Accurate Scarf", "Wise Scarf")
 	.setDurability(0)
-	.setSpeed(2)
+	.setSpeed(5)
 	.setMaxHP(50);

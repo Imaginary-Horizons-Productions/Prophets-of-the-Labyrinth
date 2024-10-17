@@ -1,10 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Harmful Poison Torrent",
-	"Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on all foes",
-	"@{mod0} x@{critMultiplier}",
+	[
+		["use", "Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on all foes"],
+		["Critical💥", "@{mod0} x@{critMultiplier}"]
+	],
 	"Spell",
 	"Water",
 	350,
@@ -15,21 +16,18 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 		if (isCrit) {
 			pendingPoison.stacks *= critMultiplier;
 		}
-		const resultsSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
 			if (user.element === element) {
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
-			const poisonedTargets = getNames(addModifier(stillLivingTargets, pendingPoison), adventure);
-			if (poisonedTargets.length > 0) {
-				resultsSentences.push(joinAsStatement(false, poisonedTargets, "was", "were", "Poisoned."));
-			}
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, pendingPoison))));
 		}
-		return resultsSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Distracting Poison Torrent")
+	.setSidegrades("Distracting Poison Torrent", "Staggering Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 })
 	.setDamage(15)
 	.setDurability(15);

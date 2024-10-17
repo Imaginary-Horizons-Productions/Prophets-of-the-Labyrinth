@@ -5,25 +5,21 @@ const { Combatant } = require("./Combatant");
 class GearTemplate {
 	/** This read-only data class defines stats for a piece of gear
 	 * @param {string} nameInput
-	 * @param {string} descriptionInput
-	 * @param {string} critDescriptionInput
+	 * @param {[type: "Requirement" | "Passive" | "use" | "Critical💥", description: string][]} descriptionTuples
 	 * @param {"Weapon" | "Armor" | "Spell" | "Pact" | "Trinket" | "Technique" | "Action"} categoryInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementInput
 	 * @param {number} costInput
-	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string} effectInput
+	 * @param {(targets: Combatant[], user: Combatant, isCrit: boolean, adventure: Adventure) => string[]} effectInput
 	 */
-	constructor(nameInput, descriptionInput, critDescriptionInput, categoryInput, elementInput, costInput, effectInput) {
+	constructor(nameInput, descriptionTuples, categoryInput, elementInput, costInput, effectInput) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
-		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
-		if (!critDescriptionInput) throw new BuildError("Falsy critDescriptionInput");
 		if (!categoryInput) throw new BuildError("Falsy categoryInput");
 		if (!elementInput) throw new BuildError("Falsy elementInput");
 		if (!costInput && costInput !== 0) throw new BuildError("Nonzero falsy costInput");
 		if (!effectInput) throw new BuildError("Falsy effectInput");
 
 		this.name = nameInput;
-		this.description = descriptionInput;
-		this.critDescription = critDescriptionInput;
+		this.descriptions = descriptionTuples;
 		this.category = categoryInput;
 		this.element = elementInput;
 		this.cost = costInput;
@@ -60,6 +56,8 @@ class GearTemplate {
 	poise = 0;
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
+	/** @type  {Record<string, number>} */
+	rnConfig;
 
 	/** @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} tagObject */
 	setTargetingTags(tagObject) {
@@ -125,7 +123,9 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {number} integer */
+	/** For description creation purposes, this stagger is separate from Same Element Stagger and is assumed to always be applied. For conditional Stagger (eg on crit) use `setBonus()` instead.
+	 * @param {number} integer
+	 */
 	setStagger(integer) {
 		this.stagger = integer;
 		return this;
@@ -176,6 +176,12 @@ class GearTemplate {
 	/** @param {import("discord.js").EmbedField} fieldObject */
 	setFlavorText(fieldObject) {
 		this.flavorText = fieldObject;
+		return this;
+	}
+
+	/** @param {Record<string, number|Record<string,number>>} rnConfig */
+	setRnConfig(rnConfig) {
+		this.rnConfig = rnConfig;
 		return this;
 	}
 };

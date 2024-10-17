@@ -1,8 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, addProtection, getNames } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Treasure Elemental",
 	"Earth",
@@ -22,7 +21,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			let damage = user.getPower() + 100;
 			addProtection([user], isCrit ? 100 : 50);
 			changeStagger([user], "elementMatchAlly");
-			return `It gains protection and ${dealDamage(targets, user, damage, false, user.element, adventure)}`;
+			return dealDamage(targets, user, damage, false, user.element, adventure).concat([`${user.name} gains protection.`]);
 		},
 		selector: selectRandomFoe,
 		needsLivingTargets: false,
@@ -38,11 +37,11 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 				damage *= 2;
 			}
 			changeStagger([user], "elementMatchAlly");
-			let text = "";
+			const texts = [];
 			for (let i = 0; i < 3; i++) {
-				text += dealDamage(targets, user, damage, false, user.element, adventure);
+				texts.push(...dealDamage(targets, user, damage, false, user.element, adventure));
 			}
-			return text;
+			return texts;
 		},
 		selector: selectRandomFoe,
 		needsLivingTargets: false,
@@ -50,19 +49,14 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	}).addAction({
 		name: "Heavy Pockets",
 		element: "Untyped",
-		description: "Inflict Slow on all foes",
+		description: "Inflict @e{Slow} on all foes",
 		priority: 0,
 		effect: (targets, user, isCrit, adventure) => {
 			let stacks = 2;
 			if (isCrit) {
 				stacks *= 2;
 			}
-			const slowedTargets = addModifier(targets, { name: "Slow", stacks });
-			if (slowedTargets.length > 0) {
-				return joinAsStatement(false, getNames(slowedTargets, adventure), "is", "are", "Slowed trying to grab at some treasure.");
-			} else {
-				return "But nothing happened.";
-			}
+			return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks })));
 		},
 		selector: selectAllFoes,
 		needsLivingTargets: false,

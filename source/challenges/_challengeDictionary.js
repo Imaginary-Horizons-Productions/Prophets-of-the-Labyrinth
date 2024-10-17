@@ -2,9 +2,10 @@ const { ChallengeTemplate, Adventure } = require("../classes");
 
 /** @type {Record<string, ChallengeTemplate>} */
 const CHALLENGES = {};
+const STARTING_CHALLENGES = [];
+const ROLLABLE_CHALLENGES = [];
 
 for (const file of [
-	"blindavarice.js",
 	"cantholdallthisvalue.js",
 	"intothedeepend.js",
 	"restless.js",
@@ -15,9 +16,17 @@ for (const file of [
 	/** @type {ChallengeTemplate} */
 	const challenge = require(`./${file}`);
 	CHALLENGES[challenge.name] = challenge;
+	if (challenge.startingChallenge) {
+		STARTING_CHALLENGES.push(challenge.name);
+	}
+	if (challenge.rollableChallenge) {
+		ROLLABLE_CHALLENGES.push(challenge.name);
+	}
 }
 
-const ROLLABLE_CHALLENGES = Object.keys(CHALLENGES).filter(challengeName => challengeName !== "Into the Deep End");
+function getStartingChallenges() {
+	return STARTING_CHALLENGES;
+}
 
 /** @param {string} challengeName */
 function getChallenge(challengeName) {
@@ -40,6 +49,7 @@ function rollChallenges(rolls, adventure) {
 }
 
 module.exports = {
+	getStartingChallenges,
 	getChallenge,
 	rollChallenges
 };

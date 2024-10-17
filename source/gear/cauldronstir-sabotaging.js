@@ -1,22 +1,13 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, getNames, addModifier } = require('../util/combatantUtil');
-
-const rollablePotions = [
-	"Protection Potion",
-	"Clear Potion",
-	"Earthen Potion",
-	"Explosive Potion",
-	"Fiery Potion",
-	"Glowing Potion",
-	"Health Potion",
-	"Inky Potion",
-	"Watery Potion",
-	"Windy Potion"
-];
+const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
+const { SAFE_DELIMITER } = require('../constants');
+const { rollablePotions } = require('../shared/potions');
 
 module.exports = new GearTemplate("Sabotaging Cauldron Stir",
-	"Inflict @{damage} @{element} damage and @{mod0Stacks} stacks of a random weakness on a foe",
-	"Add a random potion to loot",
+	[
+		["use", "Inflict @{damage} @{element} damage and @{mod0Stacks} stacks of a random weakness on a foe"],
+		["Critical💥", "Add a random potion to loot"]
+	],
 	"Weapon",
 	"Water",
 	350,
@@ -26,28 +17,25 @@ module.exports = new GearTemplate("Sabotaging Cauldron Stir",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const resultSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (isCrit) {
-			const rolledPotion = rollablePotions[adventure.generateRandomNumber(rollablePotions.length, "battle")];
+			const rolledPotion = rollablePotions[user.roundRns[`Sabotaging Cauldron Stir${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
-			resultSentences.push(`${getNames([user], adventure)[0]} sets a batch of ${rolledPotion} to simmer.`);
+			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
-		const targetNames = getNames(targets, adventure);
-		for (let i = 0; i < targets.length; i++) {
-			const target = targets[i];
+		for (const target of targets) {
 			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 			const weaknessPool = elementsList(ineligibleWeaknesses);
 			if (weaknessPool.length > 0) {
-				const addedWeakness = addModifier(targets, { name: `${weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "battle")]} Weakness`, stacks: weakness.stacks }).length > 0;
-				if (addedWeakness) {
-					resultSentences.push(`${targetNames[i]} gains ${pendingWeakness.name}`);
-				}
+				pendingWeakness.name = `${weaknessPool[user.roundRns[`Sabotaging Cauldron Stir${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
+				resultLines.push(...generateModifierResultLines(addModifier(targets, { name: pendingWeakness, stacks: weakness.stacks })));
 			}
 		}
-		return resultSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setModifiers({ name: "unparsed random weakness", stacks: 2 })
 	.setSidegrades("Corrosive Cauldron Stir", "Toxic Cauldron Stir")
 	.setDurability(15)
-	.setDamage(40);
+	.setDamage(40)
+	.setRnConfig({ potions: 1, weaknesses: 1});

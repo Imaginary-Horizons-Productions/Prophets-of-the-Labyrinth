@@ -1,9 +1,11 @@
 const { GearTemplate, Move } = require('../classes');
-const { payHP, changeStagger, addProtection, getNames } = require('../util/combatantUtil.js');
+const { payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reinforced Blood Aegis",
-	"Pay @{hpCost} hp; gain @{protection} protection and intercept a later single target move",
-	"Protection x@{critMultiplier}",
+	[
+		["use", "Pay @{hpCost} HP; gain @{protection} protection and intercept a later single target move"],
+		["Critical💥", "Protection x@{critMultiplier}"]
+	],
 	"Pact",
 	"Darkness",
 	350,
@@ -11,9 +13,9 @@ module.exports = new GearTemplate("Reinforced Blood Aegis",
 		const { element, protection, critMultiplier, hpCost } = module.exports;
 		const paymentSentence = payHP(user, hpCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
 		}
-		const resultsSentences = [`Gaining protection, ${paymentSentence}`];
+		const resultLines = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
@@ -32,9 +34,9 @@ module.exports = new GearTemplate("Reinforced Blood Aegis",
 		});
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultsSentences.push(`${getNames([target], adventure)[0]} falls for the provocation.`);
+			resultLines.push(`${target.name} falls for the provocation.`);
 		}
-		return resultsSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Charging Blood Aegis", "Toxic Blood Aegis")

@@ -1,10 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sweeping Inspiration",
-	"Apply @{mod0Stacks} @{mod0} to all allies",
-	"@{mod0} +@{bonus}",
+	[
+		["use", "Apply @{mod0Stacks} @{mod0} to all allies"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Spell",
 	"Wind",
 	350,
@@ -14,18 +15,10 @@ module.exports = new GearTemplate("Sweeping Inspiration",
 		if (isCrit) {
 			pendingPowerUp.stacks += bonus;
 		}
-		const poweredUpTargets = getNames(addModifier(targets, pendingPowerUp), adventure);
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-
-		if (poweredUpTargets.length > 1) {
-			return `${listifyEN(poweredUpTargets, false)} are Powered Up.`;
-		} else if (poweredUpTargets.length === 1) {
-			return `${poweredUpTargets[0]} is Powered Up.`;
-		} else {
-			return "But nothing happened.";
-		}
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPowerUp)));
 	}
 ).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
 	.setSidegrades("Guarding Inspiration", "Soothing Inspiration")

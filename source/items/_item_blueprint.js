@@ -9,6 +9,6 @@ module.exports = new ItemTemplate("name",
 	},
 	false,
 	(targets, user, isCrit, adventure) => {
-		return ``; // see style guide for conventions on result texts
+		return []; // see style guide for conventions on result texts
 	}
 ).setFlavorText({ name: "", value: "" });

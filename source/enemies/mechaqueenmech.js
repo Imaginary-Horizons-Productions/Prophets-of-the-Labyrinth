@@ -1,7 +1,6 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil.js");
+const { addModifier, dealDamage, changeStagger, addProtection, combineModifierReceipts, generateModifierResultLines } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 
 const drone = require("./mechabeedrone.js")
@@ -28,26 +27,27 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);
-		return "She gains protection and demands reinforcements!";
+		return [`${user.name} gains protection.`];
 	},
 	selector: selectNone,
 	needsLivingTargets: false,
-	next: "Laser Array"
+	next: "Laser Array",
+	combatFlavor: "The Queen demands reinforcements!"
 }).addAction({
 	name: "Formation Protocol",
 	element: "Untyped",
-	description: `Gain protection and grant Quicken and ${getModifierEmoji("Power Up")} to all lower ranking mechabees`,
+	description: `Gain protection and grant @e{Quicken} and @e{Power Up} to all lower ranking mechabees`,
 	priority: 1,
 	effect: (targets, user, isCrit, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
-		const quickenedTargets = addModifier(filteredTargets, { name: "Quicken", stacks: 3 });
-		const poweredUpTargets = addModifier(filteredTargets, { name: "Power Up", stacks: 3 });
 		addProtection([user], isCrit ? 60 : 30);
-		return `She gains protection and tunes the flight formation to be more efficient! ${joinAsStatement(false, getNames(quickenedTargets, adventure), "is", "are", "Quickened. ")}${joinAsStatement(false, getNames(poweredUpTargets, adventure), "is", "are", "Powered Up.")}`;
+		const receipts = addModifier(filteredTargets, { name: "Quicken", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Power Up", stacks: 3 }));
+		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	},
 	selector: selectAllAllies,
 	needsLivingTargets: false,
-	next: "Laser Array"
+	next: "Laser Array",
+	combatFlavor: "The Queen personally optimizes the flight formation."
 }).addAction({
 	name: "Assault Protocol",
 	element: "Untyped",
@@ -63,11 +63,12 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 			}
 		});
 		addProtection([user], isCrit ? 60 : 30);
-		return "She gains protection and orders a full-on attack!";
+		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
-	next: "Laser Array"
+	next: "Laser Array",
+	combatFlavor: "The Queen orders a full-on attack!"
 }).addAction({
 	name: "Sacrifice Protocol",
 	element: "Untyped",
@@ -79,13 +80,13 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 			const targetMove = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === parseInt(target.id));
 			targetMove.name = "Self-Destruct";
 			targetMove.targets = selectAllFoes(target, adventure);
-			return "She gains protection and employs desperate measures!";
 		}
-		return "She gains protection."
+		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomOtherAlly,
 	needsLivingTargets: true,
-	next: "Laser Array"
+	next: "Laser Array",
+	combatFlavor: "The Queen employs desperate measures!"
 }).addAction({
 	name: "Deploy Drone",
 	element: "Untyped",
@@ -93,7 +94,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	priority: 0,
 	effect: (targets, user, isCrit, adventure) => {
 		spawnEnemy(drone, adventure);
-		return "Another mechabee arrives.";
+		return ["Another mechabee arrives."];
 	},
 	selector: selectNone,
 	needsLivingTargets: false,

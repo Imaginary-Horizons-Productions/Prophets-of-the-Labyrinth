@@ -1,27 +1,33 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Lethal Spear",
-	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}, also inflict @{foeStagger}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}, inflict @{stagger} more Stagger"]
+	],
 	"Weapon",
 	"Earth",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, stagger, damage, critMultiplier } = module.exports;
+		const { element, bonus, damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
-			changeStagger(targets, stagger);
+			changeStagger(targets, bonus);
 		}
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)}${isCrit ? ` ${joinAsStatement(false, getNames(targets), "was", "were", "Staggered.")}` : ""}`;
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		if (targets.some(target => target.hp > 0)) {
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Reactive Spear", "Sweeping Spear")
-	.setStagger(2)
+	.setBonus(2) // Crit Stagger
 	.setDurability(15)
 	.setDamage(65);

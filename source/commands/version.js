@@ -1,9 +1,9 @@
-const { AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder, InteractionContextType } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { generateVersionEmbed } = require('../util/embedUtil');
 
 const mainId = "version";
-module.exports = new CommandWrapper(mainId, "Get the PotL change log", null, false, true, 3000,
+module.exports = new CommandWrapper(mainId, "Get the PotL change log", null, false, [InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel], 3000,
 	/** Send the user the most recent set of patch notes or full change log */
 	(interaction) => {
 		if (interaction.options.getString("notes-length") === "last-version") {

@@ -1,39 +1,36 @@
 const { GearTemplate } = require('../classes');
-const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
-const { dealDamage, removeModifier, changeStagger, getNames } = require('../util/combatantUtil');
+const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
+const { organicPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Organic Fever Break",
-	`Deals @{element} damage to a foe, equal to damage that is pending from any ${getModifierEmoji("Poison")} and Frail on them, and then removes those debuffs. Regains 1 durability when entering a new room`,
-	"Poison and Frail not removed",
+	[
+		organicPassive,
+		["use", `Deal @{element} damage to a foe, equal to pending damage from @{mod0} and @{mod1}, then remove those debuffs`],
+		["Critical💥", "@{mod0} and @{mod1} are not removed"]
+	],
 	"Spell",
 	"Darkness",
 	350,
 	(targets, user, isCrit, adventure) => {
 		const { element } = module.exports;
-		const funnelCount = adventure.getArtifactCount("Spiral Funnel");
-		const damagesByTargets = targets.map(target => {
-			const poisons = target.getModifierStacks("Poison");
-			const frails = target.getModifierStacks("Frail");
-			return [target, (10 + 5 * funnelCount) * (poisons ** 2 + poisons) / 2 + (20 + 5 * funnelCount) * frails];
-		});
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const removedDebuffs = {};
-		if (!isCrit) {
-			getNames(removeModifier(targets, { name: "Poison", stacks: "all" })).forEach(curedName => {
-				removedDebuffs[curedName] = ["Poison"];
-			})
-			getNames(removeModifier([target], { name: "Frail", stacks: "all" })).forEach(curedName => {
-				if (curedName in removedDebuffs) {
-					removedDebuffs[curedName].push("Frail");
-				} else {
-					removedDebuffs[curedName] = ["Frail"];
-				}
-			})
+		const funnelCount = adventure.getArtifactCount("Spiral Funnel");
+		const resultLines = [];
+		const receipts = [];
+		for (const target of targets) {
+			const poisons = target.getModifierStacks("Poison");
+			const frails = target.getModifierStacks("Frail");
+			const pendingDamage = (10 + 5 * funnelCount) * (poisons ** 2 + poisons) / 2 + (20 + 5 * funnelCount) * frails;
+			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));
+			if (!isCrit) {
+				receipts.push(...removeModifier(targets, { name: "Poison", stacks: "all" }).concat(removeModifier(targets, { name: "Frail", stacks: "all" })));
+			}
 		}
-		return `${damagesByTargets.map(([target, pendingDamage]) => dealDamage([target], user, pendingDamage, false, element, adventure)).join(" ")} ${Object.entries(removedDebuffs).map(([name, debuffs]) => `${name} is cured of ${listifyEN(debuffs)}.`).join(" ")}`;
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Surpassing Fever Break", "Urgent Fever Break")
+	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frail", stacks: 0 })
 	.setDurability(5);

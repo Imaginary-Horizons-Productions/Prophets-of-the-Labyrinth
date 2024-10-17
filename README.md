@@ -8,7 +8,7 @@ A multiplayer rougelike dungeon crawl in Discord to play with other server membe
 Check out some of the unique features and gameplay for *Prophets of the Labyrinth*:
 
 ## Hosted Gameplay
-![richresponses](https://user-images.githubusercontent.com/6503151/160201570-fb7add54-f884-4b8a-ab23-cf827ecc0384.png)
+![hosteggameplay](https://user-images.githubusercontent.com/6503151/160201570-fb7add54-f884-4b8a-ab23-cf827ecc0384.png)
 
 The game is hosted by the bot, so no one needs to be stuck administrating. Runs are hosted in threads, so that other channels aren't spammed.
 
@@ -18,7 +18,7 @@ The game is hosted by the bot, so no one needs to be stuck administrating. Runs 
 During combat, each player gets different information about the upcoming rounds to encourage strategizing and discussion.
 
 ### Rich Responses
-![image](https://user-images.githubusercontent.com/6503151/160201188-ccf33fe3-8b2b-47b9-8a9a-f84d1cdc9667.png)
+![richresponses](https://user-images.githubusercontent.com/6503151/160201188-ccf33fe3-8b2b-47b9-8a9a-f84d1cdc9667.png)
 
 Messages use buttons, embeds, select menus and more to ensure the UI is intuitive and integrated with Discord.
 

@@ -1,40 +1,29 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, changeStagger, getNames } = require("../util/combatantUtil");
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new GearTemplate("Shattering Corrosion",
-	"Inflict @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} on a foe",
-	"Also inflict @{foeStagger}",
+	[
+		["use", "Inflict @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} on a foe"],
+		["Critical💥", "Inflict @{bonus} more Stagger"]
+	],
 	"Spell",
 	"Fire",
 	350,
 	(targets, user, isCrit, adventure) => {
-		const { element, modifiers: [powerDown, frail], stagger } = module.exports;
+		const { element, modifiers: [powerDown, frail], bonus } = module.exports;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const targetNames = getNames(targets, adventure);
-		const sentences = [];
+		const resultLines = [];
 		if (isCrit) {
-			changeStagger(targets, stagger);
-			sentences.push(joinAsStatement(false, targetNames, "was", "were", "Staggered."));
+			changeStagger(targets, bonus);
+			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 		}
-		const poweredDownTargets = addModifier(targets, powerDown);
-		if (poweredDownTargets.length > 0) {
-			sentences.push(joinAsStatement(false, getNames(poweredDownTargets, adventure), "is", "are", "Powered Down."));
-		}
-		const frailedTargets = addModifier(targets, frail);
-		if (frailedTargets.length > 0) {
-			sentences.push(joinAsStatement(false, getNames(frailedTargets, adventure), "becomes", "become", "Frail."));
-		}
-		if (sentences.length > 0) {
-			return sentences.join(" ");
-		} else {
-			return "But nothing happened.";
-		}
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, powerDown).concat(addModifier(targets, frail)))));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Fate-Sealing Corrosion", "Harmful Corrosion")
 	.setModifiers({ name: "Power Down", stacks: 20 }, { name: "Frail", stacks: 4 })
-	.setStagger(2)
+	.setBonus(2) // Crit Stagger
 	.setDurability(15);

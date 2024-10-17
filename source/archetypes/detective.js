@@ -1,10 +1,11 @@
 const { ArchetypeTemplate } = require("../classes");
-const { getCombatantWeaknesses, getNames, modifiersToString } = require("../util/combatantUtil");
+const { POTL_ICON_URL } = require("../constants");
+const { getCombatantWeaknesses } = require("../util/combatantUtil");
 const { getEmoji, getResistances } = require("../util/elementUtil");
 
 module.exports = new ArchetypeTemplate("Detective",
-	"They'll be able to assess combatant elemental affinities and modifiers. They'll also be able to induce weaknesses on foes with their Sabotage Kit.",
-	"Earth",
+	"They'll be able to assess combatant elemental affinities and random outcomes of moves. They'll also be able to induce weaknesses on foes with their Sabotage Kit.",
+	"Untyped",
 	{
 		maxHPGrowth: 25,
 		powerGrowth: 2.5,
@@ -15,14 +16,15 @@ module.exports = new ArchetypeTemplate("Detective",
 	["Pistol", "Sabotage Kit"],
 	(embed, adventure) => {
 		const eligibleCombatants = adventure.room.enemies.filter(combatant => combatant.hp > 0).concat(adventure.delvers);
-		const combatantNames = getNames(eligibleCombatants, adventure);
-		eligibleCombatants.forEach((combatant, index) => {
+		eligibleCombatants.forEach(combatant => {
 			const weaknesses = getCombatantWeaknesses(combatant);
 			const resistances = getResistances(combatant.element);
-			const modifiersText = modifiersToString(combatant, adventure);
-			embed.addFields({ name: `${combatantNames[index]} ${getEmoji(combatant.element)}`, value: `Weaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
+			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.element)}`, value: `Weaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}` })
 		});
-		return embed.setTitle(`Detective Predictions for Round ${adventure.room.round}`);
+		if (adventure.room.detectivePredicts.length > 0) {
+			embed.addFields({ name: "Random Outcomes", value: `- ${adventure.room.detectivePredicts.join("\n- ")}` });
+		}
+		return embed.setTitle(`Detective Predictions for Round ${adventure.room.round}`).setAuthor({ name: "Random outcomes from moves are predicted as if they are the first move to happen.", iconURL: POTL_ICON_URL });
 	},
 	(combatant) => {
 		const weaknesses = getCombatantWeaknesses(combatant);

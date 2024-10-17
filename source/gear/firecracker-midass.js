@@ -1,10 +1,12 @@
 const { GearTemplate } = require('../classes/index.js');
 const { SAFE_DELIMITER } = require('../constants.js');
-const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
+const { dealDamage, changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Midas's Firecracker",
-	"Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,
@@ -14,14 +16,19 @@ module.exports = new GearTemplate("Midas's Firecracker",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			if (user.element === element) {
+				changeStagger(stillLivingTargets, "elementMatchFoe");
+			}
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, curse))));
 		}
-		const cursedTargetnames = getNames(addModifier(targets, curse), adventure);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, cursedTargetnames, "is", "are", "afflicted with Curse of Midas.")}`;
+		return resultLines;
 	}
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Double Firecracker", "Toxic Firecracker")
 	.setModifiers({ name: "Curse of Midas", stacks: 1 })
 	.setDurability(15)
-	.setDamage(5);
+	.setDamage(5)
+	.setRnConfig({ "foes": 3 });

@@ -1,11 +1,12 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
-const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, SKIP_INTERACTION_HANDLING } = require('../constants');
+const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, SKIP_INTERACTION_HANDLING, POTL_ICON_URL } = require('../constants');
 const { getAdventure, setAdventure, checkNextRound, endRound } = require('../orcustrators/adventureOrcustrator');
 const { getColor } = require('../util/elementUtil');
-const { randomAuthorTip } = require('../util/embedUtil');
 const { getItem } = require('../items/_itemDictionary');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
+const { getArchetype } = require('../archetypes/_archetypeDictionary');
+const { injectApplicationEmojiName } = require('../util/graphicsUtil');
 
 const mainId = "readyitem";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -17,12 +18,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;
 		}
+		const delverArchetypeTemplate = getArchetype(delver.archetype);
 		interaction.reply({
 			embeds: [
-				new EmbedBuilder().setColor(getColor(adventure.room.element))
-					.setAuthor(randomAuthorTip())
-					.setTitle("Readying an Item")
-					.setDescription("Using an item has priority (it'll happen before non-priority actions).\n\nPick one option from below as your move for this round:")
+				delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)).setAuthor({ name: "Using an item takes your turn and has priority (it'll happen before non-priority actions)", iconURL: POTL_ICON_URL }), adventure)
 			],
 			components: [
 				new ActionRowBuilder().addComponents(
@@ -30,7 +29,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setPlaceholder("Pick an item...")
 						.addOptions(Object.keys(adventure.items).slice(0, MAX_SELECT_OPTIONS).reduce((options, item) => options.concat({
 							label: `${item} (Held: ${adventure.items[item]})`,
-							description: trimForSelectOptionDescription(getItem(item).description),
+							description: trimForSelectOptionDescription(injectApplicationEmojiName(getItem(item).description)),
 							value: item
 						}), [])))
 			],

@@ -1,12 +1,12 @@
 const { EnemyTemplate } = require("../classes");
 
 module.exports = new EnemyTemplate("@{clone}",
-	"@{clone}", // this shouldn't get used, clones always copy delvers
+	"@{custom}",
 	300,
 	100,
 	"6",
 	0,
-	"clone", // this shouldn't get used, clones always copy delvers
+	"@{clone}",
 	true
 ).setPower(35)
 	.addAction({

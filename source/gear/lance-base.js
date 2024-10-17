@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Lance",
-	"Strike a foe for @{damage} @{element} damage (double increase from Power Up)",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage (double increase from @{mod0})"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Earth",
 	200,
@@ -20,5 +22,6 @@ module.exports = new GearTemplate("Lance",
 	}
 ).setUpgrades("Accelerating Lance", "Shattering Lance", "Unstoppable Lance")
 	.setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+	.setModifiers({ name: "Power Up", stacks: 0 })
 	.setDurability(15)
 	.setDamage(40);

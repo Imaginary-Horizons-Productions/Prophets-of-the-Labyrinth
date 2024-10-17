@@ -1,9 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Midas Staff",
-	"Apply @{mod0Stacks} @{mod0} to a combatant, then gain @{mod1Stacks} @{mod1}",
-	"@{mod0} +@{bonus}",
+	[
+		["use", "Apply @{mod0Stacks} @{mod0} to a combatant, then gain @{mod1Stacks} @{mod1}"],
+		["Critical💥", "@{mod0} +@{bonus}"]
+	],
 	"Trinket",
 	"Water",
 	350,
@@ -20,26 +22,8 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		const addedCurse = addModifier([target], pendingCurse).length > 0;
-		const addedQuicken = addModifier([user], quicken).length > 0;
-		const [targetName, userName] = getNames([target, user], adventure);
-		if (targetName === userName) {
-			if (addedCurse) {
-				return `${userName} gains Curse of Midas${addedQuicken ? " and is Quickened" : ""}.`;
-			} else if (addedQuicken) {
-				return `${userName} is Quickened.`;
-			} else {
-				return "But nothing happened.";
-			}
-		} else {
-			if (addedCurse) {
-				return `${targetName} gains Curse of Midas. ${addedQuicken ? ` ${userName} is Quickened.` : ""}`;
-			} else if (addedQuicken) {
-				return `${userName} is Quickened.`;
-			} else {
-				return "But nothing happened.";
-			}
-		}
+		const receipts = addModifier([target], pendingCurse).concat(addModifier([user], quicken));
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
 	.setSidegrades("Discounted Midas Staff", "Soothing Midas Staff")

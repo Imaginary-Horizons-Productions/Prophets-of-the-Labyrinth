@@ -1,17 +1,14 @@
 const { GearTemplate } = require('../classes');
-const { changeStagger, getNames } = require('../util/combatantUtil');
+const { changeStagger } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
-
-const rollableHerbs = [
-	"Panacea",
-	"Quick Pepper",
-	"Regen Root",
-	"Strength Spinach"
-];
+const { SAFE_DELIMITER } = require('../constants');
+const { rollableHerbs } = require('../shared/herbs');
 
 module.exports = new GearTemplate("Urgent Herb Basket",
-	"Add @{bonus} random herb to loot with priority",
-	"Herbs gathered x@{critMultiplier}",
+	[
+		["use", "Add @{bonus} random herb to loot with priority"],
+		["Critical💥", "Herbs gathered x@{critMultiplier}"]
+	],
 	"Trinket",
 	"Earth",
 	350,
@@ -24,12 +21,12 @@ module.exports = new GearTemplate("Urgent Herb Basket",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		const randomHerb = rollableHerbs[adventure.generateRandomNumber(rollableHerbs.length, "battle")];
+		const randomHerb = rollableHerbs[user.roundRns[`Urgent Herb Basket${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
 		if (isCrit) {
-			return `${getNames([user], adventure)[0]} gathers a double-batch of ${randomHerb}.`;
+			return [`${user.name} gathers a double-batch of ${randomHerb}.`];
 		} else {
-			return `${getNames([user], adventure)[0]} gathers a batch of ${randomHerb}.`;
+			return [`${user.name} gathers a batch of ${randomHerb}.`];
 		}
 	}
 ).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
@@ -37,4 +34,5 @@ module.exports = new GearTemplate("Urgent Herb Basket",
 	.setBonus(1) // Herb count
 	.setPriority(1)
 	.setDurability(15)
-	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) });
+	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
+	.setRnConfig({ herbs: 1 });

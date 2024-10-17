@@ -1,10 +1,11 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, payHP, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { dealDamage, addModifier, payHP, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reckless Certain Victory",
-	"Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}; pay HP for your @{mod0}",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}; pay HP for your @{mod0}"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Pact",
 	"Earth",
 	350,
@@ -17,21 +18,9 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultsSentences = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
-		const addedModifiers = [];
-		const addedPowerUp = addModifier([user], powerUp).length > 0;
-		if (addedPowerUp) {
-			addedModifiers.push("Powered Up");
-		}
-		const addedExposed = addModifier([user], exposed).length > 0;
-		if (addedExposed) {
-			addedModifiers.push("Exposed");
-		}
-		if (addedModifiers.length > 0) {
-			resultsSentences.push(`${getNames([user], adventure)[0]} is ${listifyEN(addedModifiers)}.`);
-		}
-		resultsSentences.push(payHP(user, user.getModifierStacks("Power Up"), adventure));
-		return resultsSentences.join(" ");
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const receipts = addModifier([user], powerUp).concat(addModifier([user], exposed));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts), payHP(user, user.getModifierStacks("Power Up"), adventure)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Lethal Certain Victory")

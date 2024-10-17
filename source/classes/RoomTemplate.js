@@ -29,15 +29,12 @@ class RoomTemplate {
 		this.buildHistory = buildHistoryFunction;
 		this.buildRoom = buildRoomFunction;
 	}
-	/** @type {Record<string, string>} */
-	enemyList = {};
+	/** @type {[enemyName: string, countExpression: string][]} */
+	enemyList = [];
 
-	/**
-	 * @param {string} enemyName
-	 * @param {string} countExpression
-	 */
-	addEnemy(enemyName, countExpression) {
-		this.enemyList[enemyName] = countExpression;
+	/** @param {[enemyName: string, countExpression: string][]} enemyListInput */
+	setEnemies(enemyListInput) {
+		this.enemyList = enemyListInput;
 		return this;
 	}
 };

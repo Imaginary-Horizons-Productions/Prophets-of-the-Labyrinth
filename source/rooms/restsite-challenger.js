@@ -23,7 +23,7 @@ module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 		const hasRoomActions = adventure.room.hasResource("roomAction");
 		if (hasRoomActions) {
 			restEmoji = "1️⃣";
-			restLabel = `Rest [+${healPercent}% hp]`;
+			restLabel = `Rest [+${healPercent}% HP]`;
 			challengeEmoji = "1️⃣";
 			challengeLabel = "Take a challenge";
 		} else {

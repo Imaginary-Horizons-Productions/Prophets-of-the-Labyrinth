@@ -1,10 +1,13 @@
 const { GearTemplate } = require("../classes");
-const { addModifier, removeModifier, changeStagger, getNames } = require("../util/combatantUtil");
-const { joinAsStatement } = require("../util/textUtil");
+const { addModifier, changeStagger, enterStance, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
+const { organicPassive } = require("./descriptions/passives");
 
 module.exports = new GearTemplate("Organic Iron Fist Stance",
-	"Increase Punch damage by @{bonus} and change its type to yours (exit other stances), regain 1 durability each room",
-	"Inflict @{mod1Stacks} @{mod1} on all enemies",
+	[
+		organicPassive,
+		["use", "Gain @{mod0Stacks} @{mod0} (exit other stances)"],
+		["Critical💥", "Inflict @{mod1Stacks} @{mod1} on all enemies"]
+	],
 	"Technique",
 	"Light",
 	350,
@@ -13,22 +16,17 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		const frailedTargets = [];
+		const receipts = enterStance(user, ironFistStance);
 		if (isCrit) {
-			const foeTeam = (user.team === "delver" ? adventure.room.enemies : adventure.delvers).filter(foe => foe.hp > 0);
-			frailedTargets.concat(getNames(addModifier(foeTeam, frail), adventure));
+			const foeTeam = user.team === "delver" ? adventure.room.enemies.filter(foe => foe.hp > 0) : adventure.delvers;
+			receipts.push(...addModifier(foeTeam, frail));
 		}
-		removeModifier([user], { name: "Floating Mist Stance", stacks: "all", force: true });
-		const ironFistStanceAdded = addModifier([user], ironFistStance).length > 0;
-		if (ironFistStanceAdded) {
-			return `${getNames([user], adventure)} enters Iron Fist Stance.${frailedTargets.length > 0 ? ` ${joinAsStatement(false, frailedTargets, "becomes", "become", "Frail.")}` : ""}`;
-		} else if (frailedTargets.length > 0) {
-			return joinAsStatement(false, frailedTargets, "becomes", "become", "Frail.");
-		} else {
-			return "But nothing happened.";
-		}
+
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
-).setTargetingTags({ type: "self", team: "any", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+	.setSidegrades("Organic Iron Fist Stance", "Lucky Iron Fist Stance")
 	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
 	.setBonus(45) // Punch damage boost
-	.setDurability(10);
+	.setDurability(10)
+	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's element to the bearer's and increases its damage by @{bonus} per stack" });

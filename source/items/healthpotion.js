@@ -9,6 +9,6 @@ module.exports = new ItemTemplate("Health Potion",
 	selectSelf,
 	false,
 	(targets, user, isCrit, adventure) => {
-		return gainHealth(user, Math.floor(user.getMaxHP() * 0.25), adventure);
+		return [gainHealth(user, Math.floor(user.getMaxHP() * 0.25), adventure)];
 	}
 );

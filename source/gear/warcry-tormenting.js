@@ -1,11 +1,13 @@
 const { GearTemplate } = require('../classes');
-const { isDebuff, getModifierEmoji } = require('../modifiers/_modifierDictionary.js');
-const { addModifier, changeStagger, getNames } = require('../util/combatantUtil.js');
-const { listifyEN } = require('../util/textUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
+const { joinAsStatement } = require('../util/textUtil.js');
+const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
-	`Inflict @{foeStagger} and duplicate debuffs on a foe and all foes with ${getModifierEmoji("Exposed")}`,
-	"Stagger +@{bonus}",
+	[
+		["use", `Duplicate debuffs on a foe; also target all foes with @{mod0}`],
+		["Critical💥", "Stagger +@{bonus}"]
+	],
 	"Technique",
 	"Light",
 	350,
@@ -13,16 +15,15 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
-			targetSet.add(getNames([initialTarget], adventure)[0]);
+			targetSet.add(initialTarget.name);
 			targetArray.push(initialTarget);
 		}
-		adventure.room.enemies.forEach(enemy => {
-			const enemyName = getNames([enemy], adventure)[0];
-			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemyName)) {
-				targetSet.add(enemyName);
+		for (const enemy of adventure.room.enemies) {
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.name)) {
+				targetSet.add(enemy.name);
 				targetArray.push(enemy);
 			}
-		})
+		}
 
 		const { element, stagger, bonus } = module.exports;
 		let pendingStaggerStacks = stagger;
@@ -32,24 +33,21 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		if (isCrit) {
 			pendingStaggerStacks += bonus;
 		}
-		const tormentTexts = "";
+		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
 		changeStagger(targetArray, pendingStaggerStacks);
-		targetArray.forEach(target => {
-			const debuffs = [];
+		const receipts = [];
+		for (const target of targetArray) {
 			for (const modifier in target.modifiers) {
 				if (isDebuff(modifier)) {
-					addModifier([target], { name: modifier, stacks: 1 });
-					debuffs.push(modifier);
+					receipts.push(...addModifier([target], { name: modifier, stacks: 1 }));
 				}
 			}
-			if (debuffs.length > 0) {
-				tormentTexts += ` ${getNames([target], adventure)[0]} gains ${listifyEN(debuffs, false)}.`;
-			}
-		})
-		return `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.${tormentTexts}`;
+		}
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")
+	.setModifiers({ name: "Exposed", stacks: 0 })
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks
 	.setDurability(15)

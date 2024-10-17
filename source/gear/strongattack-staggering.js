@@ -1,10 +1,12 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, getNames } = require('../util/combatantUtil');
+const { dealDamage, changeStagger } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Strong Attack",
-	"Strike a foe applying @{foeStagger} and @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe applying @{foeStagger} and @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Untyped",
 	350,
@@ -17,11 +19,16 @@ module.exports = new GearTemplate("Staggering Strong Attack",
 		if (isCrit) {
 			pendingDamage *= critMultiplier;
 		}
-		changeStagger(targets, stagger);
-		return `${dealDamage(targets, user, pendingDamage, false, element, adventure)} ${joinAsStatement(false, getNames(targets, adventure), "was", "were", "Staggered.")}`;
+		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (stillLivingTargets.length > 0) {
+			changeStagger(stillLivingTargets, stagger);
+			joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered.");
+		}
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setSidegrades("Sharpened Strong Attack")
+	.setSidegrades("Flanking Strong Attack", "Sharpened Strong Attack")
 	.setDurability(15)
 	.setDamage(65)
 	.setStagger(2);

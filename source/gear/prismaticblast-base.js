@@ -3,8 +3,10 @@ const { SAFE_DELIMITER } = require('../constants');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Prismatic Blast",
-	"Strike a foe and adjacent foes for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe and adjacent foes for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Spell",
 	"Light",
 	200,
@@ -20,6 +22,6 @@ module.exports = new GearTemplate("Prismatic Blast",
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe", needsLivingTargets: true })
-	.setUpgrades("Vexing Prismatic Blast")
+	.setUpgrades("Distracting Prismatic Blast", "Flanking Prismatic Blast", "Vexing Prismatic Blast")
 	.setDurability(15)
 	.setDamage(40);

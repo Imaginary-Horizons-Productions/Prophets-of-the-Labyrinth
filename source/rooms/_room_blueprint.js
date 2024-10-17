@@ -1,5 +1,7 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 
+const enemies = [["name", "countExpression"], ["name", "countExpression"]];
+
 module.exports = new RoomTemplate("name",
 	"element",
 	"primary category",
@@ -20,4 +22,4 @@ module.exports = new RoomTemplate("name",
 			]
 		};
 	}
-).addEnemy("name", "countExpression");
+).setEnemies(enemies);

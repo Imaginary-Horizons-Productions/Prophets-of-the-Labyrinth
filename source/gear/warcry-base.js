@@ -1,11 +1,12 @@
 const { GearTemplate } = require('../classes');
-const { getModifierEmoji } = require('../modifiers/_modifierDictionary');
-const { changeStagger, getNames } = require('../util/combatantUtil');
-const { listifyEN } = require('../util/textUtil');
+const { changeStagger } = require('../util/combatantUtil');
+const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("War Cry",
-	`Inflict @{foeStagger} on a foe and all foes with ${getModifierEmoji("Exposed")}`,
-	"Stagger +@{bonus}",
+	[
+		["use", `Also target all foes with @{mod0}`],
+		["Critical💥", "Stagger +@{bonus}"]
+	],
 	"Technique",
 	"Light",
 	200,
@@ -13,16 +14,15 @@ module.exports = new GearTemplate("War Cry",
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
-			targetSet.add(getNames([initialTarget], adventure)[0]);
+			targetSet.add(initialTarget.name);
 			targetArray.push(initialTarget);
 		}
-		adventure.room.enemies.forEach(enemy => {
-			const enemyName = getNames([enemy], adventure)[0];
-			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemyName)) {
-				targetSet.add(enemyName);
+		for (const enemy of adventure.room.enemies) {
+			if (enemy.hp > 0 && enemy.getModifierStacks("Exposed") > 0 && !targetSet.has(enemy.name)) {
+				targetSet.add(enemy.name);
 				targetArray.push(enemy);
 			}
-		})
+		}
 
 		const { element, stagger, bonus } = module.exports;
 		let pendingStaggerStacks = stagger;
@@ -33,10 +33,11 @@ module.exports = new GearTemplate("War Cry",
 			pendingStaggerStacks += bonus;
 		}
 		changeStagger(targetArray, pendingStaggerStacks);
-		return `${listifyEN([...targetSet], false)} ${targetArray.length === 1 ? "is" : "are"} Staggered by the fierce war cry.`;
+		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
 	.setUpgrades("Charging War Cry", "Slowing War Cry", "Tormenting War Cry")
+	.setModifiers({ name: "Exposed", stacks: 0 })
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks
 	.setDurability(15)

@@ -2,8 +2,10 @@ const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Strong Attack",
-	"Strike a foe for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike a foe for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Technique",
 	"Untyped",
 	200,
@@ -19,6 +21,6 @@ module.exports = new GearTemplate("Strong Attack",
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
-	.setUpgrades("Sharpened Strong Attack", "Staggering Strong Attack")
+	.setUpgrades("Flanking Strong Attack", "Sharpened Strong Attack", "Staggering Strong Attack")
 	.setDurability(15)
 	.setDamage(65);

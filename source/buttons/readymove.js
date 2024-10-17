@@ -1,13 +1,12 @@
-const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, bold } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
 const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, SKIP_INTERACTION_HANDLING } = require('../constants');
-const { getAdventure, checkNextRound, endRound, setAdventure } = require('../orcustrators/adventureOrcustrator');
+const { getAdventure, checkNextRound, endRound, setAdventure, cacheRoundRn } = require('../orcustrators/adventureOrcustrator');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getEmoji, getColor } = require('../util/elementUtil');
-const { gearToEmbedField, randomAuthorTip } = require('../util/embedUtil');
+const { randomAuthorTip } = require('../util/embedUtil');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
-const { getNames } = require('../util/combatantUtil');
 
 const mainId = "readymove";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -19,21 +18,20 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
 			return;
 		}
-		const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
-			.setAuthor(randomAuthorTip())
-			.setTitle("Readying a Move")
-			.setDescription(`Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.\n\nPick one option from below as your move for this round:`);
+		const delverArchetypeTemplate = getArchetype(delver.archetype);
+		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)), adventure)
+		if (!embed.data.author) {
+			embed.setAuthor(randomAuthorTip());
+		}
 		const enemyOptions = [];
-		const miniPredictBuilder = getArchetype(delver.archetype).miniPredict;
-		const enemyNames = getNames(adventure.room.enemies, adventure);
 		for (let i = 0; i < adventure.room.enemies.length; i++) {
 			const enemy = adventure.room.enemies[i];
 			if (enemy.hp > 0) {
 				const optionPayload = {
-					label: enemyNames[i],
+					label: enemy.name,
 					value: `enemy${SAFE_DELIMITER}${i}`
 				};
-				const miniPredict = trimForSelectOptionDescription(miniPredictBuilder(enemy));
+				const miniPredict = trimForSelectOptionDescription(delverArchetypeTemplate.miniPredict(enemy));
 				if (miniPredict) {
 					optionPayload.description = miniPredict;
 				}
@@ -45,22 +43,28 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				label: ally.name,
 				value: `delver${SAFE_DELIMITER}${i}`
 			};
-			const miniPredict = trimForSelectOptionDescription(miniPredictBuilder(ally));
+			const miniPredict = trimForSelectOptionDescription(delverArchetypeTemplate.miniPredict(ally));
 			if (miniPredict) {
 				optionPayload.description = miniPredict;
 			}
 			return optionPayload;
 		});
 		const components = [];
-		const usableMoves = delver.gear.filter(gear => gear.durability > 0);
+		const usableMoves = [];
+		delver.gear.forEach(gear => { if (gear.durability > 0) { usableMoves.push(gear) } });
 		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
-			usableMoves.unshift({ name: "Punch", durability: Infinity });
+			if (delver.getModifierStacks("Floating Mist Stance") > 0) {
+				usableMoves.unshift({ name: "Floating Mist Punch" });
+			} else if (delver.getModifierStacks("Iron Fist Stance") > 0) {
+				usableMoves.unshift({ name: "Iron Fist Punch" });
+			} else {
+				usableMoves.unshift({ name: "Punch" });
+			}
 		}
 		for (let i = 0; i < usableMoves.length; i++) {
 			const { name: gearName, durability } = usableMoves[i];
-			embed.addFields(gearToEmbedField(gearName, durability, delver));
 			const { type, team } = getGearProperty(gearName, "targetingTags");
-			const elementEmoji = getEmoji(getGearProperty(gearName, "element"));
+			const elementEmoji = getEmoji(gearName === "Iron Fist Punch" ? delver.element : getGearProperty(gearName, "element"));
 			if (type === "single" || type.startsWith("blast")) {
 				// Select Menu
 				let targetOptions = [];
@@ -73,14 +77,14 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 				components.push(new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${i}`)
-						.setPlaceholder(`${elementEmoji} Use ${gearName} on...`)
+						.setPlaceholder(`${elementEmoji} Use ${gearName} ${durability ? `(${durability} durability) ` : ""}on...`)
 						.addOptions(targetOptions)
 				));
 			} else {
 				// Button
 				components.push(new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${i}`)
-						.setLabel(`Use ${gearName}`)
+						.setLabel(`Use ${gearName}${durability ? ` (${durability} durability)` : ""}`)
 						.setEmoji(elementEmoji)
 						.setStyle(ButtonStyle.Secondary)
 				));
@@ -120,17 +124,22 @@ module.exports = new ButtonWrapper(mainId, 3000,
 							newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", i));
 						}
 					} else if (type.startsWith("random")) {
-						const targetCount = Number(type.split(SAFE_DELIMITER)[1]);
-						let poolSize = 0;
+						const targetCount = Number(type.split(SAFE_DELIMITER)[1]) + adventure.getArtifactCount("Loaded Dice");
 						if (team === "ally") {
-							poolSize = adventure.delvers.length;
 							targetText = `${targetCount} random all${targetCount === 1 ? "y" : "ies"}`;
 						} else if (team === "foe") {
-							poolSize = adventure.room.enemies.length;
 							targetText = `${targetCount} random enem${targetCount === 1 ? "y" : "ies"}`;
 						}
-						for (let i = 0; i < targetCount; i++) {
-							newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", adventure.generateRandomNumber(poolSize, "battle")));
+						const { [`${moveName}${SAFE_DELIMITER}allies`]: cachedAllies, [`${moveName}${SAFE_DELIMITER}foes`]: cachedFoes } = cacheRoundRn(adventure, delver, moveName, getGearProperty(moveName, "rnConfig"));
+						if (cachedAllies) {
+							for (let i = 0; i < cachedAllies.length; i++) {
+								newMove.addTarget(new CombatantReference("delver", cachedAllies[i]));
+							}
+						}
+						if (cachedFoes) {
+							for (let i = 0; i < cachedFoes.length; i++) {
+								newMove.addTarget(new CombatantReference("enemy", cachedFoes[i]));
+							}
 						}
 					} else if (type === "self") {
 						newMove.addTarget(new CombatantReference("delver", userIndex));
@@ -202,8 +211,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					}
 					adventure.room.moves.push(newMove);
 
-					const targets = getNames(targetIndices.map(index => adventure.getCombatant({ team: targetTeam, index })), adventure).map(name => `**${name}**`);
-					confirmationText = `**${collectedInteraction.member.displayName}** ${overwritten ? "switches to ready" : "readies"} **${moveName}** to use on ${listifyEN(targets, false)}.`;
+					const targets = targetIndices.map(index => bold(adventure.getCombatant({ team: targetTeam, index }).name));
+					confirmationText = `${bold(collectedInteraction.member.displayName)} ${overwritten ? "switches to ready" : "readies"} ${bold(moveName)} to use on ${listifyEN(targets, false)}.`;
 				}
 				collectedInteraction.channel.send(confirmationText).then(() => {
 					setAdventure(adventure);

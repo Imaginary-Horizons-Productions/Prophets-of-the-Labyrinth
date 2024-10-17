@@ -17,6 +17,6 @@ module.exports = new ItemTemplate("Repair Kit",
 			}
 		})
 
-		return "All their gear regains some durability.";
+		return ["All their gear regains some durability."];
 	}
 ).setFlavorText({ name: "*Additional Notes*", value: "*It's a bit rusty...*" });

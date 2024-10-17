@@ -49,7 +49,12 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Urgent Fever Break",
 				"Organic Fever Break",
 				"Surpassing Fever Break",
-				"Long Risky Mixture",
+				"Bashing Power from Wrath",
+				"Hunter's Power from Wrath",
+				"Staggering Power from Wrath",
+				"Midas's Risky Mixture",
+				"Potent Risky Mixture",
+				"Thick Risky Mixture",
 				"Lethal Scythe",
 				"Toxic Scythe",
 				"Unstoppable Scythe",
@@ -69,6 +74,9 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Hunter's Certain Victory",
 				"Lethal Certain Victory",
 				"Reckless Certain Victory",
+				"Flanking Goad Futility",
+				"Poised Goad Futility",
+				"Shattering Goad Futility",
 				"Organic Herb Basket",
 				"Reinforced Herb Basket",
 				"Urgent Herb Basket",
@@ -86,6 +94,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			Common: [
 				"Battleaxe",
 				"Firecracker",
+				"Heat Mirage",
 				"Infinite Regeneration"
 			],
 			Rare: [
@@ -95,8 +104,12 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Double Firecracker",
 				"Midas's Firecracker",
 				"Toxic Firecracker",
+				"Evasive Heat Mirage",
+				"Unlucky Heat Mirage",
+				"Vigilant Heat Mirage",
 				"Discounted Infinite Regeneration",
-				"Fate-Sealing Infinite Regeneration"
+				"Fate-Sealing Infinite Regeneration",
+				"Purifying Infinite Regeneration"
 			]
 		},
 		Light: {
@@ -111,8 +124,13 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			Rare: [
 				"Awesome Morning Star",
 				"Bashing Morning Star",
+				"Hunter's Morning Star",
+				"Distracting Prismatic Blast",
+				"Flanking Prismatic Blast",
 				"Vexing Prismatic Blast",
 				"Evasive Shoulder Throw",
+				"Harmful Shoulder Throw",
+				"Staggering Shoulder Throw",
 				"Charging War Cry",
 				"Slowing War Cry",
 				"Tormenting War Cry"
@@ -125,17 +143,25 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Abacus",
 				"Ice Bolt",
 				"Midas Staff",
-				"Poison Torrent",
+				"Omamori",
+				"Poison Torrent"
 			],
 			Rare: [
-				"Hunter's Abacus",
 				"Sharpened Abacus",
+				"Thief's Abacus",
 				"Unstoppable Abacus",
+				"Awesome Ice Bolt",
+				"Distracting Ice Bolt",
+				"Unlucky Ice Bolt",
 				"Accelerating Midas Staff",
 				"Discounted Midas Staff",
 				"Soothing Midas Staff",
+				"Centering Omamori",
+				"Cleansing Omamori",
+				"Devoted Omamori",
 				"Distracting Poison Torrent",
-				"Harmful Poison Torrent"
+				"Harmful Poison Torrent",
+				"Staggering Poison Torrent"
 			]
 		},
 		Wind: {
@@ -150,13 +176,16 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			Rare: [
 				"Cleansing Barrier",
 				"Devoted Barrier",
-				"Long Barrier",
+				"Vigilant Barrier",
 				"Evasive Bow",
-				"Hunter's Bow",
+				"Thief's Bow",
 				"Unstoppable Bow",
 				"Guarding Inspiration",
 				"Soothing Inspiration",
 				"Sweeping Inspiration",
+				"Accelerating Refreshing Breeze",
+				"Supportive Refreshing Breeze",
+				"Swift Refreshing Breeze"
 			]
 		},
 		Untyped: {
@@ -170,16 +199,21 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Wolf Ring"
 			],
 			Rare: [
+				"Poised Chainmail",
+				"Powerful Chainmail",
 				"Wise Chainmail",
+				"Accurate Scarf",
 				"Hearty Scarf",
+				"Wise Scarf",
 				"Surpassing Wolf Ring",
-				"Swift Wolf Ring"
+				"Swift Wolf Ring",
+				"Wise Wolf Ring"
 			]
 		}
 	},
 	{
 		// Labyrinth Particulars - more customized
-		"Event": ["Twin Pedestals", "Imp Contract Faire", "Free Gold?", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Free Gold?", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Workshop", "Merchant", "Rest Site", "Treasure"],
 		"Battle": ["Hawk Fight", "Wild Fire-Arrow Frogs", "Tortoise Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors"],

@@ -1,5 +1,5 @@
-const { BuildError, GearTemplate, Gear, Delver } = require("../classes");
-const { getModifierEmoji } = require("../modifiers/_modifierDictionary");
+const { BuildError, GearTemplate, Gear, Delver, Adventure } = require("../classes");
+const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
@@ -9,15 +9,17 @@ const GEAR_NAMES = [];
 for (const file of [
 	"_appease.js",
 	"_greed.js",
-	"_punch.js",
+	"_punch-base.js",
+	"_punch-floatingmist.js",
+	"_punch-ironfist.js",
 	"abacus-base.js",
-	"abacus-hunters.js",
 	"abacus-sharpened.js",
+	"abacus-thiefs.js",
 	"abacus-unstoppable.js",
 	"barrier-base.js",
 	"barrier-cleansing.js",
 	"barrier-devoted.js",
-	"barrier-long.js",
+	"barrier-vigilant.js",
 	"battleaxe-base.js",
 	"battleaxe-furious.js",
 	"battleaxe-reactive.js",
@@ -28,7 +30,7 @@ for (const file of [
 	"bloodaegis-toxic.js",
 	"bow-base.js",
 	"bow-evasive.js",
-	"bow-hunters.js",
+	"bow-thiefs.js",
 	"bow-unstoppable.js",
 	"buckler-base.js",
 	"buckler-devoted.js",
@@ -47,11 +49,13 @@ for (const file of [
 	"certainvictory-lethal.js",
 	"certainvictory-reckless.js",
 	"chainmail-base.js",
+	"chainmail-poised.js",
+	"chainmail-powerful.js",
 	"chainmail-wise.js",
 	"cloak-accelerating.js",
 	"cloak-accurate.js",
 	"cloak-base.js",
-	"cloak-long.js",
+	"cloak-evasive.js",
 	"corrosion-base.js",
 	"corrosion-fatesealing.js",
 	"corrosion-harmful.js",
@@ -70,22 +74,37 @@ for (const file of [
 	"firecracker-double.js",
 	"firecracker-midass.js",
 	"firecracker-toxic.js",
+	"floatingmiststance-agile.js",
 	"floatingmiststance-base.js",
+	"floatingmiststance-devoted.js",
 	"floatingmiststance-soothing.js",
 	"goadfutility-base.js",
+	"goadfutility-flanking.js",
+	"goadfutility-poised.js",
+	"goadfutility-shattering.js",
+	"heatmirage-base.js",
+	"heatmirage-evasive.js",
+	"heatmirage-unlucky.js",
+	"heatmirage-vigilant.js",
 	"herbbasket-base.js",
 	"herbbasket-organic.js",
 	"herbbasket-reinforced.js",
 	"herbbasket-urgent.js",
+	"icebolt-awesome.js",
 	"icebolt-base.js",
+	"icebolt-distracting.js",
+	"icebolt-unlucky.js",
 	"infiniteregeneration-base.js",
 	"infiniteregeneration-discounted.js",
 	"infiniteregeneration-fatesealing.js",
+	"infiniteregeneration-purifying.js",
 	"inspiration-base.js",
 	"inspiration-guarding.js",
 	"inspiration-soothing.js",
 	"inspiration-sweeping.js",
+	"ironfiststance-accurate.js",
 	"ironfiststance-base.js",
+	"ironfiststance-lucky.js",
 	"ironfiststance-organic.js",
 	"lance-accelerating.js",
 	"lance-base.js",
@@ -106,6 +125,11 @@ for (const file of [
 	"morningstar-base.js",
 	"morningstar-awesome.js",
 	"morningstar-bashing.js",
+	"morningstar-hunters.js",
+	"omamori-base.js",
+	"omamori-centering.js",
+	"omamori-cleansing.js",
+	"omamori-devoted.js",
 	"pistol-base.js",
 	"pistol-double.js",
 	"pistol-duelists.js",
@@ -113,18 +137,31 @@ for (const file of [
 	"poisontorrent-base.js",
 	"poisontorrent-distracting.js",
 	"poisontorrent-harmful.js",
+	"poisontorrent-staggering.js",
 	"powerfromwrath-base.js",
+	"powerfromwrath-bashing.js",
+	"powerfromwrath-hunters.js",
+	"powerfromwrath-staggering.js",
 	"prismaticblast-base.js",
+	"prismaticblast-distracting.js",
+	"prismaticblast-flanking.js",
 	"prismaticblast-vexing.js",
+	"refreshingbreeze-accelerating.js",
 	"refreshingbreeze-base.js",
+	"refreshingbreeze-supportive.js",
+	"refreshingbreeze-swift.js",
 	"riskymixture-base.js",
-	"riskymixture-long.js",
+	"riskymixture-midass.js",
+	"riskymixture-potent.js",
+	"riskymixture-thick.js",
 	"sabotagekit-base.js",
-	"sabotagekit-long.js",
+	"sabotagekit-potent.js",
 	"sabotagekit-shattering.js",
 	"sabotagekit-urgent.js",
+	"scarf-accurate.js",
 	"scarf-base.js",
 	"scarf-hearty.js",
+	"scarf-wise.js",
 	"scutum-base.js",
 	"scutum-guarding.js",
 	"scutum-lucky.js",
@@ -135,6 +172,7 @@ for (const file of [
 	"scythe-unstoppable.js",
 	"secondwind-base.js",
 	"secondwind-cleansing.js",
+	"secondwind-lucky.js",
 	"secondwind-soothing.js",
 	"shortsword-accelerating.js",
 	"shortsword-base.js",
@@ -142,11 +180,14 @@ for (const file of [
 	"shortsword-toxic.js",
 	"shoulderthrow-base.js",
 	"shoulderthrow-evasive.js",
+	"shoulderthrow-harmful.js",
+	"shoulderthrow-staggering.js",
 	"spear-base.js",
 	"spear-lethal.js",
 	"spear-reactive.js",
 	"spear-sweeping.js",
 	"strongattack-base.js",
+	"strongattack-flanking.js",
 	"strongattack-sharpened.js",
 	"strongattack-staggering.js",
 	"warcry-base.js",
@@ -159,7 +200,8 @@ for (const file of [
 	"warhammer-unstoppable.js",
 	"wolfring-base.js",
 	"wolfring-surpassing.js",
-	"wolfring-swift.js"
+	"wolfring-swift.js",
+	"wolfring-wise.js"
 ]) {
 	const gear = require(`./${file}`);
 	if (gear.name.toLowerCase() in GEAR) {
@@ -196,11 +238,16 @@ function getGearProperty(gearName, propertyName) {
 
 /**
  * @param {string} gearName
- * @param {number | "max"} durability
+ * @param {Adventure} adventure
  */
-function buildGearRecord(gearName, durability) {
+function buildGearRecord(gearName, adventure) {
 	const template = GEAR[gearName.toLowerCase()];
-	return new Gear(gearName, durability === "max" ? template.maxDurability : durability, template.maxHP, template.power, template.speed, template.critRate, template.poise);
+	let durability = template.maxDurability;
+	const shoddyPenalty = adventure.getChallengeIntensity("Shoddy Craftsmanship");
+	if (shoddyPenalty) {
+		durability = Math.ceil(durability * (100 - shoddyPenalty) / 100);
+	}
+	return new Gear(gearName, durability, template.maxHP, template.power, template.speed, template.critRate, template.poise);
 }
 
 /**
@@ -209,63 +256,88 @@ function buildGearRecord(gearName, durability) {
  * @param {Delver?} holder
  */
 function buildGearDescription(gearName, buildFullDescription, holder) {
-	if (gearExists(gearName)) {
-		/** @type {string} */
-		let description;
-		if (buildFullDescription) {
-			// return the base and crit effects of the gear with the base italicized
-			description = `*Effect:* ${getGearProperty(gearName, "description")}\n*Critical💥:* ${getGearProperty(gearName, "critDescription")}`;
-		} else {
-			// return the base effect of the gear unitalicized
-			description = getGearProperty(gearName, "description");
-		}
-
-		let damage = getGearProperty(gearName, "damage");
-		const stagger = getGearProperty(gearName, "stagger");
-		const element = getGearProperty(gearName, "element");
-		if (holder) {
-			damage += holder.power + holder.getModifierStacks("Power Up");
-			damage = Math.min(damage, holder.getDamageCap());
-
-			if (holder.element === element) {
-				description = description
-					.replace(/@{foeStagger}/g, `${stagger + 2} Stagger`)
-					.replace(/@{allyStagger}/g, `${stagger + 1} Stagger`);
-			} else {
-				description = description
-					.replace(/@{foeStagger}/g, `${stagger} Stagger`)
-					.replace(/@{allyStagger}/g, `${stagger} Stagger`);
-			}
-		} else {
-			damage = `(${damage} base)`;
-			description = description
-				.replace(/@{foeStagger}/g, `(${stagger} base) Stagger`)
-				.replace(/@{allyStagger}/g, `(${stagger} base) Stagger`);
-		}
-
-		description = description.replace(/@{element}/g, getEmoji(element))
-			.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
-			.replace(/@{damage}/g, damage)
-			.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
-			.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
-			.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
-			.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
-			.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
-			.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
-			.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
-			.replace(/@{poise}/g, getGearProperty(gearName, "poise"))
-			.replace(/@{extraStagger}/g, `${stagger} Stagger`);
-		getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
-			if (!modifier.name.startsWith("unparsed")) {
-				const modifierEmoji = getModifierEmoji(modifier.name);
-				description = description.replace(new RegExp(`@{mod${index}}`, "g"), modifierEmoji);
-			}
-			description = description.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
-		})
-		return description;
-	} else {
+	if (!gearExists(gearName)) {
 		return "";
 	}
+	let totalStagger = getGearProperty(gearName, "stagger") ?? 0;
+	if (holder) {
+		if (gearName === "Floating Mist Punch") {
+			totalStagger += 3 * holder.getModifierStacks("Floating Mist Stance");
+		}
+		if (getGearProperty(gearName, "element") === holder.element || gearName === "Iron Fist Punch") {
+			switch (getGearProperty(gearName, "targetingTags").team) {
+				case "ally":
+					totalStagger -= 1;
+					break;
+				case "foe":
+					totalStagger += 2;
+					break;
+				case "any":
+					totalStagger = "+2 or -1";
+					break;
+			}
+		}
+	}
+	let text = "";
+	if (buildFullDescription) {
+		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
+			if (type === "use") {
+				return `*${totalStagger} Stagger*: ${description}`;
+			} else if (!["upgradeDiff"].includes(type)) {
+				return `*${type}*: ${description}`;
+			}
+		});
+		text = descriptionTexts.join("\n");
+	} else {
+		// these descriptions get used in select option sets, which don't support markdown
+		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
+			if (type === "use") {
+				return `${totalStagger} Stagger: ${description}`;
+			} else if (!["Critcal💥", "upgradeDiff"].includes(type)) {
+				return `${type}: ${description}`;
+			}
+		});
+		text = descriptionTexts.join(". ")
+	}
+
+	let damage = getGearProperty(gearName, "damage");
+	if (damage !== undefined) {
+		if (holder) {
+			damage += holder.getPower();
+			if (gearName === "Iron Fist Punch") {
+				damage += 45 * holder.getModifierStacks("Iron Fist Stance");
+			}
+			text = text.replace(/@{damage}/g, Math.floor(Math.min(damage, holder.getDamageCap())));
+		} else {
+			text = text.replace(/@{damage}/g, `(${damage} + power)`);
+		}
+	}
+
+	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.element : null);
+}
+
+function injectGearStats(text, gearName, elementOverride) {
+	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
+		if (!modifier.name.startsWith("unparsed")) {
+			text = text.replace(new RegExp(`@{mod${index}}`, "g"), getApplicationEmojiMarkdown(modifier.name));
+		}
+		text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
+	})
+	if (elementOverride) {
+		text = text.replace(/@{element}/g, getEmoji(elementOverride))
+	} else {
+		text = text.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
+	}
+	return text.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
+		.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
+		.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
+		.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
+		.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
+		.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
+		.replace(/@{power}/g, getGearProperty(gearName, "power"))
+		.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
+		.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
+		.replace(/@{poise}/g, getGearProperty(gearName, "poise"));
 }
 
 module.exports = {
@@ -273,5 +345,6 @@ module.exports = {
 	gearExists,
 	getGearProperty,
 	buildGearRecord,
-	buildGearDescription
+	buildGearDescription,
+	injectGearStats
 };

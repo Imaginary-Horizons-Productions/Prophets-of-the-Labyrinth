@@ -1,8 +1,12 @@
 const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("name",
-	"description",
-	"crit description",
+	[
+		["Requirement", "text"],
+		["Passive", "text"],
+		["use", "move description"],
+		["Critical💥", "crit description"]
+	],
 	"category",
 	"element",
 	200,
@@ -14,7 +18,7 @@ module.exports = new GearTemplate("name",
 		if (isCrit) {
 
 		}
-		return ""; // see style guide for conventions on result texts
+		return []; // see style guide for conventions on result texts
 	}
 ).setTargetingTags({ type: "", team: "", needsLivingTargets: true })
 	.setDurability();

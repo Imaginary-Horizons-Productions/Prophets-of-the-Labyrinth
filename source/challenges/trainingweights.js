@@ -3,7 +3,9 @@ const { levelUp } = require("../util/delverUtil");
 
 module.exports = new ChallengeTemplate("Training Weights",
 	"Start combat with @{intensity} Slow and Exposed for @{duration} rooms. Afterwards, everyone gains @{reward} levels.",
-	4
+	4,
+	true,
+	true
 ).setDuration(5)
 	.setScoreMultiplier(1.1)
 	.setReward(3)

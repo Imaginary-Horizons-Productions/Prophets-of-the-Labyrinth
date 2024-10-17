@@ -152,9 +152,11 @@ Archetypes:
 ### Uncommon Variants
 
 ## Uncategorized Variants
+- Agile
 - Awesome
 - Bashing
 - Bouncing
+- Centering
 - Cleansing
 - Corrosive
 - Devoted
@@ -164,8 +166,10 @@ Archetypes:
 - Fate-Sealing
 - Harmful
 - Healing
-- Long
+- Lucky
 - Midas's
+- Powerful
+- Potent
 - Purifying
 - Reactive
 - Reinforced
@@ -173,8 +177,11 @@ Archetypes:
 - Sharpened
 - Shattering
 - Surpassing
+- Supportive
 - Taunting
 - Thick
+- Thief's
 - Tormenting
+- Unlucky
 - Vexing
 - Wise

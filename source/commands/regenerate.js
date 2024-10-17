@@ -1,11 +1,11 @@
-const { PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits, InteractionContextType } = require('discord.js');
 const { CommandWrapper, Adventure } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { renderRoom } = require('../util/embedUtil');
 const { clearComponents } = require('../util/messageComponentUtil');
 
 const mainId = "regenerate";
-module.exports = new CommandWrapper(mainId, "Regenerate the current room message for an adventure", PermissionFlagsBits.SendMessagesInThreads, false, false, 30000,
+module.exports = new CommandWrapper(mainId, "Regenerate the current room message for an adventure", PermissionFlagsBits.SendMessagesInThreads, false, [InteractionContextType.Guild], 30000,
 	/** Call renderRoom to regenerate room embed and components */
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);

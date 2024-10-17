@@ -1,4 +1,4 @@
-const { Adventure, LabyrinthTemplate, RoomTemplate } = require("../classes");
+const { Adventure, LabyrinthTemplate, RoomTemplate, BuildError } = require("../classes");
 const { SAFE_DELIMITER } = require("../constants.js");
 const { gearExists } = require("../gear/_gearDictionary.js");
 const { itemExists } = require("../items/_itemDictionary.js");
@@ -19,7 +19,7 @@ for (const file of [
 	for (const element in labyrinth.availableItems) {
 		for (const item of labyrinth.availableItems[element]) {
 			if (!itemExists(item)) {
-				console.error(`Unregistered item name in ${labyrinth.name}: ${item}`);
+				throw new BuildError(`Unregistered item name in ${labyrinth.name}: ${item}`);
 			}
 		}
 	}
@@ -28,7 +28,7 @@ for (const file of [
 		for (const rarity in labyrinth.availableGear[element]) {
 			for (const gear of labyrinth.availableGear[element][rarity]) {
 				if (!gearExists(gear)) {
-					console.error(`Unregistered gear name in ${labyrinth.name}: ${gear}`);
+					throw new BuildError(`Unregistered gear name in ${labyrinth.name}: ${gear}`);
 				}
 			}
 		}
@@ -37,7 +37,7 @@ for (const file of [
 	for (const tag in labyrinth.availableRooms) {
 		for (const roomTitle of labyrinth.availableRooms[tag]) {
 			if (!(ROOM_CATEGORIES.includes(roomTitle) || getRoom(roomTitle))) {
-				console.error(`Unregistered room title in ${labyrinth.name}: ${roomTitle}`);
+				throw new BuildError(`Unregistered room title in ${labyrinth.name}: ${roomTitle}`);
 			}
 		}
 	}

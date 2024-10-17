@@ -1,9 +1,12 @@
 const { GearTemplate, Move } = require('../classes/index.js');
-const { payHP, changeStagger, addProtection, getNames, addModifier } = require('../util/combatantUtil.js');
+const { payHP, changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil.js');
+const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Toxic Blood Aegis",
-	"Pay @{hpCost} hp; gain @{protection} protection, inflict @{mod0Stacks} @{mod0} on a foe and intercept their move",
-	"Protection x@{critMultiplier}",
+	[
+		["use", "Pay @{hpCost} HP; gain @{protection} protection, inflict @{mod0Stacks} @{mod0} on a foe and intercept their move"],
+		["Critical💥", "Protection x@{critMultiplier}"]
+	],
 	"Pact",
 	"Darkness",
 	350,
@@ -11,9 +14,9 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 		const { element, modifiers: [poison], protection, critMultiplier, hpCost } = module.exports;
 		const paymentSentence = payHP(user, hpCost, adventure);
 		if (adventure.lives < 1) {
-			return paymentSentence;
+			return [paymentSentence];
 		}
-		const resultsSentences = [`Gaining protection, ${paymentSentence}`];
+		const resultLines = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
@@ -30,14 +33,14 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 			const moveUser = adventure.getCombatant(move.userReference);
 			return moveUser.name === user.name && moveUser.title === user.title;
 		});
-		const addedPoison = addModifier([target], poison).length > 0;
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultsSentences.push(`${getNames([target], adventure)[0]} falls for the provocation${addedPoison ? ` and is Poisoned` : ""}.`);
-		} else if (addedPoison) {
-			resultsSentences.push(`${getNames([target], adventure)[0]} is Poisoned.`);
+			const addedPoison = addModifier([target], poison).some(receipt => receipt.succeeded.size > 0);
+			resultLines.push(`${target.name} falls for the provocation${addedPoison ? ` and gains ${getApplicationEmojiMarkdown("Poison")}` : ""}.`);
+		} else {
+			resultLines.push(...generateModifierResultLines(addModifier([target], poison)));
 		}
-		return resultsSentences.join(" ");
+		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Charging Blood Aegis", "Reinforced Blood Aegis")

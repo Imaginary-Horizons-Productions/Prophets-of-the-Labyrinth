@@ -17,15 +17,17 @@ const { readFile, writeFile } = require("fs").promises;
 const { Company } = require("./classes");
 const { SAFE_DELIMITER, authPath, testGuildId, announcementsChannelId, lastPostedVersion, SKIP_INTERACTION_HANDLING, commandIds } = require("./constants.js");
 
-const { loadCompanies, setCompany } = require("./orcustrators/companyOrcustrator.js");
-const { loadAdventures } = require("./orcustrators/adventureOrcustrator.js");
-const { loadPlayers } = require("./orcustrators/playerOrcustrator.js");
-
 const { getCommand, slashData } = require("./commands/_commandDictionary.js");
 const { getButton } = require("./buttons/_buttonDictionary.js");
+const { getModifierEmojiFileTuples } = require("./modifiers/_modifierDictionary.js");
 const { getSelect } = require("./selects/_selectDictionary.js");
 
 const { generateVersionEmbed } = require("./util/embedUtil.js");
+const { setApplicationEmojiDictionary } = require("./util/graphicsUtil.js");
+
+const { loadAdventures } = require("./orcustrators/adventureOrcustrator.js");
+const { loadCompanies, setCompany } = require("./orcustrators/companyOrcustrator.js");
+const { loadPlayers } = require("./orcustrators/playerOrcustrator.js");
 //#endregion
 
 //#region Executing Code
@@ -47,9 +49,9 @@ client.login(require(authPath).token)
 
 (async () => {
 	try {
+		console.log(await loadPlayers());
 		console.log(await loadCompanies());
 		console.log(await loadAdventures());
-		console.log(await loadPlayers());
 		client.login(require("../config/auth.json").token);
 	} catch (rejectMessage) {
 		console.error(rejectMessage);
@@ -61,10 +63,26 @@ client.login(require(authPath).token)
 client.on(Events.ClientReady, () => {
 	console.log(`Connected as ${client.user.tag}`);
 
+	//Upload Emoji
+	client.application.emojis.fetch().then(async existingEmojis => {
+		const emojiMap = {};
+		await Promise.all(getModifierEmojiFileTuples().map(async ([name, attachment]) => {
+			const existingEmoji = existingEmojis.find(emoji => emoji.name === name);
+			if (existingEmoji) {
+				emojiMap[existingEmoji.name] = existingEmoji.id;
+			} else {
+				const createdEmoji = await client.application.emojis.create({ name, attachment });
+				emojiMap[createdEmoji.name] = createdEmoji.id;
+			}
+		}))
+		setApplicationEmojiDictionary(emojiMap);
+	})
+
 	if (process.argv[4] === "prod") {
+		// Upload Slash Commands
 		(() => {
 			try {
-				new REST({ version: 9 }).setToken(require(authPath).token).put(
+				new REST({ version: 10 }).setToken(require(authPath).token).put(
 					Routes.applicationCommands(client.user.id),
 					{ body: slashData }
 				).then(commands => {

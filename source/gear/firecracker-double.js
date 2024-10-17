@@ -3,8 +3,10 @@ const { SAFE_DELIMITER } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Double Firecracker",
-	"Strike 6 random foes for @{damage} @{element} damage",
-	"Damage x@{critMultiplier}",
+	[
+		["use", "Strike 6 random foes for @{damage} @{element} damage"],
+		["Critical💥", "Damage x@{critMultiplier}"]
+	],
 	"Weapon",
 	"Fire",
 	350,
@@ -22,4 +24,5 @@ module.exports = new GearTemplate("Double Firecracker",
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}6`, team: "foe", needsLivingTargets: true })
 	.setSidegrades("Midas's Firecracker", "Toxic Firecracker")
 	.setDurability(15)
-	.setDamage(5);
+	.setDamage(5)
+	.setRnConfig({ "foes": 6 });
