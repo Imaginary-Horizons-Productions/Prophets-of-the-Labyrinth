@@ -1,8 +1,9 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes
-- Changed Detective to Untyped and increased duration of Sabotage Kit (and upgrades) weakness by 1
+- Changed Detective to Untyped, increased duration of Sabotage Kit (and upgrades) weakness by 1, changed predict to weaknesses and random outcomes (no longer modifiers)
    - The case where the Detective innately had elemental advantage against an enemy was too much more powerful than the case where the advantage was earned. Changing to Untyped both removes the innate elemental advantage case, but also makes adding Pistol triggering weakness to enemies always possible (no enemies resist Untyped).
+   - In the effort to make random outcomes stable for bouncing moves, the system became compatible with being able to have random outcomes be recorded by predicts
 - Changed Martial Artist Predict to Stagger and Enemy's next move
    - Now that predicts are unique info combinations, the Martial Artist is no longer stuck predicting speed (which hasn't been helpful in informing Stun strategies since the mechanics were made independent) in order to be able to predict Stagger. Predicting the move in the next round (note: not the upcoming round, but the one after that) is helpful for deciding if that move is worth attempting to avoid by pushing for Stun.
 ### Gear
@@ -30,6 +31,7 @@
 - Renamed the modifier "Stasis" to "Retain"
 - Added Challenge: "Shoddy Craftsmanship" - For the next 5 rooms, gear you acquire has reduced durability reduced by 25%. Afterwards gain 250 gold.
 - Added new Event room: Door 1 or Door 2?
+- Tuned Elekmist actions' progress values
 ## Prophets of the Labyrinth v0.15.0:
 After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.
 ### Detective
