@@ -3,7 +3,8 @@ const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { changeStagger, addProtection, addModifier, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 const { SAFE_DELIMITER } = require('../constants.js');
 
-module.exports = new GearTemplate("Cleansing Omamori",
+const gearName = "Cleansing Omamori";
+module.exports = new GearTemplate(gearName,
 	[
 		["use", "Gain @{mod0Stacks} @{mod0} and @{protection} protection, then shrug off a random debuff"],
 		["Critical💥", "@{mod0} x@{critMultiplier}"]
@@ -24,7 +25,7 @@ module.exports = new GearTemplate("Cleansing Omamori",
 		const receipts = addModifier([user], pendingLucky);
 		const debuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (debuffs.length > 0) {
-			const rolledDebuff = debuffs[user.roundRns[`Cleansing Omamori${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
+			const rolledDebuff = debuffs[user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
 			receipts.push(...removeModifier([user], { name: rolledDebuff, stacks: "all" }));
 		}
 		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));

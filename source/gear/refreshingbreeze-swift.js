@@ -4,7 +4,8 @@ const { removeModifier, changeStagger, combineModifierReceipts, generateModifier
 const { swiftPassive } = require('./descriptions/passives');
 const { SAFE_DELIMITER } = require('../constants.js');
 
-module.exports = new GearTemplate("Swift Refreshing Breeze",
+const gearName = "Swift Refreshing Breeze";
+module.exports = new GearTemplate(gearName,
 	[
 		swiftPassive,
 		["use", "Cure a random debuff from each ally"],
@@ -24,7 +25,7 @@ module.exports = new GearTemplate("Swift Refreshing Breeze",
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? 2 : 1);
 				for (let i = 0; i < debuffsToRemove; i++) {
-					const debuffIndex = user.roundRns[`Swift Refreshing Breeze${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
+					const debuffIndex = user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 					const rolledDebuff = targetDebuffs[debuffIndex];
 					const [removalReceipt] = removeModifier([target], { name: rolledDebuff, stacks: "all" });
 					receipts.push(removalReceipt);

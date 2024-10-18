@@ -5,7 +5,8 @@ const { organicPassive } = require('./descriptions/passives');
 const { SAFE_DELIMITER } = require('../constants');
 const { rollableHerbs } = require('../shared/herbs');
 
-module.exports = new GearTemplate("Organic Herb Basket",
+const gearName = "Organic Herb Basket";
+module.exports = new GearTemplate(gearName,
 	[
 		organicPassive,
 		["use", "Add @{bonus} random herb to loot"],
@@ -23,7 +24,7 @@ module.exports = new GearTemplate("Organic Herb Basket",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		const randomHerb = rollableHerbs[user.roundRns[`Organic Herb Basket${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
+		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
 		if (user.crit) {
 			return [`${user.name} gathers a double-batch of ${randomHerb}.`];

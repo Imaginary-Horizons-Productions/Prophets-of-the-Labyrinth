@@ -3,8 +3,8 @@ const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = 
 const { SAFE_DELIMITER } = require('../constants');
 const { rollablePotions } = require('../shared/potions');
 
-
-module.exports = new GearTemplate("Toxic Cauldron Stir",
+const gearName = "Toxic Cauldron Stir";
+module.exports = new GearTemplate(gearName,
 	[
 		["use", "Apply @{mod0Stacks} @{mod0} and @{damage} @{element} damage to a foe"],
 		["Critical💥", "Add a random potion to loot"]
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Toxic Cauldron Stir",
 		}
 		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (user.crit) {
-			const rolledPotion = rollablePotions[user.roundRns[`Toxic Cauldron Stir${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+			const rolledPotion = rollablePotions[user.roundRns[`${gearName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}

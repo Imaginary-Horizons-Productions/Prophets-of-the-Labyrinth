@@ -3,7 +3,8 @@ const { SAFE_DELIMITER } = require('../constants');
 const { rollablePotions } = require('../shared/potions');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Cauldron Stir",
+const gearName = "Cauldron Stir";
+module.exports = new GearTemplate(gearName,
 	[
 		["use", "Strike a foe for @{damage} @{element} damage"],
 		["Critical💥", "Add a random potion to loot"]
@@ -19,7 +20,7 @@ module.exports = new GearTemplate("Cauldron Stir",
 		}
 		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (user.crit) {
-			const rolledPotion = rollablePotions[user.roundRns[`Cauldron Stir${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+			const rolledPotion = rollablePotions[user.roundRns[`${gearName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}

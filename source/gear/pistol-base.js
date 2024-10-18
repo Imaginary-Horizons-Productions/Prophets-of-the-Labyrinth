@@ -2,7 +2,8 @@ const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
-module.exports = new GearTemplate("Pistol",
+const gearName = "Pistol";
+module.exports = new GearTemplate(gearName,
 	[
 		["use", "Strike a foe for @{damage} @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
@@ -22,7 +23,7 @@ module.exports = new GearTemplate("Pistol",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		if (targets.some(target => getCombatantWeaknesses(target).includes(element))) {
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
-			const ally = allyTeam[user.roundRns[`Pistol${SAFE_DELIMITER}allies`][0] % allyTeam.length];
+			const ally = allyTeam[user.roundRns[`${gearName}${SAFE_DELIMITER}allies`][0] % allyTeam.length];
 			resultLines.push(...generateModifierResultLines(addModifier([ally], powerUp)));
 		}
 		return resultLines;

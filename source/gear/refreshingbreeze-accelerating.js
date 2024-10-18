@@ -3,7 +3,8 @@ const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 const { SAFE_DELIMITER } = require('../constants.js');
 
-module.exports = new GearTemplate("Accelerating Refreshing Breeze",
+const gearName = "Accelerating Refreshing Breeze";
+module.exports = new GearTemplate(gearName,
 	[
 		["use", "Cure a random debuff from each ally and grant them @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Debuffs cured x@{critMultiplier}"]
@@ -22,7 +23,7 @@ module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? 2 : 1);
 				for (let i = 0; i < debuffsToRemove; i++) {
-					const debuffIndex = user.roundRns[`Accelerating Refreshing Breeze${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
+					const debuffIndex = user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 					const rolledDebuff = targetDebuffs[debuffIndex];
 					const [removalReceipt] = removeModifier([target], { name: rolledDebuff, stacks: "all" });
 					receipts.push(removalReceipt);

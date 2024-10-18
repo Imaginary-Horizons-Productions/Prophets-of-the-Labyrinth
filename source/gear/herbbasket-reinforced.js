@@ -4,7 +4,8 @@ const { listifyEN } = require('../util/textUtil');
 const { SAFE_DELIMITER } = require('../constants');
 const { rollableHerbs } = require('../shared/herbs');
 
-module.exports = new GearTemplate("Reinforced Herb Basket",
+const gearName = "Reinforced Herb Basket";
+module.exports = new GearTemplate(gearName,
 	[
 		["use", "Gain @{protection} protection and add @{bonus} random herb to loot"],
 		["Critical💥", "Herbs gathered x@{critMultiplier}"]
@@ -22,7 +23,7 @@ module.exports = new GearTemplate("Reinforced Herb Basket",
 			changeStagger([user], "elementMatchAlly");
 		}
 		addProtection([user], protection);
-		const randomHerb = rollableHerbs[user.roundRns[`Reinforced Herb Basket${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
+		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
 		if (user.crit) {
 			return [`${user.name} gains protection and gathers a double-batch of ${randomHerb}.`];

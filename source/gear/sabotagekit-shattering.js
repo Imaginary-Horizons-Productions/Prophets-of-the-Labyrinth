@@ -3,7 +3,8 @@ const { SAFE_DELIMITER } = require('../constants.js');
 const { addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 
-module.exports = new GearTemplate("Shattering Sabotage Kit",
+const gearName = "Shattering Sabotage Kit";
+module.exports = new GearTemplate(gearName,
 	[
 		["use", "Afflict a foe with @{mod0Stacks} @{mod0}, @{mod2Stacks} @{@mod2} and @{mod1Stacks} stacks of a random weakness"],
 		["Critical💥", "Slow and Weakness +@{bonus}"]
@@ -26,7 +27,7 @@ module.exports = new GearTemplate("Shattering Sabotage Kit",
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 		const weaknessPool = elementsList(ineligibleWeaknesses);
 		if (weaknessPool.length > 0) {
-			pendingWeakness.name = `${weaknessPool[user.roundRns[`Shattering Sabotage Kit${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
+			pendingWeakness.name = `${weaknessPool[user.roundRns[`${gearName}${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
 			receipts.unshift(...addModifier([target], pendingWeakness));
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts));
