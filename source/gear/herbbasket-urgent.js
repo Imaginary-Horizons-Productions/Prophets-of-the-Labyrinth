@@ -4,7 +4,7 @@ const { listifyEN } = require('../util/textUtil');
 const { SAFE_DELIMITER } = require('../constants');
 const { rollableHerbs } = require('../shared/herbs');
 
-const gearName = "Reinforced Herb Basket";
+const gearName = "Urgent Herb Basket";
 module.exports = new GearTemplate(gearName,
 	[
 		["use", "Add @{bonus} random herb to loot with priority"],
