@@ -16,9 +16,9 @@ module.exports = new EnemyTemplate("Bloodtail Hawk",
 	element: "Wind",
 	description: `Deals ${getEmoji("Wind")} damage to a single target`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 45;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");

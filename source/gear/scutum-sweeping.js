@@ -9,10 +9,10 @@ module.exports = new GearTemplate("Sweeping Scutum",
 	"Armor",
 	"Fire",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
-		if (isCrit) {
+		if (user.crit) {
 			pendingProtection *= critMultiplier;
 		}
 		if (user.element === element) {

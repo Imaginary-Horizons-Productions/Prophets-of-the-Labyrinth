@@ -18,7 +18,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	element: "Untyped",
 	description: `Gain protection and command all Mechabees to Call for Help`,
 	priority: 1,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		// assumes mechaqueen is at enemy index 0 and that all other enemies are mechabees
 		adventure.room.moves.forEach(move => {
 			if (move.userReference.team === "enemy" && move.userReference.index !== 0) {
@@ -26,7 +26,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 				move.targets = [];
 			}
 		});
-		addProtection([user], isCrit ? 60 : 30);
+		addProtection([user], user.crit ? 60 : 30);
 		return [`${user.name} gains protection.`];
 	},
 	selector: selectNone,
@@ -38,9 +38,9 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	element: "Untyped",
 	description: `Gain protection and grant @e{Quicken} and @e{Power Up} to all lower ranking mechabees`,
 	priority: 1,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
-		addProtection([user], isCrit ? 60 : 30);
+		addProtection([user], user.crit ? 60 : 30);
 		const receipts = addModifier(filteredTargets, { name: "Quicken", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Power Up", stacks: 3 }));
 		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	},
@@ -53,7 +53,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	element: "Untyped",
 	description: "Gain protection and command all Mechabees to Sting a single foe",
 	priority: 1,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		// assumes mecha queen is at enemy index 0 and that all other enemies are mechabees
 		const { targets: mechaqueensTargets } = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === 0)
 		adventure.room.moves.forEach(move => {
@@ -62,7 +62,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 				move.targets = mechaqueensTargets;
 			}
 		});
-		addProtection([user], isCrit ? 60 : 30);
+		addProtection([user], user.crit ? 60 : 30);
 		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomFoe,
@@ -74,8 +74,8 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	element: "Untyped",
 	description: "Gain protection and command a Mechabee to Self-Destruct",
 	priority: 1,
-	effect: ([target], user, isCrit, adventure) => {
-		addProtection([user], isCrit ? 60 : 30);
+	effect: ([target], user, adventure) => {
+		addProtection([user], user.crit ? 60 : 30);
 		if (target) {
 			const targetMove = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === parseInt(target.id));
 			targetMove.name = "Self-Destruct";
@@ -92,7 +92,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	element: "Untyped",
 	description: "Summon a Mechabee",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		spawnEnemy(drone, adventure);
 		return ["Another mechabee arrives."];
 	},
@@ -104,10 +104,10 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	element: "Darkness",
 	description: "Inflict Darkness damage on a single foe",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let pendingDamage = 125;
 		changeStagger(targets, "elementMatchFoe");
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= 2;
 		}
 		return dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);

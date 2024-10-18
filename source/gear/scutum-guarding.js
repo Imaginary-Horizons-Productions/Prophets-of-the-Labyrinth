@@ -9,14 +9,14 @@ module.exports = new GearTemplate("Guarding Scutum",
 	"Armor",
 	"Fire",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, protection, bonus, critMultiplier } = module.exports;
 		let selfProtection = bonus;
 		let targetProtection = protection;
 		if (user.element === element) {
 			changeStagger([target, user], "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			selfProtection *= critMultiplier;
 			targetProtection *= critMultiplier;
 		}

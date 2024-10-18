@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Floating Mist Stance",
 	"Technique",
 	"Light",
 	200,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [displayEvade, floatingMistStance] } = module.exports;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
 		const receipts = enterStance(user, floatingMistStance);
-		if (isCrit) {
+		if (user.crit) {
 			receipts.push(...addModifier([user], displayEvade));
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts));

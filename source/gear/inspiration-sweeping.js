@@ -9,10 +9,10 @@ module.exports = new GearTemplate("Sweeping Inspiration",
 	"Spell",
 	"Wind",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [powerUp], bonus } = module.exports;
 		const pendingPowerUp = { ...powerUp };
-		if (isCrit) {
+		if (user.crit) {
 			pendingPowerUp.stacks += bonus;
 		}
 		if (user.element === element) {

@@ -8,7 +8,7 @@ module.exports = new ItemTemplate("Clear Potion",
 	30,
 	selectSelf,
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Untyped Absorb", stacks: 3 }));
 	}
 );

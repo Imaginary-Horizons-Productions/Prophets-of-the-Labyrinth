@@ -9,14 +9,14 @@ module.exports = new GearTemplate("Flanking Life Drain",
 	"Spell",
 	"Darkness",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [exposed], damage, healing, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let pendingHealing = healing;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingHealing *= critMultiplier;
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);

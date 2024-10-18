@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Inspiration",
 	"Spell",
 	"Wind",
 	200,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [powerUp], bonus } = module.exports;
 		const pendingPowerUp = { ...powerUp };
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingPowerUp.stacks += bonus;
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPowerUp)));

@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 	"Pact",
 	"Earth",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [powerUp, exposed], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);

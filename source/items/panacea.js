@@ -11,7 +11,7 @@ module.exports = new ItemTemplate("Panacea",
 		return [[self.team, adventure.getCombatantIndex(self)]];
 	},
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		const debuffsToRemove = Math.min(userDebuffs.length, 2);
 		const receipts = [];

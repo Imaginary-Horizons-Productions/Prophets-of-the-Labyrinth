@@ -10,13 +10,13 @@ module.exports = new GearTemplate("Devoted Omamori",
 	"Trinket",
 	"Water",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [lucky], protection, critMultiplier } = module.exports;
 		const pendingLucky = { ...lucky };
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingLucky.stacks *= critMultiplier;
 		}
 		addProtection(targets, protection);

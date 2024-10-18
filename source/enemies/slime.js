@@ -15,9 +15,9 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	element: "@{adventure}",
 	description: "Deal the Slime's element damage to a single foe",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 25;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");
@@ -31,11 +31,11 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 	element: "Untyped",
 	description: "Inflict @e{Slow} on a single foe",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
-		if (isCrit) {
+	effect: (targets, user, adventure) => {
+		if (user.crit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 })));
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: user.crit ? 3 : 2 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

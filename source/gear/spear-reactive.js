@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Reactive Spear",
 	"Weapon",
 	"Earth",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, bonus, damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Reactive Spear",
 			changeStagger([target], "elementMatchFoe");
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
-		if (isCrit) {
+		if (user.crit) {
 			changeStagger([target], bonus);
 			resultLines.push(`${target.name} is Staggered.`);
 		}

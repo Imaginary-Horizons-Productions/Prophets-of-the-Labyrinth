@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Sweeping Spear",
 	"Weapon",
 	"Earth",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, stagger, damage } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Sweeping Spear",
 			if (user.element === element) {
 				changeStagger(stillLivingTargets, "elementMatchFoe");
 			}
-			if (isCrit) {
+			if (user.crit) {
 				changeStagger(stillLivingTargets, stagger);
 				resultLines.push(joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered."));
 			}

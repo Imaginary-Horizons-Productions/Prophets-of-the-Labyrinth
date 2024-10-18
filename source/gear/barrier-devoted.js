@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Devoted Barrier",
 	"Spell",
 	"Wind",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;
 		const pendingVigilance = { ...vigilance };
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingVigilance.stacks *= critMultiplier;
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, vigilance).concat(addModifier(targets, evade))));

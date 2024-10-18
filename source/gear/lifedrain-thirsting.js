@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Thirsting Life Drain",
 	"Spell",
 	"Darkness",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, healing, critMultiplier, bonus } = module.exports;
 		const targetsLivingAtMoveStart = targets.filter(target => target.hp > 0);
 		let pendingDamage = user.getPower() + damage;
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Thirsting Life Drain",
 		}
 		const resultLines = dealDamage(targetsLivingAtMoveStart, user, pendingDamage, false, element, adventure);
 		pendingHealing += targetsLivingAtMoveStart.reduce((count, target) => target.hp < 1 ? count + 1 : count, 0) * bonus;
-		if (isCrit) {
+		if (user.crit) {
 			pendingHealing *= critMultiplier;
 		}
 		resultLines.push(gainHealth(user, pendingHealing, adventure));

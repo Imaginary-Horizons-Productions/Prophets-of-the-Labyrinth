@@ -9,7 +9,7 @@ module.exports = new ItemTemplate("Protection Potion",
 	30,
 	selectAllAllies,
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		addProtection(targets, 50);
 		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")];
 	}

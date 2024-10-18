@@ -10,10 +10,10 @@ module.exports = new GearTemplate("Flanking Pistol",
 	"Weapon",
 	"Untyped",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { damage, critMultiplier, element, modifiers: [powerUp, exposed] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		if (user.element === element) {

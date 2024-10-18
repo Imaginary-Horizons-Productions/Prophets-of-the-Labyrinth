@@ -9,14 +9,14 @@ module.exports = new GearTemplate("Furious Battleaxe",
 	"Weapon",
 	"Fire",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [exposed], damage, critMultiplier } = module.exports;
 		const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
 		let pendingDamage = (user.getPower() + damage) * furiousness;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier([user], exposed)));

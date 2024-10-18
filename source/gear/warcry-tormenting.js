@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 	"Technique",
 	"Light",
 	350,
-	([initialTarget], user, isCrit, adventure) => {
+	([initialTarget], user, adventure) => {
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
@@ -30,7 +30,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		if (user.element === element) {
 			pendingStaggerStacks += 2;
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingStaggerStacks += bonus;
 		}
 		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];

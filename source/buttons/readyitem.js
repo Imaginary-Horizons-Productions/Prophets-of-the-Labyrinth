@@ -48,17 +48,16 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				const userIndex = adventure.getCombatantIndex(delver);
 				// Filter out: item uses by self and enemy (only count own team)
-				const committedCount = adventure?.room.moves.filter(move => move.name === itemName && move.userReference.team === delver.team && move.userReference.index !== userIndex).length;
-				if (!(itemName in adventure?.items && adventure?.items[itemName] > committedCount)) {
+				const committedCount = adventure.room.moves.filter(move => move.name === itemName && move.userReference.team === delver.team && move.userReference.index !== userIndex).length;
+				if (!(itemName in adventure.items && adventure.items[itemName] > committedCount)) {
 					collectedInteraction.update({ content: `The party doesn't have any more ${itemName}(s) to use.`, embeds: [], components: [] });
 					return;
 				}
 
 				// Add move to round list (overwrite exisiting readied move)
-				const newMove = new Move(new CombatantReference(delver.team, userIndex), "item", false)
+				const newMove = new Move(itemName, "item", new CombatantReference(delver.team, userIndex))
 					.setSpeedByCombatant(delver)
-					.setPriority(1)
-					.setName(itemName);
+					.setPriority(1);
 
 				const item = getItem(itemName);
 				item.selectTargets(delver, adventure).forEach(target => {

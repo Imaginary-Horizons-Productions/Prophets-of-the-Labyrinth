@@ -10,13 +10,13 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 	"Weapon",
 	"Light",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, stagger, damage, critMultiplier, modifiers: [powerUp] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		changeStagger(targets, stagger);

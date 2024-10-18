@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Reactive Warhammer",
 	"Weapon",
 	"Earth",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, damage, bonus, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (target.isStunned) {
@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Reactive Warhammer",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		return dealDamage([target], user, pendingDamage, false, element, adventure);

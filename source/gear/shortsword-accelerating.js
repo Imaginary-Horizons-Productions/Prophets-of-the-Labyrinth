@@ -9,10 +9,10 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 	"Weapon",
 	"Fire",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [exposed, quicken], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);

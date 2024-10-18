@@ -16,10 +16,10 @@ module.exports = new EnemyTemplate("Asteroid",
 	element: "Earth",
 	description: `Inflict ${getEmoji("Earth")} damage to delver, and loses some health`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 30;
 		const recoilDmg = 20;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");
@@ -33,9 +33,9 @@ module.exports = new EnemyTemplate("Asteroid",
 	element: "Earth",
 	description: `Sacrifice self to attack all combatants with ${getEmoji("Earth")} damage equal to its remaining HP`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + user.hp;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		user.hp = 0;

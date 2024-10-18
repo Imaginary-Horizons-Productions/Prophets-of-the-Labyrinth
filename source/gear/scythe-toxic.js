@@ -9,14 +9,14 @@ module.exports = new GearTemplate("Toxic Scythe",
 	"Weapon",
 	"Darkness",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [poison], damage, bonus: hpThreshold, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let pendingHPThreshold = hpThreshold;
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingHPThreshold *= critMultiplier;
 		}
 		if (target.hp > pendingHPThreshold) {

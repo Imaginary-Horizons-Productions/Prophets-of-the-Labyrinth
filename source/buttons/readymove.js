@@ -104,8 +104,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (collectedInteraction.isButton()) {
 					// Add move to round list (overwrite exisiting readied move)
 					const userIndex = adventure.getCombatantIndex(delver);
-					const newMove = new Move(new CombatantReference(delver.team, userIndex), "gear", delver.crit)
-						.setName(moveName)
+					const newMove = new Move(moveName, "gear", new CombatantReference(delver.team, userIndex))
 						.setSpeedByCombatant(delver)
 						.setPriority(getGearProperty(moveName, "priority") ?? 0);
 
@@ -163,8 +162,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					const [targetTeam, unparsedIndex] = collectedInteraction.values[0].split(SAFE_DELIMITER);
 					const targetIndex = parseInt(unparsedIndex);
 					const targetIndices = [];
-					const newMove = new Move(new CombatantReference(delver.team, userIndex), "gear", delver.crit)
-						.setName(moveName)
+					const newMove = new Move(moveName, "gear", new CombatantReference(delver.team, userIndex))
 						.setSpeedByCombatant(delver)
 						.setPriority(getGearProperty(moveName, "priority") ?? 0);
 

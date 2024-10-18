@@ -9,10 +9,10 @@ module.exports = new GearTemplate("Sweeping Daggers",
 	"Weapon",
 	"Wind",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		if (user.element === element) {

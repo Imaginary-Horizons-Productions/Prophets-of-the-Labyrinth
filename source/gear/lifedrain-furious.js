@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Furious Life Drain",
 	"Spell",
 	"Darkness",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, healing, critMultiplier } = module.exports;
 		const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
 		let pendingDamage = (user.getPower() + damage) * furiousness;
@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Furious Life Drain",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingHealing *= critMultiplier;
 		}
 		return [...dealDamage(targets, user, pendingDamage, false, element, adventure), gainHealth(user, pendingHealing, adventure)];

@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 	"Spell",
 	"Light",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, critMultiplier, bonus } = module.exports;
 		let debuffedDamage = user.getPower() + damage + bonus;
 		let nonDebuffedDamage = user.getPower() + damage;
@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 				nondebuffedTargets.push(target);
 			}
 		})
-		if (isCrit) {
+		if (user.crit) {
 			debuffedDamage *= critMultiplier;
 			nonDebuffedDamage *= critMultiplier;
 		}

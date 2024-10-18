@@ -9,14 +9,14 @@ module.exports = new GearTemplate("Lucky Iron Fist Stance",
 	"Technique",
 	"Light",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [ironFistStance, frail, lucky] } = module.exports;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
 		const receipts = enterStance(user, ironFistStance);
 		receipts.push(...addModifier([user], lucky));
-		if (isCrit) {
+		if (user.crit) {
 			const foeTeam = user.team === "delver" ? adventure.room.enemies.filter(foe => foe.hp > 0) : adventure.delvers;
 			receipts.push(...addModifier(foeTeam, frail));
 		}

@@ -8,7 +8,7 @@ module.exports = new ItemTemplate("Repair Kit",
 	30,
 	selectSelf,
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		user.gear.forEach((gear) => {
 			/** @type {number} */
 			const maxDurability = getGearProperty(gear.name, "maxDurability");

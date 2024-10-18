@@ -9,11 +9,11 @@ module.exports = new GearTemplate("Iron Fist Punch",
 	"Technique",
 	"Untyped",
 	0,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage + (user.getModifierStacks("Iron Fist Stance") * 45);
 		changeStagger(targets, "elementMatchFoe");
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		return dealDamage(targets, user, pendingDamage, false, user.element, adventure);

@@ -10,14 +10,14 @@ module.exports = new GearTemplate("Harmful Corrosion",
 	"Spell",
 	"Fire",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [powerDown], bonus, damage } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
-		if (isCrit) {
+		if (user.crit) {
 			changeStagger(targets, bonus);
 			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 		}

@@ -9,10 +9,10 @@ module.exports = new GearTemplate("Staggering Poison Torrent",
 	"Spell",
 	"Water",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [poison], critMultiplier, stagger } = module.exports;
 		const pendingPoison = { ...poison };
-		if (isCrit) {
+		if (user.crit) {
 			pendingPoison.stacks *= critMultiplier;
 		}
 		if (user.element === element) {

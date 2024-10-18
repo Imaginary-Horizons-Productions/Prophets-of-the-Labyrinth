@@ -10,13 +10,13 @@ module.exports = new GearTemplate("Cursed Blade",
 	"Weapon",
 	"Untyped",
 	-50,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;
 		let pendingDamage = damage + user.getPower();
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);

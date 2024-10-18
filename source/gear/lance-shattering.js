@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Shattering Lance",
 	"Weapon",
 	"Earth",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [frail], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + user.getModifierStacks("Power Up") + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);

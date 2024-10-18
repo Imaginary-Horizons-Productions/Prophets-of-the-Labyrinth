@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Organic Fever Break",
 	"Spell",
 	"Darkness",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element } = module.exports;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Organic Fever Break",
 			const frails = target.getModifierStacks("Frail");
 			const pendingDamage = (10 + 5 * funnelCount) * (poisons ** 2 + poisons) / 2 + (20 + 5 * funnelCount) * frails;
 			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));
-			if (!isCrit) {
+			if (!user.crit) {
 				receipts.push(...removeModifier(targets, { name: "Poison", stacks: "all" }).concat(removeModifier(targets, { name: "Frail", stacks: "all" })));
 			}
 		}

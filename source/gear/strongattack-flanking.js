@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Flanking Strong Attack",
 	"Technique",
 	"Untyped",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { damage, element, critMultiplier, modifiers: [exposed] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier(targets, exposed)));

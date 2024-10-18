@@ -16,10 +16,10 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	element: "Earth",
 	description: `Inflict minor ${getEmoji("Earth")} damage and @e{Poison} on a single foe`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
 		changeStagger(targets, "elementMatchFoe");
-		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 })));
+		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -29,9 +29,9 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	element: "Untyped",
 	description: "Gain @e{Evade}, gain @e{Agility} on Critical Hit",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		const receipts = addModifier([user], { name: "Evade", stacks: 2 });
-		if (isCrit) {
+		if (user.crit) {
 			receipts.push(...addModifier([user], { name: "Agility", stacks: 1 }));
 		}
 		changeStagger([user], "elementMatchAlly");
@@ -45,10 +45,10 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	element: "Earth",
 	description: `Inflict ${getEmoji("Earth")} damage and @e{Paralysis} on a single foe`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 40;
 		changeStagger(targets, "elementMatchFoe");
-		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Paralysis", stacks: isCrit ? 5 : 3 })));
+		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Paralysis", stacks: user.crit ? 5 : 3 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: true,
@@ -58,9 +58,9 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	element: "Earth",
 	description: `Sacrifice self to deal large ${getEmoji("Earth")} damage to all foes`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 125;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		user.hp = 0;

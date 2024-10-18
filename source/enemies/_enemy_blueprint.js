@@ -13,7 +13,7 @@ module.exports = new EnemyTemplate("name",
 	element: "element",
 	description: "",
 	priority: 0,
-	effect: ([target], user, isCrit, adventure) => {
+	effect: ([target], user, adventure) => {
 		return "";
 	},
 	selector: (self, adventure) => { // check shared/actionComponents for reusable selctors and next functions

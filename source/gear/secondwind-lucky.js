@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Lucky Second Wind",
 	"Technique",
 	"Untyped",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, critMultiplier, modifiers: [lucky] } = module.exports;
 		let pendingHealing = user.getPower();
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingHealing *= critMultiplier;
 		}
 		return [gainHealth(user, pendingHealing, adventure), ...generateModifierResultLines(addModifier([user]), lucky)];

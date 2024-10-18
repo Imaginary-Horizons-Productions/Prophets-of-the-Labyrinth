@@ -17,9 +17,9 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	element: "Earth",
 	description: `Deals ${getEmoji("Earth")} damage to a single foe`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 50;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");
@@ -33,10 +33,10 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	element: "Untyped",
 	description: `Gain protection and @e{Power Up}`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let addedPowerUp = false;
 		addProtection([user], 25);
-		if (isCrit) {
+		if (user.crit) {
 			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 50 }).some(receipt => receipt.succeeded.size > 0);
 			changeStagger([user], "elementMatchAlly");
 		} else {

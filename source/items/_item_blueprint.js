@@ -8,7 +8,7 @@ module.exports = new ItemTemplate("name",
 		return [[self.team, adventure.getCombatantIndex(self)]];
 	},
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		return []; // see style guide for conventions on result texts
 	}
 ).setFlavorText({ name: "", value: "" });

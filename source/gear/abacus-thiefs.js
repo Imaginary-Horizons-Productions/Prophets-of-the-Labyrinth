@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Thief's Abacus",
 	"Trinket",
 	"Water",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, critMultiplier, bonus: bonusBounty } = module.exports;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Thief's Abacus",
 		let hunts = 0;
 		targets.forEach(target => {
 			let pendingDamage = user.getPower() + damage + (0.05 * target.getMaxHP());
-			if (isCrit) {
+			if (user.crit) {
 				pendingDamage *= critMultiplier;
 			}
 			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));

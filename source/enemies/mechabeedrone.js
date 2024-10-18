@@ -17,10 +17,10 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	element: "Darkness",
 	description: `Inflict minor ${getEmoji("Darkness")} damage and @e{Poison} on a single foe`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
 		changeStagger(targets, "elementMatchFoe");
-		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: isCrit ? 4 : 2 })));
+		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -30,9 +30,9 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	element: "Untyped",
 	description: "Gain @e{Evade}, gain @e{Agility} on Critical Hit",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		const receipts = addModifier([user], { name: "Evade", stacks: 2 });
-		if (isCrit) {
+		if (user.crit) {
 			receipts.push(...addModifier([user], { name: "Agility", stacks: 1 }));
 		}
 		changeStagger([user], "elementMatchAlly");
@@ -46,7 +46,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	element: "Untyped",
 	description: "Summon another Mechabee",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		spawnEnemy(module.exports, adventure);
 		return ["Another mechabee arrives."];
 	},
@@ -58,9 +58,9 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	element: "Darkness",
 	description: `Sacrifice self to deal large ${getEmoji("Darkness")} damage to all foes`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 125;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		user.hp = 0;

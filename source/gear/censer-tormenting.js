@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 	"Trinket",
 	"Fire",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [slow], damage, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (target.hp > 0) {
 			const receipts = [];
-			if (isCrit) {
+			if (user.crit) {
 				receipts.push(...addModifier([target], slow));
 			}
 			for (const modifier in target.modifiers) {

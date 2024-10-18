@@ -9,10 +9,10 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 	"Trinket",
 	"Water",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [curse, quicken], bonus } = module.exports;
 		const pendingCurse = { ...curse };
-		if (isCrit) {
+		if (user.crit) {
 			pendingCurse.stacks += bonus;
 		}
 		if (user.element === element) {

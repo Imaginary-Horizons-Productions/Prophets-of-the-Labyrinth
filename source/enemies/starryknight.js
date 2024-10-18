@@ -19,7 +19,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	element: "Light",
 	description: `Deal ${getEmoji("Light")} damage to a single foe; increases with foe's debuffs, cursed gear, and unfinished challenges`,
 	priority: 0,
-	effect: ([target], user, isCrit, adventure) => {
+	effect: ([target], user, adventure) => {
 		const unfinishedChallenges = [];
 		for (const [challengeName, { duration }] of Object.entries(adventure.challenges)) {
 			// Indefinite challenge duration defined as "unfinished"
@@ -44,7 +44,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		}
 		let pendingDamage = user.getPower() + 100 + (50 * (unfinishedChallenges.length + targetDebuffCount + targetCursedGearCount));
 		changeStagger([target], "elementMatchFoe");
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= 2;
 		}
 		if (unfinishedChallenges.length > 0) {
@@ -61,11 +61,11 @@ module.exports = new EnemyTemplate("Starry Knight",
 	element: "Light",
 	description: `Inflict ${getEmoji("Light")} damage and apply insults on all foes (damage increases with foe team size)`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let pendingDamage = user.getPower() + 50 * targets.length;
 		changeStagger(targets, "elementMatchFoe");
 		return dealDamage(targets, user, pendingDamage, false, "Light", adventure)
-			.concat(combineModifierReceipts(addNewRandomInsults(targets, isCrit ? 2 : 1, adventure)));
+			.concat(combineModifierReceipts(addNewRandomInsults(targets, user.crit ? 2 : 1, adventure)));
 	},
 	selector: selectAllFoes,
 	needsLivingTargets: true,
@@ -76,9 +76,9 @@ module.exports = new EnemyTemplate("Starry Knight",
 	element: "Untyped",
 	description: `Inflict @e{Exposed} and random insults on all foes, gain protection on a crit`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		changeStagger(targets, "elementMatchFoe");
-		if (isCrit) {
+		if (user.crit) {
 			addProtection([user], 100);
 		}
 		const receipts = addModifier(targets, { name: "Exposed", stacks: 1 }).concat(addNewRandomInsults(targets, 1, adventure));
@@ -92,10 +92,10 @@ module.exports = new EnemyTemplate("Starry Knight",
 	element: "Light",
 	description: `Inflict @e{Distracted} and ${getEmoji("Light")} damage on a single foe`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		changeStagger(targets, "elementMatchFoe");
 		let pendingDamage = user.getPower() + 100;
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= 2;
 		}
 		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Distracted", stacks: 4 })));

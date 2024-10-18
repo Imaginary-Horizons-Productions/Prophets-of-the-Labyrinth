@@ -10,13 +10,13 @@ module.exports = new GearTemplate("Staggering Power from Wrath",
 	"Pact",
 	"Darkness",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, hpCost, stagger } = module.exports;
 		const resultLines = [payHP(user, hpCost, adventure)];
 		if (adventure.lives > 0) {
 			const furiousness = 2 - user.hp / user.getMaxHP();
 			let pendingDamage = (user.getPower() + damage) * furiousness;
-			if (isCrit) {
+			if (user.crit) {
 				pendingDamage *= 2;
 			}
 			resultLines.push(...dealDamage(targets, user, pendingDamage, false, element, adventure));

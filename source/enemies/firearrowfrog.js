@@ -16,10 +16,10 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	element: "Fire",
 	description: `Inflict minor ${getEmoji("Fire")} damage and @e{Poison} on a single foe`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 20;
 		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
-		return resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: isCrit ? 6 : 3 })));
+		return resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 6 : 3 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,
@@ -29,9 +29,9 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	element: "Untyped",
 	description: "Gain Evade",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let stacks = 2;
-		if (isCrit) {
+		if (user.crit) {
 			stacks *= 3;
 		}
 		changeStagger([user], "elementMatchAlly");
@@ -45,11 +45,11 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	element: "Untyped",
 	description: "Slow a single foe",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
-		if (isCrit) {
+	effect: (targets, user, adventure) => {
+		if (user.crit) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: isCrit ? 3 : 2 })));
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: user.crit ? 3 : 2 })));
 	},
 	selector: selectRandomFoe,
 	needsLivingTargets: false,

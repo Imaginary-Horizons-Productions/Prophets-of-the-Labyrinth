@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Abacus",
 	"Trinket",
 	"Water",
 	200,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;
 		const resultLines = [];
 		targets.forEach(target => {
@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Abacus",
 			if (user.element === element) {
 				changeStagger([target], "elementMatchFoe");
 			}
-			if (isCrit) {
+			if (user.crit) {
 				pendingDamage *= critMultiplier;
 			}
 			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));

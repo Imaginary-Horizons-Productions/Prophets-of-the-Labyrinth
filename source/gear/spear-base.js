@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Spear",
 	"Weapon",
 	"Earth",
 	200,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, bonus, damage } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Spear",
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
-		if (isCrit & stillLivingTargets.length > 0) {
+		if (user.crit & stillLivingTargets.length > 0) {
 			changeStagger(stillLivingTargets, bonus);
 			resultLines.push(joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered."));
 		}

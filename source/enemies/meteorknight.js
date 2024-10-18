@@ -17,9 +17,9 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	element: "Fire",
 	description: `Inflict ${getEmoji("Fire")} damage with Priority`,
 	priority: 1,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 60;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");
@@ -33,12 +33,12 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	element: "Fire",
 	description: `Deals ${getEmoji("Fire")} damage, with bonus damage to targets without protection`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		const baseDamage = user.getPower() + 75;
 		const bonusDamage = 25
 		let results = [];
 		for (const target of targets) {
-			const pendingDamage = (isCrit ? 2 : 1) * ((target.protection > 0 ? 0 : bonusDamage) + baseDamage);
+			const pendingDamage = (user.crit ? 2 : 1) * ((target.protection > 0 ? 0 : bonusDamage) + baseDamage);
 			results.push(...dealDamage([target], user, pendingDamage, false, user.element, adventure));
 		}
 		changeStagger(targets, "elementMatchFoe");
@@ -52,9 +52,9 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	element: "Untyped",
 	description: `Grant @e{Power Up} to all combatants (friend and foe); Protects non-delvers on crit`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Power Up", stacks: 20 })));
-		if (isCrit) {
+		if (user.crit) {
 			const livingEnemies = adventure.room.enemies.filter(c => c.hp > 0);
 			addProtection(livingEnemies, 50);
 			resultLines.push(joinAsStatement(false, livingEnemies.map(enemy => enemy.name), "gains", "gain", "protection."));

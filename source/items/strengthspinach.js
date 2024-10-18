@@ -8,7 +8,7 @@ module.exports = new ItemTemplate("Strength Spinach",
 	30,
 	selectSelf,
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Power Up", stacks: 50 }));
 	}
 ).setFlavorText({ name: "*Additional Notes*", value: "*It does what it says on the tin.*" });

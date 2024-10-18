@@ -7,7 +7,7 @@ module.exports = new GearTemplate("Powerful Chainmail",
 	"Trinket",
 	"Untyped",
 	350,
-	(targets, user, isCrit, adventure) => []
+	(targets, user, adventure) => []
 ).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
 	.setSidegrades("Poised Chainmail", "Wise Chainmail")
 	.setDurability(0)

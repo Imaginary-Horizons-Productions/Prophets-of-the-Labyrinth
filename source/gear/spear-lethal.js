@@ -10,13 +10,13 @@ module.exports = new GearTemplate("Lethal Spear",
 	"Weapon",
 	"Earth",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, bonus, damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 			changeStagger(targets, bonus);
 		}

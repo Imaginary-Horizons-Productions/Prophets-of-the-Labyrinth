@@ -11,13 +11,13 @@ module.exports = new GearTemplate("Cleansing Second Wind",
 	"Technique",
 	"Untyped",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, critMultiplier } = module.exports;
 		let pendingHealing = user.getPower();
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingHealing *= critMultiplier;
 		}
 		const resultLines = [gainHealth(user, pendingHealing, adventure)];

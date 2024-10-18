@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Poised Goad Futility",
 	"Technique",
 	"Earth",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [oblivious, unlucky] } = module.exports;
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Poised Goad Futility",
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			resultLines.push(`${target.name} falls for the provocation.`);
 		}
-		if (isCrit) {
+		if (user.crit) {
 			receipts.push(...addModifier([target], unlucky));
 		}
 		return generateModifierResultLines(receipts).concat(resultLines);

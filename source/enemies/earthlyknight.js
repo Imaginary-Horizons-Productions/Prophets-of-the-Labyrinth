@@ -22,9 +22,9 @@ module.exports = new EnemyTemplate("Earthly Knight",
 	element: "Earth",
 	description: `Inflict ${getEmoji("Earth")} damage and remove a random buff`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 75;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");
@@ -47,9 +47,9 @@ module.exports = new EnemyTemplate("Earthly Knight",
 	element: "Earth",
 	description: `Deal minor ${getEmoji("Earth")} to all foes and stagger them`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 5;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		changeStagger(targets, 2);
@@ -63,7 +63,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 	element: "Untyped",
 	description: "Summon an Asteroid",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		spawnEnemy(asteroid, adventure);
 		return ["An Asteroid arrives on the battlefield."];
 	},

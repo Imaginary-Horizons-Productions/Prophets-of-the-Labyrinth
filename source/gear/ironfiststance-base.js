@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Iron Fist Stance",
 	"Technique",
 	"Light",
 	200,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [ironFistStance, frail] } = module.exports;
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
 		const receipts = enterStance(user, ironFistStance);
-		if (isCrit) {
+		if (user.crit) {
 			const foeTeam = user.team === "delver" ? adventure.room.enemies.filter(foe => foe.hp > 0) : adventure.delvers;
 			receipts.push(...addModifier(foeTeam, frail));
 		}

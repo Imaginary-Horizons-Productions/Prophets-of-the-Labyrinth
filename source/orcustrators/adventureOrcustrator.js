@@ -361,7 +361,7 @@ function cacheRoundRn(adventure, user, moveName, config) {
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(256, "battle"))
 					break;
 				case "progress":
-					user.roundRns[roundRnKeyname] = [config.progress.base + user.crit ? config.progress.crit : 0 + adventure.generateRandomNumber(config.progress.random + 1, "battle")]  // reminder: user.crit is hacky
+					user.roundRns[roundRnKeyname] = [config.progress.base + user.crit ? config.progress.crit : 0 + adventure.generateRandomNumber(config.progress.random + 1, "battle")]
 					break;
 				case "herbs":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(rollableHerbs.length, "battle"))
@@ -453,7 +453,7 @@ function predictRoundRnOutcomes(adventure) {
 						const targetCombatants = move.targets.map(moveTarget => adventure.getCombatant(moveTarget));
 						if (move.name === "Bubble") {
 							let totalBuffsRemoved = targetCombatants.reduce((removedCount, combatant) => removedCount + Math.max(0, Object.keys(combatant.modifiers).filter(modifier => isBuff(modifier)).length - combatant.getModifierStacks("Retain")), 0);
-							let pendingProgress = combatant.getModifierStacks("Progress") + (move.isCrit ? 10 : 0) + combatant.roundRns[`Bubble${SAFE_DELIMITER}progress`][2] + totalBuffsRemoved * 5;
+							let pendingProgress = combatant.getModifierStacks("Progress") + (combatant.crit ? 10 : 0) + combatant.roundRns[`Bubble${SAFE_DELIMITER}progress`][2] + totalBuffsRemoved * 5;
 							outcomes.push(`The Elkemist ${pendingProgress > 100 ? "will" : "won't"} reach an epiphany this round.`);
 						}
 						else {
@@ -666,8 +666,7 @@ function newRound(adventure, thread, lastRoundText) {
 							const actionPool = Object.keys(enemyTemplate.actions).filter(actionName => actionName.includes("Protocol"));
 							actionName = actionPool[adventure.generateRandomNumber(actionPool.length, "battle")];
 						}
-						const move = new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
-							.setName(actionName)
+						const move = new Move(actionName, "action", new CombatantReference(combatant.team, i))
 							.setSpeedByCombatant(combatant)
 							.setPriority(enemyTemplate.actions[actionName].priority);
 						enemyTemplate.actions[actionName].selector(combatant, adventure).forEach(({ team, index }) => {
@@ -681,8 +680,7 @@ function newRound(adventure, thread, lastRoundText) {
 						combatant.nextAction = enemyTemplate.actions[actionName].next;
 					} else {
 						adventure.room.moves.push(
-							new Move(new CombatantReference(combatant.team, i), "action", combatant.crit)
-								.setName("@{clone}")
+							new Move("@{clone}", "action", new CombatantReference(combatant.team, i))
 								.setSpeedByCombatant(combatant)
 						);
 						// (pre-/) roll for clones' use of delver gear rn's for this round
@@ -742,7 +740,7 @@ function resolveMove(move, adventure) {
 	let headline = `${bold(user.name)} `;
 	const results = [];
 	if (!user.isStunned || move.name.startsWith("Unstoppable")) {
-		if (move.isCrit) {
+		if (user.crit) {
 			headline = `💥${headline}`;
 		}
 
@@ -809,7 +807,7 @@ function resolveMove(move, adventure) {
 					results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 				}
 
-				results.push(...effect(livingTargets, adventure.getCombatant(move.userReference), move.isCrit, adventure));
+				results.push(...effect(livingTargets, user, adventure));
 				if (move.type === "gear" && move.userReference.team === "delver") {
 					const breakText = decrementDurability(move.name, user, adventure);
 					if (breakText) {
@@ -823,7 +821,7 @@ function resolveMove(move, adventure) {
 			}
 		} else {
 			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
-			results.push(...effect(targets, adventure.getCombatant(move.userReference), move.isCrit, adventure));
+			results.push(...effect(targets, user, adventure));
 			if (move.type === "gear" && move.userReference.team === "delver") {
 				const breakText = decrementDurability(move.name, user, adventure);
 				if (breakText) {
@@ -837,7 +835,7 @@ function resolveMove(move, adventure) {
 		}
 
 		const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
-		if (insigniaCount > 0 && user.team === "delver" && move.isCrit) {
+		if (insigniaCount > 0 && user.team === "delver" && user.crit) {
 			const insigniaHealing = insigniaCount * 15;
 			results.push(gainHealth(user, insigniaHealing, adventure, "their Celestial Knight Insigina"));
 			adventure.updateArtifactStat("Health Restored", insigniaHealing);

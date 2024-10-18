@@ -9,14 +9,14 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 	"Pact",
 	"Earth",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [powerUp, huntersPowerUp], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const pendingPowerUp = { ...powerUp };
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);

@@ -8,7 +8,7 @@ module.exports = new ItemTemplate("Stasis Quartz",
 	30,
 	selectSelf,
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Retain", stacks: 1 }));
 	}
 );

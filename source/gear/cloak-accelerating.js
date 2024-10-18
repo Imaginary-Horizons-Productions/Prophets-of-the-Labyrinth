@@ -11,14 +11,14 @@ module.exports = new GearTemplate("Accelerating Cloak",
 	"Armor",
 	"Wind",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [evade, quicken], bonus } = module.exports;
 		const pendingEvade = { ...evade };
 		const pendingQuicken = { ...quicken };
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingEvade.stacks += bonus;
 			pendingQuicken.stacks += bonus;
 		}

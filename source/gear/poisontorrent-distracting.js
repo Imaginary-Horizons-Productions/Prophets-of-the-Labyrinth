@@ -9,10 +9,10 @@ module.exports = new GearTemplate("Distracting Poison Torrent",
 	"Spell",
 	"Water",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [poison, distracted], critMultiplier } = module.exports;
 		const pendingPoison = { ...poison };
-		if (isCrit) {
+		if (user.crit) {
 			pendingPoison.stacks *= critMultiplier;
 		}
 		if (user.element === element) {

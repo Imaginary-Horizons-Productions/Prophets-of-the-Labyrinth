@@ -9,11 +9,11 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 	"Spell",
 	"Water",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [poison], critMultiplier, damage } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let pendingPoison = poison;
-		if (isCrit) {
+		if (user.crit) {
 			pendingPoison.stacks *= critMultiplier;
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);

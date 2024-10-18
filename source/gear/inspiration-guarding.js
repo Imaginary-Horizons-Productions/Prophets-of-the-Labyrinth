@@ -10,13 +10,13 @@ module.exports = new GearTemplate("Guarding Inspiration",
 	"Spell",
 	"Wind",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [powerUp], bonus, protection } = module.exports;
 		const pendingPowerUp = { ...powerUp };
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingPowerUp.stacks += bonus;
 		}
 		addProtection(targets, protection);

@@ -9,14 +9,14 @@ module.exports = new GearTemplate("Awesome Ice Bolt",
 	"Spell",
 	"Water",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, modifiers: [slow], critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let stunnedDamage = pendingDamage + bonus;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 			stunnedDamage *= critMultiplier;
 		}

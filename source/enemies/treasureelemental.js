@@ -17,9 +17,9 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		element: "Earth",
 		description: `Gain protection and deal ${getEmoji("Earth")} damage to a single foe`,
 		priority: 0,
-		effect: (targets, user, isCrit, adventure) => {
+		effect: (targets, user, adventure) => {
 			let damage = user.getPower() + 100;
-			addProtection([user], isCrit ? 100 : 50);
+			addProtection([user], user.crit ? 100 : 50);
 			changeStagger([user], "elementMatchAlly");
 			return dealDamage(targets, user, damage, false, user.element, adventure).concat([`${user.name} gains protection.`]);
 		},
@@ -31,9 +31,9 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		element: "Earth",
 		description: `Deal ${getEmoji("Earth")} damage to a single foe three times`,
 		priority: 0,
-		effect: (targets, user, isCrit, adventure) => {
+		effect: (targets, user, adventure) => {
 			let damage = user.getPower() + 25;
-			if (isCrit) {
+			if (user.crit) {
 				damage *= 2;
 			}
 			changeStagger([user], "elementMatchAlly");
@@ -51,9 +51,9 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		element: "Untyped",
 		description: "Inflict @e{Slow} on all foes",
 		priority: 0,
-		effect: (targets, user, isCrit, adventure) => {
+		effect: (targets, user, adventure) => {
 			let stacks = 2;
-			if (isCrit) {
+			if (user.crit) {
 				stacks *= 2;
 			}
 			return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks })));

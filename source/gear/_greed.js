@@ -6,7 +6,7 @@ module.exports = new GearTemplate("Greed",
 	"Action",
 	"Untyped",
 	0,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { modifiers: [midas, powerUp] } = module.exports;
 		const affectedTargets = targets.filter(target => target.archetype === "Treasure Elemental");
 		return generateModifierResultLines(combineModifierReceipts(addModifier(affectedTargets, powerUp).concat(addModifier(affectedTargets, midas))));

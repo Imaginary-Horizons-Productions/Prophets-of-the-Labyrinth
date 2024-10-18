@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Duelist's Pistol",
 	"Weapon",
 	"Untyped",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { damage, bonus, critMultiplier, element, modifiers: [powerUp] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const targetIndex = adventure.getCombatantIndex(target);
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Duelist's Pistol",
 		if (!adventure.room.moves.some(move => !(move.userReference.team === user.team && move.userReference.index === userIndex) && move.targets.some(moveTarget => moveTarget.team === target.team && moveTarget.index === targetIndex))) {
 			pendingDamage += bonus;
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		if (user.element === element) {

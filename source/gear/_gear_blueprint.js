@@ -10,12 +10,12 @@ module.exports = new GearTemplate("name",
 	"category",
 	"element",
 	200,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element } = module.exports;
 		if (user.element === element) {
 
 		}
-		if (isCrit) {
+		if (user.crit) {
 
 		}
 		return []; // see style guide for conventions on result texts

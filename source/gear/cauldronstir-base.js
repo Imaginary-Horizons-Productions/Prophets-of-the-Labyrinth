@@ -11,14 +11,14 @@ module.exports = new GearTemplate("Cauldron Stir",
 	"Weapon",
 	"Water",
 	200,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage } = module.exports;
 		const pendingDamage = damage + user.getPower();
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
 		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
-		if (isCrit) {
+		if (user.crit) {
 			const rolledPotion = rollablePotions[user.roundRns[`Cauldron Stir${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);

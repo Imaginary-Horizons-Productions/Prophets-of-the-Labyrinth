@@ -2,17 +2,15 @@ const { Combatant } = require("./Combatant");
 
 class Move {
 	/**
-	 * @param {CombatantReference} userReferenceInput
+	 * @param {string} nameInput
 	 * @param {"gear" | "item" | "action"} typeInput
-	 * @param {boolean} isCritInput
+	 * @param {CombatantReference} userReferenceInput
 	 */
-	constructor(userReferenceInput, typeInput, isCritInput) {
-		this.userReference = userReferenceInput;
+	constructor(nameInput, typeInput, userReferenceInput) {
+		this.name = nameInput;
 		this.type = typeInput;
-		this.isCrit = isCritInput;
+		this.userReference = userReferenceInput;
 	}
-	/** @type {string} */
-	name = null;
 	priority = 0;
 	speed = 0;
 	randomOrder = 0;
@@ -34,12 +32,6 @@ class Move {
 		} else {
 			return second.priority - first.priority;
 		}
-	}
-
-	/** @param {string} moveName */
-	setName(moveName) {
-		this.name = moveName;
-		return this;
 	}
 
 	/** @param {number} number */

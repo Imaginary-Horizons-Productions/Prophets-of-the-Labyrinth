@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Evasive Shoulder Throw",
 	"Technique",
 	"Light",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [evade] } = module.exports;
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
 		const pendingEvade = { ...evade };
-		if (isCrit) {
+		if (user.crit) {
 			pendingEvade.stacks++;
 		}
 		const resultLines = [];

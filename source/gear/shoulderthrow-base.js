@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Shoulder Throw",
 	"Technique",
 	"Light",
 	200,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [evade] } = module.exports;
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Shoulder Throw",
 			targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
 			resultLines.push(`${target.name} is redirected into targeting themself.`);
 		}
-		if (isCrit) {
+		if (user.crit) {
 			resultLines.push(...generateModifierResultLines(addModifier([user], evade)));
 		}
 		return resultLines;

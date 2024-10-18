@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Staggering Censer",
 	"Trinket",
 	"Fire",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [slow], stagger, damage, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Staggering Censer",
 		}
 		changeStagger([target], stagger);
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
-		if (isCrit && target.hp > 0) {
+		if (user.crit && target.hp > 0) {
 			resultLines.push(...generateModifierResultLines(addModifier([target], slow)));
 		}
 		return resultLines;

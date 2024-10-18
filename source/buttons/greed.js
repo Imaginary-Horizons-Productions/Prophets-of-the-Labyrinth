@@ -16,8 +16,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const delverIndex = adventure.getCombatantIndex(delver);
 		const treasureElementalIndex = adventure.room.enemies.findIndex(enemy => enemy.archetype === "Treasure Elemental");
-		const newMove = new Move(new CombatantReference(delver.team, delverIndex), "gear", false)
-			.setName("Greed")
+		const newMove = new Move("Greed", "gear", new CombatantReference(delver.team, delverIndex))
 			.setSpeedByCombatant(delver)
 			.addTarget(new CombatantReference("enemy", treasureElementalIndex))
 			.setPriority(1);

@@ -8,7 +8,7 @@ module.exports = new ItemTemplate("Watery Potion",
 	30,
 	selectSelf,
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Water Absorb", stacks: 3 }));
 	}
 ).setFlavorText({ name: "*Additional Note*", value: "Apply directly to the forehead." });

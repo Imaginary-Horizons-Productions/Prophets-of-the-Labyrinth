@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Evasive Heat Mirage",
 	"Spell",
 	"Fire",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [evade], critMultiplier } = module.exports;
 		const pendingEvade = { ...evade };
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingEvade.stacks *= critMultiplier;
 		}
 		const resultLines = generateModifierResultLines(addModifier([user], pendingEvade));

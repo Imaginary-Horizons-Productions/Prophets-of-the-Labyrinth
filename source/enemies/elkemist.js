@@ -20,7 +20,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	element: "Untyped",
 	description: "Gains protection, cures a random debuff, and grants a large amount of @e{Progress}",
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		changeStagger([user], "elementMatchAlly");
 		const resultLines = [`${user.name} gains protection.`];
 		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Toil${SAFE_DELIMITER}progress`][0] });
@@ -43,9 +43,9 @@ module.exports = new EnemyTemplate("Elkemist",
 	element: "Water",
 	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from @e{Power Up}) and gain a small amount of @e{Progress}`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 75 + user.getModifierStacks("Power Up");
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		changeStagger(targets, "elementMatchFoe");
@@ -64,9 +64,9 @@ module.exports = new EnemyTemplate("Elkemist",
 	element: "Fire",
 	description: `Deals ${getEmoji("Fire")} damage to all foes`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 75;
-		if (isCrit) {
+		if (user.crit) {
 			damage *= 2;
 		}
 		return dealDamage(targets, user, damage, false, "Fire", adventure);
@@ -79,7 +79,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	element: "Untyped",
 	description: `Converts all foe buffs to @e{Fire Weakness} and gain @e{Progress} per buff removed`,
 	priority: 0,
-	effect: (targets, user, isCrit, adventure) => {
+	effect: (targets, user, adventure) => {
 		const resultLines = [];
 		let progressGained = user.roundRns[`Bubble${SAFE_DELIMITER}progress`][0];
 		const removalReceipts = [];

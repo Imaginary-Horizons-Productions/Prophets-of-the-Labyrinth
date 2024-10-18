@@ -11,13 +11,13 @@ module.exports = new GearTemplate("Accurate Cloak",
 	"Armor",
 	"Wind",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [evade], bonus } = module.exports;
 		const pendingEvade = { ...evade };
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingEvade.stacks += bonus;
 		}
 		return generateModifierResultLines(addModifier([user], pendingEvade));

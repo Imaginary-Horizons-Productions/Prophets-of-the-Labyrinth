@@ -7,7 +7,7 @@ module.exports = new ItemTemplate("Placebo",
 	30,
 	selectNone,
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		adventure.score += 25;
 		return ["This adventure's score will be increased by 25."];
 	}

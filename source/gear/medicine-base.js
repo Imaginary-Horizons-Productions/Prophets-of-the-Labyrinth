@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Medicine",
 	"Trinket",
 	"Water",
 	200,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { modifiers: [regen], critMultiplier, element } = module.exports;
 		const pendingRegen = { ...regen };
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingRegen.stacks *= critMultiplier;
 		}
 		return generateModifierResultLines(addModifier(targets, pendingRegen));

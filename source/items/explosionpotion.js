@@ -8,7 +8,7 @@ module.exports = new ItemTemplate("Explosion Potion",
 	30,
 	selectAllFoes,
 	true,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		return dealDamage(targets, user, 75, false, "Untyped", adventure);
 	}
 ).setFlavorText({ name: "*Additional Notes*", value: "*Not to be confused with __Fiery Potion__. DO NOT apply to self.*" });

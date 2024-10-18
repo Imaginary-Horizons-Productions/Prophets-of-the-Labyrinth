@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Bashing Power from Wrath",
 	"Pact",
 	"Darkness",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, damage, hpCost } = module.exports;
 		const resultLines = [payHP(user, hpCost, adventure)];
 		if (adventure.lives > 0) {
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Bashing Power from Wrath",
 			if (user.element === element) {
 				changeStagger(targets, "elementMatchFoe");
 			}
-			if (isCrit) {
+			if (user.crit) {
 				pendingDamage *= 2;
 			}
 			resultLines.push(...dealDamage(targets, user, pendingDamage, false, element, adventure));

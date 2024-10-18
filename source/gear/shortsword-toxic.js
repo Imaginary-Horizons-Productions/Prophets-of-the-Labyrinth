@@ -9,10 +9,10 @@ module.exports = new GearTemplate("Toxic Shortsword",
 	"Weapon",
 	"Fire",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [exposed, poison], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);

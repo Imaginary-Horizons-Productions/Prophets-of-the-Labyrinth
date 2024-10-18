@@ -14,10 +14,10 @@ module.exports = new GearTemplate("Organic Herb Basket",
 	"Trinket",
 	"Earth",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, bonus, critMultiplier } = module.exports;
 		let pendingHerbCount = bonus;
-		if (isCrit) {
+		if (user.crit) {
 			pendingHerbCount *= critMultiplier;
 		}
 		if (user.element === element) {
@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Organic Herb Basket",
 		}
 		const randomHerb = rollableHerbs[user.roundRns[`Organic Herb Basket${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
-		if (isCrit) {
+		if (user.crit) {
 			return [`${user.name} gathers a double-batch of ${randomHerb}.`];
 		} else {
 			return [`${user.name} gathers a batch of ${randomHerb}.`];

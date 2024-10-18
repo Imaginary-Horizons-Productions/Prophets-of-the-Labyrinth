@@ -10,7 +10,7 @@ module.exports = new GearTemplate("War Cry",
 	"Technique",
 	"Light",
 	200,
-	([initialTarget], user, isCrit, adventure) => {
+	([initialTarget], user, adventure) => {
 		const targetSet = new Set();
 		const targetArray = [];
 		if (initialTarget.hp > 0) {
@@ -29,7 +29,7 @@ module.exports = new GearTemplate("War Cry",
 		if (user.element === element) {
 			pendingStaggerStacks += 2;
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingStaggerStacks += bonus;
 		}
 		changeStagger(targetArray, pendingStaggerStacks);

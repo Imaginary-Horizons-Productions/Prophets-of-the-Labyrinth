@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 	"Spell",
 	"Wind",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [quicken] } = module.exports;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchAlly");
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Accelerating Refreshing Breeze",
 		for (const target of targets) {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			if (targetDebuffs.length > 0) {
-				const debuffsToRemove = Math.min(targetDebuffs.length, isCrit ? 2 : 1);
+				const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? 2 : 1);
 				for (let i = 0; i < debuffsToRemove; i++) {
 					const debuffIndex = user.roundRns[`Accelerating Refreshing Breeze${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 					const rolledDebuff = targetDebuffs[debuffIndex];

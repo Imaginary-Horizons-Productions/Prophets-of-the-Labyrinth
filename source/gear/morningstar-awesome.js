@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Awesome Morning Star",
 	"Weapon",
 	"Light",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, stagger, damage, critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (target.isStunned) {
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Awesome Morning Star",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		changeStagger([target], stagger);

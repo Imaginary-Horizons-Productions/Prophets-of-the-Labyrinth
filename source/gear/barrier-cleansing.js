@@ -11,13 +11,13 @@ module.exports = new GearTemplate("Cleansing Barrier",
 	"Spell",
 	"Wind",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;
 		const pendingVigilance = { ...vigilance };
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingVigilance.stacks *= critMultiplier;
 		}
 		const receipts = addModifier([user], pendingVigilance).concat(addModifier([user], evade));

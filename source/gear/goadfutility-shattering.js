@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Shattering Goad Futility",
 	"Technique",
 	"Earth",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [oblivious, unlucky, frail] } = module.exports;
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Shattering Goad Futility",
 			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		receipts.push(...addModifier([target], frail));
-		if (isCrit) {
+		if (user.crit) {
 			receipts.push(...addModifier([target], unlucky));
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts)).concat(resultLines);

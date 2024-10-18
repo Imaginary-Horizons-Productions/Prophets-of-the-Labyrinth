@@ -15,8 +15,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		const delverIndex = adventure.getCombatantIndex(delver);
-		const newMove = new Move(new CombatantReference(delver.team, delverIndex), "gear", false)
-			.setName("Appease")
+		const newMove = new Move("Appease", "gear", new CombatantReference(delver.team, delverIndex))
 			.setSpeedByCombatant(delver)
 			.setPriority(1);
 

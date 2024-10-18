@@ -9,10 +9,10 @@ module.exports = new GearTemplate("Infinite Regeneration",
 	"Pact",
 	"Fire",
 	200,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [regen], hpCost, critMultiplier } = module.exports;
 		let pendingHPCost = hpCost;
-		if (isCrit) {
+		if (user.crit) {
 			pendingHPCost /= critMultiplier;
 		}
 		const paymentSentence = payHP(user, pendingHPCost, adventure);

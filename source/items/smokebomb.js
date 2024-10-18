@@ -8,7 +8,7 @@ module.exports = new ItemTemplate("Smoke Bomb",
 	30,
 	selectSelf,
 	false,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Evade", stacks: 2 }));
 	}
 ).setFlavorText({ name: "*Additional Notes*", value: "*\"While the foe suspects you're fleeing\" is the third best time to strike, beat only by \"when they least expect it\" and \"first\".*" });

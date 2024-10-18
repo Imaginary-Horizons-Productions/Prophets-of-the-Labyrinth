@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Midas's Risky Mixture",
 	"Trinket",
 	"Darkness",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [poison, regen, curseOfMidas] } = module.exports;
 		if (user.element === element) {
 			if (target.team === user.team) {
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Midas's Risky Mixture",
 			}
 		}
 		const receipts = addModifier([target], curseOfMidas);
-		if (isCrit) {
+		if (user.crit) {
 			receipts.unshift(...addModifier([target], regen));
 		} else {
 			receipts.unshift(...addModifier([target], poison));

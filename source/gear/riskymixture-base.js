@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Risky Mixture",
 	"Trinket",
 	"Darkness",
 	200,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [poison, regen] } = module.exports;
 		if (user.element === element) {
 			if (target.team === user.team) {
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Risky Mixture",
 				changeStagger([target], "elementMatchFoe");
 			}
 		}
-		if (isCrit) {
+		if (user.crit) {
 			return generateModifierResultLines(addModifier([target], regen));
 		} else {
 			return generateModifierResultLines(addModifier([target], poison));

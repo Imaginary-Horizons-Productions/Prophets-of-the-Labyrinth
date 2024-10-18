@@ -10,7 +10,7 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 	"Pact",
 	"Darkness",
 	350,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [poison], protection, critMultiplier, hpCost } = module.exports;
 		const paymentSentence = payHP(user, hpCost, adventure);
 		if (adventure.lives < 1) {
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 		if (user.element === element) {
 			changeStagger([user], "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([user], pendingProtection);

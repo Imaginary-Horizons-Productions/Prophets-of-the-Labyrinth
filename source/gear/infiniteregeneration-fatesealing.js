@@ -9,7 +9,7 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	"Pact",
 	"Fire",
 	350,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const { element, modifiers: [regen, stasis], hpCost, critMultiplier } = module.exports;
 		let pendingHPCost = hpCost;
 		const paymentSentence = payHP(user, pendingHPCost, adventure);
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 		}
 		const resultLines = [paymentSentence];
 		const receipts = addModifier(targets, regen);
-		if (isCrit) {
+		if (user.crit) {
 			pendingHPCost /= critMultiplier;
 			receipts.push(...addModifier(targets, stasis));
 		}

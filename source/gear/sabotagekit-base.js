@@ -11,11 +11,11 @@ module.exports = new GearTemplate("Sabotage Kit",
 	"Weapon",
 	"Untyped",
 	200,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, modifiers: [slow, weakness], bonus } = module.exports;
 		const pendingSlow = { ...slow };
 		const pendingWeakness = { stacks: weakness.stacks };
-		if (isCrit) {
+		if (user.crit) {
 			pendingSlow.stacks += bonus;
 			pendingWeakness.stacks += bonus;
 		}

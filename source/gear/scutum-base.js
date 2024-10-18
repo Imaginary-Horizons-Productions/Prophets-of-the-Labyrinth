@@ -9,13 +9,13 @@ module.exports = new GearTemplate("Scutum",
 	"Armor",
 	"Fire",
 	200,
-	([target], user, isCrit, adventure) => {
+	([target], user, adventure) => {
 		const { element, protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([target, user], "elementMatchAlly");
 		}
-		if (isCrit) {
+		if (user.crit) {
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([target, user], pendingProtection);

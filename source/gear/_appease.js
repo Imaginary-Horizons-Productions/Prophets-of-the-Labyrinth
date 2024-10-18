@@ -6,7 +6,7 @@ module.exports = new GearTemplate("Appease",
 	"Action",
 	"Untyped",
 	0,
-	(targets, user, isCrit, adventure) => {
+	(targets, user, adventure) => {
 		const receipts = [];
 		for (const insult of ["Boring", "Lacking Rhythm", "Smelly", "Stupid", "Ugly"]) {
 			receipts.push(...removeModifier([user], { name: insult, stacks: "all", force: true }));
