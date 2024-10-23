@@ -10,6 +10,7 @@ for (const file of [
 	"intothedeepend.js",
 	"restless.js",
 	"rushing.js",
+	"shoddycraftsmanship.js",
 	"trainingweights.js",
 	"unlabelledplacebos.js"
 ]) {
