@@ -106,7 +106,7 @@ function generateRecruitEmbed(adventure) {
 function generateAdventureConfigMessage(adventure) {
 	const options = getStartingChallenges().map(challengeName => {
 		const challenge = getChallenge(challengeName);
-		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration)), value: challengeName };
+		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration, challenge.reward)), value: challengeName };
 	})
 	return {
 		content: `**${adventure.labyrinth}**\n*${injectApplicationEmojiMarkdown(getLabyrinthProperty(adventure.labyrinth, "description"))}*\nParty Leader: <@${adventure.leaderId}>\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
