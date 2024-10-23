@@ -293,7 +293,7 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
 			if (type === "use") {
 				return `${totalStagger} Stagger: ${description}`;
-			} else if (!["Critcal💥", "upgradeDiff"].includes(type)) {
+			} else if (!["Critical💥", "upgradeDiff"].includes(type)) {
 				return `${type}: ${description}`;
 			}
 		});
@@ -313,13 +313,20 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		}
 	}
 
-	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.element : null);
+	return injectGearStats(text, gearName, buildFullDescription, gearName === "Iron Fist Punch" ? holder.element : null);
 }
 
-function injectGearStats(text, gearName, elementOverride) {
+/**
+ * @param {string} text
+ * @param {string} gearName
+ * @param {boolean} markdownAllowed
+ * @param {string | null} elementOverride
+ */
+function injectGearStats(text, gearName, markdownAllowed, elementOverride) {
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 		if (!modifier.name.startsWith("unparsed")) {
-			text = text.replace(new RegExp(`@{mod${index}}`, "g"), getApplicationEmojiMarkdown(modifier.name));
+			const replacement = markdownAllowed ? getApplicationEmojiMarkdown(modifier.name) : modifier.name;
+			text = text.replace(new RegExp(`@{mod${index}}`, "g"), replacement);
 		}
 		text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 	})

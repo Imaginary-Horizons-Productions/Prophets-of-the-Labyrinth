@@ -218,7 +218,9 @@ function nextRoom(roomType, thread) {
 						tier = rollGearTier(adventure);
 					}
 					const gearName = rollGear(tier, adventure);
-					adventure.room.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCostExpression ?? "0", getGearProperty(gearName, "cost", resourceType))));
+					if (gearName) {
+						adventure.room.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCostExpression ?? "0", getGearProperty(gearName, "cost", resourceType))));
+					}
 				}
 				break;
 			case "artifact":
@@ -1016,7 +1018,9 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 		if (adventure.generateRandomNumber(gearMax, "general") < gearThreshold) {
 			const tier = rollGearTier(adventure);
 			const droppedGear = rollGear(tier, adventure);
-			adventure.room.addResource(droppedGear, "gear", "loot", 1);
+			if (droppedGear) {
+				adventure.room.addResource(droppedGear, "gear", "loot", 1);
+			}
 		}
 
 		// Item drops

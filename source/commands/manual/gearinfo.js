@@ -33,7 +33,7 @@ async function executeSubcommand(interaction, ...args) {
 
 	const extraField = getGearProperty(gearName, "flavorText");
 	if (extraField) {
-		extraField.value = injectGearStats(extraField.value, gearName);
+		extraField.value = injectGearStats(extraField.value, gearName, true);
 		fields.push(extraField);
 	}
 

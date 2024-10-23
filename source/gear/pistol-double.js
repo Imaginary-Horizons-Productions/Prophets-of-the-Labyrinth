@@ -24,7 +24,7 @@ module.exports = new GearTemplate(gearName,
 		if (targets.some(target => getCombatantWeaknesses(target).includes(element))) {
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			const selectedAllies = [];
-			for (let i = 0; i < 2; i++) {
+			for (let i = 0; i < user.roundRns[`${gearName}${SAFE_DELIMITER}allies`].length; i++) {
 				selectedAllies.push(allyTeam[user.roundRns[`${gearName}${SAFE_DELIMITER}allies`][i] % allyTeam.length]);
 			}
 			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(selectedAllies, powerUp))));

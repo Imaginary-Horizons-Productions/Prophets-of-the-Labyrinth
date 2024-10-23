@@ -80,11 +80,14 @@ function rollItem(adventure) {
 /** Filters by party element pool and given tier, then rolls a random gear's name
  * @param {"Cursed" | "Common" | "Rare"} tier
  * @param {Adventure} adventure
- * @returns {string} the name of the dropped gear
  */
 function rollGear(tier, adventure) {
 	const pool = adventure.getElementPool().flatMap(element => LABYRINTHS[adventure.labyrinth.toLowerCase()].availableGear[element][tier]);
-	return pool[adventure.generateRandomNumber(pool.length, "general")];
+	if (pool.length > 0) {
+		return pool[adventure.generateRandomNumber(pool.length, "general")];
+	} else {
+		return null;
+	}
 }
 
 /** Internally decide the next boss of the given type, so scouting can provide that information

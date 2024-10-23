@@ -28,7 +28,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		if (targetDebuffs.length > 0) {
 			const rolledDebuff = targetDebuffs[user.roundRns[`Toil${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length];
-			resultLines.concat(generateModifierResultLines(removeModifier([user], { name: rolledDebuff, stacks: "all" })));
+			resultLines.push(...generateModifierResultLines(removeModifier([user], { name: rolledDebuff, stacks: "all" })));
 		}
 		addProtection([user], 100);
 		return resultLines;

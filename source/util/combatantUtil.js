@@ -327,9 +327,9 @@ function generateModifierResultLines(receipts) {
 			const removedFragments = [];
 			if (receipt.succeeded.size > 0) {
 				if (receipt.combatantNames.size > 1) {
-					removedFragments.push(`loses ${[...receipt.succeeded].join("")}`);
-				} else {
 					removedFragments.push(`lose ${[...receipt.succeeded].join("")}`);
+				} else {
+					removedFragments.push(`loses ${[...receipt.succeeded].join("")}`);
 				}
 			}
 			if (receipt.failed.size > 0) {

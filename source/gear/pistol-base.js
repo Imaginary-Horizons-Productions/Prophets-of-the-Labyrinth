@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
+const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 const gearName = "Pistol";
 module.exports = new GearTemplate(gearName,
@@ -23,8 +23,11 @@ module.exports = new GearTemplate(gearName,
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		if (targets.some(target => getCombatantWeaknesses(target).includes(element))) {
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
-			const ally = allyTeam[user.roundRns[`${gearName}${SAFE_DELIMITER}allies`][0] % allyTeam.length];
-			resultLines.push(...generateModifierResultLines(addModifier([ally], powerUp)));
+			const selectedAllies = [];
+			for (let i = 0; i < user.roundRns[`${gearName}${SAFE_DELIMITER}allies`].length; i++) {
+				selectedAllies.push(allyTeam[user.roundRns[`${gearName}${SAFE_DELIMITER}allies`][i] % allyTeam.length]);
+			}
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(selectedAllies, powerUp))));
 		}
 		return resultLines;
 	}
