@@ -1,7 +1,7 @@
 const { ChallengeTemplate } = require("../classes");
 
 module.exports = new ChallengeTemplate("Shoddy Craftsmanship",
-	`For the next @{duration} rooms, gear you acquire has reduced durability reduced by @{intensity}%. Afterwards gain @{reward} gold.`,
+	`For @{duration} rooms, new gear's durability is reduced by @{intensity}%. Then gain @{reward} gold.`,
 	25,
 	true,
 	true

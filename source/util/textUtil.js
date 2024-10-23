@@ -65,9 +65,9 @@ function parseExpression(expression, nValue) {
  */
 function calculateTagContent(text, tags) {
 	for (const { tag, count } of tags) {
-		const taggedGlobal = new RegExp(`@{(.*?${tag}.*?)}`, "g");
+		const taggedGlobal = new RegExp(`@{([^@{}]*?${tag}[^@{}]*?)}`, "g");
 		const untagged = new RegExp(tag, "g");
-		const taggedSingle = new RegExp(`@{(.*?${tag}.*?)}`);
+		const taggedSingle = new RegExp(`@{([^@{}]*?${tag}[^@{}]*?)}`);
 
 		for (const match of text.matchAll(taggedGlobal)) {
 			const countExpression = match?.[1].replace(untagged, "n");
