@@ -904,7 +904,7 @@ function endRound(adventure, thread) {
 		if (user.archetype === "@{clone}") {
 			const counterpartMove = adventure.room.moves.find(searchedMove => searchedMove.userReference.team === "delver" && searchedMove.userReference.index === move.userReference.index);
 			move.type = counterpartMove.type;
-			move.setName(counterpartMove.name);
+			move.name = counterpartMove.name;
 			move.setPriority(counterpartMove.priority);
 			move.targets = counterpartMove.targets.map(target => {
 				return { team: target.team === "enemy" ? "delver" : "enemy", index: target.index };
