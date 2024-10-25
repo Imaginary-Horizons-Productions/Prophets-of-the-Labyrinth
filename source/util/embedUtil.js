@@ -212,7 +212,9 @@ function addScoreField(embed, adventure, guildId) {
 			break;
 		case "defeat":
 			embed.setTitle(`Defeated${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
-			finalScore = Math.floor(finalScore / 2);
+			if (finalScore > 0) {
+				finalScore = Math.floor(finalScore / 2);
+			}
 			break;
 		case "giveup":
 			embed.setTitle(`Gave up${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
@@ -227,7 +229,7 @@ function addScoreField(embed, adventure, guildId) {
 	const challengesScoreline = generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
 	const skippedArtifactScoreline = generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
 	const artifactMultiplierScoreline = generateScoreline("multiplicative", "Floating Multiplier Bonus", 1 + (adventure.getArtifactCount("Floating Multiplier") / 4));
-	const defeatScoreline = generateScoreline("multiplicative", "Defeat", adventure.state === "defeat" ? 0.5 : 1);
+	const defeatScoreline = generateScoreline("multiplicative", "Defeat", adventure.state === "defeat" && finalScore > 0 ? 0.5 : 1);
 	const giveupScoreline = generateScoreline("multiplicative", "Give Up", adventure.state === "giveup" ? 0 : 1);
 	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${guardianScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${artifactMultiplierScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
 	adventure.score = finalScore;
