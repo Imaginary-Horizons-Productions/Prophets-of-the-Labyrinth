@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, italic } = require("discor
 const { RoomTemplate } = require("../classes");
 const { rollArtifactWithExclusions } = require("../artifacts/_artifactDictionary");
 const { SAFE_DELIMITER } = require("../constants");
-const { generateRoutingRow } = require("../util/messageComponentUtil");
+const { generateRoutingRow, partyStatsButton } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Door 1 or Door 2?",
 	"@{adventureOpposite}",
@@ -58,10 +58,7 @@ module.exports = new RoomTemplate("Door 1 or Door 2?",
 						.setEmoji(door2Emoji)
 						.setLabel(door2Label)
 						.setDisabled(partyHasPicked || partyCannotAffordDoor2 || partyHasAllArtifacts),
-					new ButtonBuilder().setCustomId("partystats")
-						.setEmoji("📚")
-						.setLabel("Party Stats")
-						.setStyle(ButtonStyle.Secondary)
+					partyStatsButton
 				),
 				generateRoutingRow(adventure)
 			]

@@ -41,14 +41,8 @@ function generateCombatRoomBuilder(extraButtons) {
 		const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0);
 		if (!isCombatVictory) {
 			const buttons = [
-				new ButtonBuilder().setCustomId("partystats")
-					.setEmoji("📚")
-					.setLabel("Party Stats")
-					.setStyle(ButtonStyle.Secondary),
-				new ButtonBuilder().setCustomId("inspectself")
-					.setEmoji("🔎")
-					.setLabel("Inspect Self")
-					.setStyle(ButtonStyle.Secondary),
+				module.exports.partyStatsButton,
+				module.exports.inspectSelfButton,
 				new ButtonBuilder().setCustomId("readymove")
 					.setEmoji("⚔")
 					.setLabel("Ready a Move")
@@ -145,6 +139,14 @@ function generateMerchantScoutingRow(adventure) {
 
 module.exports = {
 	clearComponents,
+	partyStatsButton: new ButtonBuilder().setCustomId("partystats")
+		.setEmoji("📚")
+		.setLabel("Party Stats")
+		.setStyle(ButtonStyle.Secondary),
+	inspectSelfButton: new ButtonBuilder().setCustomId("inspectself")
+		.setEmoji("🔎")
+		.setLabel("Inspect Self")
+		.setStyle(ButtonStyle.Secondary),
 	generateCombatRoomBuilder,
 	generateLootRow,
 	generateRoutingRow,
