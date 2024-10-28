@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER } = require("../constants");
-const { generateRoutingRow } = require("../util/messageComponentUtil");
+const { generateRoutingRow, inspectSelfButton } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 	"@{adventure}",
@@ -50,6 +50,7 @@ module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
 			components: [
 				new ActionRowBuilder().addComponents(
+					inspectSelfButton,
 					new ButtonBuilder().setCustomId(`rest${SAFE_DELIMITER}${healPercent}`)
 						.setStyle(ButtonStyle.Primary)
 						.setEmoji(restEmoji)
