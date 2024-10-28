@@ -198,38 +198,66 @@ function renderRoom(adventure, thread, descriptionOverride) {
  */
 function addScoreField(embed, adventure, guildId) {
 	let { livesScore, goldScore, guardianScore, total: finalScore } = adventure.getBaseScore();
+	let breakdownText = generateScoreline("additive", "Depth", adventure.depth);
+	breakdownText += generateScoreline("additive", "Lives", livesScore);
+	breakdownText += generateScoreline("additive", "Gold", goldScore);
+	breakdownText += generateScoreline("additive", "Artifact Guardians Defeated", guardianScore);
+	breakdownText += generateScoreline("additive", "Bonus", adventure.score);
 	let challengeMultiplier = 1;
 	Object.keys(adventure.challenges).forEach(challengeName => {
 		const challenge = getChallenge(challengeName);
 		challengeMultiplier *= challenge.scoreMultiplier;
 	})
-	finalScore *= challengeMultiplier;
 	const skippedArtifactsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.startingArtifact ? count : count + 1, 0) / adventure.delvers.length);
-	finalScore = Math.max(1, finalScore * skippedArtifactsMultiplier);
-	switch (adventure.state) {
-		case "success":
-			embed.setTitle(`Success in ${adventure.labyrinth}`);
-			break;
-		case "defeat":
-			embed.setTitle(`Defeated${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
-			finalScore = Math.floor(finalScore / 2);
-			break;
-		case "giveup":
-			embed.setTitle(`Gave up${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
-			finalScore = 0;
-			break;
+	const floatingMultiplierBonus = 1 + (adventure.getArtifactCount("Floating Multiplier") / 4);
+	// Skip multiplicative bonuses if score is negative
+	if (finalScore > 0) {
+		finalScore *= challengeMultiplier;
+		breakdownText += generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
+		finalScore = Math.max(1, finalScore * skippedArtifactsMultiplier);
+		breakdownText += generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
+		breakdownText += generateScoreline("multiplicative", "Floating Multiplier Bonus", floatingMultiplierBonus);
+		switch (adventure.state) {
+			case "success":
+				embed.setTitle(`Success in ${adventure.labyrinth}`);
+				break;
+			case "defeat":
+				embed.setTitle(`Defeated${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
+				finalScore = Math.floor(finalScore / 2);
+				breakdownText += generateScoreline("multiplicative", "Defeat", 0.5);
+				break;
+			case "giveup":
+				embed.setTitle(`Gave up${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
+				finalScore = 0;
+				breakdownText += generateScoreline("multiplicative", "Give Up", adventure.state === "giveup" ? 0 : 1);
+				break;
+		}
+	} else {
+		if (challengeMultiplier > 1) {
+			breakdownText += `Challenges Multiplier: ~~x${challengeMultiplier}~~ x1\n`;
+		}
+		if (skippedArtifactsMultiplier > 1) {
+			breakdownText += `Artifact Skip Multiplier: ~~x${skippedArtifactsMultiplier}~~ x1\n`;
+		}
+		if (floatingMultiplierBonus > 1) {
+			breakdownText += `Floating Multiplier Bonus: ~~x${floatingMultiplierBonus}~~ x1\n`;
+		}
+		switch (adventure.state) {
+			case "success":
+				embed.setTitle(`Success in ${adventure.labyrinth}`);
+				break;
+			case "defeat":
+				embed.setTitle(`Defeated${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
+				breakdownText += `Defeat: ~~x$0.5~~ x1\n`;
+				break;
+			case "giveup":
+				embed.setTitle(`Gave up${adventure.room.title ? ` in ${adventure.room.title}` : " before even starting"}`);
+				finalScore = 0;
+				breakdownText += generateScoreline("multiplicative", "Give Up", adventure.state === "giveup" ? 0 : 1);
+				break;
+		}
 	}
-	const depthScoreLine = generateScoreline("additive", "Depth", adventure.depth);
-	const livesScoreLine = generateScoreline("additive", "Lives", livesScore);
-	const goldScoreline = generateScoreline("additive", "Gold", goldScore);
-	const guardianScoreline = generateScoreline("additive", "Artifact Guardians Defeated", guardianScore);
-	const bonusScoreline = generateScoreline("additive", "Bonus", adventure.score);
-	const challengesScoreline = generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
-	const skippedArtifactScoreline = generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
-	const artifactMultiplierScoreline = generateScoreline("multiplicative", "Floating Multiplier Bonus", 1 + (adventure.getArtifactCount("Floating Multiplier") / 4));
-	const defeatScoreline = generateScoreline("multiplicative", "Defeat", adventure.state === "defeat" ? 0.5 : 1);
-	const giveupScoreline = generateScoreline("multiplicative", "Give Up", adventure.state === "giveup" ? 0 : 1);
-	embed.addFields({ name: "Score Breakdown", value: `${depthScoreLine}${livesScoreLine}${goldScoreline}${guardianScoreline}${bonusScoreline}${challengesScoreline}${skippedArtifactScoreline}${artifactMultiplierScoreline}${defeatScoreline}${giveupScoreline}\n__Total__: ${finalScore}` });
+	embed.addFields({ name: "Score Breakdown", value: `${breakdownText}\n__Total__: ${finalScore}` });
 	adventure.score = finalScore;
 
 	const company = getCompany(guildId);
