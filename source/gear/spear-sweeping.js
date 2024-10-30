@@ -5,7 +5,7 @@ const { joinAsStatement } = require('../util/textUtil.js');
 module.exports = new GearTemplate("Sweeping Spear",
 	[
 		["use", "Strike all foes for @{damage} @{element} damage"],
-		["Critical💥", "Also inflict @{foeStagger}"]
+		["Critical💥", "Inflict @{bonus} more Stagger"]
 	],
 	"Weapon",
 	"Earth",

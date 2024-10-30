@@ -4,7 +4,7 @@ const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Strong Attack",
 	[
-		["use", "Strike a foe applying @{foeStagger} and @{damage} @{element} damage"],
+		["use", "Strike a foe for @{damage} @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

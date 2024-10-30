@@ -52,7 +52,7 @@ After the systems focus in v0.14, this update is looping back to give some love 
 - Fixed a crash in **Accelerating Shortsword**
 ### Ritualist
 - Predict: Modifiers & Stagger
-- Fate-Sealing Censor → **Staggering Censor**: to add Stun potential
+- Fate-Sealing Censer → **Staggering Censer**: to add Stun potential
 - Flanking Corrosion → **Fate-Sealing Corrosion**: Ritualist doesn't have a speed predict for Exposed
 ### New Content
 - Artifacts: Floating Multiplier, Peacock Charm, Best-in-Class Hammer

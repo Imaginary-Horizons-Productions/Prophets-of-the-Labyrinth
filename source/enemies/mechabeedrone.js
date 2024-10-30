@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
@@ -36,7 +36,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 			receipts.push(...addModifier([user], { name: "Agility", stacks: 1 }));
 		}
 		changeStagger([user], "elementMatchAlly");
-		return generateModifierResultLines(receipts);
+		return combineModifierReceipts(generateModifierResultLines(receipts));
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
