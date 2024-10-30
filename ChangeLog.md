@@ -33,6 +33,9 @@
 - Added new Event room: Door 1 or Door 2?
 - Tuned Elekmist actions' progress values
 - Added Artifact: Loaded Dice
+### Known Issues
+- Two players clicking the "Scout the Final Boss" button at nearly the same time can double-charge the party
+- Acquiring a Cursed Blade can leave the delver's current hp above their max hp
 ## Prophets of the Labyrinth v0.15.0:
 After the systems focus in v0.14, this update is looping back to give some love to balance and content. One focus is adding more archetype differences so picking party composition is a more interesting decision; a step toward composition varying based on labyrinth choice. Predicts are now unique combinations of information. For example, multiple archetypes can predict HP, but only the Hemomancer can predict both HP and Speed.
 ### Detective
