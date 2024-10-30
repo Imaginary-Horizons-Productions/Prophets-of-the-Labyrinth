@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { isDebuff } = require('../modifiers/_modifierDictionary');
-const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
+const { addModifier, changeStagger, generateModifierResultLines, removeModifier } = require('../util/combatantUtil');
 
 const gearName = "Cleansing Medicine";
 module.exports = new GearTemplate(gearName,

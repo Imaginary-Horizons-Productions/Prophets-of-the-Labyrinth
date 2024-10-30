@@ -1,7 +1,8 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier, generateModifierResultLines, getCombatantWeaknesses } = require('../util/combatantUtil');
 const { SAFE_DELIMITER } = require('../constants');
 const { rollablePotions } = require('../shared/potions');
+const { getResistances, elementsList } = require('../util/elementUtil');
 
 const gearName = "Sabotaging Cauldron Stir";
 module.exports = new GearTemplate(gearName,
@@ -28,7 +29,7 @@ module.exports = new GearTemplate(gearName,
 			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 			const weaknessPool = elementsList(ineligibleWeaknesses);
 			if (weaknessPool.length > 0) {
-				pendingWeakness.name = `${weaknessPool[user.roundRns[`${gearName}${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
+				const pendingWeakness = `${weaknessPool[user.roundRns[`${gearName}${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
 				resultLines.push(...generateModifierResultLines(addModifier(targets, { name: pendingWeakness, stacks: weakness.stacks })));
 			}
 		}

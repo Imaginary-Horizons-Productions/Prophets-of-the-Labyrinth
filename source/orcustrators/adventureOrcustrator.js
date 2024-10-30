@@ -422,6 +422,7 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			if (targetModifiers.length > pendingRemoves) {
 				return predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers);
 			}
+			break;
 		case "progress":
 			let pendingProgress = user.getModifierStacks("Progress") + user.roundRns[roundRnKeyname][0];
 			return `The Elkemist ${pendingProgress > 100 ? "will" : "won't"} reach an epiphany this round.`;
