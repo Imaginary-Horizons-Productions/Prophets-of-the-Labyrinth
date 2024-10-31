@@ -325,14 +325,8 @@ async function generateVersionEmbed() {
 	const data = await fs.promises.readFile('./ChangeLog.md', { encoding: 'utf8' });
 	const dividerRegEx = /## .+ v\d+.\d+.\d+/g;
 	const changesStartRegEx = /\.\d+:/g;
-	const knownIssuesStartRegEx = /### Known Issues/g;
 	let titleStart = dividerRegEx.exec(data).index;
 	changesStartRegEx.exec(data);
-	let knownIssuesStart;
-	let knownIssueStartResult = knownIssuesStartRegEx.exec(data);
-	if (knownIssueStartResult) {
-		knownIssuesStart = knownIssueStartResult.index;
-	}
 	let knownIssuesEnd = dividerRegEx.exec(data).index;
 
 	return embedTemplate()

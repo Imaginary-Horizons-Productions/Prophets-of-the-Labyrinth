@@ -1,9 +1,10 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes
-- Changed Detective to Untyped, increased duration of Sabotage Kit (and upgrades) weakness by 1, changed predict to weaknesses and random outcomes (no longer modifiers)
-   - The case where the Detective innately had elemental advantage against an enemy was too much more powerful than the case where the advantage was earned. Changing to Untyped both removes the innate elemental advantage case, but also makes adding Pistol triggering weakness to enemies always possible (no enemies resist Untyped).
-   - In the effort to make random outcomes stable for bouncing moves, the system became compatible with being able to have random outcomes be recorded by predicts
+- Changed Detective to Untyped
+   - The Detective was too much more powerful in battles where they innately had elemental advantage than those where the advantage was earned. Changing to Untyped both removes the possibility for innate elemental advantage and makes adding Pistol weakness to enemies always possible (no enemies resist Untyped).
+- Changed Detective predict to weaknesses and random outcomes (no longer modifiers)
+- Increased duration of Sabotage Kit (and upgrades) weakness by 1
 - Changed Martial Artist Predict to Stagger and Enemy's next move
    - Now that predicts are unique info combinations, the Martial Artist is no longer stuck predicting speed (which hasn't been helpful in informing Stun strategies since the mechanics were made independent) in order to be able to predict Stagger. Predicting the move in the next round (note: not the upcoming round, but the one after that) is helpful for deciding if that move is worth attempting to avoid by pushing for Stun.
 ### Gear
