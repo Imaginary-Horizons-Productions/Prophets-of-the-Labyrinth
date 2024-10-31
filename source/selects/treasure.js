@@ -60,6 +60,9 @@ module.exports = new SelectWrapper(mainId, 2000,
 							const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 							const discardedName = delver.gear[gearIndex].name;
 							delver.gear.splice(gearIndex, 1, buildGearRecord(name, adventure));
+							if (delver.hp > delver.getMaxHP()) {
+								delver.hp = delver.getMaxHP();
+							}
 							collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 								adventure.room.decrementResource("roomAction", 1);
 								adventure.room.decrementResource(name, 1);
@@ -79,6 +82,9 @@ module.exports = new SelectWrapper(mainId, 2000,
 					return;
 				} else {
 					delver.gear.push(buildGearRecord(name, adventure));
+					if (delver.hp > delver.getMaxHP()) {
+						delver.hp = delver.getMaxHP();
+					}
 					if (adventure.room.resources[name].count > 1) {
 						adventure.room.resources[name].count--;
 					} else {
