@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 			receipts.push(...addModifier([user], { name: "Agility", stacks: 1 }));
 		}
 		changeStagger([user], "elementMatchAlly");
-		return combineModifierReceipts(generateModifierResultLines(receipts));
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectSelf,
 	needsLivingTargets: false,
