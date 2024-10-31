@@ -18,6 +18,7 @@ const { Company } = require("./classes");
 const { SAFE_DELIMITER, authPath, testGuildId, announcementsChannelId, lastPostedVersion, SKIP_INTERACTION_HANDLING, commandIds } = require("./constants.js");
 
 const { getCommand, slashData } = require("./commands/_commandDictionary.js");
+const { contextMenuData, getContextMenu } = require("./context_menus/_contextMenuDictionary.js");
 const { getButton } = require("./buttons/_buttonDictionary.js");
 const { getModifierEmojiFileTuples } = require("./modifiers/_modifierDictionary.js");
 const { getSelect } = require("./selects/_selectDictionary.js");
@@ -84,7 +85,7 @@ client.on(Events.ClientReady, () => {
 			try {
 				new REST({ version: 10 }).setToken(require(authPath).token).put(
 					Routes.applicationCommands(client.user.id),
-					{ body: slashData }
+					{ body: slashData.concat(contextMenuData) }
 				).then(commands => {
 					for (const command of commands) {
 						commandIds[command.name] = command.id;
@@ -132,6 +133,10 @@ client.on(Events.ClientReady, () => {
 })
 
 client.on(Events.InteractionCreate, interaction => {
+	if (interaction.customId?.startsWith(SKIP_INTERACTION_HANDLING)) {
+		return;
+	}
+
 	if (interaction.isAutocomplete()) {
 		const command = getCommand(interaction.commandName);
 		const focusedOption = interaction.options.getFocused(true);
@@ -142,6 +147,14 @@ client.on(Events.InteractionCreate, interaction => {
 		const choices = unfilteredChoices.filter(choice => choice.value.toLowerCase().includes(focusedOption.value.toLowerCase()))
 			.slice(0, 25);
 		interaction.respond(choices);
+	} else if (interaction.isContextMenuCommand()) {
+		const contextMenu = getContextMenu(interaction.commandName);
+		const cooldownTimestamp = contextMenu.getCooldownTimestamp(interaction.user.id, interactionCooldowns);
+		if (cooldownTimestamp) {
+			interaction.reply({ content: `Please wait, the \`/${interaction.commandName}\` context menu option is on cooldown. It can be used again <t:${cooldownTimestamp}:R>.`, ephemeral: true });
+			return;
+		}
+		contextMenu.execute(interaction);
 	} else if (interaction.isCommand()) {
 		const command = getCommand(interaction.commandName);
 		const cooldownTimestamp = command.getCooldownTimestamp(interaction.user.id, interactionCooldowns);
@@ -151,8 +164,6 @@ client.on(Events.InteractionCreate, interaction => {
 		}
 
 		command.execute(interaction);
-	} else if (interaction.customId.startsWith(SKIP_INTERACTION_HANDLING)) {
-		return;
 	} else {
 		const [mainId, ...args] = interaction.customId.split(SAFE_DELIMITER);
 		let getter;

@@ -31,5 +31,7 @@ Please use `camelCase` unless one of the following exceptions apply:
 - Classes are in `PascalCase` as programming convention
 - Interaction instances match their customIds
    - Slash commands use `kebab-case` as part of Discord convention
+   - Context menu commands have their customIds visible to the end user as the menu option name, and we use `Proper Noun Case` as a result
+     - File names should match the customIds, but use underscores instead of spaces (like `Proper_Noun_Case.js`)
    - Others avoid a delimiter character, making them `alllowercase`, as we sometimes concatenate arguments to interaction customIds, which have a max length
 - Emoji image file names match the display name of their entity with white space replaced by underscore (eg `Curse_of_Midas.png`)
