@@ -16,21 +16,22 @@ module.exports = new GearTemplate(gearName,
 	(targets, user, adventure) => {
 		const { element, damage, modifiers: [weakness] } = module.exports;
 		const pendingDamage = damage + user.getPower();
-		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
-		}
 		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		if (user.element === element) {
+			changeStagger(stillLivingTargets, "elementMatchFoe");
+		}
 		if (user.crit) {
 			const rolledPotion = rollablePotions[user.roundRns[`${gearName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 			adventure.room.addResource(rolledPotion, "item", "loot", 1);
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
-		for (const target of targets) {
+		for (const target of stillLivingTargets) {
 			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 			const weaknessPool = elementsList(ineligibleWeaknesses);
 			if (weaknessPool.length > 0) {
 				const pendingWeakness = `${weaknessPool[user.roundRns[`${gearName}${SAFE_DELIMITER}weaknesses`][0] % weaknessPool.length]} Weakness`;
-				resultLines.push(...generateModifierResultLines(addModifier(targets, { name: pendingWeakness, stacks: weakness.stacks })));
+				resultLines.push(...generateModifierResultLines(addModifier(stillLivingTargets, { name: pendingWeakness, stacks: weakness.stacks })));
 			}
 		}
 		return resultLines;
