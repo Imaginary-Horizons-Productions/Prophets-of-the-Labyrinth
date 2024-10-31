@@ -7,6 +7,7 @@ const ROLLABLE_CHALLENGES = [];
 
 for (const file of [
 	"cantholdallthisvalue.js",
+	"cursedrun.js",
 	"intothedeepend.js",
 	"restless.js",
 	"rushing.js",

@@ -1,6 +1,7 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.17.0:
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)
+- New Challenge: Cursed Run - One of your starting gear pieces is randomly replaced with cursed gear
 - Fixed delvers being able to end up above max HP when acquiring Cursed Blade
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes

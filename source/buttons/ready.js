@@ -5,6 +5,8 @@ const { getAdventure, nextRoom, fetchRecruitMessage, setAdventure } = require('.
 const { commandMention } = require('../util/textUtil');
 const { bold } = require('discord.js');
 
+const cursedGearByPurpose = ["Cursed Blade", "Cursed Tome"];
+
 const mainId = "ready";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** check if the delver is ready to start the adventure */
@@ -39,8 +41,16 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 				const archetypeTemplate = getArchetype(delver.archetype);
 				delver.element = archetypeTemplate.element;
-				delver.gear = archetypeTemplate.startingGear.map(gearName => {
-					return buildGearRecord(gearName, adventure);
+				let cursedIndex;
+				if ("Cursed Run" in adventure.challenges) {
+					cursedIndex = adventure.generateRandomNumber(archetypeTemplate.startingGear.length, "general");
+				}
+				delver.gear = archetypeTemplate.startingGear.map((gearName, index) => {
+					if (index === cursedIndex) {
+						return buildGearRecord(cursedGearByPurpose[index], adventure);
+					} else {
+						return buildGearRecord(gearName, adventure);
+					}
 				});
 				if (delver.hp > delver.getMaxHP()) {
 					delver.hp = delver.getMaxHP();
