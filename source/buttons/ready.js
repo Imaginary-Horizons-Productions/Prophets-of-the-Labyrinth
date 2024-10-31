@@ -42,6 +42,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				delver.gear = archetypeTemplate.startingGear.map(gearName => {
 					return buildGearRecord(gearName, adventure);
 				});
+				if (delver.hp > delver.getMaxHP()) {
+					delver.hp = delver.getMaxHP();
+				}
 			})
 
 			interaction.reply({ content: `The adventure has begun (and closed to new delvers joining)! You can use ${commandMention("adventure party-stats")} or ${commandMention("adventure inspect-self")} to check adventure status.`, fetchReply: true }).then(message => {

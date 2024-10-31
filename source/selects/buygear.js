@@ -32,6 +32,9 @@ module.exports = new SelectWrapper(mainId, 3000,
 			adventure.gold -= cost;
 			adventure.room.decrementResource(name, 1);
 			delver.gear.push(buildGearRecord(name, adventure));
+			if (delver.hp > delver.getMaxHP()) {
+				delver.hp = delver.getMaxHP();
+			}
 			interaction.message.edit(renderRoom(adventure, interaction.channel));
 			interaction.reply({ content: `${interaction.member.displayName} buys a ${name} for ${cost}g.` });
 			setAdventure(adventure);
@@ -60,6 +63,9 @@ module.exports = new SelectWrapper(mainId, 3000,
 					const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 					const discardedName = delver.gear[gearIndex].name;
 					delver.gear.splice(gearIndex, 1, buildGearRecord(name, adventure));
+					if (delver.hp > delver.getMaxHP()) {
+						delver.hp = delver.getMaxHP();
+					}
 					collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 						adventure.room.decrementResource(name, 1);
 						adventure.gold -= cost;
