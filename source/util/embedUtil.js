@@ -521,7 +521,7 @@ function generateStatsEmbed(user, guildId) {
 	const totalArtifacts = getArtifactCounts();
 	return embedTemplate().setTitle(`Player Stats: ${user.displayName}`)
 		.setThumbnail(POTL_ICON_URL)
-		.setDescription(`${availability}\n\nTotal Score: ${Object.values(player.scores).map(score => score.total).reduce((total, current) => total += current)}`)
+		.setDescription(`${availability}\n\nTotal Score: ${Object.values(player.scores).map(score => score.total).reduce((total, current) => total += current, 0)}`)
 		.addFields(
 			{ name: `Best Archetype: ${bestArchetype}`, value: `High Score: ${highScore}` },
 			{ name: "Artifacts Collected", value: `${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)` }
