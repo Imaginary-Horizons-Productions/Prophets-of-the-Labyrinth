@@ -1,5 +1,5 @@
 const { MAX_SET_TIMEOUT } = require("../constants");
-const { Interaction, ButtonInteraction, PermissionFlagsBits, CommandInteraction, SlashCommandBuilder, AnySelectMenuInteraction, InteractionContextType } = require("discord.js");
+const { Interaction, ButtonInteraction, PermissionFlagsBits, CommandInteraction, SlashCommandBuilder, AnySelectMenuInteraction, InteractionContextType, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction, ContextMenuCommandInteraction, ContextMenuCommandBuilder, ApplicationCommandType } = require("discord.js");
 const { BuildError } = require("./BuildError.js");
 
 class InteractionWrapper {
@@ -139,4 +139,58 @@ class SelectWrapper extends InteractionWrapper {
 	}
 };
 
-module.exports = { ButtonWrapper, CommandWrapper, SelectWrapper };
+class ContextMenuWrapper extends InteractionWrapper {
+	/** Wrapper properties for general context menus. Intended to be the basis for the two child types.
+	 * @param {string} mainIdInput
+	 * @param {string} descriptionInput
+	 * @param {PermissionFlagsBits | null} defaultMemberPermission
+	 * @param {boolean} isPremiumCommand
+	 * @param {InteractionContextType[]} contextEnums
+	 * @param {number} cooldownInMS
+	 * @param {(interaction: ContextMenuCommandInteraction) => void} executeFunction
+	 */
+	constructor(mainIdInput, defaultMemberPermission, isPremiumCommand, contextEnums, cooldownInMS, executeFunction) {
+		super(mainIdInput, cooldownInMS, executeFunction);
+		this.premiumCommand = isPremiumCommand;
+		this.builder = new ContextMenuCommandBuilder()
+			.setName(mainIdInput)
+			.setContexts(contextEnums);
+		if (defaultMemberPermission) {
+			this.builder.setDefaultMemberPermissions(defaultMemberPermission);
+		}
+	}
+};
+
+class UserContextMenuWrapper extends ContextMenuWrapper {
+	/** Wrapper properties for context menus on users.
+	 * @param {string} mainIdInput
+	 * @param {string} descriptionInput
+	 * @param {PermissionFlagsBits | null} defaultMemberPermission
+	 * @param {boolean} isPremiumCommand
+	 * @param {InteractionContextType[]} contextEnums
+	 * @param {number} cooldownInMS
+	 * @param {(interaction: UserContextMenuCommandInteraction) => void} executeFunction
+	 */
+	constructor(mainIdInput, defaultMemberPermission, isPremiumCommand, contextEnums, cooldownInMS, executeFunction) {
+		super(mainIdInput, defaultMemberPermission, isPremiumCommand, contextEnums, cooldownInMS, executeFunction);
+		this.builder = this.builder.setType(ApplicationCommandType.User);
+	}
+};
+
+class MessageContextMenuWrapper extends ContextMenuWrapper {
+	/** Wrapper properties for context menus on messages.
+	 * @param {string} mainIdInput
+	 * @param {string} descriptionInput
+	 * @param {PermissionFlagsBits | null} defaultMemberPermission
+	 * @param {boolean} isPremiumCommand
+	 * @param {InteractionContextType[]} contextEnums
+	 * @param {number} cooldownInMS
+	 * @param {(interaction: MessageContextMenuCommandInteraction) => void} executeFunction
+	 */
+	constructor(mainIdInput, defaultMemberPermission, isPremiumCommand, contextEnums, cooldownInMS, executeFunction) {
+		super(mainIdInput, defaultMemberPermission, isPremiumCommand, contextEnums, cooldownInMS, executeFunction);
+		this.builder = this.builder.setType(ApplicationCommandType.User);
+	}
+};
+
+module.exports = { ButtonWrapper, CommandWrapper, SelectWrapper, ContextMenuWrapper, UserContextMenuWrapper, MessageContextMenuWrapper };

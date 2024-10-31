@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
@@ -16,6 +16,8 @@ const { getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require(
 
 const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
 const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
+const { getArtifactCounts } = require("../artifacts/_artifactDictionary");
+const { isSponsor } = require("./fileUtil");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -497,6 +499,35 @@ function generatePartyStatsPayload(adventure) {
 	return { embeds: [embed], components: infoSelects, ephemeral: true };
 }
 
+/**
+ * @param {User} user
+ * @param {string} guildId
+ */
+function generateStatsEmbed(user, guildId) {
+	let availability = getCompany(guildId)?.adventuring.has(user.id) ? "❌ Out on adventure" : "🟢 Available for adventure";
+	if (isSponsor(user.id)) {
+		availability = "💎 Available for adventure (Premium)";
+	}
+	const player = getPlayer(user.id, guildId);
+	let bestArchetype = "N/A";
+	let highScore = 0;
+	for (const archetype in player.archetypes) {
+		const score = player.archetypes[archetype];
+		if (score > highScore) {
+			bestArchetype = archetype;
+			highScore = score;
+		}
+	}
+	const totalArtifacts = getArtifactCounts();
+	return embedTemplate().setTitle(`Player Stats: ${user.displayName}`)
+		.setThumbnail(POTL_ICON_URL)
+		.setDescription(`${availability}\n\nTotal Score: ${Object.values(player.scores).map(score => score.total).reduce((total, current) => total += current)}`)
+		.addFields(
+			{ name: `Best Archetype: ${bestArchetype}`, value: `High Score: ${highScore}` },
+			{ name: "Artifacts Collected", value: `${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)` }
+		)
+}
+
 module.exports = {
 	randomAuthorTip,
 	randomFooterTip,
@@ -509,5 +540,6 @@ module.exports = {
 	generateArtifactEmbed,
 	gearToEmbedField,
 	inspectSelfPayload,
-	generatePartyStatsPayload
+	generatePartyStatsPayload,
+	generateStatsEmbed
 };

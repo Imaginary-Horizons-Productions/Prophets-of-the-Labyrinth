@@ -7,7 +7,7 @@ const { Combatant, Delver, Gear } = require("./Combatant");
 const { Company } = require("./Company");
 const { EnemyTemplate } = require("./EnemyTemplate");
 const { GearTemplate } = require("./GearTemplate");
-const { ButtonWrapper, CommandWrapper, SelectWrapper } = require("./InteractionWrapper");
+const { ButtonWrapper, CommandWrapper, SelectWrapper, ContextMenuWrapper, MessageContextMenuWrapper, UserContextMenuWrapper } = require("./InteractionWrapper");
 const { ItemTemplate } = require("./ItemTemplate");
 const { LabyrinthTemplate } = require("./LabyrinthTemplate");
 const { ModifierTemplate, ModifierReceipt } = require("./ModifierTemplate");
@@ -27,6 +27,7 @@ module.exports = {
 	CombatantReference,
 	CommandWrapper,
 	Company,
+	ContextMenuWrapper,
 	Delver,
 	Enemy,
 	EnemyTemplate,
@@ -34,6 +35,7 @@ module.exports = {
 	GearTemplate,
 	ItemTemplate,
 	LabyrinthTemplate,
+	MessageContextMenuWrapper,
 	ModifierTemplate,
 	ModifierReceipt,
 	Move,
@@ -41,5 +43,6 @@ module.exports = {
 	ResourceTemplate,
 	Room,
 	RoomTemplate,
-	SelectWrapper
+	SelectWrapper,
+	UserContextMenuWrapper
 };
