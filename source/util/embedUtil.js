@@ -325,31 +325,16 @@ async function generateVersionEmbed() {
 	const data = await fs.promises.readFile('./ChangeLog.md', { encoding: 'utf8' });
 	const dividerRegEx = /## .+ v\d+.\d+.\d+/g;
 	const changesStartRegEx = /\.\d+:/g;
-	const knownIssuesStartRegEx = /### Known Issues/g;
 	let titleStart = dividerRegEx.exec(data).index;
 	changesStartRegEx.exec(data);
-	let knownIssuesStart;
-	let knownIssueStartResult = knownIssuesStartRegEx.exec(data);
-	if (knownIssueStartResult) {
-		knownIssuesStart = knownIssueStartResult.index;
-	}
 	let knownIssuesEnd = dividerRegEx.exec(data).index;
 
-	const embed = embedTemplate()
+	return embedTemplate()
 		.setTitle(data.slice(titleStart + 3, changesStartRegEx.lastIndex))
-		.setURL('https://discord.gg/JxqE9EpKt9')
+		.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesEnd).slice(0, MAX_EMBED_DESCRIPTION_LENGTH)).setURL('https://discord.gg/JxqE9EpKt9')
 		.setThumbnail('https://cdn.discordapp.com/attachments/545684759276421120/734099622846398565/newspaper.png')
-		.setTimestamp();
-
-	if (knownIssuesStart && knownIssuesStart < knownIssuesEnd) {
-		// Known Issues section found
-		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesStart).slice(0, MAX_EMBED_DESCRIPTION_LENGTH))
-			.addFields({ name: "Known Issues", value: data.slice(knownIssuesStart + 16, knownIssuesEnd) });
-	} else {
-		// Known Issues section not found
-		embed.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesEnd).slice(0, MAX_EMBED_DESCRIPTION_LENGTH));
-	}
-	return embed.addFields({ name: "Become a Sponsor", value: "Chip in for server costs or get premium features by sponsoring [PotL on GitHub](https://github.com/Imaginary-Horizons-Productions/Prophets-of-the-Labyrinth)" });
+		.setTimestamp()
+		.addFields({ name: "Become a Sponsor", value: "Chip in for server costs or get premium features by sponsoring [PotL on GitHub](https://github.com/Imaginary-Horizons-Productions/Prophets-of-the-Labyrinth)" });
 }
 
 /**
