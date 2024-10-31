@@ -5,6 +5,7 @@ const { getGearProperty, buildGearDescription } = require("../gear/_gearDictiona
 const { getItem } = require("../items/_itemDictionary");
 const { generateMerchantScoutingRow, generateRoutingRow } = require("../util/messageComponentUtil");
 const { trimForSelectOptionDescription } = require("../util/textUtil");
+const { injectApplicationEmojiName } = require("../util/graphicsUtil");
 
 const uiGroups = [`gear${SAFE_DELIMITER}?`, "item"];
 
@@ -39,7 +40,7 @@ module.exports = new RoomTemplate("Item Merchant",
 						const item = getItem(name);
 						itemOptions.push({
 							label: `${item.cost}g: ${name}`,
-							description: trimForSelectOptionDescription(item.description),
+							description: trimForSelectOptionDescription(injectApplicationEmojiName(item.description)),
 							value: `${name}${SAFE_DELIMITER}${i}`
 						})
 						break;
