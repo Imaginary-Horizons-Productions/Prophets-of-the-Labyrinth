@@ -24,7 +24,7 @@ module.exports = new RoomTemplate("Item Merchant",
 		Object.values(adventure.room.resources).forEach(({ name, uiGroup }, i) => {
 			if (adventure.room.hasResource(name)) {
 				switch (uiGroup) {
-					case uiGroups[0]: // gear
+					case uiGroups[0]: { // gear
 						const cost = adventure.room.resources[name].cost;
 						/** @type {number} */
 						const maxDurability = getGearProperty(name, "maxDurability");
@@ -34,7 +34,8 @@ module.exports = new RoomTemplate("Item Merchant",
 							value: `${name}${SAFE_DELIMITER}${i}`
 						});
 						break;
-					case uiGroups[1]: // items
+					}
+					case uiGroups[1]: { // items
 						const item = getItem(name);
 						itemOptions.push({
 							label: `${item.cost}g: ${name}`,
@@ -42,6 +43,7 @@ module.exports = new RoomTemplate("Item Merchant",
 							value: `${name}${SAFE_DELIMITER}${i}`
 						})
 						break;
+					}
 				}
 			}
 		});

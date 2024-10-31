@@ -211,7 +211,7 @@ function nextRoom(roomType, thread) {
 					adventure.room.addResource(challengeName, resourceType, visibility, 1);
 				})
 				break;
-			case "gear":
+			case "gear": {
 				let tier = unparsedTier;
 				for (let i = 0; i < Math.min(MAX_SELECT_OPTIONS, count); i++) {
 					if (unparsedTier === "?") {
@@ -223,15 +223,18 @@ function nextRoom(roomType, thread) {
 					}
 				}
 				break;
-			case "artifact":
+			}
+			case "artifact": {
 				const artifact = rollArtifact(adventure);
 				adventure.room.addResource(artifact, resourceType, visibility, count, uiGroup);
 				break;
-			case "item":
+			}
+			case "item": {
 				const item = rollItem(adventure);
 				adventure.room.addResource(item, resourceType, visibility, count, uiGroup, Math.ceil(parseExpression(unparsedCostExpression, getItem(item).cost)));
 				break;
-			case "gold":
+			}
+			case "gold": {
 				// Randomize loot gold
 				let goldCount = count;
 				if (visibility !== "internal") {
@@ -239,7 +242,8 @@ function nextRoom(roomType, thread) {
 				}
 				adventure.room.addResource(resourceType, resourceType, visibility, goldCount, uiGroup);
 				break;
-			default:
+			}
+			default: {
 				let resourceCount = count;
 				const hammerCount = adventure.getArtifactCount("Best-in-Class Hammer");
 				if (roomTemplate.primaryCategory === "Workshop" && resourceType === "roomAction" && hammerCount > 0) {
@@ -247,6 +251,7 @@ function nextRoom(roomType, thread) {
 					adventure.updateArtifactStat("Best-in-Class Hammer", "Extra Room Actions", hammerCount);
 				}
 				adventure.room.addResource(resourceType, resourceType, visibility, resourceCount, uiGroup);
+			}
 		}
 	}
 
@@ -371,15 +376,16 @@ function cacheRoundRn(adventure, user, moveName, config) {
 				case "potions":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(rollablePotions.length, "battle"))
 					break;
-				default:
+				default: {
 					const keyAsInt = parseInt(key);
-					if (keyAsInt !== NaN) {
+					if (!isNaN(keyAsInt)) {
 						user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(keyAsInt, "battle"))
 					}
 					else {
 						console.error(`Invalid config key ${key} for cacheRoundRn`);
 						user.roundRns[roundRnKeyname] = [];
 					}
+				}
 			}
 		}
 	}
@@ -398,34 +404,41 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 	const roundRnKeyname = `${moveName}${SAFE_DELIMITER}${key}`;
 	let targetModifiers = null;
 	switch (key) {
-		case "foes":
+		case "foes": {
 			const enemyPool = user.team !== "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			return `${user.name}'s ${moveName} will affect ${listifyEN(user.roundRns[roundRnKeyname].map(rn => enemyPool[rn % enemyPool.length].name), false)}`;
-		case "allies":
+		}
+		case "allies": {
 			const allyPool = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			return `${user.name}'s ${moveName} will affect ${listifyEN(user.roundRns[roundRnKeyname].map(rn => allyPool[rn % allyPool.length].name), false)}`;
-		case "elements":
+		}
+		case "elements": {
 			const elements = elementsList([])
 			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(elements[rn % elements.length])).join("")} on ${target.name}`;
-		case "elementsNoUntyped":
+		}
+		case "elementsNoUntyped": {
 			const elementsNoUntyped = elementsList(["Untyped"])
 			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(elementsNoUntyped[rn % elementsNoUntyped.length])).join("")} on ${target.name}`;
-		case "weaknesses":
+		}
+		case "weaknesses": {
 			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
 			const weaknessPool = elementsList(ineligibleWeaknesses);
 			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${weaknessPool[rn % weaknessPool.length]} Weakness`)).join("")} on ${target.name}`;
+		}
 		case "buffs":
 			targetModifiers = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
-		case "debuffs":
+		case "debuffs": {
 			targetModifiers ??= Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
 			let pendingRemoves = user.roundRns[roundRnKeyname].length;
 			if (targetModifiers.length > pendingRemoves) {
 				return predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers);
 			}
 			break;
-		case "progress":
+		}
+		case "progress": {
 			let pendingProgress = user.getModifierStacks("Progress") + user.roundRns[roundRnKeyname][0];
 			return `The Elkemist ${pendingProgress > 100 ? "will" : "won't"} reach an epiphany this round.`;
+		}
 		case "herbs":
 			return `${user.name}'s ${moveName} produces a ${rollableHerbs[user.roundRns[roundRnKeyname][0] % rollableHerbs.length]}`;
 		case "potions":
@@ -451,7 +464,7 @@ function predictRoundRnOutcomes(adventure) {
 			const enemy = getEnemy(combatant.archetype);
 			const moveReference = enemy.actions[move.name];
 			if (moveReference?.rnConfig) {
-				for (key in moveReference.rnConfig) {
+				for (const key in moveReference.rnConfig) {
 					if (move.targets.length > 0) {
 						const targetCombatants = move.targets.map(moveTarget => adventure.getCombatant(moveTarget));
 						if (move.name === "Bubble") {
@@ -487,7 +500,7 @@ function predictRoundRnOutcomes(adventure) {
 			let rnConfig = getGearProperty(gear.name, "rnConfig")
 			let targetingTags = getGearProperty(gear.name, "targetingTags")
 			if (rnConfig) {
-				for (key in rnConfig) {
+				for (const key in rnConfig) {
 					if (rnsConcerningTargets.has(key)) {
 						outcomes.push(...predictRoundRnPossibleTargets(adventure, delver, targetingTags, gear.name, key));
 						if (isCloneAlive) {
@@ -569,7 +582,7 @@ function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName,
  */
 function predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers) {
 	let popped = [];
-	for (idx of user.roundRns[roundRnKeyname]) {
+	for (const idx of user.roundRns[roundRnKeyname]) {
 		const modIdx = idx % targetModifiers.length;
 		const modArr = targetModifiers.splice(modIdx, 1);
 		popped.push(getApplicationEmojiMarkdown(...modArr));
@@ -761,7 +774,7 @@ function resolveMove(move, adventure) {
 					}
 				}
 				break;
-			case "gear":
+			case "gear": {
 				effect = getGearProperty(move.name, "effect");
 				const targetingTags = getGearProperty(move.name, "targetingTags");
 				needsLivingTargets = targetingTags.needsLivingTargets;
@@ -776,7 +789,8 @@ function resolveMove(move, adventure) {
 					}
 				}
 				break;
-			case "item":
+			}
+			case "item": {
 				let isPlacebo = false;
 				if (move.userReference.team === "delver") {
 					const placeboDillution = adventure.getChallengeIntensity("Unlabelled Placebos");
@@ -791,6 +805,7 @@ function resolveMove(move, adventure) {
 				}
 				needsLivingTargets = needsLivingTargetsInput;
 				break;
+			}
 		}
 
 		headline += `used ${move.name}`;

@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
+const { isDebuff } = require('../modifiers/_modifierDictionary');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vexing Prismatic Blast",

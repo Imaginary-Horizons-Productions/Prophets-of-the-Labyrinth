@@ -35,7 +35,6 @@ class Adventure {
 	/** @type {"config" | "ongoing" | "success" | "defeat" | "giveup"} */
 	state = "config";
 	static endStates = ["success", "defeat", "giveup"];
-	element;
 	messageIds = {
 		recruit: "",
 		utility: "",

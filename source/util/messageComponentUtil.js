@@ -6,7 +6,7 @@ const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { buildGearDescription } = require("../gear/_gearDictionary");
 
-const { ordinalSuffixEN, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
+const { ordinalSuffixEN, trimForSelectOptionDescription } = require("./textUtil");
 
 /** Remove components (buttons and selects) from a given message
  * @param {string} messageId - the id of the message to remove components from

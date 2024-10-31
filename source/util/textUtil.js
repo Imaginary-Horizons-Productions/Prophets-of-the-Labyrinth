@@ -54,8 +54,8 @@ const operationMap = {
  * @param {number} nValue - the value to replace "n" with
  */
 function parseExpression(expression, nValue) {
-	const operations = expression.replace(/[^\+~\*/\^]/g, "");
-	const terms = expression.split(/[\+~\*/\^]/g).map(term => term === "n" ? nValue : Number(term));
+	const operations = expression.replace(/[^+~*/^]/g, "");
+	const terms = expression.split(/[+~*/^]/g).map(term => term === "n" ? nValue : Number(term));
 	return terms.reduce((total, term, index) => operationMap[operations[index - 1]](total, term));
 }
 

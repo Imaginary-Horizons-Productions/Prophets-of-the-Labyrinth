@@ -34,7 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const uiRows = [...interaction.message.components.map(row => {
 					return new ActionRowBuilder().addComponents(row.components.map(({ data: component }) => {
 						switch (component.type) {
-							case ComponentType.Button:
+							case ComponentType.Button: {
 								const updatedButton = new ButtonBuilder(component).setDisabled(true);
 								if (component.custom_id === interaction.customId) {
 									updatedButton.setEmoji("✔️");
@@ -43,6 +43,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 								}
 
 								return updatedButton;
+							}
 							case ComponentType.StringSelect:
 								return new StringSelectMenuBuilder(component).setDisabled(true);
 							default:
