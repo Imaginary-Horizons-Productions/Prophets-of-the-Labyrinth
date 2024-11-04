@@ -453,7 +453,7 @@ function generatePartyStatsPayload(adventure) {
 			{ name: "Items", value: Object.keys(adventure.items).map(item => `${item} x ${adventure.items[item]}`).join("\n") || "None" },
 			{
 				name: "Scouting",
-				value: `Final Battle: ${adventure.scouting.bosses.length > 0 ? adventure.bosses[0] : "???"}\nArtifact Guardians: ${guardsScouted.length > 0 ?
+				value: `Final Battle: ${adventure.scouting.bosses > 0 ? adventure.bosses[0] : "???"}\nArtifact Guardians: ${guardsScouted.length > 0 ?
 					guardsScouted.map((encounter, index) => {
 						if (index + 1 <= adventure.scouting.artifactGuardiansEncountered) {
 							return `~~${encounter}~~`;
