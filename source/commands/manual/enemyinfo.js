@@ -18,7 +18,7 @@ async function executeSubcommand(interaction, ...args) {
 	}
 
 	const enemyEmbed = embedTemplate().setTitle(`${enemyTemplate.name} ${getEmoji(enemyTemplate.element)}`)
-		.setDescription(`Base HP: ${enemyTemplate.maxHP}\nSpeed: ${enemyTemplate.speed}\nCrit Rate: ${enemyTemplate.critRate}%\nPoise: ${enemyTemplate.poiseExpression}`);
+		.setDescription(`Base HP: ${enemyTemplate.maxHP}\nSpeed: ${enemyTemplate.speed}\nCrit Rate: ${enemyTemplate.critRate}%\nPoise: ${enemyTemplate.poiseExpression}\n-# In these formulae, "n" is the party size (if it appears).`);
 	const startingModifierEntries = Object.entries(enemyTemplate.startingModifiers);
 	const enemyFields = [];
 	if (startingModifierEntries.length > 0) {
