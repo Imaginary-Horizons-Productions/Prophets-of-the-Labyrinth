@@ -147,7 +147,7 @@ function dealModifierDamage(target, modifier, adventure) {
 function payHP(user, damage, adventure) {
 	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
-	let resultText = ` ${user.name} pays ${damage} HP.${downedCheck(user, adventure)}`;
+	let resultText = `${user.name} pays ${damage} HP.${downedCheck(user, adventure)}`;
 	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
 	if (lifeLine) {
 		resultText += ` ${lifeLine}`;

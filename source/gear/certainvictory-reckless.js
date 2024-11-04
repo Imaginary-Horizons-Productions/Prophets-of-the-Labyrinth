@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const receipts = addModifier([user], powerUp).concat(addModifier([user], exposed));
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts), payHP(user, user.getModifierStacks("Power Up"), adventure)));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)), payHP(user, user.getModifierStacks("Power Up"), adventure));
 	}
 ).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
 	.setSidegrades("Hunter's Certain Victory", "Lethal Certain Victory")
