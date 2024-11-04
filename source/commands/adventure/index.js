@@ -6,7 +6,8 @@ const { createSubcommandMappings } = require('../../util/fileUtil');
 const mainId = "adventure";
 const { slashData: subcommandSlashData, executeDictionary: subcommandExecuteDictionary } = createSubcommandMappings(mainId, [
 	"partystats.js",
-	"inspectself.js"
+	"inspectself.js",
+	"retreat.js"
 ]);
 module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.SendMessagesInThreads, false, [InteractionContextType.Guild], 3000,
 	(interaction) => {

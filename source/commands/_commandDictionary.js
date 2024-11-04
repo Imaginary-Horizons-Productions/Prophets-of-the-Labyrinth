@@ -12,7 +12,6 @@ module.exports = {
 		"data-policy.js",
 		"delve.js",
 		"feedback.js",
-		"give-up.js",
 		"invite.js",
 		"manual",
 		"ping.js",
