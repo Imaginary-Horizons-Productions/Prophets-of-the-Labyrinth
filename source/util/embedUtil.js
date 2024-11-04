@@ -35,7 +35,8 @@ const potlTips = [
 	"Check party status even when there isn't a button for it with '/adventure party-stats'!",
 	"Check your hp and gear even when there isn't a button for it with '/adventure inspect-self'!",
 	"Combatants shrug off 1 Stagger each round by default.",
-	"Look up game information at any time with '/manual'!"
+	"Look up game information at any time with '/manual'!",
+	"Enemy HP is randomized outside of Final Battles."
 ];
 /** @type {EmbedAuthorData} */
 const authorTipPool = potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })).concat(potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })), discordTips.map(text => ({ name: text, iconURL: DISCORD_ICON_URL })));
