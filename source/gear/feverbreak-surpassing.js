@@ -16,15 +16,22 @@ module.exports = new GearTemplate("Surpassing Fever Break",
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const funnelCount = adventure.getArtifactCount("Spiral Funnel");
+		let poisonDamage = 10;
+		let frailDamage = 20;
+		if (user.team === "delver") {
+			const FUNNEL_BUFF = 2;
+			const funnelCount = adventure.getArtifactCount("Spiral Funnel");
+			poisonDamage += FUNNEL_BUFF * funnelCount;
+			frailDamage += FUNNEL_BUFF * funnelCount;
+		}
 		const resultLines = [];
 		const receipts = [];
 		for (const target of targets) {
 			const poisons = target.getModifierStacks("Poison");
 			const frails = target.getModifierStacks("Frail");
-			const pendingDamage = (10 + 5 * funnelCount) * (poisons ** 2 + poisons) / 2 + (20 + 5 * funnelCount) * frails;
+			const pendingDamage = poisonDamage * (poisons ** 2 + poisons) / 2 + frailDamage * frails;
 			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));
-			if (!user.crit) {
+			if (!user.crit && target.hp > 0) {
 				receipts.push(...removeModifier(targets, { name: "Poison", stacks: "all" }).concat(removeModifier(targets, { name: "Frail", stacks: "all" })))
 			}
 		}

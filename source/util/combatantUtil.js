@@ -124,7 +124,7 @@ function dealModifierDamage(target, modifier, adventure) {
 	let pendingDamage = stacks * MODIFIER_DAMAGE_PER_STACK[modifier];
 	const funnelCount = adventure.getArtifactCount("Spiral Funnel");
 	if (target.team === "enemy" && funnelCount > 0) {
-		const funnelDamage = funnelCount * 5 * stacks;
+		const funnelDamage = funnelCount * 2 * stacks;
 		pendingDamage += funnelDamage;
 		adventure.updateArtifactStat("Spiral Funnel", `Extra ${modifier} Damage`, funnelDamage);
 	}
