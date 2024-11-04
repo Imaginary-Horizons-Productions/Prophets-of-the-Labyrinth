@@ -4,6 +4,8 @@
 - New Challenge: Cursed Run - One of your starting gear pieces is randomly replaced with cursed gear
 - Fixed delvers being able to end up above max HP when acquiring Cursed Blade
 - Fixed Reckless Certain Victory not reporting its user paying HP
+- Fixed the party stats embed not showing the Final Battle after it had been scouted
+- Fixed Curse of Midas reporting generating fractional gold, not scaling with stacks, and being added to party gold immediately instead of being added to loot
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes
 - Changed Detective to Untyped
