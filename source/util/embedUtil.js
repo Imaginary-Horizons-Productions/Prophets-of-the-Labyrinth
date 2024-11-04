@@ -31,7 +31,11 @@ const potlTips = [
 	"Gear that matches your element removes 1 Stagger on allies.",
 	"Gear that matches your element adds 2 Stagger on foes.",
 	"Combatant speed varies every round.",
-	"Damage is capped to 500 in one attack without any Power Up."
+	"Damage is capped to 500 in one attack without any Power Up.",
+	"Check party status even when there isn't a button for it with '/adventure party-stats'!",
+	"Check your hp and gear even when there isn't a button for it with '/adventure inspect-self'!",
+	"Combatants shrug off 1 Stagger each round by default.",
+	"Look up game information at any time with '/manual'!"
 ];
 /** @type {EmbedAuthorData} */
 const authorTipPool = potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })).concat(potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })), discordTips.map(text => ({ name: text, iconURL: DISCORD_ICON_URL })));
