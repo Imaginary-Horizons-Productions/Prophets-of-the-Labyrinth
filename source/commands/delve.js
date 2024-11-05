@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, InteractionContextType, italic, userMention } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, InteractionContextType, italic, userMention, MessageFlags } = require('discord.js');
 const { PermissionFlagsBits } = require('discord.js');
 const { CommandWrapper, Adventure, Delver } = require('../classes');
 const { setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -32,34 +32,40 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 
 		const labyrinthNameInTitleCaps = getLabyrinthProperty(labyrinthName, "name");
 		const adventure = new Adventure(interaction.options.getString("seed"), interaction.guildId, labyrinthNameInTitleCaps, interaction.user.id);
-		// roll bosses
-		prerollBoss("Final Battle", adventure);
-		prerollBoss("Artifact Guardian", adventure);
-
-		interaction.reply({ embeds: [generateRecruitEmbed(adventure)], fetchReply: true }).then(recruitMessage => {
-			adventure.messageIds.recruit = recruitMessage.id;
-			interaction.channel.threads.create({
-				name: adventure.name,
-				type: ChannelType.PrivateThread,
-				invitable: true
-			}).then(thread => {
-				recruitMessage.edit({
-					components: [new ActionRowBuilder().addComponents(
-						new ButtonBuilder().setCustomId(`join${SAFE_DELIMITER}${thread.guildId}${SAFE_DELIMITER}${thread.id}${SAFE_DELIMITER}recruit`)
-							.setLabel("Join")
-							.setStyle(ButtonStyle.Success)
-					)]
-				});
-				adventure.delvers.push(new Delver(interaction.user.id, interaction.member.displayName, thread.id));
-				company.adventuring.add(interaction.user.id);
-				setCompany(company);
-
+		interaction.channel.threads.create({
+			name: adventure.name,
+			type: ChannelType.PrivateThread,
+			invitable: true
+		}).then(thread => {
+			interaction.reply({
+				embeds: [generateRecruitEmbed(adventure)],
+				components: [new ActionRowBuilder().addComponents(
+					new ButtonBuilder().setCustomId(`join${SAFE_DELIMITER}${thread.guildId}${SAFE_DELIMITER}${thread.id}${SAFE_DELIMITER}recruit`)
+						.setLabel("Join")
+						.setStyle(ButtonStyle.Success)
+				)],
+				fetchReply: true
+			}).then(recruitMessage => {
 				adventure.setId(thread.id);
+				adventure.messageIds.recruit = recruitMessage.id;
+				adventure.delvers.push(new Delver(interaction.user.id, interaction.member.displayName, thread.id));
+				prerollBoss("Final Battle", adventure);
+				prerollBoss("Artifact Guardian", adventure);
 				setAdventure(adventure);
-				thread.send(`## ${adventure.name}\n${italic(injectApplicationEmojiMarkdown(getLabyrinthProperty(adventure.labyrinth, "description")))}\nParty Leader: ${userMention(adventure.leaderId)}`);
-				thread.send(generateAdventureConfigMessage());
-			});
-		}).catch(console.error);
+			}).catch(console.error);
+
+			company.adventuring.add(interaction.user.id);
+			setCompany(company);
+
+			thread.send({ content: `## ${adventure.name}\n${italic(injectApplicationEmojiMarkdown(getLabyrinthProperty(adventure.labyrinth, "description")))}\nParty Leader: ${userMention(adventure.leaderId)}`, flags: MessageFlags.SuppressNotifications });
+			thread.send(generateAdventureConfigMessage());
+		}).catch(error => {
+			if (error.code === 50001) {
+				interaction.reply({ content: "The Prophets of the Labyrinth bot doesn't have permission to make threads in this channel.", ephemeral: true });
+			} else {
+				console.error(error);
+			}
+		});
 	}
 ).setOptions(
 	{ type: "String", name: "labyrinth", description: "The value to base the run's random events on", required: true, autocomplete: defaultLabyrinths.map(labyrinthName => ({ name: labyrinthName, value: labyrinthName })) },
