@@ -1,33 +1,36 @@
-## /about
+## Slash Commands
+### /about
 > Usable in: DMs, Servers, and Group DMs
 
 > Cooldown: 3 seconds
 
 Get info and contributors to PotL
-## /adventure
+### /adventure
 > Usable in: Servers
 
 > Cooldown: 3 seconds
 
 > Permission Level: SendMessagesInThreads
 
-### /adventure party-stats
+#### /adventure party-stats
 Get info about the current adventure
-### /adventure inspect-self
+#### /adventure inspect-self
 🔎 Get your adventure-specific stats
-## /commands
+#### /adventure retreat
+End the current adventure by retreating
+### /commands
 > Usable in: DMs, Servers, and Group DMs
 
 > Cooldown: 3 seconds
 
-Get a link to a list of the Prophets of the Labyrinth commands
-## /data-policy
+Get a link to the PotL commands wiki
+### /data-policy
 > Usable in: DMs, Servers, and Group DMs
 
 > Cooldown: 3 seconds
 
 Get a link to the Prophets of the Labyrinth Data Policy page
-## /delve
+### /delve
 > Usable in: Servers
 
 > Cooldown: 3 seconds
@@ -35,11 +38,11 @@ Get a link to the Prophets of the Labyrinth Data Policy page
 > Permission Level: SendMessages
 
 Start a new adventure
-### labyrinth
+#### labyrinth
 The value to base the run's random events on
-### seed (optional)
+#### seed (optional)
 The value to base the run's random events on
-## /feedback
+### /feedback
 > Usable in: DMs, Servers, and Group DMs
 
 > Cooldown: 3 seconds
@@ -47,19 +50,11 @@ The value to base the run's random events on
 > Permission Level: SendMessages
 
 Provide PotL feedback and get an invite to the test server
-### feedback-type
+#### feedback-type
 > Choices: `Bug Report`, `Feature Request`, `Balance Suggestion`
 
 the type of feedback you'd like to provide
-## /give-up
-> Usable in: Servers
-
-> Cooldown: 3 seconds
-
-> Permission Level: SendMessagesInThreads
-
-Ends the adventure
-## /invite
+### /invite
 > Usable in: Servers
 
 > Cooldown: 3 seconds
@@ -67,24 +62,24 @@ Ends the adventure
 > Permission Level: SendMessagesInThreads
 
 Invite a friend to an adventure
-### invitee
+#### invitee
 The user's mention
-## /manual
+### /manual
 > Usable in: DMs, Servers, and Group DMs
 
 > Cooldown: 3 seconds
 
-### /manual glossary
+#### /manual glossary
 Get info about individual topics
-### /manual enemy-info
+#### /manual enemy-info
 Look up details on an enemy
-### /manual artifact-info
+#### /manual artifact-info
 Look up details on an artifact
-### /manual gear-info
+#### /manual gear-info
 Look up details on a piece of gear
-### /manual item-info
+#### /manual item-info
 Look up details on an item
-## /ping
+### /ping
 > Usable in: Servers
 
 > Cooldown: 3 seconds
@@ -92,15 +87,15 @@ Look up details on an item
 > Permission Level: SendMessagesInThreads
 
 Remind delvers to input their vote or move
-## /player-stats
+### /player-stats
 > Usable in: Servers
 
 > Cooldown: 3 seconds
 
 Get the overall PotL stats for a user
-### user (optional)
+#### user (optional)
 The user's mention (default: yourself)
-## /regenerate
+### /regenerate
 > Usable in: Servers
 
 > Cooldown: 30 seconds
@@ -108,7 +103,7 @@ The user's mention (default: yourself)
 > Permission Level: SendMessagesInThreads
 
 Regenerate the current room message for an adventure
-## /reset
+### /reset
 > Usable in: Servers
 
 > Cooldown: 3 seconds
@@ -116,7 +111,7 @@ Regenerate the current room message for an adventure
 > Permission Level: ManageRoles
 
 Reset player scores for this server
-## /share-seed
+### /share-seed
 > Usable in: Servers
 
 > Cooldown: 300 seconds
@@ -124,23 +119,29 @@ Reset player scores for this server
 > Permission Level: SendMessages
 
 Recommend this seed and Labyrinth to someone
-### user
+#### user
 The user with whom to share this adventure's seed with
-### personalized-message (optional)
+#### personalized-message (optional)
 A personalized message to send with the share (like the interesting part of the seed)
-## /support
+### /support
 > Usable in: DMs, Servers, and Group DMs
 
 > Cooldown: 3 seconds
 
 List ways to support PotL
-## /version
+### /version
 > Usable in: DMs, Servers, and Group DMs
 
 > Cooldown: 3 seconds
 
 Get the PotL change log
-### notes-length
+#### notes-length
 > Choices: `Last version`, `Full change log`
 
 Get the changes in last version or the full change log
+## Context Menu Options
+### User -> Apps -> PotL Stats
+> Usable in: Servers
+
+> Cooldown: 3 seconds
+
