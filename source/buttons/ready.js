@@ -32,8 +32,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(recruitMessage => {
 				recruitMessage.edit({ components: [] });
 			}).catch(console.error);
-			interaction.update({ components: [] });
-			interaction.message.delete();
+			interaction.update({ components: [] }).then(() => {
+				interaction.message.delete();
+			});
 
 			adventure.delvers.forEach(delver => {
 				if (delver.startingArtifact) {
@@ -62,7 +63,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				message.pin();
 			});
 			adventure.state = "ongoing";
-			nextRoom(adventure.getChallengeIntensity("Into the Deep End") > 0 ? "Artifact Guardian" : "Battle", interaction.channel);
+			nextRoom(adventure.getChallengeIntensity("Into the Deep End") > 0 ? "Artifact Guardian" : "Treasure", interaction.channel);
 		}
 	}
 );

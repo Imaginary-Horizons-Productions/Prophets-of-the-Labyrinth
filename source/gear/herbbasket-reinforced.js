@@ -24,7 +24,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		addProtection([user], protection);
 		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
-		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
+		adventure.room.addResource(randomHerb, "Item", "loot", pendingHerbCount);
 		if (user.crit) {
 			return [`${user.name} gains protection and gathers a double-batch of ${randomHerb}.`];
 		} else {

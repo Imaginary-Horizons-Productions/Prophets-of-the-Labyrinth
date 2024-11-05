@@ -9,7 +9,7 @@ module.exports = new RoomTemplate("Wild Fire-Arrow Frogs",
 	"A blaze of orange and red in the muck outs itself as a warning sign to a blast of heated mud and venom.",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
-		new ResourceTemplate(`${enemies[0][1]}*35`, "loot", "gold")
+		new ResourceTemplate(`${enemies[0][1]}*35`, "loot", "Currency")
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])

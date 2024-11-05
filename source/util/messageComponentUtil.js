@@ -3,10 +3,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, StringSelect
 const { Adventure } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
-const { getArtifact } = require("../artifacts/_artifactDictionary");
-const { buildGearDescription } = require("../gear/_gearDictionary");
-
-const { ordinalSuffixEN, trimForSelectOptionDescription } = require("./textUtil");
+const { ordinalSuffixEN } = require("./textUtil");
 
 /** Remove components (buttons and selects) from a given message
  * @param {string} messageId - the id of the message to remove components from
@@ -78,20 +75,11 @@ function generateLootRow(adventure) {
 	for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 		if (visibility === "loot") {
 			if (count > 0) {
-				let option = { value: `${name}${SAFE_DELIMITER}${options.length}` };
-
-				if (name === "gold") {
-					option.label = `${count} Gold`;
-				} else {
-					option.label = `${name} x ${count}`;
-				}
-
-				if (type === "gear") {
-					option.description = trimForSelectOptionDescription(buildGearDescription(name, false));
-				} else if (type === "artifact") {
-					option.description = trimForSelectOptionDescription(getArtifact(name).dynamicDescription(count));
-				}
-				options.push(option)
+				options.push({
+					label: type === "Currency" ? `${count} ${name}` : `${name} x ${count}`,
+					description: type,
+					value: `${name}${SAFE_DELIMITER}${options.length}`
+				});
 			}
 		}
 	}

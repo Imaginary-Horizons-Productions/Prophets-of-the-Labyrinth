@@ -8,7 +8,7 @@ module.exports = new RoomTemplate("Free Gold?",
 	"Event",
 	"A large pile of gold sits quietly in the middle of the room, seemingly alone.",
 	[
-		new ResourceTemplate("300", "internal", "gold")
+		new ResourceTemplate("300", "internal", "Currency")
 	],
 	function (adventure) {
 		return {
@@ -25,7 +25,7 @@ module.exports = new RoomTemplate("Free Gold?",
 			getEmoji = "🔥";
 			getLabel = `+${reward}g, ${adventure.room.history.Burned[0]} -${burnDamage} HP`;
 			isGetDisabled = true;
-		} else if (!("gold" in adventure.room.resources)) {
+		} else if (!("Gold" in adventure.room.resources)) {
 			getEmoji = "✔️";
 			getLabel = `+${reward}g`;
 			isGetDisabled = true;

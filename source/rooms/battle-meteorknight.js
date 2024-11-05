@@ -9,7 +9,7 @@ module.exports = new RoomTemplate("Meteor Knight Fight",
 	"You are halted by a company of knights. By the time a Earthly Knight has advanced one step towards you, the Meteor Knight has recklessly charged across most of the gap!",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
-		new ResourceTemplate("45*n", "loot", "gold")
+		new ResourceTemplate("45*n", "loot", "Currency")
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])

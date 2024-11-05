@@ -3,8 +3,7 @@ const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
-const { buildGearDescription } = require("../gear/_gearDictionary");
-const { trimForSelectOptionDescription, listifyEN } = require("../util/textUtil");
+const { listifyEN } = require("../util/textUtil");
 const { generateRoutingRow } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Treasure! Gold or Gear?",
@@ -13,8 +12,8 @@ module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 	"Two treasure boxes sit on opposite ends of a seesaw suspended above pits of molten rock. They are labled 'Gold' and 'Gear' respectively, and it looks as if taking one will surely cause the other to plummet into the pit below.",
 	[
 		new ResourceTemplate("1", "internal", "roomAction"),
-		new ResourceTemplate("250*n", "always", "gold").setCostExpression("0"),
-		new ResourceTemplate("2", "always", "gear").setTier("?").setCostExpression("0")
+		new ResourceTemplate("250*n", "always", "Currency").setCostExpression("0"),
+		new ResourceTemplate("2", "always", "Gear").setTier("?").setCostExpression("0")
 	],
 	function (adventure) {
 		return {
@@ -26,18 +25,11 @@ module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 			const options = [];
 			for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 				if (visibility === "always" && count > 0) {
-					const option = { value: `${name}${SAFE_DELIMITER}${options.length}` };
-
-					if (name === "gold") {
-						option.label = `${count} Gold`;
-					} else {
-						option.label = `${name} x ${count}`;
-					}
-
-					if (type === "gear") {
-						option.description = trimForSelectOptionDescription(buildGearDescription(name, false));
-					}
-					options.push(option)
+					options.push({
+						label: type === "Currency" ? `${count} ${name}` : `${name} x ${count}`,
+						description: type,
+						value: `${name}${SAFE_DELIMITER}${options.length}`
+					});
 				}
 			}
 			const hasOptions = options.length > 0;

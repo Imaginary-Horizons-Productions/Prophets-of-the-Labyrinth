@@ -8,7 +8,7 @@ module.exports = new RoomTemplate("Workshop with Black Box",
 	"In this workshop there's a black box with a gear-shaped keyhole on the front. You figure it's designed to trade a piece of your gear for a Rare piece of gear.",
 	[
 		new ResourceTemplate("n", "internal", "roomAction"),
-		new ResourceTemplate("1", "internal", "gear").setTier("Rare").setCostExpression("0")
+		new ResourceTemplate("1", "internal", "Gear").setTier("Rare").setCostExpression("0")
 	],
 	function (adventure) {
 		return {

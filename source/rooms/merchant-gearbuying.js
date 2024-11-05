@@ -1,16 +1,15 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
-const { buildGearDescription, getGearProperty } = require("../gear/_gearDictionary");
+const { getGearProperty } = require("../gear/_gearDictionary");
 const { generateMerchantScoutingRow, generateRoutingRow } = require("../util/messageComponentUtil");
-const { trimForSelectOptionDescription } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Gear Buying Merchant",
 	"@{adventure}",
 	"Merchant",
 	"A masked figure sits in front of a half-full rack of weapons and other gear. \"Care to trade?\"",
 	[
-		new ResourceTemplate("n+1", "always", "gear").setTier("?")
+		new ResourceTemplate("n+1", "always", "Gear").setTier("?")
 	],
 	function (adventure) { return {}; },
 	function (roomEmbed, adventure) {
@@ -23,7 +22,7 @@ module.exports = new RoomTemplate("Gear Buying Merchant",
 				const maxDurability = getGearProperty(name, "maxDurability");
 				mixedGearOptions.push({
 					label: `${cost}g: ${name} (${maxDurability > 0 ? `${maxDurability}  uses` : "passive"})`,
-					description: trimForSelectOptionDescription(buildGearDescription(name, false)),
+					description: "Gear",
 					value: `${name}${SAFE_DELIMITER}${i}`
 				});
 			}
