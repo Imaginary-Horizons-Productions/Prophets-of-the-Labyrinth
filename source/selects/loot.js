@@ -25,21 +25,21 @@ module.exports = new SelectWrapper(mainId, 2000,
 		let result;
 		const { type, count } = adventure.room.resources[name];
 		switch (type) {
-			case "gold":
+			case "Currency":
 				adventure.gainGold(count);
 				delete adventure.room.resources[name];
 				result = {
 					content: `The party acquires ${count} gold.`
 				}
 				break;
-			case "artifact":
+			case "Artifact":
 				adventure.gainArtifact(name, count);
 				delete adventure.room.resources[name];
 				result = {
 					content: `The party acquires ${count} ${name}.`
 				}
 				break;
-			case "gear":
+			case "Gear":
 				if (delver.gear.length >= adventure.getGearCapacity()) {
 					interaction.reply({
 						content: `You can only carry ${adventure.getGearCapacity()} pieces of gear at a time. Pick one to replace with the ${name}:`,
@@ -95,7 +95,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 					}
 				}
 				break;
-			case "item":
+			case "Item":
 				adventure.gainItem(name, count);
 				delete adventure.room.resources[name];
 				result = {
