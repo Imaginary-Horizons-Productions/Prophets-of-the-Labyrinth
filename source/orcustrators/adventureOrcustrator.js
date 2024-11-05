@@ -1086,11 +1086,6 @@ function completeAdventure(adventure, thread, endState, descriptionOverride) {
 	})
 	clearComponents(adventure.messageIds.battleRound, messageManager);
 	clearComponents(adventure.messageIds.room, messageManager);
-	[adventure.messageIds.utility].forEach(id => {
-		if (id) {
-			messageManager.delete(id).catch(console.error);
-		}
-	})
 
 	adventure.state = endState;
 	setAdventure(adventure);
