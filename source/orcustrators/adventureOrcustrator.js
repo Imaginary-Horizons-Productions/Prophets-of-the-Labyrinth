@@ -211,7 +211,7 @@ function nextRoom(roomType, thread) {
 					adventure.room.addResource(challengeName, resourceType, visibility, 1);
 				})
 				break;
-			case "gear": {
+			case "Gear": {
 				let tier = unparsedTier;
 				for (let i = 0; i < Math.min(MAX_SELECT_OPTIONS, count); i++) {
 					if (unparsedTier === "?") {
@@ -224,23 +224,23 @@ function nextRoom(roomType, thread) {
 				}
 				break;
 			}
-			case "artifact": {
+			case "Artifact": {
 				const artifact = rollArtifact(adventure);
 				adventure.room.addResource(artifact, resourceType, visibility, count, uiGroup);
 				break;
 			}
-			case "item": {
+			case "Item": {
 				const item = rollItem(adventure);
 				adventure.room.addResource(item, resourceType, visibility, count, uiGroup, Math.ceil(parseExpression(unparsedCostExpression, getItem(item).cost)));
 				break;
 			}
-			case "gold": {
+			case "Currency": {
 				// Randomize loot gold
 				let goldCount = count;
 				if (visibility !== "internal") {
 					goldCount = Math.ceil(count * (90 + adventure.generateRandomNumber(21, "general")) / 100);
 				}
-				adventure.room.addResource(resourceType, resourceType, visibility, goldCount, uiGroup);
+				adventure.room.addResource("Gold", resourceType, visibility, goldCount, uiGroup);
 				break;
 			}
 			default: {
@@ -1035,7 +1035,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 			const tier = rollGearTier(adventure);
 			const droppedGear = rollGear(tier, adventure);
 			if (droppedGear) {
-				adventure.room.addResource(droppedGear, "gear", "loot", 1);
+				adventure.room.addResource(droppedGear, "Gear", "loot", 1);
 			}
 		}
 
@@ -1043,7 +1043,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 		const itemThreshold = 1;
 		const itemMax = 8;
 		if (adventure.generateRandomNumber(itemMax, "general") < itemThreshold) {
-			adventure.room.addResource(rollItem(adventure), "item", "loot", 1);
+			adventure.room.addResource(rollItem(adventure), "Item", "loot", 1);
 		}
 
 		return { payload: renderRoom(adventure, thread, lastRoundText), type: "endCombat" };

@@ -1,9 +1,8 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
-const { buildGearDescription, getGearProperty } = require("../gear/_gearDictionary");
+const { getGearProperty } = require("../gear/_gearDictionary");
 const { generateMerchantScoutingRow, generateRoutingRow } = require("../util/messageComponentUtil");
-const { trimForSelectOptionDescription } = require("../util/textUtil");
 
 const uiGroups = [`gear${SAFE_DELIMITER}?`, `gear${SAFE_DELIMITER}Rare`];
 
@@ -28,7 +27,7 @@ module.exports = new RoomTemplate("Overpriced Merchant",
 					const maxDurability = getGearProperty(name, "maxDurability");
 					const option = {
 						label: `${cost}g: ${name} (${maxDurability > 0 ? `${maxDurability}  uses` : "passive"})`,
-						description: trimForSelectOptionDescription(buildGearDescription(name, false)),
+						description: "Gear",
 						value: `${name}${SAFE_DELIMITER}${i}`
 					};
 					switch (uiGroup) {

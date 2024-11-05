@@ -3,6 +3,7 @@ const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { buildGearRecord } = require('../gear/_gearDictionary');
 const { getAdventure, nextRoom, fetchRecruitMessage, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { bold } = require('discord.js');
+const { commandMention } = require('../util/textUtil');
 
 const cursedGearByPurpose = ["Cursed Blade", "Cursed Tome"];
 
@@ -31,8 +32,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			fetchRecruitMessage(interaction.channel, adventure.messageIds.recruit).then(recruitMessage => {
 				recruitMessage.edit({ components: [] });
 			}).catch(console.error);
-			interaction.update({ components: [] });
-			interaction.message.delete();
+			interaction.update({ components: [] }).then(() => {
+				interaction.message.delete();
+			});
 
 			adventure.delvers.forEach(delver => {
 				if (delver.startingArtifact) {

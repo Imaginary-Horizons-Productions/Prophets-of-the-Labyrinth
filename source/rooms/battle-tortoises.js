@@ -9,7 +9,7 @@ module.exports = new RoomTemplate("Tortoise Fight",
 	"The rocky terrain rises up to reveal a pair of shelled menaces.",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
-		new ResourceTemplate("40*n", "loot", "gold")
+		new ResourceTemplate("40*n", "loot", "Currency")
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])

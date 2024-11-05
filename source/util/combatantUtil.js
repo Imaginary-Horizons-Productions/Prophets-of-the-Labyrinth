@@ -89,7 +89,7 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 					results.push(`${target.name} takes ${pendingDamage} ${getEmoji(element)} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}${downedCheck(target, adventure)}`);
 					if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
 						const midasGold = Math.floor(pendingDamage / 10 * target.modifiers["Curse of Midas"]);
-						adventure.room.addResource("gold", "gold", "loot", midasGold);
+						adventure.room.addResource("Gold", "Currency", "loot", midasGold);
 						results.push(`${getApplicationEmojiMarkdown("Curse of Midas")}: Loot +${midasGold}g`)
 					}
 				} else {

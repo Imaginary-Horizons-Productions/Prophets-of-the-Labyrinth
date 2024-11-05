@@ -9,7 +9,7 @@ module.exports = new RoomTemplate("Slime Fight",
 	"Some slimes and oozes approach...",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
-		new ResourceTemplate("35*n", "loot", "gold")
+		new ResourceTemplate("35*n", "loot", "Currency")
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])

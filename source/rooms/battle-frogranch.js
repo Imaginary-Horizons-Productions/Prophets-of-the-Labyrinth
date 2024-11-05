@@ -9,7 +9,7 @@ module.exports = new RoomTemplate("Frog Ranch",
 	"Two Mechabee Soldiers are interrupted while escorting a set of domesticated Fire-Arrow Frogs to another pasture.",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
-		new ResourceTemplate(`${enemies[1][1]}*25+35`, "loot", "gold")
+		new ResourceTemplate(`${enemies[1][1]}*25+35`, "loot", "Currency")
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])

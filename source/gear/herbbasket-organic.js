@@ -25,7 +25,7 @@ module.exports = new GearTemplate(gearName,
 			changeStagger([user], "elementMatchAlly");
 		}
 		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
-		adventure.room.addResource(randomHerb, "item", "loot", pendingHerbCount);
+		adventure.room.addResource(randomHerb, "Item", "loot", pendingHerbCount);
 		if (user.crit) {
 			return [`${user.name} gathers a double-batch of ${randomHerb}.`];
 		} else {

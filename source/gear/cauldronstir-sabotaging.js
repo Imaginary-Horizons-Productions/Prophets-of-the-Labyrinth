@@ -23,7 +23,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		if (user.crit) {
 			const rolledPotion = rollablePotions[user.roundRns[`${gearName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
-			adventure.room.addResource(rolledPotion, "item", "loot", 1);
+			adventure.room.addResource(rolledPotion, "Item", "loot", 1);
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
 		for (const target of stillLivingTargets) {

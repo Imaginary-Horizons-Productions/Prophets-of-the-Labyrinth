@@ -9,7 +9,7 @@ module.exports = new RoomTemplate("Hawk Fight",
 	"A flock of birds of prey swoop down looking for a meal.",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
-		new ResourceTemplate(`${enemies[0][1]}*35`, "loot", "gold")
+		new ResourceTemplate(`${enemies[0][1]}*35`, "loot", "Currency")
 	],
 	function (adventure) { return {}; },
 	generateCombatRoomBuilder([])
