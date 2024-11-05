@@ -3,6 +3,7 @@ const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { buildGearRecord } = require('../gear/_gearDictionary');
 const { getAdventure, nextRoom, fetchRecruitMessage, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { bold } = require('discord.js');
+const { commandMention } = require('../util/textUtil');
 
 const cursedGearByPurpose = ["Cursed Blade", "Cursed Tome"];
 
