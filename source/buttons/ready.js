@@ -63,7 +63,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				message.pin();
 			});
 			adventure.state = "ongoing";
-			nextRoom(adventure.getChallengeIntensity("Into the Deep End") > 0 ? "Artifact Guardian" : "Treasure", interaction.channel);
+			nextRoom(adventure.getChallengeIntensity("Into the Deep End") > 0 ? "Artifact Guardian" : "Battle", interaction.channel);
 		}
 	}
 );
