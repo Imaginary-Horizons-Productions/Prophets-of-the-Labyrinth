@@ -6,13 +6,12 @@ const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MA
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { getLabyrinthProperty } = require("../labyrinths/_labyrinthDictionary");
 const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
 const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
-const { getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require("./graphicsUtil");
+const { getApplicationEmojiMarkdown } = require("./graphicsUtil");
 
 const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator");
 const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
@@ -109,14 +108,13 @@ function generateRecruitEmbed(adventure) {
 		.addFields(fields);
 }
 
-/** @param {Adventure} adventure */
-function generateAdventureConfigMessage(adventure) {
+function generateAdventureConfigMessage() {
 	const options = getStartingChallenges().map(challengeName => {
 		const challenge = getChallenge(challengeName);
 		return { label: challengeName, description: trimForSelectOptionDescription(challenge.dynamicDescription(challenge.intensity, challenge.duration, challenge.reward)), value: challengeName };
 	})
 	return {
-		content: `**${adventure.labyrinth}**\n*${injectApplicationEmojiMarkdown(getLabyrinthProperty(adventure.labyrinth, "description"))}*\nParty Leader: <@${adventure.leaderId}>\n\nThe adventure will begin when everyone clicks the "Ready!" button. Each player must select an archetype and can optionally select a starting artifact.`,
+		content: "Each player must select an archetype and can optionally select a starting artifact. The adventure will begin when everyone clicks the \"Ready!\" button.",
 		components: [
 			new ActionRowBuilder().addComponents(
 				new ButtonBuilder().setCustomId("ready")

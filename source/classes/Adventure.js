@@ -37,7 +37,6 @@ class Adventure {
 	static endStates = ["success", "defeat", "giveup"];
 	messageIds = {
 		recruit: "",
-		utility: "",
 		room: "",
 		battleRound: ""
 	};
