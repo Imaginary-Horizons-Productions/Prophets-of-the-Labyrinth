@@ -364,7 +364,7 @@ class Enemy extends Combatant {
 	 * @param {number} poiseExpression
 	 * @param {number} critRateInput
 	 * @param {string} firstActionName
-	 * @param {{[modifierName]: number}} startingModifiersShallowCopy
+	 * @param {{[modifierName: string]: number}} startingModifiersShallowCopy
 	 * @param {Adventure} adventure
 	 */
 	constructor(nameInput, elementEnum, shouldRandomizeHP, hpInput, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, adventure) {
