@@ -4,14 +4,20 @@ const { generateRoutingRow } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Workshop with Black Box",
 	"@{adventure}",
-	"Workshop",
 	"In this workshop there's a black box with a gear-shaped keyhole on the front. You figure it's designed to trade a piece of your gear for a Rare piece of gear.",
 	[
-		new ResourceTemplate("n", "internal", "roomAction"),
 		new ResourceTemplate("1", "internal", "Gear").setTier("Rare").setCostExpression("0")
 	],
 	function (adventure) {
-		return {
+		let pendingActions = adventure.delvers.length;
+		const hammerCount = adventure.getArtifactCount("Best-in-Class Hammer");
+		if (hammerCount > 0) {
+			pendingActions += hammerCount;
+			adventure.updateArtifactStat("Best-in-Class Hammer", "Extra Room Actions", hammerCount);
+		}
+		adventure.room.actions = pendingActions;
+
+		adventure.room.history = {
 			"Upgraders": [],
 			"Repairers": [],
 			"Traded for box": []
@@ -19,7 +25,7 @@ module.exports = new RoomTemplate("Workshop with Black Box",
 	},
 	function (roomEmbed, adventure) {
 		let upgradeEmoji, upgradeLabel, isUpgradeDisabled, repairEmoji, repairLabel, isRepairDisabled, boxEmoji, boxLabel, isBoxDisabled;
-		if (adventure.room.hasResource("roomAction")) {
+		if (adventure.room.actions > 0) {
 			upgradeEmoji = "1️⃣";
 			upgradeLabel = "Consider gear upgrades";
 			isUpgradeDisabled = false;

@@ -1,17 +1,22 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { generateRoutingRow } = require("../util/messageComponentUtil");
 const { MAX_MESSAGE_ACTION_ROWS } = require("../constants");
 
 module.exports = new RoomTemplate("Tanning Workshop",
 	"@{adventure}",
-	"Workshop",
 	"This workshop contains various leatherworking tools. You could make some bags, bandoliers, or holsters for the party to carry more gear.",
-	[
-		new ResourceTemplate("n", "internal", "roomAction")
-	],
+	[],
 	function (adventure) {
-		return {
+		let pendingActions = adventure.delvers.length;
+		const hammerCount = adventure.getArtifactCount("Best-in-Class Hammer");
+		if (hammerCount > 0) {
+			pendingActions += hammerCount;
+			adventure.updateArtifactStat("Best-in-Class Hammer", "Extra Room Actions", hammerCount);
+		}
+		adventure.room.actions = pendingActions;
+
+		adventure.room.history = {
 			"Upgraders": [],
 			"Repairers": [],
 			"Cap boosters": []
@@ -19,7 +24,7 @@ module.exports = new RoomTemplate("Tanning Workshop",
 	},
 	function (roomEmbed, adventure) {
 		let upgradeEmoji, upgradeLabel, isUpgradeDisabled, repairEmoji, repairLabel, isRepairDisabled, capUpEmoji, capUpLabel, isCapUpDisabled;
-		if (adventure.room.hasResource("roomAction")) {
+		if (adventure.room.actions > 0) {
 			upgradeEmoji = "1️⃣";
 			upgradeLabel = "Consider gear upgrades";
 			isUpgradeDisabled = false;

@@ -8,20 +8,20 @@ const { listifyEN } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Treasure! Artifact or Gold?",
 	"@{adventure}",
-	"Treasure",
 	"Two treasure boxes sit on opposite ends of a seesaw suspended above pits of molten rock. They are labled 'Artifact' and 'Gold' respectively, and it looks as if taking one will surely cause the other to plummet into the pit below.",
 	[
-		new ResourceTemplate("1", "internal", "roomAction"),
 		new ResourceTemplate("1", "always", "Artifact").setCostExpression("0"),
 		new ResourceTemplate("250*n", "always", "Currency").setCostExpression("0")
 	],
 	function (adventure) {
-		return {
+		adventure.room.actions = 1;
+
+		adventure.room.history = {
 			"Treasure picked": []
 		};
 	},
 	function (roomEmbed, adventure) {
-		if (adventure.room.hasResource("roomAction")) {
+		if (adventure.room.actions > 0) {
 			const options = [];
 			for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 				if (visibility === "always" && count > 0) {

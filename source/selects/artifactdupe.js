@@ -13,8 +13,8 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.hasResource("roomAction")) {
-			adventure.room.decrementResource("roomAction", "all");
+		if (adventure.room.actions > 0) {
+			adventure.room.actions = 0;
 			const artifactName = interaction.values[0];
 			adventure.room.history["Duped artifact"].push(artifactName);
 			adventure.gainArtifact(artifactName, 1);

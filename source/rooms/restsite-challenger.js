@@ -5,14 +5,14 @@ const { generateRoutingRow, inspectSelfButton } = require("../util/messageCompon
 
 module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 	"@{adventure}",
-	"Rest Site",
 	"The room contains a campfire... and a mysterious challenger hanging out in the corner.",
 	[
-		new ResourceTemplate("n", "internal", "roomAction"),
 		new ResourceTemplate("2", "internal", "challenge")
 	],
 	function (adventure) {
-		return {
+		adventure.room.actions = adventure.delvers.length;
+
+		adventure.room.history = {
 			"Rested": [],
 			"New challenges": []
 		};
@@ -20,7 +20,7 @@ module.exports = new RoomTemplate("Rest Site: Mysterious Challenger",
 	function (roomEmbed, adventure) {
 		const healPercent = Math.trunc(30 * (1 - (adventure.getChallengeIntensity("Restless") / 100)));
 		let restEmoji, restLabel, challengeEmoji, challengeLabel;
-		const hasRoomActions = adventure.room.hasResource("roomAction");
+		const hasRoomActions = adventure.room.actions > 0;
 		if (hasRoomActions) {
 			restEmoji = "1️⃣";
 			restLabel = `Rest [+${healPercent}% HP]`;

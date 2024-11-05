@@ -35,7 +35,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const adventure = getAdventure(collectedInteraction.channelId);
 				const [_, startingDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
 				const challengeName = collectedInteraction.values[0];
-				if (startingDepth !== adventure?.depth.toString() || !adventure?.room.hasResource("roomAction")) {
+				if (startingDepth !== adventure?.depth.toString() || !adventure?.room.actions > 0) {
 					return;
 				}
 
@@ -47,7 +47,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				} else {
 					adventure.challenges[challengeName] = new Challenge(intensity, reward, duration);
 				}
-				adventure.room.decrementResource("roomAction", 1);
+				adventure.room.actions--;
 				adventure.room.history["New challenges"].push(challengeName);
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 					roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));

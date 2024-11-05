@@ -15,13 +15,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		const actionCost = 1;
-		if (!adventure.room.hasResource("roomAction", actionCost)) {
+		if (adventure.room.actions < actionCost) {
 			interaction.reply({ content: "You don't have time to use the training dummy.", ephemeral: true });
 			return;
 		}
 
 		levelUp(delver, 1, adventure);
-		adventure.room.decrementResource("roomAction", actionCost);
+		adventure.room.actions -= actionCost;
 		adventure.room.history.Trained.push(delver.name);
 		interaction.update(renderRoom(adventure, interaction.channel)).then(() => {
 			interaction.followUp(`${delver.name} leveled up!`);

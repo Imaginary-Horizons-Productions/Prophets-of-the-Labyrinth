@@ -16,7 +16,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (!adventure.room.hasResource("roomAction")) {
+		if (adventure.room.actions < 1) {
 			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
 			return;
 		}
@@ -53,7 +53,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);
 				const [_, startedDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				if (startedDepth !== adventure.depth.toString() || !adventure.room.hasResource("roomAction")) {
+				if (startedDepth !== adventure.depth.toString() || adventure.room.actions < 1) {
 					return;
 				}
 
@@ -61,7 +61,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const [gearName, index, value] = collectedInteraction.values[0].split(SAFE_DELIMITER);
 				delver.gear[Number(index)].durability += Number(value);
 				adventure.room.history.Repairers.push(delver.name);
-				adventure.room.decrementResource("roomAction", 1);
+				adventure.room.actions--;
 				setAdventure(adventure);
 				collectedInteraction.channel.send({ content: `**${collectedInteraction.member.displayName}** repaired ${value} durability on their ${gearName}.` });
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {

@@ -1,17 +1,16 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { SAFE_DELIMITER } = require("../constants");
 const { generateRoutingRow, inspectSelfButton } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Rest Site: Training Dummy",
 	"@{adventure}",
-	"Rest Site",
 	"The room contains a campfire and a training dummy.",
-	[
-		new ResourceTemplate("n", "internal", "roomAction")
-	],
+	[],
 	function (adventure) {
-		return {
+		adventure.room.actions = adventure.delvers.length;
+
+		adventure.room.history = {
 			"Rested": [],
 			"Trained": []
 		};
@@ -19,7 +18,7 @@ module.exports = new RoomTemplate("Rest Site: Training Dummy",
 	function (roomEmbed, adventure) {
 		const healPercent = Math.trunc(30 * (1 - (adventure.getChallengeIntensity("Restless") / 100)));
 		let restEmoji, restLabel, trainingEmoji, trainingLabel;
-		const hasRoomActions = adventure.room.hasResource("roomAction");
+		const hasRoomActions = adventure.room.actions > 0;
 		if (hasRoomActions) {
 			restEmoji = "1️⃣";
 			restLabel = `Rest [+${healPercent}% HP]`;

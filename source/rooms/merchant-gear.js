@@ -8,13 +8,12 @@ const uiGroups = [`gear${SAFE_DELIMITER}?`, `gear${SAFE_DELIMITER}Rare`];
 
 module.exports = new RoomTemplate("Gear Merchant",
 	"@{adventure}",
-	"Merchant",
 	"A masked figure sits in front of a rack of weapons and other gear. \"Care to trade?\"",
 	[
 		new ResourceTemplate("n+1", "always", "Gear").setTier("?").setUIGroup(uiGroups[0]),
 		new ResourceTemplate("2", "always", "Gear").setTier("Rare").setUIGroup(uiGroups[1])
 	],
-	function (adventure) { return {}; },
+	function (adventure) { },
 	function (roomEmbed, adventure) {
 		const mixedGearOptions = [];
 		const rareGearOptions = [];

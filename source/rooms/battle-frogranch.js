@@ -5,12 +5,11 @@ const enemies = [["Mechabee Soldier", "1"], ["Fire-Arrow Frog", "0.5*n"], ["Mech
 
 module.exports = new RoomTemplate("Frog Ranch",
 	"Earth",
-	"Battle",
 	"Two Mechabee Soldiers are interrupted while escorting a set of domesticated Fire-Arrow Frogs to another pasture.",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
 		new ResourceTemplate(`${enemies[1][1]}*25+35`, "loot", "Currency")
 	],
-	function (adventure) { return {}; },
+	function (adventure) { },
 	generateCombatRoomBuilder([])
 ).setEnemies(enemies);

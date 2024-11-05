@@ -1,5 +1,5 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { trimForSelectOptionDescription } = require("../util/textUtil");
 const { EMPTY_SELECT_OPTION_SET } = require("../constants");
@@ -7,19 +7,18 @@ const { generateRoutingRow } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Twin Pedestals",
 	"@{adventure}",
-	"Event",
 	"There are two identical pedestals in this room. If you place an artifact on one, it'll duplicate onto the other.",
-	[
-		new ResourceTemplate("1", "internal", "roomAction")
-	],
+	[],
 	function (adventure) {
-		return {
+		adventure.room.actions = 1;
+
+		adventure.room.history = {
 			"Duped artifact": []
 		};
 	},
 	function (roomEmbed, adventure) {
 		let duperLabel, duperOptions, isDuperDisabled, pillageLabel, pillageEmoji, isPillageDisabled;
-		if (adventure.room.hasResource("roomAction")) {
+		if (adventure.room.actions > 0) {
 			duperOptions = Object.keys(adventure.artifacts).map(artifact => {
 				const count = adventure.getArtifactCount(artifact);
 				return {
