@@ -5,13 +5,12 @@ const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new RoomTemplate("Free Gold?",
 	"Fire",
-	"Event",
 	"A large pile of gold sits quietly in the middle of the room, seemingly alone.",
 	[
 		new ResourceTemplate("300", "internal", "Currency")
 	],
 	function (adventure) {
-		return {
+		adventure.room.history = {
 			"Burned": []
 		};
 	},

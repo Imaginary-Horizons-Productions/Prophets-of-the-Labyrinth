@@ -55,7 +55,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 
 				const gearIndex = collectedInteraction.values[0];
-				const blackBoxResource = Object.values(adventure.room.resources).find(resource => resource.type === "gear");
+				const blackBoxResource = Object.values(adventure.room.resources).find(resource => resource.type === "Gear");
 				delete adventure.room.resources[blackBoxResource.name];
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				const tradedGearName = delver.gear[gearIndex].name;

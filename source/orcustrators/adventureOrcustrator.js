@@ -190,7 +190,8 @@ function nextRoom(roomType, thread) {
 
 	// Generate current room
 	const roomTemplate = rollRoom(roomType, adventure);
-	adventure.room = new Room(roomTemplate.title, roomTemplate.element, roomTemplate.buildHistory(adventure), roomTemplate.enemyList);
+	adventure.room = new Room(roomTemplate.title, roomTemplate.element, roomTemplate.enemyList);
+	roomTemplate.init(adventure);
 	if (adventure.room.element === "@{adventure}") {
 		adventure.room.element = adventure.element;
 	} else if (adventure.room.element === "@{adventureWeakness}") {
@@ -244,13 +245,7 @@ function nextRoom(roomType, thread) {
 				break;
 			}
 			default: {
-				let resourceCount = count;
-				const hammerCount = adventure.getArtifactCount("Best-in-Class Hammer");
-				if (roomTemplate.primaryCategory === "Workshop" && resourceType === "roomAction" && hammerCount > 0) {
-					resourceCount += hammerCount;
-					adventure.updateArtifactStat("Best-in-Class Hammer", "Extra Room Actions", hammerCount);
-				}
-				adventure.room.addResource(resourceType, resourceType, visibility, resourceCount, uiGroup);
+				adventure.room.addResource(resourceType, resourceType, visibility, count, uiGroup);
 			}
 		}
 	}

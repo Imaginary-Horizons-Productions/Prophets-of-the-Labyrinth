@@ -280,13 +280,11 @@ class Room {
 	/** This read-write instance class describes a room in an adventure
 	 * @param {string} titleInput
 	 * @param {CombatantElement} elementEnum
-	 * @param {Record<string, string[]>} initialHistoryMap
 	 * @param {[enemyName: string, countExpression: string][]} enemyList
 	 */
-	constructor(titleInput, elementEnum, initialHistoryMap, enemyList) {
+	constructor(titleInput, elementEnum, enemyList) {
 		this.title = titleInput;
 		this.element = elementEnum;
-		this.history = initialHistoryMap;
 		if (enemyList && enemyList.length > 0) {
 			this.round = -1;
 			this.moves = [];
@@ -302,7 +300,8 @@ class Room {
 	enemies = null;
 	/** @type {{[enemyName: string]: number} | null} */
 	enemyIdMap = null;
-	/** @type {Record<string, {name: string, type: "Gear" | "Artifact" | "Currency" | "scouting" | "roomAction" | "challenge" | "Item", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
+	actions = 0;
+	/** @type {Record<string, {name: string, type: "Gear" | "Artifact" | "Currency" | "challenge" | "Item", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
 	resources = {};
 	/** @type {Record<string, string[]>} */
 	history = {};
@@ -317,7 +316,7 @@ class Room {
 
 	/** Initializes a resource in the room's resources if it's not already present
 	 * @param {string} nameInput Note: all names in the combined pool of gear, artifacts, items, and resources must be unique
-	 * @param {"Gear" | "Artifact" | "Currency" | "scouting" | "roomAction" | "challenge" | "Item"} typeInput
+	 * @param {"Gear" | "Artifact" | "Currency" | "challenge" | "Item"} typeInput
 	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
 	 * @param {number} countInput
 	 * @param {string?} uiGroupInput

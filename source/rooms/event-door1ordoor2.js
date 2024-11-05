@@ -6,14 +6,13 @@ const { generateRoutingRow, partyStatsButton } = require("../util/messageCompone
 
 module.exports = new RoomTemplate("Door 1 or Door 2?",
 	"@{adventureOpposite}",
-	"Event",
 	"There are four doors in this room. Two of them are labelled with numbers \"Door 1\" and \"Door 2\" and have coin insert slots. The other two doors are the entrance and exit.",
 	[],
 	function (adventure) {
 		const ownedArtifacts = Object.keys(adventure.artifacts);
 		const door1Artifact = ownedArtifacts.length > 0 ? ownedArtifacts[adventure.generateRandomNumber(ownedArtifacts.length, "general")] : null;
 		const door2Artifact = rollArtifactWithExclusions(adventure, ownedArtifacts);
-		return {
+		adventure.room.history = {
 			"Artifacts": [door1Artifact, door2Artifact],
 			"Option Picked": []
 		};

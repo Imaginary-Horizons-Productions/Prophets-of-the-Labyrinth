@@ -6,27 +6,24 @@ class RoomTemplate {
 	/** This read-only data class defines stats for a room
 	 * @param {string} titleText room titles double as the id, so must be unique
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{adventureWeakness}"} elementEnum
-	 * @param {"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Workshop" | "Artifact Guardian" | "Treasure" | "Empty"} primaryCategoryEnum
 	 * @param {string} descriptionInput
 	 * @param {ResourceTemplate[]} resourceArray
-	 * @param {(adventure: Adventure) => Record<string, string[]>} buildHistoryFunction
+	 * @param {(adventure: Adventure) => Record<string, string[]>} initializeFunction
 	 * @param {(roomEmbed: EmbedBuilder, adventure: Adventure) => {embeds: EmbedBuilder[], components: ActionRowBuilder[]}} buildRoomFunction
 	 */
-	constructor(titleText, elementEnum, primaryCategoryEnum, descriptionInput, resourceArray, buildHistoryFunction, buildRoomFunction) {
+	constructor(titleText, elementEnum, descriptionInput, resourceArray, initializeFunction, buildRoomFunction) {
 		if (!titleText) throw new BuildError("Falsy titleText");
 		if (!elementEnum) throw new BuildError("Falsy elementEnum");
-		if (!primaryCategoryEnum) throw new BuildError("Falsy primaryCategoryEnum");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
 		if (!resourceArray) throw new BuildError("Falsy resourceArray");
-		if (!buildHistoryFunction) throw new BuildError("Falsy buildHistoryFunction");
+		if (!initializeFunction) throw new BuildError("Falsy buildHistoryFunction");
 		if (!buildRoomFunction) throw new BuildError("Falsy buildRoomFunction");
 
 		this.title = titleText;
 		this.element = elementEnum;
-		this.primaryCategory = primaryCategoryEnum;
 		this.description = descriptionInput;
 		this.resourceList = resourceArray;
-		this.buildHistory = buildHistoryFunction;
+		this.init = initializeFunction;
 		this.buildRoom = buildRoomFunction;
 	}
 	/** @type {[enemyName: string, countExpression: string][]} */
@@ -43,7 +40,7 @@ class ResourceTemplate {
 	/** This read-only data class that defines resources available for placement in rooms
 	 * @param {string} countExpression
 	 * @param {"loot" | "always" | "internal"} visibilityInput "loot" only shows in end of room loot, "always" always shows in ui, "internal" never shows in ui
-	 * @param {"Gear" | "Artifact" | "Currency" | "roomAction" | "challenge" | "Item" | string} typeInput categories (eg "item", "gear") are random rolls, specific names allowed
+	 * @param {"Gear" | "Artifact" | "Currency" | "challenge" | "Item" | string} typeInput categories (eg "Item", "Gear") are random rolls, specific names allowed
 	 */
 	constructor(countExpression, visibilityInput, typeInput) {
 		if (!countExpression) throw new BuildError("Falsy countExpression");

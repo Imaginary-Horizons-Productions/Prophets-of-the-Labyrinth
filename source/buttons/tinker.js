@@ -18,7 +18,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.resources.roomAction.count < 1) {
+		if (adventure.room.actions < 1) {
 			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
 			return;
 		}
@@ -55,7 +55,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			collector.on("collect", collectedInteraction => {
 				const [_, startedDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
 				const adventure = getAdventure(collectedInteraction.channelId);
-				if (!adventure.room.hasResource("roomAction") || startedDepth !== adventure.depth.toString()) {
+				if (adventure.room.actions < 1 || startedDepth !== adventure.depth.toString()) {
 					return;
 				}
 
@@ -67,7 +67,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const sidegradeName = sidegrades[adventure.generateRandomNumber(sidegrades.length, "general")];
 				transformGear(delver, index, gearName, sidegradeName);
 				adventure.room.history.Tinkerers.push(delver.name);
-				adventure.room.decrementResource("roomAction", 1);
+				adventure.room.actions--;
 				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}**'s *${gearName}* has been tinkered to **${sidegradeName}**!`);
 				setAdventure(adventure);
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {

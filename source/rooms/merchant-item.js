@@ -9,13 +9,12 @@ const uiGroups = [`gear${SAFE_DELIMITER}?`, "item"];
 
 module.exports = new RoomTemplate("Item Merchant",
 	"@{adventure}",
-	"Merchant",
 	"A masked figure sits in front of a a line up of flasks and vials. \"Care to trade?\"",
 	[
-		new ResourceTemplate("n+1", "always", "gear").setTier("?").setUIGroup(uiGroups[0]),
-		new ResourceTemplate("n+1", "always", "item").setUIGroup(uiGroups[1])
+		new ResourceTemplate("n+1", "always", "Gear").setTier("?").setUIGroup(uiGroups[0]),
+		new ResourceTemplate("n+1", "always", "Item").setUIGroup(uiGroups[1])
 	],
-	function (adventure) { return {}; },
+	function (adventure) { },
 	function (roomEmbed, adventure) {
 		const gearOptions = [];
 		const itemOptions = [];

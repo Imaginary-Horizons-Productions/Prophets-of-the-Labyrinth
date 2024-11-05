@@ -18,7 +18,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (!adventure.room.hasResource("roomAction")) {
+		if (adventure.room.actions < 1) {
 			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
 			return;
 		}
@@ -55,7 +55,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);
 				const [_, startingDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				if (!adventure?.room.hasResource("roomAction") || startingDepth !== adventure.depth.toString()) {
+				if (adventure.room.actions < 1 || startingDepth !== adventure.depth.toString()) {
 					return;
 				}
 
@@ -67,7 +67,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const upgradeName = upgradePool[adventure.generateRandomNumber(upgradePool.length, "general")];
 				transformGear(delver, index, gearName, upgradeName);
 				adventure.room.history.Upgraders.push(delver.name);
-				adventure.room.decrementResource("roomAction", 1);
+				adventure.room.actions--;
 				setAdventure(adventure);
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 					return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));

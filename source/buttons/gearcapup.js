@@ -5,7 +5,7 @@ const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "gearcapup";
 module.exports = new ButtonWrapper(mainId, 3000,
-	/** Consumes a roomAction to raise Adventure's gear capacity */
+	/** Consumes a room action to raise Adventure's gear capacity */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure?.delvers.some(delver => delver.id === interaction.user.id)) {
@@ -14,14 +14,14 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		const actionCost = 1;
-		if (adventure.room.resources.roomAction.count < actionCost) {
+		if (adventure.room.actions < actionCost) {
 			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
 			return;
 		}
 
 		if (adventure.gearCapacity < MAX_MESSAGE_ACTION_ROWS) {
 			adventure.gearCapacity++;
-			adventure.room.decrementResource("roomAction", actionCost);
+			adventure.room.actions -= actionCost;
 			adventure.room.history["Cap boosters"].push(interaction.member.displayName);
 			setAdventure(adventure);
 			interaction.channel.send(`The party's gear capacity has been boosted to ${adventure.gearCapacity}.`);

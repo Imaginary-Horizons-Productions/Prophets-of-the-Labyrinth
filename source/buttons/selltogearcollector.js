@@ -43,11 +43,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					const [_, startedDepth] = collectedIntearction.customId.split(SAFE_DELIMITER);
 					const adventure = getAdventure(collectedIntearction.channelId);
 					const actionCost = 1;
-					if (startedDepth !== adventure.depth.toString() || !adventure.room.hasResource("roomAction", actionCost)) {
+					if (startedDepth !== adventure.depth.toString() || adventure.room.actions < actionCost) {
 						return;
 					}
 
-					adventure.room.decrementResource("roomAction", actionCost);
+					adventure.room.actions -= actionCost;
 					const [saleIndex] = collectedIntearction.values;
 					const delver = adventure.delvers.find(delver => delver.id === collectedIntearction.user.id);
 					const gearName = delver.gear[saleIndex].name;

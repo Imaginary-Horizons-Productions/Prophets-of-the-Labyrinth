@@ -5,11 +5,12 @@ const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new RoomTemplate("The Score Beggar",
 	"Water",
-	"Event",
 	"In the center of the room sits a desolate beggar.\n\"Score... more score... I need it! I'll give you this.\"\nThe beggar motions to a flask of questionable liquid.",
 	[],
 	function (adventure) {
-		return { "Traded for Flask": [] }
+		adventure.room.history = {
+			"Traded for Flask": []
+		};
 	},
 	function (roomEmbed, adventure) {
 		const tradeButtons = new ActionRowBuilder();

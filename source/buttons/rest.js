@@ -15,12 +15,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		const actionCost = 1;
-		if (!adventure.room.hasResource("roomAction", actionCost)) {
+		if (adventure.room.actions < actionCost) {
 			interaction.reply({ content: "No more actions can be taken in this room.", ephemeral: true });
 			return;
 		}
 
-		adventure.room.decrementResource("roomAction", actionCost);
+		adventure.room.actions -= actionCost;
 		adventure.room.history.Rested.push(delver.name);
 		interaction.update(renderRoom(adventure, interaction.channel)).then(() => {
 			interaction.followUp(gainHealth(delver, Math.ceil(delver.getMaxHP() * (parseInt(healPercent) / 100.0)), adventure));

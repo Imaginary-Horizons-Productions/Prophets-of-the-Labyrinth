@@ -16,7 +16,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 			return;
 		}
 
-		if (!adventure.room.hasResource("roomAction", 1)) {
+		if (adventure.room.actions < 1) {
 			interaction.reply({ content: "There aren't any more treasure picks to use.", ephemeral: true });
 			return;
 		}
@@ -64,7 +64,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 								delver.hp = delver.getMaxHP();
 							}
 							collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-								adventure.room.decrementResource("roomAction", 1);
+								adventure.room.actions--;
 								adventure.room.decrementResource(name, 1);
 								adventure.room.history["Treasure picked"].push(name);
 								return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
@@ -98,7 +98,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				delete adventure.room.resources[name];
 				break;
 		}
-		adventure.room.decrementResource("roomAction", 1);
+		adventure.room.actions--;
 		adventure.room.history["Treasure picked"].push(name);
 		setAdventure(adventure);
 		interaction.update(renderRoom(adventure, interaction.channel, interaction.message.embeds[0].description));

@@ -181,8 +181,8 @@ function renderRoom(adventure, thread, descriptionOverride) {
 				]
 			}
 		default:
-			if ("roomAction" in adventure.room.resources) {
-				roomEmbed.addFields({ name: "Room Actions", value: `${getNumberEmoji(adventure.room.resources.roomAction.count)} remaining` });
+			if (adventure.room.actions > 0) {
+				roomEmbed.addFields({ name: `Room Actions: ${getNumberEmoji(adventure.room.actions)}`, value: `The party can take ${adventure.room.actions} more actions in this room. Action costs will be noted with similar emoji on the UI component.` });
 			}
 
 			if (roomTemplate?.buildRoom) {

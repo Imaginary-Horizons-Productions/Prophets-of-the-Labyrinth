@@ -1,16 +1,21 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { generateRoutingRow } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Abandoned Forge",
 	"@{adventure}",
-	"Workshop",
 	"The forge in this room could be used to recast some of your upgraded gear to change it's form.",
-	[
-		new ResourceTemplate("n", "internal", "roomAction")
-	],
+	[],
 	function (adventure) {
-		return {
+		let pendingActions = adventure.delvers.length;
+		const hammerCount = adventure.getArtifactCount("Best-in-Class Hammer");
+		if (hammerCount > 0) {
+			pendingActions += hammerCount;
+			adventure.updateArtifactStat("Best-in-Class Hammer", "Extra Room Actions", hammerCount);
+		}
+		adventure.room.actions = pendingActions;
+
+		adventure.room.history = {
 			"Upgraders": [],
 			"Repairers": [],
 			"Tinkerers": []
@@ -18,7 +23,7 @@ module.exports = new RoomTemplate("Abandoned Forge",
 	},
 	function (roomEmbed, adventure) {
 		let upgradeEmoji, upgradeLabel, isUpgradeDisabled, repairEmoji, repairLabel, isRepairDisabled, tinkerEmoji, tinkerLabel, isTinkerDisabled;
-		if (adventure.room.hasResource("roomAction")) {
+		if (adventure.room.actions > 0) {
 			upgradeEmoji = "1️⃣";
 			upgradeLabel = "Consider gear upgrades";
 			isUpgradeDisabled = false;

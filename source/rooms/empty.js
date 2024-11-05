@@ -4,10 +4,9 @@ const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new RoomTemplate("Empty Room",
 	"Untyped",
-	"Empty",
 	"This room is empty. Lucky you?",
 	[],
-	function (adventure) { return {}; },
+	function (adventure) { },
 	function (roomEmbed, adventure) {
 		return {
 			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],

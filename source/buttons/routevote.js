@@ -56,7 +56,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setAuthor(embed.author)
 						.setTitle(embed.title)
 						.setDescription(embed.description)
-						.addFields(embed.fields.filter(field => !(["Room Actions", "Decide the next room"].includes(field.name))))
+						.addFields(embed.fields.filter(field => field.name !== "Decide the next room" && !field.name.startsWith("Room Actions")))
 						.setFooter(embed.footer)
 				})
 				interaction.message.edit({ embeds: updatedEmbeds, components: uiRows });

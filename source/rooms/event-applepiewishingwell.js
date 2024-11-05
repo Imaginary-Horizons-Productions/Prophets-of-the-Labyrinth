@@ -5,11 +5,10 @@ const { EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 module.exports = new RoomTemplate("Apple Pie Wishing Well",
 	"Light",
-	"Event",
 	"In the center of the room sits a wishing well with a glowing crystal core. Pinned to a post in front of the well are instructions indicating that tossing an item into the well will float it back as a delicious apple pie.",
 	[],
 	function (adventure) {
-		return {
+		adventure.room.history = {
 			"Items tossed": [],
 			"Core thief": []
 		};

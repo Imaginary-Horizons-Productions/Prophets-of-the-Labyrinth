@@ -5,12 +5,11 @@ const enemies = [["@{adventure} Slime", "0.5*n"], ["@{adventureOpposite} Ooze", 
 
 module.exports = new RoomTemplate("Slime Fight",
 	"@{adventure}",
-	"Battle",
 	"Some slimes and oozes approach...",
 	[
 		new ResourceTemplate("1", "internal", "levelsGained"),
 		new ResourceTemplate("35*n", "loot", "Currency")
 	],
-	function (adventure) { return {}; },
+	function (adventure) { },
 	generateCombatRoomBuilder([])
 ).setEnemies(enemies);
