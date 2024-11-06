@@ -1,11 +1,11 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
-const { getGearProperty } = require('../gear/_gearDictionary');
+const { getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
-const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
+const { getNumberEmoji } = require('../util/textUtil');
 const { transformGear } = require('../util/delverUtil');
-const { renderRoom } = require('../util/embedUtil');
+const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 
 const mainId = "upgrade";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -18,18 +18,26 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.actions < 1) {
+		const actionCost = 1;
+		if (adventure.room.actions < actionCost) {
 			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
 			return;
 		}
 
+		const upgradesPreviews = [];
 		const options = [];
 		delver.gear.forEach((gear, index) => {
-			const upgrades = getGearProperty(gear.name, "upgrades").map(upgrade => upgrade.replace(gear.name, "").trim());
+			const upgrades = getGearProperty(gear.name, "upgrades");
 			if (upgrades.length > 0) {
+				upgradesPreviews.push({
+					name: gear.name,
+					value: upgrades.map(upgrade => {
+						const description = buildGearDescription(upgrade, false, delver);
+						return `- ${underline(upgrade)} ${description}`;
+					}).join("\n")
+				});
 				options.push({
 					label: gear.name,
-					description: trimForSelectOptionDescription(`Possibilities: ${listifyEN(upgrades, true)}`),
 					value: index.toString()
 				})
 			}
@@ -40,11 +48,17 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		interaction.reply({
-			content: "You can use 1 room action to upgrade a piece of gear.",
+			embeds: [
+				new EmbedBuilder().setColor(Colors.Orange)
+					.setAuthor(randomAuthorTip())
+					.setTitle("Upgrading Gear")
+					.setDescription("The piece of gear you pick will be upgraded, but the upgrade it receives will be random. Here are the possible upgrades for your gear:")
+					.addFields(upgradesPreviews)
+			],
 			components: [
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
-						.setPlaceholder("Pick a piece of gear to randomly upgrade...")
+						.setPlaceholder(`${getNumberEmoji(actionCost)} Upgrade a gear piece...`)
 						.setOptions(options)
 				)
 			],
@@ -67,7 +81,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const upgradeName = upgradePool[adventure.generateRandomNumber(upgradePool.length, "general")];
 				transformGear(delver, index, gearName, upgradeName);
 				adventure.room.history.Upgraders.push(delver.name);
-				adventure.room.actions--;
+				adventure.room.actions -= actionCost;
 				setAdventure(adventure);
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 					return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));

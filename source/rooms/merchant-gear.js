@@ -2,7 +2,7 @@ const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getGearProperty } = require("../gear/_gearDictionary");
-const { generateMerchantScoutingRow, generateRoutingRow } = require("../util/messageComponentUtil");
+const { generateMerchantScoutingRow, generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 
 const uiGroups = [`gear${SAFE_DELIMITER}?`, `gear${SAFE_DELIMITER}Rare`];
 
@@ -44,7 +44,7 @@ module.exports = new RoomTemplate("Gear Merchant",
 		const hasMixedGearOptions = mixedGearOptions.length > 0;
 		const hasRareGearOptions = rareGearOptions.length > 0;
 		return {
-			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+			embeds: [roomEmbed.addFields(pathVoteField)],
 			components: [
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`buy${uiGroups[0]}`)

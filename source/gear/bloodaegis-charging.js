@@ -3,7 +3,7 @@ const { addModifier, payHP, changeStagger, addProtection, generateModifierResult
 
 module.exports = new GearTemplate("Charging Blood Aegis",
 	[
-		["use", "Pay @{hpCost} HP; gain @{protection} protection, @{mod0Stacks} @{mod0}, intercept a later single target move"],
+		["use", "Pay @{hpCost} HP; gain @{protection} protection and @{mod0Stacks} @{mod0}, then intercept a later single target move"],
 		["Critical💥", "Protection x@{critMultiplier}"]
 	],
 	"Pact",

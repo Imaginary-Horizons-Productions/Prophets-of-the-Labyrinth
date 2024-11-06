@@ -22,6 +22,7 @@ for (const file of [
 	"inspectself.js",
 	"join.js",
 	"modifier.js",
+	"modify.js",
 	"partystats.js",
 	"pillagepedestals.js",
 	"ready.js",
@@ -35,7 +36,6 @@ for (const file of [
 	"selltogearcollector.js",
 	"startingartifacts.js",
 	"stealwishingwellcore.js",
-	"tinker.js",
 	"trainingdummy.js",
 	"upgrade.js"
 ]) {

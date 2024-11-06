@@ -41,7 +41,7 @@ for (const file of [
 	"treasure-goldvsitems.js",
 	"workshop-blackbox.js",
 	"workshop-gearcapup.js",
-	"workshop-tinker.js"
+	"workshop-modify.js"
 ]) {
 	/** @type {RoomTemplate} */
 	const room = require(`./${file}`);

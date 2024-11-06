@@ -1,4 +1,5 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { pathVoteField } = require("../util/messageComponentUtil");
 
 const enemies = [["name", "countExpression"], ["name", "countExpression"]];
 
@@ -15,7 +16,7 @@ module.exports = new RoomTemplate("name",
 	},
 	function (roomEmbed, adventure) {
 		return {
-			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+			embeds: [roomEmbed.addFields(pathVoteField)],
 			components: [
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`routevote${SAFE_DELIMITER}Battle${SAFE_DELIMITER}${adventure.depth}`)

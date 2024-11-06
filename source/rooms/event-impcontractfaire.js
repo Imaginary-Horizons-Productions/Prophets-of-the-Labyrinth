@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
-const { generateRoutingRow } = require("../util/messageComponentUtil");
+const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new RoomTemplate("Imp Contract Faire",
@@ -32,7 +32,7 @@ module.exports = new RoomTemplate("Imp Contract Faire",
 			isShareDisabled = true;
 		}
 		return {
-			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+			embeds: [roomEmbed.addFields(pathVoteField)],
 			components: [
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId("elementresearch")
