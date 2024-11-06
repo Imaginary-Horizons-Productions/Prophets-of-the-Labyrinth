@@ -4,7 +4,6 @@ const { elementsList, getWeaknesses, getResistances, getEmoji, getOpposite } = r
 const { listifyEN } = require("../../util/textUtil");
 const { getApplicationEmojiMarkdown } = require("../../util/graphicsUtil");
 
-const matchingElementStaggerField = { name: "Matching Element Stagger", value: "When a combatant makes a move that matches their element, their target gets a bonus effect. If the target is an ally, they are relieved of 1 Stagger. If the target is an enemy, they suffer 2 additional Stagger. Check the page on Stagger to learn more about Stagger and Stun." };
 const allElements = elementsList();
 
 /**
@@ -37,7 +36,7 @@ async function executeSubcommand(interaction, ...args) {
 								const weaknesses = getWeaknesses(element);
 								const resistances = getResistances(element);
 								return { name: `${getEmoji(element)} ${element}`, value: `Opposite: ${getEmoji(getOpposite(element))}\nWeaknesses: ${weaknesses.length > 0 ? weaknesses.map(weakness => getEmoji(weakness)).join(" ") : "(none)"}\nResistances: ${resistances.length > 0 ? resistances.map(resistance => getEmoji(resistance)).join(" ") : "(none)"}` }
-							}).concat(matchingElementStaggerField)
+							}).concat({ name: "Matching Element Stagger", value: "When a combatant makes a move that matches their element, their target gets a bonus effect. If the target is an ally, they are relieved of 1 Stagger. If the target is an enemy, they suffer 2 additional Stagger. Check the page on Stagger to learn more about Stagger and Stun." })
 						)
 				],
 				ephemeral: true
@@ -47,8 +46,8 @@ async function executeSubcommand(interaction, ...args) {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Stagger")
-						.setDescription("Stagger stacks up on combatants when moves are used against them, leading to the combatant getting Stunned. Stagger promotes to Stun between rounds when a combatant's Stagger reaches their Poise (default 6 for delvers, varies for enemies). A stunned combatant misses their turn next round.")
-						.addFields(matchingElementStaggerField)
+						.setDescription("Stagger stacks up on combatants when moves are used against them, leading to the combatant getting Stunned. Stagger promotes to Stun between rounds when a combatant's Stagger reaches their Poise (default 6 for delvers, varies for enemies). A stunned combatant misses their turn next round.\n\nBy default Combatants shrug off 1 Stagger each round. This increases to 2 if they have Agility, but changes to instead gaining an extra Stagger if they have Paralysis.")
+						.addFields({ name: "Matching Element Stagger", value: "When a combatant makes a move that matches their element, their target gets a bonus effect. If the target is an ally, they are relieved of 1 Stagger. If the target is an enemy, they suffer 2 additional Stagger." })
 				],
 				ephemeral: true
 			});
