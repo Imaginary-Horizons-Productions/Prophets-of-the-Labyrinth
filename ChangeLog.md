@@ -1,7 +1,10 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.17.0:
+### Command Improvements
+- Added `/manual modifier-info`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)
 - Renamed `/give-up` to `/adventure retreat`
+### Other Changes
 - New Challenge: Cursed Run - One of your starting gear pieces is randomly replaced with cursed gear
 - Fixed delvers being able to end up above max HP when acquiring Cursed Blade
 - Fixed Reckless Certain Victory not reporting its user paying HP

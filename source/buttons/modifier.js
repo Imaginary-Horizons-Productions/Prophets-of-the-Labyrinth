@@ -1,10 +1,8 @@
 const { EmbedBuilder, Colors } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
-const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { modifiersToString } = require('../util/combatantUtil');
-const { randomAuthorTip } = require('../util/embedUtil');
-const { isBuff, isDebuff, getModifierDescription } = require('../modifiers/_modifierDictionary');
+const { randomAuthorTip, generateModifierEmbed } = require('../util/embedUtil');
 
 const mainId = "modifier";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -18,25 +16,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 		if (modifierName !== "MORE") {
-			const buff = isBuff(modifierName);
-			const debuff = isDebuff(modifierName);
-			let styleColor;
-			if (buff) {
-				styleColor = Colors.Blurple;
-			} else if (debuff) {
-				styleColor = Colors.Red;
-			} else {
-				styleColor = Colors.LightGrey;
-			}
-			interaction.reply({
-				embeds: [
-					new EmbedBuilder().setColor(styleColor)
-						.setAuthor(randomAuthorTip())
-						.setTitle(`${modifierName} x ${delver.modifiers[modifierName]} ${getApplicationEmojiMarkdown(modifierName)}`)
-						.setDescription(getModifierDescription(modifierName, delver, adventure))
-						.addFields({ name: "Category", value: `${buff ? "Buff" : debuff ? "Debuff" : "Modifier"}` })
-				], ephemeral: true
-			});
+			interaction.reply({ embeds: [generateModifierEmbed(modifierName, delver.modifiers[modifierName], delver.getPoise(), adventure.getArtifactCount("Spiral Funnel"))], ephemeral: true });
 		} else {
 			interaction.reply({
 				embeds: [
