@@ -8,7 +8,8 @@ const { slashData: subcommandSlashData, executeDictionary: subcommandExecuteDict
 	"enemyinfo.js",
 	"artifactinfo.js",
 	"gearinfo.js",
-	"iteminfo.js"
+	"iteminfo.js",
+	"modifierinfo.js"
 ]);
 module.exports = new CommandWrapper(mainId, "Get information about how to play or game entities", null, false, [InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel], 3000,
 	(interaction) => {

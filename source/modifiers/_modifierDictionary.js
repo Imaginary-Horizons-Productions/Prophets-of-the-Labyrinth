@@ -1,4 +1,4 @@
-const { Adventure, ModifierTemplate, BuildError, Combatant } = require("../classes");
+const { ModifierTemplate, BuildError } = require("../classes");
 const { sanitizeEmojiName } = require("../util/graphicsUtil");
 const { calculateTagContent } = require("../util/textUtil");
 
@@ -65,14 +65,15 @@ function getModifierEmojiFileTuples() {
 
 /**
  * @param {string} modifierName
- * @param {Combatant} bearer
- * @param {Adventure} adventure
+ * @param {number} stackCount
+ * @param {number} bearerPoise
+ * @param {number} funnelCount
  */
-function getModifierDescription(modifierName, bearer, adventure) {
+function getModifierDescription(modifierName, stackCount, bearerPoise, funnelCount) {
 	return calculateTagContent(MODIFIERS[modifierName].description, [
-		{ tag: 'stackCount', count: bearer.modifiers[modifierName] },
-		{ tag: 'poise', count: bearer.getPoise() },
-		{ tag: 'funnelCount', count: adventure.getArtifactCount("Spiral Funnel") },
+		{ tag: 'stackCount', count: stackCount },
+		{ tag: 'poise', count: bearerPoise },
+		{ tag: 'funnelCount', count: funnelCount },
 		{ tag: 'roundDecrement', count: getTurnDecrement(modifierName) }
 	]);
 }

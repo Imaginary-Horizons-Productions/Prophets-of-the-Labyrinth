@@ -383,7 +383,7 @@ function addProtection(combatants, value) {
 function modifiersToString(combatant, adventure) {
 	let modifiersText = "";
 	for (const modifier in combatant.modifiers) {
-		modifiersText += `*${modifier} x ${combatant.modifiers[modifier]}* - ${getModifierDescription(modifier, combatant, adventure)}\n`;
+		modifiersText += `*${modifier} x ${combatant.modifiers[modifier]}* - ${getModifierDescription(modifier, combatant.modifiers[modifier], combatant.getPoise(), adventure.getArtifactCount("Spiral Funnel"))}\n`;
 	}
 	return modifiersText;
 }

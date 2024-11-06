@@ -6,7 +6,7 @@ const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MA
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
+const { isBuff, isDebuff, getModifierDescription } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
@@ -531,6 +531,24 @@ function generateStatsEmbed(user, guildId) {
 		)
 }
 
+function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
+	const buff = isBuff(modifierName);
+	const debuff = isDebuff(modifierName);
+	let styleColor;
+	if (buff) {
+		styleColor = Colors.Blurple;
+	} else if (debuff) {
+		styleColor = Colors.Red;
+	} else {
+		styleColor = Colors.LightGrey;
+	}
+	return new EmbedBuilder().setColor(styleColor)
+		.setAuthor(randomAuthorTip())
+		.setTitle(`${modifierName} x ${count} ${getApplicationEmojiMarkdown(modifierName)}`)
+		.setDescription(getModifierDescription(modifierName, count, bearerPoise, funnelCount))
+		.addFields({ name: "Category", value: `${buff ? "Buff" : debuff ? "Debuff" : "State"}` })
+}
+
 module.exports = {
 	randomAuthorTip,
 	randomFooterTip,
@@ -544,5 +562,6 @@ module.exports = {
 	gearToEmbedField,
 	inspectSelfPayload,
 	generatePartyStatsPayload,
-	generateStatsEmbed
+	generateStatsEmbed,
+	generateModifierEmbed
 };
