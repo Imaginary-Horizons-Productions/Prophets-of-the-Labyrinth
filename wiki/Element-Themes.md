@@ -39,6 +39,7 @@ Archetypes: Knight, Detective
 - Charging
 - Guarding
 - Hunter's
+- Impactful
 - Organic
 - Staggering
 

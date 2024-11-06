@@ -307,9 +307,11 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			if (gearName === "Iron Fist Punch") {
 				damage += 45 * holder.getModifierStacks("Iron Fist Stance");
 			}
-			text = text.replace(/@{damage}/g, Math.floor(Math.min(damage, holder.getDamageCap())));
+			text = text.replace(/@{damage}/g, Math.floor(Math.min(damage, holder.getDamageCap())))
+				.replace(/@{impactfulDamage}/g, Math.floor(Math.min(damage + holder.getModifierStacks("Power Up"), holder.getDamageCap())));
 		} else {
-			text = text.replace(/@{damage}/g, `(${damage} + power)`);
+			text = text.replace(/@{damage}/g, `(${damage} + power)`)
+				.replace(/@{impactfulDamage}/g, `(${damage} + power + Power Up)`);
 		}
 	}
 
