@@ -60,7 +60,7 @@ function generateCombatRoomBuilder(extraButtons) {
 		} else {
 			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
 
-			roomEmbed.addFields({ name: "Level-Up!", value: `Everyone gains ${adventure.room.resources.levelsGained.count ?? 0} levels.` }, { name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." });
+			roomEmbed.addFields({ name: "Level-Up!", value: `Everyone gains ${adventure.room.resources.levelsGained.count ?? 0} levels.` }, pathVoteField);
 			return {
 				embeds: [roomEmbed],
 				components: [generateLootRow(adventure), generateRoutingRow(adventure)]
@@ -104,7 +104,7 @@ function generateRoutingRow(adventure) {
 		...Object.keys(adventure.roomCandidates).map((candidateTag, index) => {
 			const [roomType, depth] = candidateTag.split(SAFE_DELIMITER);
 			return new ButtonBuilder().setCustomId(`routevote${SAFE_DELIMITER}${candidateTag}`)
-				.setLabel(`Next room: ${adventure.roomCandidates[candidateTag].isHidden ? `Unknown ${index + 1}` : roomType}`)
+				.setLabel(`Path Vote: ${adventure.roomCandidates[candidateTag].isHidden ? `Unknown ${index + 1}` : roomType}`)
 				.setStyle(ButtonStyle.Secondary)
 		}));
 }
@@ -137,6 +137,7 @@ module.exports = {
 		.setStyle(ButtonStyle.Secondary),
 	generateCombatRoomBuilder,
 	generateLootRow,
+	pathVoteField: { name: "Path Vote", value: "Each delver must vote for the next room (changes allowed). The party will move on when the decision is unanimous." },
 	generateRoutingRow,
 	generateMerchantScoutingRow
 };

@@ -3,7 +3,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { getGearProperty } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
-const { generateMerchantScoutingRow, generateRoutingRow } = require("../util/messageComponentUtil");
+const { generateMerchantScoutingRow, generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 
 const uiGroups = [`gear${SAFE_DELIMITER}?`, "item"];
 
@@ -49,7 +49,7 @@ module.exports = new RoomTemplate("Item Merchant",
 		const hasGearOptions = gearOptions.length > 0;
 		const hasItemOptions = itemOptions.length > 0;
 		return {
-			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+			embeds: [roomEmbed.addFields(pathVoteField)],
 			components: [
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`buy${uiGroups[0]}`)

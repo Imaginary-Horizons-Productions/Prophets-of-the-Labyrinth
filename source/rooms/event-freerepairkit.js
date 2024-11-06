@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate, ResourceTemplate } = require("../classes");
-const { generateRoutingRow } = require("../util/messageComponentUtil");
+const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Repair Kit, just hanging out",
 	"Earth",
@@ -36,7 +36,7 @@ module.exports = new RoomTemplate("Repair Kit, just hanging out",
 			}
 		}
 		return {
-			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+			embeds: [roomEmbed.addFields(pathVoteField)],
 			components: [
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId("freerepairkit")

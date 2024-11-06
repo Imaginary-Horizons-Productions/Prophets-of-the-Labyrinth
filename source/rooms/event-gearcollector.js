@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
-const { generateRoutingRow } = require("../util/messageComponentUtil");
+const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 const { getNumberEmoji } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Gear Collector",
@@ -15,7 +15,7 @@ module.exports = new RoomTemplate("Gear Collector",
 	function (roomEmbed, adventure) {
 		if (adventure.room.actions > 0) {
 			return {
-				embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+				embeds: [roomEmbed.addFields(pathVoteField)],
 				components: [
 					new ActionRowBuilder().addComponents(
 						new ButtonBuilder().setCustomId("selltogearcollector")
@@ -28,7 +28,7 @@ module.exports = new RoomTemplate("Gear Collector",
 			};
 		} else {
 			return {
-				embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+				embeds: [roomEmbed.addFields(pathVoteField)],
 				components: [
 					new ActionRowBuilder().addComponents(
 						new ButtonBuilder().setCustomId("viewgearcollector")

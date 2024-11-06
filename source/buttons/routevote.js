@@ -2,6 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ComponentType, StringSelectMenuBuilder,
 const { ButtonWrapper } = require('../classes');
 const { SAFE_DELIMITER, ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { getAdventure, endRoom } = require('../orcustrators/adventureOrcustrator');
+const { pathVoteField } = require('../util/messageComponentUtil');
 
 const mainId = "routevote";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -56,7 +57,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setAuthor(embed.author)
 						.setTitle(embed.title)
 						.setDescription(embed.description)
-						.addFields(embed.fields.filter(field => field.name !== "Decide the next room" && !field.name.startsWith("Room Actions")))
+						.addFields(embed.fields.filter(field => field.name !== pathVoteField.name && !field.name.startsWith("Room Actions")))
 						.setFooter(embed.footer)
 				})
 				interaction.message.edit({ embeds: updatedEmbeds, components: uiRows });

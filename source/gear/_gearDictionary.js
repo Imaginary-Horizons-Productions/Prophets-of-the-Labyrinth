@@ -313,20 +313,18 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		}
 	}
 
-	return injectGearStats(text, gearName, buildFullDescription, gearName === "Iron Fist Punch" ? holder.element : null);
+	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.element : null);
 }
 
 /**
  * @param {string} text
  * @param {string} gearName
- * @param {boolean} markdownAllowed
  * @param {string | null} elementOverride
  */
-function injectGearStats(text, gearName, markdownAllowed, elementOverride) {
+function injectGearStats(text, gearName, elementOverride) {
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 		if (!modifier.name.startsWith("unparsed")) {
-			const replacement = markdownAllowed ? getApplicationEmojiMarkdown(modifier.name) : modifier.name;
-			text = text.replace(new RegExp(`@{mod${index}}`, "g"), replacement);
+			text = text.replace(new RegExp(`@{mod${index}}`, "g"), getApplicationEmojiMarkdown(modifier.name));
 		}
 		text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 	})

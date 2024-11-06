@@ -1,9 +1,10 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { buildGearRecord } = require('../gear/_gearDictionary');
-const { renderRoom } = require('../util/embedUtil');
+const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
+const { getNumberEmoji } = require('../util/textUtil');
 
 const mainId = "blackbox";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -27,11 +28,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		interaction.reply({
-			content: "You can trade a piece of gear the mysterious Rare gear in the black box.",
+			embeds: [
+				new EmbedBuilder().setAuthor(randomAuthorTip())
+					.setTitle("Opening the Black Box")
+					.setDescription("The black box has a gear-shaped keyhole on the front and shaking the box makes the sound of Rare gear tumbling about inside. You could trade a piece of gear for the Rare gear in the black box, but there's no way to know what you'll get...")
+			],
 			components: [
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
-						.setPlaceholder("Pick a piece of gear to trade...")
+						.setPlaceholder(`${getNumberEmoji(0)} Trade a gear piece...`)
 						.setOptions(delver.gear.map((gear, index) => ({
 							label: gear.name,
 							value: index.toString()

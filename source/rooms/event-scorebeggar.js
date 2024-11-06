@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
-const { generateRoutingRow } = require("../util/messageComponentUtil");
+const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new RoomTemplate("The Score Beggar",
@@ -63,7 +63,7 @@ module.exports = new RoomTemplate("The Score Beggar",
 			}
 		}
 		return {
-			embeds: [roomEmbed.addFields({ name: "Decide the next room", value: "Each delver can pick or change their pick for the next room. The party will move on when the decision is unanimous." })],
+			embeds: [roomEmbed.addFields(pathVoteField)],
 			components: [tradeButtons, generateRoutingRow(adventure)]
 		};
 	}
