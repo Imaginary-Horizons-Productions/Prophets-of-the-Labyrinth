@@ -207,6 +207,12 @@ Gain Power Up on kill
 - Morning Star (Light)
 - Power from Wrath (Darkness)
 
+### Impactful
+Double benefits from Power Up
+
+**Available on**
+- all Lances (Earth)
+
 ### Lethal
 Increased crit damage
 
@@ -486,7 +492,6 @@ Increases stats gained by level up
 ## Unnamed Variants
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
 - Adds Iron Fist Stance to user (all Iron Fist Stances)
-- Double benefits from Power Up (all Lances)
 - Adds Power Up to target (all Inspiration)
 - Also hits targets with Exposed (all War Cries)
 - Adds Power Up to random ally if hitting weakness (all Pistols)

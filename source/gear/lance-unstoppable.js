@@ -3,7 +3,7 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Unstoppable Lance",
 	[
-		["use", "Strike a foe for @{damage} @{element} unblockable damage (double increase from @{mod0}), even while Stunned"],
+		["use", "Strike a foe for @{impactfulDamage} @{element} unblockable damage (double increase from @{mod0}), even while Stunned"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

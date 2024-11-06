@@ -3,7 +3,7 @@ const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = 
 
 module.exports = new GearTemplate("Shattering Lance",
 	[
-		["use", "Apply @{mod0Stacks} @{mod0} and @{damage} @{element} damage (double increase from @{mod1}) to a foe"],
+		["use", "Apply @{mod0Stacks} @{mod0} and @{impactfulDamage} @{element} damage (double increase from @{mod1}) to a foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

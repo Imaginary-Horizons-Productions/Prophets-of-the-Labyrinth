@@ -10,6 +10,7 @@
 - Fixed Reckless Certain Victory not reporting its user paying HP
 - Fixed the party stats embed not showing the Final Battle after it had been scouted
 - Fixed Curse of Midas reporting generating fractional gold, not scaling with stacks, and being added to party gold immediately instead of being added to loot
+- Fixed Lance descriptions not accounting for double Power Up contribution
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes
 - Changed Detective to Untyped
