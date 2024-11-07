@@ -62,7 +62,7 @@ function getPetMove(petName, [moveIndex], playerId, guildId) {
 			return [`${owner.name}'s ${petName} loafs around.`];
 		})
 	}
-	return PETS[petName.toLowerCase()].moves[moveIndex][Math.ceil((petLevel - moveIndex) / 2)];
+	return PETS[petName.toLowerCase()].moves[moveIndex][Math.ceil((petLevel - moveIndex) / 2) - 1];
 }
 
 module.exports = {
