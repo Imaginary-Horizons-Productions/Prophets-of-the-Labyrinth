@@ -22,7 +22,6 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: 3 })));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "random"
 }).addAction({
 	name: "Tackle",
@@ -38,7 +37,6 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "random"
 })
 	.setFlavorText({ name: "Ooze's Element", value: "The Ooze's element will be the opposite of the current adventure." });

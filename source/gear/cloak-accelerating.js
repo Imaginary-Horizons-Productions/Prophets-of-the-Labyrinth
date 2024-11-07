@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Accelerating Cloak",
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier([user], pendingEvade).concat(addModifier([user], pendingQuicken))));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Accurate Cloak", "Evasive Cloak")
 	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Quicken", stacks: 1 })
 	.setBonus(1) // Evade stacks

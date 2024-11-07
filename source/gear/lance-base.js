@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Lance",
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
 ).setUpgrades("Accelerating Lance", "Shattering Lance", "Unstoppable Lance")
-	.setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+	.setTargetingTags({ type: "single", team: "foe" })
 	.setModifiers({ name: "Power Up", stacks: 0 })
 	.setDurability(15)
 	.setDamage(40);

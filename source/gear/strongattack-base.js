@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Strong Attack",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Flanking Strong Attack", "Sharpened Strong Attack", "Staggering Strong Attack")
 	.setDurability(15)
 	.setDamage(65);

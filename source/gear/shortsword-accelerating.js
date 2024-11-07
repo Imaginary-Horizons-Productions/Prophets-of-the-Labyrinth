@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed), addModifier([user], quicken))));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Lethal Shortsword", "Toxic Shortsword")
 	.setModifiers({ name: "Exposed", stacks: 1 }, { name: "Quicken", stacks: 1 })
 	.setDurability(15)

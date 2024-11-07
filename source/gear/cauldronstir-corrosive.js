@@ -27,7 +27,7 @@ module.exports = new GearTemplate(gearName,
 
 		return resultLines.concat(generateModifierResultLines(addModifier(targets, powerdown)));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sabotaging Cauldron Stir", "Toxic Cauldron Stir")
 	.setModifiers({ name: "Power Down", stacks: 10 })
 	.setDurability(15)

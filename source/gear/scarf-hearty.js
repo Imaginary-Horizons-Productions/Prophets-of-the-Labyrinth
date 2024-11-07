@@ -8,8 +8,6 @@ module.exports = new GearTemplate("Hearty Scarf",
 	"Untyped",
 	350,
 	(targets, user, adventure) => []
-).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
-	.setSidegrades("Accurate Scarf", "Wise Scarf")
-	.setDurability(0)
+).setSidegrades("Accurate Scarf", "Wise Scarf")
 	.setSpeed(5)
 	.setMaxHP(50);

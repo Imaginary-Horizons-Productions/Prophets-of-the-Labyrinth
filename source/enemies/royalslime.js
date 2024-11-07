@@ -34,7 +34,6 @@ module.exports = new EnemyTemplate("Royal Slime",
 		}
 	},
 	selector: selectSelf,
-	needsLivingTargets: false,
 	next: "random",
 	rnConfig: { "elements": 1 }
 }).addAction({
@@ -51,7 +50,6 @@ module.exports = new EnemyTemplate("Royal Slime",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: false,
 	next: "random"
 }).addAction({
 	name: "Opposite Rolling Tackle",
@@ -67,7 +65,6 @@ module.exports = new EnemyTemplate("Royal Slime",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: false,
 	next: "random"
 }).addAction({
 	name: "Goop Deluge",
@@ -81,7 +78,6 @@ module.exports = new EnemyTemplate("Royal Slime",
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: user.crit ? 3 : 2 })));
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: false,
 	next: "random"
 })
 	.setFlavorText({ name: "Royal Slime's Element", value: "The Royal Slime will start as the adventure's element and change it with Element Shift." });

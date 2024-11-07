@@ -26,7 +26,6 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: true,
 	next: "random"
 }).addAction({
 	name: "Armored Avalanche",
@@ -45,7 +44,6 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		return results;
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: true,
 	next: "random"
 }).addAction({
 	name: "Freefall Flare-Up",
@@ -62,6 +60,5 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		return resultLines;
 	},
 	selector: selectAllCombatants,
-	needsLivingTargets: true,
 	next: "Sonic Slash"
 });

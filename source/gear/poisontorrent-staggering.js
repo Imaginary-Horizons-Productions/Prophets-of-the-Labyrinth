@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Staggering Poison Torrent",
 		changeStagger(targets, stagger);
 		return ["All foes were Staggered.", ...generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPoison)))];
 	}
-).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "foe" })
 	.setSidegrades("Distracting Poison Torrent", "Harmful Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 })
 	.setDurability(15)

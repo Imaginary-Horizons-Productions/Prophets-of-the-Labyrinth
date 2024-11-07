@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 			payHP(user, user.getModifierStacks("Power Up"), adventure)
 		);
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Hunter's Certain Victory", "Reckless Certain Victory")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)

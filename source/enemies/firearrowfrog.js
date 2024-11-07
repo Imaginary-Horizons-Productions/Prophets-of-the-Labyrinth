@@ -22,7 +22,6 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		return resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 6 : 3 })));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "random"
 }).addAction({
 	name: "Burrow",
@@ -38,7 +37,6 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		return generateModifierResultLines(addModifier([user], { name: "Evade", stacks }));
 	},
 	selector: selectSelf,
-	needsLivingTargets: false,
 	next: "Venom Cannon"
 }).addAction({
 	name: "Goop Spray",
@@ -52,6 +50,5 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: user.crit ? 3 : 2 })));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "Venom Cannon"
 });

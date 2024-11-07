@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Accurate Iron Fist Stance",
 
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Lucky Iron Fist Stance", "Organic Iron Fist Stance")
 	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
 	.setBonus(45) // Punch damage boost

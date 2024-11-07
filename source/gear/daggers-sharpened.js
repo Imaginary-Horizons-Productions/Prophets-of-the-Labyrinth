@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Sharpened Daggers",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sweeping Daggers", "Slowing Daggers")
 	.setDurability(15)
 	.setCritMultiplier(3)

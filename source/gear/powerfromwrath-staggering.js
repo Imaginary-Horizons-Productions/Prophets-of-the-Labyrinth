@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Staggering Power from Wrath",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Bashing Power from Wrath", "Hunter's Power from Wrath")
 	.setDurability(15)
 	.setHPCost(40)

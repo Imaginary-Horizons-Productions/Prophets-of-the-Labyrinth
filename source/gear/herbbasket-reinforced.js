@@ -31,7 +31,7 @@ module.exports = new GearTemplate(gearName,
 			return [`${user.name} gains protection and gathers a batch of ${randomHerb}.`];
 		}
 	}
-).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
+).setTargetingTags({ type: "none", team: "none" })
 	.setSidegrades("Organic Herb Basket", "Urgent Herb Basket")
 	.setBonus(1) // Herb count
 	.setProtection(75)

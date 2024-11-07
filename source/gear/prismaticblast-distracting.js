@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Distracting Prismatic Blast",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, distracted))));
 	}
-).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe" })
 	.setSidegrades("Flanking Prismatic Blast", "Vexing Prismatic Blast")
 	.setModifiers({ name: "Distracted", stacks: 2 })
 	.setDurability(15)

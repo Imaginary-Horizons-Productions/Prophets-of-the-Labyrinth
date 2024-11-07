@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Lethal Spear",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Reactive Spear", "Sweeping Spear")
 	.setBonus(2) // Crit Stagger
 	.setDurability(15)

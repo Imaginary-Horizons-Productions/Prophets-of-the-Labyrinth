@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Smoke Bomb",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Evade", stacks: 2 }));
 	}

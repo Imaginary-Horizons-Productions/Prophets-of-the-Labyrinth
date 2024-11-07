@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Awesome Morning Star",
 		changeStagger([target], stagger);
 		return [...dealDamage([target], user, pendingDamage, false, element, adventure), `${target.name} is Staggered.`];
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Bashing Morning Star", "Hunter's Morning Star")
 	.setStagger(2)
 	.setDurability(15)

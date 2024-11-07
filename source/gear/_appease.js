@@ -13,4 +13,4 @@ module.exports = new GearTemplate("Appease",
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false });
+).setTargetingTags({ type: "self", team: "ally" });

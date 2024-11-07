@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Agile Floating Mist Stance",
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Devoted Floating Mist Stance", "Soothing Floating Mist Stance")
 	.setModifiers({ name: "Evade", stacks: 1 }, { name: "Floating Mist Stance", stacks: 1 }, { name: "Agility", stacks: 2 })
 	.setDurability(10)

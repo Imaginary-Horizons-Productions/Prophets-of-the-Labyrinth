@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Guarding Buckler",
 		addProtection(targets, pendingProtection);
 		return [joinAsStatement(false, [user, ...targets].map(combatant => combatant.name), "gains", "gain", "protection."), ...generateModifierResultLines(addModifier([user], powerUp))];
 	}
-).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Devoted Buckler", "Reinforced Buckler")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setDurability(15)

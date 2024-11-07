@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Awesome Ice Bolt",
 		const resultLines = targets.reduce((array, target) => array.concat(dealDamage([target], user, target.isStunned ? stunnedDamage : pendingDamage, false, element, adventure)), []);
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow))));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Distracting Ice Bolt", "Unlucky Ice Bolt")
 	.setDamage(40)
 	.setModifiers({ name: "Slow", stacks: 2 })

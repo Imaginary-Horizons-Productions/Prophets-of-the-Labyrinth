@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Harmful Corrosion",
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, powerDown))));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Fate-Sealing Corrosion", "Shattering Corrosion")
 	.setModifiers({ name: "Power Down", stacks: 20 })
 	.setBonus(2) // Crit Stagger

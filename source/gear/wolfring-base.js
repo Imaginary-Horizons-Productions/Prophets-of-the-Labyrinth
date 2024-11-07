@@ -8,7 +8,5 @@ module.exports = new GearTemplate("Wolf Ring",
 	"Untyped",
 	200,
 	(targets, user, adventure) => []
-).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
-	.setUpgrades("Surpassing Wolf Ring", "Swift Wolf Ring", "Wise Wolf Ring")
-	.setDurability(0)
+).setUpgrades("Surpassing Wolf Ring", "Swift Wolf Ring", "Wise Wolf Ring")
 	.setPoise(2);

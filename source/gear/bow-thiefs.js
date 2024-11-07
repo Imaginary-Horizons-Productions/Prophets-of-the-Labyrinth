@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Thief's Bow",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Evasive Bow", "Unstoppable Bow")
 	.setDurability(15)
 	.setDamage(40)

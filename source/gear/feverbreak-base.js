@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Fever Break",
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Organic Fever Break", "Surpassing Fever Break", "Urgent Fever Break")
 	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frail", stacks: 0 })
 	.setDurability(5);

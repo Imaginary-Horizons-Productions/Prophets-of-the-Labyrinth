@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Strength Spinach",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Power Up", stacks: 50 }));
 	}

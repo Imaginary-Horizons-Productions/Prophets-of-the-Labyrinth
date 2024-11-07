@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Accurate Cloak",
 		}
 		return generateModifierResultLines(addModifier([user], pendingEvade));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Accelerating Cloak", "Evasive Cloak")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setBonus(1) // Evade stacks

@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Earthen Potion",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Earth Absorb", stacks: 3 }));
 	}

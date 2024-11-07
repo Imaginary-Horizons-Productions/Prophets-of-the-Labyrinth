@@ -26,7 +26,6 @@ module.exports = new EnemyTemplate("Asteroid",
 		return dealDamage(targets, user, damage, false, user.element, adventure).concat(dealDamage([user], user, recoilDmg, true, "Untyped", adventure));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: true,
 	next: "random"
 }).addAction({
 	name: "Bolide Burst",
@@ -43,6 +42,5 @@ module.exports = new EnemyTemplate("Asteroid",
 		return [...dealDamage(targets, user, damage, false, user.element, adventure), `${user.name} is downed.`];
 	},
 	selector: selectAllOtherCombatants,
-	needsLivingTargets: true,
 	next: "random"
 });

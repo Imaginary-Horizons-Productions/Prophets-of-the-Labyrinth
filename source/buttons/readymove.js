@@ -120,7 +120,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 							targetText = "all enemies";
 						}
 						for (let i = 0; i < targetCount; i++) {
-							newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", i));
+							if (adventure.room.enemies[i].hp > 0) {
+								newMove.addTarget(new CombatantReference(team === "ally" ? "delver" : "enemy", i));
+							}
 						}
 					} else if (type.startsWith("random")) {
 						const targetCount = Number(type.split(SAFE_DELIMITER)[1]) + adventure.getArtifactCount("Loaded Dice");

@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "foe" })
 	.setSidegrades("Distracting Poison Torrent", "Staggering Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 })
 	.setDamage(15)

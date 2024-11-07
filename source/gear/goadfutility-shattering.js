@@ -34,7 +34,7 @@ module.exports = new GearTemplate("Shattering Goad Futility",
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts)).concat(resultLines);
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Flanking Goad Futility", "Poised Goad Futility")
 	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Unlucky", stacks: 3 }, { name: "Frail", stacks: 4 })
 	.setDurability(10);

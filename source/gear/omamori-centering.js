@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Centering Omamori",
 		}
 		return [`${user.name} ${listifyEN(userEffects)}.`].concat(generateModifierResultLines(addModifier([user], pendingLucky)));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Omamori", "Devoted Omamori")
 	.setModifiers({ name: "Lucky", stacks: 2 })
 	.setProtection(50)

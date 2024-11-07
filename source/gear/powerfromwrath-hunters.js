@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Bashing Power from Wrath", "Staggering Power from Wrath")
 	.setDurability(15)
 	.setHPCost(40)

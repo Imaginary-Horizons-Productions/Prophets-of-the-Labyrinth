@@ -8,8 +8,6 @@ module.exports = new GearTemplate("Powerful Chainmail",
 	"Untyped",
 	350,
 	(targets, user, adventure) => []
-).setTargetingTags({ type: "none", team: "none", needsLivingTargets: false })
-	.setSidegrades("Poised Chainmail", "Wise Chainmail")
-	.setDurability(0)
+).setSidegrades("Poised Chainmail", "Wise Chainmail")
 	.setMaxHP(50)
 	.setPower(15);

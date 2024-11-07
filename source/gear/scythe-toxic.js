@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Toxic Scythe",
 			return [`${target.name} meets the reaper.`];
 		}
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Lethal Scythe", "Unstoppable Scythe")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDurability(15)

@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Quick Pepper",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Quicken", stacks: 3 }));
 	}

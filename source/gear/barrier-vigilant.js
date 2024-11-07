@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Vigilant Barrier",
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier([user], pendingVigilance).concat(addModifier([user], evade))));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Barrier", "Devoted Barrier")
 	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 2 })
 	.setDurability(5);

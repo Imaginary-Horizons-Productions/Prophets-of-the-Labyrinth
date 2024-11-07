@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Shortsword",
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed))));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Accelerating Shortsword", "Lethal Shortsword", "Toxic Shortsword")
 	.setModifiers({ name: "Exposed", stacks: 1 })
 	.setDurability(15)

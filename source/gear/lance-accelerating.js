@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Accelerating Lance",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier([user], quicken)));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Shattering Lance", "Unstoppable Lance")
 	.setModifiers({ name: "Quicken", stacks: 1 }, { name: "Power Up", stacks: 0 })
 	.setDurability(15)

@@ -39,7 +39,6 @@ module.exports = new EnemyTemplate("Earthly Knight",
 		return resultLines;
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: true,
 	next: "random",
 	rnConfig: { "buffs": 1 }
 }).addAction({
@@ -56,7 +55,6 @@ module.exports = new EnemyTemplate("Earthly Knight",
 		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered.")];
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: true,
 	next: "random"
 }).addAction({
 	name: "Call Asteroid",
@@ -68,6 +66,5 @@ module.exports = new EnemyTemplate("Earthly Knight",
 		return ["An Asteroid arrives on the battlefield."];
 	},
 	selector: selectNone,
-	needsLivingTargets: false,
 	next: "Tremor Smash"
 });

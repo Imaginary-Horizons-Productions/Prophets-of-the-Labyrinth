@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 		const receipts = addModifier([target], pendingCurse).concat(addModifier([user], quicken));
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
-).setTargetingTags({ type: "single", team: "any", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "any" })
 	.setSidegrades("Discounted Midas Staff", "Soothing Midas Staff")
 	.setModifiers({ name: "Curse of Midas", stacks: 2 }, { name: "Quicken", stacks: 1 })
 	.setBonus(1) // Curse of Midas stacks

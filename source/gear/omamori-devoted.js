@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Devoted Omamori",
 		addProtection(targets, protection);
 		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")].concat(generateModifierResultLines(addModifier(targets, pendingLucky)));
 	}
-).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Centering Omamori", "Cleansing Omamori")
 	.setModifiers({ name: "Lucky", stacks: 2 })
 	.setProtection(50)

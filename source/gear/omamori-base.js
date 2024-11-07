@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Omamori",
 		addProtection([user], protection);
 		return [`${user.name} gains protection.`].concat(generateModifierResultLines(addModifier([user], pendingLucky)));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setUpgrades("Centering Omamori", "Cleansing Omamori", "Devoted Omamori")
 	.setModifiers({ name: "Lucky", stacks: 2 })
 	.setProtection(50)

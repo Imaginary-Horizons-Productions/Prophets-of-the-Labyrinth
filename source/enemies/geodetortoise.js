@@ -26,7 +26,6 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "random"
 }).addAction({
 	name: "Crystallize",
@@ -45,6 +44,5 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		return [`${user.name} gains protection${addedPowerUp ? ` and ${getApplicationEmojiMarkdown("Power Up")}` : ` but was oblivious to ${getApplicationEmojiMarkdown("Power Up")}`}.`];
 	},
 	selector: selectSelf,
-	needsLivingTargets: false,
 	next: "random"
 });

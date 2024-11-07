@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Bow",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Evasive Bow", "Thief's Bow", "Unstoppable Bow")
 	.setDurability(15)
 	.setDamage(40)

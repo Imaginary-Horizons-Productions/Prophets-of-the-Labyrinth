@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Bouncing Medicine",
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingRegen)));
 	}
-).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "ally" })
 	.setSidegrades("Cleansing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
 	.setDurability(15)

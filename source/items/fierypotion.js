@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Fiery Potion",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Fire Absorb", stacks: 3 }));
 	}

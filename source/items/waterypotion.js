@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Watery Potion",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Water Absorb", stacks: 3 }));
 	}

@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Soothing Second Wind",
 		}
 		return [gainHealth(user, pendingHealing, adventure), ...generateModifierResultLines(addModifier([user], regen))];
 	}
-).setTargetingTags({ type: "self", team: "none", needsLivingTargets: true })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Second Wind", "Lucky Second Wind")
 	.setDurability(10)
 	.setDamage(0)

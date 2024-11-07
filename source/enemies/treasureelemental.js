@@ -24,7 +24,6 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			return dealDamage(targets, user, damage, false, user.element, adventure).concat([`${user.name} gains protection.`]);
 		},
 		selector: selectRandomFoe,
-		needsLivingTargets: false,
 		next: "random"
 	}).addAction({
 		name: "Hail of Gemstones",
@@ -44,7 +43,6 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			return texts;
 		},
 		selector: selectRandomFoe,
-		needsLivingTargets: false,
 		next: "random"
 	}).addAction({
 		name: "Heavy Pockets",
@@ -59,6 +57,5 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks })));
 		},
 		selector: selectAllFoes,
-		needsLivingTargets: false,
 		next: "random"
 	});

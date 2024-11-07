@@ -81,7 +81,14 @@ function selectAllFoes(self, adventure) {
  */
 function selectRandomFoe(self, adventure) {
 	if (self.team === "delver") {
-		return [new CombatantReference("enemy", adventure.generateRandomNumber(adventure.room.enemies.length, "battle"))];
+		const livingEnemyIndicies = [];
+		for (let i = 0; i < adventure.room.enemies.length; i++) {
+			if (enemy.hp > 0) {
+				livingEnemyIndicies.push(i);
+			}
+		}
+		// If there are no living enemies, combat should already be over
+		return [new CombatantReference("enemy", livingEnemyIndicies[adventure.generateRandomNumber(livingEnemyIndicies.length, "battle")])];
 	} else {
 		return [new CombatantReference("delver", adventure.generateRandomNumber(adventure.delvers.length, "battle"))];
 	}

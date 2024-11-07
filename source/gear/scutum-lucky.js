@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Lucky Scutum",
 		addProtection([target, user], pendingProtection);
 		return [`${target.name} and ${user.name} gain protection.`, ...generateModifierResultLines(addModifier([user], lucky))];
 	}
-).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")
 	.setModifiers({ name: "Lucky", stacks: 1 })
 	.setDurability(15)

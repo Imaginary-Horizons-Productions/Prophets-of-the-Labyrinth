@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Explosion Potion",
 	"Untyped",
 	30,
 	selectAllFoes,
-	true,
 	(targets, user, adventure) => {
 		return dealDamage(targets, user, 75, false, "Untyped", adventure);
 	}

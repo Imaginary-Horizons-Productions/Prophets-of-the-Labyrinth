@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Shattering Lance",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Accelerating Lance", "Unstoppable Lance")
 	.setModifiers({ name: "Frail", stacks: 4 }, { name: "Power Up", stacks: 0 })
 	.setDurability(15)

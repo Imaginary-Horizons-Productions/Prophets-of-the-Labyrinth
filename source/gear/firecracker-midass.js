@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Midas's Firecracker",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe" })
 	.setSidegrades("Double Firecracker", "Toxic Firecracker")
 	.setModifiers({ name: "Curse of Midas", stacks: 1 })
 	.setDurability(15)

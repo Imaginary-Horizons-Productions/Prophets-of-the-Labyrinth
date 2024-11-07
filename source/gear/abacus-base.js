@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Abacus",
 		})
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Sharpened Abacus", "Thief's Abacus", "Unstoppable Abacus")
 	.setDurability(15)
 	.setDamage(40);
