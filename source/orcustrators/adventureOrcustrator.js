@@ -738,10 +738,6 @@ function newRound(adventure, thread, lastRoundText) {
 				petMove.addTarget(reference);
 			})
 			adventure.room.moves.push(petMove);
-
-			// Generate pet move prediction
-			adventure.nextPet = (adventure.nextPet + 1) % adventure.delvers.length;
-			generatePetRNs(adventure);
 		}
 	}
 
@@ -770,7 +766,7 @@ function resolveMove(move, adventure) {
 
 	let headline = `${bold(user.name)} `;
 	const results = [];
-	if (!user.isStunned || move.name.startsWith("Unstoppable")) {
+	if (!user.isStunned || move.name.startsWith("Unstoppable") || move.type === "pet") {
 		if (user.crit) {
 			headline = `💥${headline}`;
 		}
@@ -1014,6 +1010,12 @@ function endRound(adventure, thread) {
 				removeModifier([combatant], { name: modifier, stacks: getTurnDecrement(modifier), force: true })
 			}
 		}
+	}
+
+	if (adventure.room.round % 2 === 1) {
+		// Generate pet move prediction
+		adventure.nextPet = (adventure.nextPet + 1) % adventure.delvers.length;
+		generatePetRNs(adventure);
 	}
 
 	newRound(adventure, thread, lastRoundText);

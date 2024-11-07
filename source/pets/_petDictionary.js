@@ -57,8 +57,8 @@ function generatePetRNs(adventure) {
 function getPetMove(petName, [moveIndex], playerId, guildId) {
 	const player = getPlayer(playerId, guildId);
 	const petLevel = player.pets[petName];
-	if (moveIndex === 1 && petLevel === 2) {
-		return new PetMoveTemplate("Loaf", "The pet loafs around", () => [], (targets, owner, adventure) => {
+	if (moveIndex === 1 && petLevel === 1) {
+		return new PetMoveTemplate("Loaf Around", "The pet loafs around", () => [], (targets, owner, adventure) => {
 			return [`${owner.name}'s ${petName} loafs around.`];
 		})
 	}
