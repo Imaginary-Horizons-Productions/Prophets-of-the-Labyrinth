@@ -6,7 +6,7 @@ const { getEmoji } = require("../util/elementUtil");
 const GEAR = {};
 const GEAR_NAMES = [];
 
-for (const file of [
+for (const file of [ //TODONOW add carrots and sticks
 	"_appease.js",
 	"_greed.js",
 	"_punch-base.js",

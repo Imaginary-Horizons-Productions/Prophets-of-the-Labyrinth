@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
 
-const { Adventure, ArtifactTemplate, Delver } = require("../classes");
+const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
@@ -123,6 +123,10 @@ function generateAdventureConfigMessage() {
 				new ButtonBuilder().setCustomId("deploy")
 					.setLabel("Pick Archetype")
 					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder().setCustomId("deploypet")
+					.setEmoji("🐾")
+					.setLabel("Bring a Pet")
+					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder().setCustomId("startingartifacts")
 					.setLabel("Pick Starting Artifact")
 					.setStyle(ButtonStyle.Secondary)
@@ -201,7 +205,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
  * @param {Adventure} adventure
  * @param {string} guildId
  */
-function addScoreField(embed, adventure, guildId) {
+function addScoreField(embed, adventure, guildId) { //TODONOW add Skipped Pets Multiplier
 	let { livesScore, goldScore, guardianScore, total: finalScore } = adventure.getBaseScore();
 	let breakdownText = generateScoreline("additive", "Depth", adventure.depth);
 	breakdownText += generateScoreline("additive", "Lives", livesScore);
@@ -549,6 +553,18 @@ function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
 		.addFields({ name: "Category", value: `${buff ? "Buff" : debuff ? "Debuff" : "State"}` })
 }
 
+/**
+ * @param {string} petName
+ * @param {Player} player
+ */
+function generatePetEmbed(petName, player) { //TODONOW finish
+	const petLevel = player.pets[petName] ?? 0;
+	return new EmbedBuilder() //TODONOW pet color?
+		.setAuthor(randomAuthorTip())
+		.setTitle(petName)
+		.setFooter(randomFooterTip())
+}
+
 module.exports = {
 	randomAuthorTip,
 	randomFooterTip,
@@ -563,5 +579,6 @@ module.exports = {
 	inspectSelfPayload,
 	generatePartyStatsPayload,
 	generateStatsEmbed,
-	generateModifierEmbed
+	generateModifierEmbed,
+	generatePetEmbed
 };

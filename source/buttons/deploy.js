@@ -15,17 +15,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const player = getPlayer(interaction.user.id, interaction.guild.id);
 		const archetypeOptions = [];
 		for (const archetypeName in player.archetypes) {
-			if (player.archetypes[archetypeName] != null) {
-				const archetype = getArchetype(archetypeName);
-				if (archetype) {
-					archetypeOptions.push({
-						label: `${archetypeName} ${getEmoji(archetype.element)}`,
-						description: trimForSelectOptionDescription(`Gear: ${listifyEN(archetype.startingGear, false)}`),
-						value: archetypeName
-					})
-				} else {
-					console.error(`Attempt to deploy unregistered archtype: ${archetypeName}`);
-				}
+			const archetype = getArchetype(archetypeName);
+			if (archetype) {
+				archetypeOptions.push({
+					label: `${archetypeName} ${getEmoji(archetype.element)}`,
+					description: trimForSelectOptionDescription(`Gear: ${listifyEN(archetype.startingGear, false)}`),
+					value: archetypeName
+				})
+			} else {
+				console.error(`Attempt to deploy unregistered archtype: ${archetypeName}`);
 			}
 		}
 		interaction.reply({
@@ -49,7 +47,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					return;
 				}
 
-				// Add delver to list (or overwrite)
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				const isSwitching = Boolean(delver.archetype);
 				const archetype = collectedInteraction.values[0];

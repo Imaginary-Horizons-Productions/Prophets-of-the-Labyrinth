@@ -3,7 +3,7 @@ const { Combatant } = require("./Combatant");
 class Move {
 	/**
 	 * @param {string} nameInput
-	 * @param {"gear" | "item" | "action"} typeInput
+	 * @param {"gear" | "item" | "action" | "pet"} typeInput
 	 * @param {CombatantReference} userReferenceInput
 	 */
 	constructor(nameInput, typeInput, userReferenceInput) {

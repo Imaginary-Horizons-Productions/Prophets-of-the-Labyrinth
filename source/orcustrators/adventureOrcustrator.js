@@ -26,6 +26,7 @@ const { levelUp } = require("../util/delverUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { rollableHerbs } = require("../shared/herbs");
 const { rollablePotions } = require("../shared/potions");
+const { getPetMove, generatePetRNs } = require("../pets/_petDictionary.js");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();
@@ -270,6 +271,7 @@ function nextRoom(roomType, thread) {
 				spawnEnemy(getEnemy(enemyName), adventure);
 			}
 		}
+		generatePetRNs(adventure); //TODONOW clobbers existing RNs in room 2 onwards
 		newRound(adventure, thread);
 		setAdventure(adventure);
 	} else {
@@ -724,6 +726,25 @@ function newRound(adventure, thread, lastRoundText) {
 			adventure.room.detectivePredicts.push(...allOutcomes.splice(adventure.generateRandomNumber(allOutcomes.length, "battle"), 1));
 		}
 	}
+
+	if (adventure.room.round % 2 === 1) {
+		// Generate pet move
+		const owner = adventure.delvers[adventure.nextPet];
+		if (owner.pet) {
+			const petMoveTemplate = getPetMove(owner.pet, adventure.petRNs, owner.id, thread.guildId);
+			const petMove = new Move(petMoveTemplate.name, "pet", { team: "delver", index: adventure.nextPet })
+				.setSpeedByValue(100);
+			petMoveTemplate.selector(owner, adventure).forEach(reference => {
+				petMove.addTarget(reference);
+			})
+			adventure.room.moves.push(petMove);
+
+			// Generate pet move prediction
+			adventure.nextPet = (adventure.nextPet + 1) % adventure.delvers.length;
+			generatePetRNs(adventure);
+		}
+	}
+
 	thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
 		if (!checkNextRound(adventure)) {
 			message.edit({ embeds: message.embeds.map(embed => new EmbedBuilder(embed).setAuthor({ name: roomHeaderString(adventure), iconURL: message.client.user.displayAvatarURL() })) });
@@ -794,45 +815,59 @@ function resolveMove(move, adventure) {
 				effect = itemEffect;
 				break;
 			}
+			case "pet":
+				headline = `${user.name}'s ${bold(user.pet)} `;
+				effect = getPetMove(user.pet, adventure.petRNs, user.id, adventure.guildId).effect;
+				break;
 		}
 
 		headline += `used ${move.name}`;
-		const livingTargets = [];
-		const deadTargets = [];
-		move.targets.forEach(targetReference => {
-			const target = adventure.getCombatant(targetReference);
-			if (target) {
-				if (target.hp > 0) {
-					livingTargets.push(target);
-				} else {
-					deadTargets.push(target);
+		if (move.targets.length > 0) {
+			const livingTargets = [];
+			const deadTargets = [];
+			move.targets.forEach(targetReference => {
+				const target = adventure.getCombatant(targetReference);
+				if (target) {
+					if (target.hp > 0) {
+						livingTargets.push(target);
+					} else {
+						deadTargets.push(target);
+					}
 				}
-			}
-		})
-		if (livingTargets.length > 0) {
-			if (deadTargets.length > 0) {
-				results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
-			}
+			})
+			if (livingTargets.length > 0) {
+				if (deadTargets.length > 0) {
+					results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
+				}
 
-			results.push(...effect(livingTargets, user, adventure));
+				results.push(...effect(livingTargets, user, adventure));
+				if (move.type === "gear" && move.userReference.team === "delver") {
+					const breakText = decrementDurability(move.name, user, adventure);
+					if (breakText) {
+						results.push(breakText);
+					}
+				}
+			} else if (move.targets.length === 1) {
+				headline += `, but ${adventure.getCombatant(move.targets[0]).name} was already dead!`;
+			} else {
+				headline += `, but all targets were already dead!`;
+			}
+		} else {
+			results.push(...effect([], user, adventure));
+		}
+
+		if (combatFlavor) {
+			headline += ` ${italic(combatFlavor)}`;
 			if (move.type === "gear" && move.userReference.team === "delver") {
 				const breakText = decrementDurability(move.name, user, adventure);
 				if (breakText) {
 					results.push(breakText);
 				}
 			}
-		} else if (targets.length === 1) {
-			headline += `, but ${targets[0].name} was already dead!`;
-		} else {
-			headline += `, but all targets were already dead!`;
-		}
-
-		if (combatFlavor) {
-			headline += ` ${italic(combatFlavor)}`;
 		}
 
 		const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
-		if (insigniaCount > 0 && user.team === "delver" && user.crit) {
+		if (insigniaCount > 0 && user.team === "delver" && user.crit && move.type !== "pet") {
 			const insigniaHealing = insigniaCount * 15;
 			results.push(gainHealth(user, insigniaHealing, adventure, "their Celestial Knight Insigina"));
 			adventure.updateArtifactStat("Health Restored", insigniaHealing);
@@ -841,13 +876,15 @@ function resolveMove(move, adventure) {
 		headline = `💫 ${headline} is Stunned!`;
 	}
 
-	// Poison/Regen
-	if ("Poison" in user.modifiers) {
-		results.push(...dealModifierDamage(user, "Poison", adventure));
-	} else {
-		const regenStacks = user.getModifierStacks("Regen");
-		if (regenStacks) {
-			results.push(gainHealth(user, regenStacks * 10, adventure, "Regen"));
+	if (move.type !== "pet") {
+		// Poison/Regen
+		if ("Poison" in user.modifiers) {
+			results.push(...dealModifierDamage(user, "Poison", adventure));
+		} else {
+			const regenStacks = user.getModifierStacks("Regen");
+			if (regenStacks) {
+				results.push(gainHealth(user, regenStacks * 10, adventure, "Regen"));
+			}
 		}
 	}
 	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
@@ -1033,9 +1070,10 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 /** The round ends when all combatants have readied all their moves
  * @param {Adventure} adventure
  */
-function checkNextRound({ room, delvers }) {
+function checkNextRound({ nextPet, room, delvers }) {
 	const readiedMoves = room.moves.length;
-	const movesThisRound = room.enemies.length + delvers.length;
+	const petMoves = delvers[nextPet].pet !== "" ? room.round % 2 : 0;
+	const movesThisRound = room.enemies.length + delvers.length + petMoves;
 	return readiedMoves === movesThisRound;
 }
 

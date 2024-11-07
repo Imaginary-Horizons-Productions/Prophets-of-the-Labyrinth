@@ -12,6 +12,7 @@ for (const file of [
 	"clearstartingchallenges.js",
 	"collectartifact.js",
 	"deploy.js",
+	"deploypet.js",
 	"elementresearch.js",
 	"eventartifact.js",
 	"freerepairkit.js",

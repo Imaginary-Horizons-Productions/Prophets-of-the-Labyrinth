@@ -45,6 +45,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		// Update game logic
+		//TODONOW auto-set favoritePet
 		adventure.delvers.push(new Delver(interaction.user.id, interaction.user.username, adventureId));
 		adventure.lives++;
 		adventure.gainGold(50);
