@@ -3,7 +3,7 @@ const { CommandWrapper, BuildError } = require('../classes');
 /** @type {Record<string, CommandWrapper>} */
 const commandDictionary = {};
 
-module.exports = { //TODONOW add favorite-pet
+module.exports = {
 	/** @type {string[]} */
 	commandFiles: [
 		"about.js",
@@ -11,6 +11,7 @@ module.exports = { //TODONOW add favorite-pet
 		"commands.js",
 		"data-policy.js",
 		"delve.js",
+		"favorite-pet.js",
 		"feedback.js",
 		"invite.js",
 		"manual",

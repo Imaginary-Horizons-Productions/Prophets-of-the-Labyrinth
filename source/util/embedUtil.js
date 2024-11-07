@@ -531,6 +531,7 @@ function generateStatsEmbed(user, guildId) {
 		.setDescription(`${availability}\n\nTotal Score: ${Object.values(player.scores).map(score => score.total).reduce((total, current) => total += current, 0)}`)
 		.addFields(
 			{ name: `Best Archetype: ${bestArchetype}`, value: `High Score: ${highScore}` },
+			{ name: "Favorite Pet", value: player.favoritePet ? player.favoritePet : "Not Set" },
 			{ name: "Artifacts Collected", value: `${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)` }
 		)
 }

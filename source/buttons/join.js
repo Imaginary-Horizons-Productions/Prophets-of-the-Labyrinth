@@ -4,6 +4,7 @@ const { MAX_DELVER_COUNT, ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
 const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator');
 const { getAdventure, setAdventure, fetchRecruitMessage } = require('../orcustrators/adventureOrcustrator');
+const { getPlayer } = require('../orcustrators/playerOrcustrator');
 
 const mainId = "join";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -45,8 +46,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		// Update game logic
-		//TODONOW auto-set favoritePet
-		adventure.delvers.push(new Delver(interaction.user.id, interaction.user.username, adventureId));
+		const delver = new Delver(interaction.user.id, interaction.user.username, adventureId);
+		const player = getPlayer(interaction.user.id, interaction.guildId);
+		if (player.favoritePet !== "") {
+			delver.pet = player.favoritePet;
+		}
+		adventure.delvers.push(delver);
 		adventure.lives++;
 		adventure.gainGold(50);
 		setAdventure(adventure);
