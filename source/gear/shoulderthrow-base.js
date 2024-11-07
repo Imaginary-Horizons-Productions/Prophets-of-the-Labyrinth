@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Shoulder Throw",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Evasive Shoulder Throw", "Harmful Shoulder Throw", "Staggering Shoulder Throw")
 	.setDurability(10)
 	.setModifiers({ name: "Evade", stacks: 1 });

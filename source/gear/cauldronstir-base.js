@@ -26,7 +26,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Corrosive Cauldron Stir", "Toxic Cauldron Stir", "Sabotaging Cauldron Stir")
 	.setDurability(15)
 	.setDamage(40)

@@ -45,7 +45,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Charging War Cry", "Slowing War Cry")
 	.setModifiers({ name: "Exposed", stacks: 0 })
 	.setStagger(2)

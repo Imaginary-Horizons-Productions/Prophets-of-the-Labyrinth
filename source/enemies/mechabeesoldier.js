@@ -22,7 +22,6 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "Neurotoxin Strike"
 }).addAction({
 	name: "Barrel Roll",
@@ -38,7 +37,6 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectSelf,
-	needsLivingTargets: false,
 	next: "Sting"
 }).addAction({
 	name: "Neurotoxin Strike",
@@ -51,7 +49,6 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Paralysis", stacks: user.crit ? 5 : 3 })));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: true,
 	next: "Self-Destruct"
 }).addAction({
 	name: "Self-Destruct",
@@ -69,6 +66,5 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: false,
 	next: "Barrel Roll"
 });

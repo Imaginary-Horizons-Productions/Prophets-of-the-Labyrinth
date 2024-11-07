@@ -29,7 +29,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: false })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Devoted Barrier", "Vigilant Barrier")
 	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 1 })
 	.setDurability(5)

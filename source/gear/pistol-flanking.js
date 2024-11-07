@@ -32,7 +32,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		return resultLines.concat(generateModifierResultLines(receipts));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Double Pistol", "Duelist's Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 }, { name: "Exposed", stacks: 2 })
 	.setDurability(15)

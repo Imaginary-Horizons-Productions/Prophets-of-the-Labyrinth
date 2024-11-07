@@ -34,7 +34,6 @@ module.exports = new EnemyTemplate("Elkemist",
 		return resultLines;
 	},
 	selector: selectSelf,
-	needsLivingTargets: false,
 	next: "random",
 	combatFlavor: "It gathers some materials to fortify its lab.",
 	rnConfig: { "debuffs": 1, "progress": { base: 30, crit: 15, random: 15 } }
@@ -55,7 +54,6 @@ module.exports = new EnemyTemplate("Elkemist",
 		return resultLines;
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "random",
 	combatFlavor: "An obstacle to potion progress is identified and mitigated!",
 	rnConfig: { "progress": { base: 30, crit: 15, random: 15 } }
@@ -72,7 +70,6 @@ module.exports = new EnemyTemplate("Elkemist",
 		return dealDamage(targets, user, damage, false, "Fire", adventure);
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: false,
 	next: "random",
 }).addAction({
 	name: "Bubble",
@@ -109,7 +106,6 @@ module.exports = new EnemyTemplate("Elkemist",
 		return resultLines;
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: false,
 	next: "random",
 	rnConfig: { "progress": { base: 0, crit: 15, random: 15 } }
 }).setFlavorText({ name: "Progress", value: `Each time the Elkemist reaches 100 @e{Progress}, it'll gain a large amount of @e{Power Up}. Stun the Elkemist to reduce its @e{Progress}.` });

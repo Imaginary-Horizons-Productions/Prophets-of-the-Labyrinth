@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Unlucky Ice Bolt",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow).concat(addModifier(targets, unlucky)))));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Awesome Ice Bolt", "Distracting Ice Bolt")
 	.setDamage(40)
 	.setModifiers({ name: "Slow", stacks: 2 }, { name: "Unlucky", stacks: 1 })

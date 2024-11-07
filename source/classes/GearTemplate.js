@@ -25,7 +25,7 @@ class GearTemplate {
 		this.cost = costInput;
 		this.effect = effectInput;
 	}
-	/** @type {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} */
+	/** @type {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} */
 	targetingTags;
 	maxDurability = 0;
 	/** @type {string[]} */
@@ -59,7 +59,7 @@ class GearTemplate {
 	/** @type  {Record<string, number>} */
 	rnConfig;
 
-	/** @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none", needsLivingTargets: boolean}} tagObject */
+	/** @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} tagObject */
 	setTargetingTags(tagObject) {
 		this.targetingTags = tagObject;
 		return this;

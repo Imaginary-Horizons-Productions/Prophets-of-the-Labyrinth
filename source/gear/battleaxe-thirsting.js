@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 		resultLines.push(gainHealth(user, healing * killCount, adventure));
 		return resultLines.concat(generateModifierResultLines(addModifier([user], exposed)));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Furious Battleaxe", "Reactive Battleaxe")
 	.setModifiers({ name: "Exposed", stacks: 1 })
 	.setDurability(15)

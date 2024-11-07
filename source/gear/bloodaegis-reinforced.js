@@ -38,7 +38,7 @@ module.exports = new GearTemplate("Reinforced Blood Aegis",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Charging Blood Aegis", "Toxic Blood Aegis")
 	.setDurability(15)
 	.setHPCost(25)

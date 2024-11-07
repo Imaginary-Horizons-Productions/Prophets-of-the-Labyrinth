@@ -24,7 +24,6 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 		return dealDamage(targets, user, damage, false, adventure.element, adventure);
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "random"
 }).addAction({
 	name: "Goop Spray",
@@ -38,7 +37,6 @@ module.exports = new EnemyTemplate("@{adventure} Slime",
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: user.crit ? 3 : 2 })));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "random"
 })
 	.setFlavorText({ name: "Slime's Element", value: "The Slime's element will match the current adventure." });

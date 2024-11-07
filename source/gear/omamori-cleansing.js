@@ -30,7 +30,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
-).setTargetingTags({ type: "self", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Centering Omamori", "Devoted Omamori")
 	.setModifiers({ name: "Lucky", stacks: 2 })
 	.setProtection(50)

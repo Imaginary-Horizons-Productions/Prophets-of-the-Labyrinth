@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Distracting Poison Torrent",
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPoison).concat(addModifier(targets, distracted))));
 	}
-).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "foe" })
 	.setSidegrades("Harmful Poison Torrent", "Staggering Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 }, { name: "Distracted", stacks: 2 })
 	.setDurability(15);

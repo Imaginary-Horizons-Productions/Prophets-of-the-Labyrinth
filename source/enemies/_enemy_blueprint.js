@@ -19,7 +19,6 @@ module.exports = new EnemyTemplate("name",
 	selector: (self, adventure) => { // check shared/actionComponents for reusable selctors and next functions
 		return [];
 	},
-	needsLivingTargets: false,
 	next: "",
 	combatFlavor: "(should mostly be omitted except for boss actions)"
 });

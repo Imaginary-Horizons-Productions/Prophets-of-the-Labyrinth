@@ -25,6 +25,5 @@ module.exports = new EnemyTemplate("Bloodtail Hawk",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "Rake"
 });

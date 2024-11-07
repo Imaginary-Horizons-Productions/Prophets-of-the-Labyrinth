@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Evasive Bow",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier([user], evade)));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Thief's Bow", "Unstoppable Bow")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setDurability(15)

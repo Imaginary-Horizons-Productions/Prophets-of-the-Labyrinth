@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Flanking Life Drain",
 
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Furios Life Drain", "Thirsting Life Drain")
 	.setModifiers({ name: "Exposed", stacks: 2 })
 	.setDurability(15)

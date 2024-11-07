@@ -26,7 +26,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		return resultLines.concat(generateModifierResultLines(addModifier(targets, poison)));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Corrosive Cauldron Stir", "Sabotaging Cauldron Stir")
 	.setDurability(15)
 	.setModifiers({ name: "Poison", stacks: 4 })

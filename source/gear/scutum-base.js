@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Scutum",
 		addProtection([target, user], pendingProtection);
 		return [`${target.name} and ${user.name} gain protection.`];
 	}
-).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally" })
 	.setUpgrades("Guarding Scutum", "Lucky Scutum", "Sweeping Scutum")
 	.setDurability(15)
 	.setProtection(75);

@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Medicine",
 		}
 		return generateModifierResultLines(addModifier(targets, pendingRegen));
 	}
-).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally" })
 	.setUpgrades("Bouncing Medicine", "Cleansing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
 	.setDurability(15);

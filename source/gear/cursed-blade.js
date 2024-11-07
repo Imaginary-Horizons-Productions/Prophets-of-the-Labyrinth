@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Cursed Blade",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Daggers", "Scythe", "Shortsword", "Spear")
 	.setDurability(15)
 	.setDamage(10)

@@ -23,7 +23,6 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "Barrel Roll"
 }).addAction({
 	name: "Barrel Roll",
@@ -39,7 +38,6 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectSelf,
-	needsLivingTargets: false,
 	next: "Call for Help"
 }).addAction({
 	name: "Call for Help",
@@ -51,7 +49,6 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		return ["Another mechabee arrives."];
 	},
 	selector: selectNone,
-	needsLivingTargets: false,
 	next: "Self-Destruct"
 }).addAction({
 	name: "Self-Destruct",
@@ -69,6 +66,5 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: false,
 	next: "Sting"
 });

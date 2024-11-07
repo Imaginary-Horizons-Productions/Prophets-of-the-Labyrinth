@@ -32,7 +32,7 @@ module.exports = new GearTemplate(gearName,
 
 		return generateModifierResultLines(receipts);
 	}
-).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Bouncing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
 	.setDurability(15)

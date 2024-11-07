@@ -30,7 +30,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 		return [`${user.name} gains protection.`];
 	},
 	selector: selectNone,
-	needsLivingTargets: false,
 	next: "V.E.N.O.Missile",
 	combatFlavor: "The Queen demands reinforcements!"
 }).addAction({
@@ -51,7 +50,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "V.E.N.O.Missile",
 	combatFlavor: "The Queen orders a full-on attack!"
 }).addAction({
@@ -66,7 +64,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	},
 	selector: selectAllAllies,
-	needsLivingTargets: false,
 	next: "V.E.N.O.Missile",
 	combatFlavor: "The Queen personally optimizes the flight formation."
 }).addAction({
@@ -84,7 +81,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomOtherAlly,
-	needsLivingTargets: true,
 	next: "V.E.N.O.Missile",
 	combatFlavor: "The Queen employs desperate measures!"
 }).addAction({
@@ -97,7 +93,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 		return ["Another mechabee arrives."];
 	},
 	selector: selectNone,
-	needsLivingTargets: false,
 	next: "a random protocol"
 }).addAction({
 	name: "V.E.N.O.Missile",
@@ -109,6 +104,5 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 		return generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 5 : 3 }));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "Deploy Drone"
 });

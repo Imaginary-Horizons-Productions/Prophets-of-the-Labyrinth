@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
-).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Discounted Infinite Regeneration", "Purifying Infinite Regeneration")
 	.setModifiers({ name: "Regen", stacks: 4 }, { name: "Retain", stacks: 1 })
 	.setHPCost(50)

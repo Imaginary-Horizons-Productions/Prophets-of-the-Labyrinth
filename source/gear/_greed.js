@@ -11,5 +11,5 @@ module.exports = new GearTemplate("Greed",
 		const affectedTargets = targets.filter(target => target.archetype === "Treasure Elemental");
 		return generateModifierResultLines(combineModifierReceipts(addModifier(affectedTargets, powerUp).concat(addModifier(affectedTargets, midas))));
 	}
-).setTargetingTags({ type: "all", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "foe" })
 	.setModifiers({ name: "Curse of Midas", stacks: 1 }, { name: "Power Up", stacks: 20 });

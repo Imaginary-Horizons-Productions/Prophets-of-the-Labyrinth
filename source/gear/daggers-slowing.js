@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Slowing Daggers",
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")
 	.setModifiers({ name: "Slow", stacks: 1 })
 	.setDurability(15)

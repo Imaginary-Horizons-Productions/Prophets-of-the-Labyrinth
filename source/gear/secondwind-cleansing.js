@@ -29,7 +29,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		return resultLines;
 	}
-).setTargetingTags({ type: "self", team: "none", needsLivingTargets: true })
+).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Lucky Second Wind", "Soothing Second Wind")
 	.setDurability(10)
 	.setDamage(0)

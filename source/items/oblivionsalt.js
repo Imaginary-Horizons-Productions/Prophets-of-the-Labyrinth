@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Salt of Oblivion",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Oblivious", stacks: 1 }));
 	}

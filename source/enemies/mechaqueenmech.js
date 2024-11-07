@@ -30,7 +30,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		return [`${user.name} gains protection.`];
 	},
 	selector: selectNone,
-	needsLivingTargets: false,
 	next: "Laser Array",
 	combatFlavor: "The Queen demands reinforcements!"
 }).addAction({
@@ -45,7 +44,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	},
 	selector: selectAllAllies,
-	needsLivingTargets: false,
 	next: "Laser Array",
 	combatFlavor: "The Queen personally optimizes the flight formation."
 }).addAction({
@@ -66,7 +64,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "Laser Array",
 	combatFlavor: "The Queen orders a full-on attack!"
 }).addAction({
@@ -84,7 +81,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		return [`${user.name} gains protection.`];
 	},
 	selector: selectRandomOtherAlly,
-	needsLivingTargets: true,
 	next: "Laser Array",
 	combatFlavor: "The Queen employs desperate measures!"
 }).addAction({
@@ -97,7 +93,6 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		return ["Another mechabee arrives."];
 	},
 	selector: selectNone,
-	needsLivingTargets: false,
 	next: "a random protocol"
 }).addAction({
 	name: "Laser Array",
@@ -113,6 +108,5 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		return dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: false,
 	next: "Deploy Drone"
 });

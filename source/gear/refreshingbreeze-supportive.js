@@ -37,7 +37,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
-).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "ally" })
 	.setSidegrades("Accelerating Refreshing Breeze", "Swift Refreshing Breeze")
 	.setDurability(15)
 	.setStagger(-2)

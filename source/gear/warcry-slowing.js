@@ -35,7 +35,7 @@ module.exports = new GearTemplate("Slowing War Cry",
 		changeStagger(targetArray, pendingStaggerStacks);
 		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered."), ...generateModifierResultLines(combineModifierReceipts(addModifier(targetArray, slow))) ];
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: false })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Charging War Cry", "Tormenting War Cry")
 	.setModifiers({ name: "Slow", stacks: 1 }, { name: "Exposed", stacks: 0 })
 	.setStagger(2)

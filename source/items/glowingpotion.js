@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Glowing Potion",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Light Absorb", stacks: 3 }));
 	}

@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Windy Potion",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Wind Absorb", stacks: 3 }));
 	}

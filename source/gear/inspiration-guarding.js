@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Guarding Inspiration",
 		addProtection(targets, protection);
 		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."), ...generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPowerUp)))];
 	}
-).setTargetingTags({ type: "single", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Soothing Inspiration", "Sweeping Inspiration")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setBonus(25) // Power Up stacks

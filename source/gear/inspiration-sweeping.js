@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Sweeping Inspiration",
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPowerUp)));
 	}
-).setTargetingTags({ type: "all", team: "ally", needsLivingTargets: true })
+).setTargetingTags({ type: "all", team: "ally" })
 	.setSidegrades("Guarding Inspiration", "Soothing Inspiration")
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setBonus(25) // Power Up stacks

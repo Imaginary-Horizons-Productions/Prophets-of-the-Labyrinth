@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Flanking Strong Attack",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier(targets, exposed)));
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sharpened Strong Attack", "Staggering Strong Attack")
 	.setModifiers({ name: "Exposed", stacks: 2 })
 	.setDurability(15)

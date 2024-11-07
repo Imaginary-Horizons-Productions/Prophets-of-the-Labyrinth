@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Unstoppable Warhammer",
 		}
 		return dealDamage([target], user, pendingDamage, true, element, adventure);
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Reactive Warhammer", "Slowing Warhammer")
 	.setDurability(15)
 	.setDamage(40)

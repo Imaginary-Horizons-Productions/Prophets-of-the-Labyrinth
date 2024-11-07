@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Vitamins",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		const gains = 50;
 		user.maxHP += gains;

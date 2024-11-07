@@ -54,7 +54,6 @@ module.exports = new EnemyTemplate("Starry Knight",
 		}
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: true,
 	next: "random"
 }).addAction({
 	name: "Center of Attention",
@@ -68,7 +67,6 @@ module.exports = new EnemyTemplate("Starry Knight",
 			.concat(combineModifierReceipts(addNewRandomInsults(targets, user.crit ? 2 : 1, adventure)));
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: true,
 	next: "random",
 	combatFlavor: "\"Fear not! I have enough Star Power to take you all on!\""
 }).addAction({
@@ -85,7 +83,6 @@ module.exports = new EnemyTemplate("Starry Knight",
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectAllFoes,
-	needsLivingTargets: true,
 	next: "random"
 }).addAction({
 	name: "Boast",
@@ -101,7 +98,6 @@ module.exports = new EnemyTemplate("Starry Knight",
 		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Distracted", stacks: 4 })));
 	},
 	selector: selectRandomFoe,
-	needsLivingTargets: true,
 	next: "random"
 }).setFlavorText({ name: "Insult to Injury", value: "Insult debuffs (@e{Ugly}, @e{Stupid}, @e{Smelly}, @e{Boring}, @e{Lacking Rhythm}) make the Starry Knight's Mock the Accursed more dangerous. Appease the Starry Knight to cure them all." });
 

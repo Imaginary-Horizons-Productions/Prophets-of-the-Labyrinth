@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 		resultLines.push(joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered."))
 		return resultLines;
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Awesome Morning Star", "Bashing Morning Star")
 	.setStagger(2)
 	.setDurability(15)

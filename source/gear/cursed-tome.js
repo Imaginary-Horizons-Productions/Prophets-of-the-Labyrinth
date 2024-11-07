@@ -8,7 +8,5 @@ module.exports = new GearTemplate("Cursed Tome",
 	"Untyped",
 	-50,
 	(targets, user, adventure) => []
-).setTargetingTags({ type: "none", team: "any", needsLivingTargets: false })
-	.setUpgrades("Blood Aegis", "Certain Victory", "Infinite Regeneration", "Power from Wrath")
-	.setDurability(0)
+).setUpgrades("Blood Aegis", "Certain Victory", "Infinite Regeneration", "Power from Wrath")
 	.setPoise(-2);

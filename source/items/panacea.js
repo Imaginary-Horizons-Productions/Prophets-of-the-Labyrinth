@@ -11,7 +11,6 @@ module.exports = new ItemTemplate(itemName,
 	(self, adventure) => {
 		return [[self.team, adventure.getCombatantIndex(self)]];
 	},
-	false,
 	(targets, user, adventure) => {
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
 		const debuffsToRemove = Math.min(userDebuffs.length, 2);

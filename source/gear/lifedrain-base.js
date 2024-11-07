@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Life Drain",
 		}
 		return [...dealDamage(targets, user, pendingDamage, false, element, adventure), gainHealth(user, pendingHealing, adventure)];
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Flanking Life Drain", "Furious Life Drain", "Thirsting Life Drain")
 	.setDurability(15)
 	.setDamage(40)

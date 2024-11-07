@@ -33,7 +33,7 @@ module.exports = new GearTemplate(gearName,
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setSidegrades("Shattering Sabotage Kit", "Urgent Sabotage Kit")
-	.setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+	.setTargetingTags({ type: "single", team: "foe" })
 	.setModifiers({ name: "Slow", stacks: 3 }, { name: "unparsed random weakness", stacks: 4 })
 	.setBonus(2) // Crit Slow and Weakness stacks
 	.setDurability(15)

@@ -244,9 +244,8 @@ function nextRoom(roomType, thread) {
 				adventure.room.addResource("Gold", resourceType, visibility, goldCount, uiGroup);
 				break;
 			}
-			default: {
+			default:
 				adventure.room.addResource(resourceType, resourceType, visibility, count, uiGroup);
-			}
 		}
 	}
 
@@ -756,14 +755,12 @@ function resolveMove(move, adventure) {
 		}
 
 		let effect;
-		let needsLivingTargets = false;
 		let combatFlavor;
 		switch (move.type) {
 			case "action":
 				if (move.userReference.team !== "delver") {
 					const action = getEnemy(user.archetype).actions[move.name];
 					effect = action.effect;
-					needsLivingTargets = action.needsLivingTargets;
 					if (action.combatFlavor) {
 						combatFlavor = action.combatFlavor;
 					}
@@ -772,7 +769,6 @@ function resolveMove(move, adventure) {
 			case "gear": {
 				effect = getGearProperty(move.name, "effect");
 				const targetingTags = getGearProperty(move.name, "targetingTags");
-				needsLivingTargets = targetingTags.needsLivingTargets;
 				if (move.userReference.team === "delver") {
 					if (adventure.getArtifactCount("Crystal Shard") > 0 && getGearProperty(move.name, "category") === "Spell") {
 						adventure.updateArtifactStat("Crystal Shard", "Spells Cast", 1);
@@ -792,55 +788,43 @@ function resolveMove(move, adventure) {
 					if (placeboDillution > 0) {
 						isPlacebo = (placeboDillution - 1) === adventure.generateRandomNumber(placeboDillution, "battle");
 					}
-				}
-				const { effect: itemEffect, needsLivingTargets: needsLivingTargetsInput } = getItem(isPlacebo ? "Placebo" : move.name);
-				effect = itemEffect;
-				if (move.userReference.team !== "enemy") {
 					adventure.decrementItem(move.name, 1);
 				}
-				needsLivingTargets = needsLivingTargetsInput;
+				const { effect: itemEffect } = getItem(isPlacebo ? "Placebo" : move.name);
+				effect = itemEffect;
 				break;
 			}
 		}
 
 		headline += `used ${move.name}`;
-		if (needsLivingTargets) {
-			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference));
-			const livingTargets = [];
-			const deadTargets = [];
-			for (const target of targets) {
+		const livingTargets = [];
+		const deadTargets = [];
+		move.targets.forEach(targetReference => {
+			const target = adventure.getCombatant(targetReference);
+			if (target) {
 				if (target.hp > 0) {
 					livingTargets.push(target);
 				} else {
 					deadTargets.push(target);
 				}
 			}
-			if (livingTargets.length > 0) {
-				if (deadTargets.length > 0) {
-					results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
-				}
-
-				results.push(...effect(livingTargets, user, adventure));
-				if (move.type === "gear" && move.userReference.team === "delver") {
-					const breakText = decrementDurability(move.name, user, adventure);
-					if (breakText) {
-						results.push(breakText);
-					}
-				}
-			} else if (targets.length === 1) {
-				headline += `, but ${targets[0].name} was already dead!`;
-			} else {
-				headline += `, but all targets were already dead!`;
+		})
+		if (livingTargets.length > 0) {
+			if (deadTargets.length > 0) {
+				results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 			}
-		} else {
-			const targets = move.targets.map(targetReference => adventure.getCombatant(targetReference)).filter(reference => !!reference);
-			results.push(...effect(targets, user, adventure));
+
+			results.push(...effect(livingTargets, user, adventure));
 			if (move.type === "gear" && move.userReference.team === "delver") {
 				const breakText = decrementDurability(move.name, user, adventure);
 				if (breakText) {
 					results.push(breakText);
 				}
 			}
+		} else if (targets.length === 1) {
+			headline += `, but ${targets[0].name} was already dead!`;
+		} else {
+			headline += `, but all targets were already dead!`;
 		}
 
 		if (combatFlavor) {

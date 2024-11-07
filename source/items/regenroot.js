@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("Regen Root",
 	"Untyped",
 	30,
 	selectSelf,
-	false,
 	(targets, user, adventure) => {
 		return generateModifierResultLines(addModifier([user], { name: "Regen", stacks: 5 }));
 	}

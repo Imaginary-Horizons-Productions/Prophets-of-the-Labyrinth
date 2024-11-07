@@ -18,6 +18,6 @@ module.exports = new GearTemplate("Iron Fist Punch",
 		}
 		return dealDamage(targets, user, pendingDamage, false, user.element, adventure);
 	}
-).setTargetingTags({ type: "single", team: "foe", needsLivingTargets: true })
+).setTargetingTags({ type: "single", team: "foe" })
 	.setDurability(Infinity)
 	.setDamage(0);

@@ -7,7 +7,6 @@ module.exports = new ItemTemplate("name",
 	(self, adventure) => {
 		return [[self.team, adventure.getCombatantIndex(self)]];
 	},
-	false,
 	(targets, user, adventure) => {
 		return []; // see style guide for conventions on result texts
 	}
