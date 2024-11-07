@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, bold } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, bold, ButtonStyle, ButtonBuilder } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -31,7 +31,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setPlaceholder("Select an pet...")
 						.addOptions(petOptions)
 				),
-				//TODONOW clear pet button
+				new ActionRowBuilder().addComponents(
+					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}clear`)
+						.setStyle(ButtonStyle.Danger)
+						.setLabel("Deselect Pet")
+				)
 			],
 			ephemeral: true,
 			fetchReply: true
@@ -44,14 +48,23 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					return;
 				}
 
+				const [_, mainId] = collectedInteraction.customId.split(SKIP_INTERACTION_HANDLING);
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
-				const isSwitching = Boolean(delver.pet);
-				const pet = collectedInteraction.values[0];
-				delver.pet = pet;
-				setAdventure(adventure);
+				switch (mainId) {
+					case "pet":
+						const isSwitching = Boolean(delver.pet);
+						const pet = collectedInteraction.values[0];
+						delver.pet = pet;
 
-				// Send confirmation text
-				interaction.channel.send(`${bold(interaction.user.displayName)} ${isSwitching ? "has switched to" : "will be"} bringing their ${bold(pet)} pet.`);
+						// Send confirmation text
+						interaction.channel.send({ content: `${bold(interaction.user.displayName)} ${isSwitching ? "has switched to" : "will be"} bringing their ${bold(pet)} pet.` });
+						break;
+					case "clear":
+						delver.pet = "";
+						interaction.channel.send({ content: `${bold(interaction.user.displayName)} has decided not to bring a pet.` });
+						break;
+				}
+				setAdventure(adventure);
 			})
 
 			collector.on("end", () => {
