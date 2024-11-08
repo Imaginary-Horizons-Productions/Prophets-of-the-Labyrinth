@@ -15,6 +15,7 @@ This new Archetype predicts the moves of enemies and pets (and if enemies have p
 - Renamed `/give-up` to `/adventure retreat`
 ### Other Changes
 - New Challenge: Cursed Run - One of your starting gear pieces is randomly replaced with cursed gear
+- New Items: Creative Acorn, Flexigrass
 - Fixed the party stats embed not showing the Final Battle after it had been scouted
 - Fixed Curse of Midas reporting generating fractional gold, not scaling with stacks, and being added to party gold immediately instead of being added to loot
 ## Prophets of the Labyrinth v0.16.0:
