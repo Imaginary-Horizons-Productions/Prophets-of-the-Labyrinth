@@ -17,7 +17,8 @@ const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator")
 const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 const { getArtifactCounts } = require("../artifacts/_artifactDictionary");
 const { isSponsor } = require("./fileUtil");
-const { getPetTemplate, getPetMoveDescription } = require("../pets/_petDictionary");
+const { getPetTemplate, getPetMoveDescription, PET_NAMES } = require("../pets/_petDictionary");
+const { getArchetypesCount } = require("../archetypes/_archetypeDictionary");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -538,7 +539,7 @@ function generateStatsEmbed(user, guildId) {
 		.addFields(
 			{ name: `Best Archetype: ${bestArchetype}`, value: `High Score: ${highScore}` },
 			{ name: "Favorite Pet", value: player.favoritePet ? player.favoritePet : "Not Set" },
-			{ name: "Artifacts Collected", value: `${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)` }
+			{ name: "Collection", value: `Artifacts Collected: ${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)\nArchetypes Collected: ${Object.keys(player.archetypes).length}/${getArchetypesCount()} (${Math.floor(Object.keys(player.archetypes).length / getArchetypesCount()) * 100}%)\nPets Collected: ${Object.keys(player.pets).length}/${PET_NAMES.length} (${Math.floor(Object.keys(player.pets).length / PET_NAMES.length) * 100}%)` }
 		)
 }
 

@@ -28,6 +28,11 @@ function getArchetype(archetypeName) {
 	return ARCHETYPES[archetypeName];
 }
 
+function getArchetypesCount() {
+	return Object.keys(ARCHETYPES).length;
+}
+
 module.exports = {
-	getArchetype
+	getArchetype,
+	getArchetypesCount
 };
