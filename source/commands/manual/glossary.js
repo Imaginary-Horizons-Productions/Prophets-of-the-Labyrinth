@@ -42,6 +42,16 @@ async function executeSubcommand(interaction, ...args) {
 				ephemeral: true
 			});
 			break;
+		case "Speed":
+			interaction.reply({
+				embeds: [
+					embedTemplate().setTitle("Speed")
+						.setDescription("Within a round, the combatant with the highest total speed gets to resolve their move first. Combatant speed is now static however: it randomly varies from round to round, can be increased with the Quicken modifier, or decreased with the Slow modifier.\n\n\
+							Additionally, moves can have priority, which allows them resolve before moves with lower or no priority regardless of speed.")
+				],
+				ephemeral: true
+			});
+			break;
 		case "Stagger":
 			interaction.reply({
 				embeds: [
@@ -87,6 +97,7 @@ module.exports = {
 					{ name: "Tutorial", value: "Tutorial" },
 					{ name: "Elements", value: "Elements" },
 					{ name: "Stagger", value: "Stagger" },
+					{ name: "Speed", value: "Speed" },
 					{ name: "Damage Cap", value: "Damage Cap" },
 					{ name: "Leveling Up", value: "Leveling Up" }
 				]
