@@ -14,6 +14,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 		Wind: [],
 		Untyped: [
 			"Clear Potion",
+			"Creative Acorn",
 			"Earthen Potion",
 			"Explosion Potion",
 			"Fiery Potion",

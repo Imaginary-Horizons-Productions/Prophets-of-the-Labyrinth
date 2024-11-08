@@ -8,7 +8,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 	5,
 	[5],
 	Object.fromEntries(["Darkness", "Earth", "Fire", "Light", "Water", "Wind", "Untyped"].map(element => [element, [
-		"Placebo"
+		"Creative Acorn"
 	]])),
 	{
 		Darkness: Object.fromEntries(RARITIES.map(rarity => [rarity, [
