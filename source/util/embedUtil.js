@@ -206,7 +206,7 @@ function renderRoom(adventure, thread, descriptionOverride) {
  * @param {Adventure} adventure
  * @param {string} guildId
  */
-function addScoreField(embed, adventure, guildId) { //TODONOW add Skipped Pets Multiplier
+function addScoreField(embed, adventure, guildId) {
 	let { livesScore, goldScore, guardianScore, total: finalScore } = adventure.getBaseScore();
 	let breakdownText = generateScoreline("additive", "Depth", adventure.depth);
 	breakdownText += generateScoreline("additive", "Lives", livesScore);
@@ -219,6 +219,7 @@ function addScoreField(embed, adventure, guildId) { //TODONOW add Skipped Pets M
 		challengeMultiplier *= challenge.scoreMultiplier;
 	})
 	const skippedArtifactsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.startingArtifact ? count : count + 1, 0) / adventure.delvers.length);
+	const skippedPetsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.pet ? count : count + 1, 0) / adventure.delvers.length);
 	const floatingMultiplierBonus = 1 + (adventure.getArtifactCount("Floating Multiplier") / 4);
 	// Skip multiplicative bonuses if score is negative
 	if (finalScore > 0) {
@@ -226,6 +227,7 @@ function addScoreField(embed, adventure, guildId) { //TODONOW add Skipped Pets M
 		breakdownText += generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
 		finalScore = Math.max(1, finalScore * skippedArtifactsMultiplier);
 		breakdownText += generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
+		breakdownText += generateScoreline("multiplicative", "Pet Skip Multiplier", skippedPetsMultiplier);
 		breakdownText += generateScoreline("multiplicative", "Floating Multiplier Bonus", floatingMultiplierBonus);
 		switch (adventure.state) {
 			case "success":
@@ -248,6 +250,9 @@ function addScoreField(embed, adventure, guildId) { //TODONOW add Skipped Pets M
 		}
 		if (skippedArtifactsMultiplier > 1) {
 			breakdownText += `Artifact Skip Multiplier: ~~x${skippedArtifactsMultiplier}~~ x1\n`;
+		}
+		if (skippedPetsMultiplier > 1) {
+			breakdownText += `Pet Skip Multiplier: ~~x${skippedPetsMultiplier}~~ x1\n`;
 		}
 		if (floatingMultiplierBonus > 1) {
 			breakdownText += `Floating Multiplier Bonus: ~~x${floatingMultiplierBonus}~~ x1\n`;
