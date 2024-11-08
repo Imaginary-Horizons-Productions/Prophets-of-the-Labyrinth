@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 //TODONOW finish
-module.exports = new GearTemplate("name",
+module.exports = new GearTemplate("Stick",
 	[
 		["Requirement", "text"],
 		["Passive", "text"],
@@ -8,7 +8,7 @@ module.exports = new GearTemplate("name",
 		["Critical💥", "crit description"]
 	],
 	"category",
-	"element",
+	"Earth",
 	200,
 	(targets, user, adventure) => {
 		const { element } = module.exports;

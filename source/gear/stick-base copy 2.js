@@ -8,8 +8,8 @@ module.exports = new GearTemplate("name",
 		["Critical💥", "crit description"]
 	],
 	"category",
-	"element",
-	200,
+	"Earth",
+	350,
 	(targets, user, adventure) => {
 		const { element } = module.exports;
 		if (user.element === element) {
