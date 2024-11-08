@@ -5,6 +5,7 @@ const { createSubcommandMappings } = require('../../util/fileUtil');
 const mainId = "manual";
 const { slashData: subcommandSlashData, executeDictionary: subcommandExecuteDictionary } = createSubcommandMappings(mainId, [
 	"glossary.js",
+	"challengeinfo.js",
 	"enemyinfo.js",
 	"artifactinfo.js",
 	"gearinfo.js",

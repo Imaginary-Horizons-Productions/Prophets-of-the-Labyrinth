@@ -2,6 +2,7 @@ const { ChallengeTemplate, Adventure } = require("../classes");
 
 /** @type {Record<string, ChallengeTemplate>} */
 const CHALLENGES = {};
+const CHALLENGE_NAMES = [];
 const STARTING_CHALLENGES = [];
 const ROLLABLE_CHALLENGES = [];
 
@@ -18,6 +19,7 @@ for (const file of [
 	/** @type {ChallengeTemplate} */
 	const challenge = require(`./${file}`);
 	CHALLENGES[challenge.name] = challenge;
+	CHALLENGE_NAMES.push(challenge.name);
 	if (challenge.startingChallenge) {
 		STARTING_CHALLENGES.push(challenge.name);
 	}
@@ -51,6 +53,7 @@ function rollChallenges(rolls, adventure) {
 }
 
 module.exports = {
+	CHALLENGE_NAMES,
 	getStartingChallenges,
 	getChallenge,
 	rollChallenges
