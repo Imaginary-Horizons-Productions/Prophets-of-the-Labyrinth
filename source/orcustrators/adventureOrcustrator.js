@@ -272,7 +272,9 @@ function nextRoom(roomType, thread) {
 				spawnEnemy(getEnemy(enemyName), adventure);
 			}
 		}
-		generatePetRNs(adventure); //TODONOW clobbers existing RNs in room 2 onwards
+		if (adventure.petRNs.length === 0) {
+			generatePetRNs(adventure);
+		}
 		newRound(adventure, thread);
 		setAdventure(adventure);
 	} else {
