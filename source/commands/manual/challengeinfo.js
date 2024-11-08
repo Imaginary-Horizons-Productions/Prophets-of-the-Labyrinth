@@ -14,7 +14,7 @@ async function executeSubcommand(interaction, ...args) {
 		return;
 	}
 
-	const challengeTemplate = getChallenge(challengeName);
+	const challengeTemplate = getChallenge(nameInTitleCaps);
 	const embed = embedTemplate().setTitle(challengeTemplate.name)
 		.setDescription(challengeTemplate.dynamicDescription(challengeTemplate.intensity, challengeTemplate.duration, challengeTemplate.reward, true))
 		.addFields(
@@ -32,7 +32,7 @@ module.exports = {
 			{
 				type: "String",
 				name: "challenge-name",
-				description: "Challenges can stack, information provided for 1 stack",
+				description: "Challenges can stack; information provided is for 1 stack",
 				required: true,
 				autocomplete: CHALLENGE_NAMES.map(name => ({ name, value: name }))
 			}

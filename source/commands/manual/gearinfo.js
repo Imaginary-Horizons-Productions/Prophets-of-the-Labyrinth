@@ -57,7 +57,7 @@ module.exports = {
 			{
 				type: "String",
 				name: "gear-name",
-				description: "Input is case-sensitive",
+				description: "Input is case-insensitive",
 				required: true,
 				autocomplete: gearNames.map(name => ({ name, value: name }))
 			}

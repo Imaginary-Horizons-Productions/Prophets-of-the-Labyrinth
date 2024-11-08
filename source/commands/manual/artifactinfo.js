@@ -25,7 +25,7 @@ module.exports = {
 			{
 				type: "String",
 				name: "artifact-name",
-				description: "Input is case-sensitive",
+				description: "Artifacts can stack; information provided is for 1 stack",
 				required: true,
 				autocomplete: artifactNames.map(name => ({ name, value: name }))
 			}
