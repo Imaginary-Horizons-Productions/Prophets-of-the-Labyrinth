@@ -10,6 +10,7 @@ for (const file of [
 	"earthenpotion.js",
 	"explosionpotion.js",
 	"fierypotion.js",
+	"flexigrass.js",
 	"glowingpotion.js",
 	"healthpotion.js",
 	"inkypotion.js",
