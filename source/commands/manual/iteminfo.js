@@ -39,7 +39,7 @@ module.exports = {
 			{
 				type: "String",
 				name: "item-name",
-				description: "Input is case-sensitive",
+				description: "Input is case-insensitive",
 				required: true,
 				autocomplete: itemNames.map(name => ({ name, value: name }))
 			}

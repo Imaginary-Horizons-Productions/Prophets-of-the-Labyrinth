@@ -43,7 +43,7 @@ module.exports = {
 			{
 				type: "String",
 				name: "enemy-name",
-				description: "Input is case-sensitive",
+				description: "Input is case-insensitive",
 				required: true,
 				autocomplete: enemyNames.map(name => ({ name, value: name }))
 			}
