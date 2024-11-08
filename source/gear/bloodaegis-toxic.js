@@ -25,14 +25,8 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([user], pendingProtection);
-		const targetMove = adventure.room.moves.find(move => {
-			const moveUser = adventure.getCombatant(move.userReference);
-			return moveUser.name === target.name && moveUser.title === target.title;
-		});
-		const userMove = adventure.room.moves.find(move => {
-			const moveUser = adventure.getCombatant(move.userReference);
-			return moveUser.name === user.name && moveUser.title === user.title;
-		});
+		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
+		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			const addedPoison = addModifier([target], poison).some(receipt => receipt.succeeded.size > 0);

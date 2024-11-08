@@ -12,8 +12,8 @@ module.exports = new GearTemplate("Reactive Spear",
 	([target], user, adventure) => {
 		const { element, bonus, damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
-		const targetMove = adventure.room.moves.find(move => move.userReference.team === target.team && move.userReference.index === adventure.getCombatantIndex(target));
+		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
+		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
 			pendingDamage *= critMultiplier;

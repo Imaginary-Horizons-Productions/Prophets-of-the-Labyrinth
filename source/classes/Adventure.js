@@ -355,6 +355,11 @@ class Room {
 			this.resources[name].count -= decrement;
 		}
 	}
+
+	/** @param {CombatantReference} combatantReference */
+	findCombatantMove(combatantReference) {
+		return this.moves.find(move => move.type !== "pet" && move.userReference.index === combatantReference.index && move.userReference.team === combatantReference.team);
+	}
 }
 
 class Enemy extends Combatant {

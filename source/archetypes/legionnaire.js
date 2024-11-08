@@ -16,7 +16,7 @@ module.exports = new ArchetypeTemplate("Legionnaire",
 		const eligibleCombatants = adventure.room.enemies.filter(combatant => combatant.hp > 0).concat(adventure.delvers);
 		eligibleCombatants.forEach(combatant => {
 			const individualIndex = adventure.getCombatantIndex(combatant);
-			const move = adventure.room.moves.find(move => move.userReference.team === combatant.team && move.userReference.index === individualIndex);
+			const move = adventure.room.findCombatantMove({ index: individualIndex, team: combatant.team });
 			let targetNames = null;
 			if (move) {
 				targetNames = move.targets.map(targetReference => adventure.getCombatant(targetReference).name);

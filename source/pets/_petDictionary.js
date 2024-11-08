@@ -18,6 +18,7 @@ for (const file of [
 	PET_NAMES.push(pet.name);
 }
 
+//TOODNOW documentation and pruning
 function getPetTemplate(petName) {
 	return PETS[petName.toLowerCase()];
 }

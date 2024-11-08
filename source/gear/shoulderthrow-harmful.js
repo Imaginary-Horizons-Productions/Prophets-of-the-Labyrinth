@@ -16,14 +16,8 @@ module.exports = new GearTemplate("Harmful Shoulder Throw",
 		}
 		const resultLines = dealDamage([target], user, damage, false, element, adventure);
 		if (target.hp > 0) {
-			const targetMove = adventure.room.moves.find(move => {
-				const moveUser = adventure.getCombatant(move.userReference);
-				return moveUser.name === target.name && moveUser.title === target.title;
-			});
-			const userMove = adventure.room.moves.find(move => {
-				const moveUser = adventure.getCombatant(move.userReference);
-				return moveUser.name === user.name && moveUser.title === user.title;
-			});
+			const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
+			const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 			if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 				targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
 				resultLines.push(`${target.name} is redirected into targeting themself.`);
