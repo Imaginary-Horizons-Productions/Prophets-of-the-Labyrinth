@@ -10,7 +10,7 @@ This new Archetype predicts the moves of enemies and pets (and if enemies have p
 - Fixed Reckless Certain Victory not reporting its user paying HP
 - Fixed Lance descriptions not accounting for double Power Up contribution
 ### Command Improvements
-- Added `/manual modifier-info`
+- Added `/manual modifier-info` & `/manual challenge-info`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)
 - Renamed `/give-up` to `/adventure retreat`
 ### Other Changes

@@ -3,6 +3,7 @@ const { ThreadChannel } = require("discord.js");
 const { Adventure } = require("./Adventure");
 const { calculateTagContent } = require("../util/textUtil");
 const { BuildError } = require("./BuildError");
+const { injectApplicationEmojiMarkdown, injectApplicationEmojiName } = require("../util/graphicsUtil");
 
 class ChallengeTemplate {
 	/**
@@ -63,8 +64,9 @@ class ChallengeTemplate {
 	 * @param {number} duration
 	 * @param {number} reward
 	 */
-	dynamicDescription(intensity, duration, reward) {
-		return calculateTagContent(this.description, [
+	dynamicDescription(intensity, duration, reward, markdownAllowed) {
+		const emojiParsed = markdownAllowed ? injectApplicationEmojiMarkdown(this.description) : injectApplicationEmojiName(this.description);
+		return calculateTagContent(emojiParsed, [
 			{ tag: 'intensity', count: intensity },
 			{ tag: 'duration', count: duration },
 			{ tag: 'reward', count: reward }
