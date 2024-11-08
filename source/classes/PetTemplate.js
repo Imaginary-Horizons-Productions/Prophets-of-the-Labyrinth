@@ -5,10 +5,12 @@ const { CombatantReference } = require("./Move");
 class PetTemplate {
 	/**
 	 * @param {string} nameInput
+	 * @param {number} colorEnum
 	 * @param {PetMoveTemplate[][]} moveFamilies
 	 */
-	constructor(nameInput, moveFamilies) {
+	constructor(nameInput, colorEnum, moveFamilies) {
 		this.name = nameInput;
+		this.color = colorEnum;
 		this.moves = moveFamilies;
 	}
 };

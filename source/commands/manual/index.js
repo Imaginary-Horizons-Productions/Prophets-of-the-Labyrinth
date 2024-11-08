@@ -10,7 +10,7 @@ const { slashData: subcommandSlashData, executeDictionary: subcommandExecuteDict
 	"gearinfo.js",
 	"iteminfo.js",
 	"modifierinfo.js",
-	//TODONOW "petinfo.js"
+	"petinfo.js"
 ]);
 module.exports = new CommandWrapper(mainId, "Get information about how to play or game entities", null, false, [InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel], 3000,
 	(interaction) => {

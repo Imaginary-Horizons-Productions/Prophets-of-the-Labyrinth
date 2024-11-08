@@ -1,10 +1,11 @@
+const { Colors } = require("discord.js");
 const { PetTemplate, PetMoveTemplate } = require("../classes");
 const { selectRandomFoe, selectNone } = require("../shared/actionComponents");
 const { rollablePotions } = require("../shared/potions");
 const { addModifier, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
 const petName = "Friendly Slime";
-module.exports = new PetTemplate(petName,
+module.exports = new PetTemplate(petName, Colors.Aqua,
 	[
 		[
 			new PetMoveTemplate("Toxin Spray", "Inflict @{mod0Stacks} @{mod0} on a random foe", selectRandomFoe,

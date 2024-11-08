@@ -27,6 +27,7 @@ const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { rollableHerbs } = require("../shared/herbs");
 const { rollablePotions } = require("../shared/potions");
 const { getPetMove, generatePetRNs } = require("../pets/_petDictionary.js");
+const { getPlayer } = require("./playerOrcustrator.js");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();
@@ -731,7 +732,7 @@ function newRound(adventure, thread, lastRoundText) {
 		// Generate pet move
 		const owner = adventure.delvers[adventure.nextPet];
 		if (owner.pet) {
-			const petMoveTemplate = getPetMove(owner.pet, adventure.petRNs, owner.id, thread.guildId);
+			const petMoveTemplate = getPetMove(owner.pet, adventure.petRNs, getPlayer(owner.id, thread.guildId).pets[owner.pet]);
 			const petMove = new Move(petMoveTemplate.name, "pet", { team: "delver", index: adventure.nextPet })
 				.setSpeedByValue(100);
 			petMoveTemplate.selector(owner, adventure).forEach(reference => {
@@ -813,7 +814,7 @@ function resolveMove(move, adventure) {
 			}
 			case "pet":
 				headline = `${user.name}'s ${bold(user.pet)} `;
-				effect = getPetMove(user.pet, adventure.petRNs, user.id, adventure.guildId).effect;
+				effect = getPetMove(user.pet, adventure.petRNs, getPlayer(user.id, adventure.guildId).pets[user.pet]).effect;
 				break;
 		}
 

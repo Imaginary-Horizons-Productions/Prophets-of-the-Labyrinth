@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User, bold } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
@@ -17,6 +17,7 @@ const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator")
 const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 const { getArtifactCounts } = require("../artifacts/_artifactDictionary");
 const { isSponsor } = require("./fileUtil");
+const { getPetTemplate, getPetMoveDescription } = require("../pets/_petDictionary");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -558,11 +559,19 @@ function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
  * @param {string} petName
  * @param {Player} player
  */
-function generatePetEmbed(petName, player) { //TODONOW finish
+function generatePetEmbed(petName, player) {
+	const petTemplate = getPetTemplate(petName);
 	const petLevel = player.pets[petName] ?? 0;
-	return new EmbedBuilder() //TODONOW pet color?
+	const moveSets = [1, 2, 3, 4].map(level => {
+		const [firstMoveName, firstMoveDescription] = getPetMoveDescription(petName, 0, level);
+		const [secondMoveName, secondMoveDescription] = getPetMoveDescription(petName, 1, level);
+		return { name: `Level ${level}${petLevel === level ? " - Your Pet's Here!" : ""}`, value: `${firstMoveName} - ${firstMoveDescription}\n${secondMoveName} - ${secondMoveDescription}` };
+	});
+	return new EmbedBuilder().setColor(petTemplate.color)
 		.setAuthor(randomAuthorTip())
 		.setTitle(petName)
+		.setDescription("Pets improve their movesets as they level up.")
+		.addFields(moveSets)
 		.setFooter(randomFooterTip())
 }
 
