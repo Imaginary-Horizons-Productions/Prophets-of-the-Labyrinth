@@ -60,7 +60,7 @@ function generateCombatRoomBuilder(extraButtons) {
 		} else {
 			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
 
-			roomEmbed.addFields({ name: "Level-Up!", value: `Everyone gains ${adventure.room.resources.levelsGained.count ?? 0} levels.` }, pathVoteField);
+			roomEmbed.addFields({ name: "Level-Up!", value: `Everyone gains ${adventure.room.resources.levelsGained.count ?? 0} levels.` }, module.exports.pathVoteField);
 			return {
 				embeds: [roomEmbed],
 				components: [generateLootRow(adventure), generateRoutingRow(adventure)]

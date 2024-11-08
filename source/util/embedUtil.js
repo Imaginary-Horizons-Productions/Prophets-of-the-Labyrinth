@@ -1,7 +1,7 @@
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User, bold } = require("discord.js");
 
-const { Adventure, ArtifactTemplate, Delver } = require("../classes");
+const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
@@ -17,6 +17,7 @@ const { getCompany, setCompany } = require("../orcustrators/companyOrcustrator")
 const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 const { getArtifactCounts } = require("../artifacts/_artifactDictionary");
 const { isSponsor } = require("./fileUtil");
+const { getPetTemplate, getPetMoveDescription } = require("../pets/_petDictionary");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -123,6 +124,10 @@ function generateAdventureConfigMessage() {
 				new ButtonBuilder().setCustomId("deploy")
 					.setLabel("Pick Archetype")
 					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder().setCustomId("deploypet")
+					.setEmoji("🐾")
+					.setLabel("Bring a Pet")
+					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder().setCustomId("startingartifacts")
 					.setLabel("Pick Starting Artifact")
 					.setStyle(ButtonStyle.Secondary)
@@ -214,6 +219,7 @@ function addScoreField(embed, adventure, guildId) {
 		challengeMultiplier *= challenge.scoreMultiplier;
 	})
 	const skippedArtifactsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.startingArtifact ? count : count + 1, 0) / adventure.delvers.length);
+	const skippedPetsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.pet ? count : count + 1, 0) / adventure.delvers.length);
 	const floatingMultiplierBonus = 1 + (adventure.getArtifactCount("Floating Multiplier") / 4);
 	// Skip multiplicative bonuses if score is negative
 	if (finalScore > 0) {
@@ -221,6 +227,7 @@ function addScoreField(embed, adventure, guildId) {
 		breakdownText += generateScoreline("multiplicative", "Challenges Multiplier", challengeMultiplier);
 		finalScore = Math.max(1, finalScore * skippedArtifactsMultiplier);
 		breakdownText += generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
+		breakdownText += generateScoreline("multiplicative", "Pet Skip Multiplier", skippedPetsMultiplier);
 		breakdownText += generateScoreline("multiplicative", "Floating Multiplier Bonus", floatingMultiplierBonus);
 		switch (adventure.state) {
 			case "success":
@@ -243,6 +250,9 @@ function addScoreField(embed, adventure, guildId) {
 		}
 		if (skippedArtifactsMultiplier > 1) {
 			breakdownText += `Artifact Skip Multiplier: ~~x${skippedArtifactsMultiplier}~~ x1\n`;
+		}
+		if (skippedPetsMultiplier > 1) {
+			breakdownText += `Pet Skip Multiplier: ~~x${skippedPetsMultiplier}~~ x1\n`;
 		}
 		if (floatingMultiplierBonus > 1) {
 			breakdownText += `Floating Multiplier Bonus: ~~x${floatingMultiplierBonus}~~ x1\n`;
@@ -527,6 +537,7 @@ function generateStatsEmbed(user, guildId) {
 		.setDescription(`${availability}\n\nTotal Score: ${Object.values(player.scores).map(score => score.total).reduce((total, current) => total += current, 0)}`)
 		.addFields(
 			{ name: `Best Archetype: ${bestArchetype}`, value: `High Score: ${highScore}` },
+			{ name: "Favorite Pet", value: player.favoritePet ? player.favoritePet : "Not Set" },
 			{ name: "Artifacts Collected", value: `${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)` }
 		)
 }
@@ -549,6 +560,26 @@ function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
 		.addFields({ name: "Category", value: `${buff ? "Buff" : debuff ? "Debuff" : "State"}` })
 }
 
+/**
+ * @param {string} petName
+ * @param {Player} player
+ */
+function generatePetEmbed(petName, player) {
+	const petTemplate = getPetTemplate(petName);
+	const petLevel = player.pets[petName] ?? 0;
+	const moveSets = [1, 2, 3, 4].map(level => {
+		const [firstMoveName, firstMoveDescription] = getPetMoveDescription(petName, 0, level);
+		const [secondMoveName, secondMoveDescription] = getPetMoveDescription(petName, 1, level);
+		return { name: `Level ${level}${petLevel === level ? " - Your Pet's Here!" : ""}`, value: `${firstMoveName} - ${firstMoveDescription}\n${secondMoveName} - ${secondMoveDescription}` };
+	});
+	return new EmbedBuilder().setColor(petTemplate.color)
+		.setAuthor(randomAuthorTip())
+		.setTitle(petName)
+		.setDescription("Pets improve their movesets as they level up.")
+		.addFields(moveSets)
+		.setFooter(randomFooterTip())
+}
+
 module.exports = {
 	randomAuthorTip,
 	randomFooterTip,
@@ -563,5 +594,6 @@ module.exports = {
 	inspectSelfPayload,
 	generatePartyStatsPayload,
 	generateStatsEmbed,
-	generateModifierEmbed
+	generateModifierEmbed,
+	generatePetEmbed
 };

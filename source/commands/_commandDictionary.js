@@ -11,6 +11,7 @@ module.exports = {
 		"commands.js",
 		"data-policy.js",
 		"delve.js",
+		"favorite-pet.js",
 		"feedback.js",
 		"invite.js",
 		"manual",

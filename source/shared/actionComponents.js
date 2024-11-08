@@ -83,7 +83,7 @@ function selectRandomFoe(self, adventure) {
 	if (self.team === "delver") {
 		const livingEnemyIndicies = [];
 		for (let i = 0; i < adventure.room.enemies.length; i++) {
-			if (enemy.hp > 0) {
+			if (adventure.room.enemies[i].hp > 0) {
 				livingEnemyIndicies.push(i);
 			}
 		}

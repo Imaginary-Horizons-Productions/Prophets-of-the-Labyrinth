@@ -148,8 +148,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 					let overwritten = false;
 					for (let i = 0; i < adventure.room.moves.length; i++) {
-						const { userReference } = adventure.room.moves[i];
-						if (userReference.team === delver.team && userReference.index === userIndex) {
+						const { userReference, type } = adventure.room.moves[i];
+						if (userReference.team === delver.team && userReference.index === userIndex && type !== "pet") {
 							adventure.room.moves.splice(i, 1);
 							overwritten = true;
 							break;
@@ -202,8 +202,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					}
 					let overwritten = false;
 					for (let i = 0; i < adventure.room.moves.length; i++) {
-						const { userReference } = adventure.room.moves[i];
-						if (userReference.team === delver.team && userReference.index === userIndex) {
+						const { userReference, type } = adventure.room.moves[i];
+						if (userReference.team === delver.team && userReference.index === userIndex && type !== "pet") {
 							adventure.room.moves.splice(i, 1);
 							overwritten = true;
 							break;

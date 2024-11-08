@@ -1,5 +1,5 @@
 class Player {
-	/** Represents a player's overall profile, including unlocked artifacts and archetypes and score
+	/** Represents a player's overall profile, including unlocked artifacts, archetypes, and pets as well as high scores
 	 * @param {string} idInput
 	 */
 	constructor(idInput) {
@@ -11,8 +11,11 @@ class Player {
 	scores = {};
 	/** @type {{[adventureId: string]: string}} adventureId for the adventure unlocked, pointing to artifact name */
 	artifacts = { "start": "Phoenix Fruit Blossom" };
-	/** @type {{[archetypeName: string]: highScore}} set highScore to null to signify "not unlocked yet" */
-	archetypes = { "Knight": null, "Assassin": null, "Chemist": null, "Martial Artist": null, "Hemomancer": null, "Ritualist": null, "Legionnaire": null };
+	/** @type {{[archetypeName: string]: number}} value is high score */
+	archetypes = {};
+	/** @type {{[petName: string]: number}} value is pet level (which should be on range [1-4])*/
+	pets = {};
+	favoritePet = "";
 
 	/** @param {number} count */
 	unlockRandomArchetype(count) {

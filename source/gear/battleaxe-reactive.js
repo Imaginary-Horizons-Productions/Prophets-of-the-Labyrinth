@@ -3,7 +3,7 @@ const { addModifier, dealDamage, changeStagger, generateModifierResultLines } = 
 
 module.exports = new GearTemplate("Reactive Battleaxe",
 	[
-		["use", "Strike a foe for @{damage} (x@{bonus} if after foe) @{element} damage, gain @{mod0Stacks} @{mod0}"],
+		["use", "Strike a foe for @{damage} (+@{bonus} if after foe) @{element} damage, gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
@@ -12,8 +12,8 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 	(targets, user, adventure) => {
 		const { element, modifiers: [exposed], damage, critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		const userMove = adventure.room.moves.find(move => move.userReference.team === user.team && move.userReference.index === adventure.getCombatantIndex(user));
-		const targetMove = adventure.room.moves.find(move => move.userReference.team === targets[0].team && move.userReference.index === adventure.getCombatantIndex(targets[0]));
+		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
+		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(targets[0]), team: targets[0].team });
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
 			pendingDamage *= bonus;
@@ -31,4 +31,4 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 	.setModifiers({ name: "Exposed", stacks: 1 })
 	.setDurability(30)
 	.setDamage(90)
-	.setBonus(2); // Reactive multiplier
+	.setBonus(75); // Reactive damage

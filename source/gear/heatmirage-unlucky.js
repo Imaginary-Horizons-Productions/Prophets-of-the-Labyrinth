@@ -21,14 +21,8 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 			pendingEvade.stacks *= critMultiplier;
 		}
 		const resultLines = generateModifierResultLines(addModifier([user], pendingEvade));
-		const targetMove = adventure.room.moves.find(move => {
-			const moveUser = adventure.getCombatant(move.userReference);
-			return moveUser.name === target.name && moveUser.title === target.title;
-		});
-		const userMove = adventure.room.moves.find(move => {
-			const moveUser = adventure.getCombatant(move.userReference);
-			return moveUser.name === user.name && moveUser.title === user.title;
-		});
+		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
+		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		const targetEffects = [];
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];

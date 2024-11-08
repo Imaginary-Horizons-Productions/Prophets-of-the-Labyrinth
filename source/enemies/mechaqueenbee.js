@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	priority: 1,
 	effect: (targets, user, adventure) => {
 		// assumes mecha queen is at enemy index 0 and that all other enemies are mechabees
-		const { targets: mechaqueensTargets } = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === 0)
+		const { targets: mechaqueensTargets } = adventure.room.findCombatantMove({ index: 0, team: "enemy" });
 		adventure.room.moves.forEach(move => {
 			if (move.userReference.team === "enemy" && move.userReference.index !== 0) {
 				move.name = "Sting";
@@ -74,7 +74,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	effect: ([target], user, adventure) => {
 		addProtection([user], user.crit ? 60 : 30);
 		if (target) {
-			const targetMove = adventure.room.moves.find(move => move.userReference.team === "enemy" && move.userReference.index === parseInt(target.id));
+			const targetMove = adventure.room.findCombatantMove({ index: parseInt(target.id), team: "enemy" });
 			targetMove.name = "Self-Destruct";
 			targetMove.targets = selectAllFoes(target, adventure);
 		}

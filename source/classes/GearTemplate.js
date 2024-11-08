@@ -47,6 +47,8 @@ class GearTemplate {
 	stagger;
 	/** @type {number} */
 	bonus;
+	/** @type {number} */
+	bonus2;
 	/** @type {{name: string, stacks: number}[]} */
 	modifiers;
 	maxHP = 0;
@@ -134,6 +136,12 @@ class GearTemplate {
 	/** @param {number} integer */
 	setBonus(integer) {
 		this.bonus = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setBonus2(integer) {
+		this.bonus2 = integer;
 		return this;
 	}
 

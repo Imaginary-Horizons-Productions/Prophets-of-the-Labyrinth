@@ -16,14 +16,8 @@ module.exports = new GearTemplate("Shattering Goad Futility",
 		}
 		const resultLines = [];
 		const receipts = addModifier([user], oblivious);
-		const targetMove = adventure.room.moves.find(move => {
-			const moveUser = adventure.getCombatant(move.userReference);
-			return moveUser.name === target.name && moveUser.title === target.title;
-		});
-		const userMove = adventure.room.moves.find(move => {
-			const moveUser = adventure.getCombatant(move.userReference);
-			return moveUser.name === user.name && moveUser.title === user.title;
-		});
+		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
+		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			resultLines.push(`${target.name} falls for the provocation.`);

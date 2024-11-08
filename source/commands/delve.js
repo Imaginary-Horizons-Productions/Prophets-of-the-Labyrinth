@@ -8,6 +8,7 @@ const { SAFE_DELIMITER } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
 const { generateRecruitEmbed, generateAdventureConfigMessage } = require('../util/embedUtil');
 const { injectApplicationEmojiMarkdown } = require('../util/graphicsUtil');
+const { getPlayer } = require('../orcustrators/playerOrcustrator');
 
 const mainId = "delve";
 module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionFlagsBits.SendMessages, false, [InteractionContextType.Guild], 3000,
@@ -48,7 +49,12 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 			}).then(recruitMessage => {
 				adventure.setId(thread.id);
 				adventure.messageIds.recruit = recruitMessage.id;
-				adventure.delvers.push(new Delver(interaction.user.id, interaction.member.displayName, thread.id));
+				const delver = new Delver(interaction.user.id, interaction.member.displayName, thread.id);
+				const player = getPlayer(interaction.user.id, interaction.guildId);
+				if (player.favoritePet !== "") {
+					delver.pet = player.favoritePet;
+				}
+				adventure.delvers.push(delver);
 				prerollBoss("Final Battle", adventure);
 				prerollBoss("Artifact Guardian", adventure);
 				setAdventure(adventure);

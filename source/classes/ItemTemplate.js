@@ -1,6 +1,7 @@
 const { Adventure } = require("./Adventure");
 const { Combatant } = require("./Combatant");
 const { CombatantReference } = require("./Move");
+
 class ItemTemplate {
 	/**
 	 * @param {string} nameInput

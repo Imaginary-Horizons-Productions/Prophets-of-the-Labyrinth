@@ -58,6 +58,10 @@ class Adventure {
 	depth = 1;
 	/** @type {Room} */
 	room = {};
+	/** @type {number} the index of the delver whos pet will act next */
+	nextPet = 0;
+	/** @type {number []} */
+	petRNs = [];
 	/** @type {{[candidate: string]: {voterIds: string[], isHidden: boolean}}} */
 	roomCandidates = {};
 	lives = 2;
@@ -350,6 +354,11 @@ class Room {
 		} else {
 			this.resources[name].count -= decrement;
 		}
+	}
+
+	/** @param {CombatantReference} combatantReference */
+	findCombatantMove(combatantReference) {
+		return this.moves.find(move => move.type !== "pet" && move.userReference.index === combatantReference.index && move.userReference.team === combatantReference.team);
 	}
 }
 
