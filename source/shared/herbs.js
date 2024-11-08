@@ -1,8 +1,9 @@
 const rollableHerbs = [
-  "Panacea",
-  "Quick Pepper",
-  "Regen Root",
-  "Strength Spinach"
+	"Creative Acorn",
+	"Panacea",
+	"Quick Pepper",
+	"Regen Root",
+	"Strength Spinach"
 ];
 
 module.exports = { rollableHerbs }

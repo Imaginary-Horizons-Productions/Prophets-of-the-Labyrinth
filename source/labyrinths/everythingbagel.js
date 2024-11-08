@@ -14,6 +14,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 		Wind: [],
 		Untyped: [
 			"Clear Potion",
+			"Creative Acorn",
 			"Earthen Potion",
 			"Explosion Potion",
 			"Fiery Potion",

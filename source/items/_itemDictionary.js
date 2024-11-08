@@ -6,6 +6,7 @@ const ITEM_NAMES = [];
 
 for (const file of [
 	"clearpotion.js",
+	"creativeacorn.js",
 	"earthenpotion.js",
 	"explosionpotion.js",
 	"fierypotion.js",
