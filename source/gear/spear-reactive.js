@@ -3,20 +3,20 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Spear",
 	[
-		["use", "Strike a foe for @{damage} (x@{critMultiplier} if after foe) @{element} damage"],
+		["use", "Strike a foe for @{damage} (+@{bonus2} if after foe) @{element} damage"],
 		["Critical💥", "Inflict @{bonus} more Stagger"]
 	],
 	"Weapon",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { element, bonus, damage, critMultiplier } = module.exports;
+		const { element, bonus, damage, bonus2 } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= bonus2;
 		}
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
@@ -32,4 +32,5 @@ module.exports = new GearTemplate("Reactive Spear",
 	.setSidegrades("Lethal Spear", "Sweeping Spear")
 	.setDurability(15)
 	.setDamage(65)
-	.setBonus(2); // Crit Stagger
+	.setBonus(2) // Crit Stagger
+	.setBonus2(75); // Reactive Multiplier

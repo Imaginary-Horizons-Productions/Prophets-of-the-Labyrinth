@@ -32,7 +32,11 @@ module.exports = new ArchetypeTemplate("Beast Tamer",
 		const [moveName, moveDescription] = getPetMoveDescription(nextPetOwner.pet, adventure.petRNs[0], ownerPlayer.pets[nextPetOwner.pet]);
 		return embed.setTitle(`Beast Tamer Predictions for Round ${adventure.room.round + 1}`).addFields({ name: `Next Pet Move (Round: ${adventure.room.round === 0 ? 2 : adventure.room.round + (adventure.room.round % 2)})`, value: `${nextPetOwner.name}'s ${nextPetOwner.pet} will use ${bold(moveName)}\n${italic(moveDescription)}` });
 	},
-	(combatant) => { //TODONOW mini-predict
-		return "";
+	(combatant) => {
+		if (combatant.pet) {
+			return combatant.pet;
+		} else {
+			return "";
+		}
 	}
 );

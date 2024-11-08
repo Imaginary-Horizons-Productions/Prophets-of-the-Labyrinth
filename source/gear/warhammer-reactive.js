@@ -3,14 +3,14 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Warhammer",
 	[
-		["use", "Strike a foe for @{damage} (+@{bonus} if foe is stunned, x@{critMultiplier} if after foe) @{element} damage"],
+		["use", "Strike a foe for @{damage} (+@{bonus} if foe is stunned, +@{bonus2} if after foe) @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { element, damage, bonus, critMultiplier } = module.exports;
+		const { element, damage, bonus, critMultiplier, bonus2 } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (target.isStunned) {
 			pendingDamage += bonus;
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Reactive Warhammer",
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
-			pendingDamage *= critMultiplier;
+			pendingDamage += bonus2;
 		}
 
 		if (user.element === element) {
@@ -34,4 +34,5 @@ module.exports = new GearTemplate("Reactive Warhammer",
 	.setSidegrades("Slowing Warhammer", "Unstoppable Warhammer")
 	.setDurability(15)
 	.setDamage(40)
-	.setBonus(75); // damage
+	.setBonus(75) // Awesome damage
+	.setBonus2(75); // Reactive damage

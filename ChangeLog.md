@@ -1,16 +1,22 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.17.0:
+### Pets
+TODONOW
+### Beast Tamer
+This new Archetype predicts the moves of enemies and pets (and if enemies have priority). Their Carrot gear entices an allied pet to act immediately and their Stick punishes foes that act with priority.
+### Gear
+- Reactive variants are back to a flat bonus
+- Fixed delvers being able to end up above max HP when acquiring Cursed Blade
+- Fixed Reckless Certain Victory not reporting its user paying HP
+- Fixed Lance descriptions not accounting for double Power Up contribution
 ### Command Improvements
 - Added `/manual modifier-info`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)
 - Renamed `/give-up` to `/adventure retreat`
 ### Other Changes
 - New Challenge: Cursed Run - One of your starting gear pieces is randomly replaced with cursed gear
-- Fixed delvers being able to end up above max HP when acquiring Cursed Blade
-- Fixed Reckless Certain Victory not reporting its user paying HP
 - Fixed the party stats embed not showing the Final Battle after it had been scouted
 - Fixed Curse of Midas reporting generating fractional gold, not scaling with stacks, and being added to party gold immediately instead of being added to loot
-- Fixed Lance descriptions not accounting for double Power Up contribution
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes
 - Changed Detective to Untyped

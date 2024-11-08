@@ -100,6 +100,7 @@ Can apply to allies
 **Available on**
 - Bucker (Earth)
 - Barrier (Wind)
+- Carrot (Earth)
 - Floating Mist Stance (Light)
 - Omamori (Water)
 
@@ -228,6 +229,7 @@ Add Lucky to the user
 
 **Available on**
 - all Omamori (Water)
+- Carrot (Earth)
 - Iron Fist Stance (Light)
 - Scutum (Fire)
 - Second Wind (Untyped)
@@ -269,6 +271,12 @@ Passively increases user's power
 **Available on**
 - Chainmail (Untyped)
 
+### Punishing
+Multiplies damage if target has priority
+
+**Available on**
+- all Sticks (Earth)
+
 ### Purifying
 Cures all debuffs on target
 
@@ -302,6 +310,7 @@ Adds protection to the user
 **Available on**
 - Blood Aegis (Darkness)
 - Buckler (Earth)
+- Carrot (Earth)
 - Herb Basket (Earth)
 
 ### Sabotaging
@@ -324,6 +333,7 @@ Increased damage
 - all Spears (Wind)
 - Daggers (Wind)
 - Abacus (Water)
+- Stick (Earth)
 - Strong Attack (Untyped)
 
 ### Shattering
@@ -334,6 +344,7 @@ Adds Frail to target
 - Goad Futility (Earth)
 - Lance (Earth)
 - Sabotage Kit (Untyped)
+- Stick (Earth)
 
 ### Slowing
 Adds Slow to target
@@ -363,7 +374,8 @@ Add Stagger to target
 - Poison Torrent (Water)
 - Power from Wrath (Darkness)
 - Shoulder Throw (Light)
-- Stong Attack (Untyped)
+- Stick (Earth)
+- Strong Attack (Untyped)
 
 ### Supportive
 Reduces Stagger on target
@@ -395,6 +407,12 @@ Passively increases user's speed
 - all Scarves (Untyped)
 - Refreshing Breeze (Wind)
 - Wolf Ring (Untyped)
+
+### Tamer's
+Target's pet acts immediately
+
+**Available on**
+- all Carrots (Earth)
 
 ### Taunting
 Change target's move's target to user

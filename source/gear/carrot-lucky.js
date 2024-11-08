@@ -1,18 +1,18 @@
 const { GearTemplate } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addProtection } = require('../util/combatantUtil');
+const { changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Carrot",
+module.exports = new GearTemplate("Lucky Carrot",
 	[
-		["use", "Gain @{protection} protection and entice an ally's pet to use its first move this turn"],
+		["use", "Gain @{protection} protection and @{mod0Stacks} @{mod0}, then entice an ally's pet to use its first move this turn"],
 		["Critical💥", "Protection x@{critMultiplier}"]
 	],
 	"Technique",
 	"Earth",
-	200,
+	350,
 	([target], user, adventure) => {
-		const { element, protection, critMultiplier } = module.exports;
+		const { element, protection, critMultiplier, modifiers: [lucky] } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
 			changeStagger([target], "elementMatchAlly");
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Carrot",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([user], protection);
-		const resultLines = [`${user.name} gains protection.`];
+		const resultLines = [`${user.name} gains protection.`, ...generateModifierResultLines(addModifier([user], lucky))];
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: adventure.getCombatantIndex(target) });
 		if (owner.pet) {
 			const petRNs = [0];
@@ -46,6 +46,7 @@ module.exports = new GearTemplate("Carrot",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setUpgrades("Devoted Carrot", "Lucky Carrot", "Reinforced Carrot")
+	.setSidegrades("Devoted Carrot", "Reinforced Carrot")
+	.setModifiers({ name: "Lucky", stacks: 1 })
 	.setDurability(15)
 	.setProtection(50);

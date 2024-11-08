@@ -3,14 +3,14 @@ const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getPetMove } = require('../pets/_petDictionary');
 const { changeStagger, addProtection } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Carrot",
+module.exports = new GearTemplate("Devoted Carrot",
 	[
-		["use", "Gain @{protection} protection and entice an ally's pet to use its first move this turn"],
+		["use", "Grant an ally @{protection} protection and entice their pet to use its first move this turn"],
 		["Critical💥", "Protection x@{critMultiplier}"]
 	],
 	"Technique",
 	"Earth",
-	200,
+	350,
 	([target], user, adventure) => {
 		const { element, protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
@@ -20,8 +20,8 @@ module.exports = new GearTemplate("Carrot",
 		if (user.crit) {
 			pendingProtection *= critMultiplier;
 		}
-		addProtection([user], protection);
-		const resultLines = [`${user.name} gains protection.`];
+		addProtection([target], protection);
+		const resultLines = [`${target.name} gains protection.`];
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: adventure.getCombatantIndex(target) });
 		if (owner.pet) {
 			const petRNs = [0];
@@ -46,6 +46,6 @@ module.exports = new GearTemplate("Carrot",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setUpgrades("Devoted Carrot", "Lucky Carrot", "Reinforced Carrot")
+	.setSidegrades("Lucky Carrot", "Reinforced Carrot")
 	.setDurability(15)
 	.setProtection(50);

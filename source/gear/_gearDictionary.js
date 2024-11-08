@@ -6,7 +6,7 @@ const { getEmoji } = require("../util/elementUtil");
 const GEAR = {};
 const GEAR_NAMES = [];
 
-for (const file of [ //TODONOW add carrots and sticks
+for (const file of [
 	"_appease.js",
 	"_greed.js",
 	"_punch-base.js",
@@ -36,6 +36,10 @@ for (const file of [ //TODONOW add carrots and sticks
 	"buckler-devoted.js",
 	"buckler-guarding.js",
 	"buckler-reinforced.js",
+	"carrot-base.js",
+	"carrot-devoted.js",
+	"carrot-lucky.js",
+	"carrot-reinforced.js",
 	"cauldronstir-base.js",
 	"cauldronstir-corrosive.js",
 	"cauldronstir-sabotaging.js",
@@ -186,6 +190,10 @@ for (const file of [ //TODONOW add carrots and sticks
 	"spear-lethal.js",
 	"spear-reactive.js",
 	"spear-sweeping.js",
+	"stick-base.js",
+	"stick-sharpened.js",
+	"stick-shattering.js",
+	"stick-staggering.js",
 	"strongattack-base.js",
 	"strongattack-flanking.js",
 	"strongattack-sharpened.js",
@@ -337,6 +345,7 @@ function injectGearStats(text, gearName, elementOverride) {
 	}
 	return text.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
 		.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
+		.replace(/@{bonus2}/g, getGearProperty(gearName, "bonus2"))
 		.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
 		.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
 		.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
