@@ -18,11 +18,16 @@ for (const file of [
 	PET_NAMES.push(pet.name);
 }
 
-//TOODNOW documentation and pruning
+/** @param {string} petName */
 function getPetTemplate(petName) {
 	return PETS[petName.toLowerCase()];
 }
 
+/**
+ * @param {string} petName
+ * @param {number} index
+ * @param {number} level
+ */
 function getPetMoveDescription(petName, index, level) {
 	const move = getPetMove(petName, [index], level);
 	if (move.modifiers) {
@@ -60,7 +65,6 @@ function generatePetRNs(adventure) {
 				}
 			})
 		}
-
 	}
 }
 
