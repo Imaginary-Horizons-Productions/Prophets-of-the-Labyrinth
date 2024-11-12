@@ -4,7 +4,7 @@ const { RoomTemplate, ResourceTemplate } = require("../classes");
 
 const { EMPTY_SELECT_OPTION_SET, SAFE_DELIMITER } = require("../constants");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
-const { listifyEN } = require("../util/textUtil");
+const { listifyEN, getNumberEmoji } = require("../util/textUtil");
 
 module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 	"@{adventure}",
@@ -26,7 +26,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Items?",
 			for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 				if (visibility === "always" && count > 0) {
 					options.push({
-						label: `${name} x ${count}`,
+						label: `${getNumberEmoji(1)} ${name} x ${count}`,
 						description: type,
 						value: `${name}${SAFE_DELIMITER}${options.length}`
 					});
