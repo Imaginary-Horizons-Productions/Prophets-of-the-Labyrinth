@@ -376,7 +376,7 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 	return embed;
 }
 
-/** Seen in target selection embeds and /inspect-self gear fields contain nearly all information about the gear they represent
+/** Seen in /inspect-self, gear fields contain nearly all information about the gear they represent
  * @param {string} gearName
  * @param {number} durability
  * @param {Delver} holder
