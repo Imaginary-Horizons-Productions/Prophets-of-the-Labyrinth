@@ -1,5 +1,5 @@
 const { Adventure } = require("./Adventure");
-const { Combatant } = require("./Combatant");
+const { Combatant, Delver } = require("./Combatant");
 const { CombatantReference } = require("./Move");
 
 class PetTemplate {
@@ -19,8 +19,8 @@ class PetMoveTemplate {
 	/**
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
-	 * @param {(owner: Combatant, adventure: Adventure) => CombatantReference[]} selectorFunction
-	 * @param {(targets: Combatant[], owner: Combatant, adventure: Adventure) => string[]} effectFunction
+	 * @param {(owner: Delver, adventure: Adventure) => CombatantReference[]} selectorFunction
+	 * @param {(targets: Combatant[], owner: Delver, adventure: Adventure) => string[]} effectFunction
 	 */
 	constructor(nameInput, descriptionInput, selectorFunction, effectFunction) {
 		this.name = nameInput;

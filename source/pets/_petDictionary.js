@@ -7,7 +7,10 @@ const PETS = {};
 const PET_NAMES = [];
 
 for (const file of [
-	"friendlyslime.js"
+	"friendlyslime.js",
+	"redtailedraptor.js",
+	"shieldgoblin.js",
+	"shinystone.js"
 ]) {
 	/** @type {PetTemplate} */
 	const pet = require(`./${file}`);
