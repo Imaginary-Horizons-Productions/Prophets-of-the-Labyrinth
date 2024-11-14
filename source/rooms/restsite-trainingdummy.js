@@ -23,7 +23,7 @@ module.exports = new RoomTemplate("Rest Site: Training Dummy",
 			restEmoji = "1️⃣";
 			restLabel = `Rest [+${healPercent}% HP]`;
 			trainingEmoji = "1️⃣";
-			trainingLabel = "Use the training dummy";
+			trainingLabel = "Train [+1 Level]";
 		} else {
 			if (adventure.room.history.Rested.length > 0) {
 				restEmoji = "✔️";
