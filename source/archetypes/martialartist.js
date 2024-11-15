@@ -1,4 +1,6 @@
+const { italic } = require("discord.js");
 const { ArchetypeTemplate } = require("../classes");
+const { ZERO_WIDTH_WHITESPACE } = require("../constants");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Martial Artist",
@@ -13,15 +15,14 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 	},
 	["Iron Fist Stance", "Floating Mist Stance"],
 	(embed, adventure) => {
-		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
-			.concat(adventure.delvers)
-			.sort((first, second) => {
-				return second.getSpeed(true) - first.getSpeed(true);
-			});
-		activeCombatants.forEach(combatant => {
-			embed.addFields({ name: combatant.name, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}${combatant.team === "enemy" ? `\nRound ${adventure.room.round + 2} Move: ${combatant.nextAction}` : ""}` });
-		})
-		return embed.setTitle(`Martial Artist Predictions for Round ${adventure.room.round + 1}`);
+		adventure.room.enemies.filter(enemy => enemy.hp > 0).forEach(combatant => {
+			embed.addFields({ name: combatant.name, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\nRound ${adventure.room.round + 2} Move: ${italic(combatant.nextAction)}`, inline: true });
+		});
+		embed.addFields({ name: ZERO_WIDTH_WHITESPACE, value: ZERO_WIDTH_WHITESPACE });
+		adventure.delvers.forEach(combatant => {
+			embed.addFields({ name: combatant.name, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}`, inline: true });
+		});
+		return embed.setDescription(`Martial Artist predictions:`);
 	},
 	(combatant) => {
 		if (combatant.isStunned) {

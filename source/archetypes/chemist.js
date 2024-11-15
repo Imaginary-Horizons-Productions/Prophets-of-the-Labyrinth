@@ -17,9 +17,9 @@ module.exports = new ArchetypeTemplate("Chemist",
 		const eligibleCombatants = adventure.room.enemies.concat(adventure.delvers).filter(combatant => combatant.hp > 0);
 		eligibleCombatants.forEach(combatant => {
 			const modifiersText = modifiersToString(combatant, adventure);
-			embed.addFields({ name: combatant.name, value: `${generateTextBar(combatant.hp, combatant.getMaxHP(), 16)} ${combatant.hp}/${combatant.getMaxHP()} HP${combatant.protection ? `, ${combatant.protection} Protection` : ""}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
+			embed.addFields({ name: combatant.name, value: `${generateTextBar(combatant.hp, combatant.getMaxHP(), 16)} ${combatant.hp}/${combatant.getMaxHP()} HP${combatant.protection ? `, ${combatant.protection} Protection` : ""}\n${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}` });
 		})
-		return embed.setTitle(`Chemist Predictions for Round ${adventure.room.round}`);
+		return embed.setDescription(`Chemist predictions for Round ${adventure.room.round}:`);
 	},
 	(combatant) => {
 		return `HP: ${combatant.hp}/${combatant.getMaxHP()}`;

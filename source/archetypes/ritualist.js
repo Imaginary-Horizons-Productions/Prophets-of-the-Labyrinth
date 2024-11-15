@@ -15,12 +15,21 @@ module.exports = new ArchetypeTemplate("Ritualist",
 	},
 	["Censer", "Corrosion"],
 	(embed, adventure) => {
-		const eligibleCombatants = adventure.room.enemies.concat(adventure.delvers).filter(combatant => combatant.hp > 0)
-		eligibleCombatants.forEach(combatant => {
-			const modifiersText = modifiersToString(combatant, adventure);
-			embed.addFields({ name: combatant.name, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\n${modifiersText ? `${modifiersText}` : "No modifiers"}` });
+		embed.addFields({
+			name: "Enemies",
+			value: adventure.room.enemies.filter(combatant => combatant.hp > 0).map(enemy => {
+				const modifiersText = modifiersToString(enemy, adventure);
+				return `${enemy.name}\n${enemy.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(enemy.stagger, enemy.getPoise(), enemy.getPoise())}`}\n${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}`;
+			}).join("\n\n")
 		})
-		return embed.setTitle(`Ritualist Predictions for Round ${adventure.room.round}`);
+		embed.addFields({
+			name: "Delvers",
+			value: adventure.delvers.map(delver => {
+				const modifiersText = modifiersToString(delver, adventure);
+				return `${delver.name}\n${delver.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())}`}\n${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}`;
+			}).join("\n\n")
+		})
+		return embed.setDescription(`Ritualist predictions for Round ${adventure.room.round}:`);
 	},
 	(combatant) => {
 		return `Has Debuffs: ${Object.keys(combatant.modifiers).some(modifier => isDebuff(modifier)) ? "✅" : "🚫"}`;

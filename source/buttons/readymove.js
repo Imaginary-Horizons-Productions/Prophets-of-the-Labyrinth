@@ -19,7 +19,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 		const delverArchetypeTemplate = getArchetype(delver.archetype);
-		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)), adventure)
+		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)).setTitle("Select a Move"), adventure)
 		if (!embed.data.author) {
 			embed.setAuthor(randomAuthorTip());
 		}
@@ -157,7 +157,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					}
 					adventure.room.moves.push(newMove);
 
-					confirmationText = `**${collectedInteraction.member.displayName}** ${overwritten ? "switches to ready" : "readies"} **${moveName}**${type !== "none" && type !== "self" ? ` to use on **${targetText}**` : ""}.`;
+					confirmationText = `${bold(collectedInteraction.member.displayName)} ${overwritten ? "switches to ready" : "readies"} **${moveName}**${type !== "none" && type !== "self" ? ` to use on **${targetText}**` : ""}.`;
 				} else {
 					// Add move to round list (overwrite exisiting readied move)
 					const userIndex = adventure.getCombatantIndex(delver);
