@@ -21,7 +21,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const delverArchetypeTemplate = getArchetype(delver.archetype);
 		interaction.reply({
 			embeds: [
-				delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)).setAuthor({ name: "Using an item takes your turn and has priority (it'll happen before non-priority actions)", iconURL: POTL_ICON_URL }), adventure)
+				delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)).setTitle("Select an Item").setAuthor({ name: "Using an item takes your turn and has priority (it'll happen before non-priority actions)", iconURL: POTL_ICON_URL }), adventure)
 			],
 			components: [
 				new ActionRowBuilder().addComponents(

@@ -1,3 +1,4 @@
+const { bold } = require("discord.js");
 const { ArchetypeTemplate } = require("../classes");
 const { listifyEN } = require("../util/textUtil");
 
@@ -13,23 +14,29 @@ module.exports = new ArchetypeTemplate("Knight",
 	},
 	["Lance", "Buckler"],
 	(embed, adventure) => {
-		adventure.room.moves.forEach(({ userReference, targets, name, priority }) => {
+		const currentRoundLines = [];
+		const nextRoundLines = [];
+		adventure.room.moves.forEach(({ userReference, name, targets, priority }) => {
 			if (userReference.team === "enemy") {
 				const enemy = adventure.getCombatant(userReference);
 				if (enemy.hp > 0) {
 					if (name !== "@{clone}") {
-						embed.addFields({ name: enemy.name, value: `Round ${adventure.room.round + 1}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}(Targets: ${listifyEN(targets.map(targetReference => adventure.getCombatant(targetReference).name), false) || "none"})\nRound ${adventure.room.round + 2}: ${enemy.nextAction}` });
+						currentRoundLines.push(`${bold(enemy.name)}: ${name} (Targets: ${listifyEN(targets.map(targetReference => adventure.getCombatant(targetReference).name), false) || "none"}${priority != 0 ? `, Priority: ${priority}` : ""})`);
+						nextRoundLines.push(`${bold(enemy.name)}: ${enemy.nextAction}`);
 					} else {
-						embed.addFields({ name: enemy.name, value: "Mirror Clones mimic your allies!" })
+						currentRoundLines.push(`${bold(enemy.name)}: Mimic ${adventure.delvers[userReference.index].name}`);
+						nextRoundLines.push(`${bold(enemy.name)}: Mimic ${adventure.delvers[userReference.index].name}`);
 					}
 				}
 			}
 		})
-		return embed.setTitle(`Knight Predictions for Round ${adventure.room.round + 1}`);
+		embed.addFields({ name: `Enemy Moves (Round ${adventure.room.round + 1})`, value: currentRoundLines.join("\n") });
+		embed.addFields({ name: `Enemy Moves (Round ${adventure.room.round + 2})`, value: nextRoundLines.join("\n") });
+		return embed.setDescription(`Knight predictions:`);
 	},
 	(combatant) => {
 		if (combatant.team === "delver") {
-			return "Move in 2 rounds: Ask them";
+			return "";
 		} else {
 			return `Move in 2 rounds: ${combatant.nextAction}`;
 		}

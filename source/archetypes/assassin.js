@@ -1,4 +1,5 @@
-const { ArchetypeTemplate } = require("../classes");
+const { ArchetypeTemplate, Combatant } = require("../classes");
+const { ZERO_WIDTH_WHITESPACE } = require("../constants");
 const { getCombatantWeaknesses } = require("../util/combatantUtil");
 const { getEmoji, getResistances } = require("../util/elementUtil");
 
@@ -14,13 +15,17 @@ module.exports = new ArchetypeTemplate("Assassin",
 	},
 	["Daggers", "Cloak"],
 	(embed, adventure) => {
-		const eligibleCombatants = adventure.room.enemies.filter(combatant => combatant.hp > 0).concat(adventure.delvers)
-		eligibleCombatants.forEach(combatant => {
+		/** @param {Combatant} combatant */
+		function createElementAndCritField(combatant) {
 			const weaknesses = getCombatantWeaknesses(combatant);
 			const resistances = getResistances(combatant.element);
-			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.element)}`, value: `Critical Hit: ${combatant.crit ? "💥" : "🚫"}\nWeaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}` });
-		});
-		return embed.setTitle(`Assassin Predictions for Round ${adventure.room.round}`);
+			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.element)}`, value: `Critical Hit: ${combatant.crit ? "💥" : "🚫"}\nWeaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}`, inline: true });
+		}
+		// Separate Enemies and Delvers into different rows
+		adventure.room.enemies.filter(combatant => combatant.hp > 0).forEach(createElementAndCritField);
+		embed.addFields({ name: ZERO_WIDTH_WHITESPACE, value: ZERO_WIDTH_WHITESPACE });
+		adventure.delvers.forEach(createElementAndCritField);
+		return embed.setDescription(`Assassin predictions for Round ${adventure.room.round}:`);
 	},
 	(combatant) => {
 		const weaknesses = getCombatantWeaknesses(combatant);

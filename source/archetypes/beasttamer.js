@@ -15,22 +15,24 @@ module.exports = new ArchetypeTemplate("Beast Tamer",
 	},
 	["Stick", "Carrot"],
 	(embed, adventure) => {
-		adventure.room.moves.forEach(({ userReference, targets, name, priority }) => {
+		const moveLines = [];
+		adventure.room.moves.forEach(({ userReference, name, priority }) => {
 			if (userReference.team === "enemy") {
 				const enemy = adventure.getCombatant(userReference);
 				if (enemy.hp > 0) {
 					if (name !== "@{clone}") {
-						embed.addFields({ name: enemy.name, value: `Round ${adventure.room.round + 1}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}` });
+						moveLines.push(`${bold(enemy.name)}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}`);
 					} else {
-						embed.addFields({ name: enemy.name, value: "Mirror Clones mimic your allies!" })
+						moveLines.push(`${bold(enemy.name)}: Mimic ${adventure.delvers[userReference.index].name}`);
 					}
 				}
 			}
 		})
+		embed.addFields({ name: `Enemy Moves (Round ${adventure.room.round + 1})`, value: moveLines.join("\n") });
 		const nextPetOwner = adventure.delvers[adventure.nextPet];
 		const ownerPlayer = getPlayer(nextPetOwner.id, adventure.guildId);
 		const [moveName, moveDescription] = getPetMoveDescription(nextPetOwner.pet, adventure.petRNs[0], ownerPlayer.pets[nextPetOwner.pet]);
-		return embed.setTitle(`Beast Tamer Predictions for Round ${adventure.room.round + 1}`).addFields({ name: `Next Pet Move (Round: ${adventure.room.round === 0 ? 2 : adventure.room.round + (adventure.room.round % 2)})`, value: `${nextPetOwner.name}'s ${nextPetOwner.pet} will use ${bold(moveName)}\n${italic(moveDescription)}` });
+		return embed.setDescription("Beast Tamer predictions:").addFields({ name: `Next Pet Move (Round ${2 + adventure.room.round - (adventure.room.round % 2)})`, value: `${nextPetOwner.name}'s ${nextPetOwner.pet} will use ${bold(moveName)}\n${italic(moveDescription)}` });
 	},
 	(combatant) => {
 		if (combatant.pet) {

@@ -22,7 +22,7 @@ module.exports = new ArchetypeTemplate("Hemomancer",
 		activeCombatants.forEach(combatant => {
 			embed.addFields({ name: combatant.name, value: `${generateTextBar(combatant.hp, combatant.getMaxHP(), 16)} ${combatant.hp}/${combatant.getMaxHP()} HP${combatant.protection ? `, ${combatant.protection} Protection` : ""}\nSpeed: ${combatant.getSpeed(true)}` });
 		});
-		return embed.setTitle(`Hemomancer Predictions for Round ${adventure.room.round + 1}`).setAuthor({ name: "Combatants may act out of order if they have priority or are tied in speed.", iconURL: POTL_ICON_URL });
+		return embed.setDescription(`Hemomancer predictions for Round ${adventure.room.round + 1}:`).setAuthor({ name: "Combatants may act out of order if they have priority or are tied in speed.", iconURL: POTL_ICON_URL });
 	},
 	(combatant) => {
 		return `Speed: ${combatant.getSpeed(true)}`;
