@@ -6,15 +6,15 @@ const commandDictionary = {};
 module.exports = {
 	/** @type {string[]} */
 	commandFiles: [
-		"about.js",
 		"adventure",
+		"manual",
+		"set-favorite",
+		"about.js",
 		"commands.js",
 		"data-policy.js",
 		"delve.js",
-		"favorite-pet.js",
 		"feedback.js",
 		"invite.js",
-		"manual",
 		"ping.js",
 		"player-stats.js",
 		"regenerate.js",

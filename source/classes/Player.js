@@ -15,6 +15,7 @@ class Player {
 	archetypes = {};
 	/** @type {{[petName: string]: number}} value is pet level (which should be on range [1-4])*/
 	pets = {};
+	favoriteArchetype = "";
 	favoritePet = "";
 
 	/** @param {number} count */

@@ -54,6 +54,9 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 				if (player.favoritePet !== "") {
 					delver.pet = player.favoritePet;
 				}
+				if (player.favoriteArchetype !== "") {
+					delver.archetype = player.favoriteArchetype;
+				}
 				adventure.delvers.push(delver);
 				prerollBoss("Final Battle", adventure);
 				prerollBoss("Artifact Guardian", adventure);

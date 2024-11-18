@@ -51,6 +51,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		if (player.favoritePet !== "") {
 			delver.pet = player.favoritePet;
 		}
+		if (player.favoriteArchetype !== "") {
+			delver.archetype = player.favoriteArchetype;
+		}
 		adventure.delvers.push(delver);
 		adventure.lives++;
 		adventure.gainGold(50);
