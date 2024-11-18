@@ -272,9 +272,7 @@ function nextRoom(roomType, thread) {
 				spawnEnemy(getEnemy(enemyName), adventure);
 			}
 		}
-		if (adventure.petRNs.length === 0) {
-			generatePetRNs(adventure);
-		}
+		generatePetRNs(adventure);
 		newRound(adventure, thread);
 		setAdventure(adventure);
 	} else {
@@ -737,7 +735,7 @@ function newRound(adventure, thread, lastRoundText) {
 			const petMoveTemplate = getPetMove(owner.pet, adventure.petRNs, getPlayer(owner.id, thread.guildId).pets[owner.pet]);
 			const petMove = new Move(petMoveTemplate.name, "pet", { team: "delver", index: adventure.nextPet })
 				.setSpeedByValue(100);
-			petMoveTemplate.selector(owner, adventure).forEach(reference => {
+			petMoveTemplate.selector(owner, adventure.petRNs).forEach(reference => {
 				petMove.addTarget(reference);
 			})
 			adventure.room.moves.push(petMove);
@@ -839,7 +837,7 @@ function resolveMove(move, adventure) {
 					results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 				}
 
-				results.push(...effect(livingTargets, user, adventure));
+				results.push(...effect(livingTargets, user, adventure, adventure.petRNs));
 				if (move.type === "gear" && move.userReference.team === "delver") {
 					const breakText = decrementDurability(move.name, user, adventure);
 					if (breakText) {

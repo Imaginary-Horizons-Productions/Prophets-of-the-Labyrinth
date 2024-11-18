@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 				changeStagger(targets, "elementMatchFoe");
 			}
 		}
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed), addModifier([user], quicken))));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed).concat(addModifier([user], quicken)))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Lethal Shortsword", "Toxic Shortsword")

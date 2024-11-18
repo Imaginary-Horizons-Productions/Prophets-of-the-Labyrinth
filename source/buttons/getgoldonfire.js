@@ -16,9 +16,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		burnDamage = parseInt(burnDamage);
-		const goldCount = adventure.room.resources.gold.count;
+		const goldCount = adventure.room.resources.Gold.count;
 		adventure.gainGold(goldCount);
-		delete adventure.room.resources.gold;
+		delete adventure.room.resources.Gold;
 		// deal damage on 50% chance
 		if (adventure.generateRandomNumber(RN_TABLE_BASE, "general") > (RN_TABLE_BASE / 2)) {
 			adventure.room.history.Burned.push(interaction.member.displayName);

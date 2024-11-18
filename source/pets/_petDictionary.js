@@ -55,13 +55,13 @@ function generatePetRNs(adventure) {
 			moveTemplate.rnConfig.forEach(rnType => {
 				switch (rnType) {
 					case "enemyIndex":
-						const livingEnemyIndicies = [];
+						const livingEnemyIndices = [];
 						for (let i = 0; i < adventure.room.enemies.length; i++) {
 							if (adventure.room.enemies[i].hp > 0) {
-								livingEnemyIndicies.push(i);
+								livingEnemyIndices.push(i);
 							}
 						}
-						adventure.petRNs.push(livingEnemyIndicies[adventure.generateRandomNumber(livingEnemyIndicies.length, "general")]);
+						adventure.petRNs.push(livingEnemyIndices[adventure.generateRandomNumber(livingEnemyIndices.length, "general")]);
 						break;
 					default:
 						adventure.petRNs.push(adventure.generateRandomNumber(rnType, "general"));

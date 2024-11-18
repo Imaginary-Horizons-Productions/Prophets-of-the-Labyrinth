@@ -27,7 +27,7 @@ module.exports = new ArchetypeTemplate("Legionnaire",
 			if (move) {
 				targetNames = move.targets.map(targetReference => adventure.getCombatant(targetReference).name);
 			}
-			embed.addFields({ name: combatant.name, value: `Targets: ${targetNames === null ? "undecided" : (listifyEN(targetNames, false) || "none")}\nCritical Hit: ${combatant.crit ? "💥" : "🚫"}` });
+			embed.addFields({ name: combatant.name, value: `Targets: ${targetNames === null ? "undecided" : (listifyEN(targetNames, false) || "none")}\nCritical Hit: ${combatant.crit ? "💥" : "🚫"}`, inline: true });
 		});
 		return embed.setDescription(`Legionnaire predictions for Round ${adventure.room.round + 1}:`);
 	},

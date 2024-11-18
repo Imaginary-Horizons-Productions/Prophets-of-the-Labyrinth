@@ -68,31 +68,33 @@ module.exports = new SelectWrapper(mainId, 3000,
 			collector.on("collect", collectedInteraction => {
 				const [mainId, startedDepth, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
 				const adventure = getAdventure(collectedInteraction.channelId);
-				const { count, cost } = adventure.room.resources[name];
-				if (count < 1 || startedDepth !== adventure.depth.toString()) {
-					return;
-				}
+				if (name in adventure.room.resources) {
+					const { count, cost } = adventure.room.resources[name];
+					if (count < 1 || startedDepth !== adventure.depth.toString()) {
+						return;
+					}
 
-				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
-				const gearRecord = buildGearRecord(name, adventure);
-				let discardedName;
-				if (mainId.endsWith("replace")) {
-					discardedName = delver.gear[gearIndex].name;
-					delver.gear.splice(gearIndex, 1, gearRecord);
-				} else {
-					delver.gear.push(gearRecord);
+					const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
+					const gearRecord = buildGearRecord(name, adventure);
+					let discardedName;
+					if (mainId.endsWith("replace")) {
+						discardedName = delver.gear[gearIndex].name;
+						delver.gear.splice(gearIndex, 1, gearRecord);
+					} else {
+						delver.gear.push(gearRecord);
+					}
+					if (delver.hp > delver.getMaxHP()) {
+						delver.hp = delver.getMaxHP();
+					}
+					collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
+						adventure.room.decrementResource(name, 1);
+						adventure.gold -= cost;
+						return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
+					}).then(() => {
+						collectedInteraction.channel.send(`${bold(collectedInteraction.member.displayName)} buys a ${name} for ${cost}g${discardedName ? ` (${discardedName} discarded)` : ""}.`);
+						setAdventure(adventure);
+					})
 				}
-				if (delver.hp > delver.getMaxHP()) {
-					delver.hp = delver.getMaxHP();
-				}
-				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-					adventure.room.decrementResource(name, 1);
-					adventure.gold -= cost;
-					return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
-				}).then(() => {
-					collectedInteraction.channel.send(`${bold(collectedInteraction.member.displayName)} buys a ${name} for ${cost}g${discardedName ? ` (${discardedName} discarded)` : ""}.`);
-					setAdventure(adventure);
-				})
 			})
 
 			collector.on("end", async (interactionCollection) => {

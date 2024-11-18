@@ -20,10 +20,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const eligibleGear = [];
 		delver.gear.forEach(gear => {
 			const upgrades = getGearProperty(gear.name, "upgrades");
-			eligibleGear.push([gear.name, upgrades ?? []]);
+			if (upgrades?.length > 0) {
+				eligibleGear.push([gear.name, upgrades]);
+			}
 		});
 
-		if (eligibleGear.every(([gearName, upgrades]) => upgrades.length < 1)) {
+		if (eligibleGear.length < 1) {
 			interaction.reply({ content: "None of your gear can be upgraded.", ephemeral: true });
 			return;
 		}

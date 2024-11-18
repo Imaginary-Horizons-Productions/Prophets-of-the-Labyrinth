@@ -17,7 +17,7 @@ module.exports = new GearTemplate("Stick",
 		}
 
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
-		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
+		if (targetMove.priority > 0) {
 			pendingDamage *= bonus;
 		}
 

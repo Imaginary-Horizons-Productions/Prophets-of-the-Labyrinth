@@ -47,12 +47,14 @@ module.exports = new SelectWrapper(mainId, 3000,
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
-				adventure.gold -= cost;
-				adventure.room.decrementResource(name, 1);
-				adventure.gainItem(name, 1);
-				interaction.message.edit(renderRoom(adventure, interaction.channel));
-				collectedInteraction.channel.send({ content: `${interaction.member.displayName} buys a ${name} for ${cost}g.` });
-				setAdventure(adventure);
+				if (name in adventure.room.resources) {
+					adventure.gold -= cost;
+					adventure.room.decrementResource(name, 1);
+					adventure.gainItem(name, 1);
+					interaction.message.edit(renderRoom(adventure, interaction.channel));
+					collectedInteraction.channel.send({ content: `${interaction.member.displayName} buys a ${name} for ${cost}g.` });
+					setAdventure(adventure);
+				}
 			})
 
 			collector.on("end", async (interactionCollection) => {

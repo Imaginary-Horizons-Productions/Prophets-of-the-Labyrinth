@@ -19,8 +19,8 @@ class PetMoveTemplate {
 	/**
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
-	 * @param {(owner: Delver, adventure: Adventure) => CombatantReference[]} selectorFunction
-	 * @param {(targets: Combatant[], owner: Delver, adventure: Adventure) => string[]} effectFunction
+	 * @param {(owner: Delver, petRNs: number[]) => CombatantReference[]} selectorFunction
+	 * @param {(targets: Combatant[], owner: Delver, adventure: Adventure, petRNs: number[]) => string[]} effectFunction
 	 */
 	constructor(nameInput, descriptionInput, selectorFunction, effectFunction) {
 		this.name = nameInput;
