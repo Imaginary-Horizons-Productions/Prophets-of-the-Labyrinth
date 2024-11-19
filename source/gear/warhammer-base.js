@@ -3,7 +3,7 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Warhammer",
 	[
-		["use", "Strike a foe for @{damage} (+@{bonus} if foe is stunned) @{element} damage"],
+		["use", "Strike a foe for <@{damage} + @{bonus} if foe is stunned> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

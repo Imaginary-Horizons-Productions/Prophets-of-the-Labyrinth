@@ -3,7 +3,7 @@ const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, gene
 
 module.exports = new GearTemplate("Urgent Fever Break",
 	[
-		["use", `Deal @{element} damage to a foe (with priority), equal to pending damage from @{mod0} and @{mod1}, then remove those debuffs`],
+		["use", `Deal <pending damage from @{mod0} and @{mod1}> @{element} damage to a foe with priority then cure it of those debuffs`],
 		["Critical💥", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Spell",

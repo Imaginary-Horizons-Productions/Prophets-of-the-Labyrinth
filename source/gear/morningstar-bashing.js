@@ -4,7 +4,7 @@ const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Bashing Morning Star",
 	[
-		["use", "Strike a foe for @{damage} (+protection) @{element} damage"],
+		["use", "Strike a foe for <@{damage} + protection> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

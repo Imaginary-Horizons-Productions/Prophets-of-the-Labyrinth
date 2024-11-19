@@ -315,16 +315,16 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			if (gearName === "Iron Fist Punch") {
 				damage += 45 * holder.getModifierStacks("Iron Fist Stance");
 			}
-			text = text.replace(/@{damage}/g, Math.floor(Math.min(damage, holder.getDamageCap())));
+			text = text.replace(/@{damage}/g, `[${Math.floor(Math.min(damage, holder.getDamageCap()))}]`);
 		} else {
-			text = text.replace(/@{damage}/g, `${damage} + power`);
+			text = text.replace(/@{damage}/g, `(${damage} + power)`);
 		}
 	}
 
 	if (holder) {
-		text = text.replace(/@{bonusSpeed}/g, Math.max(0, holder.getSpeed(true) - 100));
+		text = text.replace(/@{bonusSpeed}/g, `[${Math.max(0, holder.getSpeed(true) - 100)}]`);
 	} else {
-		text = text.replace(/@{bonusSpeed}/g, "speed over 100");
+		text = text.replace(/@{bonusSpeed}/g, "(speed over 100)");
 	}
 
 	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.element : null);

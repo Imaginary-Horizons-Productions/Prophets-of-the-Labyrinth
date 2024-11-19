@@ -3,7 +3,7 @@ const { addModifier, dealDamage, changeStagger, generateModifierResultLines, com
 
 module.exports = new GearTemplate("Awesome Ice Bolt",
 	[
-		["use", "Inflict @{damage} @{element} damage (+@{bonus} if foe is stunned) and @{mod0Stacks} @{mod0} on one foe"],
+		["use", "Inflict <@{damage} + @{bonus} if foe is stunned> @{element} damage and @{mod0Stacks} @{mod0} on one foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Spell",

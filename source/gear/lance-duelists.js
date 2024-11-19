@@ -3,7 +3,7 @@ const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = 
 
 module.exports = new GearTemplate("Duelist's Lance",
 	[
-		["use", "Strike a foe for ([@{damage}] + [@{bonusSpeed}] + @{bonus} if only attacker) @{element} damage, then gain @{mod0Stacks} @{mod0}"],
+		["use", "Strike a foe for <@{damage} + @{bonusSpeed} + @{bonus} if only attacker> @{element} damage, then gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

@@ -4,7 +4,7 @@ const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Charging War Cry",
 	[
-		["use", `Also target all foes with @{mod1} then gain @{mod0Stacks} @{mod0}`],
+		["use", "Also target all foes with @{mod1} then gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Stagger +@{bonus}"]
 	],
 	"Technique",

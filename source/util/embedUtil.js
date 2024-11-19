@@ -37,7 +37,8 @@ const potlTips = [
 	"Check your hp and gear even when there isn't a button for it with '/adventure inspect-self'!",
 	"Combatants shrug off 1 Stagger each round by default.",
 	"Look up game information at any time with '/manual'!",
-	"Enemy HP is randomized outside of Final Battles."
+	"Enemy HP is randomized outside of Final Battles.",
+	"Numbers based on user stats will be surrounded in [], formulae will be surrounded in <>."
 ];
 /** @type {EmbedAuthorData} */
 const authorTipPool = potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })).concat(potlTips.map(text => ({ name: text, iconURL: POTL_ICON_URL })), discordTips.map(text => ({ name: text, iconURL: DISCORD_ICON_URL })));
@@ -385,11 +386,17 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 function gearToEmbedField(gearName, durability, holder) {
 	/** @type {number} */
 	const maxDurability = getGearProperty(gearName, "maxDurability");
-	const durabilityText = [Infinity, 0].includes(maxDurability) ? "" : ` (${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability} /${maxDurability} durability)`;
-	return {
-		name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}${durabilityText}`,
-		value: buildGearDescription(gearName, true, holder)
-	};
+	if ([Infinity, 0].includes(maxDurability)) {
+		return {
+			name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}`,
+			value: buildGearDescription(gearName, true, holder)
+		};
+	} else {
+		return {
+			name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}`,
+			value: `${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability} /${maxDurability} durability\n${buildGearDescription(gearName, true, holder)}`
+		};
+	}
 }
 
 /** Generates an object to Discord.js's specification that corresponds with a delver's in-adventure stats
