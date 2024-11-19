@@ -36,4 +36,4 @@ module.exports = new GearTemplate("Reinforced Blood Aegis",
 	.setSidegrades("Charging Blood Aegis", "Toxic Blood Aegis")
 	.setDurability(15)
 	.setHPCost(25)
-	.setProtection(250);
+	.setProtection(200);
