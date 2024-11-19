@@ -1,9 +1,9 @@
-const { GearTemplate, Move } = require('../classes');
+const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Staggering Stick",
 	[
-		["use", "Strike a foe for @{damage} (x@{bonus} if foe has priority) @{element} damage"],
+		["use", "Strike a foe for <@{damage} x @{bonus} if foe has priority> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Technique",

@@ -43,7 +43,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		})
 		if (options.length < 1) {
-			interaction.reply({ content: "You don't have any upgraded gear that can be tinkered with.", ephemeral: true });
+			interaction.reply({ content: "You don't have any upgraded gear that can be modified with.", ephemeral: true });
 			return;
 		}
 
@@ -82,7 +82,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				transformGear(delver, index, gearName, sidegradeName);
 				adventure.room.history.Tinkerers.push(delver.name);
 				adventure.room.actions -= actionCost;
-				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}**'s *${gearName}* has been tinkered to **${sidegradeName}**!`);
+				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}**'s *${gearName}* has been modified to **${sidegradeName}**!`);
 				setAdventure(adventure);
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 					return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));

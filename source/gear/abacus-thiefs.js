@@ -3,7 +3,7 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thief's Abacus",
 	[
-		["use", "Deal @{damage} (+5% foe max HP) @{element} damage to a foe, gain @{bonus}g on kill"],
+		["use", "Deal <@{damage} + 5% target max HP> @{element} damage to a foe, gain @{bonus}g on kill"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Trinket",

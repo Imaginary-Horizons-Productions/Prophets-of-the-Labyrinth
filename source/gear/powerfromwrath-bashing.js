@@ -3,7 +3,7 @@ const { payHP, dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Bashing Power from Wrath",
 	[
-		["use", "Pay @{hpCost} to strike a foe for @{damage} @{element} (+protection) damage (greatly increases with your missing HP)"],
+		["use", "Pay @{hpCost} to strike a foe for <(@{damage} + protection) x 1 to 2 based on your missing HP> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",

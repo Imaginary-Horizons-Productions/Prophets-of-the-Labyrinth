@@ -5,7 +5,7 @@ const { surpassingPassive } = require('./descriptions/passives');
 module.exports = new GearTemplate("Surpassing Lance",
 	[
 		surpassingPassive,
-		["use", "Strike a foe for ([@{damage}] + [@{bonusSpeed}]) @{element} damage"],
+		["use", "Strike a foe for <@{damage} + @{bonusSpeed}> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

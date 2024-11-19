@@ -1,9 +1,9 @@
-const { GearTemplate, Move } = require('../classes');
+const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shattering Stick",
 	[
-		["use", "Inflict @{damage} (x@{bonus} if foe has priority) @{element} damage and @{mod0Stacks} @{mod0} on a foe"],
+		["use", "Inflict <@{damage} x @{bonus} if foe has priority> @{element} damage and @{mod0Stacks} @{mod0} on a foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Technique",

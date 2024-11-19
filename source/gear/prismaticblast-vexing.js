@@ -5,7 +5,7 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vexing Prismatic Blast",
 	[
-		["use", "Strike a foe and adjacent foes for @{damage} @{element} damage (+@{bonus} if target has any debuffs)"],
+		["use", "Strike a foe and adjacent foes for <@{damage} + @{bonus} if target has any debuffs> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Spell",

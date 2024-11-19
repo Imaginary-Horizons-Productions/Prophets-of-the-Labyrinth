@@ -3,7 +3,7 @@ const { addModifier, dealDamage, changeStagger, generateModifierResultLines } = 
 
 module.exports = new GearTemplate("Reactive Battleaxe",
 	[
-		["use", "Strike a foe for @{damage} (+@{bonus} if after foe) @{element} damage, gain @{mod0Stacks} @{mod0}"],
+		["use", "Strike a foe for <@{damage} + @{bonus} if after target> @{element} damage, gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

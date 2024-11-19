@@ -3,7 +3,7 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Lance",
 	[
-		["use", "Strike a foe for ([@{damage}] + [@{bonusSpeed}]) @{element} damage"],
+		["use", "Strike a foe for <@{damage}] + @{bonusSpeed}> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

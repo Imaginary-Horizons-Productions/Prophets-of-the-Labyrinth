@@ -5,7 +5,7 @@ const { surpassingPassive } = require('./descriptions/passives');
 module.exports = new GearTemplate("Surpassing Fever Break",
 	[
 		surpassingPassive,
-		["use", `Deal @{element} damage to a foe, equal to pending damage from @{mod0} and @{mod1}, then remove those debuffs`],
+		["use", `Deal <pending damage from @{mod0} and @{mod1}> @{element} damage to a foe then cure it of those debuffs`],
 		["Critical💥", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Spell",
