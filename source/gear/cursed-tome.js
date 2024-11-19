@@ -8,5 +8,5 @@ module.exports = new GearTemplate("Cursed Tome",
 	"Untyped",
 	-50,
 	(targets, user, adventure) => []
-).setUpgrades("Blood Aegis", "Certain Victory", "Infinite Regeneration", "Power from Wrath")
+).setUpgrades("Blood Aegis", "Certain Victory", "Infinite Regeneration", "Power from Wrath", "Universal Solution", "Resource Transmuter")
 	.setPoise(-2);

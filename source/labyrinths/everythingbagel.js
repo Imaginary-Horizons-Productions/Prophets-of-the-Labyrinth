@@ -196,7 +196,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Medicine",
 				"Midas Staff",
 				"Omamori",
-				"Poison Torrent"
+				"Poison Torrent",
+				"Universal Solution"
 			],
 			Rare: [
 				"Sharpened Abacus",
@@ -219,7 +220,10 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Devoted Omamori",
 				"Distracting Poison Torrent",
 				"Harmful Poison Torrent",
-				"Staggering Poison Torrent"
+				"Staggering Poison Torrent",
+				"Centering Universal Solution",
+				"Evasive Universal Solution",
+				"Harmful Universal Solution"
 			]
 		},
 		Wind: {
@@ -232,7 +236,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Daggers",
 				"Inspiration",
 				"Refreshing Breeze",
-				"Universal Solution"
+				"Air Blades"
 			],
 			Rare: [
 				"Cleansing Barrier",
@@ -253,9 +257,9 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Accelerating Refreshing Breeze",
 				"Supportive Refreshing Breeze",
 				"Swift Refreshing Breeze",
-				"Centering Universal Solution",
-				"Evasive Universal Solution",
-				"Harmful Universal Solution"
+				"Accelerating Air Blades",
+				"Toxic Air Blades",
+				"Unstoppable Air Blades"
 			]
 		},
 		Untyped: {

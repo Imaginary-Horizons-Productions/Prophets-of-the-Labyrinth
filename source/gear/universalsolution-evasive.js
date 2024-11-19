@@ -10,7 +10,7 @@ module.exports = new GearTemplate(gearName,
 		["Critical💥", "Transfer all your debuffs instead"]
 	],
 	"Pact",
-	"Wind",
+	"Water",
 	350,
 	(targets, user, adventure) => {
 		const { element, modifiers: [poison, evade] } = module.exports;

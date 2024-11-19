@@ -8,6 +8,7 @@ Adds Quicken to the user
 
 **Available on**
 - all Bucklers (Light)
+- Air Blades (Wind)
 - Buckler (Light)
 - Cloak (Wind)
 - Midas Staff (Water)
@@ -62,7 +63,7 @@ Relieve Stagger on user
 
 **Available on**
 - Omamori (Water)
-- Universal Solution (Wind)
+- Universal Solution (Water)
 
 ### Charging
 Adds Power Up to the user
@@ -124,6 +125,7 @@ Add Distracted to target
 Doubles number of attacks, halves base damage (double power scaling)
 
 **Available on**
+- all Air Blades (Wind)
 - Firecracker (Fire)
 - Pistol (Untyped)
 
@@ -145,7 +147,7 @@ Adds Evade to the user
 - Cloak (Wind)
 - Heat Mirage (Fire)
 - Shoulder Throw (Light)
-- Universal Solution (Wind)
+- Universal Solution (Water)
 
 ### Fate-Sealing
 Adds Retain to target on crit
@@ -189,7 +191,7 @@ Deals damage to target
 - Corrosion (Fire)
 - Poison Torrent (Water)
 - Shoulder Throw (Light)
-- Universal Solution (Wind)
+- Universal Solution (Water)
 
 ### Healing
 Heal the user
@@ -459,6 +461,7 @@ Increment a stack on all target's debuffs
 Adds Poison to target
 
 **Available on**
+- Air Blades (Wind)
 - Blood Aegis (Darkness)
 - Cauldron Stir (Water)
 - Firecracker (Fire)
@@ -476,6 +479,7 @@ Deals Unblockable damage, usable while Stunned
 
 **Available on**
 - Abacus (Water)
+- Air Blades (Wind)
 - Bow (Wind)
 - Scythe (Darkness)
 - Warhammer (Earth)
