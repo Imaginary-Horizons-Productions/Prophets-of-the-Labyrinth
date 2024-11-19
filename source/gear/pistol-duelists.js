@@ -28,12 +28,14 @@ module.exports = new GearTemplate(gearName,
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (getCombatantWeaknesses(target).includes(element)) {
+			const inducedWeaknessCount = Object.keys(target.modifiers).filter(modifier => modifier.endsWith("Weakness")).length;
+			const pendingPowerUp = { name: "Power Up", stacks: Math.floor(powerUp.stacks / inducedWeaknessCount) };
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			const selectedAllies = [];
 			for (let i = 0; i < user.roundRns[`${gearName}${SAFE_DELIMITER}allies`].length; i++) {
 				selectedAllies.push(allyTeam[user.roundRns[`${gearName}${SAFE_DELIMITER}allies`][i] % allyTeam.length]);
 			}
-			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(selectedAllies, powerUp))));
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(selectedAllies, pendingPowerUp))));
 		}
 		return resultLines;
 	}
