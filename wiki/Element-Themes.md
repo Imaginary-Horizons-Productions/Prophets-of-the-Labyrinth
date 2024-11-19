@@ -39,7 +39,6 @@ Archetypes: Knight, Detective
 - Charging
 - Guarding
 - Hunter's
-- Impactful
 - Organic
 - Staggering
 
@@ -78,6 +77,7 @@ Weak to: 🌿 Earth, 💨 Wind
 Archetypes: Martial Artist
 
 ### Common Variants
+- Kinetic
 - Soothing
 - Staggering
 - Unstoppable
@@ -148,7 +148,9 @@ Archetypes:
 - Accurate
 - Hearty
 - Poised
+- Powerful
 - Swift
+- Wise
 
 ### Uncommon Variants
 
@@ -169,7 +171,6 @@ Archetypes:
 - Healing
 - Lucky
 - Midas's
-- Powerful
 - Potent
 - Purifying
 - Reactive
@@ -185,4 +186,3 @@ Archetypes:
 - Tormenting
 - Unlucky
 - Vexing
-- Wise
