@@ -13,6 +13,8 @@ In keeping with the elemental alignment of mechanics, the Knight is now Light el
 - Fixed delvers being able to end up above max HP when acquiring Cursed Blade
 - Fixed Reckless Certain Victory not reporting its user paying HP
 - Fixed Lance descriptions not accounting for double Power Up contribution
+- Made Double variant consistent: twice as many hits at half base power to double power scaling
+- Pistol's Power Up stacks is now divided by the number of Weakness debuffs the target has to nerf the team of 6 Detectives
 ### Command Improvements
 - Added `/manual modifier-info` & `/manual challenge-info`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)

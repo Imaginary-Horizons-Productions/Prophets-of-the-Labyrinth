@@ -120,7 +120,7 @@ Add Distracted to target
 - Prismatic Blast (Light)
 
 ### Double
-Doubles number of targets
+Doubles number of attacks, halves base damage (double power scaling)
 
 **Available on**
 - Firecracker (Fire)

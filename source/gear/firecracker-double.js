@@ -24,5 +24,5 @@ module.exports = new GearTemplate("Double Firecracker",
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}6`, team: "foe" })
 	.setSidegrades("Midas's Firecracker", "Toxic Firecracker")
 	.setDurability(15)
-	.setDamage(5)
+	.setDamage(2)
 	.setRnConfig({ "foes": 6 });
