@@ -197,10 +197,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Midas Staff",
 				"Omamori",
 				"Poison Torrent",
-				"Universal Solution",
-				"Centering Universal Solution",
-				"Evasive Universal Solution",
-				"Harmful Universal Solution"
+				"Universal Solution"
 			],
 			Rare: [
 				"Sharpened Abacus",
@@ -223,7 +220,10 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Devoted Omamori",
 				"Distracting Poison Torrent",
 				"Harmful Poison Torrent",
-				"Staggering Poison Torrent"
+				"Staggering Poison Torrent",
+				"Centering Universal Solution",
+				"Evasive Universal Solution",
+				"Harmful Universal Solution"
 			]
 		},
 		Wind: {
