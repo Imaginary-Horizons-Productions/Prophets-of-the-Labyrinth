@@ -3,15 +3,15 @@ const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = 
 
 module.exports = new GearTemplate("Shattering Lance",
 	[
-		["use", "Apply @{mod0Stacks} @{mod0} and @{impactfulDamage} @{element} damage (double increase from @{mod1}) to a foe"],
+		["use", "Apply @{mod0Stacks} @{mod0} and <@{damage} + @{bonusSpeed}> @{element} damage to a foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
-	"Earth",
+	"Light",
 	350,
 	(targets, user, adventure) => {
 		const { element, modifiers: [frail], damage, critMultiplier } = module.exports;
-		let pendingDamage = user.getPower() + user.getModifierStacks("Power Up") + damage;
+		let pendingDamage = user.getPower() + Math.max(0, user.getSpeed(true) - 100) + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Shattering Lance",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Accelerating Lance", "Unstoppable Lance")
-	.setModifiers({ name: "Frail", stacks: 4 }, { name: "Power Up", stacks: 0 })
+	.setSidegrades("Duelist's Lance", "Surpassing Lance")
+	.setModifiers({ name: "Frail", stacks: 4 })
 	.setDurability(15)
 	.setDamage(40);

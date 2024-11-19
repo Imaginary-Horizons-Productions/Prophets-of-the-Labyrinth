@@ -3,7 +3,7 @@ const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Lance",
 	[
-		["use", "Strike a foe for @{impactfulDamage} @{element} damage (double increase from @{mod0})"],
+		["use", "Strike a foe for <@{damage}] + @{bonusSpeed}> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Lance",
 	200,
 	(targets, user, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;
-		let pendingDamage = user.getPower() + user.getModifierStacks("Power Up") + damage;
+		let pendingDamage = user.getPower() + Math.max(0, user.getSpeed(true) - 100) + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
@@ -20,8 +20,7 @@ module.exports = new GearTemplate("Lance",
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
-).setUpgrades("Accelerating Lance", "Shattering Lance", "Unstoppable Lance")
+).setUpgrades("Duelist's Lance", "Shattering Lance", "Surpassing Lance")
 	.setTargetingTags({ type: "single", team: "foe" })
-	.setModifiers({ name: "Power Up", stacks: 0 })
 	.setDurability(15)
 	.setDamage(40);

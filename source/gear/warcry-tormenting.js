@@ -5,7 +5,7 @@ const { isDebuff } = require('../modifiers/_modifierDictionary.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
 	[
-		["use", `Duplicate debuffs on a foe; also target all foes with @{mod0}`],
+		["use", "Duplicate debuffs on a foe; also target all foes with @{mod0}"],
 		["Critical💥", "Stagger +@{bonus}"]
 	],
 	"Technique",

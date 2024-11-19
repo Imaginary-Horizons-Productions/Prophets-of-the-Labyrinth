@@ -4,7 +4,7 @@ const { dealDamage, addModifier, changeStagger, generateModifierResultLines, com
 
 module.exports = new GearTemplate("Tormenting Censer",
 	[
-		["use", "Burn a foe for @{damage} (+@{bonus} if target has debuffs) @{element} damage, duplicate its debuffs"],
+		["use", "Burn a foe for <@{damage} + @{bonus} if target has any debuffs> @{element} damage, duplicate its debuffs"],
 		["Critical💥", "Also apply @{mod0Stacks} @{mod0}"]
 	],
 	"Trinket",

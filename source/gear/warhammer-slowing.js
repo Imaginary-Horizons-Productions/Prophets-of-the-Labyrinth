@@ -3,7 +3,7 @@ const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = 
 
 module.exports = new GearTemplate("Slowing Warhammer",
 	[
-		["use", "Strike a foe for @{damage} (+@{bonus} if foe is stunned) @{element} damage and inflict @{mod0Stacks} @{mod0}"],
+		["use", "Strike a foe for <@{damage} + @{bonus} if foe is stunned> @{element} damage and inflict @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

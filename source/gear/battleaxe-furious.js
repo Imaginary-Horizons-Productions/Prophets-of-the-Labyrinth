@@ -3,7 +3,7 @@ const { addModifier, dealDamage, changeStagger, generateModifierResultLines } = 
 
 module.exports = new GearTemplate("Furious Battleaxe",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage (increases with your missing HP), gain @{mod0Stacks} @{mod0}"],
+		["use", "Strike a foe for <@{damage} x 1 to 1.5 based on your missing HP> @{element} damage, gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

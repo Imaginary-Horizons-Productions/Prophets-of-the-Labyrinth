@@ -4,11 +4,18 @@
 Delvers can now bring pets with them on adventure. Which pet you bring can be configured during the preparation phase, or with `/favorite-pet`. One of the party's pets will use a supportive move each even round (or Loaf Around). Pets can also be leveled-up permenantly outside of adventure, which upgrades their moves (or gets them to stop Loafing Around). Your pet kennel is individual per server, so you can have different experiences with different friend groups.
 ### Beast Tamer
 This new Archetype predicts the moves of enemies and pets (and if enemies have priority). Their Carrot gear entices an allied pet to act immediately and their Stick punishes foes that act with priority.
+### Knight
+Reworked the Knight to scale off of speed instead of Power Up. Lance gains damage for each point of Speed the Knight has above 100 (variant name: Kinetic), and Buckler gives Quicken instead of Power Up. This allows the Knight to benefit from other forms of speed increase (like gear, leveling-up, and round speed) instead of only Power Up, aligns with the Knight's desire to outspeed enemies for efficient protection provision, and gives speed interaction a less volatile payoff (since most previous payoffs were based on move order). The Knight's damage will probably go down, but this is a big enough change that we want to see the dust settle before attempting compensation buffs.
+
+In keeping with the elemental alignment of mechanics, the Knight is now Light element. Reinforced Buckler has been changed to Accelerating Buckler to increase the number of accessible Quicken stacks. Accelerating Lance has been changed to Duelist's Lance as Quicken + Kinetic would short-circuit gameplay. Unstoppable Lance has been changed to Surpassing Lance as the Knight no longer gains free access to Damage Cap increases through Power Up and Light having Unstoppable would give it both premium Stun application *and* mitigation.
 ### Gear
 - Reactive variants are back to a flat bonus
 - Fixed delvers being able to end up above max HP when acquiring Cursed Blade
 - Fixed Reckless Certain Victory not reporting its user paying HP
 - Fixed Lance descriptions not accounting for double Power Up contribution
+- Made Double variant consistent: twice as many hits at half base power to double power scaling
+- Pistol's Power Up stacks is now divided by the number of Weakness debuffs the target has to nerf the team of 6 Detectives
+- Reduced protection provided by Reinforced Blood Aegis to 200 (250 was more of an increase than other Reinforced variants)
 ### Command Improvements
 - Added `/manual modifier-info` & `/manual challenge-info`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)

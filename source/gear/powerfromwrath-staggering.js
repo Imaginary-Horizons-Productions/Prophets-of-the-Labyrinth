@@ -4,7 +4,7 @@ const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Staggering Power from Wrath",
 	[
-		["use", "Pay @{hpCost} to strike a foe for @{damage} @{element} damage (greatly increases with your missing HP)"],
+		["use", "Pay @{hpCost} to strike a foe for <@{damage} x 1 to 2 based on your missing HP> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",
