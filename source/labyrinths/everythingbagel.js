@@ -231,7 +231,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Cloak",
 				"Daggers",
 				"Inspiration",
-				"Refreshing Breeze"
+				"Refreshing Breeze",
+				"Universal Solution"
 			],
 			Rare: [
 				"Cleansing Barrier",
@@ -251,7 +252,10 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Sweeping Inspiration",
 				"Accelerating Refreshing Breeze",
 				"Supportive Refreshing Breeze",
-				"Swift Refreshing Breeze"
+				"Swift Refreshing Breeze",
+				"Centering Universal Solution",
+				"Evasive Universal Solution",
+				"Harmful Universal Solution"
 			]
 		},
 		Untyped: {

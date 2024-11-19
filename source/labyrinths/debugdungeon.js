@@ -72,11 +72,10 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Staggering Poison Torrent"
 		]])),
 		Wind: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Unstoppable Bow",
-			"Slowing Daggers",
-			"Accelerating Refreshing Breeze",
-			"Supportive Refreshing Breeze",
-			"Swift Refreshing Breeze"
+			"Universal Solution",
+			"Centering Universal Solution",
+			"Evasive Universal Solution",
+			"Harmful Universal Solution"
 		]])),
 		Untyped: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Pistol",

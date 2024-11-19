@@ -62,6 +62,7 @@ Relieve Stagger on user
 
 **Available on**
 - Omamori (Water)
+- Universal Solution (Wind)
 
 ### Charging
 Adds Power Up to the user
@@ -144,6 +145,7 @@ Adds Evade to the user
 - Cloak (Wind)
 - Heat Mirage (Fire)
 - Shoulder Throw (Light)
+- Universal Solution (Wind)
 
 ### Fate-Sealing
 Adds Retain to target on crit
@@ -187,6 +189,7 @@ Deals damage to target
 - Corrosion (Fire)
 - Poison Torrent (Water)
 - Shoulder Throw (Light)
+- Universal Solution (Wind)
 
 ### Healing
 Heal the user
@@ -515,3 +518,4 @@ Increases stats gained by level up
 - Adds Power Up to target (all Inspiration)
 - Also hits targets with Exposed (all War Cries)
 - Adds Power Up to random ally if hitting weakness (all Pistols)
+- Transfers debuffs to target (all Universal Problem Solvers)

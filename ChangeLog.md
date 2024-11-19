@@ -16,6 +16,7 @@ In keeping with the elemental alignment of mechanics, the Knight is now Light el
 - Made Double variant consistent: twice as many hits at half base power to double power scaling
 - Pistol's Power Up stacks is now divided by the number of Weakness debuffs the target has to nerf the team of 6 Detectives
 - Reduced protection provided by Reinforced Blood Aegis to 200 (250 was more of an increase than other Reinforced variants)
+- New Gear: Universal Solution (Wind Pact, variants: Centering, Evasive, Harmful) Transfer a random 2 of your debuffs to a single foe, then gain 3 Poison
 ### Command Improvements
 - Added `/manual modifier-info`, `/manual challenge-info` & `/set-favorite archetype`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)
