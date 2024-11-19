@@ -50,32 +50,16 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Surpassing Lance"
 		]])),
 		Water: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Blood Aegis",
-			"Charging Blood Aegis",
-			"Reinforced Blood Aegis",
-			"Toxic Blood Aegis",
-			"Corrosive Cauldron Stir",
-			"Sabotaging Cauldron Stir",
-			"Ice Bolt",
-			"Awesome Ice Bolt",
-			"Distracting Ice Bolt",
-			"Unlucky Ice Bolt",
-			"Bouncing Medicine",
-			"Cleansing Medicine",
-			"Soothing Medicine",
-			"Omamori",
-			"Centering Omamori",
-			"Cleansing Omamori",
-			"Devoted Omamori",
-			"Distracting Poison Torrent",
-			"Harmful Poison Torrent",
-			"Staggering Poison Torrent"
-		]])),
-		Wind: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Universal Solution",
 			"Centering Universal Solution",
 			"Evasive Universal Solution",
 			"Harmful Universal Solution"
+		]])),
+		Wind: Object.fromEntries(RARITIES.map(rarity => [rarity, [
+			"Air Blades",
+			"Accelerating Air Blades",
+			"Toxic Air Blades",
+			"Unstoppable Air Blades"
 		]])),
 		Untyped: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Pistol",
