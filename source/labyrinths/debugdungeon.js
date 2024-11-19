@@ -37,7 +37,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Sharpened Stick"
 		]])),
 		Fire: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Reactive Battleaxe",
+			"Double Firecracker",
 		]])),
 		Light: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Buckler",
@@ -79,13 +79,10 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Swift Refreshing Breeze"
 		]])),
 		Untyped: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Poised Chainmail",
-			"Powerful Chainmail",
-			"Accurate Scarf",
-			"Wise Scarf",
-			"Lucky Second Wind",
-			"Flanking Strong Attack",
-			"Wise Wolf Ring"
+			"Pistol",
+			"Double Pistol",
+			"Duelist's Pistol",
+			"Flanking Pistol",
 		]]))
 	},
 	{
