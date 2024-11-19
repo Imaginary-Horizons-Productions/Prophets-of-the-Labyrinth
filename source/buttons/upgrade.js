@@ -32,7 +32,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				upgradesPreviews.push({
 					name: gear.name,
 					value: upgrades.map(upgrade => {
-						const description = buildGearDescription(upgrade, false, delver);
+						const description = buildGearDescription(upgrade, false);
 						return `- ${underline(upgrade)} ${description}`;
 					}).join("\n")
 				});

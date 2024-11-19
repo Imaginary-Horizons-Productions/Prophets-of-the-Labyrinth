@@ -1,27 +1,28 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
+const { surpassingPassive } = require('./descriptions/passives');
 
-module.exports = new GearTemplate("Unstoppable Lance",
+module.exports = new GearTemplate("Surpassing Lance",
 	[
-		["use", "Strike a foe for @{impactfulDamage} @{element} unblockable damage (double increase from @{mod0}), even while Stunned"],
+		surpassingPassive,
+		["use", "Strike a foe for ([@{damage}] + [@{bonusSpeed}]) @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
-	"Earth",
+	"Light",
 	350,
 	(targets, user, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;
-		let pendingDamage = user.getPower() + user.getModifierStacks("Power Up") + damage;
+		let pendingDamage = user.getPower() + Math.max(0, user.getSpeed(true) - 100) + damage;
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, true, element, adventure);
+		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Accelerating Lance", "Shattering Lance")
-	.setModifiers({ name: "Power Up", stacks: 0 })
+	.setSidegrades("Duelist's Lance", "Shattering Lance")
 	.setDurability(15)
 	.setDamage(40);

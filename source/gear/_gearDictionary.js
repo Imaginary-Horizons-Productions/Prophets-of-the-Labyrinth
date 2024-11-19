@@ -32,10 +32,10 @@ for (const file of [
 	"bow-evasive.js",
 	"bow-thiefs.js",
 	"bow-unstoppable.js",
+	"buckler-accelerating.js",
 	"buckler-base.js",
 	"buckler-devoted.js",
 	"buckler-guarding.js",
-	"buckler-reinforced.js",
 	"carrot-base.js",
 	"carrot-devoted.js",
 	"carrot-lucky.js",
@@ -110,10 +110,10 @@ for (const file of [
 	"ironfiststance-base.js",
 	"ironfiststance-lucky.js",
 	"ironfiststance-organic.js",
-	"lance-accelerating.js",
 	"lance-base.js",
+	"lance-duelists.js",
 	"lance-shattering.js",
-	"lance-unstoppable.js",
+	"lance-surpassing.js",
 	"lifedrain-base.js",
 	"lifedrain-flanking.js",
 	"lifedrain-furious.js",
@@ -315,12 +315,16 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			if (gearName === "Iron Fist Punch") {
 				damage += 45 * holder.getModifierStacks("Iron Fist Stance");
 			}
-			text = text.replace(/@{damage}/g, Math.floor(Math.min(damage, holder.getDamageCap())))
-				.replace(/@{impactfulDamage}/g, Math.floor(Math.min(damage + holder.getModifierStacks("Power Up"), holder.getDamageCap())));
+			text = text.replace(/@{damage}/g, Math.floor(Math.min(damage, holder.getDamageCap())));
 		} else {
-			text = text.replace(/@{damage}/g, `(${damage} + power)`)
-				.replace(/@{impactfulDamage}/g, `(${damage} + power + Power Up)`);
+			text = text.replace(/@{damage}/g, `${damage} + power`);
 		}
+	}
+
+	if (holder) {
+		text = text.replace(/@{bonusSpeed}/g, Math.max(0, holder.getSpeed(true) - 100));
+	} else {
+		text = text.replace(/@{bonusSpeed}/g, "speed over 100");
 	}
 
 	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.element : null);

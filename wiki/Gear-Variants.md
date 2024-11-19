@@ -7,8 +7,9 @@ Adding the a variant prefix to the beginning of the gear's name adds the listed 
 Adds Quicken to the user
 
 **Available on**
+- all Bucklers (Light)
+- Buckler (Light)
 - Cloak (Wind)
-- Lance (Earth)
 - Midas Staff (Water)
 - Refreshing Breeze (Wind)
 - Shortsword (Fire)
@@ -66,7 +67,6 @@ Relieve Stagger on user
 Adds Power Up to the user
 
 **Available on**
-- all Bucklers (Earth)
 - all Certain Victory (Earth)
 - Blood Aegis (Darkness)
 - War Cry (Light)
@@ -98,7 +98,7 @@ Adds Power Down to target
 Can apply to allies
 
 **Available on**
-- Bucker (Earth)
+- Buckler (Light)
 - Barrier (Wind)
 - Carrot (Earth)
 - Floating Mist Stance (Light)
@@ -130,6 +130,7 @@ Doubles number of targets
 Bonus damage if only one attacking target
 
 **Available on**
+- Lance (Light)
 - Pistol (Untyped)
 
 ### Evasive
@@ -173,8 +174,9 @@ Increases damage proprotional to user's missing HP
 Adds protection to the target
 
 **Available on**
+- all Bucklers (Light)
 - all Omamori (Water)
-- Buckler (Earth)
+- Buckler (Light)
 - Inspiration (Wind)
 - Scutum (Fire)
 
@@ -208,11 +210,11 @@ Gain Power Up on kill
 - Morning Star (Light)
 - Power from Wrath (Darkness)
 
-### Impactful
-Double benefits from Power Up
+### Kinetic
+Increase damage by bonus speed
 
 **Available on**
-- all Lances (Earth)
+- all Lances (Light)
 
 ### Lethal
 Increased crit damage
@@ -309,7 +311,6 @@ Adds protection to the user
 
 **Available on**
 - Blood Aegis (Darkness)
-- Buckler (Earth)
 - Carrot (Earth)
 - Herb Basket (Earth)
 
@@ -342,7 +343,7 @@ Adds Frail to target
 **Available on**
 - Corrosion (Fire)
 - Goad Futility (Earth)
-- Lance (Earth)
+- Lance (Light)
 - Sabotage Kit (Untyped)
 - Stick (Earth)
 
@@ -387,8 +388,9 @@ Reduces Stagger on target
 Increases the user's damage cap
 
 **Available on**
-- Wolf Ring (Untyped)
+- Lance (Light)
 - Fever Break (Darkness)
+- Wolf Ring (Untyped)
 
 ### Sweeping
 Targets whole team
@@ -419,6 +421,7 @@ Change target's move's target to user
 
 **Available on**
 - all Blood Aegis (Darkness)
+- all Goad Futility (Earth)
 - all Heat Mirages (Fire)
 
 ### Thick
@@ -471,7 +474,6 @@ Deals Unblockable damage, usable while Stunned
 **Available on**
 - Abacus (Water)
 - Bow (Wind)
-- Lance (Earth)
 - Scythe (Darkness)
 - Warhammer (Earth)
 

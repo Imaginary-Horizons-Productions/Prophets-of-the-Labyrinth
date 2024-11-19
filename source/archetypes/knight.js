@@ -3,8 +3,8 @@ const { ArchetypeTemplate } = require("../classes");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Knight",
-	`They'll be able to predict who enemies are targeting with which moves. They'll gain @e{Power Up} for protecting allies with their Buckler too.`,
-	"Earth",
+	`They'll be able to predict who enemies are targeting with which moves. They'll gain deal extra damage scaling with their Speed with their Lance.`,
+	"Light",
 	{
 		maxHPGrowth: 25,
 		powerGrowth: 2.5,

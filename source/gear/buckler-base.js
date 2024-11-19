@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Buckler",
 		["Critical💥", "Protection x@{critMultiplier}"]
 	],
 	"Armor",
-	"Earth",
+	"Light",
 	200,
 	(targets, user, adventure) => {
 		const { element, modifiers: [powerUp], protection, critMultiplier } = module.exports;
@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Buckler",
 		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."), ...generateModifierResultLines(addModifier([user], powerUp))];
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setUpgrades("Devoted Buckler", "Guarding Buckler", "Reinforced Buckler")
-	.setModifiers({ name: "Power Up", stacks: 25 })
+	.setUpgrades("Accelerating Buckler", "Devoted Buckler", "Guarding Buckler")
+	.setModifiers({ name: "Quicken", stacks: 4 })
 	.setDurability(15)
 	.setProtection(75);
