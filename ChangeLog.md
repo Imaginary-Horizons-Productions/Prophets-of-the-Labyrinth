@@ -1,7 +1,7 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.17.0:
 ### Pets
-Delvers can now bring pets with them on adventure. Which pet you bring can be configured during the preparation phase, or with `/favorite-pet`. One of the party's pets will use a supportive move each even round (or Loaf Around). Pets can also be leveled-up permenantly outside of adventure, which upgrades their moves (or gets them to stop Loafing Around). Your pet kennel is individual per server, so you can have different experiences with different friend groups.
+Delvers can now bring pets with them on adventure. Which pet you bring can be configured during the preparation phase, or with `/set-favorite pet`. One of the party's pets will use a supportive move each even round (or Loaf Around). Pets can also be leveled-up permenantly outside of adventure, which upgrades their moves (or gets them to stop Loafing Around). Your pet kennel is individual per server, so you can have different experiences with different friend groups.
 ### Beast Tamer
 This new Archetype predicts the moves of enemies and pets (and if enemies have priority). Their Carrot gear entices an allied pet to act immediately and their Stick punishes foes that act with priority.
 ### Knight
@@ -17,7 +17,7 @@ In keeping with the elemental alignment of mechanics, the Knight is now Light el
 - Pistol's Power Up stacks is now divided by the number of Weakness debuffs the target has to nerf the team of 6 Detectives
 - Reduced protection provided by Reinforced Blood Aegis to 200 (250 was more of an increase than other Reinforced variants)
 ### Command Improvements
-- Added `/manual modifier-info` & `/manual challenge-info`
+- Added `/manual modifier-info`, `/manual challenge-info` & `/set-favorite archetype`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)
 - Renamed `/give-up` to `/adventure retreat`
 ### Other Changes
