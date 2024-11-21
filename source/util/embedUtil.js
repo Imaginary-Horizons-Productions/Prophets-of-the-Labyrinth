@@ -339,7 +339,9 @@ function roomHeaderString(adventure) {
 
 /** The version embed lists the following: changes in the most recent update, known issues in the most recent update, and links to support the project */
 async function generateVersionEmbed() {
-	const data = await fs.promises.readFile('./ChangeLog.md', { encoding: 'utf8' });
+	const changelogPath = "./ChangeLog.md";
+	const data = await fs.promises.readFile(changelogPath, { encoding: 'utf8' });
+	const stats = await fs.promises.stat(changelogPath);
 	const dividerRegEx = /## .+ v\d+.\d+.\d+/g;
 	const changesStartRegEx = /\.\d+:/g;
 	let titleStart = dividerRegEx.exec(data).index;
@@ -350,7 +352,7 @@ async function generateVersionEmbed() {
 		.setTitle(data.slice(titleStart + 3, changesStartRegEx.lastIndex))
 		.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesEnd).slice(0, MAX_EMBED_DESCRIPTION_LENGTH)).setURL('https://discord.gg/JxqE9EpKt9')
 		.setThumbnail('https://cdn.discordapp.com/attachments/545684759276421120/734099622846398565/newspaper.png')
-		.setTimestamp()
+		.setTimestamp(stats.mtime)
 		.addFields({ name: "Become a Sponsor", value: "Chip in for server costs or get premium features by sponsoring [PotL on GitHub](https://github.com/Imaginary-Horizons-Productions/Prophets-of-the-Labyrinth)" });
 }
 
