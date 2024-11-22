@@ -21,7 +21,7 @@ async function executeSubcommand(interaction, ...args) {
 
 module.exports = {
 	data: {
-		name: "modifier-info",
+		name: "modifier",
 		description: "Look up details on an modifier",
 		optionsInput: [
 			{

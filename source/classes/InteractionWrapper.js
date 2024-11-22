@@ -86,7 +86,7 @@ class CommandWrapper extends InteractionWrapper {
 				built.setName(option.name).setDescription(option.description).setRequired(option.required);
 				if (option.autocomplete?.length > 0) {
 					if (option.name in this.autocomplete) {
-						throw new BuildError(`duplicate autocomplet key (${option.name})`);
+						throw new BuildError(`duplicate autocomplete key (${option.name})`);
 					}
 					built.setAutocomplete(true);
 					this.autocomplete[option.name] = option.autocomplete;
@@ -110,7 +110,7 @@ class CommandWrapper extends InteractionWrapper {
 							subBuilt.setName(option.name).setDescription(option.description).setRequired(option.required);
 							if (option.autocomplete?.length > 0) {
 								if (option.name in this.autocomplete) {
-									throw new BuildError(`duplicate autocomplet key (${option.name})`);
+									throw new BuildError(`duplicate autocomplete key (${option.name})`);
 								}
 								subBuilt.setAutocomplete(true);
 								this.autocomplete[option.name] = option.autocomplete;

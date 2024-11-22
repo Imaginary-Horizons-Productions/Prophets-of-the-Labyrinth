@@ -19,7 +19,7 @@ async function executeSubcommand(interaction, ...args) {
 
 module.exports = {
 	data: {
-		name: "artifact-info",
+		name: "artifact",
 		description: "Look up details on an artifact",
 		optionsInput: [
 			{
