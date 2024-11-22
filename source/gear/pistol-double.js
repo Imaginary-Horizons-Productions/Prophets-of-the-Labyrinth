@@ -5,7 +5,7 @@ const { SAFE_DELIMITER } = require('../constants.js');
 const gearName = "Double Pistol";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Strike a foe twice for @{damage} @{element} damage, give a random ally <@{mod0Stacks} / target's Weakness debuffs> @{mod0} if the foe is weak to @{element}"],
+		["use", "Strike a foe twice for @{damage} @{element} damage, give a random ally <@{mod0Stacks} ÷ target's Weakness debuffs> @{mod0} if the foe is weak to @{element}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",

@@ -5,7 +5,7 @@ const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generate
 const gearName = "Pistol";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Strike a foe for @{damage} @{element} damage, give a random ally <@{mod0Stacks} / target's Weakness debuffs> @{mod0} if the foe is weak to @{element}"],
+		["use", "Strike a foe for @{damage} @{element} damage, give a random ally <@{mod0Stacks} ÷ target's Weakness debuffs> @{mod0} if the foe is weak to @{element}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
