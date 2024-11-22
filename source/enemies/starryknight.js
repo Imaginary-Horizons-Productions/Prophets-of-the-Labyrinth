@@ -4,7 +4,6 @@ const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
 const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 module.exports = new EnemyTemplate("Starry Knight",
 	"Light",
