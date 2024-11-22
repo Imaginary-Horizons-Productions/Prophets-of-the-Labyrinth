@@ -26,7 +26,7 @@ async function executeSubcommand(interaction, ...args) {
 
 module.exports = {
 	data: {
-		name: "challenge-info",
+		name: "challenge",
 		description: "Look up details on a challenge",
 		optionsInput: [
 			{

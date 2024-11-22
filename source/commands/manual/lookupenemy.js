@@ -37,7 +37,7 @@ async function executeSubcommand(interaction, ...args) {
 
 module.exports = {
 	data: {
-		name: "enemy-info",
+		name: "enemy",
 		description: "Look up details on an enemy",
 		optionsInput: [
 			{
