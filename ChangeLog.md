@@ -27,6 +27,7 @@ In keeping with the elemental alignment of mechanics, the Knight is now Light el
 - New Items: Creative Acorn, Flexigrass
 - Fixed the party stats embed not showing the Final Battle after it had been scouted
 - Fixed Curse of Midas reporting generating fractional gold, not scaling with stacks, and being added to party gold immediately instead of being added to loot
+- New Artifact Guardian: Brute Convention
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes
 - Changed Detective to Untyped

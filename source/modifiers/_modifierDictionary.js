@@ -37,6 +37,7 @@ for (const file of [
 	"slow.js",
 	"stance-floating-mist.js",
 	"stance-iron-fist.js",
+	"the-target.js",
 	"unlucky.js",
 	"vigilance.js",
 	"weakness-darkness.js",

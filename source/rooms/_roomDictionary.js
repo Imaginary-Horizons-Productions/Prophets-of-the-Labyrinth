@@ -4,6 +4,7 @@ const { RoomTemplate } = require("../classes");
 const ROOMS = {};
 
 for (const file of [
+	"artifactguardian-bruteconvention.js",
 	"artifactguardian-royalslime.js",
 	"artifactguardian-treasureelemental.js",
 	"battle-bloodtailhawks.js",
