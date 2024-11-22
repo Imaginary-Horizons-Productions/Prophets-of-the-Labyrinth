@@ -1033,7 +1033,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 		return { payload: completeAdventure(adventure, thread, "defeat", lastRoundText), type: "adventureDefeat" };
 	}
 
-	if (adventure.room.enemies.every(enemy => enemy.hp === 0)) {
+	if (adventure.room.enemies.every(enemy => enemy.hp === 0 || "Coward" in enemy.modifiers)) {
 		if ("endedCombat" in adventure.room.history) {
 			return { type: "endCombat" };
 		}

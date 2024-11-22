@@ -6,7 +6,7 @@ const { joinAsStatement } = require("../util/textUtil.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
-	200,
+	225,
 	70,
 	"3",
 	0,

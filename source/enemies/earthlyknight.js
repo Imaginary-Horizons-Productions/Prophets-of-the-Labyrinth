@@ -11,7 +11,7 @@ const { SAFE_DELIMITER } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Earthly Knight",
 	"Earth",
-	250,
+	275,
 	100,
 	"6",
 	0,
