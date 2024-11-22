@@ -533,7 +533,6 @@ function predictRoundRnOutcomes(adventure) {
  * @param {"foes" | "allies" | "elements" | string} targetingTags
  * @param {"foes" | "allies" | "elements" | string} moveName
  * @param {Record<string, number>} config
- * @returns {string[]}
  */
 function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName, key) {
 	const liveEnemies = adventure.room.enemies.filter(e => e.hp > 0);
@@ -574,15 +573,14 @@ function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName,
  * @param {Combatant} user
  * @param {string} moveName
  * @param {string} roundRnKeyname
- * @param {boolean} isBuffs
- * @returns
+ * @param {string[]} targetModifiers
  */
 function predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers) {
 	let popped = [];
 	for (const idx of user.roundRns[roundRnKeyname]) {
 		const modIdx = idx % targetModifiers.length;
-		const modArr = targetModifiers.splice(modIdx, 1);
-		popped.push(getApplicationEmojiMarkdown(...modArr));
+		const [removedModifier] = targetModifiers.splice(modIdx, 1);
+		popped.push(getApplicationEmojiMarkdown(removedModifier));
 	}
 	return `${user.name}'s ${moveName} will remove ${popped.join("")} from ${target.name}`;
 }
@@ -757,7 +755,6 @@ function newRound(adventure, thread, lastRoundText) {
 /** Updates game state with the move's effect AND returns the game's description of what happened
  * @param {Move} move
  * @param {Adventure} adventure
- * @returns {Promise<string>} result text
  */
 function resolveMove(move, adventure) {
 	const user = adventure.getCombatant(move.userReference);
