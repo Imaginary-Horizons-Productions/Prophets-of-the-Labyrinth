@@ -520,6 +520,7 @@ Increases stats gained by level up
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
 - Adds Iron Fist Stance to user (all Iron Fist Stances)
 - Adds Power Up to target (all Inspiration)
-- Also hits targets with Exposed (all War Cries)
+- Also hits targets with Distracted (all War Cries)
+- Also hits allies with Vigilance (planned)
 - Adds Power Up to random ally if hitting weakness (all Pistols)
 - Transfers debuffs to target (all Universal Problem Solvers)
