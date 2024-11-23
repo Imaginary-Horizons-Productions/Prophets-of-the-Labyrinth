@@ -309,7 +309,7 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
 			if (type === "use") {
 				return `${totalStagger} Stagger: ${description}`;
-			} else if (!["Critical💥", "upgradeDiff"].includes(type)) {
+			} else if (type !== "Critical💥") {
 				return `${type}: ${description}`;
 			}
 		});
