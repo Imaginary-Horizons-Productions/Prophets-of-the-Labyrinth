@@ -19,6 +19,7 @@ In keeping with the elemental alignment of mechanics, the Knight is now Light el
 - New Gear: Universal Solution (Water Pact, variants: Centering, Evasive, Harmful) Transfer a random 2 of your debuffs to a single foe, then gain 3 Poison
 - New Gear: Air Blades (Wind Pact, variants: Accelerating, Toxic, Unstoppable) Pay 25 HP, strike a foe for Wind damage twice (Infinite Durability)
 - War Cries now affect Distracted foes (instead of Exposed)
+- Replaced Thick variants with Unbreakable
 ### Command Improvements
 - Added `/manual modifier-info`, `/manual challenge-info` & `/set-favorite archetype`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)

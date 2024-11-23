@@ -429,13 +429,6 @@ Change target's move's target to user
 - all Goad Futility (Earth)
 - all Heat Mirages (Fire)
 
-### Thick
-Increased durability
-
-**Available on**
-- Censer (Fire)
-- Risky Mixture (Darkness)
-
 ### Thief's
 Gain gold on kill
 
@@ -466,6 +459,14 @@ Adds Poison to target
 - Cauldron Stir (Water)
 - Firecracker (Fire)
 - Shortsword (Fire)
+
+### Unbreakable
+Infinite durability
+
+**Available on**
+- all Air Blades (Wind)
+- Censer (Fire)
+- Risky Mixture (Darkness)
 
 ### Unlucky
 Adds Unlucky to target

@@ -22,7 +22,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Furious Life Drain",
 			"Thirsting Life Drain",
 			"Midas's Risky Mixture",
-			"Thick Risky Mixture",
+			"Unbreakable Risky Mixture",
 		]])),
 		Earth: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Carrot",

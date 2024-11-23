@@ -1,9 +1,11 @@
 const { GearTemplate } = require("../classes");
 const { isDebuff } = require("../modifiers/_modifierDictionary");
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil");
+const { unbreakablePassive } = require("./descriptions/passives");
 
-module.exports = new GearTemplate("Thick Censer",
+module.exports = new GearTemplate("Unbreakable Censer",
 	[
+		unbreakablePassive,
 		["use", "Burn a foe for <@{damage} + @{bonus} if target has any debuffs> @{element} damage"],
 		["Critical💥", "Also apply @{mod0Stacks} @{mod0}"]
 	],
@@ -30,4 +32,4 @@ module.exports = new GearTemplate("Thick Censer",
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDamage(15)
 	.setBonus(75) // damage
-	.setDurability(30);
+	.setDurability(Infinity);

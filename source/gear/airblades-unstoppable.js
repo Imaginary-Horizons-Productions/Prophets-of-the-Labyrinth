@@ -1,8 +1,10 @@
 const { GearTemplate } = require('../classes');
 const { changeStagger, payHP, dealDamage } = require('../util/combatantUtil');
+const { unbreakablePassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Unstoppable Air Blades",
 	[
+		unbreakablePassive,
 		["use", "Pay @{hpCost} HP, then strike a foe for @{damage} @{element} unblockable damage, even while Stunned"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
