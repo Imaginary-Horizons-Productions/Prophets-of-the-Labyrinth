@@ -1,7 +1,8 @@
 const { ModifierTemplate } = require("../classes");
+const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new ModifierTemplate("Untyped Weakness",
-	"Suffer weakness to Untyped damage",
+	`Suffer weakness to ${getEmoji("Untyped")} damage`,
 	"Debuff",
 	0,
 	1

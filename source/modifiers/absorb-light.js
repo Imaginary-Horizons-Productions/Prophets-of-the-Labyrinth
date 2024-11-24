@@ -1,7 +1,8 @@
 const { ModifierTemplate } = require("../classes");
+const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new ModifierTemplate("Light Absorb",
-	"Convert Light damage to healing",
+	`Convert ${getEmoji("Light")} damage to healing`,
 	"Buff",
 	0,
 	1

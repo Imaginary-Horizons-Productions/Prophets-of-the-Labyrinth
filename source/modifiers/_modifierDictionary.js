@@ -1,9 +1,11 @@
 const { ModifierTemplate, BuildError } = require("../classes");
-const { sanitizeEmojiName } = require("../util/graphicsUtil");
+const { sanitizeEmojiName, getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { calculateTagContent } = require("../util/textUtil");
 
 /** @type {Record<string, ModifierTemplate>} */
 const MODIFIERS = {};
+/** @type {string[]} */
+const MODIFIER_NAMES = [];
 
 for (const file of [
 	"absorb-darkness.js",
@@ -54,6 +56,7 @@ for (const file of [
 		throw new BuildError(`Duplicate modifier name (${modifier.name})`);
 	}
 	MODIFIERS[modifier.name] = modifier;
+	MODIFIER_NAMES.push(modifier.name);
 }
 
 /** @returns {[name: string, attachment: string][]} */
@@ -71,7 +74,7 @@ function getModifierEmojiFileTuples() {
  * @param {number} funnelCount
  */
 function getModifierDescription(modifierName, stacks, bearerPoise, funnelCount) {
-	return calculateTagContent(MODIFIERS[modifierName].description, [
+	return calculateTagContent(injectApplicationEmojiMarkdown(MODIFIERS[modifierName].description), [
 		{ tag: 'stacks', count: stacks },
 		{ tag: 'poise', count: bearerPoise },
 		{ tag: 'funnelCount', count: funnelCount }
@@ -99,6 +102,7 @@ function getInverse(modifierName) {
 }
 
 module.exports = {
+	MODIFIER_NAMES,
 	getModifierEmojiFileTuples,
 	getModifierDescription,
 	getModifierCategory,

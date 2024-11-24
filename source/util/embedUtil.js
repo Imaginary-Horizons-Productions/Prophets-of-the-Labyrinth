@@ -6,7 +6,7 @@ const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MA
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { getModifierDescription, getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
+const { getModifierDescription, getModifierCategory, getRoundDecrement, getMoveDecrement, getInverse } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
@@ -557,33 +557,47 @@ const COLORS_BY_MODIFIER_CATEGORY = {
 };
 
 function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
+	const modifierCategory = getModifierCategory(modifierName);
+	const fields = [{ name: "Category", value: modifierCategory, inline: true }];
 	const durationField = { name: "Duration", value: "Until end of battle" };
+
+	const inverse = getInverse(modifierName);
+	if (inverse) {
+		fields.push({ name: "Inverse", value: `${inverse} ${getApplicationEmojiMarkdown(inverse)}`, inline: true });
+	}
+
 	const roundDecrement = getRoundDecrement(modifierName);
 	if (roundDecrement !== 0) {
-		if (roundDecrement === "all" || count === roundDecrement) {
+		durationField.name += ` <-${roundDecrement} per round>`;
+		if (roundDecrement === "all") {
 			durationField.value = "Until next round";
+		} else if (count === roundDecrement) {
+			durationField.value = "[Until next round]";
 		} else if (count % roundDecrement === 0) {
-			durationField.value = `${count / roundDecrement} rounds`;
+			durationField.value = `[${count / roundDecrement} rounds]`;
 		} else {
-			durationField.value = `${Math.floor(count / roundDecrement) + 1} rounds`;
+			durationField.value = `[${Math.floor(count / roundDecrement) + 1} rounds]`;
 		}
 	}
 	const moveDecrement = getMoveDecrement(modifierName);
 	if (moveDecrement !== 0) {
-		if (moveDecrement === "all" || count === moveDecrement) {
+		durationField.name += ` <-${roundDecrement} per move>`;
+		if (moveDecrement === "all") {
 			durationField.value = "Until next move";
+		} else if (count === moveDecrement) {
+			durationField.value = "[Until next move]";
 		} else if (count % moveDecrement === 0) {
-			durationField.value = `${count / moveDecrement} moves`;
+			durationField.value = `[${count / moveDecrement} moves]`;
 		} else {
-			durationField.value = `${Math.floor(count / moveDecrement) + 1} moves`;
+			durationField.value = `[${Math.floor(count / moveDecrement) + 1} moves]`;
 		}
 	}
-	const modifierCategory = getModifierCategory(modifierName);
+	fields.push(durationField);
 	return new EmbedBuilder().setColor(COLORS_BY_MODIFIER_CATEGORY[modifierCategory])
 		.setAuthor(randomAuthorTip())
-		.setTitle(`${modifierName} x ${count} ${getApplicationEmojiMarkdown(modifierName)}`)
+		.setTitle(`${modifierName} ${getApplicationEmojiMarkdown(modifierName)} x ${count}`)
 		.setDescription(getModifierDescription(modifierName, count, bearerPoise, funnelCount))
-		.addFields({ name: "Category", value: modifierCategory }, durationField)
+		.addFields(fields)
 }
 
 /**

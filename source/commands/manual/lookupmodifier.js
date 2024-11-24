@@ -1,8 +1,6 @@
 const { CommandInteraction, bold } = require("discord.js");
 const { generateModifierEmbed } = require("../../util/embedUtil");
-const { getModifierEmojiFileTuples } = require("../../modifiers/_modifierDictionary");
-
-const modifierNames = getModifierEmojiFileTuples().map(([name]) => name);
+const { MODIFIER_NAMES } = require("../../modifiers/_modifierDictionary");
 
 /**
  * @param {CommandInteraction} interaction
@@ -10,7 +8,7 @@ const modifierNames = getModifierEmojiFileTuples().map(([name]) => name);
  */
 async function executeSubcommand(interaction, ...args) {
 	const modifierName = interaction.options.getString("modifier-name");
-	const nameInTitleCaps = modifierNames.find(name => name.toLowerCase() === modifierName.toLowerCase());
+	const nameInTitleCaps = MODIFIER_NAMES.find(name => name.toLowerCase() === modifierName.toLowerCase());
 	if (!nameInTitleCaps) {
 		interaction.reply({ content: `Stats on ${bold(modifierName)} could not be found. Check for typos!`, ephemeral: true });
 		return;
@@ -29,7 +27,7 @@ module.exports = {
 				name: "modifier-name",
 				description: "Provides information at 1 stack",
 				required: true,
-				autocomplete: modifierNames.map(name => ({ name, value: name }))
+				autocomplete: MODIFIER_NAMES.map(name => ({ name, value: name }))
 			}
 		]
 	},
