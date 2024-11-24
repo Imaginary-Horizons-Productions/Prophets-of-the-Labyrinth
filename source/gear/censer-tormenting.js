@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { isDebuff } = require("../modifiers/_modifierDictionary");
+const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Tormenting Censer",
@@ -16,7 +16,8 @@ module.exports = new GearTemplate("Tormenting Censer",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
+		const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
+		if (targetDebuffs.length > 0) {
 			pendingDamage += bonus;
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
@@ -25,10 +26,8 @@ module.exports = new GearTemplate("Tormenting Censer",
 			if (user.crit) {
 				receipts.push(...addModifier([target], slow));
 			}
-			for (const modifier in target.modifiers) {
-				if (isDebuff(modifier)) {
-					receipts.push(...addModifier([target], { name: modifier, stacks: 1 }));
-				}
+			for (const modifier of targetDebuffs) {
+				receipts.push(...addModifier([target], { name: modifier, stacks: 1 }));
 			}
 			resultLines.push(...generateModifierResultLines(combineModifierReceipts(receipts)));
 		}

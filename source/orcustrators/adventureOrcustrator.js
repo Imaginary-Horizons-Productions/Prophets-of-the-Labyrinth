@@ -13,7 +13,7 @@ const { getEnemy } = require("../enemies/_enemyDictionary");
 const { getGearProperty } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
-const { getTurnDecrement, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
+const { getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
 const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getCombatantWeaknesses } = require("../util/combatantUtil");
 const { getWeaknesses, elementsList, getEmoji, getResistances } = require("../util/elementUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
@@ -423,9 +423,9 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${weaknessPool[rn % weaknessPool.length]} Weakness`)).join("")} on ${target.name}`;
 		}
 		case "buffs":
-			targetModifiers = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
+			targetModifiers = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 		case "debuffs": {
-			targetModifiers ??= Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
+			targetModifiers ??= Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			let pendingRemoves = user.roundRns[roundRnKeyname].length;
 			if (targetModifiers.length > pendingRemoves) {
 				return predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers);
@@ -465,7 +465,7 @@ function predictRoundRnOutcomes(adventure) {
 					if (move.targets.length > 0) {
 						const targetCombatants = move.targets.map(moveTarget => adventure.getCombatant(moveTarget));
 						if (move.name === "Bubble") {
-							let totalBuffsRemoved = targetCombatants.reduce((removedCount, combatant) => removedCount + Math.max(0, Object.keys(combatant.modifiers).filter(modifier => isBuff(modifier)).length - combatant.getModifierStacks("Retain")), 0);
+							let totalBuffsRemoved = targetCombatants.reduce((removedCount, combatant) => removedCount + Math.max(0, Object.keys(combatant.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff").length - combatant.getModifierStacks("Retain")), 0);
 							let pendingProgress = combatant.getModifierStacks("Progress") + (combatant.crit ? 10 : 0) + combatant.roundRns[`Bubble${SAFE_DELIMITER}progress`][2] + totalBuffsRemoved * 5;
 							outcomes.push(`The Elkemist ${pendingProgress > 100 ? "will" : "won't"} reach an epiphany this round.`);
 						}
@@ -515,7 +515,7 @@ function predictRoundRnOutcomes(adventure) {
 		}
 		// items
 		if ("Panacea" in adventure.items) {
-			if (Object.keys(delver.modifiers).filter(modifier => isDebuff(modifier)).length > 2) {
+			if (Object.keys(delver.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff").length > 2) {
 				outcomes.push(predictRoundRnTargeted(adventure, delver, delver, "Panacea", "debuffs"))
 				if (isCloneAlive) {
 					outcomes.push(predictRoundRnTargeted(adventure, counterpart, counterpart, "Panacea", "debuffs"))
@@ -636,8 +636,6 @@ function newRound(adventure, thread, lastRoundText) {
 				// Roll Round Speed
 				const percentBonus = (adventure.generateRandomNumber(21, "battle") - 10) / 100;
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
-				removeModifier([combatant], { name: "Slow", stacks: 1, force: true });
-				removeModifier([combatant], { name: "Quicken", stacks: 1, force: true });
 
 				// Roll Critical Hit
 				let modifierCritBonus = 1;
@@ -661,8 +659,6 @@ function newRound(adventure, thread, lastRoundText) {
 				}
 				const critRoll = adventure.generateRandomNumber(max, "battle");
 				combatant.crit = critRoll < threshold;
-				removeModifier([combatant], { name: "Lucky", stacks: 1, force: true });
-				removeModifier([combatant], { name: "Unlucky", stacks: 1, force: true });
 
 				// Roll Enemy Moves
 				if (teamName === "enemy") {
@@ -871,7 +867,7 @@ function resolveMove(move, adventure) {
 	}
 
 	if (move.type !== "pet") {
-		// Poison/Regen
+		// Poison/Regen effect
 		if ("Poison" in user.modifiers) {
 			results.push(...dealModifierDamage(user, "Poison", adventure));
 		} else {
@@ -880,7 +876,16 @@ function resolveMove(move, adventure) {
 				results.push(gainHealth(user, regenStacks * 10, adventure, "Regen"));
 			}
 		}
+
+		// Decrement modifiers with move decrement
+		for (const modifier of user.modifiers) {
+			const moveDecrement = getMoveDecrement(modifier);
+			if (moveDecrement !== 0) {
+				removeModifier([user], { name: modifier, stacks: moveDecrement, force: true });
+			}
+		}
 	}
+
 	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
 }
 
@@ -913,6 +918,8 @@ function decrementDurability(moveName, user, adventure) {
 	}
 	return "";
 }
+
+const RETAINING_MODIFIER_PAIRS = [["Exposed", "Distracted"], ["Evade", "Vigilance"]];
 
 /** Generate reactive moves, randomize speed ties, then resolve moves
  * @param {Adventure} adventure
@@ -997,15 +1004,10 @@ function endRound(adventure, thread) {
 		}
 
 		// Decrement Modifiers
-		if (!("Vigilance" in combatant.modifiers)) {
-			removeModifier([combatant], { name: "Evade", stacks: getTurnDecrement("Evade"), force: true });
-		}
-		if (!("Distracted" in combatant.modifiers)) {
-			removeModifier([combatant], { name: "Exposed", stacks: getTurnDecrement("Exposed"), force: true });
-		}
 		for (const modifier in combatant.modifiers) {
-			if (!["Evade", "Exposed"].includes(modifier)) {
-				removeModifier([combatant], { name: modifier, stacks: getTurnDecrement(modifier), force: true })
+			const roundDecrement = getRoundDecrement(modifier);
+			if (roundDecrement !== 0 && !RETAINING_MODIFIER_PAIRS.some(([retainee, retainer]) => modifier === retainee && retainer in combatant.modifiers)) {
+				removeModifier([combatant], { name: modifier, stacks: roundDecrement, force: true })
 			}
 		}
 	}

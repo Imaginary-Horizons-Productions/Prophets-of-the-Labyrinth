@@ -1,6 +1,6 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, removeModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil.js");
-const { isBuff } = require("../modifiers/_modifierDictionary");
+const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
@@ -30,7 +30,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 		changeStagger(targets, "elementMatchFoe");
 		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
 		for (const target of targets) {
-			const targetBuffs = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
+			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 			if (targetBuffs.length > 0) {
 				const rolledBuff = targetBuffs[user.roundRns[`Damping Wallop${SAFE_DELIMITER}buffs`][0]];
 				resultLines.push(...generateModifierResultLines(removeModifier([target], { name: rolledBuff, stacks: "all" })));

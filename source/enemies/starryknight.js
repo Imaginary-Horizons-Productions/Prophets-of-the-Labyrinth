@@ -1,6 +1,6 @@
 const { bold } = require("discord.js");
 const { EnemyTemplate, Combatant, Adventure } = require("../classes");
-const { isDebuff } = require("../modifiers/_modifierDictionary");
+const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
 const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
@@ -26,13 +26,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 				unfinishedChallenges.push(challengeName);
 			}
 		}
-		const targetDebuffCount = Object.keys(target.modifiers).reduce((count, modifier) => {
-			if (isDebuff(modifier)) {
-				return count + 1;
-			} else {
-				return count;
-			}
-		}, 0);
+		const targetDebuffCount = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff").length;
 		let targetCursedGearCount = 0;
 		if ("gear" in target) {
 			for (const gearPiece of target.gear) {

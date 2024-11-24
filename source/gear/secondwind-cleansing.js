@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { gainHealth, removeModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
 const { SAFE_DELIMITER } = require('../constants.js');
 
@@ -22,7 +22,7 @@ module.exports = new GearTemplate(gearName,
 			pendingHealing *= critMultiplier;
 		}
 		const resultLines = [gainHealth(user, pendingHealing, adventure)];
-		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
+		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		if (userDebuffs.length > 0) {
 			const rolledDebuff = userDebuffs[user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length];
 			resultLines.push(...generateModifierResultLines(removeModifier([user], { name: rolledDebuff, stacks: "all" })));

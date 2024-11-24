@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { addModifier, changeStagger, generateModifierResultLines, removeModifier } = require('../util/combatantUtil');
 
 const gearName = "Cleansing Medicine";
@@ -23,7 +23,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		const receipts = addModifier(targets, pendingRegen);
 		for (const target of targets) {
-			const debuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
+			const debuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			if (debuffs.length > 0) {
 				const rolledDebuff = debuffs[user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
 				receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));

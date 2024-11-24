@@ -1,5 +1,5 @@
 const { EnemyTemplate, ModifierReceipt, Enemy } = require("../classes");
-const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary.js");
+const { getModifierCategory } = require("../modifiers/_modifierDictionary.js");
 const { dealDamage, addModifier, removeModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { listifyEN } = require("../util/textUtil.js");
@@ -25,7 +25,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		const resultLines = [`${user.name} gains protection.`];
 		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Toil${SAFE_DELIMITER}progress`][0] });
 		progressCheck(user, wrappedProgressReceipt, resultLines);
-		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
+		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		if (targetDebuffs.length > 0) {
 			const rolledDebuff = targetDebuffs[user.roundRns[`Toil${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length];
 			resultLines.push(...generateModifierResultLines(removeModifier([user], { name: rolledDebuff, stacks: "all" })));
@@ -82,7 +82,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		const removalReceipts = [];
 		for (const target of targets) {
 			for (let modifier in target.modifiers) {
-				if (isBuff(modifier)) {
+				if (getModifierCategory(modifier) === "Buff") {
 					const buffStackCount = target.modifiers[modifier];
 					const receipt = removeModifier([target], { name: modifier, stacks: "all" })[0];
 					removalReceipts.push(receipt);

@@ -1,8 +1,8 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Power Down",
-	"Decreases damage dealt by moves by @{stackCount}.",
-	false,
-	true,
+	"Decrease move damage by @{stacks}",
+	"Debuff",
+	0,
 	0
 ).setInverse("Power Up");

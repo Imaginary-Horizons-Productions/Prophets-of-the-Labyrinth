@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
-const { isDebuff } = require('../modifiers/_modifierDictionary.js');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
 	[
@@ -38,7 +38,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		const receipts = [];
 		for (const target of targetArray) {
 			for (const modifier in target.modifiers) {
-				if (isDebuff(modifier)) {
+				if (getModifierCategory(modifier) === "Debuff") {
 					receipts.push(...addModifier([target], { name: modifier, stacks: 1 }));
 				}
 			}

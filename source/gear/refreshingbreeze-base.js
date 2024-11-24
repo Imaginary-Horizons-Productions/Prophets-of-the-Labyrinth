@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
 const { SAFE_DELIMITER } = require('../constants.js');
 
@@ -19,7 +19,7 @@ module.exports = new GearTemplate(gearName,
 		}
 		const receipts = [];
 		targets.forEach(target => {
-			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
+			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? 2 : 1);
 				for (let i = 0; i < debuffsToRemove; i++) {

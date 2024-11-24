@@ -1,8 +1,8 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Unlucky",
-	"Halve your Critical Hit chance for your next @{stackCount} move(s).",
-	false,
-	true,
+	"Halve Critical Hit chance",
+	"Debuff",
+	1,
 	0
 ).setInverse("Lucky");

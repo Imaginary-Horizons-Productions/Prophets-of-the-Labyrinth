@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { isDebuff } = require('../modifiers/_modifierDictionary.js');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
 const { addModifier, payHP, changeStagger, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Purifying Infinite Regeneration",
@@ -27,8 +27,8 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 		const receipts = addModifier(targets, regen);
 		for (const target of targets) {
 			Object.keys(target.modifiers).forEach(modifier => {
-				if (isDebuff(modifier)) {
-					receipts.push(...removeModifier([target], { name: modifier, stacks: "all" })) ;
+				if (getModifierCategory(modifier) === "Debuff") {
+					receipts.push(...removeModifier([target], { name: modifier, stacks: "all" }));
 				}
 			})
 		}

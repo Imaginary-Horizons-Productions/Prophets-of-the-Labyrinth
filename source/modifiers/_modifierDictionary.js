@@ -66,32 +66,31 @@ function getModifierEmojiFileTuples() {
 
 /**
  * @param {string} modifierName
- * @param {number} stackCount
+ * @param {number} stacks
  * @param {number} bearerPoise
  * @param {number} funnelCount
  */
-function getModifierDescription(modifierName, stackCount, bearerPoise, funnelCount) {
+function getModifierDescription(modifierName, stacks, bearerPoise, funnelCount) {
 	return calculateTagContent(MODIFIERS[modifierName].description, [
-		{ tag: 'stackCount', count: stackCount },
+		{ tag: 'stacks', count: stacks },
 		{ tag: 'poise', count: bearerPoise },
-		{ tag: 'funnelCount', count: funnelCount },
-		{ tag: 'roundDecrement', count: getTurnDecrement(modifierName) }
+		{ tag: 'funnelCount', count: funnelCount }
 	]);
 }
 
 /** @param {string} modifierName */
-function getTurnDecrement(modifierName) {
-	return MODIFIERS[modifierName].turnDecrement;
+function getModifierCategory(modifierName) {
+	return MODIFIERS[modifierName].category;
 }
 
 /** @param {string} modifierName */
-function isBuff(modifierName) {
-	return MODIFIERS[modifierName].isBuff;
+function getMoveDecrement(modifierName) {
+	return MODIFIERS[modifierName].moveDecrement;
 }
 
 /** @param {string} modifierName */
-function isDebuff(modifierName) {
-	return MODIFIERS[modifierName].isDebuff;
+function getRoundDecrement(modifierName) {
+	return MODIFIERS[modifierName].roundDecrement;
 }
 
 /** @param {string} modifierName */
@@ -102,8 +101,8 @@ function getInverse(modifierName) {
 module.exports = {
 	getModifierEmojiFileTuples,
 	getModifierDescription,
-	getTurnDecrement,
-	isBuff,
-	isDebuff,
+	getModifierCategory,
+	getMoveDecrement,
+	getRoundDecrement,
 	getInverse
 };

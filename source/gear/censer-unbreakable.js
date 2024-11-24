@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { isDebuff } = require("../modifiers/_modifierDictionary");
+const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil");
 const { unbreakablePassive } = require("./descriptions/passives");
 
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Unbreakable Censer",
 		if (user.element === element) {
 			changeStagger([target], "elementMatchFoe");
 		}
-		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
+		if (Object.keys(target.modifiers).some(modifier => getModifierCategory(modifier) === "Debuff")) {
 			pendingDamage += bonus;
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);

@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, addModifier, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 const gearName = "Universal Solution";
@@ -17,7 +17,7 @@ module.exports = new GearTemplate(gearName,
 		if (user.element === element) {
 			changeStagger(targets, "elementMatchFoe");
 		}
-		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
+		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const addReciepts = [];
 		if (user.crit) {
 			for (const debuff of userDebuffs) {

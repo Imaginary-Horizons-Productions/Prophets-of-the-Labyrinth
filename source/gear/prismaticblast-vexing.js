@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vexing Prismatic Blast",
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 			changeStagger(targets, "elementMatchFoe");
 		}
 		targets.forEach(target => {
-			if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
+			if (Object.keys(target.modifiers).some(modifier => getModifierCategory(modifier) === "Debuff")) {
 				debuffedTargets.push(target);
 			} else {
 				nondebuffedTargets.push(target);

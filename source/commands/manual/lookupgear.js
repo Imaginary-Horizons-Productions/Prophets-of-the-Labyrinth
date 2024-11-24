@@ -1,5 +1,5 @@
 const { CommandInteraction } = require("discord.js");
-const { gearExists, getGearProperty, buildGearDescription, gearNames, injectGearStats } = require("../../gear/_gearDictionary");
+const { gearExists, getGearProperty, buildGearDescription, GEAR_NAMES, injectGearStats } = require("../../gear/_gearDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getEmoji, getColor } = require("../../util/elementUtil");
 const { listifyEN } = require("../../util/textUtil");
@@ -59,7 +59,7 @@ module.exports = {
 				name: "gear-name",
 				description: "Input is case-insensitive",
 				required: true,
-				autocomplete: gearNames.map(name => ({ name, value: name }))
+				autocomplete: GEAR_NAMES.map(name => ({ name, value: name }))
 			}
 		]
 	},

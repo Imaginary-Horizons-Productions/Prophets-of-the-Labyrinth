@@ -4,6 +4,7 @@ const { getEmoji } = require("../util/elementUtil");
 
 /** @type {Record<string, GearTemplate>} */
 const GEAR = {};
+/** @type {string[]} */
 const GEAR_NAMES = [];
 
 for (const file of [
@@ -369,7 +370,7 @@ function injectGearStats(text, gearName, elementOverride) {
 }
 
 module.exports = {
-	gearNames: GEAR_NAMES,
+	GEAR_NAMES,
 	gearExists,
 	getGearProperty,
 	buildGearRecord,

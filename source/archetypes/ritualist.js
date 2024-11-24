@@ -1,5 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
-const { isDebuff } = require("../modifiers/_modifierDictionary");
+const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { modifiersToString } = require("../util/combatantUtil");
 const { generateTextBar } = require("../util/textUtil");
 
@@ -32,6 +32,6 @@ module.exports = new ArchetypeTemplate("Ritualist",
 		return embed.setDescription(`Ritualist predictions for Round ${adventure.room.round}:`);
 	},
 	(combatant) => {
-		return `Has Debuffs: ${Object.keys(combatant.modifiers).some(modifier => isDebuff(modifier)) ? "✅" : "🚫"}`;
+		return `Has Debuffs: ${Object.keys(combatant.modifiers).some(modifier => getModifierCategory(modifier) === "Debuff") ? "✅" : "🚫"}`;
 	}
 );

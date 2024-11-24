@@ -1,8 +1,8 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Earth Absorb",
-	"Convert Earth damage to health for @{stackCount} rounds.",
-	true,
-	false,
+	"Convert Earth damage to healing",
+	"Buff",
+	0,
 	1
 ).setInverse("Earth Weakness");

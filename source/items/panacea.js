@@ -1,5 +1,5 @@
 const { ItemTemplate } = require("../classes");
-const { isDebuff } = require("../modifiers/_modifierDictionary");
+const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { removeModifier, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { SAFE_DELIMITER } = require('../constants.js');
 
@@ -12,7 +12,7 @@ module.exports = new ItemTemplate(itemName,
 		return [[self.team, adventure.getCombatantIndex(self)]];
 	},
 	(targets, user, adventure) => {
-		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
+		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const debuffsToRemove = Math.min(userDebuffs.length, 2);
 		const receipts = [];
 		for (let i = 0; i < debuffsToRemove; i++) {

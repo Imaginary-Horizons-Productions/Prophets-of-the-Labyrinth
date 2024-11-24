@@ -1,12 +1,12 @@
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User, bold } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
-const { isBuff, isDebuff, getModifierDescription } = require("../modifiers/_modifierDictionary");
+const { getModifierDescription, getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
 const { getEmoji, getColor } = require("./elementUtil");
@@ -401,6 +401,12 @@ function gearToEmbedField(gearName, durability, holder) {
 	}
 }
 
+const BUTTON_STYLES_BY_MODIFIER_CATEGORY = {
+	"Buff": ButtonStyle.Primary,
+	"Debuff": ButtonStyle.Danger,
+	"State": ButtonStyle.Secondary
+};
+
 /** Generates an object to Discord.js's specification that corresponds with a delver's in-adventure stats
  * @param {Delver} delver
  * @param {number} gearCapacity
@@ -436,17 +442,9 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 		let buttonCount = Math.min(modifiers.length, MAX_BUTTONS_PER_ROW - 1); // save spot for "and X more..." button
 		for (let i = 0; i < buttonCount; i++) {
 			const modifierName = modifiers[i];
-			let style;
-			if (isBuff(modifierName)) {
-				style = ButtonStyle.Primary;
-			} else if (isDebuff(modifierName)) {
-				style = ButtonStyle.Danger;
-			} else {
-				style = ButtonStyle.Secondary;
-			}
 			const modifierButton = new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
 				.setLabel(`${modifierName} x ${delver.modifiers[modifierName]}`)
-				.setStyle(style)
+				.setStyle(BUTTON_STYLES_BY_MODIFIER_CATEGORY[getModifierCategory(modifierName)])
 				.setEmoji(getApplicationEmojiMarkdown(modifierName));
 			actionRow.push(modifierButton);
 		}
@@ -552,22 +550,40 @@ function generateStatsEmbed(user, guildId) {
 		)
 }
 
+const COLORS_BY_MODIFIER_CATEGORY = {
+	"Buff": Colors.Blurple,
+	"Debuff": Colors.Red,
+	"State": Colors.LightGrey
+};
+
 function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
-	const buff = isBuff(modifierName);
-	const debuff = isDebuff(modifierName);
-	let styleColor;
-	if (buff) {
-		styleColor = Colors.Blurple;
-	} else if (debuff) {
-		styleColor = Colors.Red;
-	} else {
-		styleColor = Colors.LightGrey;
+	const durationField = { name: "Duration", value: "Until end of battle" };
+	const roundDecrement = getRoundDecrement(modifierName);
+	if (roundDecrement !== 0) {
+		if (roundDecrement === "all" || count === roundDecrement) {
+			durationField.value = "Until next round";
+		} else if (count % roundDecrement === 0) {
+			durationField.value = `${count / roundDecrement} rounds`;
+		} else {
+			durationField.value = `${Math.floor(count / roundDecrement) + 1} rounds`;
+		}
 	}
-	return new EmbedBuilder().setColor(styleColor)
+	const moveDecrement = getMoveDecrement(modifierName);
+	if (moveDecrement !== 0) {
+		if (moveDecrement === "all" || count === moveDecrement) {
+			durationField.value = "Until next move";
+		} else if (count % moveDecrement === 0) {
+			durationField.value = `${count / moveDecrement} moves`;
+		} else {
+			durationField.value = `${Math.floor(count / moveDecrement) + 1} moves`;
+		}
+	}
+	const modifierCategory = getModifierCategory(modifierName);
+	return new EmbedBuilder().setColor(COLORS_BY_MODIFIER_CATEGORY[modifierCategory])
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${modifierName} x ${count} ${getApplicationEmojiMarkdown(modifierName)}`)
 		.setDescription(getModifierDescription(modifierName, count, bearerPoise, funnelCount))
-		.addFields({ name: "Category", value: `${buff ? "Buff" : debuff ? "Debuff" : "State"}` })
+		.addFields({ name: "Category", value: modifierCategory }, durationField)
 }
 
 /**
