@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
-const { SAFE_DELIMITER } = require('../constants.js');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 
 const gearName = "Double Pistol";
 module.exports = new GearTemplate(gearName,
@@ -18,7 +18,7 @@ module.exports = new GearTemplate(gearName,
 			pendingDamage *= critMultiplier;
 		}
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure).concat(dealDamage(targets, user, pendingDamage, false, element, adventure));
 		if (targets.some(target => getCombatantWeaknesses(target).includes(element))) {

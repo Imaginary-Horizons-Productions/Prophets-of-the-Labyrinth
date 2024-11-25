@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, removeModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 const { surpassingPassive } = require('./descriptions/passives');
 
@@ -14,7 +15,7 @@ module.exports = new GearTemplate("Surpassing Fever Break",
 	(targets, user, adventure) => {
 		const { element } = module.exports;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		let poisonDamage = 10;
 		let frailDamage = 20;

@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 
@@ -21,7 +21,7 @@ module.exports = new GearTemplate(gearName,
 			pendingWeakness.stacks += bonus;
 		}
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		const receipts = addModifier([target], pendingSlow);
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));

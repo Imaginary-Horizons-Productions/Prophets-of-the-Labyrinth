@@ -1,4 +1,5 @@
 const { EnemyTemplate } = require("../classes");
+const { ELEMENT_MATCH_STAGGER_ALLY } = require("../constants.js");
 const { selectAllFoes, selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil.js");
@@ -20,7 +21,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		effect: (targets, user, adventure) => {
 			let damage = user.getPower() + 100;
 			addProtection([user], user.crit ? 100 : 50);
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 			return dealDamage(targets, user, damage, false, user.element, adventure).concat([`${user.name} gains protection.`]);
 		},
 		selector: selectRandomFoe,
@@ -35,7 +36,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			if (user.crit) {
 				damage *= 2;
 			}
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 			const texts = [];
 			for (let i = 0; i < 3; i++) {
 				texts.push(...dealDamage(targets, user, damage, false, user.element, adventure));

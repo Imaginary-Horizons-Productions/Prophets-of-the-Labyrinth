@@ -22,7 +22,7 @@ module.exports = new EnemyTemplate("Brute",
 			return generateModifierResultLines(addModifier([target], { name: "The Target", stacks: 1 }));
 		} else {
 			const resultLines = dealDamage([markedTarget], user, 70, false, "Untyped", adventure);
-			changeStagger([markedTarget], 3);
+			changeStagger([markedTarget], user, 3);
 			resultLines.push(`${markedTarget.name} is Staggered.`);
 			if (user.crit) {
 				adventure.gold -= 5;

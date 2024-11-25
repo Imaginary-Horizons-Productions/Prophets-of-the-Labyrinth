@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { addModifier, payHP, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Discounted Infinite Regeneration",
@@ -20,7 +21,7 @@ module.exports = new GearTemplate("Discounted Infinite Regeneration",
 			return [paymentSentence];
 		}
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		return [paymentSentence, ...generateModifierResultLines(addModifier(targets, regen))];
 	}

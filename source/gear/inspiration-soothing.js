@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Soothing Inspiration",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Soothing Inspiration",
 		const { element, modifiers: [powerUp, regen], bonus } = module.exports;
 		const pendingPowerUp = { ...powerUp };
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingPowerUp.stacks += bonus;

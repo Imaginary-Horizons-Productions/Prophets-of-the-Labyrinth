@@ -33,7 +33,7 @@ module.exports = new PetTemplate(petName, Colors.LightGrey,
 					const [oblivious] = module.exports.moves[1][1].modifiers;
 					const resultLines = generateModifierResultLines(addModifier([owner], oblivious));
 					if (owner.stagger > 0) {
-						changeStagger([owner], -1);
+						changeStagger([owner], null, -1);
 						resultLines.push(`${owner.name} is relieved of Stagger.`);
 					}
 					return resultLines;

@@ -1,5 +1,5 @@
 const { ModifierTemplate, BuildError } = require("../classes");
-const { sanitizeEmojiName, getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require("../util/graphicsUtil");
+const { sanitizeEmojiName, injectApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { calculateTagContent } = require("../util/textUtil");
 
 /** @type {Record<string, ModifierTemplate>} */
@@ -21,6 +21,8 @@ for (const file of [
 	"evade.js",
 	"exposed.js",
 	"frail.js",
+	"impactful.js",
+	"ineffectual.js",
 	"insult-boring.js",
 	"insult-lacking-rhythm.js",
 	"insult-smelly.js",

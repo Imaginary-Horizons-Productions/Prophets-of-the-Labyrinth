@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
-const { SAFE_DELIMITER } = require('../constants.js');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 
 const gearName = "Supportive Refreshing Breeze";
 module.exports = new GearTemplate(gearName,
@@ -14,10 +14,11 @@ module.exports = new GearTemplate(gearName,
 	350,
 	(targets, user, adventure) => {
 		const { element, stagger } = module.exports;
+		let pendingStagger = stagger;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			pendingStagger += ELEMENT_MATCH_STAGGER_ALLY;
 		}
-		changeStagger(targets, stagger);
+		changeStagger(targets, user, pendingStagger);
 		const resultLines = ["All allies shrug off some Stagger."];
 		const receipts = [];
 		for (const target of targets) {

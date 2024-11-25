@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, addProtection } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Sweeping Scutum",
@@ -16,7 +17,7 @@ module.exports = new GearTemplate("Sweeping Scutum",
 			pendingProtection *= critMultiplier;
 		}
 		if (user.element === element) {
-			changeStagger([user, ...targets], "elementMatchAlly");
+			changeStagger([user, ...targets], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		addProtection([user, ...targets], pendingProtection);
 		return ["Everyone gains protection."];

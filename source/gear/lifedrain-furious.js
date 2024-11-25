@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Furious Life Drain",
@@ -15,7 +16,7 @@ module.exports = new GearTemplate("Furious Life Drain",
 		let pendingDamage = (user.getPower() + damage) * furiousness;
 		let pendingHealing = healing;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingHealing *= critMultiplier;

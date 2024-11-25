@@ -350,16 +350,20 @@ function generateModifierResultLines(receipts) {
 
 /** add Stagger, negative values allowed
  * @param {Combatant[]} combatants
- * @param {number | "elementMatchAlly" | "elementMatchFoe"} value
+ * @param {Combatant | null} applier
+ * @param {number} value
  */
-function changeStagger(combatants, value) {
+function changeStagger(combatants, applier, value) {
 	for (const combatant of combatants) {
 		if (!combatant.isStunned) {
 			let pendingStagger = value;
-			if (value === "elementMatchAlly") {
-				pendingStagger = -1;
-			} else if (value === "elementMatchFoe") {
-				pendingStagger = 2;
+			if (applier && pendingStagger > 0) {
+				if (applier.getModifierStacks("Impactful") > 0) {
+					pendingStagger++;
+				}
+				if (applier.getModifierStacks("Ineffectual") > 0) {
+					pendingStagger--;
+				}
 			}
 			combatant.stagger = Math.min(Math.max(combatant.stagger + pendingStagger, 0), combatant.getPoise());
 		}

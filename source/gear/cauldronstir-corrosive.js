@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { rollablePotions } = require('../shared/potions');
 const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
@@ -16,7 +16,7 @@ module.exports = new GearTemplate(gearName,
 		const { element, damage, modifiers: [powerdown] } = module.exports;
 		const pendingDamage = damage + user.getPower();
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		if (user.crit) {

@@ -1,4 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
+const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, addProtection, combineModifierReceipts, generateModifierResultLines } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
@@ -101,7 +102,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let pendingDamage = 125;
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		if (user.crit) {
 			pendingDamage *= 2;
 		}

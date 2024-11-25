@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { payHP, dealDamage, changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Hunter's Power from Wrath",
@@ -16,7 +17,7 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 			const furiousness = 2 - user.hp / user.getMaxHP();
 			let pendingDamage = (user.getPower() + damage) * furiousness;
 			if (user.element === element) {
-				changeStagger(targets, "elementMatchFoe");
+				changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 			}
 			if (user.crit) {
 				pendingDamage *= 2;

@@ -2,6 +2,7 @@ const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
 	[
@@ -26,15 +27,15 @@ module.exports = new GearTemplate("Tormenting War Cry",
 			}
 		}
 
-		let pendingStaggerStacks = stagger;
+		let pendingStagger = stagger;
 		if (user.element === element) {
-			pendingStaggerStacks += 2;
+			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
-			pendingStaggerStacks += bonus;
+			pendingStagger += bonus;
 		}
 		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
-		changeStagger(targetArray, pendingStaggerStacks);
+		changeStagger(targetArray, user, pendingStagger);
 		const receipts = [];
 		for (const target of targetArray) {
 			for (const modifier in target.modifiers) {

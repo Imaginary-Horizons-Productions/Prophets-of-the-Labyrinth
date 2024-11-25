@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
@@ -14,7 +15,7 @@ module.exports = new GearTemplate("Censer",
 		const { element, modifiers: [slow], damage, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (Object.keys(target.modifiers).some(modifier => getModifierCategory(modifier) === "Debuff")) {
 			pendingDamage += bonus;

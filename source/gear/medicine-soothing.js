@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Soothing Medicine",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Soothing Medicine",
 		const { modifiers: [regen], critMultiplier, element } = module.exports;
 		const pendingRegen = { ...regen };
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingRegen.stacks *= critMultiplier;

@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -13,13 +14,14 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 	(targets, user, adventure) => {
 		const { element, stagger, damage, critMultiplier, modifiers: [powerUp] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
+		let pendingStagger = stagger;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		changeStagger(targets, stagger);
+		changeStagger(targets, user, pendingStagger);
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length < targets.length) {

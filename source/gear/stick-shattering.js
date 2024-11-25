@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shattering Stick",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Shattering Stick",
 		const { element, damage, bonus, critMultiplier, modifiers: [frail] } = module.exports;
 		let pendingDamage = damage + user.getPower();
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });

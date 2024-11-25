@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -25,14 +26,14 @@ module.exports = new GearTemplate("War Cry",
 			}
 		}
 
-		let pendingStaggerStacks = stagger;
+		let pendingStagger = stagger;
 		if (user.element === element) {
-			pendingStaggerStacks += 2;
+			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
-			pendingStaggerStacks += bonus;
+			pendingStagger += bonus;
 		}
-		changeStagger(targetArray, pendingStaggerStacks);
+		changeStagger(targetArray, user, pendingStagger);
 		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
 	}
 ).setTargetingTags({ type: "single", team: "foe" })

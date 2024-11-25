@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { changeStagger } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { rollableHerbs } = require('../shared/herbs');
 
 const gearName = "Urgent Herb Basket";
@@ -20,7 +20,7 @@ module.exports = new GearTemplate(gearName,
 			pendingHerbCount *= critMultiplier;
 		}
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "Item", "loot", pendingHerbCount);

@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Iron Fist Punch",
@@ -12,7 +13,7 @@ module.exports = new GearTemplate("Iron Fist Punch",
 	(targets, user, adventure) => {
 		const { damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage + (user.getModifierStacks("Iron Fist Stance") * 45);
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}

@@ -1,4 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { payHP, changeStagger, addProtection } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reinforced Blood Aegis",
@@ -18,7 +19,7 @@ module.exports = new GearTemplate("Reinforced Blood Aegis",
 		const resultLines = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingProtection *= critMultiplier;

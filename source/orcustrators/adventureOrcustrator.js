@@ -1000,7 +1000,7 @@ function endRound(adventure, thread) {
 			} else if (combatant.getModifierStacks("Agility") > 0) {
 				staggerChange = -2;
 			}
-			changeStagger([combatant], staggerChange);
+			changeStagger([combatant], null, staggerChange);
 		}
 
 		// Decrement Modifiers

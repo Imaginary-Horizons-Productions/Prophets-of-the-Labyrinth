@@ -1,4 +1,5 @@
 const { EnemyTemplate } = require("../classes");
+const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
@@ -17,7 +18,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		if (user.crit) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: 3 })));
 	},
@@ -33,7 +34,7 @@ module.exports = new EnemyTemplate("@{adventureOpposite} Ooze",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,

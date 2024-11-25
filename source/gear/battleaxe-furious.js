@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Furious Battleaxe",
@@ -14,7 +15,7 @@ module.exports = new GearTemplate("Furious Battleaxe",
 		const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
 		let pendingDamage = (user.getPower() + damage) * furiousness;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;

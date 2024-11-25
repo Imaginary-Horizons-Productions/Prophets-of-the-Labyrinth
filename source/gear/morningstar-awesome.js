@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Awesome Morning Star",
@@ -12,16 +13,17 @@ module.exports = new GearTemplate("Awesome Morning Star",
 	([target], user, adventure) => {
 		const { element, stagger, damage, critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
+		let pendingStagger = stagger;
 		if (target.isStunned) {
 			pendingDamage += bonus;
 		}
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		changeStagger([target], stagger);
+		changeStagger([target], user, pendingStagger);
 		return [...dealDamage([target], user, pendingDamage, false, element, adventure), `${target.name} is Staggered.`];
 	}
 ).setTargetingTags({ type: "single", team: "foe" })

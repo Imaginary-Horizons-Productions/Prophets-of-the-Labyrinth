@@ -7,7 +7,7 @@ const { spawnEnemy } = require("../util/roomUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
 const asteroid = require("./asteroid.js");
-const { SAFE_DELIMITER } = require("../constants.js");
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Earthly Knight",
 	"Earth",
@@ -27,7 +27,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
 		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
@@ -51,7 +51,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, 2);
+		changeStagger(targets, user, 2);
 		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered.")];
 	},
 	selector: selectAllFoes,

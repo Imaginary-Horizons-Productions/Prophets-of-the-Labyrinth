@@ -4,6 +4,7 @@ const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
 const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
+const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants");
 
 module.exports = new EnemyTemplate("Starry Knight",
 	"Light",
@@ -36,7 +37,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 			}
 		}
 		let pendingDamage = user.getPower() + 100 + (50 * (unfinishedChallenges.length + targetDebuffCount + targetCursedGearCount));
-		changeStagger([target], "elementMatchFoe");
+		changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
@@ -55,7 +56,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let pendingDamage = user.getPower() + 50 * targets.length;
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, pendingDamage, false, "Light", adventure)
 			.concat(combineModifierReceipts(addNewRandomInsults(targets, user.crit ? 2 : 1, adventure)));
 	},
@@ -68,7 +69,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	description: `Inflict @e{Exposed} and random insults on all foes, gain protection on a crit`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		if (user.crit) {
 			addProtection([user], 100);
 		}
@@ -83,7 +84,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	description: `Inflict @e{Distracted} and ${getEmoji("Light")} damage on a single foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		let pendingDamage = user.getPower() + 100;
 		if (user.crit) {
 			pendingDamage *= 2;

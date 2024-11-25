@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { changeStagger, addProtection } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { rollableHerbs } = require('../shared/herbs');
 
 const gearName = "Reinforced Herb Basket";
@@ -20,7 +20,7 @@ module.exports = new GearTemplate(gearName,
 			pendingHerbCount *= critMultiplier;
 		}
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		addProtection([user], protection);
 		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];

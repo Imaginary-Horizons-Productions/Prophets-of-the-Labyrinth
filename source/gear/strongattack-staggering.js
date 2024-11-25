@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -13,8 +14,9 @@ module.exports = new GearTemplate("Staggering Strong Attack",
 	(targets, user, adventure) => {
 		const { damage, element, stagger, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
+		let pendingStagger = stagger;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -22,7 +24,7 @@ module.exports = new GearTemplate("Staggering Strong Attack",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
-			changeStagger(stillLivingTargets, stagger);
+			changeStagger(stillLivingTargets, user, pendingStagger);
 			joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered.");
 		}
 		return resultLines;

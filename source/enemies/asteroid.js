@@ -2,6 +2,7 @@ const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, changeStagger } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectAllOtherCombatants } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
+const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Asteroid",
 	"Earth",
@@ -22,7 +23,7 @@ module.exports = new EnemyTemplate("Asteroid",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure).concat(dealDamage([user], user, recoilDmg, true, "Untyped", adventure));
 	},
 	selector: selectRandomFoe,
@@ -38,7 +39,7 @@ module.exports = new EnemyTemplate("Asteroid",
 			damage *= 2;
 		}
 		user.hp = 0;
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return [...dealDamage(targets, user, damage, false, user.element, adventure), `${user.name} is downed.`];
 	},
 	selector: selectAllOtherCombatants,

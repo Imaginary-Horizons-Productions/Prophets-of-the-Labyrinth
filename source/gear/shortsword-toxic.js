@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Shortsword",
@@ -19,7 +20,7 @@ module.exports = new GearTemplate("Toxic Shortsword",
 		const receipts = addModifier([user], exposed);
 		if (target.hp > 0) {
 			if (user.element === element) {
-				changeStagger([target], "elementMatchFoe");
+				changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 			}
 			receipts.push(...addModifier([target], poison), ...addModifier([target], exposed));
 		}

@@ -3,6 +3,7 @@ const { dealDamage, addModifier, changeStagger, addProtection, generateModifierR
 const { selectRandomFoe, selectAllCombatants } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
+const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
@@ -22,7 +23,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
@@ -40,7 +41,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 			const pendingDamage = (user.crit ? 2 : 1) * ((target.protection > 0 ? 0 : bonusDamage) + baseDamage);
 			results.push(...dealDamage([target], user, pendingDamage, false, user.element, adventure));
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return results;
 	},
 	selector: selectRandomFoe,

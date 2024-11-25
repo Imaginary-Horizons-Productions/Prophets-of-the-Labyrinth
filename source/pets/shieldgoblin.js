@@ -27,7 +27,7 @@ module.exports = new PetTemplate(petName, Colors.Green,
 			new PetMoveTemplate("Shield Avalanche", `Deal owner's protection in ${getEmoji("Earth")} damage and 1 Stagger to a random foe`,
 				(owner, petRNs) => [new CombatantReference(owner.team === "delver" ? "enemy" : "delver", petRNs[1])],
 				(targets, owner, adventure, petRNs) => {
-					changeStagger(targets, 1);
+					changeStagger(targets, null, 1);
 					return dealDamage(targets, owner, owner.protection, false, "Earth", adventure);
 				}).setRnConfig(["enemyIndex"])
 		]

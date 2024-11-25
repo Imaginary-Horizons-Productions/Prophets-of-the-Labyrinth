@@ -5,7 +5,7 @@ const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/action
 const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY, ELEMENT_MATCH_STAGGER_FOE } = require("../constants");
 
 module.exports = new EnemyTemplate("Elkemist",
 	"Water",
@@ -21,7 +21,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	description: "Gains protection, cures a random debuff, and grants a large amount of @e{Progress}",
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		changeStagger([user], "elementMatchAlly");
+		changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		const resultLines = [`${user.name} gains protection.`];
 		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Toil${SAFE_DELIMITER}progress`][0] });
 		progressCheck(user, wrappedProgressReceipt, resultLines);
@@ -47,7 +47,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
 		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Trouble${SAFE_DELIMITER}progress`][0] });
 		progressCheck(user, wrappedProgressReceipt, resultLines);

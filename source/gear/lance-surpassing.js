@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 const { surpassingPassive } = require('./descriptions/passives');
 
@@ -15,7 +16,7 @@ module.exports = new GearTemplate("Surpassing Lance",
 		const { element, damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + Math.max(0, user.getSpeed(true) - 100) + damage;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;

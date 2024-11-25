@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY, ELEMENT_MATCH_STAGGER_FOE } = require("../constants");
 const { selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { elementsList } = require("../util/elementUtil");
@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		let addedAbsorb = false;
 		if (user.crit) {
 			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 5 }).some(receipt => receipt.succeeded.size > 0);
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		} else {
 			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 3 }).some(receipt => receipt.succeeded.size > 0);
 		}
@@ -46,7 +46,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
@@ -61,7 +61,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectAllFoes,
@@ -73,7 +73,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		if (user.crit) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: user.crit ? 3 : 2 })));
 	},

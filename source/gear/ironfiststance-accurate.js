@@ -1,4 +1,5 @@
 const { GearTemplate } = require("../classes");
+const { ELEMENT_MATCH_STAGGER_ALLY } = require("../constants");
 const { addModifier, changeStagger, enterStance, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { accuratePassive } = require("./descriptions/passives");
 
@@ -14,7 +15,7 @@ module.exports = new GearTemplate("Accurate Iron Fist Stance",
 	(targets, user, adventure) => {
 		const { element, modifiers: [ironFistStance, frail] } = module.exports;
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		const receipts = enterStance(user, ironFistStance);
 		if (user.crit) {

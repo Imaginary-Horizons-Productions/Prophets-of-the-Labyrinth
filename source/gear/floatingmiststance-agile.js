@@ -1,4 +1,5 @@
 const { GearTemplate } = require("../classes");
+const { ELEMENT_MATCH_STAGGER_ALLY } = require("../constants");
 const { addModifier, changeStagger, enterStance, combineModifierReceipts, generateModifierResultLines } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Agile Floating Mist Stance",
@@ -12,7 +13,7 @@ module.exports = new GearTemplate("Agile Floating Mist Stance",
 	(targets, user, adventure) => {
 		const { element, modifiers: [displayEvade, floatingMistStance, agility] } = module.exports;
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		const receipts = enterStance(user, floatingMistStance).concat(addModifier([user], agility));
 		if (user.crit) {

@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Poison Torrent",
@@ -16,7 +17,7 @@ module.exports = new GearTemplate("Poison Torrent",
 			pendingPoison.stacks *= critMultiplier;
 		}
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPoison)));
 	}

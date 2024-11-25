@@ -1,4 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Evasive Heat Mirage",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Evasive Heat Mirage",
 		const { element, modifiers: [evade], critMultiplier } = module.exports;
 		const pendingEvade = { ...evade };
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingEvade.stacks *= critMultiplier;
