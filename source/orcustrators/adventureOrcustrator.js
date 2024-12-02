@@ -878,7 +878,7 @@ function resolveMove(move, adventure) {
 		}
 
 		// Decrement modifiers with move decrement
-		for (const modifier of user.modifiers) {
+		for (const modifier in user.modifiers) {
 			const moveDecrement = getMoveDecrement(modifier);
 			if (moveDecrement !== 0) {
 				removeModifier([user], { name: modifier, stacks: moveDecrement, force: true });
@@ -1106,6 +1106,9 @@ function completeAdventure(adventure, thread, endState, descriptionOverride) {
 	clearComponents(adventure.messageIds.battleRound, messageManager);
 	clearComponents(adventure.messageIds.room, messageManager);
 
+	if (adventure.room.resources.Gold.count > 0) {
+		adventure.gainGold(adventure.room.resources.Gold.count);
+	}
 	adventure.state = endState;
 	setAdventure(adventure);
 	const company = getCompany(thread.guild.id);
