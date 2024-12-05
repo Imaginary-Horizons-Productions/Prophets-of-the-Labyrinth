@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
-const { isDebuff } = require('../modifiers/_modifierDictionary.js');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Staggering Censer",
@@ -13,13 +14,14 @@ module.exports = new GearTemplate("Staggering Censer",
 	([target], user, adventure) => {
 		const { element, modifiers: [slow], stagger, damage, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
+		let pendingStagger = stagger;
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
 		}
-		if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
+		if (Object.keys(target.modifiers).some(modifier => getModifierCategory(modifier) === "Debuff")) {
 			pendingDamage += bonus;
 		}
-		changeStagger([target], stagger);
+		changeStagger([target], user, pendingStagger);
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (user.crit && target.hp > 0) {
 			resultLines.push(...generateModifierResultLines(addModifier([target], slow)));
@@ -27,9 +29,9 @@ module.exports = new GearTemplate("Staggering Censer",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Thick Censer", "Tormenting Censer")
+	.setSidegrades("Chaining Censer", "Tormenting Censer")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDamage(15)
 	.setBonus(75) // damage
 	.setStagger(2)
-	.setDurability(15);
+	.setCooldown(1);

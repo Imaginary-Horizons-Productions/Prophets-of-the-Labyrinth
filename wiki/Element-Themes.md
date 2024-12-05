@@ -181,8 +181,8 @@ Archetypes:
 - Surpassing
 - Supportive
 - Taunting
-- Thick
 - Thief's
 - Tormenting
+- Unbreakable
 - Unlucky
 - Vexing

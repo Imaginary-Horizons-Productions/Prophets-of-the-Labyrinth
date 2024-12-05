@@ -1,8 +1,9 @@
 const { ModifierTemplate } = require("../classes");
+const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new ModifierTemplate("Darkness Absorb",
-	"Convert Darkness damage to health for @{stackCount} rounds.",
-	true,
-	false,
+	`Convert ${getEmoji("Darkness")} damage to healing`,
+	"Buff",
+	0,
 	1
 ).setInverse("Darkness Weakness");

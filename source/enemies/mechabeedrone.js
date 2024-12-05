@@ -3,6 +3,7 @@ const { dealDamage, addModifier, changeStagger, generateModifierResultLines, com
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
+const { ELEMENT_MATCH_STAGGER_FOE, ELEMENT_MATCH_STAGGER_ALLY } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
@@ -19,7 +20,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
 	},
 	selector: selectRandomFoe,
@@ -34,7 +35,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		if (user.crit) {
 			receipts.push(...addModifier([user], { name: "Agility", stacks: 1 }));
 		}
-		changeStagger([user], "elementMatchAlly");
+		changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectSelf,
@@ -61,7 +62,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 			damage *= 2;
 		}
 		user.hp = 0;
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},

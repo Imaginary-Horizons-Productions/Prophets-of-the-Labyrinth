@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Barrier",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Barrier",
 		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;
 		const pendingVigilance = { ...vigilance };
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingVigilance.stacks *= critMultiplier;
@@ -23,4 +24,4 @@ module.exports = new GearTemplate("Barrier",
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setUpgrades("Cleansing Barrier", "Devoted Barrier", "Vigilant Barrier")
 	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 1 })
-	.setDurability(5);
+	.setCharges(5);

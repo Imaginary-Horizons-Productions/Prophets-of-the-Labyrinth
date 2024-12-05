@@ -1,9 +1,11 @@
 const { BuildError, GearTemplate, Gear, Delver, Adventure } = require("../classes");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { getEmoji } = require("../util/elementUtil");
+const { italic } = require("discord.js");
 
 /** @type {Record<string, GearTemplate>} */
 const GEAR = {};
+/** @type {string[]} */
 const GEAR_NAMES = [];
 
 for (const file of [
@@ -49,8 +51,8 @@ for (const file of [
 	"cauldronstir-sabotaging.js",
 	"cauldronstir-toxic.js",
 	"censer-base.js",
+	"censer-chaining.js",
 	"censer-staggering.js",
-	"censer-thick.js",
 	"censer-tormenting.js",
 	"certainvictory-base.js",
 	"certainvictory-hunters.js",
@@ -75,8 +77,8 @@ for (const file of [
 	"daggers-slowing.js",
 	"daggers-sweeping.js",
 	"feverbreak-base.js",
-	"feverbreak-organic.js",
 	"feverbreak-surpassing.js",
+	"feverbreak-unlimited.js",
 	"feverbreak-urgent.js",
 	"firecracker-base.js",
 	"firecracker-double.js",
@@ -95,7 +97,7 @@ for (const file of [
 	"heatmirage-unlucky.js",
 	"heatmirage-vigilant.js",
 	"herbbasket-base.js",
-	"herbbasket-organic.js",
+	"herbbasket-chaining.js",
 	"herbbasket-reinforced.js",
 	"herbbasket-urgent.js",
 	"icebolt-awesome.js",
@@ -112,8 +114,8 @@ for (const file of [
 	"inspiration-sweeping.js",
 	"ironfiststance-accurate.js",
 	"ironfiststance-base.js",
+	"ironfiststance-chaining.js",
 	"ironfiststance-lucky.js",
-	"ironfiststance-organic.js",
 	"lance-base.js",
 	"lance-duelists.js",
 	"lance-shattering.js",
@@ -159,9 +161,9 @@ for (const file of [
 	"refreshingbreeze-supportive.js",
 	"refreshingbreeze-swift.js",
 	"riskymixture-base.js",
+	"riskymixture-chaining.js",
 	"riskymixture-midass.js",
 	"riskymixture-potent.js",
-	"riskymixture-thick.js",
 	"sabotagekit-base.js",
 	"sabotagekit-potent.js",
 	"sabotagekit-shattering.js",
@@ -258,12 +260,12 @@ function getGearProperty(gearName, propertyName) {
  */
 function buildGearRecord(gearName, adventure) {
 	const template = GEAR[gearName.toLowerCase()];
-	let durability = template.maxDurability;
+	let charges = template.maxCharges;
 	const shoddyPenalty = adventure.getChallengeIntensity("Shoddy Craftsmanship");
 	if (shoddyPenalty) {
-		durability = Math.ceil(durability * (100 - shoddyPenalty) / 100);
+		charges = Math.ceil(charges * (100 - shoddyPenalty) / 100);
 	}
-	return new Gear(gearName, durability, template.maxHP, template.power, template.speed, template.critRate, template.poise);
+	return new Gear(gearName, charges, template.maxHP, template.power, template.speed, template.critRate, template.poise);
 }
 
 /**
@@ -295,24 +297,31 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 		}
 	}
 	let text = "";
+	const cooldown = getGearProperty(gearName, "cooldown");
 	if (buildFullDescription) {
 		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
 			if (type === "use") {
-				return `*${totalStagger} Stagger*: ${description}`;
+				return `${italic(`${totalStagger} Stagger`)}: ${description}`;
 			} else if (!["upgradeDiff"].includes(type)) {
-				return `*${type}*: ${description}`;
+				return `${italic(type)}: ${description}`;
 			}
 		});
+		if (cooldown > 0) {
+			descriptionTexts.push(`${italic("Cooldown")}: ${cooldown} Rounds`);
+		}
 		text = descriptionTexts.join("\n");
 	} else {
 		// these descriptions get used in select option sets, which don't support markdown
 		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
 			if (type === "use") {
 				return `${totalStagger} Stagger: ${description}`;
-			} else if (!["Critical💥", "upgradeDiff"].includes(type)) {
+			} else if (type !== "Critical💥") {
 				return `${type}: ${description}`;
 			}
 		});
+		if (cooldown > 0) {
+			descriptionTexts.push(`Cooldown: ${cooldown} Rounds`);
+		}
 		text = descriptionTexts.join(". ")
 	}
 
@@ -369,7 +378,7 @@ function injectGearStats(text, gearName, elementOverride) {
 }
 
 module.exports = {
-	gearNames: GEAR_NAMES,
+	GEAR_NAMES,
 	gearExists,
 	getGearProperty,
 	buildGearRecord,

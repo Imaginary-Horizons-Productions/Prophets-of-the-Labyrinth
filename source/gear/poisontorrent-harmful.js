@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Harmful Poison Torrent",
@@ -20,7 +21,7 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
 			if (user.element === element) {
-				changeStagger(stillLivingTargets, "elementMatchFoe");
+				changeStagger(stillLivingTargets, user, ELEMENT_MATCH_STAGGER_FOE);
 			}
 			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, pendingPoison))));
 		}
@@ -30,4 +31,4 @@ module.exports = new GearTemplate("Harmful Poison Torrent",
 	.setSidegrades("Distracting Poison Torrent", "Staggering Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 })
 	.setDamage(15)
-	.setDurability(15);
+	.setCharges(15);

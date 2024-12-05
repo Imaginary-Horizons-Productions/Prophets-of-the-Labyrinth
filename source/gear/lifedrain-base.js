@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Life Drain",
@@ -14,7 +15,7 @@ module.exports = new GearTemplate("Life Drain",
 		let pendingDamage = user.getPower() + damage;
 		let pendingHealing = healing;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingHealing *= critMultiplier;
@@ -23,6 +24,6 @@ module.exports = new GearTemplate("Life Drain",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Flanking Life Drain", "Furious Life Drain", "Thirsting Life Drain")
-	.setDurability(15)
+	.setCharges(15)
 	.setDamage(40)
 	.setHealing(25);

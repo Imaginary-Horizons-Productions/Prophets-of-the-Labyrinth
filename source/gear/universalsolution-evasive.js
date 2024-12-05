@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, addModifier, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 const gearName = "Evasive Universal Solution";
@@ -15,9 +15,9 @@ module.exports = new GearTemplate(gearName,
 	(targets, user, adventure) => {
 		const { element, modifiers: [poison, evade] } = module.exports;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
-		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
+		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const addReciepts = [];
 		if (user.crit) {
 			for (const debuff of userDebuffs) {
@@ -39,5 +39,4 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Centering Universal Solution", "Harmful Universal Solution")
 	.setModifiers({ name: "Poison", stacks: 3 }, { name: "Evade", stacks: 2 })
-	.setDurability(10)
 	.setRnConfig({ "debuffs": 2 });

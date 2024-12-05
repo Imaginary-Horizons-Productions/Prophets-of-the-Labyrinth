@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, payHP, dealDamage } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Air Blades",
@@ -17,7 +18,7 @@ module.exports = new GearTemplate("Air Blades",
 		}
 		let pendingDamage = damage + user.getPower();
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -26,6 +27,5 @@ module.exports = new GearTemplate("Air Blades",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Accelerating Air Blade", "Toxic Air Blade", "Unstoppable Air Blade")
-	.setDurability(Infinity)
 	.setDamage(20)
 	.setHPCost(25);

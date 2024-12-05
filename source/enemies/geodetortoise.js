@@ -3,6 +3,7 @@ const { addModifier, dealDamage, changeStagger, addProtection } = require("../ut
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
+const { ELEMENT_MATCH_STAGGER_FOE, ELEMENT_MATCH_STAGGER_ALLY } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",
 	"Earth",
@@ -22,7 +23,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,
@@ -37,7 +38,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		addProtection([user], 25);
 		if (user.crit) {
 			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 50 }).some(receipt => receipt.succeeded.size > 0);
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		} else {
 			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 25 }).some(receipt => receipt.succeeded.size > 0);
 		}

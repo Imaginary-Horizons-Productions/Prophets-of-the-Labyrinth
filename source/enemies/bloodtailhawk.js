@@ -1,4 +1,5 @@
 const { EnemyTemplate } = require("../classes");
+const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants");
 const { selectRandomFoe } = require("../shared/actionComponents");
 const { dealDamage, changeStagger } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/elementUtil");
@@ -21,7 +22,7 @@ module.exports = new EnemyTemplate("Bloodtail Hawk",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},
 	selector: selectRandomFoe,

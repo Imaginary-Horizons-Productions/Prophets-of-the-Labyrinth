@@ -1,9 +1,11 @@
 const { ModifierTemplate, BuildError } = require("../classes");
-const { sanitizeEmojiName } = require("../util/graphicsUtil");
+const { sanitizeEmojiName, injectApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { calculateTagContent } = require("../util/textUtil");
 
 /** @type {Record<string, ModifierTemplate>} */
 const MODIFIERS = {};
+/** @type {string[]} */
+const MODIFIER_NAMES = [];
 
 for (const file of [
 	"absorb-darkness.js",
@@ -20,6 +22,8 @@ for (const file of [
 	"evade.js",
 	"exposed.js",
 	"frail.js",
+	"impactful.js",
+	"ineffectual.js",
 	"insult-boring.js",
 	"insult-lacking-rhythm.js",
 	"insult-smelly.js",
@@ -38,6 +42,7 @@ for (const file of [
 	"slow.js",
 	"stance-floating-mist.js",
 	"stance-iron-fist.js",
+	"the-target.js",
 	"unlucky.js",
 	"vigilance.js",
 	"weakness-darkness.js",
@@ -54,6 +59,7 @@ for (const file of [
 		throw new BuildError(`Duplicate modifier name (${modifier.name})`);
 	}
 	MODIFIERS[modifier.name] = modifier;
+	MODIFIER_NAMES.push(modifier.name);
 }
 
 /** @returns {[name: string, attachment: string][]} */
@@ -66,32 +72,31 @@ function getModifierEmojiFileTuples() {
 
 /**
  * @param {string} modifierName
- * @param {number} stackCount
+ * @param {number} stacks
  * @param {number} bearerPoise
  * @param {number} funnelCount
  */
-function getModifierDescription(modifierName, stackCount, bearerPoise, funnelCount) {
-	return calculateTagContent(MODIFIERS[modifierName].description, [
-		{ tag: 'stackCount', count: stackCount },
+function getModifierDescription(modifierName, stacks, bearerPoise, funnelCount) {
+	return calculateTagContent(injectApplicationEmojiMarkdown(MODIFIERS[modifierName].description), [
+		{ tag: 'stacks', count: stacks },
 		{ tag: 'poise', count: bearerPoise },
-		{ tag: 'funnelCount', count: funnelCount },
-		{ tag: 'roundDecrement', count: getTurnDecrement(modifierName) }
+		{ tag: 'funnelCount', count: funnelCount }
 	]);
 }
 
 /** @param {string} modifierName */
-function getTurnDecrement(modifierName) {
-	return MODIFIERS[modifierName].turnDecrement;
+function getModifierCategory(modifierName) {
+	return MODIFIERS[modifierName].category;
 }
 
 /** @param {string} modifierName */
-function isBuff(modifierName) {
-	return MODIFIERS[modifierName].isBuff;
+function getMoveDecrement(modifierName) {
+	return MODIFIERS[modifierName].moveDecrement;
 }
 
 /** @param {string} modifierName */
-function isDebuff(modifierName) {
-	return MODIFIERS[modifierName].isDebuff;
+function getRoundDecrement(modifierName) {
+	return MODIFIERS[modifierName].roundDecrement;
 }
 
 /** @param {string} modifierName */
@@ -100,10 +105,11 @@ function getInverse(modifierName) {
 }
 
 module.exports = {
+	MODIFIER_NAMES,
 	getModifierEmojiFileTuples,
 	getModifierDescription,
-	getTurnDecrement,
-	isBuff,
-	isDebuff,
+	getModifierCategory,
+	getMoveDecrement,
+	getRoundDecrement,
 	getInverse
 };

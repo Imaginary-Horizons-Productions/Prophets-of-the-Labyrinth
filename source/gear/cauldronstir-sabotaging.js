@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { dealDamage, changeStagger, addModifier, generateModifierResultLines, getCombatantWeaknesses } = require('../util/combatantUtil');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { rollablePotions } = require('../shared/potions');
 const { getResistances, elementsList } = require('../util/elementUtil');
 
@@ -19,7 +19,7 @@ module.exports = new GearTemplate(gearName,
 		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (user.element === element) {
-			changeStagger(stillLivingTargets, "elementMatchFoe");
+			changeStagger(stillLivingTargets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			const rolledPotion = rollablePotions[user.roundRns[`${gearName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
@@ -39,6 +39,6 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setModifiers({ name: "unparsed random weakness", stacks: 2 })
 	.setSidegrades("Corrosive Cauldron Stir", "Toxic Cauldron Stir")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setRnConfig({ potions: 1, weaknesses: 1 });

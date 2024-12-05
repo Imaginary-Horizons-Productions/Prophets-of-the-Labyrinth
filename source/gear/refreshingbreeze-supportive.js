@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
-const { SAFE_DELIMITER } = require('../constants.js');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 
 const gearName = "Supportive Refreshing Breeze";
 module.exports = new GearTemplate(gearName,
@@ -14,14 +14,15 @@ module.exports = new GearTemplate(gearName,
 	350,
 	(targets, user, adventure) => {
 		const { element, stagger } = module.exports;
+		let pendingStagger = stagger;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			pendingStagger += ELEMENT_MATCH_STAGGER_ALLY;
 		}
-		changeStagger(targets, stagger);
+		changeStagger(targets, user, pendingStagger);
 		const resultLines = ["All allies shrug off some Stagger."];
 		const receipts = [];
 		for (const target of targets) {
-			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
+			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			if (targetDebuffs.length > 0) {
 				const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? 2 : 1);
 				for (let i = 0; i < debuffsToRemove; i++) {
@@ -39,6 +40,6 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "all", team: "ally" })
 	.setSidegrades("Accelerating Refreshing Breeze", "Swift Refreshing Breeze")
-	.setDurability(15)
+	.setCharges(15)
 	.setStagger(-2)
 	.setRnConfig({ debuffs: 1 });

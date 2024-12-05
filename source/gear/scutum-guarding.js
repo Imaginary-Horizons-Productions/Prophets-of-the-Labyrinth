@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, addProtection } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Guarding Scutum",
@@ -14,7 +15,7 @@ module.exports = new GearTemplate("Guarding Scutum",
 		let selfProtection = bonus;
 		let targetProtection = protection;
 		if (user.element === element) {
-			changeStagger([target, user], "elementMatchAlly");
+			changeStagger([target, user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			selfProtection *= critMultiplier;
@@ -26,6 +27,6 @@ module.exports = new GearTemplate("Guarding Scutum",
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Lucky Scutum", "Sweeping Scutum")
-	.setDurability(15)
+	.setCooldown(1)
 	.setProtection(100)
 	.setBonus(75);

@@ -65,6 +65,16 @@ Relieve Stagger on user
 - Omamori (Water)
 - Universal Solution (Water)
 
+### Chaining
+Reduced cooldown
+
+**Available on**
+- all Air Blades (Wind)
+- Censer (Fire)
+- Herb Basket (Earth)
+- Iron Fist Stance (Light)
+- Risky Mixture (Darkness)
+
 ### Charging
 Adds Power Up to the user
 
@@ -249,14 +259,6 @@ Adds Curse of Midas to target
 - Firecracker (Fire)
 - Risky Mixture (Darkness)
 
-### Organic
-Regains durability when entering new rooms
-
-**Available on**
-- Iron Fist Stance (Light)
-- Fever Break (Darkness)
-- Herb Basket (Earth)
-
 ### Poised
 Passively increases user's poise
 
@@ -429,13 +431,6 @@ Change target's move's target to user
 - all Goad Futility (Earth)
 - all Heat Mirages (Fire)
 
-### Thick
-Increased durability
-
-**Available on**
-- Censer (Fire)
-- Risky Mixture (Darkness)
-
 ### Thief's
 Gain gold on kill
 
@@ -466,6 +461,12 @@ Adds Poison to target
 - Cauldron Stir (Water)
 - Firecracker (Fire)
 - Shortsword (Fire)
+
+### Unlimited
+Infinite charges
+
+**Available on**
+- Fever Break (Darkness)
 
 ### Unlucky
 Adds Unlucky to target
@@ -520,6 +521,7 @@ Increases stats gained by level up
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
 - Adds Iron Fist Stance to user (all Iron Fist Stances)
 - Adds Power Up to target (all Inspiration)
-- Also hits targets with Exposed (all War Cries)
+- Also hits targets with Distracted (all War Cries)
+- Also hits allies with Vigilance (planned)
 - Adds Power Up to random ally if hitting weakness (all Pistols)
 - Transfers debuffs to target (all Universal Problem Solvers)

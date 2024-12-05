@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vexing Prismatic Blast",
@@ -18,10 +18,10 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 		const debuffedTargets = [];
 		const nondebuffedTargets = [];
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		targets.forEach(target => {
-			if (Object.keys(target.modifiers).some(modifier => isDebuff(modifier))) {
+			if (Object.keys(target.modifiers).some(modifier => getModifierCategory(modifier) === "Debuff")) {
 				debuffedTargets.push(target);
 			} else {
 				nondebuffedTargets.push(target);
@@ -41,6 +41,6 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe" })
 	.setSidegrades("Distracting Prismatic Blast", "Flanking Prismatic Blast")
-	.setDurability(15)
+	.setCharges(15)
 	.setBonus(50) // vexing damage
 	.setDamage(40);

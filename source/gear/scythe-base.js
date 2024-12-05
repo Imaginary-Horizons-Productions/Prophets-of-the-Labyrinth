@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Scythe",
@@ -14,7 +15,7 @@ module.exports = new GearTemplate("Scythe",
 		let pendingDamage = user.getPower() + damage;
 		let pendingHPThreshold = hpThreshold;
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingHPThreshold *= critMultiplier;
@@ -28,6 +29,6 @@ module.exports = new GearTemplate("Scythe",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Lethal Scythe", "Toxic Scythe", "Unstoppable Scythe")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(99); // execute threshold

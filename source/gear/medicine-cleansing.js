@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { addModifier, changeStagger, generateModifierResultLines, removeModifier } = require('../util/combatantUtil');
 
 const gearName = "Cleansing Medicine";
@@ -16,14 +16,14 @@ module.exports = new GearTemplate(gearName,
 		const { modifiers: [regen], critMultiplier, element } = module.exports;
 		const pendingRegen = { ...regen };
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingRegen.stacks *= critMultiplier;
 		}
 		const receipts = addModifier(targets, pendingRegen);
 		for (const target of targets) {
-			const debuffs = Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
+			const debuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			if (debuffs.length > 0) {
 				const rolledDebuff = debuffs[user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
 				receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
@@ -35,5 +35,5 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Bouncing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setRnConfig({ debuffs: 1 });

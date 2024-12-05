@@ -12,9 +12,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.hasResource("Repair Kit")) {
-			delete adventure.room.resources["Repair Kit"];
-			adventure.gainItem("Repair Kit", 1);
+		if (adventure.room.hasResource("Spellbook Repair Kit")) {
+			delete adventure.room.resources["Spellbook Repair Kit"];
+			adventure.gainItem("Spellbook Repair Kit", 1);
 			interaction.update(renderRoom(adventure, interaction.message.channel)).then(() => {
 				setAdventure(adventure);
 			});

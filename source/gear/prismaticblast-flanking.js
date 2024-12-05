@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Flanking Prismatic Blast",
@@ -14,7 +14,7 @@ module.exports = new GearTemplate("Flanking Prismatic Blast",
 		const { element, damage, critMultiplier, modifiers: [exposed] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -24,5 +24,5 @@ module.exports = new GearTemplate("Flanking Prismatic Blast",
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe" })
 	.setSidegrades("Distracting Prismatic Blast", "Vexing Prismatic Blast")
 	.setModifiers({ name: "Exposed", stacks: 2 })
-	.setDurability(15)
+	.setCharges(15)
 	.setDamage(40);

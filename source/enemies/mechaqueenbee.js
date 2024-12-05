@@ -1,4 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
+const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
@@ -100,7 +101,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	description: `Inflict @e{Poison} on a single foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 5 : 3 }));
 	},
 	selector: selectRandomFoe,

@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Fever Break",
@@ -12,7 +13,7 @@ module.exports = new GearTemplate("Fever Break",
 	(targets, user, adventure) => {
 		const { element } = module.exports;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		let poisonDamage = 10;
 		let frailDamage = 20;
@@ -36,6 +37,6 @@ module.exports = new GearTemplate("Fever Break",
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Organic Fever Break", "Surpassing Fever Break", "Urgent Fever Break")
+	.setUpgrades("Organic Fever Break", "Unlimited Fever Break", "Urgent Fever Break")
 	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frail", stacks: 0 })
-	.setDurability(5);
+	.setCharges(5);

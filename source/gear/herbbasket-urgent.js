@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { changeStagger } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { rollableHerbs } = require('../shared/herbs');
 
 const gearName = "Urgent Herb Basket";
@@ -20,7 +20,7 @@ module.exports = new GearTemplate(gearName,
 			pendingHerbCount *= critMultiplier;
 		}
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "Item", "loot", pendingHerbCount);
@@ -31,9 +31,9 @@ module.exports = new GearTemplate(gearName,
 		}
 	}
 ).setTargetingTags({ type: "none", team: "none" })
-	.setSidegrades("Organic Herb Basket", "Reinforced Herb Basket")
+	.setSidegrades("Chaining Herb Basket", "Reinforced Herb Basket")
 	.setBonus(1) // Herb count
 	.setPriority(1)
-	.setDurability(15)
+	.setCooldown(1)
 	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
 	.setRnConfig({ herbs: 1 });

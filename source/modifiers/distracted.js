@@ -1,8 +1,8 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Distracted",
-	"Retain Exposed between rounds for @{stackCount} rounds.",
-	false,
-	true,
+	"Retain @e{Exposed} between rounds",
+	"Debuff",
+	0,
 	1
 ).setInverse("Vigilance");

@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { gainHealth, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Lucky Second Wind",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Lucky Second Wind",
 		const { element, critMultiplier, modifiers: [lucky] } = module.exports;
 		let pendingHealing = user.getPower();
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingHealing *= critMultiplier;
@@ -23,5 +24,5 @@ module.exports = new GearTemplate("Lucky Second Wind",
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Second Wind", "Soothing Second Wind")
 	.setModifiers({ name: "Lucky", stacks: 1 })
-	.setDurability(10)
+	.setCooldown(2)
 	.setDamage(0);

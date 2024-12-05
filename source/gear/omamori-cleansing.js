@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, addProtection, addModifier, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
-const { SAFE_DELIMITER } = require('../constants.js');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 
 const gearName = "Cleansing Omamori";
 module.exports = new GearTemplate(gearName,
@@ -16,14 +16,14 @@ module.exports = new GearTemplate(gearName,
 		const { element, modifiers: [lucky], protection, critMultiplier } = module.exports;
 		const pendingLucky = { ...lucky };
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingLucky.stacks *= critMultiplier;
 		}
 		addProtection([user], protection);
 		const receipts = addModifier([user], pendingLucky);
-		const debuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
+		const debuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		if (debuffs.length > 0) {
 			const rolledDebuff = debuffs[user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
 			receipts.push(...removeModifier([user], { name: rolledDebuff, stacks: "all" }));
@@ -34,5 +34,5 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Centering Omamori", "Devoted Omamori")
 	.setModifiers({ name: "Lucky", stacks: 2 })
 	.setProtection(50)
-	.setDurability(10)
+	.setCooldown(2)
 	.setRnConfig({ debuffs: 1 });

@@ -1,4 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { listifyEN } = require('../util/textUtil');
@@ -15,7 +16,7 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 		const { element, modifiers: [evade, unlucky], critMultiplier } = module.exports;
 		const pendingEvade = { ...evade };
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingEvade.stacks *= critMultiplier;
@@ -42,4 +43,4 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Evasive Heat Mirage", "Vigilant Heat Mirage")
 	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Unlucky", stacks: 2 })
-	.setDurability(10);
+	.setCharges(10);

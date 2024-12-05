@@ -1,11 +1,11 @@
 const { EnemyTemplate, ModifierReceipt, Enemy } = require("../classes");
-const { isBuff, isDebuff } = require("../modifiers/_modifierDictionary.js");
+const { getModifierCategory } = require("../modifiers/_modifierDictionary.js");
 const { dealDamage, addModifier, removeModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY, ELEMENT_MATCH_STAGGER_FOE } = require("../constants");
 
 module.exports = new EnemyTemplate("Elkemist",
 	"Water",
@@ -21,11 +21,11 @@ module.exports = new EnemyTemplate("Elkemist",
 	description: "Gains protection, cures a random debuff, and grants a large amount of @e{Progress}",
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		changeStagger([user], "elementMatchAlly");
+		changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		const resultLines = [`${user.name} gains protection.`];
 		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Toil${SAFE_DELIMITER}progress`][0] });
 		progressCheck(user, wrappedProgressReceipt, resultLines);
-		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
+		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		if (targetDebuffs.length > 0) {
 			const rolledDebuff = targetDebuffs[user.roundRns[`Toil${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length];
 			resultLines.push(...generateModifierResultLines(removeModifier([user], { name: rolledDebuff, stacks: "all" })));
@@ -47,7 +47,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
 		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Trouble${SAFE_DELIMITER}progress`][0] });
 		progressCheck(user, wrappedProgressReceipt, resultLines);
@@ -82,7 +82,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		const removalReceipts = [];
 		for (const target of targets) {
 			for (let modifier in target.modifiers) {
-				if (isBuff(modifier)) {
+				if (getModifierCategory(modifier) === "Buff") {
 					const buffStackCount = target.modifiers[modifier];
 					const receipt = removeModifier([target], { name: modifier, stacks: "all" })[0];
 					removalReceipts.push(receipt);

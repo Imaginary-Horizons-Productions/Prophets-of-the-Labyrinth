@@ -2,6 +2,7 @@ const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/elementUtil.js");
+const { ELEMENT_MATCH_STAGGER_FOE, ELEMENT_MATCH_STAGGER_ALLY } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Mechabee Soldier",
 	"Earth",
@@ -18,7 +19,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
 	},
 	selector: selectRandomFoe,
@@ -33,7 +34,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		if (user.crit) {
 			receipts.push(...addModifier([user], { name: "Agility", stacks: 1 }));
 		}
-		changeStagger([user], "elementMatchAlly");
+		changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectSelf,
@@ -45,7 +46,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 40;
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Paralysis", stacks: user.crit ? 5 : 3 })));
 	},
 	selector: selectRandomFoe,
@@ -61,7 +62,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 			damage *= 2;
 		}
 		user.hp = 0;
-		changeStagger(targets, "elementMatchFoe");
+		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 
 		return dealDamage(targets, user, damage, false, user.element, adventure);
 	},

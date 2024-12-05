@@ -4,22 +4,22 @@ class ModifierTemplate {
 	/** Template for combatant buffs and debuffs
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
-	 * @param {boolean} isBuffInput
-	 * @param {boolean} isDebuffInput
-	 * @param {number | "all"} turnDecrementInput
+	 * @param {"Buff" | "Debuff" | "State"} categoryEnum
+	 * @param {number | "all"} moveDecrementInput
+	 * @param {number | "all"} roundDecrementInput
 	 */
-	constructor(nameInput, descriptionInput, isBuffInput, isDebuffInput, turnDecrementInput) {
+	constructor(nameInput, descriptionInput, categoryEnum, moveDecrementInput, roundDecrementInput) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
-		if (!isBuffInput && isBuffInput !== false) throw new BuildError("Nonfalse falsy isBuffInput");
-		if (!isDebuffInput && isDebuffInput !== false) throw new BuildError("Nonfalse falsy isDebuffInput");
-		if (!turnDecrementInput && turnDecrementInput !== 0) throw new BuildError("Nonzero falsy turnDecrementInput");
+		if (!categoryEnum) throw new BuildError("Falsy categoryEnum");
+		if (!moveDecrementInput && moveDecrementInput !== 0) throw new BuildError("Nonzero falsy moveDecrementInput");
+		if (!roundDecrementInput && roundDecrementInput !== 0) throw new BuildError("Nonzero falsy roundDecrementInput");
 
 		this.name = nameInput;
 		this.description = descriptionInput;
-		this.isBuff = isBuffInput;
-		this.isDebuff = isDebuffInput;
-		this.turnDecrement = turnDecrementInput;
+		this.category = categoryEnum;
+		this.moveDecrement = moveDecrementInput;
+		this.roundDecrement = roundDecrementInput;
 	}
 	inverse = "";
 

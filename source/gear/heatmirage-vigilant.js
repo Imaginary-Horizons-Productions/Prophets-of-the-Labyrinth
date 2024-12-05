@@ -1,4 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Vigilant Heat Mirage",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Vigilant Heat Mirage",
 		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;
 		const pendingEvade = { ...evade };
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingEvade.stacks *= critMultiplier;
@@ -31,4 +32,4 @@ module.exports = new GearTemplate("Vigilant Heat Mirage",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Evasive Heat Mirage", "Unlucky Heat Mirage")
 	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Vigilance", stacks: 1 })
-	.setDurability(10);
+	.setCharges(10);

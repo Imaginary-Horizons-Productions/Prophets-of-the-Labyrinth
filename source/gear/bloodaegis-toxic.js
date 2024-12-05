@@ -1,4 +1,5 @@
 const { GearTemplate, Move } = require('../classes/index.js');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { payHP, changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
@@ -19,7 +20,7 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 		const resultLines = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingProtection *= critMultiplier;
@@ -38,7 +39,6 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Charging Blood Aegis", "Reinforced Blood Aegis")
-	.setDurability(15)
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setHPCost(25)
 	.setProtection(125);

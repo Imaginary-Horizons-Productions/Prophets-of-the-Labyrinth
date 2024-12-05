@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -14,7 +15,7 @@ module.exports = new GearTemplate("Devoted Omamori",
 		const { element, modifiers: [lucky], protection, critMultiplier } = module.exports;
 		const pendingLucky = { ...lucky };
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingLucky.stacks *= critMultiplier;
@@ -26,4 +27,4 @@ module.exports = new GearTemplate("Devoted Omamori",
 	.setSidegrades("Centering Omamori", "Cleansing Omamori")
 	.setModifiers({ name: "Lucky", stacks: 2 })
 	.setProtection(50)
-	.setDurability(10);
+	.setCooldown(2);

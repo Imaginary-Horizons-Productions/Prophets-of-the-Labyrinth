@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants.js');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Toxic Firecracker",
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Toxic Firecracker",
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
 			if (user.element === element) {
-				changeStagger(stillLivingTargets, "elementMatchFoe");
+				changeStagger(stillLivingTargets, user, ELEMENT_MATCH_STAGGER_FOE);
 			}
 			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, poison))));
 		}
@@ -29,6 +29,6 @@ module.exports = new GearTemplate("Toxic Firecracker",
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe" })
 	.setSidegrades("Double Firecracker", "Midas's Firecracker")
 	.setModifiers({ name: "Poison", stacks: 3 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(5)
 	.setRnConfig({ "foes": 3 });

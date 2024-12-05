@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shattering Lance",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Shattering Lance",
 		const { element, modifiers: [frail], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + Math.max(0, user.getSpeed(true) - 100) + damage;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -28,5 +29,5 @@ module.exports = new GearTemplate("Shattering Lance",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Duelist's Lance", "Surpassing Lance")
 	.setModifiers({ name: "Frail", stacks: 4 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40);

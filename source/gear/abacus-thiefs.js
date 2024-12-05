@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thief's Abacus",
@@ -12,7 +13,7 @@ module.exports = new GearTemplate("Thief's Abacus",
 	(targets, user, adventure) => {
 		const { element, damage, critMultiplier, bonus: bonusBounty } = module.exports;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		const resultLines = [];
 		let hunts = 0;
@@ -35,6 +36,6 @@ module.exports = new GearTemplate("Thief's Abacus",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sharpened Abacus", "Unstoppable Abacus")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(30); // gold

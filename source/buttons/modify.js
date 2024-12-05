@@ -3,7 +3,7 @@ const { ButtonWrapper } = require('../classes');
 const { getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
-const { trimForSelectOptionDescription, listifyEN, getNumberEmoji } = require('../util/textUtil');
+const { getNumberEmoji } = require('../util/textUtil');
 const { transformGear } = require('../util/delverUtil');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 

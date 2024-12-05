@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { payHP, dealDamage, changeStagger } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -16,6 +17,7 @@ module.exports = new GearTemplate("Staggering Power from Wrath",
 		if (adventure.lives > 0) {
 			const furiousness = 2 - user.hp / user.getMaxHP();
 			let pendingDamage = (user.getPower() + damage) * furiousness;
+			let pendingStagger = stagger;
 			if (user.crit) {
 				pendingDamage *= 2;
 			}
@@ -23,9 +25,9 @@ module.exports = new GearTemplate("Staggering Power from Wrath",
 			const stillLivingTargets = targets.filter(target => target.hp > 0);
 			if (stillLivingTargets.length > 0) {
 				if (user.element === element) {
-					changeStagger(stillLivingTargets, "elementMatchFoe");
+					pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
 				}
-				changeStagger(stillLivingTargets, stagger);
+				changeStagger(stillLivingTargets, user, pendingStagger);
 				resultLines.push(joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered."));
 			}
 		}
@@ -33,7 +35,6 @@ module.exports = new GearTemplate("Staggering Power from Wrath",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Bashing Power from Wrath", "Hunter's Power from Wrath")
-	.setDurability(15)
 	.setHPCost(40)
 	.setDamage(40)
 	.setStagger(2);

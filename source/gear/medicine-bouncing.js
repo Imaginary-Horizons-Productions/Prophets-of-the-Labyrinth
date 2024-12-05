@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Bouncing Medicine",
@@ -14,7 +14,7 @@ module.exports = new GearTemplate("Bouncing Medicine",
 		const { modifiers: [regen], critMultiplier, element } = module.exports;
 		const pendingRegen = { ...regen };
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingRegen.stacks *= critMultiplier;
@@ -24,5 +24,5 @@ module.exports = new GearTemplate("Bouncing Medicine",
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "ally" })
 	.setSidegrades("Cleansing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setRnConfig({ "allies": 3 });

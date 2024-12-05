@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Midas's Risky Mixture",
@@ -13,9 +14,9 @@ module.exports = new GearTemplate("Midas's Risky Mixture",
 		const { element, modifiers: [poison, regen, curseOfMidas] } = module.exports;
 		if (user.element === element) {
 			if (target.team === user.team) {
-				changeStagger([target], "elementMatchAlly");
+				changeStagger([target], user, ELEMENT_MATCH_STAGGER_ALLY);
 			} else {
-				changeStagger([target], "elementMatchFoe");
+				changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 			}
 		}
 		const receipts = addModifier([target], curseOfMidas);
@@ -27,6 +28,6 @@ module.exports = new GearTemplate("Midas's Risky Mixture",
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "single", team: "any" })
-	.setSidegrades("Potent Risky Mixture", "Thick Risky Mixture")
+	.setSidegrades("Chaining Risky Mixture", "Potent Risky Mixture")
 	.setModifiers({ name: "Poison", stacks: 4 }, { name: "Regen", stacks: 4 }, { name: "Curse of Midas", stacks: 1 })
-	.setDurability(15);
+	.setCooldown(1);

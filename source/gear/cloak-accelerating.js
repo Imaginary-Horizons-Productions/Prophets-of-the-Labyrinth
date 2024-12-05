@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { accuratePassive } = require('./descriptions/passives.js');
 
@@ -16,7 +17,7 @@ module.exports = new GearTemplate("Accelerating Cloak",
 		const pendingEvade = { ...evade };
 		const pendingQuicken = { ...quicken };
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingEvade.stacks += bonus;
@@ -29,4 +30,4 @@ module.exports = new GearTemplate("Accelerating Cloak",
 	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Quicken", stacks: 1 })
 	.setBonus(1) // Evade stacks
 	.setCritRate(5)
-	.setDurability(15);
+	.setCooldown(1);

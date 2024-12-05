@@ -1,6 +1,6 @@
 const { italic, bold } = require("discord.js");
 const { Combatant, Adventure, ModifierReceipt } = require("../classes");
-const { getInverse, getModifierDescription, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
+const { getInverse, getModifierDescription, getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { getWeaknesses, getResistances, elementsList, getEmoji } = require("./elementUtil.js");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 const { listifyEN } = require("./textUtil.js");
@@ -193,7 +193,7 @@ function addModifier(combatants, { name: modifier, stacks: pendingStacks, force 
 	const receipts = [];
 	for (const combatant of combatants) {
 		// Oblivious only blocks buffs and debuffs
-		if (force || !("Oblivious" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
+		if (force || !("Oblivious" in combatant.modifiers && getModifierCategory(modifier) !== "State")) {
 			const inverse = getInverse(modifier);
 			const inverseStacks = combatant.modifiers[inverse];
 			if (inverseStacks) {
@@ -229,7 +229,7 @@ function removeModifier(combatants, { name: modifier, stacks, force = false }) {
 	const receipts = [];
 	for (const combatant of combatants) {
 		// Retain only protects buffs and debuffs
-		if (force || !("Retain" in combatant.modifiers && (isBuff(modifier) || isDebuff(modifier)))) {
+		if (force || !("Retain" in combatant.modifiers && getModifierCategory(modifier) !== "State")) {
 			const didHaveModifier = modifier in combatant.modifiers;
 			if (isNaN(parseInt(stacks)) || stacks >= combatant.modifiers[modifier]) {
 				delete combatant.modifiers[modifier];
@@ -350,16 +350,20 @@ function generateModifierResultLines(receipts) {
 
 /** add Stagger, negative values allowed
  * @param {Combatant[]} combatants
- * @param {number | "elementMatchAlly" | "elementMatchFoe"} value
+ * @param {Combatant | null} applier
+ * @param {number} value
  */
-function changeStagger(combatants, value) {
+function changeStagger(combatants, applier, value) {
 	for (const combatant of combatants) {
 		if (!combatant.isStunned) {
 			let pendingStagger = value;
-			if (value === "elementMatchAlly") {
-				pendingStagger = -1;
-			} else if (value === "elementMatchFoe") {
-				pendingStagger = 2;
+			if (applier && pendingStagger > 0) {
+				if (applier.getModifierStacks("Impactful") > 0) {
+					pendingStagger++;
+				}
+				if (applier.getModifierStacks("Ineffectual") > 0) {
+					pendingStagger--;
+				}
 			}
 			combatant.stagger = Math.min(Math.max(combatant.stagger + pendingStagger, 0), combatant.getPoise());
 		}

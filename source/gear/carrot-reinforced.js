@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getPetMove } = require('../pets/_petDictionary');
 const { changeStagger, addProtection } = require('../util/combatantUtil');
@@ -15,7 +16,7 @@ module.exports = new GearTemplate("Reinforced Carrot",
 		const { element, protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
-			changeStagger([target], "elementMatchAlly");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingProtection *= critMultiplier;
@@ -47,5 +48,5 @@ module.exports = new GearTemplate("Reinforced Carrot",
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Devoted Carrot", "Lucky Carrot")
-	.setDurability(15)
+	.setCooldown(1)
 	.setProtection(125);

@@ -18,9 +18,9 @@ module.exports = new RoomTemplate("Gear Buying Merchant",
 			if (adventure.room.hasResource(name)) {
 				const cost = adventure.room.resources[name].cost;
 				/** @type {number} */
-				const maxDurability = getGearProperty(name, "maxDurability");
+				const maxCharges = getGearProperty(name, "maxCharges");
 				mixedGearOptions.push({
-					label: `${cost}g: ${name} (${maxDurability > 0 ? `${maxDurability}  uses` : "passive"})`,
+					label: `${cost}g: ${name}${maxCharges > 0 ? ` (${maxCharges}  charges)` : ""}`,
 					description: "Gear",
 					value: `${name}${SAFE_DELIMITER}${i}`
 				});

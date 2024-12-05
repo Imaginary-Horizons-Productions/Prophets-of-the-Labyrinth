@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Lucky Scutum",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Lucky Scutum",
 		const { element, modifiers: [lucky], protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
 		if (user.element === element) {
-			changeStagger([target, user], "elementMatchAlly");
+			changeStagger([target, user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingProtection *= critMultiplier;
@@ -24,5 +25,5 @@ module.exports = new GearTemplate("Lucky Scutum",
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Guarding Scutum", "Sweeping Scutum")
 	.setModifiers({ name: "Lucky", stacks: 1 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setProtection(75);

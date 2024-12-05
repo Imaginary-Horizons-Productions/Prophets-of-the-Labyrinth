@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Unstoppable Warhammer",
@@ -16,7 +17,7 @@ module.exports = new GearTemplate("Unstoppable Warhammer",
 			pendingDamage += bonus;
 		}
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -25,6 +26,6 @@ module.exports = new GearTemplate("Unstoppable Warhammer",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Reactive Warhammer", "Slowing Warhammer")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(75); // damage

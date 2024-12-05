@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
-const { isDebuff } = require('../modifiers/_modifierDictionary');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { removeModifier, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
-const { SAFE_DELIMITER } = require('../constants.js');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 
 const gearName = "Cleansing Barrier";
 module.exports = new GearTemplate(gearName,
@@ -16,13 +16,13 @@ module.exports = new GearTemplate(gearName,
 		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;
 		const pendingVigilance = { ...vigilance };
 		if (user.element === element) {
-			changeStagger([user], "elementMatchAlly");
+			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingVigilance.stacks *= critMultiplier;
 		}
 		const receipts = addModifier([user], pendingVigilance).concat(addModifier([user], evade));
-		const userDebuffs = Object.keys(user.modifiers).filter(modifier => isDebuff(modifier));
+		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		if (userDebuffs.length > 0) {
 			const rolledDebuff = userDebuffs[user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length];
 			receipts.push(...removeModifier([user], { name: rolledDebuff, stacks: "all" }));
@@ -32,5 +32,5 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Devoted Barrier", "Vigilant Barrier")
 	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 1 })
-	.setDurability(5)
+	.setCharges(5)
 	.setRnConfig({ debuffs: 1 });

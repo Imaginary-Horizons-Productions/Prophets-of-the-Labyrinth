@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { addModifier, payHP, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
@@ -23,12 +24,11 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 			receipts.push(...addModifier(targets, stasis));
 		}
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Discounted Infinite Regeneration", "Purifying Infinite Regeneration")
 	.setModifiers({ name: "Regen", stacks: 4 }, { name: "Retain", stacks: 1 })
-	.setHPCost(50)
-	.setDurability(10);
+	.setHPCost(50);

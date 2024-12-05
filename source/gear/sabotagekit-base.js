@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { elementsList, getResistances } = require('../util/elementUtil.js');
 
@@ -21,7 +21,7 @@ module.exports = new GearTemplate(gearName,
 			pendingWeakness.stacks += bonus;
 		}
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		const receipts = addModifier([target], pendingSlow);
 		const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
@@ -36,6 +36,6 @@ module.exports = new GearTemplate(gearName,
 	.setTargetingTags({ type: "single", team: "foe" })
 	.setModifiers({ name: "Slow", stacks: 2 }, { name: "unparsed random weakness", stacks: 3 })
 	.setBonus(2) // Crit Slow and Weakness stacks
-	.setDurability(15)
+	.setCooldown(1)
 	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" })
 	.setRnConfig({ "weaknesses": 1 });

@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Sweeping Daggers",
@@ -16,12 +17,12 @@ module.exports = new GearTemplate("Sweeping Daggers",
 			pendingDamage *= critMultiplier;
 		}
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		return dealDamage(targets, user, pendingDamage, false, element, adventure);
 	}
 ).setTargetingTags({ type: "all", team: "foe" })
 	.setSidegrades("Sharpened Daggers", "Slowing Daggers")
-	.setDurability(15)
+	.setCooldown(1)
 	.setCritMultiplier(3)
 	.setDamage(15);

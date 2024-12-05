@@ -1,4 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shoulder Throw",
@@ -12,7 +13,7 @@ module.exports = new GearTemplate("Shoulder Throw",
 	([target], user, adventure) => {
 		const { element, modifiers: [evade] } = module.exports;
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		const resultLines = [];
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
@@ -28,5 +29,5 @@ module.exports = new GearTemplate("Shoulder Throw",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Evasive Shoulder Throw", "Harmful Shoulder Throw", "Staggering Shoulder Throw")
-	.setDurability(10)
+	.setCooldown(2)
 	.setModifiers({ name: "Evade", stacks: 1 });

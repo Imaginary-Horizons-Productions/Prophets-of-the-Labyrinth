@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, addModifier, payHP, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Lethal Certain Victory",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 		const { element, modifiers: [powerUp], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -26,6 +27,5 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Hunter's Certain Victory", "Reckless Certain Victory")
 	.setModifiers({ name: "Power Up", stacks: 25 })
-	.setDurability(15)
 	.setDamage(40)
 	.setCritMultiplier(3);

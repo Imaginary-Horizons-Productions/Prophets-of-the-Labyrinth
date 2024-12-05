@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thief's Bow",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Thief's Bow",
 		const { element, damage, bonus: bonusBounty, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -34,7 +35,7 @@ module.exports = new GearTemplate("Thief's Bow",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Evasive Bow", "Unstoppable Bow")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(30) // gold
 	.setPriority(1);

@@ -1,5 +1,5 @@
 const { CommandInteraction } = require("discord.js");
-const { gearExists, getGearProperty, buildGearDescription, gearNames, injectGearStats } = require("../../gear/_gearDictionary");
+const { gearExists, getGearProperty, buildGearDescription, GEAR_NAMES, injectGearStats } = require("../../gear/_gearDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getEmoji, getColor } = require("../../util/elementUtil");
 const { listifyEN } = require("../../util/textUtil");
@@ -17,9 +17,12 @@ async function executeSubcommand(interaction, ...args) {
 
 	const fields = [
 		{ name: "Category", value: getGearProperty(gearName, "category") },
-		{ name: "Max Durability", value: getGearProperty(gearName, "maxDurability").toString() },
 		{ name: "Base Value", value: `${getGearProperty(gearName, "cost").toString()}g` }
 	];
+	const maxCharges = getGearProperty(gearName, "maxCharges");
+	if (maxCharges > 0) {
+		fields.push({ name: "Max Charges", value: maxCharges.toString() });
+	}
 
 	const upgrades = getGearProperty(gearName, "upgrades");
 	if (upgrades.length > 0) {
@@ -59,7 +62,7 @@ module.exports = {
 				name: "gear-name",
 				description: "Input is case-insensitive",
 				required: true,
-				autocomplete: gearNames.map(name => ({ name, value: name }))
+				autocomplete: GEAR_NAMES.map(name => ({ name, value: name }))
 			}
 		]
 	},

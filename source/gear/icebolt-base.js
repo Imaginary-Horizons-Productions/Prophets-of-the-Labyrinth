@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Ice Bolt",
@@ -13,7 +14,7 @@ module.exports = new GearTemplate("Ice Bolt",
 		const { element, damage, modifiers: [slow], critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchFoe");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -24,4 +25,4 @@ module.exports = new GearTemplate("Ice Bolt",
 	.setUpgrades("Awesome Ice Bolt", "Distracting Ice Bolt", "Unlucky Ice Bolt")
 	.setDamage(40)
 	.setModifiers({ name: "Slow", stacks: 2 })
-	.setDurability(15);
+	.setCharges(15);

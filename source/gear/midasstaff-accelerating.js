@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_ALLY, ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Accelerating Midas Staff",
@@ -17,9 +18,9 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 		}
 		if (user.element === element) {
 			if (target.team === user.team) {
-				changeStagger([target], "elementMatchAlly");
+				changeStagger([target], user, ELEMENT_MATCH_STAGGER_ALLY);
 			} else {
-				changeStagger([target], "elementMatchFoe");
+				changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 			}
 		}
 		const receipts = addModifier([target], pendingCurse).concat(addModifier([user], quicken));
@@ -29,4 +30,4 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 	.setSidegrades("Discounted Midas Staff", "Soothing Midas Staff")
 	.setModifiers({ name: "Curse of Midas", stacks: 2 }, { name: "Quicken", stacks: 1 })
 	.setBonus(1) // Curse of Midas stacks
-	.setDurability(10);
+	.setCooldown(2);

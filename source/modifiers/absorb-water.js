@@ -1,8 +1,9 @@
 const { ModifierTemplate } = require("../classes");
+const { getEmoji } = require("../util/elementUtil");
 
 module.exports = new ModifierTemplate("Water Absorb",
-	"Convert Water damage to health for @{stackCount} rounds.",
-	true,
-	false,
+	`Convert ${getEmoji("Water")} damage to healing`,
+	"Buff",
+	0,
 	1
 ).setInverse("Water Weakness");

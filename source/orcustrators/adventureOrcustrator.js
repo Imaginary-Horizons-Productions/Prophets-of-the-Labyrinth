@@ -13,7 +13,7 @@ const { getEnemy } = require("../enemies/_enemyDictionary");
 const { getGearProperty } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
-const { getTurnDecrement, isBuff, isDebuff } = require("../modifiers/_modifierDictionary");
+const { getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
 const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getCombatantWeaknesses } = require("../util/combatantUtil");
 const { getWeaknesses, elementsList, getEmoji, getResistances } = require("../util/elementUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
@@ -47,7 +47,9 @@ async function loadAdventures() {
 				// Cast delvers into Delver class
 				const castDelvers = [];
 				for (let delver of adventure.delvers) {
-					castDelvers.push(Object.assign(new Delver(), delver));
+					const castDelver = Object.assign(new Delver(), delver);
+					castDelver.gear.forEach(gear => { if (gear.charges === null) { gear.charges = Infinity; } });
+					castDelvers.push(castDelver);
 				}
 				adventure.delvers = castDelvers;
 
@@ -139,14 +141,6 @@ function nextRoom(roomType, thread) {
 		}
 		delver.stagger = 0;
 		delver.isStunned = false;
-		delver.gear.forEach(gear => {
-			if (gear.name.startsWith("Organic")) {
-				const maxDurability = getGearProperty(gear.name, "maxDurability");
-				if (gear.durability < maxDurability) {
-					gear.durability++;
-				}
-			}
-		})
 	})
 
 	const piggyBankCount = adventure.getArtifactCount("Piggy Bank");
@@ -423,9 +417,9 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${weaknessPool[rn % weaknessPool.length]} Weakness`)).join("")} on ${target.name}`;
 		}
 		case "buffs":
-			targetModifiers = Object.keys(target.modifiers).filter(modifier => isBuff(modifier));
+			targetModifiers = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 		case "debuffs": {
-			targetModifiers ??= Object.keys(target.modifiers).filter(modifier => isDebuff(modifier));
+			targetModifiers ??= Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			let pendingRemoves = user.roundRns[roundRnKeyname].length;
 			if (targetModifiers.length > pendingRemoves) {
 				return predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers);
@@ -465,7 +459,7 @@ function predictRoundRnOutcomes(adventure) {
 					if (move.targets.length > 0) {
 						const targetCombatants = move.targets.map(moveTarget => adventure.getCombatant(moveTarget));
 						if (move.name === "Bubble") {
-							let totalBuffsRemoved = targetCombatants.reduce((removedCount, combatant) => removedCount + Math.max(0, Object.keys(combatant.modifiers).filter(modifier => isBuff(modifier)).length - combatant.getModifierStacks("Retain")), 0);
+							let totalBuffsRemoved = targetCombatants.reduce((removedCount, combatant) => removedCount + Math.max(0, Object.keys(combatant.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff").length - combatant.getModifierStacks("Retain")), 0);
 							let pendingProgress = combatant.getModifierStacks("Progress") + (combatant.crit ? 10 : 0) + combatant.roundRns[`Bubble${SAFE_DELIMITER}progress`][2] + totalBuffsRemoved * 5;
 							outcomes.push(`The Elkemist ${pendingProgress > 100 ? "will" : "won't"} reach an epiphany this round.`);
 						}
@@ -515,7 +509,7 @@ function predictRoundRnOutcomes(adventure) {
 		}
 		// items
 		if ("Panacea" in adventure.items) {
-			if (Object.keys(delver.modifiers).filter(modifier => isDebuff(modifier)).length > 2) {
+			if (Object.keys(delver.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff").length > 2) {
 				outcomes.push(predictRoundRnTargeted(adventure, delver, delver, "Panacea", "debuffs"))
 				if (isCloneAlive) {
 					outcomes.push(predictRoundRnTargeted(adventure, counterpart, counterpart, "Panacea", "debuffs"))
@@ -533,7 +527,6 @@ function predictRoundRnOutcomes(adventure) {
  * @param {"foes" | "allies" | "elements" | string} targetingTags
  * @param {"foes" | "allies" | "elements" | string} moveName
  * @param {Record<string, number>} config
- * @returns {string[]}
  */
 function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName, key) {
 	const liveEnemies = adventure.room.enemies.filter(e => e.hp > 0);
@@ -574,15 +567,14 @@ function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName,
  * @param {Combatant} user
  * @param {string} moveName
  * @param {string} roundRnKeyname
- * @param {boolean} isBuffs
- * @returns
+ * @param {string[]} targetModifiers
  */
 function predictRemovedModifiers(target, user, moveName, roundRnKeyname, targetModifiers) {
 	let popped = [];
 	for (const idx of user.roundRns[roundRnKeyname]) {
 		const modIdx = idx % targetModifiers.length;
-		const modArr = targetModifiers.splice(modIdx, 1);
-		popped.push(getApplicationEmojiMarkdown(...modArr));
+		const [removedModifier] = targetModifiers.splice(modIdx, 1);
+		popped.push(getApplicationEmojiMarkdown(removedModifier));
 	}
 	return `${user.name}'s ${moveName} will remove ${popped.join("")} from ${target.name}`;
 }
@@ -638,8 +630,6 @@ function newRound(adventure, thread, lastRoundText) {
 				// Roll Round Speed
 				const percentBonus = (adventure.generateRandomNumber(21, "battle") - 10) / 100;
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
-				removeModifier([combatant], { name: "Slow", stacks: 1, force: true });
-				removeModifier([combatant], { name: "Quicken", stacks: 1, force: true });
 
 				// Roll Critical Hit
 				let modifierCritBonus = 1;
@@ -663,8 +653,6 @@ function newRound(adventure, thread, lastRoundText) {
 				}
 				const critRoll = adventure.generateRandomNumber(max, "battle");
 				combatant.crit = critRoll < threshold;
-				removeModifier([combatant], { name: "Lucky", stacks: 1, force: true });
-				removeModifier([combatant], { name: "Unlucky", stacks: 1, force: true });
 
 				// Roll Enemy Moves
 				if (teamName === "enemy") {
@@ -757,7 +745,6 @@ function newRound(adventure, thread, lastRoundText) {
 /** Updates game state with the move's effect AND returns the game's description of what happened
  * @param {Move} move
  * @param {Adventure} adventure
- * @returns {Promise<string>} result text
  */
 function resolveMove(move, adventure) {
 	const user = adventure.getCombatant(move.userReference);
@@ -767,7 +754,8 @@ function resolveMove(move, adventure) {
 
 	let headline = `${bold(user.name)} `;
 	const results = [];
-	if (!user.isStunned || move.name.startsWith("Unstoppable") || move.type === "pet") {
+	const [moveName, index] = move.name.split(SAFE_DELIMITER);
+	if (!user.isStunned || moveName.startsWith("Unstoppable") || move.type === "pet") {
 		if (user.crit) {
 			headline = `💥${headline}`;
 		}
@@ -777,7 +765,7 @@ function resolveMove(move, adventure) {
 		switch (move.type) {
 			case "action":
 				if (move.userReference.team !== "delver") {
-					const action = getEnemy(user.archetype).actions[move.name];
+					const action = getEnemy(user.archetype).actions[moveName];
 					effect = action.effect;
 					if (action.combatFlavor) {
 						combatFlavor = action.combatFlavor;
@@ -785,13 +773,9 @@ function resolveMove(move, adventure) {
 				}
 				break;
 			case "gear": {
-				effect = getGearProperty(move.name, "effect");
-				const targetingTags = getGearProperty(move.name, "targetingTags");
+				effect = getGearProperty(moveName, "effect");
+				const targetingTags = getGearProperty(moveName, "targetingTags");
 				if (move.userReference.team === "delver") {
-					if (adventure.getArtifactCount("Crystal Shard") > 0 && getGearProperty(move.name, "category") === "Spell") {
-						adventure.updateArtifactStat("Crystal Shard", "Spells Cast", 1);
-					}
-
 					const loadedDiceCount = adventure.getArtifactCount("Loaded Dice");
 					if (loadedDiceCount > 0 && targetingTags.type.startsWith("random")) {
 						adventure.updateArtifactStat("Loaded Dice", "Extra Targets", loadedDiceCount);
@@ -806,9 +790,9 @@ function resolveMove(move, adventure) {
 					if (placeboDillution > 0) {
 						isPlacebo = (placeboDillution - 1) === adventure.generateRandomNumber(placeboDillution, "battle");
 					}
-					adventure.decrementItem(move.name, 1);
+					adventure.decrementItem(moveName, 1);
 				}
-				const { effect: itemEffect } = getItem(isPlacebo ? "Placebo" : move.name);
+				const { effect: itemEffect } = getItem(isPlacebo ? "Placebo" : moveName);
 				effect = itemEffect;
 				break;
 			}
@@ -818,7 +802,7 @@ function resolveMove(move, adventure) {
 				break;
 		}
 
-		headline += `used ${move.name}`;
+		headline += `used ${moveName}`;
 		if (move.targets.length > 0) {
 			const livingTargets = [];
 			const deadTargets = [];
@@ -839,7 +823,7 @@ function resolveMove(move, adventure) {
 
 				results.push(...effect(livingTargets, user, adventure, adventure.petRNs));
 				if (move.type === "gear" && move.userReference.team === "delver") {
-					const breakText = decrementDurability(move.name, user, adventure);
+					const breakText = gearUpkeep(moveName, index, user, adventure);
 					if (breakText) {
 						results.push(breakText);
 					}
@@ -856,7 +840,7 @@ function resolveMove(move, adventure) {
 		if (combatFlavor) {
 			headline += ` ${italic(combatFlavor)}`;
 			if (move.type === "gear" && move.userReference.team === "delver") {
-				const breakText = decrementDurability(move.name, user, adventure);
+				const breakText = gearUpkeep(moveName, index, user, adventure);
 				if (breakText) {
 					results.push(breakText);
 				}
@@ -874,7 +858,7 @@ function resolveMove(move, adventure) {
 	}
 
 	if (move.type !== "pet") {
-		// Poison/Regen
+		// Poison/Regen effect
 		if ("Poison" in user.modifiers) {
 			results.push(...dealModifierDamage(user, "Poison", adventure));
 		} else {
@@ -883,39 +867,69 @@ function resolveMove(move, adventure) {
 				results.push(gainHealth(user, regenStacks * 10, adventure, "Regen"));
 			}
 		}
+
+		// Decrement modifiers with move decrement
+		for (const modifier in user.modifiers) {
+			const moveDecrement = getMoveDecrement(modifier);
+			if (moveDecrement !== 0) {
+				removeModifier([user], { name: modifier, stacks: moveDecrement, force: true });
+			}
+		}
 	}
+
 	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
 }
 
-/**
+/** Decrement charges and set cooldown of gear moves
  * @param {string} moveName
+ * @param {number} index
  * @param {Combatant} user
  * @param {Adventure} adventure
  */
-function decrementDurability(moveName, user, adventure) {
+function gearUpkeep(moveName, index, user, adventure) {
 	if (!["Punch", "Floating Mist Punch", "Iron Fist Punch", "Appease", "Greed"].includes(moveName) && user.team === "delver") {
+		const gear = user.gear[index];
 		const gearCategory = getGearProperty(moveName, "category");
+
+		let cdReduction = 0;
 		if (gearCategory === "Weapon") {
 			const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");
 			if (weaponPolishCount > 0) {
-				const durabilitySaveChance = 1 - 0.85 ** weaponPolishCount;
+				const chargeSaveChance = 1 - 0.85 ** weaponPolishCount;
 				const max = RN_TABLE_BASE ** 2;
-				adventure.updateArtifactStat("Weapon Polish", "Expected Durability Saved", durabilitySaveChance.toFixed(2));
-				if (adventure.generateRandomNumber(max, "battle") < max * durabilitySaveChance) {
-					adventure.updateArtifactStat("Weapon Polish", "Actual Durability Saved", 1);
+				adventure.updateArtifactStat("Weapon Polish", "Expected Cooldown Saved", chargeSaveChance.toFixed(2));
+				if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
+					cdReduction = 1;
+					adventure.updateArtifactStat("Weapon Polish", "Actual Cooldown Saved", 1);
+				}
+			}
+		}
+		gear.cooldown = Math.max(0, getGearProperty(gear.name, "cooldown") - cdReduction);
+
+		if (gearCategory === "Spell") {
+			const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
+			if (crystalShardCount > 0) {
+				const chargeSaveChance = 1 - 0.85 ** crystalShardCount;
+				const max = RN_TABLE_BASE ** 2;
+				adventure.updateArtifactStat("Crystal Shard", "Expected Charges Saved", chargeSaveChance.toFixed(2));
+				if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
+					adventure.updateArtifactStat("Crystal Shard", "Actual Charges Saved", 1);
 					return "";
 				}
 			}
 		}
 
-		const gear = user.gear.find(gear => gear.name === moveName);
-		gear.durability--;
-		if (gear.durability < 1) {
-			return `${user.name}'s ${moveName} broke!`;
+		if (getGearProperty(moveName, "maxCharges") > 0) {
+			gear.charges--;
+			if (gear.charges < 1) {
+				return `${user.name}'s ${moveName} is exhausted!`;
+			}
 		}
 	}
 	return "";
 }
+
+const RETAINING_MODIFIER_PAIRS = [["Exposed", "Distracted"], ["Evade", "Vigilance"]];
 
 /** Generate reactive moves, randomize speed ties, then resolve moves
  * @param {Adventure} adventure
@@ -948,6 +962,14 @@ function endRound(adventure, thread) {
 	// Resolve moves
 	let lastRoundText = "";
 	for (const move of adventure.room.moves) {
+		const combatant = adventure.getCombatant(move.userReference);
+		if (combatant.team === "delver" && move.type !== "pet") {
+			combatant.gear.forEach(gear => {
+				if (gear.cooldown > 0) {
+					gear.cooldown--;
+				}
+			})
+		}
 		lastRoundText += resolveMove(move, adventure);
 
 		const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);
@@ -996,19 +1018,14 @@ function endRound(adventure, thread) {
 			} else if (combatant.getModifierStacks("Agility") > 0) {
 				staggerChange = -2;
 			}
-			changeStagger([combatant], staggerChange);
+			changeStagger([combatant], null, staggerChange);
 		}
 
 		// Decrement Modifiers
-		if (!("Vigilance" in combatant.modifiers)) {
-			removeModifier([combatant], { name: "Evade", stacks: getTurnDecrement("Evade"), force: true });
-		}
-		if (!("Distracted" in combatant.modifiers)) {
-			removeModifier([combatant], { name: "Exposed", stacks: getTurnDecrement("Exposed"), force: true });
-		}
 		for (const modifier in combatant.modifiers) {
-			if (!["Evade", "Exposed"].includes(modifier)) {
-				removeModifier([combatant], { name: modifier, stacks: getTurnDecrement(modifier), force: true })
+			const roundDecrement = getRoundDecrement(modifier);
+			if (roundDecrement !== 0 && !RETAINING_MODIFIER_PAIRS.some(([retainee, retainer]) => modifier === retainee && retainer in combatant.modifiers)) {
+				removeModifier([combatant], { name: modifier, stacks: roundDecrement, force: true })
 			}
 		}
 	}
@@ -1107,6 +1124,9 @@ function completeAdventure(adventure, thread, endState, descriptionOverride) {
 	clearComponents(adventure.messageIds.battleRound, messageManager);
 	clearComponents(adventure.messageIds.room, messageManager);
 
+	if (adventure.room.resources.Gold.count > 0) {
+		adventure.gainGold(adventure.room.resources.Gold.count);
+	}
 	adventure.state = endState;
 	setAdventure(adventure);
 	const company = getCompany(thread.guild.id);

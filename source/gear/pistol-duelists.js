@@ -1,11 +1,11 @@
 const { GearTemplate } = require("../classes");
 const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
-const { SAFE_DELIMITER } = require('../constants.js');
+const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
 
 const gearName = "Duelist's Pistol";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Strike a foe for <@{damage} + @{bonus} if only attacker> @{element} damage, give a random ally @{mod0Stacks} @{mod0} if the foe is weak to @{element}"],
+		["use", "Strike a foe for <@{damage} + @{bonus} if only attacker> @{element} damage, give a random ally <@{mod0Stacks} ÷ target's Weakness debuffs> @{mod0} if the foe is weak to @{element}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
@@ -24,7 +24,7 @@ module.exports = new GearTemplate(gearName,
 			pendingDamage *= critMultiplier;
 		}
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
 		if (getCombatantWeaknesses(target).includes(element)) {
@@ -42,7 +42,7 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Double Pistol", "Flanking Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(75)
 	.setRnConfig({ "allies": 1 });

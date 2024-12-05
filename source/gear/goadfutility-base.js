@@ -1,4 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
+const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Goad Futility",
@@ -12,7 +13,7 @@ module.exports = new GearTemplate("Goad Futility",
 	([target], user, adventure) => {
 		const { element, modifiers: [oblivious, unlucky] } = module.exports;
 		if (user.element === element) {
-			changeStagger([target], "elementMatchFoe");
+			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
 		}
 		const resultLines = [];
 		const receipts = addModifier([user], oblivious);
@@ -30,4 +31,4 @@ module.exports = new GearTemplate("Goad Futility",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Flanking Goad Futility", "Poised Goad Futility", "Shattering Goad Futility")
 	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Unlucky", stacks: 3 })
-	.setDurability(10);
+	.setCooldown(2);

@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes/index.js');
-const { isDebuff } = require('../modifiers/_modifierDictionary.js');
+const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
 const { addModifier, payHP, changeStagger, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Purifying Infinite Regeneration",
@@ -21,14 +22,14 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 			return [paymentSentence];
 		}
 		if (user.element === element) {
-			changeStagger(targets, "elementMatchAlly");
+			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		const resultLines = [paymentSentence];
 		const receipts = addModifier(targets, regen);
 		for (const target of targets) {
 			Object.keys(target.modifiers).forEach(modifier => {
-				if (isDebuff(modifier)) {
-					receipts.push(...removeModifier([target], { name: modifier, stacks: "all" })) ;
+				if (getModifierCategory(modifier) === "Debuff") {
+					receipts.push(...removeModifier([target], { name: modifier, stacks: "all" }));
 				}
 			})
 		}
@@ -37,5 +38,4 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setUpgrades("Discounted Infinite Regeneration", "Fate-Sealing Infinite Regeneration")
 	.setModifiers({ name: "Regen", stacks: 4 })
-	.setHPCost(50)
-	.setDurability(10);
+	.setHPCost(50);
