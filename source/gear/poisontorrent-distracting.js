@@ -24,4 +24,4 @@ module.exports = new GearTemplate("Distracting Poison Torrent",
 ).setTargetingTags({ type: "all", team: "foe" })
 	.setSidegrades("Harmful Poison Torrent", "Staggering Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 }, { name: "Distracted", stacks: 2 })
-	.setDurability(15);
+	.setCharges(15);

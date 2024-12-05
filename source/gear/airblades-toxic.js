@@ -1,11 +1,9 @@
 const { GearTemplate } = require('../classes');
 const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, payHP, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
-const { unbreakablePassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Toxic Air Blades",
 	[
-		unbreakablePassive,
 		["use", "Pay @{hpCost} HP, then inflict @{damage} @{element} damage twice and @{mod0Stacks} @{mod0} on a foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
@@ -30,6 +28,5 @@ module.exports = new GearTemplate("Toxic Air Blades",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Accelerating Air Blade", "Unstoppable Air Blade")
 	.setModifiers({ name: "Poison", stacks: 3 })
-	.setDurability(Infinity)
 	.setDamage(20)
 	.setHPCost(25);

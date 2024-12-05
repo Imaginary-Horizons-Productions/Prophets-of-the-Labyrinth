@@ -23,6 +23,6 @@ module.exports = new GearTemplate("Soothing Second Wind",
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Second Wind", "Lucky Second Wind")
-	.setDurability(10)
+	.setCooldown(2)
 	.setDamage(0)
 	.setModifiers({ name: "Regen", stacks: 2 });

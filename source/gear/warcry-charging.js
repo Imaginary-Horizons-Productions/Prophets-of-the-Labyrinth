@@ -41,5 +41,4 @@ module.exports = new GearTemplate("Charging War Cry",
 	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Distracted", stacks: 0 })
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks
-	.setDurability(15)
-	.setPriority(1);
+	.setCooldown(1);

@@ -24,5 +24,5 @@ module.exports = new GearTemplate("Flanking Prismatic Blast",
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe" })
 	.setSidegrades("Distracting Prismatic Blast", "Vexing Prismatic Blast")
 	.setModifiers({ name: "Exposed", stacks: 2 })
-	.setDurability(15)
+	.setCharges(15)
 	.setDamage(40);

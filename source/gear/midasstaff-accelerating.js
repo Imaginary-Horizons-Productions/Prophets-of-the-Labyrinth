@@ -30,4 +30,4 @@ module.exports = new GearTemplate("Accelerating Midas Staff",
 	.setSidegrades("Discounted Midas Staff", "Soothing Midas Staff")
 	.setModifiers({ name: "Curse of Midas", stacks: 2 }, { name: "Quicken", stacks: 1 })
 	.setBonus(1) // Curse of Midas stacks
-	.setDurability(10);
+	.setCooldown(2);

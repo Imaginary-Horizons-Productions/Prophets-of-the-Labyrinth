@@ -29,5 +29,5 @@ module.exports = new GearTemplate("Shattering Lance",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Duelist's Lance", "Surpassing Lance")
 	.setModifiers({ name: "Frail", stacks: 4 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40);

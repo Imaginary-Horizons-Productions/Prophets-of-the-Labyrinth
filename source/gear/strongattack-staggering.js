@@ -31,6 +31,6 @@ module.exports = new GearTemplate("Staggering Strong Attack",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Flanking Strong Attack", "Sharpened Strong Attack")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(65)
 	.setStagger(2);

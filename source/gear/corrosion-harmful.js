@@ -33,4 +33,4 @@ module.exports = new GearTemplate("Harmful Corrosion",
 	.setModifiers({ name: "Power Down", stacks: 20 })
 	.setBonus(2) // Crit Stagger
 	.setDamage(50)
-	.setDurability(15);
+	.setCharges(15);

@@ -34,5 +34,5 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Centering Omamori", "Devoted Omamori")
 	.setModifiers({ name: "Lucky", stacks: 2 })
 	.setProtection(50)
-	.setDurability(10)
+	.setCooldown(2)
 	.setRnConfig({ debuffs: 1 });

@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline, bold } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -8,7 +8,7 @@ const { getNumberEmoji } = require('../util/textUtil');
 
 const mainId = "repair";
 module.exports = new ButtonWrapper(mainId, 3000,
-	/** Allow the user to select a piece of gear to regain durability on */
+	/** Allow the user to select a piece of gear to regain charges on */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
@@ -23,13 +23,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		let description = "The piece of gear you pick will regain half its max durability. Here is the state of your gear:";
+		let description = "The piece of gear you pick will regain half its max charges. Here is the state of your gear:";
 		const options = [];
 		delver.gear.forEach((gear, index) => {
-			const maxDurability = getGearProperty(gear.name, "maxDurability");
-			if (maxDurability > 0 && gear.durability < maxDurability) {
-				const value = Math.min(Math.ceil(maxDurability / 2), maxDurability - gear.durability);
-				description += `\n${underline(gear.name)} Will regain ${value} durability (${gear.durability}/${maxDurability})`
+			const maxCharges = getGearProperty(gear.name, "maxCharges");
+			if (maxCharges > 0 && gear.charges < maxCharges) {
+				const value = Math.min(Math.ceil(maxCharges / 2), maxCharges - gear.charges);
+				description += `\n${underline(gear.name)} Will regain ${value} charges (${gear.charges}/${maxCharges})`
 				options.push({
 					label: gear.name,
 					value: `${gear.name}${SAFE_DELIMITER}${index}${SAFE_DELIMITER}${value}`
@@ -67,11 +67,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				const [gearName, index, value] = collectedInteraction.values[0].split(SAFE_DELIMITER);
-				delver.gear[Number(index)].durability += Number(value);
+				delver.gear[Number(index)].charges += Number(value);
 				adventure.room.history.Repairers.push(delver.name);
 				adventure.room.actions -= actionCost;
 				setAdventure(adventure);
-				collectedInteraction.channel.send({ content: `**${collectedInteraction.member.displayName}** repaired ${value} durability on their ${gearName}.` });
+				collectedInteraction.channel.send({ content: `${bold(collectedInteraction.member.displayName)} repaired ${value} charges on their ${gearName}.` });
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 					return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
 				})

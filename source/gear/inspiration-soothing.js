@@ -25,4 +25,4 @@ module.exports = new GearTemplate("Soothing Inspiration",
 	.setSidegrades("Guarding Inspiration", "Sweeping Inspiration")
 	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Regen", stacks: 2 })
 	.setBonus(25) // Power Up stacks
-	.setDurability(10);
+	.setCharges(10);

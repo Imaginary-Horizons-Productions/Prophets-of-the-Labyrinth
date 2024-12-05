@@ -30,8 +30,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.room.hasResource("Repair Kit")) {
-			adventure.room.decrementResource("Repair Kit", "all");
+		if (adventure.room.hasResource("Spellbook Repair Kit")) {
+			adventure.room.decrementResource("Spellbook Repair Kit", "all");
 			const gearIndex = adventure.generateRandomNumber(eligibleGear.length, "general");
 			const [gearToUpgrade, upgradePool] = eligibleGear[gearIndex];
 			const upgradeName = upgradePool[adventure.generateRandomNumber(upgradePool.length, "general")];

@@ -29,6 +29,6 @@ module.exports = new GearTemplate("Midas's Firecracker",
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}3`, team: "foe" })
 	.setSidegrades("Double Firecracker", "Toxic Firecracker")
 	.setModifiers({ name: "Curse of Midas", stacks: 1 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(5)
 	.setRnConfig({ "foes": 3 });

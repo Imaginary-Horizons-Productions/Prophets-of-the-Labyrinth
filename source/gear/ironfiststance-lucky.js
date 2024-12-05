@@ -25,8 +25,8 @@ module.exports = new GearTemplate("Lucky Iron Fist Stance",
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
-	.setSidegrades("Accurate Iron Fist Stance", "Organic Iron Fist Stance")
+	.setSidegrades("Accurate Iron Fist Stance", "Chaining Iron Fist Stance")
 	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 }, { name: "Lucky", stacks: 1 })
 	.setBonus(45) // Punch damage boost
-	.setDurability(10)
+	.setCooldown(2)
 	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's element to the bearer's and increases its damage by @{bonus} per stack" });

@@ -32,5 +32,5 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Devoted Barrier", "Vigilant Barrier")
 	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 1 })
-	.setDurability(5)
+	.setCharges(5)
 	.setRnConfig({ debuffs: 1 });

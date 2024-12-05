@@ -31,6 +31,6 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Lucky Second Wind", "Soothing Second Wind")
-	.setDurability(10)
+	.setCooldown(2)
 	.setDamage(0)
 	.setRnConfig({ debuffs: 1 });

@@ -381,14 +381,14 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 
 /** Seen in /inspect-self, gear fields contain nearly all information about the gear they represent
  * @param {string} gearName
- * @param {number} durability
+ * @param {number} charges
  * @param {Delver} holder
  * @returns {EmbedField} contents for a message embed field
  */
-function gearToEmbedField(gearName, durability, holder) {
+function gearToEmbedField(gearName, charges, holder) {
 	/** @type {number} */
-	const maxDurability = getGearProperty(gearName, "maxDurability");
-	if ([Infinity, 0].includes(maxDurability)) {
+	const maxCharges = getGearProperty(gearName, "maxCharges");
+	if ([Infinity, 0].includes(maxCharges)) {
 		return {
 			name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}`,
 			value: buildGearDescription(gearName, true, holder)
@@ -396,7 +396,7 @@ function gearToEmbedField(gearName, durability, holder) {
 	} else {
 		return {
 			name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}`,
-			value: `${generateTextBar(durability, maxDurability, Math.min(maxDurability, 10))} ${durability} /${maxDurability} durability\n${buildGearDescription(gearName, true, holder)}`
+			value: `${generateTextBar(charges, maxCharges, Math.min(maxCharges, 10))} ${charges} /${maxCharges} charges\n${buildGearDescription(gearName, true, holder)}`
 		};
 	}
 }
@@ -430,7 +430,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 	}
 	for (let index = 0; index < Math.min(Math.max(delver.gear.length, gearCapacity), MAX_EMBED_FIELD_COUNT); index++) {
 		if (delver.gear[index]) {
-			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].durability, delver));
+			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].charges, delver));
 		} else {
 			embed.addFields({ name: `${ordinalSuffixEN(index + 1)} Gear Slot`, value: "No gear yet..." })
 		}

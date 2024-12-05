@@ -33,6 +33,6 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Awesome Morning Star", "Bashing Morning Star")
 	.setStagger(2)
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setModifiers({ name: "Power Up", stacks: 15 });

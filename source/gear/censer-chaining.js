@@ -2,11 +2,9 @@ const { GearTemplate } = require("../classes");
 const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants");
 const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil");
-const { unbreakablePassive } = require("./descriptions/passives");
 
-module.exports = new GearTemplate("Unbreakable Censer",
+module.exports = new GearTemplate("Chaining Censer",
 	[
-		unbreakablePassive,
 		["use", "Burn a foe for <@{damage} + @{bonus} if target has any debuffs> @{element} damage"],
 		["Critical💥", "Also apply @{mod0Stacks} @{mod0}"]
 	],
@@ -32,5 +30,4 @@ module.exports = new GearTemplate("Unbreakable Censer",
 	.setSidegrades("Staggering Censer", "Tormenting Censer")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDamage(15)
-	.setBonus(75) // damage
-	.setDurability(Infinity);
+	.setBonus(75); // damage

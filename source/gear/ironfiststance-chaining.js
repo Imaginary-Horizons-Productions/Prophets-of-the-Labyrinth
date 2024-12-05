@@ -1,11 +1,9 @@
 const { GearTemplate } = require("../classes");
 const { ELEMENT_MATCH_STAGGER_ALLY } = require("../constants");
 const { addModifier, changeStagger, enterStance, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
-const { organicPassive } = require("./descriptions/passives");
 
-module.exports = new GearTemplate("Organic Iron Fist Stance",
+module.exports = new GearTemplate("Chaining Iron Fist Stance",
 	[
-		organicPassive,
 		["use", "Gain @{mod0Stacks} @{mod0} (exit other stances)"],
 		["Critical💥", "Inflict @{mod1Stacks} @{mod1} on all enemies"]
 	],
@@ -29,5 +27,5 @@ module.exports = new GearTemplate("Organic Iron Fist Stance",
 	.setSidegrades("Organic Iron Fist Stance", "Lucky Iron Fist Stance")
 	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
 	.setBonus(45) // Punch damage boost
-	.setDurability(10)
+	.setCooldown(1)
 	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's element to the bearer's and increases its damage by @{bonus} per stack" });

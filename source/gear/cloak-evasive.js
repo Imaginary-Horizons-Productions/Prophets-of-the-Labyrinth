@@ -28,4 +28,4 @@ module.exports = new GearTemplate("Evasive Cloak",
 	.setModifiers({ name: "Evade", stacks: 3 })
 	.setBonus(1) // Evade stacks
 	.setCritRate(5)
-	.setDurability(15);
+	.setCooldown(1);

@@ -26,6 +26,6 @@ module.exports = new GearTemplate("Potent Risky Mixture",
 		}
 	}
 ).setTargetingTags({ type: "single", team: "any" })
-	.setSidegrades("Midas's Risky Mixture", "Unbreakable Risky Mixture")
+	.setSidegrades("Chaining Risky Mixture", "Midas's Risky Mixture")
 	.setModifiers({ name: "Poison", stacks: 6 }, { name: "Regen", stacks: 6 })
-	.setDurability(15);
+	.setCooldown(1);

@@ -27,5 +27,5 @@ module.exports = new GearTemplate("Sharpened Abacus",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Thief's Abacus", "Unstoppable Abacus")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(65);

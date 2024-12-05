@@ -10,4 +10,5 @@ module.exports = new GearTemplate("Accurate Scarf",
 	(targets, user, adventure) => []
 ).setSidegrades("Hearty Scarf", "Wise Scarf")
 	.setSpeed(5)
-	.setCritRate(5);
+	.setCritRate(5)
+	.setCharges(0);

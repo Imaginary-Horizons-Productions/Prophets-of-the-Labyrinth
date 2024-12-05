@@ -35,8 +35,8 @@ module.exports = new GearTemplate("Tormenting Censer",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Staggering Censer", "Unbreakable Censer")
+	.setSidegrades("Chaining Censer", "Staggering Censer")
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setDamage(15)
 	.setBonus(75) // damage
-	.setDurability(15);
+	.setCooldown(1);

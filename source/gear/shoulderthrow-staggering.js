@@ -29,6 +29,6 @@ module.exports = new GearTemplate("Staggering Shoulder Throw",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Evasive Shoulder Throw", "Harmful Shoulder Throw")
-	.setDurability(10)
+	.setCooldown(2)
 	.setModifiers({ name: "Evade", stacks: 1 })
 	.setStagger(2);

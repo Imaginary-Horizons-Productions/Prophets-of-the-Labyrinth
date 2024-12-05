@@ -35,5 +35,5 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Bouncing Medicine", "Soothing Medicine")
 	.setModifiers({ name: "Regen", stacks: 3 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setRnConfig({ debuffs: 1 });

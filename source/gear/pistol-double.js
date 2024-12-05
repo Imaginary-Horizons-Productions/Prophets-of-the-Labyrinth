@@ -36,6 +36,6 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Duelist's Pistol", "Flanking Pistol")
 	.setModifiers({ name: "Power Up", stacks: 30 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(20)
 	.setRnConfig({ "allies": 2 });

@@ -26,4 +26,4 @@ module.exports = new GearTemplate("Omamori",
 	.setUpgrades("Centering Omamori", "Cleansing Omamori", "Devoted Omamori")
 	.setModifiers({ name: "Lucky", stacks: 2 })
 	.setProtection(50)
-	.setDurability(10);
+	.setCooldown(2);

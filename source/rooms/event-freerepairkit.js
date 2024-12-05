@@ -4,9 +4,9 @@ const { generateRoutingRow, pathVoteField } = require("../util/messageComponentU
 
 module.exports = new RoomTemplate("Repair Kit, just hanging out",
 	"Earth",
-	"There's a Repair Kit hanging in the middle of the room tied to the ceiling by a rope.",
+	"There's a Spellbook Repair Kit hanging in the middle of the room tied to the ceiling by a rope.",
 	[
-		new ResourceTemplate("1", "internal", "Repair Kit")
+		new ResourceTemplate("1", "internal", "Spellbook Repair Kit")
 	],
 	function (adventure) {
 		adventure.room.history = {
@@ -15,7 +15,7 @@ module.exports = new RoomTemplate("Repair Kit, just hanging out",
 	},
 	function (roomEmbed, adventure) {
 		let saveEmoji, saveLabel, tinkerEmoji, tinkerLabel;
-		const isRepairKitRemaining = "Repair Kit" in adventure.room.resources;
+		const isRepairKitRemaining = "Spellbook Repair Kit" in adventure.room.resources;
 		if (isRepairKitRemaining) {
 			saveEmoji = "🔧";
 			saveLabel = "Save the Repair Kit";

@@ -29,5 +29,5 @@ module.exports = new GearTemplate("Toxic Shortsword",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Accelerating Shortsword", "Lethal Shortsword")
 	.setModifiers({ name: "Exposed", stacks: 1 }, { name: "Poison", stacks: 3 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40);
