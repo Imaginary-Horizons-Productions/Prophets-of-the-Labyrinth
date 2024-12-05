@@ -3,7 +3,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, StringSelect
 const { Adventure } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
-const { ordinalSuffixEN } = require("./textUtil");
+const { ordinalSuffixEN, listifyEN } = require("./textUtil");
 
 /** Remove components (buttons and selects) from a given message
  * @param {string} messageId - the id of the message to remove components from
@@ -35,7 +35,7 @@ const extraCombatButtonsMap = {
 function generateCombatRoomBuilder(extraButtons) {
 	return (roomEmbed, adventure) => {
 		roomEmbed.setFooter({ text: `Room #${adventure.depth} - Round ${adventure.room.round}` });
-		const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0);
+		const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0 || "Coward" in enemy.modifiers);
 		if (!isCombatVictory) {
 			const buttons = [
 				module.exports.partyStatsButton,
@@ -59,8 +59,18 @@ function generateCombatRoomBuilder(extraButtons) {
 			}
 		} else {
 			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
-
-			roomEmbed.addFields({ name: "Level-Up!", value: `Everyone gains ${adventure.room.resources.levelsGained.count ?? 0} levels.` }, module.exports.pathVoteField);
+			const fields = [];
+			const livingCowards = [];
+			adventure.room.enemies.forEach(enemy => {
+				if (enemy.hp > 0 && "Coward" in enemy.modifiers) {
+					livingCowards.push(enemy.name);
+				}
+			})
+			if (livingCowards.length > 0) {
+				fields.push({ name: "Fleeing Cowards", value: listifyEN(livingCowards) });
+			}
+			fields.push({ name: "Level-Up!", value: `Everyone gains ${adventure.room.resources.levelsGained.count ?? 0} levels.` }, module.exports.pathVoteField);
+			roomEmbed.addFields(fields);
 			return {
 				embeds: [roomEmbed],
 				components: [generateLootRow(adventure), generateRoutingRow(adventure)]
