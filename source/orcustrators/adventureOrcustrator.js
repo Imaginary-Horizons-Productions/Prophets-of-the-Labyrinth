@@ -1060,8 +1060,18 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 			return { payload: completeAdventure(adventure, thread, "success", lastRoundText), type: "adventureSuccess" };
 		}
 
-		for (const delver of adventure.delvers) {
-			levelUp(delver, adventure.room.resources.levelsGained.count ?? 0, adventure);
+		for (const resourceName in adventure.room.resources) {
+			const resource = adventure.room.resources[resourceName];
+			if (resource.type === "levelsGained") {
+				const [_, index] = resourceName.split(SAFE_DELIMITER);
+				if (!index) {
+					for (const delver of adventure.delvers) {
+						levelUp(delver, resource.count, adventure);
+					}
+				} else {
+					levelUp(adventure.delvers[index], resource.count, adventure);
+				}
+			}
 		}
 
 		// Gear drops

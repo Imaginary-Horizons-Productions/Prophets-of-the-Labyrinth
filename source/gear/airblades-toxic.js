@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Toxic Air Blades",
 		return resultLines.concat(dealDamage(targets, user, pendingDamage, false, element, adventure), dealDamage(targets, user, pendingDamage, false, element, adventure), generateModifierResultLines(addModifier(targets, poison)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Accelerating Air Blade", "Unstoppable Air Blade")
+	.setSidegrades("Adventurer's Air Blade", "Unstoppable Air Blade")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDamage(20)
 	.setHPCost(25);

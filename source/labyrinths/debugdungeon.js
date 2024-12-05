@@ -57,7 +57,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		]])),
 		Wind: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Air Blades",
-			"Accelerating Air Blades",
+			"Adventurer's Air Blades",
 			"Toxic Air Blades",
 			"Unstoppable Air Blades"
 		]])),

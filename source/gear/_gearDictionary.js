@@ -18,7 +18,7 @@ for (const file of [
 	"abacus-sharpened.js",
 	"abacus-thiefs.js",
 	"abacus-unstoppable.js",
-	"airblades-accelerating.js",
+	"airblades-adventurers.js",
 	"airblades-base.js",
 	"airblades-toxic.js",
 	"airblades-unstoppable.js",

@@ -8,7 +8,6 @@ Adds Quicken to the user
 
 **Available on**
 - all Bucklers (Light)
-- Air Blades (Wind)
 - Buckler (Light)
 - Cloak (Wind)
 - Midas Staff (Water)
@@ -23,6 +22,12 @@ Passively increases the user's Crit Rate
 - Cloak (Wind)
 - Iron Fist Stance (Light)
 - Scarf (Untyped)
+
+### Adventurer's
+Gain an extra level at the end of combat on kill
+
+**Available on**
+- Air Blades (Wind)
 
 ### Agile
 Add Agility to user

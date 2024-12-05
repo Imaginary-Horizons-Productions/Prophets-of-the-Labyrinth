@@ -26,5 +26,6 @@ module.exports = new GearTemplate("Unstoppable Air Blades",
 		return resultLines.concat(dealDamage(targets, user, pendingDamage, true, element, adventure), dealDamage(targets, user, pendingDamage, true, element, adventure));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
+	.setSidegrades("Adventurer's Air Blades", "Toxic Air Blades")
 	.setDamage(20)
 	.setHPCost(25);

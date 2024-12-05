@@ -257,7 +257,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Accelerating Refreshing Breeze",
 				"Supportive Refreshing Breeze",
 				"Swift Refreshing Breeze",
-				"Accelerating Air Blades",
+				"Adventurer's Air Blades",
 				"Toxic Air Blades",
 				"Unstoppable Air Blades"
 			]
