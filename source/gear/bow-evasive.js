@@ -24,6 +24,6 @@ module.exports = new GearTemplate("Evasive Bow",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Thief's Bow", "Unstoppable Bow")
 	.setModifiers({ name: "Evade", stacks: 2 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setPriority(1);

@@ -24,4 +24,4 @@ module.exports = new GearTemplate("Soothing Medicine",
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Bouncing Medicine", "Cleansing Medicine")
 	.setModifiers({ name: "Regen", stacks: 5 })
-	.setDurability(15);
+	.setCooldown(1);

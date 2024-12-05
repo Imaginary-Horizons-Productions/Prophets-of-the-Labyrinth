@@ -17,9 +17,12 @@ async function executeSubcommand(interaction, ...args) {
 
 	const fields = [
 		{ name: "Category", value: getGearProperty(gearName, "category") },
-		{ name: "Max Durability", value: getGearProperty(gearName, "maxDurability").toString() },
 		{ name: "Base Value", value: `${getGearProperty(gearName, "cost").toString()}g` }
 	];
+	const maxCharges = getGearProperty(gearName, "maxCharges");
+	if (maxCharges > 0) {
+		fields.push({ name: "Max Charges", value: maxCharges.toString() });
+	}
 
 	const upgrades = getGearProperty(gearName, "upgrades");
 	if (upgrades.length > 0) {

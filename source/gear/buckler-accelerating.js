@@ -26,5 +26,5 @@ module.exports = new GearTemplate("Accelerating Buckler",
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Devoted Buckler", "Guarding Buckler")
 	.setModifiers({ name: "Quicken", stacks: 6 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setProtection(75);

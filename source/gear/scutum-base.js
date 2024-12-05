@@ -24,5 +24,5 @@ module.exports = new GearTemplate("Scutum",
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setUpgrades("Guarding Scutum", "Lucky Scutum", "Sweeping Scutum")
-	.setDurability(15)
+	.setCooldown(1)
 	.setProtection(75);

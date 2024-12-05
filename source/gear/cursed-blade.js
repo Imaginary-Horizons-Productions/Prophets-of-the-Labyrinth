@@ -24,6 +24,6 @@ module.exports = new GearTemplate("Cursed Blade",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Daggers", "Scythe", "Shortsword", "Spear")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(10)
 	.setMaxHP(-50);

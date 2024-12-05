@@ -39,6 +39,6 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "all", team: "ally" })
 	.setSidegrades("Accelerating Refreshing Breeze", "Supportive Refreshing Breeze")
-	.setDurability(15)
+	.setCharges(15)
 	.setSpeed(2)
 	.setRnConfig({ debuffs: 1 });

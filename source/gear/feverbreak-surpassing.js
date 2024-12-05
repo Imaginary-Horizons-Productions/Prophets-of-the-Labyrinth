@@ -39,6 +39,6 @@ module.exports = new GearTemplate("Surpassing Fever Break",
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Organic Fever Break", "Urgent Fever Break")
+	.setSidegrades("Unlimited Fever Break", "Urgent Fever Break")
 	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frail", stacks: 0 })
-	.setDurability(5);
+	.setCharges(5);

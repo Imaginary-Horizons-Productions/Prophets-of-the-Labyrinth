@@ -34,5 +34,5 @@ module.exports = new GearTemplate("Sweeping Spear",
 ).setTargetingTags({ type: "all", team: "foe" })
 	.setSidegrades("Lethal Spear", "Reactive Spear")
 	.setStagger(2)
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40);

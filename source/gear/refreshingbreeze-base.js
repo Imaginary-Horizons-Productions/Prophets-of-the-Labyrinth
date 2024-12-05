@@ -37,5 +37,5 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "all", team: "ally" })
 	.setUpgrades("Accelerating Refereshing Breeze", "Supportive Refreshing Breeze", "Swift Refreshing Breeze")
-	.setDurability(15)
+	.setCharges(15)
 	.setRnConfig({ debuffs: 1 });

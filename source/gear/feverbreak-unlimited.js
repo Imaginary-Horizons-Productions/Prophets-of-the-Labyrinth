@@ -1,11 +1,9 @@
 const { GearTemplate } = require('../classes');
 const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
-const { organicPassive } = require('./descriptions/passives');
 
-module.exports = new GearTemplate("Organic Fever Break",
+module.exports = new GearTemplate("Unlimited Fever Break",
 	[
-		organicPassive,
 		["use", `Deal <pending damage from @{mod0} and @{mod1}> @{element} damage to a foe then cure it of those debuffs`],
 		["Critical💥", "@{mod0} and @{mod1} are not removed"]
 	],
@@ -40,5 +38,4 @@ module.exports = new GearTemplate("Organic Fever Break",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Surpassing Fever Break", "Urgent Fever Break")
-	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frail", stacks: 0 })
-	.setDurability(5);
+	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frail", stacks: 0 });

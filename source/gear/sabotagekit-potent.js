@@ -36,6 +36,6 @@ module.exports = new GearTemplate(gearName,
 	.setTargetingTags({ type: "single", team: "foe" })
 	.setModifiers({ name: "Slow", stacks: 3 }, { name: "unparsed random weakness", stacks: 4 })
 	.setBonus(2) // Crit Slow and Weakness stacks
-	.setDurability(15)
+	.setCooldown(1)
 	.setFlavorText({ name: "Eligible Weaknesses", value: "The rolled weakness won't be one of the target's resistances or existing weaknesses" })
 	.setRnConfig({ "weaknesses": 1 });

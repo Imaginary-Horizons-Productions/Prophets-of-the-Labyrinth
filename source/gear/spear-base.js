@@ -32,5 +32,5 @@ module.exports = new GearTemplate("Spear",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Lethal Spear", "Reactive Spear", "Sweeping Spear")
 	.setBonus(2) // Crit Stagger
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(65);

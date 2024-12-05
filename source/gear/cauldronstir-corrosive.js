@@ -30,6 +30,6 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sabotaging Cauldron Stir", "Toxic Cauldron Stir")
 	.setModifiers({ name: "Power Down", stacks: 10 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setRnConfig({ potions: 1 });

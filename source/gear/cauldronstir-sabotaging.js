@@ -39,6 +39,6 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setModifiers({ name: "unparsed random weakness", stacks: 2 })
 	.setSidegrades("Corrosive Cauldron Stir", "Toxic Cauldron Stir")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setRnConfig({ potions: 1, weaknesses: 1 });

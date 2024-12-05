@@ -49,5 +49,5 @@ module.exports = new GearTemplate("Lucky Carrot",
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Devoted Carrot", "Reinforced Carrot")
 	.setModifiers({ name: "Lucky", stacks: 1 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setProtection(50);

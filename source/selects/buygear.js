@@ -30,15 +30,15 @@ module.exports = new SelectWrapper(mainId, 3000,
 		}
 
 		const hasFreeGearSlots = delver.gear.length < adventure.getGearCapacity();
-		let durability = getGearProperty(name, "maxDurability");
-		const shoddyPenalty = adventure.getChallengeIntensity("Shoddy Craftsmanship");
+		let charges = getGearProperty(name, "maxCharges");
+		const shoddyPenalty = adventure.getChallengeIntensity("Shoddy Spellcraft");
 		if (shoddyPenalty) {
-			durability = Math.ceil(durability * (100 - shoddyPenalty) / 100);
+			charges = Math.ceil(charges * (100 - shoddyPenalty) / 100);
 		}
 		const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
 			.setAuthor(randomAuthorTip())
 			.setTitle("Buy this gear?")
-			.addFields(gearToEmbedField(name, durability, delver));
+			.addFields(gearToEmbedField(name, charges, delver));
 		const components = [];
 		if (hasFreeGearSlots) {
 			components.push(

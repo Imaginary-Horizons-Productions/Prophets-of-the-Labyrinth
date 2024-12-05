@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Thirsting Life Drain",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Flanking Life Drain", "Furious Life Drain")
-	.setDurability(15)
+	.setCharges(15)
 	.setDamage(40)
 	.setHealing(25)
 	.setBonus(60);

@@ -47,7 +47,9 @@ async function loadAdventures() {
 				// Cast delvers into Delver class
 				const castDelvers = [];
 				for (let delver of adventure.delvers) {
-					castDelvers.push(Object.assign(new Delver(), delver));
+					const castDelver = Object.assign(new Delver(), delver);
+					castDelver.gear.forEach(gear => { if (gear.charges === null) { gear.charges = Infinity; } });
+					castDelvers.push(castDelver);
 				}
 				adventure.delvers = castDelvers;
 
@@ -139,14 +141,6 @@ function nextRoom(roomType, thread) {
 		}
 		delver.stagger = 0;
 		delver.isStunned = false;
-		delver.gear.forEach(gear => {
-			if (gear.name.startsWith("Organic")) {
-				const maxDurability = getGearProperty(gear.name, "maxDurability");
-				if (gear.durability < maxDurability) {
-					gear.durability++;
-				}
-			}
-		})
 	})
 
 	const piggyBankCount = adventure.getArtifactCount("Piggy Bank");
@@ -760,7 +754,8 @@ function resolveMove(move, adventure) {
 
 	let headline = `${bold(user.name)} `;
 	const results = [];
-	if (!user.isStunned || move.name.startsWith("Unstoppable") || move.type === "pet") {
+	const [moveName, index] = move.name.split(SAFE_DELIMITER);
+	if (!user.isStunned || moveName.startsWith("Unstoppable") || move.type === "pet") {
 		if (user.crit) {
 			headline = `💥${headline}`;
 		}
@@ -770,7 +765,7 @@ function resolveMove(move, adventure) {
 		switch (move.type) {
 			case "action":
 				if (move.userReference.team !== "delver") {
-					const action = getEnemy(user.archetype).actions[move.name];
+					const action = getEnemy(user.archetype).actions[moveName];
 					effect = action.effect;
 					if (action.combatFlavor) {
 						combatFlavor = action.combatFlavor;
@@ -778,13 +773,9 @@ function resolveMove(move, adventure) {
 				}
 				break;
 			case "gear": {
-				effect = getGearProperty(move.name, "effect");
-				const targetingTags = getGearProperty(move.name, "targetingTags");
+				effect = getGearProperty(moveName, "effect");
+				const targetingTags = getGearProperty(moveName, "targetingTags");
 				if (move.userReference.team === "delver") {
-					if (adventure.getArtifactCount("Crystal Shard") > 0 && getGearProperty(move.name, "category") === "Spell") {
-						adventure.updateArtifactStat("Crystal Shard", "Spells Cast", 1);
-					}
-
 					const loadedDiceCount = adventure.getArtifactCount("Loaded Dice");
 					if (loadedDiceCount > 0 && targetingTags.type.startsWith("random")) {
 						adventure.updateArtifactStat("Loaded Dice", "Extra Targets", loadedDiceCount);
@@ -799,9 +790,9 @@ function resolveMove(move, adventure) {
 					if (placeboDillution > 0) {
 						isPlacebo = (placeboDillution - 1) === adventure.generateRandomNumber(placeboDillution, "battle");
 					}
-					adventure.decrementItem(move.name, 1);
+					adventure.decrementItem(moveName, 1);
 				}
-				const { effect: itemEffect } = getItem(isPlacebo ? "Placebo" : move.name);
+				const { effect: itemEffect } = getItem(isPlacebo ? "Placebo" : moveName);
 				effect = itemEffect;
 				break;
 			}
@@ -811,7 +802,7 @@ function resolveMove(move, adventure) {
 				break;
 		}
 
-		headline += `used ${move.name}`;
+		headline += `used ${moveName}`;
 		if (move.targets.length > 0) {
 			const livingTargets = [];
 			const deadTargets = [];
@@ -832,7 +823,7 @@ function resolveMove(move, adventure) {
 
 				results.push(...effect(livingTargets, user, adventure, adventure.petRNs));
 				if (move.type === "gear" && move.userReference.team === "delver") {
-					const breakText = decrementDurability(move.name, user, adventure);
+					const breakText = gearUpkeep(moveName, index, user, adventure);
 					if (breakText) {
 						results.push(breakText);
 					}
@@ -849,7 +840,7 @@ function resolveMove(move, adventure) {
 		if (combatFlavor) {
 			headline += ` ${italic(combatFlavor)}`;
 			if (move.type === "gear" && move.userReference.team === "delver") {
-				const breakText = decrementDurability(move.name, user, adventure);
+				const breakText = gearUpkeep(moveName, index, user, adventure);
 				if (breakText) {
 					results.push(breakText);
 				}
@@ -889,31 +880,50 @@ function resolveMove(move, adventure) {
 	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
 }
 
-/**
+/** Decrement charges and set cooldown of gear moves
  * @param {string} moveName
+ * @param {number} index
  * @param {Combatant} user
  * @param {Adventure} adventure
  */
-function decrementDurability(moveName, user, adventure) {
+function gearUpkeep(moveName, index, user, adventure) {
 	if (!["Punch", "Floating Mist Punch", "Iron Fist Punch", "Appease", "Greed"].includes(moveName) && user.team === "delver") {
+		const gear = user.gear[index];
 		const gearCategory = getGearProperty(moveName, "category");
+
+		let cdReduction = 0;
 		if (gearCategory === "Weapon") {
 			const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");
 			if (weaponPolishCount > 0) {
-				const durabilitySaveChance = 1 - 0.85 ** weaponPolishCount;
+				const chargeSaveChance = 1 - 0.85 ** weaponPolishCount;
 				const max = RN_TABLE_BASE ** 2;
-				adventure.updateArtifactStat("Weapon Polish", "Expected Durability Saved", durabilitySaveChance.toFixed(2));
-				if (adventure.generateRandomNumber(max, "battle") < max * durabilitySaveChance) {
-					adventure.updateArtifactStat("Weapon Polish", "Actual Durability Saved", 1);
+				adventure.updateArtifactStat("Weapon Polish", "Expected Cooldown Saved", chargeSaveChance.toFixed(2));
+				if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
+					cdReduction = 1;
+					adventure.updateArtifactStat("Weapon Polish", "Actual Cooldown Saved", 1);
+				}
+			}
+		}
+		gear.cooldown = Math.max(0, getGearProperty(gear.name, "cooldown") - cdReduction);
+
+		if (gearCategory === "Spell") {
+			const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
+			if (crystalShardCount > 0) {
+				const chargeSaveChance = 1 - 0.85 ** crystalShardCount;
+				const max = RN_TABLE_BASE ** 2;
+				adventure.updateArtifactStat("Crystal Shard", "Expected Charges Saved", chargeSaveChance.toFixed(2));
+				if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
+					adventure.updateArtifactStat("Crystal Shard", "Actual Charges Saved", 1);
 					return "";
 				}
 			}
 		}
 
-		const gear = user.gear.find(gear => gear.name === moveName);
-		gear.durability--;
-		if (gear.durability < 1) {
-			return `${user.name}'s ${moveName} broke!`;
+		if (getGearProperty(moveName, "maxCharges") > 0) {
+			gear.charges--;
+			if (gear.charges < 1) {
+				return `${user.name}'s ${moveName} is exhausted!`;
+			}
 		}
 	}
 	return "";
@@ -952,6 +962,14 @@ function endRound(adventure, thread) {
 	// Resolve moves
 	let lastRoundText = "";
 	for (const move of adventure.room.moves) {
+		const combatant = adventure.getCombatant(move.userReference);
+		if (combatant.team === "delver" && move.type !== "pet") {
+			combatant.gear.forEach(gear => {
+				if (gear.cooldown > 0) {
+					gear.cooldown--;
+				}
+			})
+		}
 		lastRoundText += resolveMove(move, adventure);
 
 		const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);

@@ -28,6 +28,6 @@ module.exports = new GearTemplate("Duelist's Lance",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Shattering Lance", "Surpassing Lance")
 	.setModifiers({ name: "Quicken", stacks: 1 })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(75); // Duelist's damage

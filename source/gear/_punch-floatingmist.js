@@ -30,5 +30,4 @@ module.exports = new GearTemplate("Floating Mist Punch",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setDurability(Infinity)
 	.setDamage(0);

@@ -30,4 +30,4 @@ module.exports = new GearTemplate("Accelerating Cloak",
 	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Quicken", stacks: 1 })
 	.setBonus(1) // Evade stacks
 	.setCritRate(5)
-	.setDurability(15);
+	.setCooldown(1);

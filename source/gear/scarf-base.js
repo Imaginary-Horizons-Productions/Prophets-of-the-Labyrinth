@@ -10,4 +10,5 @@ module.exports = new GearTemplate("Scarf",
 	200,
 	(targets, user, adventure) => []
 ).setUpgrades("Accurate Scarf", "Hearty Scarf", "Wise Scarf")
-	.setSpeed(5);
+	.setSpeed(5)
+	.setCharges(0);

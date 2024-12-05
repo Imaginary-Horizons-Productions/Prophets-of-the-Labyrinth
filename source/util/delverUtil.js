@@ -36,12 +36,12 @@ function levelUp(delver, levels, adventure) {
  * @param {string} newGearName
  */
 function transformGear(delver, index, oldGearName, newGearName) {
-	const upgradeDurability = getGearProperty(newGearName, "maxDurability");
-	const durabilityDifference = upgradeDurability - getGearProperty(oldGearName, "maxDurability");
-	if (durabilityDifference > 0) {
-		delver.gear[index].durability += durabilityDifference;
+	const upgradeCharges = getGearProperty(newGearName, "maxCharges");
+	const chargesDifference = upgradeCharges - getGearProperty(oldGearName, "maxCharges");
+	if (chargesDifference > 0) {
+		delver.gear[index].charges += chargesDifference;
 	}
-	delver.gear.splice(index, 1, new Gear(newGearName, Math.min(upgradeDurability, delver.gear[index].durability), getGearProperty(newGearName, "maxHP"), getGearProperty(newGearName, "power"), getGearProperty(newGearName, "speed"), getGearProperty(newGearName, "critRate"), getGearProperty(newGearName, "poise")));
+	delver.gear.splice(index, 1, new Gear(newGearName, Math.min(upgradeCharges, delver.gear[index].charges), getGearProperty(newGearName, "maxHP"), getGearProperty(newGearName, "power"), getGearProperty(newGearName, "speed"), getGearProperty(newGearName, "critRate"), getGearProperty(newGearName, "poise")));
 }
 
 module.exports = {

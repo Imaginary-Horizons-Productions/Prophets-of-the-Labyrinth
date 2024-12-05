@@ -29,6 +29,6 @@ module.exports = new GearTemplate("Sharpened Stick",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Shattering Stick", "Staggering Stick")
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(65)
 	.setBonus(2);

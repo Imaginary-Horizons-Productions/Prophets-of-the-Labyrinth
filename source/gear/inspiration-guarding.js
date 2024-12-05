@@ -28,4 +28,4 @@ module.exports = new GearTemplate("Guarding Inspiration",
 	.setModifiers({ name: "Power Up", stacks: 25 })
 	.setBonus(25) // Power Up stacks
 	.setProtection(25)
-	.setDurability(10);
+	.setCharges(10);

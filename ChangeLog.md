@@ -17,9 +17,17 @@ In keeping with the elemental alignment of mechanics, the Knight is now Light el
 - Pistol's Power Up stacks is now divided by the number of Weakness debuffs the target has to nerf the team of 6 Detectives
 - Reduced protection provided by Reinforced Blood Aegis to 200 (250 was more of an increase than other Reinforced variants)
 - New Gear: Universal Solution (Water Pact, variants: Centering, Evasive, Harmful) Transfer a random 2 of your debuffs to a single foe, then gain 3 Poison
-- New Gear: Air Blades (Wind Pact, variants: Accelerating, Toxic, Unstoppable) Pay 25 HP, strike a foe for Wind damage twice (Infinite Durability)
+- New Gear: Air Blades (Wind Pact, variants: Accelerating, Toxic, Unstoppable) Pay 25 HP, strike a foe for Wind damage twice
 - War Cries now affect Distracted foes (instead of Exposed)
-- Replaced Thick variants with Unbreakable
+#### Cooldowns
+We're adding cooldowns to gear to create another type of variety.
+- Gear that is not a Spell or Pact now has cooldowns instead of durability. Spell durability is now called "charges" instead. Pacts don't have charges as they charge you other resources instead.
+- ~~Shoddy Craftsmanship~~ -> Shoddy Spellcraft (Challenge): increased the charge reduction to 50% as it will affect fewer gear now.
+- ~~Repair Kit~~ -> Spellbook Repair Kit: now fully restores charges to Spells
+- Organic and Thick variants have been replaced with Chaining
+   - Fever Break: ~~Organic~~ -> Unlimited (infinite charges)
+- Crystal Shard (artifact) now reduces chance of charge use instead of expanding targets
+- Weapon Polish (artifact) now grants a chance to reduce Weapon cooldowns by 1 round
 ### Command Improvements
 - Added `/manual modifier-info`, `/manual challenge-info` & `/set-favorite archetype`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)

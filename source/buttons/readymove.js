@@ -51,18 +51,23 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		});
 		const components = [];
 		const usableMoves = [];
-		delver.gear.forEach(gear => { if (gear.durability > 0) { usableMoves.push(gear) } });
+		delver.gear.forEach((gear, index) => {
+			if (gear.charges > 0) {
+				usableMoves.push({ ...gear, gearIndex: index })
+			}
+		});
 		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
 			if (delver.getModifierStacks("Floating Mist Stance") > 0) {
-				usableMoves.unshift({ name: "Floating Mist Punch" });
+				usableMoves.unshift({ name: "Floating Mist Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
 			} else if (delver.getModifierStacks("Iron Fist Stance") > 0) {
-				usableMoves.unshift({ name: "Iron Fist Punch" });
+				usableMoves.unshift({ name: "Iron Fist Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
 			} else {
-				usableMoves.unshift({ name: "Punch" });
+				usableMoves.unshift({ name: "Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
 			}
 		}
 		for (let i = 0; i < usableMoves.length; i++) {
-			const { name: gearName, durability } = usableMoves[i];
+			const { name: gearName, charges, cooldown, gearIndex } = usableMoves[i];
+			const isOnCD = Boolean(cooldown) && (cooldown > 0);
 			const { type, team } = getGearProperty(gearName, "targetingTags");
 			const elementEmoji = getEmoji(gearName === "Iron Fist Punch" ? delver.element : getGearProperty(gearName, "element"));
 			if (type === "single" || type.startsWith("blast")) {
@@ -75,25 +80,29 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (team === "ally" || team === "any") {
 					targetOptions = targetOptions.concat(delverOptions);
 				}
+				const placeholder = isOnCD ? `${elementEmoji} ${gearName} CD: ${cooldown} Rounds` : `${elementEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `(${charges} charges) ` : ""}on...`;
 				components.push(new ActionRowBuilder().addComponents(
-					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${i}`)
-						.setPlaceholder(`${elementEmoji} Use ${gearName} ${durability ? `(${durability} durability) ` : ""}on...`)
+					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
+						.setPlaceholder(placeholder)
 						.addOptions(targetOptions)
+						.setDisabled(isOnCD)
 				));
 			} else {
+				const label = isOnCD ? `${gearName} CD: ${cooldown} Rounds` : `Use ${gearName}${![0, Infinity].includes(charges) ? ` (${charges} charges)` : ""}`;
 				// Button
 				components.push(new ActionRowBuilder().addComponents(
-					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${i}`)
-						.setLabel(`Use ${gearName}${durability ? ` (${durability} durability)` : ""}`)
+					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
+						.setLabel(label)
 						.setEmoji(elementEmoji)
 						.setStyle(ButtonStyle.Secondary)
+						.setDisabled(isOnCD)
 				));
 			}
 		}
 		interaction.reply({ embeds: [embed], components, ephemeral: true, fetchReply: true }).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
-				const [_, startedDepth, round, moveName, actionRowIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
+				const [_, startedDepth, round, moveName, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
 				const adventure = getAdventure(collectedInteraction.channelId);
 				const delver = adventure?.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				if (adventure.room.round !== Number(round) || startedDepth !== adventure.depth.toString()) {
@@ -104,7 +113,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (collectedInteraction.isButton()) {
 					// Add move to round list (overwrite exisiting readied move)
 					const userIndex = adventure.getCombatantIndex(delver);
-					const newMove = new Move(moveName, "gear", new CombatantReference(delver.team, userIndex))
+					const newMove = new Move(`${moveName}${SAFE_DELIMITER}${gearIndex}`, "gear", new CombatantReference(delver.team, userIndex))
 						.setSpeedByCombatant(delver)
 						.setPriority(getGearProperty(moveName, "priority") ?? 0);
 
@@ -164,42 +173,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					const [targetTeam, unparsedIndex] = collectedInteraction.values[0].split(SAFE_DELIMITER);
 					const targetIndex = parseInt(unparsedIndex);
 					const targetIndices = [];
-					const newMove = new Move(moveName, "gear", new CombatantReference(delver.team, userIndex))
+					const newMove = new Move(`${moveName}${SAFE_DELIMITER}${gearIndex}`, "gear", new CombatantReference(delver.team, userIndex))
 						.setSpeedByCombatant(delver)
 						.setPriority(getGearProperty(moveName, "priority") ?? 0);
 
-					const targetType = getGearProperty(moveName, "targetingTags").type;
-					const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
-					if (targetType.startsWith("blast") || (crystalShardCount > 0 && getGearProperty(moveName, "category") === "Spell")) {
-						const blastRange = parseInt(targetType.split(SAFE_DELIMITER)[1] ?? 0);
-						const range = crystalShardCount + blastRange;
-						const targetTeamMaxIndex = targetTeam === "delver" ? adventure.delvers.length - 1 : adventure.room.enemies.length - 1;
-
-						let targetsSelectedLeft = 0;
-						for (let index = targetIndex - 1; targetsSelectedLeft < range && index >= 0; index--) {
-							if (adventure.room.enemies[index].hp > 0) {
-								targetsSelectedLeft++;
-								targetIndices.unshift(index);
-							}
-						}
-
-						targetIndices.push(targetIndex);
-
-						let targetsSelectedRight = 0;
-						for (let index = targetIndex + 1; targetsSelectedRight < range && index <= targetTeamMaxIndex; index++) {
-							if (adventure.room.enemies[index].hp > 0) {
-								targetsSelectedRight++;
-								targetIndices.push(index);
-							}
-						}
-
-						targetIndices.forEach(index => {
-							newMove.addTarget(new CombatantReference(targetTeam, index));
-						});
-					} else {
-						newMove.addTarget(new CombatantReference(targetTeam, targetIndex));
-						targetIndices.push(targetIndex);
-					}
+					newMove.addTarget(new CombatantReference(targetTeam, targetIndex));
+					targetIndices.push(targetIndex);
 					let overwritten = false;
 					for (let i = 0; i < adventure.room.moves.length; i++) {
 						const { userReference, type } = adventure.room.moves[i];

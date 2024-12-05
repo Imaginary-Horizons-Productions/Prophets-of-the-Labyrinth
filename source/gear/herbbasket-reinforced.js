@@ -32,9 +32,9 @@ module.exports = new GearTemplate(gearName,
 		}
 	}
 ).setTargetingTags({ type: "none", team: "none" })
-	.setSidegrades("Organic Herb Basket", "Urgent Herb Basket")
+	.setSidegrades("Chaining Herb Basket", "Urgent Herb Basket")
 	.setBonus(1) // Herb count
 	.setProtection(75)
-	.setDurability(15)
+	.setCooldown(1)
 	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
 	.setRnConfig({ herbs: 1 });

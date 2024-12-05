@@ -9,4 +9,5 @@ module.exports = new GearTemplate("Chainmail",
 	200,
 	(targets, user, adventure) => []
 ).setUpgrades("Poised Chainmail", "Powerful Chainmail", "Wise Chainmail")
-	.setMaxHP(50);
+	.setMaxHP(50)
+	.setCharges(0);

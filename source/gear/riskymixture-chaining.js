@@ -1,11 +1,9 @@
 const { GearTemplate } = require('../classes');
 const { ELEMENT_MATCH_STAGGER_ALLY, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
-const { unbreakablePassive } = require('./descriptions/passives');
 
-module.exports = new GearTemplate("Unbreakable Risky Mixture",
+module.exports = new GearTemplate("Chaining Risky Mixture",
 	[
-		unbreakablePassive,
 		["use", "Inflict @{mod0Stacks} @{mod0} on a target"],
 		["Critical💥", "Apply @{mod1} instead of @{mod0}"]
 	],
@@ -29,5 +27,4 @@ module.exports = new GearTemplate("Unbreakable Risky Mixture",
 	}
 ).setTargetingTags({ type: "single", team: "any" })
 	.setSidegrades("Potent Risky Mixture", "Midas's Risky Mixture")
-	.setModifiers({ name: "Poison", stacks: 4 }, { name: "Regen", stacks: 4 })
-	.setDurability(Infinity);
+	.setModifiers({ name: "Poison", stacks: 4 }, { name: "Regen", stacks: 4 });

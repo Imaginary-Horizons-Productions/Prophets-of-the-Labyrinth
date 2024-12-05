@@ -23,5 +23,5 @@ module.exports = new GearTemplate("Lance",
 	}
 ).setUpgrades("Duelist's Lance", "Shattering Lance", "Surpassing Lance")
 	.setTargetingTags({ type: "single", team: "foe" })
-	.setDurability(15)
+	.setCooldown(1)
 	.setDamage(40);

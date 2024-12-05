@@ -9,4 +9,5 @@ module.exports = new GearTemplate("Wolf Ring",
 	200,
 	(targets, user, adventure) => []
 ).setUpgrades("Surpassing Wolf Ring", "Swift Wolf Ring", "Wise Wolf Ring")
-	.setPoise(2);
+	.setPoise(2)
+	.setCharges(0);

@@ -48,6 +48,5 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Evasive Universal Solution", "Harmful Universal Solution")
 	.setModifiers({ name: "Poison", stacks: 3 })
-	.setDurability(10)
 	.setStagger(-2)
 	.setRnConfig({ "debuffs": 2 });

@@ -28,6 +28,6 @@ module.exports = new GearTemplate("Midas's Risky Mixture",
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "single", team: "any" })
-	.setSidegrades("Potent Risky Mixture", "Unbreakable Risky Mixture")
+	.setSidegrades("Chaining Risky Mixture", "Potent Risky Mixture")
 	.setModifiers({ name: "Poison", stacks: 4 }, { name: "Regen", stacks: 4 }, { name: "Curse of Midas", stacks: 1 })
-	.setDurability(15);
+	.setCooldown(1);

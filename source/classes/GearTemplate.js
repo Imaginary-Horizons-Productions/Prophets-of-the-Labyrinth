@@ -27,7 +27,8 @@ class GearTemplate {
 	}
 	/** @type {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} */
 	targetingTags;
-	maxDurability = 0;
+	cooldown = 0;
+	maxCharges = Infinity;
 	/** @type {string[]} */
 	upgrades = [];
 	/** @type {string[]} */
@@ -84,8 +85,14 @@ class GearTemplate {
 	}
 
 	/** @param {number} integer */
-	setDurability(integer) {
-		this.maxDurability = integer;
+	setCooldown(integer) {
+		this.cooldown = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setCharges(integer) {
+		this.maxCharges = integer;
 		return this;
 	}
 

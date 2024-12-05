@@ -28,6 +28,5 @@ module.exports = new GearTemplate("Power from Wrath",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Bashing Power from Wrath", "Hunter's Power from Wrath", "Staggering Power from Wrath")
-	.setDurability(15)
 	.setHPCost(40)
 	.setDamage(40);

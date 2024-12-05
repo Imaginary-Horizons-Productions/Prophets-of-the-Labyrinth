@@ -18,16 +18,16 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const pricePercent = 50;
 		const saleOptions = delver.gear.map((gear, index) => {
-			const maxDurability = getGearProperty(gear.name, "maxDurability");
-			if (maxDurability > 0) {
+			const maxCharges = getGearProperty(gear.name, "maxCharges");
+			if (maxCharges > 0) {
 				return {
-					label: `${gear.name} (${gear.durability}/${maxDurability})`,
-					description: `${Math.floor(getGearProperty(gear.name, "cost") * pricePercent / 100 * gear.durability / maxDurability)}g`,
+					label: `${gear.name} (${gear.charges}/${maxCharges})`,
+					description: `${Math.floor(getGearProperty(gear.name, "cost") * pricePercent / 100 * gear.charges / maxCharges)}g`,
 					value: index.toString()
 				};
 			} else {
 				return {
-					label: `${gear.name}`,
+					label: gear.name,
 					description: `${Math.floor(getGearProperty(gear.name, "cost") * pricePercent / 100)}g`,
 					value: index.toString()
 				};
@@ -58,9 +58,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 					const gearName = delver.gear[saleIndex].name;
 					let price = pricePercent / 100 * getGearProperty(gearName, "cost");
-					const maxDurability = getGearProperty(gearName, "maxDurability");
-					if (maxDurability > 0) {
-						price *= (delver.gear[saleIndex].durability / maxDurability);
+					const maxCharges = getGearProperty(gearName, "maxCharges");
+					if (maxCharges > 0) {
+						price *= (delver.gear[saleIndex].charges / maxCharges);
 					}
 					price = Math.floor(price);
 					delver.gear.splice(saleIndex, 1);

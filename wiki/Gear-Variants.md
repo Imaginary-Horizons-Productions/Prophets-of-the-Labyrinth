@@ -65,6 +65,16 @@ Relieve Stagger on user
 - Omamori (Water)
 - Universal Solution (Water)
 
+### Chaining
+Reduced cooldown
+
+**Available on**
+- all Air Blades (Wind)
+- Censer (Fire)
+- Herb Basket (Earth)
+- Iron Fist Stance (Light)
+- Risky Mixture (Darkness)
+
 ### Charging
 Adds Power Up to the user
 
@@ -248,14 +258,6 @@ Adds Curse of Midas to target
 - all Midas Staves (Water)
 - Firecracker (Fire)
 - Risky Mixture (Darkness)
-
-### Organic
-Regains durability when entering new rooms
-
-**Available on**
-- Iron Fist Stance (Light)
-- Fever Break (Darkness)
-- Herb Basket (Earth)
 
 ### Poised
 Passively increases user's poise
@@ -460,13 +462,11 @@ Adds Poison to target
 - Firecracker (Fire)
 - Shortsword (Fire)
 
-### Unbreakable
-Infinite durability
+### Unlimited
+Infinite charges
 
 **Available on**
-- all Air Blades (Wind)
-- Censer (Fire)
-- Risky Mixture (Darkness)
+- Fever Break (Darkness)
 
 ### Unlucky
 Adds Unlucky to target

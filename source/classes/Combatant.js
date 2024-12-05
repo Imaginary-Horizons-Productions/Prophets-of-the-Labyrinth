@@ -153,22 +153,23 @@ class Delver extends Combatant {
 class Gear {
 	/**
 	 * @param {string} nameInput
-	 * @param {number} durabilityInput
+	 * @param {number} chargesInput
 	 * @param {number} maxHPInput
 	 * @param {number} powerInput
 	 * @param {number} speedInput
 	 * @param {number} critRateInput
 	 * @param {number} poiseInput
 	 */
-	constructor(nameInput, durabilityInput, maxHPInput, powerInput, speedInput, critRateInput, poiseInput) {
+	constructor(nameInput, chargesInput, maxHPInput, powerInput, speedInput, critRateInput, poiseInput) {
 		this.name = nameInput;
-		this.durability = durabilityInput;
+		this.charges = chargesInput;
 		this.maxHP = maxHPInput;
 		this.power = powerInput;
 		this.speed = speedInput;
 		this.critRate = critRateInput;
 		this.poise = poiseInput;
 	}
+	cooldown = 0;
 };
 
 module.exports = {

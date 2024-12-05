@@ -30,6 +30,6 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Furious Battleaxe", "Thirsting Battleaxe")
 	.setModifiers({ name: "Exposed", stacks: 1 })
-	.setDurability(30)
+	.setCooldown(1)
 	.setDamage(90)
 	.setBonus(75); // Reactive damage
