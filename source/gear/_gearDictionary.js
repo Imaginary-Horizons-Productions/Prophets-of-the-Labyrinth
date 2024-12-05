@@ -68,7 +68,7 @@ for (const file of [
 	"cloak-evasive.js",
 	"corrosion-base.js",
 	"corrosion-fatesealing.js",
-	"corrosion-harmful.js",
+	"corrosion-fatiguing.js",
 	"corrosion-shattering.js",
 	"cursed-blade.js",
 	"cursed-tome.js",

@@ -128,6 +128,7 @@ Archetypes: Assassin
 - Urgent
 
 ### Uncommon Variants
+- Adventurer's
 - Staggering
 - Sweeping
 - Thirsting
@@ -167,6 +168,7 @@ Archetypes:
 - Double
 - Duelist's
 - Fate-Sealing
+- Fatiguing
 - Harmful
 - Healing
 - Lucky

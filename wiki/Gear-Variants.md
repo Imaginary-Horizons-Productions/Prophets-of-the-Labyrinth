@@ -171,6 +171,12 @@ Adds Retain to target on crit
 - Corrosion (Fire)
 - Infinite Regeneration (Fire)
 
+### Fatiguing
+Adds Ineffectual to target on crit
+
+**Available on**
+- Corrosion (Fire)
+
 ### Flanking
 Adds Exposed to target
 
@@ -203,7 +209,6 @@ Adds protection to the target
 Deals damage to target
 
 **Available on**
-- Corrosion (Fire)
 - Poison Torrent (Water)
 - Shoulder Throw (Light)
 - Universal Solution (Water)

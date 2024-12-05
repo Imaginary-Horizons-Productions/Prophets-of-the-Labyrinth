@@ -19,6 +19,7 @@ In keeping with the elemental alignment of mechanics, the Knight is now Light el
 - New Gear: Universal Solution (Water Pact, variants: Centering, Evasive, Harmful) Transfer a random 2 of your debuffs to a single foe, then gain 3 Poison
 - New Gear: Air Blades (Wind Pact, variants: Adventurer's, Toxic, Unstoppable) Pay 25 HP, strike a foe for Wind damage twice
 - War Cries now affect Distracted foes (instead of Exposed)
+- Corrosion: ~~Harmful~~ -> Fatiguing
 #### Cooldowns
 We're adding cooldowns to gear to create another type of variety.
 - Gear that is not a Spell or Pact now has cooldowns instead of durability. Spell durability is now called "charges" instead. Pacts don't have charges as they charge you other resources instead.
