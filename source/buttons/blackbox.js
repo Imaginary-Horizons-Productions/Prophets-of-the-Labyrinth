@@ -1,14 +1,13 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, bold } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
-const { buildGearRecord } = require('../gear/_gearDictionary');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getNumberEmoji } = require('../util/textUtil');
 
 const mainId = "blackbox";
 module.exports = new ButtonWrapper(mainId, 3000,
-	/** Allow delver trade a gear piece for the black box gear */
+	/** Allow delver trade a gear piece for the black box artifact */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
@@ -31,7 +30,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			embeds: [
 				new EmbedBuilder().setAuthor(randomAuthorTip())
 					.setTitle("Opening the Black Box")
-					.setDescription("The black box has a gear-shaped keyhole on the front and shaking the box makes the sound of Rare gear tumbling about inside. You could trade a piece of gear for the Rare gear in the black box, but there's no way to know what you'll get...")
+					.setDescription("The black box has a gear-shaped keyhole on the front and shaking the box makes the sound of an artifact tumbling about inside. You could trade a piece of gear for the artifact inside, but there's no way to know what you'll get...")
 			],
 			components: [
 				new ActionRowBuilder().addComponents(
@@ -60,17 +59,18 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 
 				const gearIndex = collectedInteraction.values[0];
-				const blackBoxResource = Object.values(adventure.room.resources).find(resource => resource.type === "Gear");
-				delete adventure.room.resources[blackBoxResource.name];
+				const artifactResource = Object.values(adventure.room.resources).find(resource => resource.type === "Artifact");
+				delete adventure.room.resources[artifactResource.name];
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				const tradedGearName = delver.gear[gearIndex].name;
 				adventure.room.history["Traded for box"].push(tradedGearName);
-				delver.gear.splice(gearIndex, 1, buildGearRecord(blackBoxResource.name, adventure));
+				delver.gear.splice(gearIndex, 1);
+				adventure.gainArtifact(artifactResource.name, artifactResource.count);
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 					roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
 				})
 				setAdventure(adventure);
-				collectedInteraction.channel.send(`**${collectedInteraction.user.displayName}** trades their **${tradedGearName}** for the **${blackBoxResource.name}** in the black box.`);
+				collectedInteraction.channel.send(`${bold(delver.name)} trades their ${bold(tradedGearName)} for the ${bold(artifactResource.name)} in the black box.`);
 			})
 
 			collector.on("end", () => {

@@ -6,9 +6,9 @@ const { getGearProperty } = require('../gear/_gearDictionary');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getNumberEmoji } = require('../util/textUtil');
 
-const mainId = "repair";
+const mainId = "recharge";
 module.exports = new ButtonWrapper(mainId, 3000,
-	/** Allow the user to select a piece of gear to regain charges on */
+	/** Allow the user to select a Spell to recharge */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
@@ -38,7 +38,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		})
 
 		if (options.length < 1) {
-			interaction.reply({ content: "None of your gear needs repair.", ephemeral: true });
+			interaction.reply({ content: "None of your Spells need recharge.", ephemeral: true });
 			return;
 		}
 
@@ -46,12 +46,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			embeds: [
 				new EmbedBuilder().setColor(Colors.LightGrey)
 					.setAuthor(randomAuthorTip())
-					.setTitle("Repairing Gear")
+					.setTitle("Recharging Spells")
 					.setDescription(description)
 			],
 			components: [new ActionRowBuilder().addComponents(
 				new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
-					.setPlaceholder(`${getNumberEmoji(actionCost)} Repair a gear piece...`)
+					.setPlaceholder(`${getNumberEmoji(actionCost)} Recharge a Spell...`)
 					.setOptions(options)
 			)],
 			ephemeral: true,
@@ -68,10 +68,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				const [gearName, index, value] = collectedInteraction.values[0].split(SAFE_DELIMITER);
 				delver.gear[Number(index)].charges += Number(value);
-				adventure.room.history.Repairers.push(delver.name);
+				adventure.room.history.Rechargers.push(delver.name);
 				adventure.room.actions -= actionCost;
 				setAdventure(adventure);
-				collectedInteraction.channel.send({ content: `${bold(collectedInteraction.member.displayName)} repaired ${value} charges on their ${gearName}.` });
+				collectedInteraction.channel.send({ content: `${bold(collectedInteraction.member.displayName)} recharged ${value} charges on their ${gearName}.` });
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 					return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
 				})

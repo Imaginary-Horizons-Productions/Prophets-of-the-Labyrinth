@@ -17,7 +17,7 @@ module.exports = new RoomTemplate("Abandoned Forge",
 
 		adventure.room.history = {
 			"Upgraders": [],
-			"Repairers": [],
+			"Rechargers": [],
 			"Tinkerers": []
 		};
 	},
@@ -47,10 +47,10 @@ module.exports = new RoomTemplate("Abandoned Forge",
 						.setEmoji(upgradeEmoji)
 						.setLabel("Upgrade gear")
 						.setDisabled(isUpgradeDisabled),
-					new ButtonBuilder().setCustomId("repair")
+					new ButtonBuilder().setCustomId("recharge")
 						.setStyle(ButtonStyle.Primary)
 						.setEmoji(repairEmoji)
-						.setLabel("Repair gear")
+						.setLabel("Recharge a Spell")
 						.setDisabled(isRepairDisabled),
 					new ButtonBuilder().setCustomId("modify")
 						.setStyle(ButtonStyle.Success)

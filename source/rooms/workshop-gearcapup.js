@@ -18,7 +18,7 @@ module.exports = new RoomTemplate("Tanning Workshop",
 
 		adventure.room.history = {
 			"Upgraders": [],
-			"Repairers": [],
+			"Rechargers": [],
 			"Cap boosters": []
 		};
 	},
@@ -41,7 +41,7 @@ module.exports = new RoomTemplate("Tanning Workshop",
 		} else {
 			upgradeEmoji = adventure.room.history.Upgraders.length > 0 ? "✔️" : "✖️";
 			isUpgradeDisabled = true;
-			repairEmoji = adventure.room.history.Repairers.length > 0 ? "✔️" : "✖️";
+			repairEmoji = adventure.room.history.Rechargers.length > 0 ? "✔️" : "✖️";
 			isRepairDisabled = true;
 			capUpEmoji = adventure.room.history["Cap boosters"].length > 0 ? "✔️" : "✖️";
 			if (adventure.gearCapacity < MAX_MESSAGE_ACTION_ROWS) {
@@ -60,10 +60,10 @@ module.exports = new RoomTemplate("Tanning Workshop",
 						.setEmoji(upgradeEmoji)
 						.setLabel("Upgrade gear")
 						.setDisabled(isUpgradeDisabled),
-					new ButtonBuilder().setCustomId("repair")
+					new ButtonBuilder().setCustomId("Recharge")
 						.setStyle(ButtonStyle.Primary)
 						.setEmoji(repairEmoji)
-						.setLabel("Repair gear")
+						.setLabel("Recharge a Spell")
 						.setDisabled(isRepairDisabled),
 					new ButtonBuilder().setCustomId("gearcapup")
 						.setStyle(ButtonStyle.Success)

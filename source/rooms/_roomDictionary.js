@@ -19,7 +19,6 @@ for (const file of [
 	"event-artifactdupe.js",
 	"event-door1ordoor2.js",
 	"event-freegoldonfire.js",
-	"event-freerepairkit.js",
 	"event-gearcollector.js",
 	"event-impcontractfaire.js",
 	"event-scorebeggar.js",
@@ -40,7 +39,6 @@ for (const file of [
 	"treasure-gearvsitems.js",
 	"treasure-goldvsgear.js",
 	"treasure-goldvsitems.js",
-	"workshop-blackbox.js",
 	"workshop-gearcapup.js",
 	"workshop-modify.js"
 ]) {
