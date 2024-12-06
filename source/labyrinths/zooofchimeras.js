@@ -1,4 +1,5 @@
 const { LabyrinthTemplate } = require("../classes");
+const { standardLabyrinthInfrastructure } = require("./shared");
 
 module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 	"Water",
@@ -25,11 +26,11 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			"Salt of Oblivion",
 			"Panacea",
 			"Placebo",
+			"Portable Spellbook Charger",
 			"Protection Potion",
 			"Quick Pepper",
 			"Regen Root",
 			"Smoke Bomb",
-			"Spellbook Repair Kit",
 			"Stasis Quartz",
 			"Strength Spinach",
 			"Vitamins",
@@ -222,17 +223,11 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 		}
 	},
 	{
-		// Labyrinth Particulars - more customized
-		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Free Gold?", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		// Rooms
+		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Free Gold?", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
 		"Battle": ["Hawk Fight", "Wild Fire-Arrow Frogs", "Tortoise Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "Brute Convention"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors"],
-
-		// Labyrinth Infrastructure - less customized
-		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant", "Gear Buying Merchant"],
-		"Rest Site": ["Rest Site: Mysterious Challenger", "Rest Site: Training Dummy"],
-		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
-		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],
-		"Empty": ["Empty Room"]
+		...standardLabyrinthInfrastructure
 	}
 );

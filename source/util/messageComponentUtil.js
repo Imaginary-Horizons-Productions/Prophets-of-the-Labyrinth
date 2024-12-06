@@ -3,8 +3,6 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, StringSelect
 const { Adventure } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
-const { ordinalSuffixEN } = require("./textUtil");
-
 /** Remove components (buttons and selects) from a given message
  * @param {string} messageId - the id of the message to remove components from
  * @param {MessageManager} messageManager - the MessageManager for the channel the message is in
@@ -123,22 +121,6 @@ function generateRoutingRow(adventure) {
 		}));
 }
 
-/** @param {Adventure} adventure */
-function generateMerchantScoutingRow(adventure) {
-	const bossScoutingCost = adventure.calculateScoutingCost("Final Battle");
-	const guardScoutingCost = adventure.calculateScoutingCost("Artifact Guardian");
-	return new ActionRowBuilder().addComponents(
-		new ButtonBuilder().setCustomId(`buyscouting${SAFE_DELIMITER}Final Battle`)
-			.setLabel(`${adventure.scouting.bosses > 0 ? `Final Battle: ${adventure.bosses[adventure.scouting.bossesEncountered]}` : `${bossScoutingCost}g: Scout the Final Battle`}`)
-			.setStyle(ButtonStyle.Secondary)
-			.setDisabled(adventure.scouting.bosses > 0 || adventure.gold < bossScoutingCost),
-		new ButtonBuilder().setCustomId(`buyscouting${SAFE_DELIMITER}Artifact Guardian`)
-			.setLabel(`${guardScoutingCost}g: Scout the ${ordinalSuffixEN(adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians + 1)} Artifact Guardian`)
-			.setStyle(ButtonStyle.Secondary)
-			.setDisabled(adventure.gold < guardScoutingCost)
-	)
-}
-
 module.exports = {
 	clearComponents,
 	partyStatsButton: new ButtonBuilder().setCustomId("partystats")
@@ -152,6 +134,5 @@ module.exports = {
 	generateCombatRoomBuilder,
 	generateLootRow,
 	pathVoteField: { name: "Path Vote", value: "Each delver must vote for the next room (changes allowed). The party will move on when the decision is unanimous." },
-	generateRoutingRow,
-	generateMerchantScoutingRow
+	generateRoutingRow
 };

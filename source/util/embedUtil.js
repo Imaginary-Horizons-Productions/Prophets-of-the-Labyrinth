@@ -124,6 +124,7 @@ function generateAdventureConfigMessage() {
 					.setLabel("Ready!")
 					.setStyle(ButtonStyle.Success),
 				new ButtonBuilder().setCustomId("deploy")
+					.setEmoji("🆔")
 					.setLabel("Pick Archetype")
 					.setStyle(ButtonStyle.Primary),
 				new ButtonBuilder().setCustomId("deploypet")
@@ -470,7 +471,7 @@ function generatePartyStatsPayload(adventure) {
 		.addFields([
 			{ name: `${adventure.lives} Lives Remaining`, value: "When a player runs out of HP, a life will be lost and they'll be returned to max HP. When all lives are lost, the adventure will end." },
 			{ name: `${adventure.gold} Gold`, value: `Gold is exchanged for goods and services within adventures. *Gold will be lost when an adventure ends.*\nPeak Gold: ${adventure.peakGold}` },
-			{ name: `Gear Capacity: ${gearCapacity}`, value: `Each delver can carry ${gearCapacity} pieces of gear. Gear capacity can be increased at Tanning Workshops and by the Hammerspace Holster artifact.` },
+			{ name: `Gear Capacity: ${gearCapacity}`, value: `Each delver can carry ${gearCapacity} pieces of gear. Gear capacity can be increased at Merchants and by finding the Hammerspace Holster artifact.` },
 			{ name: "Items", value: Object.keys(adventure.items).map(item => `${item} x ${adventure.items[item]}`).join("\n") || "None" },
 			{
 				name: "Scouting",

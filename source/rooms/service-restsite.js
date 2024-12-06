@@ -3,7 +3,7 @@ const { RoomTemplate } = require("../classes");
 const { SAFE_DELIMITER } = require("../constants");
 const { generateRoutingRow, inspectSelfButton, pathVoteField } = require("../util/messageComponentUtil");
 
-module.exports = new RoomTemplate("Rest Site: Training Dummy",
+module.exports = new RoomTemplate("Rest Site & Training Dummy",
 	"@{adventure}",
 	"The room contains a campfire and a training dummy.",
 	[],

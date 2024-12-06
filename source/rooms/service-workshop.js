@@ -1,13 +1,11 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 
-module.exports = new RoomTemplate("Workshop with Black Box",
+module.exports = new RoomTemplate("Abandoned Forge",
 	"@{adventure}",
-	"This is a normal, fully-stocked workshop... with a mysterious black box off to the side.",
-	[
-		new ResourceTemplate("1", "internal", "Gear").setTier("Rare").setCostExpression("0")
-	],
+	"The forge in this room could be used to modify some of your upgraded gear to change its form.",
+	[],
 	function (adventure) {
 		let pendingActions = adventure.delvers.length;
 		const hammerCount = adventure.getArtifactCount("Best-in-Class Hammer");
@@ -19,30 +17,21 @@ module.exports = new RoomTemplate("Workshop with Black Box",
 
 		adventure.room.history = {
 			"Upgraders": [],
-			"Repairers": [],
-			"Traded for box": []
+			"Modders": []
 		};
 	},
 	function (roomEmbed, adventure) {
-		let upgradeEmoji, isUpgradeDisabled, repairEmoji, isRepairDisabled, boxEmoji, isBoxDisabled;
+		let upgradeEmoji, isUpgradeDisabled, modifyEmoji, isModifyDisabled;
 		if (adventure.room.actions > 0) {
 			upgradeEmoji = "⬆️";
 			isUpgradeDisabled = false;
-			repairEmoji = "🛠️";
-			isRepairDisabled = false;
+			modifyEmoji = "↔️";
+			isModifyDisabled = false;
 		} else {
 			upgradeEmoji = adventure.room.history.Upgraders.length > 0 ? "✔️" : "✖️";
 			isUpgradeDisabled = true;
-			repairEmoji = adventure.room.history.Repairers.length > 0 ? "✔️" : "✖️";
-			isRepairDisabled = true;
-		}
-
-		if (adventure.room.history["Traded for box"].length < 1) {
-			boxEmoji = "◼";
-			isBoxDisabled = false;
-		} else {
-			boxEmoji = "✔️";
-			isBoxDisabled = true;
+			modifyEmoji = adventure.room.history.Modders.length > 0 ? "✔️" : "✖️";
+			isModifyDisabled = true;
 		}
 		return {
 			embeds: [roomEmbed.addFields(pathVoteField)],
@@ -53,16 +42,11 @@ module.exports = new RoomTemplate("Workshop with Black Box",
 						.setEmoji(upgradeEmoji)
 						.setLabel("Upgrade gear")
 						.setDisabled(isUpgradeDisabled),
-					new ButtonBuilder().setCustomId("repair")
-						.setStyle(ButtonStyle.Primary)
-						.setEmoji(repairEmoji)
-						.setLabel("Repair gear")
-						.setDisabled(isRepairDisabled),
-					new ButtonBuilder().setCustomId("blackbox")
+					new ButtonBuilder().setCustomId("modify")
 						.setStyle(ButtonStyle.Success)
-						.setEmoji(boxEmoji)
-						.setLabel("A black box?")
-						.setDisabled(isBoxDisabled)
+						.setEmoji(modifyEmoji)
+						.setLabel("Modify gear")
+						.setDisabled(isModifyDisabled)
 				),
 				generateRoutingRow(adventure)
 			]

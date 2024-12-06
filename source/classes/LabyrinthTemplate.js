@@ -11,7 +11,7 @@ class LabyrinthTemplate {
 	 * @param {number[]} bossRoomDepthsInput
 	 * @param {Record<CombatantElement, string[]} itemMap
 	 * @param {Record<CombatantElement, Record<"Cursed" | "Common" | "Rare", string[]>>} gearMap
-	 * @param {Record<"Event" | "Battle" | "Merchant" | "Rest Site" | "Final Battle" | "Workshop" | "Artifact Guardian" | "Treasure" | "Empty", string[]>} roomMap if a room category is rolled, it rolls again on that category
+	 * @param {Record<"Event" | "Battle" | "Merchant" | "Rest Site" | "Workshop" | "Library" | "Guildstop" | "Artifact Guardian" | "Treasure" | "Final Battle" | "Empty", string[]>} roomMap if a room category is rolled, it rolls again on that category
 	 */
 	constructor(nameInput, elementInput, descriptionInput, maxDepthInput, bossRoomDepthsInput, itemMap, gearMap, roomMap) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");

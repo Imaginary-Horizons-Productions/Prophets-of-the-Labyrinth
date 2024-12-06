@@ -135,7 +135,7 @@ function rollRoom(type, adventure) {
 module.exports = {
 	labyrinthExists,
 	/** This array determines which labyrinths show up in the `/delve labyrinth` autocomplete. It is desync'd from the list of all labyrinths to allow for secret labyrinths (eg Debug Dungeon) */
-	defaultLabyrinths: ["Mechahive", "Castle of the Celestial Knights", "Zoo of Chimeras", "Everything Bagel"],
+	DEFAULT_LABYRINTHS: ["Mechahive", "Castle of the Celestial Knights", "Zoo of Chimeras", "Everything Bagel"],
 	getLabyrinthProperty,
 	rollItem,
 	rollGear,

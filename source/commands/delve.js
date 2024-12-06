@@ -3,7 +3,7 @@ const { PermissionFlagsBits } = require('discord.js');
 const { CommandWrapper, Adventure, Delver } = require('../classes');
 const { setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator');
-const { prerollBoss, defaultLabyrinths, labyrinthExists, getLabyrinthProperty } = require('../labyrinths/_labyrinthDictionary');
+const { prerollBoss, DEFAULT_LABYRINTHS, labyrinthExists, getLabyrinthProperty } = require('../labyrinths/_labyrinthDictionary');
 const { SAFE_DELIMITER } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
 const { generateRecruitEmbed, generateAdventureConfigMessage } = require('../util/embedUtil');
@@ -77,6 +77,6 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 		});
 	}
 ).setOptions(
-	{ type: "String", name: "labyrinth", description: "The value to base the run's random events on", required: true, autocomplete: defaultLabyrinths.map(labyrinthName => ({ name: labyrinthName, value: labyrinthName })) },
+	{ type: "String", name: "labyrinth", description: "The value to base the run's random events on", required: true, autocomplete: DEFAULT_LABYRINTHS.map(labyrinthName => ({ name: labyrinthName, value: labyrinthName })) },
 	{ type: "String", name: "seed", description: "The value to base the run's random events on", required: false }
 );

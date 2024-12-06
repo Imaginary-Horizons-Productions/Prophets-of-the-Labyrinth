@@ -19,10 +19,15 @@ Here is a list of reserved emoji and their meanings:
 * 📚 Party Stats
 * 🔎 Inspect Self
 * ⚔ Ready a Move
-* 🧪 Read an Item
+* 🧪 Ready an Item
 * ⚕️ Lives
 * ❤️ HP
 * 💰 Gold
+* 🆔 Archetype
+* 🐾 Pet
+* 🔋 Recharge Spells
+* 🔭 Scouting
+* 🏆 Take on a Challenge
 
 ## Modifier Emoji Convention
 ### Buffs

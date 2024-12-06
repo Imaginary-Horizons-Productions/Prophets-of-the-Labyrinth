@@ -1,11 +1,11 @@
 const { ButtonWrapper } = require('../classes');
-const { MAX_MESSAGE_ACTION_ROWS } = require('../constants');
+const { MAX_MESSAGE_ACTION_ROWS, SAFE_DELIMITER } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "gearcapup";
 module.exports = new ButtonWrapper(mainId, 3000,
-	/** Consumes a room action to raise Adventure's gear capacity */
+	/** Spend gold to raise the party's gear capacity */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure?.delvers.some(delver => delver.id === interaction.user.id)) {
@@ -13,18 +13,16 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		const actionCost = 1;
-		if (adventure.room.actions < actionCost) {
-			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
-			return;
-		}
-
 		if (adventure.gearCapacity < MAX_MESSAGE_ACTION_ROWS) {
-			adventure.gearCapacity++;
-			adventure.room.actions -= actionCost;
-			adventure.room.history["Cap boosters"].push(interaction.member.displayName);
-			setAdventure(adventure);
-			interaction.channel.send(`The party's gear capacity has been boosted to ${adventure.gearCapacity}.`);
+			const [_, cost] = interaction.customId.split(SAFE_DELIMITER);
+			const parsedCost = parseInt(cost);
+			if (adventure.gold >= parsedCost) {
+				adventure.gold -= parsedCost;
+				adventure.gearCapacity++;
+				adventure.room.history["Cap boosters"].push(interaction.member.displayName);
+				setAdventure(adventure);
+				interaction.channel.send(`The party's gear capacity has been boosted to ${adventure.gearCapacity}.`);
+			}
 		}
 		interaction.update(renderRoom(adventure, interaction.channel));
 	}
