@@ -17,8 +17,10 @@ In keeping with the elemental alignment of mechanics, the Knight is now Light el
 - Pistol's Power Up stacks is now divided by the number of Weakness debuffs the target has to nerf the team of 6 Detectives
 - Reduced protection provided by Reinforced Blood Aegis to 200 (250 was more of an increase than other Reinforced variants)
 - New Gear: Universal Solution (Water Pact, variants: Centering, Evasive, Harmful) Transfer a random 2 of your debuffs to a single foe, then gain 3 Poison
-- New Gear: Air Blades (Wind Pact, variants: Accelerating, Toxic, Unstoppable) Pay 25 HP, strike a foe for Wind damage twice
+- New Gear: Air Blades (Wind Pact, variants: Adventurer's, Toxic, Unstoppable) Pay 25 HP, strike a foe for Wind damage twice
 - War Cries now affect Distracted foes (instead of Exposed)
+- Corrosion: ~~Harmful~~ -> Fatiguing
+- Warhammer: ~~Reactive~~ -> Vigorous
 #### Cooldowns
 We're adding cooldowns to gear to create another type of variety.
 - Gear that is not a Spell or Pact now has cooldowns instead of durability. Spell durability is now called "charges" instead. Pacts don't have charges as they charge you other resources instead.

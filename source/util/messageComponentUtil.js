@@ -60,7 +60,21 @@ function generateCombatRoomBuilder(extraButtons) {
 		} else {
 			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
 
-			roomEmbed.addFields({ name: "Level-Up!", value: `Everyone gains ${adventure.room.resources.levelsGained.count ?? 0} levels.` }, module.exports.pathVoteField);
+			const levelTexts = [];
+			for (const resourceName in adventure.room.resources) {
+				const resource = adventure.room.resources[resourceName];
+				if (resource.type === "levelsGained") {
+					const [_, index] = resourceName.split(SAFE_DELIMITER);
+					if (!index) {
+						levelTexts.push(`Everyone gains ${resource.count} levels.`);
+					} else {
+						levelTexts.push(`${adventure.delvers[index].name} gains ${resource.count} levels.`);
+					}
+				}
+			}
+			if (levelTexts.length > 0) {
+				roomEmbed.addFields({ name: "Level-Up!", value: levelTexts.join("\n") }, module.exports.pathVoteField);
+			}
 			return {
 				embeds: [roomEmbed],
 				components: [generateLootRow(adventure), generateRoutingRow(adventure)]

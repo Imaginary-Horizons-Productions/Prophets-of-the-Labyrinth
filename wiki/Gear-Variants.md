@@ -8,7 +8,6 @@ Adds Quicken to the user
 
 **Available on**
 - all Bucklers (Light)
-- Air Blades (Wind)
 - Buckler (Light)
 - Cloak (Wind)
 - Midas Staff (Water)
@@ -23,6 +22,12 @@ Passively increases the user's Crit Rate
 - Cloak (Wind)
 - Iron Fist Stance (Light)
 - Scarf (Untyped)
+
+### Adventurer's
+Gain an extra level at the end of combat on kill
+
+**Available on**
+- Air Blades (Wind)
 
 ### Agile
 Add Agility to user
@@ -166,6 +171,12 @@ Adds Retain to target on crit
 - Corrosion (Fire)
 - Infinite Regeneration (Fire)
 
+### Fatiguing
+Adds Ineffectual to target on crit
+
+**Available on**
+- Corrosion (Fire)
+
 ### Flanking
 Adds Exposed to target
 
@@ -198,7 +209,6 @@ Adds protection to the target
 Deals damage to target
 
 **Available on**
-- Corrosion (Fire)
 - Poison Torrent (Water)
 - Shoulder Throw (Light)
 - Universal Solution (Water)
@@ -298,7 +308,6 @@ Bonus damage if user moves after target
 **Available on**
 - Battleaxe (Fire)
 - Spear (Wind)
-- Warhammer (Earth)
 
 ### Reaper's
 Kills target at or below hp threshold
@@ -508,6 +517,12 @@ Adds Vigilance to user
 - all Barriers (Wind)
 - Barrier (Wind)
 - Heat Mirage (Fire)
+
+### Vigorous
+Adds Impactful to the user
+
+**Available on**
+- Warhammer (Earth)
 
 ### Wise
 Increases stats gained by level up

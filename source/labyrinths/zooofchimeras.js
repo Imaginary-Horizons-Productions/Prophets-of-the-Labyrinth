@@ -85,9 +85,9 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Lethal Spear",
 				"Reactive Spear",
 				"Sweeping Spear",
-				"Reactive Warhammer",
 				"Slowing Warhammer",
 				"Unstoppable Warhammer",
+				"Vigorous Warhammer",
 			]
 		},
 		Fire: {
@@ -193,7 +193,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Accelerating Refreshing Breeze",
 				"Supportive Refreshing Breeze",
 				"Swift Refreshing Breeze",
-				"Accelerating Air Blades",
+				"Adventurer's Air Blades",
 				"Toxic Air Blades",
 				"Unstoppable Air Blades"
 			]
