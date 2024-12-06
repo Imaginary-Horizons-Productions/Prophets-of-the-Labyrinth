@@ -1134,7 +1134,7 @@ function completeAdventure(adventure, thread, endState, descriptionOverride) {
 	clearComponents(adventure.messageIds.battleRound, messageManager);
 	clearComponents(adventure.messageIds.room, messageManager);
 
-	if (adventure.room.resources.Gold.count > 0) {
+	if (adventure.room.resources.Gold?.count > 0) {
 		adventure.gainGold(adventure.room.resources.Gold.count);
 	}
 	adventure.state = endState;
