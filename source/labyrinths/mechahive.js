@@ -85,9 +85,9 @@ module.exports = new LabyrinthTemplate("Mechahive",
 				"Lethal Spear",
 				"Reactive Spear",
 				"Sweeping Spear",
-				"Reactive Warhammer",
 				"Slowing Warhammer",
 				"Unstoppable Warhammer",
+				"Vigorous Warhammer",
 			]
 		},
 		Fire: {

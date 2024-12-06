@@ -308,7 +308,6 @@ Bonus damage if user moves after target
 **Available on**
 - Battleaxe (Fire)
 - Spear (Wind)
-- Warhammer (Earth)
 
 ### Reaper's
 Kills target at or below hp threshold
@@ -518,6 +517,12 @@ Adds Vigilance to user
 - all Barriers (Wind)
 - Barrier (Wind)
 - Heat Mirage (Fire)
+
+### Vigorous
+Adds Impactful to the user
+
+**Available on**
+- Warhammer (Earth)
 
 ### Wise
 Increases stats gained by level up

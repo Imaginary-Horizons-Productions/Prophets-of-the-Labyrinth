@@ -101,9 +101,9 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Sharpened Stick",
 				"Shattering Stick",
 				"Staggering Stick",
-				"Reactive Warhammer",
 				"Slowing Warhammer",
 				"Unstoppable Warhammer",
+				"Vigorous Warhammer",
 			]
 		},
 		Fire: {

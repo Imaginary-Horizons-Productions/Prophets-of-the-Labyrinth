@@ -85,9 +85,9 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Lethal Spear",
 				"Reactive Spear",
 				"Sweeping Spear",
-				"Reactive Warhammer",
 				"Slowing Warhammer",
 				"Unstoppable Warhammer",
+				"Vigorous Warhammer",
 			]
 		},
 		Fire: {
