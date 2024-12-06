@@ -17,19 +17,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		const actionCost = 1;
-		if (adventure.room.actions < actionCost) {
-			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
-			return;
-		}
-
-		let description = "The piece of gear you pick will regain half its max charges. Here is the state of your gear:";
+		const [_, cost] = interaction.customId.split(SAFE_DELIMITER);
+		const parsedCost = parseInt(cost);
+		let description = "The Spell you pick will regain all its charges. Here are your Spells:";
 		const options = [];
 		delver.gear.forEach((gear, index) => {
 			const maxCharges = getGearProperty(gear.name, "maxCharges");
 			if (maxCharges > 0 && gear.charges < maxCharges) {
 				const value = Math.min(Math.ceil(maxCharges / 2), maxCharges - gear.charges);
-				description += `\n${underline(gear.name)} Will regain ${value} charges (${gear.charges}/${maxCharges})`
+				description += `\n${underline(gear.name)} will regain ${value} charges (${gear.charges}/${maxCharges})`
 				options.push({
 					label: gear.name,
 					value: `${gear.name}${SAFE_DELIMITER}${index}${SAFE_DELIMITER}${value}`
@@ -51,7 +47,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			],
 			components: [new ActionRowBuilder().addComponents(
 				new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
-					.setPlaceholder(`${getNumberEmoji(actionCost)} Recharge a Spell...`)
+					.setPlaceholder(`${cost}g: Recharge a Spell...`)
 					.setOptions(options)
 			)],
 			ephemeral: true,
@@ -61,7 +57,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);
 				const [_, startedDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				if (startedDepth !== adventure.depth.toString() || adventure.room.actions < 1) {
+				if (startedDepth !== adventure.depth.toString() || adventure.gold < parsedCost) {
 					return;
 				}
 
@@ -69,7 +65,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const [gearName, index, value] = collectedInteraction.values[0].split(SAFE_DELIMITER);
 				delver.gear[Number(index)].charges += Number(value);
 				adventure.room.history.Rechargers.push(delver.name);
-				adventure.room.actions -= actionCost;
+				adventure.gold -= parsedCost;
 				setAdventure(adventure);
 				collectedInteraction.channel.send({ content: `${bold(collectedInteraction.member.displayName)} recharged ${value} charges on their ${gearName}.` });
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {

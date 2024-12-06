@@ -1,4 +1,5 @@
 const { LabyrinthTemplate } = require("../classes");
+const { standardLabyrinthInfrastructure } = require("./shared");
 
 module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 	"Light",
@@ -222,17 +223,11 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 		}
 	},
 	{
-		// Labyrinth Particulars - more customized
-		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		// Rooms
+		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
 		"Battle": ["Slime Fight", "Tortoise Fight", "Meteor Knight Fight"],
 		"Artifact Guardian": ["Brute Convention", "A windfall of treasure!"],
 		"Final Battle": ["Hall of Mirrors", "Confronting the Top Celestial Knight"],
-
-		// Labyrinth Infrastructure - less customized
-		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant", "Gear Buying Merchant"],
-		"Rest Site": ["Rest Site: Mysterious Challenger", "Rest Site: Training Dummy"],
-		"Workshop": ["Abandoned Forge", "Tanning Workshop"],
-		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],
-		"Empty": ["Empty Room"]
+		...standardLabyrinthInfrastructure
 	}
 );

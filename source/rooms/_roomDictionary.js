@@ -27,20 +27,17 @@ for (const file of [
 	"finalbattle-mechaqueenmech.js",
 	"finalbattle-mirrors.js",
 	"finalbattle-starryknight.js",
-	"merchant-gearbuying.js",
-	"merchant-gear.js",
-	"merchant-item.js",
-	"merchant-overpriced.js",
-	"restsite-challenger.js",
-	"restsite-trainingdummy.js",
+	"service-guildstop.js",
+	"service-library.js",
+	"service-merchant.js",
+	"service-restsite.js",
+	"service-workshop.js",
 	"treasure-artifactvsgear.js",
 	"treasure-artifactvsgold.js",
 	"treasure-artifactvsitems.js",
 	"treasure-gearvsitems.js",
 	"treasure-goldvsgear.js",
 	"treasure-goldvsitems.js",
-	"workshop-gearcapup.js",
-	"workshop-modify.js"
 ]) {
 	/** @type {RoomTemplate} */
 	const room = require(`./${file}`);
@@ -56,5 +53,5 @@ function getRoom(roomTitle) {
 
 module.exports = {
 	getRoom,
-	ROOM_CATEGORIES: ["Event", "Battle", "Merchant", "Rest Site", "Final Battle", "Workshop", "Artifact Guardian", "Treasure", "Empty"]
+	ROOM_CATEGORIES: ["Event", "Battle", "Merchant", "Rest Site", "Library", "Guildstop", "Final Battle", "Workshop", "Artifact Guardian", "Treasure", "Empty"]
 };

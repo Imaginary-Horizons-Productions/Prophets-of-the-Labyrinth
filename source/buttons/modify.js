@@ -43,7 +43,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		})
 		if (options.length < 1) {
-			interaction.reply({ content: "You don't have any upgraded gear that can be modified with.", ephemeral: true });
+			interaction.reply({ content: "You don't have any upgraded gear that can be modified.", ephemeral: true });
 			return;
 		}
 
@@ -80,7 +80,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const sidegrades = getGearProperty(gearName, "sidegrades");
 				const sidegradeName = sidegrades[adventure.generateRandomNumber(sidegrades.length, "general")];
 				transformGear(delver, index, gearName, sidegradeName);
-				adventure.room.history.Tinkerers.push(delver.name);
+				adventure.room.history.Modders.push(delver.name);
 				adventure.room.actions -= actionCost;
 				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}**'s *${gearName}* has been modified to **${sidegradeName}**!`);
 				setAdventure(adventure);

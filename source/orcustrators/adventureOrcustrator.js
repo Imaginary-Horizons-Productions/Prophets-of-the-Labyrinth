@@ -100,8 +100,8 @@ function setAdventure(adventure) {
 /** @type {Record<number, string[]>} key = weight, value = roomTag[] */
 const roomTypesByRarity = {
 	1: ["Treasure"],
-	5: ["Workshop", "Rest Site", "Merchant", "Artifact Guardian"],
-	13: ["Battle", "Event"]
+	3: ["Workshop", "Rest Site", "Merchant", "Artifact Guardian", "Library"],
+	12: ["Battle", "Event"]
 };
 
 /** @param {Adventure} adventure */
@@ -151,7 +151,27 @@ function nextRoom(roomType, thread) {
 	}
 
 	// Roll options for next room type
-	if (!getLabyrinthProperty(adventure.labyrinth, "bossRoomDepths").includes(adventure.depth + 1)) {
+	let floorStart;
+	let floorEnd;
+	const bossDepths = getLabyrinthProperty(adventure.labyrinth, "bossRoomDepths");
+	for (let i = 0; i < bossDepths.length; i++) {
+		if (bossDepths[i] > adventure.depth) {
+			floorStart = bossDepths[i - 1] ?? 0;
+			floorEnd = bossDepths[i];
+		}
+	}
+	const nextDepth = adventure.depth + 1;
+	if (Math.floor((floorStart + floorEnd) / 2) === nextDepth) {
+		// Guaranteed Guildstop at midpoint of floors
+		adventure.roomCandidates[`Guildstop${SAFE_DELIMITER}${adventure.depth}`] = { voterIds: [], isHidden: false };
+	} else if (floorEnd - 1 === nextDepth) {
+		// Guaranteed Rest Site before Final Battle
+		adventure.roomCandidates[`Rest Site${SAFE_DELIMITER}${adventure.depth}`] = { voterIds: [], isHidden: false };
+	} else if (floorEnd === nextDepth) {
+		// Final Battle
+		adventure.roomCandidates[`Final Battle${SAFE_DELIMITER}${adventure.depth}`] = { voterIds: [], isHidden: false };
+	} else {
+		// Other Room
 		const mapCount = adventure.getArtifactCount("Enchanted Map");
 		if (mapCount) {
 			adventure.updateArtifactStat("Enchanted Map", "Extra Rooms Rolled", mapCount);
@@ -180,8 +200,6 @@ function nextRoom(roomType, thread) {
 				}
 			}
 		}
-	} else {
-		adventure.roomCandidates[`Final Battle${SAFE_DELIMITER}${adventure.depth}`] = { voterIds: [], isHidden: false };
 	}
 
 	// Generate current room

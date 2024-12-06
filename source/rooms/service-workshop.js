@@ -17,26 +17,21 @@ module.exports = new RoomTemplate("Abandoned Forge",
 
 		adventure.room.history = {
 			"Upgraders": [],
-			"Rechargers": [],
-			"Tinkerers": []
+			"Modders": []
 		};
 	},
 	function (roomEmbed, adventure) {
-		let upgradeEmoji, isUpgradeDisabled, repairEmoji, isRepairDisabled, tinkerEmoji, isTinkerDisabled;
+		let upgradeEmoji, isUpgradeDisabled, modifyEmoji, isModifyDisabled;
 		if (adventure.room.actions > 0) {
 			upgradeEmoji = "⬆️";
 			isUpgradeDisabled = false;
-			repairEmoji = "🛠️";
-			isRepairDisabled = false;
-			tinkerEmoji = "↔️";
-			isTinkerDisabled = false;
+			modifyEmoji = "↔️";
+			isModifyDisabled = false;
 		} else {
 			upgradeEmoji = adventure.room.history.Upgraders.length > 0 ? "✔️" : "✖️";
 			isUpgradeDisabled = true;
-			repairEmoji = adventure.room.history.Repairers.length > 0 ? "✔️" : "✖️";
-			isRepairDisabled = true;
-			tinkerEmoji = adventure.room.history.Tinkerers.length > 0 ? "✔️" : "✖️";
-			isTinkerDisabled = true;
+			modifyEmoji = adventure.room.history.Modders.length > 0 ? "✔️" : "✖️";
+			isModifyDisabled = true;
 		}
 		return {
 			embeds: [roomEmbed.addFields(pathVoteField)],
@@ -47,16 +42,11 @@ module.exports = new RoomTemplate("Abandoned Forge",
 						.setEmoji(upgradeEmoji)
 						.setLabel("Upgrade gear")
 						.setDisabled(isUpgradeDisabled),
-					new ButtonBuilder().setCustomId("recharge")
-						.setStyle(ButtonStyle.Primary)
-						.setEmoji(repairEmoji)
-						.setLabel("Recharge a Spell")
-						.setDisabled(isRepairDisabled),
 					new ButtonBuilder().setCustomId("modify")
 						.setStyle(ButtonStyle.Success)
-						.setEmoji(tinkerEmoji)
+						.setEmoji(modifyEmoji)
 						.setLabel("Modify gear")
-						.setDisabled(isTinkerDisabled)
+						.setDisabled(isModifyDisabled)
 				),
 				generateRoutingRow(adventure)
 			]
