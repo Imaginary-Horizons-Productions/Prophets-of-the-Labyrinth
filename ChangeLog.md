@@ -1,22 +1,26 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.17.0:
 ### Pets
-Delvers can now bring pets with them on adventure. Which pet you bring can be configured during the preparation phase, or with `/set-favorite pet`. One of the party's pets will use a supportive move (or Loaf Around) each even round. Pets can be leveled-up permenantly outside of adventure, which upgrades their moves (or gets them to stop Loafing Around). Your pet kennel is individual per server, so you can have different experiences with different friend groups.
+Delvers can now bring pets with them on adventure. One of the party's pets will use a supportive move (or Loaf Around) each even round. You pick which pet to bring during the preparation phase or with `/set-favorite pet`. Your pet kennel is tracked per server so you can have different loadouts with different friend groups. Pets can be leveled-up per kennel, which gets them to stop Loafing Around or upgrades their moves.
 ### Beast Tamer
-This new Archetype predicts the moves of enemies and pets (and if enemies have priority). Their Carrot gear entices an allied pet to act immediately and their Stick punishes foes that act with priority.
-### Knight
-Reworked the Knight to scale off of speed instead of Power Up. Lance gains damage for each point of Speed the Knight has above 100 (variant name: Kinetic), and Buckler gives Quicken instead of Power Up. This allows the Knight to benefit from other forms of speed increase (like gear, leveling-up, and round speed) instead of only Power Up, aligns with the Knight's desire to outspeed enemies for efficient protection provision, and gives speed interaction a less volatile payoff (since most previous payoffs were based on move order). The Knight's damage will probably go down, but there are other big changes coming soon that we want to see the dust settle on before attempting compensation buffs.
-
-To keep elements aligned with mechanics, the Knight is now Light element. Reinforced Buckler is now Accelerating Buckler to increase the number of accessible Quicken stacks. Accelerating Lance is now Duelist's Lance as Quicken + Kinetic would short-circuit gameplay. Unstoppable Lance is now Surpassing Lance as the Knight no longer gains free access to Damage Cap increases through Power Up and Light having Unstoppable would give it both premium Stun application *and* mitigation.
+This new Archetype predicts pet and enemy moves (and if enemies have priority). Their Carrot gear entices an allied pet to act immediately and their Stick punishes foes that act with priority.
+### Knight Rework
+This rework's goal is to increase ways to support the Knight and provide speed increases a less volatile payoff. The Knight's damage will probably go down, but there are other big changes coming soon that we want to see the dust settle on before attempting compensation buffs.
+- Lance: damage increases with ~~Power Up~~ -> speed over 100 (variant name: Kinetic)
+- Lance: ~~Accelerating~~ -> Duelist's (Quicken + Kinetic short-circuits gameplay)
+- Lance: ~~Unstoppable~~ -> Surpassing (increase Damage Cap in lieu of Power Up)
+- Buckler: grants ~~Power Up~~ -> Quicken
+- Buckler: ~~Reinforced~~ -> Accelerating
+- The Knight's Element is now Light
 ### Gear
 - New Gear: Universal Solution, Air Blades
 - Reactive variants are back to a flat bonus
 - Fixed delvers being able to get above max HP when acquiring Cursed Blade
 - Fixed Reckless Certain Victory not reporting its user paying HP
 - Made Double variant consistent: double hit count at half base power (double power scaling)
-- Pistol: Power Up stacks are now divided by the number of Weakness debuffs the target has (to nerf the team of 6 Detectives)
-- Reinforced Blood Aegis: reduced protection provided to 200 (250 was a bigger increase than other Reinforced variants)
-- War Cries now affect Distracted foes instead of Exposed
+- Pistol: Power Up stacks are divided by the number of Weakness debuffs the target has (to nerf the team of 6 Detectives)
+- Reinforced Blood Aegis: ~~250~~ -> 200 protection (was a bigger increase than other Reinforced variants)
+- War Cries: also target ~~Exposed~~ -> Distracted foes
 - Corrosion: ~~Harmful~~ -> Fatiguing
 - Warhammer: ~~Reactive~~ -> Vigorous
 - Gear that isn't a Spell or Pact now has a cooldown instead of durability. Spell durability is now called "charges". Pacts don't have charges; they cost other resources instead.
@@ -27,13 +31,13 @@ To keep elements aligned with mechanics, the Knight is now Light element. Reinfo
 - Crystal Shard (artifact) now reduces chance of charge use
 - Weapon Polish (artifact) now grants a chance to reduce Weapon cooldowns by 1 round
 ### Room Rebalancing
-- Fixed some unintentional bias in room category rolling
+- Fixed unintentional bias in room category rolling
 - A Rest Site before the Final Battle and a Guildstop (new!) at the midpoint of a floor are now guaraneed
 - "Repair Kit, just hanging around" has been removed (only Spells have charges)
-- The Black Box can now be found when encountering the Gear Collector
+- The Black Box moved to the Gear Collector
 - New Artifact Guardian: Brute Convention
-### Services By Room
-The following room types no longer have variations:
+### Invariant Service Rooms
+These rooms now always have the following services:
 Guildstop - Switch Specializations (Coming Soon), Switch Pets, Take on a new Challenge
 Library - Recharge Spells, Scouting
 Merchant - Buy Gear, Buy Artifacts (Coming Soon), Buy Items, Expand Gear Capacity
@@ -41,14 +45,15 @@ Rest Site - Heal, Level-Up
 Workshop - Upgrade Gear, Modify Gear
 ### Command Improvements
 - Added `/manual modifier-info`, `/manual challenge-info` & `/set-favorite archetype`
-- Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)
+- Added context menu option to check PotL stats (Apps -> PotL Stats)
 - Renamed `/give-up` to `/adventure retreat`
-- Fixed `/adventure party-stats` not showing the Final Battle after it had been scouted
+- Fixed `/adventure party-stats` not showing the Final Battle after scouting
 ### Other Changes
-- New Challenge: Cursed Run - One of your starting gear pieces is randomly replaced with cursed gear
+- New Challenge: Cursed Run - a random starting gear piece is replaced with cursed gear
 - New Items: Creative Acorn, Flexigrass
 - Vitamins (item) now grant 2 levels instead of 50 max HP
-- Fixed Curse of Midas reporting generating fractional gold, not scaling with stacks, and being added to party gold immediately instead of being added to loot
+- Fixed Curse of Midas reporting generating fractional gold, not scaling with stacks, and being added to party gold immediately
+- Optional combat adds are marked with the Coward state
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes
 - Changed Detective to Untyped

@@ -3,6 +3,8 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, StringSelect
 const { Adventure } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
+const { listifyEN } = require("./textUtil");
+
 /** Remove components (buttons and selects) from a given message
  * @param {string} messageId - the id of the message to remove components from
  * @param {MessageManager} messageManager - the MessageManager for the channel the message is in
@@ -33,7 +35,7 @@ const extraCombatButtonsMap = {
 function generateCombatRoomBuilder(extraButtons) {
 	return (roomEmbed, adventure) => {
 		roomEmbed.setFooter({ text: `Room #${adventure.depth} - Round ${adventure.room.round}` });
-		const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0);
+		const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0 || "Coward" in enemy.modifiers);
 		if (!isCombatVictory) {
 			const buttons = [
 				module.exports.partyStatsButton,
@@ -57,6 +59,16 @@ function generateCombatRoomBuilder(extraButtons) {
 			}
 		} else {
 			roomEmbed.setTitle(`${adventure.room.title} - Victory!`);
+			const fields = [];
+			const livingCowards = [];
+			adventure.room.enemies.forEach(enemy => {
+				if (enemy.hp > 0 && "Coward" in enemy.modifiers) {
+					livingCowards.push(enemy.name);
+				}
+			})
+			if (livingCowards.length > 0) {
+				fields.push({ name: "Fleeing Cowards", value: listifyEN(livingCowards) });
+			}
 
 			const levelTexts = [];
 			for (const resourceName in adventure.room.resources) {
@@ -71,8 +83,9 @@ function generateCombatRoomBuilder(extraButtons) {
 				}
 			}
 			if (levelTexts.length > 0) {
-				roomEmbed.addFields({ name: "Level-Up!", value: levelTexts.join("\n") }, module.exports.pathVoteField);
+				fields.push({ name: "Level-Up!", value: levelTexts.join("\n") });
 			}
+			roomEmbed.addFields(fields.concat(module.exports.pathVoteField));
 			return {
 				embeds: [roomEmbed],
 				components: [generateLootRow(adventure), generateRoutingRow(adventure)]
