@@ -1,4 +1,5 @@
 const { LabyrinthTemplate } = require("../classes");
+const { standardLabyrinthInfrastructure } = require("./shared");
 
 module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 	"Light",
@@ -25,11 +26,11 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			"Salt of Oblivion",
 			"Panacea",
 			"Placebo",
+			"Portable Spellbook Charger",
 			"Protection Potion",
 			"Quick Pepper",
 			"Regen Root",
 			"Smoke Bomb",
-			"Spellbook Repair Kit",
 			"Stasis Quartz",
 			"Strength Spinach",
 			"Vitamins",
@@ -85,9 +86,9 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Lethal Spear",
 				"Reactive Spear",
 				"Sweeping Spear",
-				"Reactive Warhammer",
 				"Slowing Warhammer",
 				"Unstoppable Warhammer",
+				"Vigorous Warhammer",
 			]
 		},
 		Fire: {
@@ -193,7 +194,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Accelerating Refreshing Breeze",
 				"Supportive Refreshing Breeze",
 				"Swift Refreshing Breeze",
-				"Accelerating Air Blades",
+				"Adventurer's Air Blades",
 				"Toxic Air Blades",
 				"Unstoppable Air Blades"
 			]
@@ -222,17 +223,11 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 		}
 	},
 	{
-		// Labyrinth Particulars - more customized
-		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Repair Kit, just hanging out", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		// Rooms
+		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
 		"Battle": ["Slime Fight", "Tortoise Fight", "Meteor Knight Fight"],
 		"Artifact Guardian": ["Brute Convention", "A windfall of treasure!"],
 		"Final Battle": ["Hall of Mirrors", "Confronting the Top Celestial Knight"],
-
-		// Labyrinth Infrastructure - less customized
-		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant", "Gear Buying Merchant"],
-		"Rest Site": ["Rest Site: Mysterious Challenger", "Rest Site: Training Dummy"],
-		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
-		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],
-		"Empty": ["Empty Room"]
+		...standardLabyrinthInfrastructure
 	}
 );

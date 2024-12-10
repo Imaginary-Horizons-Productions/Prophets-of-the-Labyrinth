@@ -1,44 +1,54 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.17.0:
 ### Pets
-Delvers can now bring pets with them on adventure. Which pet you bring can be configured during the preparation phase, or with `/set-favorite pet`. One of the party's pets will use a supportive move each even round (or Loaf Around). Pets can also be leveled-up permenantly outside of adventure, which upgrades their moves (or gets them to stop Loafing Around). Your pet kennel is individual per server, so you can have different experiences with different friend groups.
+Delvers can now bring pets with them on adventure. Which pet you bring can be configured during the preparation phase, or with `/set-favorite pet`. One of the party's pets will use a supportive move (or Loaf Around) each even round. Pets can be leveled-up permenantly outside of adventure, which upgrades their moves (or gets them to stop Loafing Around). Your pet kennel is individual per server, so you can have different experiences with different friend groups.
 ### Beast Tamer
 This new Archetype predicts the moves of enemies and pets (and if enemies have priority). Their Carrot gear entices an allied pet to act immediately and their Stick punishes foes that act with priority.
 ### Knight
-Reworked the Knight to scale off of speed instead of Power Up. Lance gains damage for each point of Speed the Knight has above 100 (variant name: Kinetic), and Buckler gives Quicken instead of Power Up. This allows the Knight to benefit from other forms of speed increase (like gear, leveling-up, and round speed) instead of only Power Up, aligns with the Knight's desire to outspeed enemies for efficient protection provision, and gives speed interaction a less volatile payoff (since most previous payoffs were based on move order). The Knight's damage will probably go down, but this is a big enough change that we want to see the dust settle before attempting compensation buffs.
+Reworked the Knight to scale off of speed instead of Power Up. Lance gains damage for each point of Speed the Knight has above 100 (variant name: Kinetic), and Buckler gives Quicken instead of Power Up. This allows the Knight to benefit from other forms of speed increase (like gear, leveling-up, and round speed) instead of only Power Up, aligns with the Knight's desire to outspeed enemies for efficient protection provision, and gives speed interaction a less volatile payoff (since most previous payoffs were based on move order). The Knight's damage will probably go down, but there are other big changes coming soon that we want to see the dust settle on before attempting compensation buffs.
 
-In keeping with the elemental alignment of mechanics, the Knight is now Light element. Reinforced Buckler has been changed to Accelerating Buckler to increase the number of accessible Quicken stacks. Accelerating Lance has been changed to Duelist's Lance as Quicken + Kinetic would short-circuit gameplay. Unstoppable Lance has been changed to Surpassing Lance as the Knight no longer gains free access to Damage Cap increases through Power Up and Light having Unstoppable would give it both premium Stun application *and* mitigation.
+To keep elements aligned with mechanics, the Knight is now Light element. Reinforced Buckler is now Accelerating Buckler to increase the number of accessible Quicken stacks. Accelerating Lance is now Duelist's Lance as Quicken + Kinetic would short-circuit gameplay. Unstoppable Lance is now Surpassing Lance as the Knight no longer gains free access to Damage Cap increases through Power Up and Light having Unstoppable would give it both premium Stun application *and* mitigation.
 ### Gear
+- New Gear: Universal Solution, Air Blades
 - Reactive variants are back to a flat bonus
-- Fixed delvers being able to end up above max HP when acquiring Cursed Blade
+- Fixed delvers being able to get above max HP when acquiring Cursed Blade
 - Fixed Reckless Certain Victory not reporting its user paying HP
-- Fixed Lance descriptions not accounting for double Power Up contribution
-- Made Double variant consistent: twice as many hits at half base power to double power scaling
-- Pistol's Power Up stacks is now divided by the number of Weakness debuffs the target has to nerf the team of 6 Detectives
-- Reduced protection provided by Reinforced Blood Aegis to 200 (250 was more of an increase than other Reinforced variants)
-- New Gear: Universal Solution (Water Pact, variants: Centering, Evasive, Harmful) Transfer a random 2 of your debuffs to a single foe, then gain 3 Poison
-- New Gear: Air Blades (Wind Pact, variants: Accelerating, Toxic, Unstoppable) Pay 25 HP, strike a foe for Wind damage twice
-- War Cries now affect Distracted foes (instead of Exposed)
-#### Cooldowns
-We're adding cooldowns to gear to create another type of variety.
-- Gear that is not a Spell or Pact now has cooldowns instead of durability. Spell durability is now called "charges" instead. Pacts don't have charges as they charge you other resources instead.
-- ~~Shoddy Craftsmanship~~ -> Shoddy Spellcraft (Challenge): increased the charge reduction to 50% as it will affect fewer gear now.
-- ~~Repair Kit~~ -> Spellbook Repair Kit: now fully restores charges to Spells
+- Made Double variant consistent: double hit count at half base power (double power scaling)
+- Pistol: Power Up stacks are now divided by the number of Weakness debuffs the target has (to nerf the team of 6 Detectives)
+- Reinforced Blood Aegis: reduced protection provided to 200 (250 was a bigger increase than other Reinforced variants)
+- War Cries now affect Distracted foes instead of Exposed
+- Corrosion: ~~Harmful~~ -> Fatiguing
+- Warhammer: ~~Reactive~~ -> Vigorous
+- Gear that isn't a Spell or Pact now has a cooldown instead of durability. Spell durability is now called "charges". Pacts don't have charges; they cost other resources instead.
+- ~~Shoddy Craftsmanship~~ -> Shoddy Spellcraft (challenge): increased the charge reduction to 50% (it affects less gear)
+- ~~Repair Kit~~ -> Portable Spellbook Charger: now fully restores charges to Spells
 - Organic and Thick variants have been replaced with Chaining
    - Fever Break: ~~Organic~~ -> Unlimited (infinite charges)
-- Crystal Shard (artifact) now reduces chance of charge use instead of expanding targets
+- Crystal Shard (artifact) now reduces chance of charge use
 - Weapon Polish (artifact) now grants a chance to reduce Weapon cooldowns by 1 round
+### Room Rebalancing
+- Fixed some unintentional bias in room category rolling
+- A Rest Site before the Final Battle and a Guildstop (new!) at the midpoint of a floor are now guaraneed
+- "Repair Kit, just hanging around" has been removed (only Spells have charges)
+- The Black Box can now be found when encountering the Gear Collector
+- New Artifact Guardian: Brute Convention
+### Services By Room
+The following room types no longer have variations:
+Guildstop - Switch Specializations (Coming Soon), Switch Pets, Take on a new Challenge
+Library - Recharge Spells, Scouting
+Merchant - Buy Gear, Buy Artifacts (Coming Soon), Buy Items, Expand Gear Capacity
+Rest Site - Heal, Level-Up
+Workshop - Upgrade Gear, Modify Gear
 ### Command Improvements
 - Added `/manual modifier-info`, `/manual challenge-info` & `/set-favorite archetype`
 - Added context menu option to check a server member's PotL stats (Apps -> PotL Stats)
 - Renamed `/give-up` to `/adventure retreat`
+- Fixed `/adventure party-stats` not showing the Final Battle after it had been scouted
 ### Other Changes
 - New Challenge: Cursed Run - One of your starting gear pieces is randomly replaced with cursed gear
 - New Items: Creative Acorn, Flexigrass
 - Vitamins (item) now grant 2 levels instead of 50 max HP
-- Fixed the party stats embed not showing the Final Battle after it had been scouted
 - Fixed Curse of Midas reporting generating fractional gold, not scaling with stacks, and being added to party gold immediately instead of being added to loot
-- New Artifact Guardian: Brute Convention
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes
 - Changed Detective to Untyped

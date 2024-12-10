@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Unstoppable Warhammer",
 		return dealDamage([target], user, pendingDamage, true, element, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Reactive Warhammer", "Slowing Warhammer")
+	.setSidegrades("Slowing Warhammer", "Vigorous Warhammer")
 	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(75); // damage

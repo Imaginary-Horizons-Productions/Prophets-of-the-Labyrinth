@@ -34,11 +34,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);
 				const [_, startingDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				const challengeName = collectedInteraction.values[0];
-				if (startingDepth !== adventure?.depth.toString() || !adventure?.room.actions > 0) {
+				if (adventure?.room.history["New challenges"].length > 0 || startingDepth !== adventure.depth.toString()) {
 					return;
 				}
 
+				const challengeName = collectedInteraction.values[0];
 				const { intensity, duration, reward } = getChallenge(challengeName);
 				if (adventure.challenges[challengeName]) {
 					adventure.challenges[challengeName].intensity += intensity;
@@ -47,7 +47,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				} else {
 					adventure.challenges[challengeName] = new Challenge(intensity, reward, duration);
 				}
-				adventure.room.actions--;
 				adventure.room.history["New challenges"].push(challengeName);
 				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
 					roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));

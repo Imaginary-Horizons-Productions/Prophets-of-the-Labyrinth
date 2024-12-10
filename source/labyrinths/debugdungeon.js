@@ -1,4 +1,5 @@
 const { LabyrinthTemplate } = require("../classes");
+const { standardLabyrinthInfrastructure } = require("./shared");
 
 const RARITIES = ["Cursed", "Common", "Rare"];
 
@@ -29,7 +30,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Devoted Carrot",
 			"Lucky Carrot",
 			"Reinforced Carrot",
-			"Reactive Warhammer",
+			"Vigorous Warhammer",
 			"Reactive Spear",
 			"Stick",
 			"Staggering Stick",
@@ -57,7 +58,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		]])),
 		Wind: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Air Blades",
-			"Accelerating Air Blades",
+			"Adventurer's Air Blades",
 			"Toxic Air Blades",
 			"Unstoppable Air Blades"
 		]])),
@@ -69,17 +70,11 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		]]))
 	},
 	{
-		// Labyrinth Particulars - more customized
-		"Event": ["Apple Pie Wishing Well", "Door 1 or Door 2?", "Free Gold?", "Gear Collector", "Imp Contract Faire", "Repair Kit, just hanging out", "The Score Beggar", "Twin Pedestals", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		// Rooms
+		"Event": ["Apple Pie Wishing Well", "Door 1 or Door 2?", "Free Gold?", "Gear Collector", "Imp Contract Faire", "The Score Beggar", "Twin Pedestals", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
 		"Battle": ["Hawk Fight", "Frog Ranch", "Wild Fire-Arrow Frogs", "Mechabee Fight", "Slime Fight", "Tortoise Fight", "Meteor Knight Fight"],
 		"Artifact Guardian": ["Brute Convention"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors", "The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
-
-		// Labyrinth Infrastructure - less customized
-		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant", "Gear Buying Merchant"],
-		"Rest Site": ["Rest Site: Mysterious Challenger", "Rest Site: Training Dummy"],
-		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
-		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],
-		"Empty": ["Empty Room"]
+		...standardLabyrinthInfrastructure
 	}
 );

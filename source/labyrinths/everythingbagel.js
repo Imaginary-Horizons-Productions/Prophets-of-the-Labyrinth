@@ -1,4 +1,5 @@
 const { LabyrinthTemplate } = require("../classes");
+const { standardLabyrinthInfrastructure } = require("./shared");
 
 module.exports = new LabyrinthTemplate("Everything Bagel",
 	"Untyped",
@@ -25,11 +26,11 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			"Salt of Oblivion",
 			"Panacea",
 			"Placebo",
+			"Portable Spellbook Charger",
 			"Protection Potion",
 			"Quick Pepper",
 			"Regen Root",
 			"Smoke Bomb",
-			"Spellbook Repair Kit",
 			"Stasis Quartz",
 			"Strength Spinach",
 			"Vitamins",
@@ -101,9 +102,9 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Sharpened Stick",
 				"Shattering Stick",
 				"Staggering Stick",
-				"Reactive Warhammer",
 				"Slowing Warhammer",
 				"Unstoppable Warhammer",
+				"Vigorous Warhammer",
 			]
 		},
 		Fire: {
@@ -127,7 +128,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Tormenting Censer",
 				"Chaining Censer",
 				"Fate-Sealing Corrosion",
-				"Harmful Corrosion",
+				"Fatiguing Corrosion",
 				"Shattering Corrosion",
 				"Double Firecracker",
 				"Midas's Firecracker",
@@ -257,7 +258,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Accelerating Refreshing Breeze",
 				"Supportive Refreshing Breeze",
 				"Swift Refreshing Breeze",
-				"Accelerating Air Blades",
+				"Adventurer's Air Blades",
 				"Toxic Air Blades",
 				"Unstoppable Air Blades"
 			]
@@ -302,17 +303,11 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 		}
 	},
 	{
-		// Labyrinth Particulars - more customized
-		"Event": ["Apple Pie Wishing Well", "Door 1 or Door 2?", "Free Gold?", "Gear Collector", "Imp Contract Faire", "Repair Kit, just hanging out", "The Score Beggar", "Twin Pedestals", "Workshop", "Merchant", "Rest Site", "Treasure"],
+		// Rooms
+		"Event": ["Apple Pie Wishing Well", "Door 1 or Door 2?", "Free Gold?", "Gear Collector", "Imp Contract Faire", "The Score Beggar", "Twin Pedestals", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
 		"Battle": ["Hawk Fight", "Frog Ranch", "Wild Fire-Arrow Frogs", "Mechabee Fight", "Slime Fight", "Tortoise Fight", "Meteor Knight Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!", "Brute Convention"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors", "The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
-
-		// Labyrinth Infrastructure - less customized
-		"Merchant": ["Gear Merchant", "Item Merchant", "Overpriced Merchant", "Gear Buying Merchant"],
-		"Rest Site": ["Rest Site: Mysterious Challenger", "Rest Site: Training Dummy"],
-		"Workshop": ["Abandoned Forge", "Workshop with Black Box", "Tanning Workshop"],
-		"Treasure": ["Treasure! Artifact or Gear?", "Treasure! Artifact or Gold?", "Treasure! Artifact or Items?", "Treasure! Gear or Items?", "Treasure! Gold or Gear?", "Treasure! Gold or Items?"],
-		"Empty": ["Empty Room"]
+		...standardLabyrinthInfrastructure
 	}
 );
