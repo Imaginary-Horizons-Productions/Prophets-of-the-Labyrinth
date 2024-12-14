@@ -6,7 +6,7 @@ const { changeStagger, addModifier, removeModifier, generateModifierResultLines,
 const gearName = "Centering Universal Solution";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Transfer a random 2 of your debuffs to a single foe, then gain @{mod0Stacks} @{mod0} and shrug off @{stagger} Stagger"],
+		["use", "Transfer a random 2 of your debuffs to a single foe then gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Transfer all your debuffs instead"]
 	],
 	"Pact",
