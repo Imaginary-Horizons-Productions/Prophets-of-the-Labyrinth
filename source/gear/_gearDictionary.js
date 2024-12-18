@@ -283,16 +283,19 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			totalStagger += 3 * holder.getModifierStacks("Floating Mist Stance");
 		}
 		if (getGearProperty(gearName, "element") === holder.element || gearName === "Iron Fist Punch") {
-			switch (getGearProperty(gearName, "targetingTags").team) {
-				case "ally":
-					totalStagger -= 1;
-					break;
-				case "foe":
-					totalStagger += 2;
-					break;
-				case "any":
-					totalStagger = "+2 or -1";
-					break;
+			const targetingTags = getGearProperty(gearName, "targetingTags");
+			if (targetingTags) {
+				switch (targetingTags.team) {
+					case "ally":
+						totalStagger -= 1;
+						break;
+					case "foe":
+						totalStagger += 2;
+						break;
+					case "any":
+						totalStagger = "+2 or -1";
+						break;
+				}
 			}
 		}
 	}

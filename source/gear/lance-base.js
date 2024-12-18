@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Lance",
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
-	"Earth",
+	"Light",
 	200,
 	(targets, user, adventure) => {
 		const { element, damage, critMultiplier } = module.exports;

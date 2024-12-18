@@ -852,7 +852,7 @@ function resolveMove(move, adventure) {
 				headline += `, but all targets were already dead!`;
 			}
 		} else {
-			results.push(...effect([], user, adventure));
+			results.push(...effect([], user, adventure, adventure.petRNs));
 		}
 
 		if (combatFlavor) {
