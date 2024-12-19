@@ -141,6 +141,7 @@ function nextRoom(roomType, thread) {
 		}
 		delver.stagger = 0;
 		delver.isStunned = false;
+		delver.gear.forEach(gear => { gear.cooldown = 0; });
 	})
 
 	const piggyBankCount = adventure.getArtifactCount("Piggy Bank");

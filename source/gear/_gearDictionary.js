@@ -310,22 +310,23 @@ function buildGearDescription(gearName, buildFullDescription, holder) {
 			}
 		});
 		if (cooldown > 0) {
-			descriptionTexts.push(`${italic("Cooldown")}: ${cooldown} Rounds`);
+			descriptionTexts.push(`${italic("Cooldown")}: ${cooldown} Round${cooldown === 1 ? "" : "s"}`);
 		}
 		text = descriptionTexts.join("\n");
 	} else {
 		// these descriptions get used in select option sets, which don't support markdown
-		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
+		const descriptionTexts = [];
+		getGearProperty(gearName, "descriptions").forEach(([type, description]) => {
 			if (type === "use") {
-				return `${totalStagger} Stagger: ${description}`;
+				descriptionTexts.push(`${totalStagger} Stagger: ${description}`);
 			} else if (type !== "Critical💥") {
-				return `${type}: ${description}`;
+				descriptionTexts.push(`${type}: ${description}`);
 			}
 		});
 		if (cooldown > 0) {
-			descriptionTexts.push(`Cooldown: ${cooldown} Rounds`);
+			descriptionTexts.push(`Cooldown: ${cooldown} Round${cooldown === 1 ? "" : "s"}`);
 		}
-		text = descriptionTexts.join(". ")
+		text = descriptionTexts.join(". ");
 	}
 
 	let damage = getGearProperty(gearName, "damage");
