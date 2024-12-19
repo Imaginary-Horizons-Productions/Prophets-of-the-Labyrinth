@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Reactive Spear",
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
-			pendingDamage *= bonus2;
+			pendingDamage += bonus2;
 		}
 		if (user.element === element) {
 			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;

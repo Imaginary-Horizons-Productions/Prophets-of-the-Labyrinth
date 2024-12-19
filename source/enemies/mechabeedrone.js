@@ -46,7 +46,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	description: "Summon another Mechabee",
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		spawnEnemy(module.exports, adventure);
+		spawnEnemy(module.exports, adventure, true);
 		return ["Another mechabee arrives."];
 	},
 	selector: selectNone,

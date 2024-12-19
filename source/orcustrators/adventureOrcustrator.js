@@ -141,6 +141,7 @@ function nextRoom(roomType, thread) {
 		}
 		delver.stagger = 0;
 		delver.isStunned = false;
+		delver.gear.forEach(gear => { gear.cooldown = 0; });
 	})
 
 	const piggyBankCount = adventure.getArtifactCount("Piggy Bank");
@@ -852,7 +853,7 @@ function resolveMove(move, adventure) {
 				headline += `, but all targets were already dead!`;
 			}
 		} else {
-			results.push(...effect([], user, adventure));
+			results.push(...effect([], user, adventure, adventure.petRNs));
 		}
 
 		if (combatFlavor) {
@@ -1068,7 +1069,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 		return { payload: completeAdventure(adventure, thread, "defeat", lastRoundText), type: "adventureDefeat" };
 	}
 
-	if (adventure.room.enemies.every(enemy => enemy.hp === 0)) {
+	if (adventure.room.enemies.every(enemy => enemy.hp === 0 || "Coward" in enemy.modifiers)) {
 		if ("endedCombat" in adventure.room.history) {
 			return { type: "endCombat" };
 		}

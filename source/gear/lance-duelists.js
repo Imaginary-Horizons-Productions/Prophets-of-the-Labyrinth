@@ -14,7 +14,9 @@ module.exports = new GearTemplate("Duelist's Lance",
 		const { element, modifiers: [quicken], damage, critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + Math.max(0, user.getSpeed(true) - 100) + damage;
 		// Duelist's check
-		if (!adventure.room.moves.some(move => !(move.userReference.team === user.team && move.userReference.index === userIndex) && move.targets.some(moveTarget => moveTarget.team === target.team && moveTarget.index === targetIndex))) {
+		const userIndex = adventure.getCombatantIndex(user);
+		const targetIndex = adventure.getCombatant(targets[0]);
+		if (!adventure.room.moves.some(move => !(move.userReference.team === user.team && move.userReference.index === userIndex) && move.targets.some(moveTarget => moveTarget.team === targets[0].team && moveTarget.index === targetIndex))) {
 			pendingDamage += bonus;
 		}
 		if (user.element === element) {

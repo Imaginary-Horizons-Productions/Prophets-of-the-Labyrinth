@@ -8,7 +8,7 @@ const drone = require("./mechabeedrone.js")
 
 module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	"Darkness",
-	500,
+	750,
 	100,
 	"n*2+2",
 	0,
@@ -90,7 +90,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	description: "Summon a Mechabee",
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		spawnEnemy(drone, adventure);
+		spawnEnemy(drone, adventure, true);
 		return ["Another mechabee arrives."];
 	},
 	selector: selectNone,

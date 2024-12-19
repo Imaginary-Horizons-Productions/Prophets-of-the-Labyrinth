@@ -7,7 +7,7 @@ const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
-	200,
+	225,
 	70,
 	"3",
 	0,
