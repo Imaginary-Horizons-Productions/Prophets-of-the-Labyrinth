@@ -737,10 +737,10 @@ function newRound(adventure, thread, lastRoundText) {
 
 	if (adventure.room.round % 2 === 1) {
 		// Generate pet move
-		const owner = adventure.delvers[adventure.nextPet];
+		const owner = adventure.delvers[adventure.petRNs.delverIndex];
 		if (owner.pet) {
-			const petMoveTemplate = getPetMove(owner.pet, adventure.petRNs, getPlayer(owner.id, thread.guildId).pets[owner.pet]);
-			const petMove = new Move(petMoveTemplate.name, "pet", { team: "delver", index: adventure.nextPet })
+			const petMoveTemplate = getPetMove(owner.pet, adventure.petRNs.moveIndex, getPlayer(owner.id, thread.guildId).pets[owner.pet]);
+			const petMove = new Move(petMoveTemplate.name, "pet", { team: "delver", index: adventure.petRNs.delverIndex })
 				.setSpeedByValue(100);
 			petMoveTemplate.selector(owner, adventure.petRNs).forEach(reference => {
 				petMove.addTarget(reference);
@@ -817,7 +817,7 @@ function resolveMove(move, adventure) {
 			}
 			case "pet":
 				headline = `${user.name}'s ${bold(user.pet)} `;
-				effect = getPetMove(user.pet, adventure.petRNs, getPlayer(user.id, adventure.guildId).pets[user.pet]).effect;
+				effect = getPetMove(user.pet, adventure.petRNs.moveIndex, getPlayer(user.id, adventure.guildId).pets[user.pet]).effect;
 				break;
 		}
 
@@ -1051,7 +1051,7 @@ function endRound(adventure, thread) {
 
 	if (adventure.room.round % 2 === 1) {
 		// Generate pet move prediction
-		adventure.nextPet = (adventure.nextPet + 1) % adventure.delvers.length;
+		adventure.petRNs.delverIndex = (adventure.petRNs.delverIndex + 1) % adventure.delvers.length;
 		generatePetRNs(adventure);
 	}
 
@@ -1119,9 +1119,9 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 /** The round ends when all combatants have readied all their moves
  * @param {Adventure} adventure
  */
-function checkNextRound({ nextPet, room, delvers }) {
+function checkNextRound({ petRNs, room, delvers }) {
 	const readiedMoves = room.moves.length;
-	const petMoves = delvers[nextPet].pet !== "" ? room.round % 2 : 0;
+	const petMoves = delvers[petRNs.delverIndex].pet !== "" ? room.round % 2 : 0;
 	const movesThisRound = room.enemies.length + delvers.length + petMoves;
 	return readiedMoves === movesThisRound;
 }
