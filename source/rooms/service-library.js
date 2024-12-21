@@ -26,12 +26,12 @@ module.exports = new RoomTemplate("A Serene Library",
 						.setLabel(`${rechargeCost}g: Recharge a Spell`)
 						.setStyle(ButtonStyle.Secondary)
 						.setDisabled(adventure.gold < rechargeCost),
-					new ButtonBuilder().setCustomId(`buyscouting${SAFE_DELIMITER}Final Battle`)
+					new ButtonBuilder().setCustomId(`buyscouting${SAFE_DELIMITER}Final Battle${adventure.scouting.bosses}`)
 						.setEmoji("🔭")
 						.setLabel(`${adventure.scouting.bosses > 0 ? `Final Battle: ${adventure.bosses[adventure.scouting.bossesEncountered]}` : `${bossScoutingCost}g: Scout the Final Battle`}`)
 						.setStyle(ButtonStyle.Primary)
 						.setDisabled(adventure.scouting.bosses > 0 || adventure.gold < bossScoutingCost),
-					new ButtonBuilder().setCustomId(`buyscouting${SAFE_DELIMITER}Artifact Guardian`)
+					new ButtonBuilder().setCustomId(`buyscouting${SAFE_DELIMITER}Artifact Guardian${adventure.scouting.artifactGuardians}`)
 						.setEmoji("🔭")
 						.setLabel(`${guardScoutingCost}g: Scout the ${ordinalSuffixEN(adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians + 1)} Artifact Guardian`)
 						.setStyle(ButtonStyle.Primary)
