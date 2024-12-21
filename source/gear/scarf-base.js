@@ -1,14 +1,13 @@
 const { GearTemplate } = require('../classes');
-const { swiftPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Scarf",
 	[
-		swiftPassive
+		["Passive", "Increase your Crit Rate by 20%"]
 	],
 	"Trinket",
 	"Untyped",
 	200,
 	(targets, user, adventure) => []
-).setUpgrades("Accurate Scarf", "Hearty Scarf", "Wise Scarf")
-	.setSpeed(5)
+).setUpgrades("Hearty Scarf", "Powerful Scarf", "Swift Scarf")
+	.setCritRate(20)
 	.setCharges(0);

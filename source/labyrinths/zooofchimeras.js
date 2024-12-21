@@ -205,20 +205,24 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Cursed Tome"
 			],
 			Common: [
-				"Chainmail",
+				"Boots of Comfort",
+				"Mighty Gauntlet",
 				"Scarf",
 				"Wolf Ring"
 			],
 			Rare: [
-				"Poised Chainmail",
-				"Powerful Chainmail",
-				"Wise Chainmail",
-				"Accurate Scarf",
+				"Accurate Boots of Comfort",
+				"Hearty Boots of Comfort",
+				"Powerful Boots of Comfort",
+				"Accurate Mighty Gauntlet",
+				"Hearty Mighty Gauntlet",
+				"Swift Mighty Gauntlet",
 				"Hearty Scarf",
-				"Wise Scarf",
-				"Surpassing Wolf Ring",
-				"Swift Wolf Ring",
-				"Wise Wolf Ring"
+				"Powerful Scarf",
+				"Swift Scarf",
+				"Accurate Wolf Ring",
+				"Powerful Wolf Ring",
+				"Swift Wolf Ring"
 			]
 		}
 	},

@@ -32,5 +32,4 @@ module.exports = new GearTemplate("Poised Goad Futility",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Flanking Goad Futility", "Shattering Goad Futility")
 	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Unlucky", stacks: 3 })
-	.setCooldown(2)
-	.setPoise(2);
+	.setCooldown(2);

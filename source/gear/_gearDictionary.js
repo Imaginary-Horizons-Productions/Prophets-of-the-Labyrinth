@@ -34,6 +34,10 @@ for (const file of [
 	"bloodaegis-charging.js",
 	"bloodaegis-reinforced.js",
 	"bloodaegis-toxic.js",
+	"bootsofcomfort-accurate.js",
+	"bootsofcomfort-base.js",
+	"bootsofcomfort-hearty.js",
+	"bootsofcomfort-powerful.js",
 	"bow-base.js",
 	"bow-evasive.js",
 	"bow-thiefs.js",
@@ -58,10 +62,6 @@ for (const file of [
 	"certainvictory-hunters.js",
 	"certainvictory-lethal.js",
 	"certainvictory-reckless.js",
-	"chainmail-base.js",
-	"chainmail-poised.js",
-	"chainmail-powerful.js",
-	"chainmail-wise.js",
 	"cloak-accelerating.js",
 	"cloak-accurate.js",
 	"cloak-base.js",
@@ -132,6 +132,10 @@ for (const file of [
 	"midasstaff-base.js",
 	"midasstaff-discounted.js",
 	"midasstaff-soothing.js",
+	"mightygauntlet-accurate.js",
+	"mightygauntlet-base.js",
+	"mightygauntlet-hearty.js",
+	"mightygauntlet-swift.js",
 	"morningstar-base.js",
 	"morningstar-awesome.js",
 	"morningstar-bashing.js",
@@ -168,10 +172,10 @@ for (const file of [
 	"sabotagekit-potent.js",
 	"sabotagekit-shattering.js",
 	"sabotagekit-urgent.js",
-	"scarf-accurate.js",
 	"scarf-base.js",
 	"scarf-hearty.js",
-	"scarf-wise.js",
+	"scarf-powerful.js",
+	"scarf-swift.js",
 	"scutum-base.js",
 	"scutum-guarding.js",
 	"scutum-lucky.js",
@@ -216,10 +220,10 @@ for (const file of [
 	"warhammer-slowing.js",
 	"warhammer-unstoppable.js",
 	"warhammer-vigorous.js",
+	"wolfring-accurate.js",
 	"wolfring-base.js",
-	"wolfring-surpassing.js",
-	"wolfring-swift.js",
-	"wolfring-wise.js"
+	"wolfring-powerful.js",
+	"wolfring-swift.js"
 ]) {
 	const gear = require(`./${file}`);
 	if (gear.name.toLowerCase() in GEAR) {
@@ -265,7 +269,7 @@ function buildGearRecord(gearName, adventure) {
 	if (shoddyPenalty) {
 		charges = Math.ceil(charges * (100 - shoddyPenalty) / 100);
 	}
-	return new Gear(gearName, charges, template.maxHP, template.power, template.speed, template.critRate, template.poise);
+	return new Gear(gearName, charges, template.maxHP, template.power, template.speed, template.critRate);
 }
 
 /**
@@ -377,8 +381,7 @@ function injectGearStats(text, gearName, elementOverride) {
 		.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
 		.replace(/@{power}/g, getGearProperty(gearName, "power"))
 		.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
-		.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"))
-		.replace(/@{poise}/g, getGearProperty(gearName, "poise"));
+		.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"));
 }
 
 module.exports = {
