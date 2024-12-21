@@ -81,23 +81,23 @@ class Delver extends Combatant {
 	startingArtifact = "";
 
 	getMaxHP() {
-		return Math.floor(this.maxHP) + this.gear.reduce((totalGearMaxHP, gear) => {
+		return Math.floor(this.maxHP) * (1 + this.gear.reduce((totalGearMaxHP, gear) => {
 			if (parseInt(gear.maxHP)) {
 				return totalGearMaxHP + gear.maxHP;
 			} else {
 				return totalGearMaxHP;
 			}
-		}, 0);
+		}, 0) / 100);
 	}
 
 	getPower() {
-		return Math.floor(this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down") + this.gear.reduce((totalPower, gear) => {
+		return Math.floor(this.power * (1 + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down") + this.gear.reduce((totalPower, gear) => {
 			if (parseInt(gear.power)) {
 				return totalPower + gear.power;
 			} else {
 				return totalPower;
 			}
-		}, 0));
+		}, 0) / 100));
 	}
 
 	/** @param {boolean} includeRoundSpeed */
@@ -109,7 +109,7 @@ class Delver extends Combatant {
 				return totalGearSpeed;
 			}
 		}, 0);
-		let totalSpeed = this.speed + gearSpeed;
+		let totalSpeed = this.speed * (1 + gearSpeed / 100);
 		if (includeRoundSpeed) {
 			totalSpeed += this.roundSpeed;
 		}
@@ -125,23 +125,17 @@ class Delver extends Combatant {
 	}
 
 	getCritRate() {
-		return Math.floor(this.critRate + this.gear.reduce((totalCritRate, gear) => {
+		return Math.floor(this.critRate * (1 + this.gear.reduce((totalCritRate, gear) => {
 			if (parseInt(gear.critRate)) {
 				return totalCritRate + gear.critRate;
 			} else {
 				return totalCritRate;
 			}
-		}, 0));
+		}, 0)) / 100);
 	}
 
 	getPoise() {
-		return Math.floor(this.poise + this.gear.reduce((totalGearPoise, gear) => {
-			if (parseInt(gear.poise)) {
-				return totalGearPoise + gear.poise;
-			} else {
-				return totalGearPoise;
-			}
-		}, 0));
+		return Math.floor(this.getMaxHP() / 50);
 	}
 
 	getDamageCap() {
@@ -158,16 +152,14 @@ class Gear {
 	 * @param {number} powerInput
 	 * @param {number} speedInput
 	 * @param {number} critRateInput
-	 * @param {number} poiseInput
 	 */
-	constructor(nameInput, chargesInput, maxHPInput, powerInput, speedInput, critRateInput, poiseInput) {
+	constructor(nameInput, chargesInput, maxHPInput, powerInput, speedInput, critRateInput) {
 		this.name = nameInput;
 		this.charges = chargesInput;
 		this.maxHP = maxHPInput;
 		this.power = powerInput;
 		this.speed = speedInput;
 		this.critRate = critRateInput;
-		this.poise = poiseInput;
 	}
 	cooldown = 0;
 };

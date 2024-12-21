@@ -56,7 +56,6 @@ class GearTemplate {
 	power = 0;
 	speed = 0;
 	critRate = 0;
-	poise = 0;
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
 	/** @type  {Record<string, number>} */
@@ -179,12 +178,6 @@ class GearTemplate {
 	/** @param {number} integer */
 	setCritRate(integer) {
 		this.critRate = integer;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setPoise(integer) {
-		this.poise = integer;
 		return this;
 	}
 

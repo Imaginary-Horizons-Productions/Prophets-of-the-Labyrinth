@@ -18,10 +18,10 @@ Adds Quicken to the user
 Passively increases the user's Crit Rate
 
 **Available on**
-- all Cloaks (Wind)
-- Cloak (Wind)
-- Iron Fist Stance (Light)
-- Scarf (Untyped)
+- all Scarves (Untyped)
+- Boots of Comfort (Untyped)
+- Mighty Guantlet (Untyped)
+- Wolf Ring (Untyped)
 
 ### Adventurer's
 Gain an extra level at the end of combat on kill
@@ -224,7 +224,9 @@ Heal the user
 Passively increases the user's Max HP
 
 **Available on**
-- all Chainmails (Untyped)
+- all Wolf Rings (Untyped)
+- Boots of Comfort (Untyped)
+- Mighty Gauntlet (Untyped)
 - Scarf (Untyped)
 
 ### Hunter's
@@ -288,7 +290,10 @@ Increased modifier stacks
 Passively increases user's power
 
 **Available on**
-- Chainmail (Untyped)
+- all Mighty Gauntlets (Untyped)
+- Accurate Mighty Gauntlet (Untyped)
+- Hearty Mighty Gauntlet (Untyped)
+- Swift Mighty Gauntlet (Untyped)
 
 ### Punishing
 Multiplies damage if target has priority
@@ -422,8 +427,9 @@ Targets whole team
 Passively increases user's speed
 
 **Available on**
-- all Scarves (Untyped)
-- Refreshing Breeze (Wind)
+- all Boots of Comfort (Untyped)
+- Mighty Gauntlet (Untyped)
+- Scarf (Untyped)
 - Wolf Ring (Untyped)
 
 ### Tamer's

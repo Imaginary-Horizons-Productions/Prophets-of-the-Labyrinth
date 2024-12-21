@@ -2,13 +2,13 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Hearty Scarf",
 	[
-		["Passive", "Gain @{speed} Speed and @{maxHP} Max HP"]
+		["Passive", "Increase your Crit Rate by 20% and Max HP by 10%"]
 	],
 	"Trinket",
 	"Untyped",
 	350,
 	(targets, user, adventure) => []
-).setSidegrades("Accurate Scarf", "Wise Scarf")
-	.setSpeed(5)
-	.setMaxHP(50)
+).setSidegrades("Powerful Scarf", "Swift Scarf")
+	.setMaxHP(10)
+	.setCritRate(20)
 	.setCharges(0);

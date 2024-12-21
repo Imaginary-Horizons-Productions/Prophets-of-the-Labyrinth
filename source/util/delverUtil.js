@@ -41,7 +41,7 @@ function transformGear(delver, index, oldGearName, newGearName) {
 	if (chargesDifference > 0) {
 		delver.gear[index].charges += chargesDifference;
 	}
-	delver.gear.splice(index, 1, new Gear(newGearName, Math.min(upgradeCharges, delver.gear[index].charges), getGearProperty(newGearName, "maxHP"), getGearProperty(newGearName, "power"), getGearProperty(newGearName, "speed"), getGearProperty(newGearName, "critRate"), getGearProperty(newGearName, "poise")));
+	delver.gear.splice(index, 1, new Gear(newGearName, Math.min(upgradeCharges, delver.gear[index].charges), getGearProperty(newGearName, "maxHP"), getGearProperty(newGearName, "power"), getGearProperty(newGearName, "speed"), getGearProperty(newGearName, "critRate")));
 }
 
 module.exports = {
