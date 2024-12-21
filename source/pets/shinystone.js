@@ -8,14 +8,14 @@ module.exports = new PetTemplate(petName, Colors.LightGrey,
 	[
 		[
 			new PetMoveTemplate("Eye-Catcher", "Inflict a random foe with @{mod0Stacks} @{mod0}",
-				(owner, petRNs) => [new CombatantReference(owner.team === "delver" ? "enemy" : "delver", petRNs[1])],
+				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, petRNs) => {
 					const [distracted] = module.exports.moves[0][0].modifiers;
 					return generateModifierResultLines(addModifier(targets, distracted));
 				}).setRnConfig(["enemyIndex"])
 				.setModifiers({ name: "Distracted", stacks: 2 }),
 			new PetMoveTemplate("Extra Eye-Catcher", "Inflict a random foe with @{mod0Stacks} @{mod0} and 1 Stagger",
-				(owner, petRNs) => [new CombatantReference(owner.team === "delver" ? "enemy" : "delver", petRNs[1])],
+				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, petRNs) => {
 					const [distracted] = module.exports.moves[0][1].modifiers;
 					return generateModifierResultLines(addModifier(targets, distracted)).concat(joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered."));

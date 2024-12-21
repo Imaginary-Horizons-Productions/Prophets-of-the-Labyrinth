@@ -1,4 +1,4 @@
-const { BuildError, PetTemplate, PetMoveTemplate, Adventure } = require("../classes");
+const { BuildError, PetTemplate, PetMoveTemplate, Adventure, CombatantReference } = require("../classes");
 const { getPlayer } = require("../orcustrators/playerOrcustrator");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
@@ -32,7 +32,7 @@ function getPetTemplate(petName) {
  * @param {number} level
  */
 function getPetMoveDescription(petName, index, level) {
-	const move = getPetMove(petName, [index], level);
+	const move = getPetMove(petName, index, level);
 	if (move.modifiers) {
 		let description = move.description;
 		move.modifiers.forEach((modifier, index) => {
@@ -47,10 +47,12 @@ function getPetMoveDescription(petName, index, level) {
 
 /** @param {Adventure} adventure */
 function generatePetRNs(adventure) {
-	const owner = adventure.delvers[adventure.nextPet];
+	const owner = adventure.delvers[adventure.petRNs.delverIndex];
 	if (owner.pet !== "") {
-		adventure.petRNs = [adventure.generateRandomNumber(2, "general")];
-		const moveTemplate = getPetMove(owner.pet, adventure.petRNs, getPlayer(owner.id, adventure.guildId).pets[owner.pet]);
+		adventure.petRNs.moveIndex = adventure.generateRandomNumber(2, "general");
+		adventure.petRNs.targetReferences = [];
+		adventure.petRNs.extras = [];
+		const moveTemplate = getPetMove(owner.pet, adventure.petRNs.moveIndex, getPlayer(owner.id, adventure.guildId).pets[owner.pet]);
 		if (moveTemplate.rnConfig) {
 			moveTemplate.rnConfig.forEach(rnType => {
 				switch (rnType) {
@@ -61,10 +63,10 @@ function generatePetRNs(adventure) {
 								livingEnemyIndices.push(i);
 							}
 						}
-						adventure.petRNs.push(livingEnemyIndices[adventure.generateRandomNumber(livingEnemyIndices.length, "general")]);
+						adventure.petRNs.targetReferences.push(new CombatantReference(owner.team === "delver" ? "enemy" : "delver", livingEnemyIndices[adventure.generateRandomNumber(livingEnemyIndices.length, "general")]));
 						break;
 					default:
-						adventure.petRNs.push(adventure.generateRandomNumber(rnType, "general"));
+						adventure.petRNs.extras.push(adventure.generateRandomNumber(rnType, "general"));
 				}
 			})
 		}
@@ -73,10 +75,10 @@ function generatePetRNs(adventure) {
 
 /**
  * @param {string} petName
- * @param {[number]} petRNs
+ * @param {number} moveIndex
  * @param {number} petLevel
  */
-function getPetMove(petName, [moveIndex], petLevel) {
+function getPetMove(petName, moveIndex, petLevel) {
 	if (moveIndex === 1 && petLevel === 1) {
 		return new PetMoveTemplate("Loaf Around", "The pet loafs around", () => [], (targets, owner, adventure) => {
 			return [`${owner.name}'s ${petName} loafs around.`];

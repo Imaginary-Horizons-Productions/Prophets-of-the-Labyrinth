@@ -1,4 +1,4 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate, CombatantReference } = require('../classes');
 const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getPetMove } = require('../pets/_petDictionary');
@@ -23,10 +23,11 @@ module.exports = new GearTemplate("Lucky Carrot",
 		}
 		addProtection([user], protection);
 		const resultLines = [`${user.name} gains protection.`, ...generateModifierResultLines(addModifier([user], lucky))];
-		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: adventure.getCombatantIndex(target) });
+		const ownerIndex = adventure.getCombatantIndex(target);
+		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 		if (owner.pet) {
-			const petRNs = [0];
-			const petMoveTemplate = getPetMove(owner.pet, petRNs, getPlayer(owner.id, adventure.guildId).pets[owner.pet]);
+			const petMoveTemplate = getPetMove(owner.pet, 0, getPlayer(owner.id, adventure.guildId).pets[owner.pet]);
+			const petRNs = { delverIndex: ownerIndex, moveIndex: 0, targetReferences: [], extras: [] };
 			petMoveTemplate.rnConfig.forEach(rnType => {
 				switch (rnType) {
 					case "enemyIndex":
@@ -36,10 +37,10 @@ module.exports = new GearTemplate("Lucky Carrot",
 								livingEnemyIndices.push(i);
 							}
 						}
-						petRNs.push(livingEnemyIndices[adventure.generateRandomNumber(livingEnemyIndices.length, "battle")]);
+						petRNs.targetReferences.push(new CombatantReference(owner.team === "delver" ? "enemy" : "delver", livingEnemyIndices[adventure.generateRandomNumber(livingEnemyIndices.length, "battle")]));
 						break;
 					default:
-						petRNs.push(adventure.generateRandomNumber(rnType, "battle"));
+						petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 				}
 			})
 			resultLines.push(`${target.name}'s ${owner.pet} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
