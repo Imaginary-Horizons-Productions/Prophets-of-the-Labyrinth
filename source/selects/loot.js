@@ -1,9 +1,9 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { buildGearRecord, getGearProperty } = require('../gear/_gearDictionary');
+const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING, ZERO_WIDTH_WHITESPACE } = require('../constants');
-const { renderRoom, randomAuthorTip, gearToEmbedField } = require('../util/embedUtil');
+const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getColor } = require('../util/elementUtil');
 
 const mainId = "loot";
@@ -51,7 +51,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
 					.setAuthor(randomAuthorTip())
 					.setTitle("Take this gear?")
-					.addFields(gearToEmbedField(name, charges, delver));
+					.addFields({ name, value: buildGearDescription(name) });
 				const components = [];
 				if (hasFreeGearSlots) {
 					components.push(

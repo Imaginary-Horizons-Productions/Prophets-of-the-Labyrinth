@@ -25,21 +25,29 @@ class GearTemplate {
 		this.cost = costInput;
 		this.effect = effectInput;
 	}
+	// Internal Configuration
 	/** @type {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} */
 	targetingTags;
-	cooldown = 0;
-	maxCharges = Infinity;
 	/** @type {string[]} */
 	upgrades = [];
 	/** @type {string[]} */
 	sidegrades = [];
+	/** @type  {Record<string, number>} */
+	rnConfig;
+
+	// Requirements
+	cooldown = 0;
+	maxCharges = Infinity;
+	moraleRequirement = 0;
+	/** @type {[integer: number, descriptionTemplate: string]} */
+	pactCost;
+
+	// Attributes
 	critMultiplier = 2;
 	/** @type {number} */
 	damage;
 	/** @type {number} */
 	protection;
-	/** @type {number} */
-	hpCost;
 	/** @type {number} */
 	healing;
 	/** @type {number} */
@@ -58,8 +66,6 @@ class GearTemplate {
 	critRate = 0;
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
-	/** @type  {Record<string, number>} */
-	rnConfig;
 
 	/** @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} tagObject */
 	setTargetingTags(tagObject) {
@@ -113,9 +119,9 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {number} integer */
-	setHPCost(integer) {
-		this.hpCost = integer;
+	/** @param {[integer: number, descriptionTemplate: string]} pactTuple */
+	setPactCost(pactTuple) {
+		this.pactCost = pactTuple;
 		return this;
 	}
 

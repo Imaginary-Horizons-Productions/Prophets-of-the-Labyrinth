@@ -4,15 +4,15 @@ const { changeStagger, payHP, dealDamage } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Unstoppable Air Blades",
 	[
-		["use", "Pay @{hpCost} HP, then strike a foe for @{damage} @{element} unblockable damage, even while Stunned"],
+		["use", "Strike a foe for @{damage} @{element} unblockable damage, even while Stunned"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",
 	"Wind",
 	350,
 	(targets, user, adventure) => {
-		const { element, hpCost, damage, critMultiplier } = module.exports;
-		const resultLines = [payHP(user, hpCost, adventure)];
+		const { element, pactCost: [pactCostValue], damage, critMultiplier } = module.exports;
+		const resultLines = [payHP(user, pactCostValue, adventure)];
 		if (adventure.lives < 1) {
 			return resultLines;
 		}
@@ -28,4 +28,4 @@ module.exports = new GearTemplate("Unstoppable Air Blades",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Adventurer's Air Blades", "Toxic Air Blades")
 	.setDamage(20)
-	.setHPCost(25);
+	.setPactCost([25, "@{pactCost} HP"]);
