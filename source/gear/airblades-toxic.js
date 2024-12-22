@@ -4,15 +4,15 @@ const { changeStagger, payHP, dealDamage, generateModifierResultLines, addModifi
 
 module.exports = new GearTemplate("Toxic Air Blades",
 	[
-		["use", "Pay @{hpCost} HP, then inflict @{damage} @{element} damage twice and @{mod0Stacks} @{mod0} on a foe"],
+		["use", "Inflict @{damage} @{element} damage twice and @{mod0Stacks} @{mod0} on a foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",
 	"Wind",
 	350,
 	(targets, user, adventure) => {
-		const { element, hpCost, damage, critMultiplier, modifiers: [poison] } = module.exports;
-		const resultLines = [payHP(user, hpCost, adventure)];
+		const { element, pactCost: [pactCostValue], damage, critMultiplier, modifiers: [poison] } = module.exports;
+		const resultLines = [payHP(user, pactCostValue, adventure)];
 		if (adventure.lives < 1) {
 			return resultLines;
 		}
@@ -29,4 +29,4 @@ module.exports = new GearTemplate("Toxic Air Blades",
 	.setSidegrades("Adventurer's Air Blade", "Unstoppable Air Blade")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDamage(20)
-	.setHPCost(25);
+	.setPactCost([25, "@{pactCost} HP"]);

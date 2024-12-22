@@ -4,7 +4,7 @@ const { dealDamage, addModifier, payHP, changeStagger, generateModifierResultLin
 
 module.exports = new GearTemplate("Reckless Certain Victory",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}; pay HP for your @{mod0}"],
+		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",
@@ -26,4 +26,5 @@ module.exports = new GearTemplate("Reckless Certain Victory",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Hunter's Certain Victory", "Lethal Certain Victory")
 	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Exposed", stacks: 1 })
+	.setPactCost([1, "Pay HP for your Power Up after the move"])
 	.setDamage(90);

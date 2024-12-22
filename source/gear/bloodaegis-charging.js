@@ -4,15 +4,15 @@ const { addModifier, payHP, changeStagger, addProtection, generateModifierResult
 
 module.exports = new GearTemplate("Charging Blood Aegis",
 	[
-		["use", "Pay @{hpCost} HP; gain @{protection} protection and @{mod0Stacks} @{mod0}, then intercept a later single target move"],
+		["use", "Gain @{protection} protection and @{mod0Stacks} @{mod0}, then intercept a later single target move"],
 		["Critical💥", "Protection x@{critMultiplier}"]
 	],
 	"Pact",
 	"Darkness",
 	350,
 	([target], user, adventure) => {
-		const { element, modifiers: [powerUp], protection, critMultiplier, hpCost } = module.exports;
-		const paymentSentence = payHP(user, hpCost, adventure);
+		const { element, modifiers: [powerUp], protection, critMultiplier, pactCost: [pactCostValue] } = module.exports;
+		const paymentSentence = payHP(user, pactCostValue, adventure);
 		if (adventure.lives < 1) {
 			return [paymentSentence];
 		}
@@ -37,5 +37,5 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Reinforced Blood Aegis", "Toxic Blood Aegis")
 	.setModifiers({ name: "Power Up", stacks: 25 })
-	.setHPCost(25)
+	.setPactCost([25, "@{pactCost} HP"])
 	.setProtection(125);

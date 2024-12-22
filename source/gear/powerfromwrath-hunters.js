@@ -4,15 +4,15 @@ const { payHP, dealDamage, changeStagger, generateModifierResultLines, addModifi
 
 module.exports = new GearTemplate("Hunter's Power from Wrath",
 	[
-		["use", "Pay @{hpCost} to strike a foe for <@{damage} x 1 to 2 based on your missing HP> @{element} damage"],
+		["use", "Strike a foe for <@{damage} x 1 to 2 based on your missing HP> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",
 	"Darkness",
 	350,
 	(targets, user, adventure) => {
-		const { element, damage, hpCost, modifiers: [powerUp] } = module.exports;
-		const resultLines = [payHP(user, hpCost, adventure)];
+		const { element, damage, pactCost: [pactCostValue], modifiers: [powerUp] } = module.exports;
+		const resultLines = [payHP(user, pactCostValue, adventure)];
 		if (adventure.lives > 0) {
 			const furiousness = 2 - user.hp / user.getMaxHP();
 			let pendingDamage = (user.getPower() + damage) * furiousness;
@@ -32,6 +32,6 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Bashing Power from Wrath", "Staggering Power from Wrath")
-	.setHPCost(40)
+	.setPactCost([40, "@{pactCost} HP"])
 	.setDamage(40)
 	.setModifiers({ name: "Power Up", stacks: 15 });

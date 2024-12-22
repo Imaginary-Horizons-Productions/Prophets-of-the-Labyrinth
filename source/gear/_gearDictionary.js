@@ -268,85 +268,104 @@ function buildGearRecord(gearName, adventure) {
 	return new Gear(gearName, charges, template.maxHP, template.power, template.speed, template.critRate, template.poise);
 }
 
-/**
- * @param {string} gearName
- * @param {boolean} buildFullDescription
- * @param {Delver?} holder
- */
-function buildGearDescription(gearName, buildFullDescription, holder) {
+/** @param {string} gearName */
+function buildGearDescription(gearName) {
 	if (!gearExists(gearName)) {
 		return "";
 	}
-	let totalStagger = getGearProperty(gearName, "stagger") ?? 0;
-	if (holder) {
-		if (gearName === "Floating Mist Punch") {
-			totalStagger += 3 * holder.getModifierStacks("Floating Mist Stance");
+	const maxCharges = getGearProperty(gearName, "maxCharges");
+	const moraleRequirement = getGearProperty(gearName, "moraleRequirement");
+	const pactCost = getGearProperty(gearName, "pactCost");
+	const descriptionTexts = [];
+	if (maxCharges !== Infinity) {
+		descriptionTexts.push(`${italic("Max Charges")}: ${maxCharges}`);
+	} else if (moraleRequirement > 0) {
+		descriptionTexts.push(`${italic("Morale Required")}: ${moraleRequirement}`);
+	} else if (pactCost) {
+		descriptionTexts.push(`${italic("Pact Cost")}: ${pactCost[1].replace(/@{pactCost}/g, pactCost[0])}`);
+	} else {
+		const cooldown = getGearProperty(gearName, "cooldown");
+		descriptionTexts.push(`${italic("Cooldown")}: ${cooldown} Round${cooldown === 1 ? "" : "s"}`);
+	}
+	getGearProperty(gearName, "descriptions").forEach(([type, description]) => {
+		if (type === "use") {
+			descriptionTexts.push(`${italic(`${getGearProperty(gearName, "stagger") ?? 0} Stagger`)}: ${description}`);
+		} else {
+			descriptionTexts.push(`${italic(type)}: ${description}`);
 		}
-		if (getGearProperty(gearName, "element") === holder.element || gearName === "Iron Fist Punch") {
-			const targetingTags = getGearProperty(gearName, "targetingTags");
-			if (targetingTags) {
-				switch (targetingTags.team) {
-					case "ally":
-						totalStagger -= 1;
-						break;
-					case "foe":
-						totalStagger += 2;
-						break;
-					case "any":
-						totalStagger = "+2 or -1";
-						break;
+	});
+	let text = descriptionTexts.join("\n");
+
+	text = text.replace(/@{damage}/g, `(${getGearProperty(gearName, "damage")} + power)`)
+		.replace(/@{bonusSpeed}/g, "(speed over 100)");
+
+	return injectGearStats(text, gearName);
+}
+
+/**
+ * @param {string} gearName
+ * @param {number} gearIndex for charges lookup if holder has multiple of same gear type
+ * @param {Delver} holder
+ */
+function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
+	if (!gearExists(gearName)) {
+		return "";
+	}
+	const gearRecord = holder.gear[gearIndex];
+	const maxCharges = getGearProperty(gearName, "maxCharges");
+	const moraleRequirement = getGearProperty(gearName, "moraleRequirement");
+	const pactCost = getGearProperty(gearName, "pactCost");
+	const descriptionTexts = [];
+	if (maxCharges !== Infinity) {
+		descriptionTexts.push(`${italic("Remaining Charges")}: ${gearRecord.charges}`);
+	} else if (moraleRequirement > 0) {
+		descriptionTexts.push(`${italic("Morale Required")}: ${moraleRequirement}`);
+	} else if (pactCost) {
+		// Game Design: do not calculate Pact Cost for the current context; that should be player responsibility
+		descriptionTexts.push(`${italic("Pact Cost")}: ${pactCost[1].replace(/@{pactCost}/g, pactCost[0])}`);
+	} else {
+		const cooldown = getGearProperty(gearName, "cooldown");
+		descriptionTexts.push(`${italic("Cooldown")}: ${cooldown} Round${cooldown === 1 ? "" : "s"}`);
+	}
+	getGearProperty(gearName, "descriptions").forEach(([type, description]) => {
+		if (type === "use") {
+			let totalStagger = getGearProperty(gearName, "stagger") ?? 0;
+			if (gearName === "Floating Mist Punch") {
+				totalStagger += 3 * holder.getModifierStacks("Floating Mist Stance");
+			}
+			if (getGearProperty(gearName, "element") === holder.element || gearName === "Iron Fist Punch") {
+				const targetingTags = getGearProperty(gearName, "targetingTags");
+				if (targetingTags) {
+					switch (targetingTags.team) {
+						case "ally":
+							totalStagger -= 1;
+							break;
+						case "foe":
+							totalStagger += 2;
+							break;
+						case "any":
+							totalStagger = "+2 or -1";
+							break;
+					}
 				}
 			}
+			descriptionTexts.push(`${italic(`${totalStagger} Stagger`)}: ${description}`);
+		} else if (!["upgradeDiff"].includes(type)) {
+			descriptionTexts.push(`${italic(type)}: ${description}`);
 		}
-	}
-	let text = "";
-	const cooldown = getGearProperty(gearName, "cooldown");
-	if (buildFullDescription) {
-		const descriptionTexts = getGearProperty(gearName, "descriptions").map(([type, description]) => {
-			if (type === "use") {
-				return `${italic(`${totalStagger} Stagger`)}: ${description}`;
-			} else if (!["upgradeDiff"].includes(type)) {
-				return `${italic(type)}: ${description}`;
-			}
-		});
-		if (cooldown > 0) {
-			descriptionTexts.push(`${italic("Cooldown")}: ${cooldown} Round${cooldown === 1 ? "" : "s"}`);
-		}
-		text = descriptionTexts.join("\n");
-	} else {
-		// these descriptions get used in select option sets, which don't support markdown
-		const descriptionTexts = [];
-		getGearProperty(gearName, "descriptions").forEach(([type, description]) => {
-			if (type === "use") {
-				descriptionTexts.push(`${totalStagger} Stagger: ${description}`);
-			} else if (type !== "Critical💥") {
-				descriptionTexts.push(`${type}: ${description}`);
-			}
-		});
-		if (cooldown > 0) {
-			descriptionTexts.push(`Cooldown: ${cooldown} Round${cooldown === 1 ? "" : "s"}`);
-		}
-		text = descriptionTexts.join(". ");
-	}
+	});
+	let text = descriptionTexts.join("\n");
 
 	let damage = getGearProperty(gearName, "damage");
 	if (damage !== undefined) {
-		if (holder) {
-			damage += holder.getPower();
-			if (gearName === "Iron Fist Punch") {
-				damage += 45 * holder.getModifierStacks("Iron Fist Stance");
-			}
-			text = text.replace(/@{damage}/g, `[${Math.floor(Math.min(damage, holder.getDamageCap()))}]`);
-		} else {
-			text = text.replace(/@{damage}/g, `(${damage} + power)`);
+		damage += holder.getPower();
+		if (gearName === "Iron Fist Punch") {
+			damage += 45 * holder.getModifierStacks("Iron Fist Stance");
 		}
+		text = text.replace(/@{damage}/g, `[${Math.floor(Math.min(damage, holder.getDamageCap()))}]`);
 	}
 
-	if (holder) {
-		text = text.replace(/@{bonusSpeed}/g, `[${Math.max(0, holder.getSpeed(true) - 100)}]`);
-	} else {
-		text = text.replace(/@{bonusSpeed}/g, "(speed over 100)");
-	}
+	text = text.replace(/@{bonusSpeed}/g, `[${Math.max(0, holder.getSpeed(true) - 100)}]`);
 
 	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.element : null);
 }
@@ -372,7 +391,6 @@ function injectGearStats(text, gearName, elementOverride) {
 		.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
 		.replace(/@{bonus2}/g, getGearProperty(gearName, "bonus2"))
 		.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
-		.replace(/@{hpCost}/g, getGearProperty(gearName, "hpCost"))
 		.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
 		.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
 		.replace(/@{power}/g, getGearProperty(gearName, "power"))
@@ -387,5 +405,6 @@ module.exports = {
 	getGearProperty,
 	buildGearRecord,
 	buildGearDescription,
+	buildGearDescriptionWithHolderStats,
 	injectGearStats
 };

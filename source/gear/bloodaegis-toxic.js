@@ -5,15 +5,15 @@ const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
 module.exports = new GearTemplate("Toxic Blood Aegis",
 	[
-		["use", "Pay @{hpCost} HP; gain @{protection} protection, inflict @{mod0Stacks} @{mod0} on a foe and intercept their move"],
+		["use", "Gain @{protection} protection, inflict @{mod0Stacks} @{mod0} on a foe and intercept their move"],
 		["Critical💥", "Protection x@{critMultiplier}"]
 	],
 	"Pact",
 	"Darkness",
 	350,
 	([target], user, adventure) => {
-		const { element, modifiers: [poison], protection, critMultiplier, hpCost } = module.exports;
-		const paymentSentence = payHP(user, hpCost, adventure);
+		const { element, modifiers: [poison], protection, critMultiplier, pactCost: [pactCostValue] } = module.exports;
+		const paymentSentence = payHP(user, pactCostValue, adventure);
 		if (adventure.lives < 1) {
 			return [paymentSentence];
 		}
@@ -40,5 +40,5 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Charging Blood Aegis", "Reinforced Blood Aegis")
 	.setModifiers({ name: "Poison", stacks: 3 })
-	.setHPCost(25)
+	.setPactCost([25, "@{pactCost} HP"])
 	.setProtection(125);
