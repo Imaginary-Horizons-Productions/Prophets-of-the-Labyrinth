@@ -6,7 +6,7 @@ class GearTemplate {
 	/** This read-only data class defines stats for a piece of gear
 	 * @param {string} nameInput
 	 * @param {[type: "Requirement" | "Passive" | "use" | "Critical💥", description: string][]} descriptionTuples
-	 * @param {"Weapon" | "Armor" | "Spell" | "Pact" | "Trinket" | "Technique" | "Action"} categoryInput
+	 * @param {"Offense" | "Defense" | "Support" | "Adventuring" | "Spell" | "Pact" | "Maneuver" | "Trinket" | "Action"} categoryInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementInput
 	 * @param {number} costInput
 	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} effectInput

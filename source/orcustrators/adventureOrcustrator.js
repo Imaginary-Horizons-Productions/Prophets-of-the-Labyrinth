@@ -911,7 +911,7 @@ function gearUpkeep(moveName, index, user, adventure) {
 		const gearCategory = getGearProperty(moveName, "category");
 
 		let cdReduction = 0;
-		if (gearCategory === "Weapon") {
+		if (gearCategory === "Offense") {
 			const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");
 			if (weaponPolishCount > 0) {
 				const chargeSaveChance = 1 - 0.85 ** weaponPolishCount;
