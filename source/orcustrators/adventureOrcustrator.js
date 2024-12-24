@@ -723,12 +723,6 @@ function newRound(adventure, thread, lastRoundText) {
 						}
 					}
 				}
-
-				// Persisting Round Effects
-				const floatingMistStacks = combatant.getModifierStacks("Floating Mist Stance");
-				if (floatingMistStacks > 0) {
-					addModifier([combatant], { name: "Evade", stacks: floatingMistStacks });
-				}
 			})
 	}
 
@@ -913,7 +907,7 @@ function resolveMove(move, adventure) {
  * @param {Adventure} adventure
  */
 function gearUpkeep(moveName, index, user, adventure) {
-	if (!["Punch", "Floating Mist Punch", "Iron Fist Punch", "Appease", "Greed"].includes(moveName) && user.team === "delver") {
+	if (!["Punch", "Appease", "Greed"].includes(moveName) && user.team === "delver") {
 		const gear = user.gear[index];
 		const gearCategory = getGearProperty(moveName, "category");
 
@@ -1038,13 +1032,7 @@ function endRound(adventure, thread) {
 				}
 			}
 		} else {
-			let staggerChange = -1;
-			if (combatant.getModifierStacks("Paralysis") > 0) {
-				staggerChange = 1;
-			} else if (combatant.getModifierStacks("Agility") > 0) {
-				staggerChange = -2;
-			}
-			changeStagger([combatant], null, staggerChange);
+			changeStagger([combatant], null, -1);
 		}
 
 		// Decrement Modifiers

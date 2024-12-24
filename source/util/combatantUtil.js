@@ -183,33 +183,26 @@ function gainHealth(combatant, healing, adventure, source) {
  * @param {object} modifierData
  * @param {string} modifierData.name
  * @param {number} modifierData.stacks removes all if not parsable to an integer
- * @param {boolean} modifierData.force whether to ignore the Oblivious check
  */
-function addModifier(combatants, { name: modifier, stacks: pendingStacks, force = false }) {
+function addModifier(combatants, { name: modifier, stacks: pendingStacks }) {
 	const receipts = [];
 	for (const combatant of combatants) {
-		// Oblivious only blocks buffs and debuffs
-		if (force || !("Oblivious" in combatant.modifiers && getModifierCategory(modifier) !== "State")) {
-			const inverse = getInverse(modifier);
-			const inverseStacks = combatant.modifiers[inverse];
-			if (inverseStacks) {
-				removeModifier([combatant], { name: inverse, stacks: pendingStacks, force: true });
-				if (inverseStacks < pendingStacks) {
-					combatant.modifiers[modifier] = pendingStacks - inverseStacks;
-				}
-			} else {
-				if (combatant.modifiers[modifier]) {
-					combatant.modifiers[modifier] += pendingStacks;
-				} else {
-					combatant.modifiers[modifier] = pendingStacks;
-				}
+		const inverse = getInverse(modifier);
+		const inverseStacks = combatant.modifiers[inverse];
+		if (inverseStacks) {
+			removeModifier([combatant], { name: inverse, stacks: pendingStacks });
+			if (inverseStacks < pendingStacks) {
+				combatant.modifiers[modifier] = pendingStacks - inverseStacks;
 			}
-
-			receipts.push(new ModifierReceipt(combatant.name, "add", [getApplicationEmojiMarkdown(modifier)], []));
 		} else {
-			removeModifier([combatant], { name: "Oblivious", stacks: 1, force: true });
-			receipts.push(new ModifierReceipt(combatant.name, "add", [], [getApplicationEmojiMarkdown(modifier)]));
+			if (combatant.modifiers[modifier]) {
+				combatant.modifiers[modifier] += pendingStacks;
+			} else {
+				combatant.modifiers[modifier] = pendingStacks;
+			}
 		}
+
+		receipts.push(new ModifierReceipt(combatant.name, "add", [getApplicationEmojiMarkdown(modifier)], []));
 	}
 	return receipts;
 }
@@ -219,44 +212,21 @@ function addModifier(combatants, { name: modifier, stacks: pendingStacks, force 
  * @param {object} modifierData
  * @param {string} modifierData.name
  * @param {number} modifierData.stacks removes all if not parsable to an integer
- * @param {boolean} modifierData.force whether to ignore the Retain check (eg buffs/debuffs consuming themselves)
  */
-function removeModifier(combatants, { name: modifier, stacks, force = false }) {
+function removeModifier(combatants, { name: modifier, stacks }) {
 	const receipts = [];
 	for (const combatant of combatants) {
-		// Retain only protects buffs and debuffs
-		if (force || !("Retain" in combatant.modifiers && getModifierCategory(modifier) !== "State")) {
-			const didHaveModifier = modifier in combatant.modifiers;
-			if (isNaN(parseInt(stacks)) || stacks >= combatant.modifiers[modifier]) {
-				delete combatant.modifiers[modifier];
-			} else if (modifier in combatant.modifiers) {
-				combatant.modifiers[modifier] -= stacks;
-			}
-			if (didHaveModifier) {
-				receipts.push(new ModifierReceipt(combatant.name, "remove", [getApplicationEmojiMarkdown(modifier)], []));
-			}
-		} else {
-			removeModifier([combatant], { name: "Retain", stacks: 1, force: true });
-			receipts.push(new ModifierReceipt(combatant.name, "remove", [], [getApplicationEmojiMarkdown(modifier)]))
+		const didHaveModifier = modifier in combatant.modifiers;
+		if (isNaN(parseInt(stacks)) || stacks >= combatant.modifiers[modifier]) {
+			delete combatant.modifiers[modifier];
+		} else if (modifier in combatant.modifiers) {
+			combatant.modifiers[modifier] -= stacks;
+		}
+		if (didHaveModifier) {
+			receipts.push(new ModifierReceipt(combatant.name, "remove", [getApplicationEmojiMarkdown(modifier)], []));
 		}
 	}
 	return receipts;
-}
-
-const ALL_STANCES = ["Iron Fist Stance", "Floating Mist Stance"];
-
-/** Exits all stances aside from the given one, then adds the given stance
- * @param {Combatant} combatant
- * @param {{name: "Iron Fist Stance" | "Floating Mist Stance", stacks: number}} stanceModifier
- */
-function enterStance(combatant, stanceModifier) {
-	const receipts = [];
-	ALL_STANCES.filter(stanceToCheck => stanceToCheck !== stanceModifier.name).forEach(stanceToRemove => {
-		if (stanceToRemove in combatant.modifiers) {
-			receipts.push(...removeModifier([combatant], { name: stanceToRemove, stacks: "all", force: true }));
-		}
-	});
-	return receipts.concat(addModifier([combatant], stanceModifier));
 }
 
 /**  Consolidation convention set by game design as "name then modifier set" to minimize the number of lines required to describe all changes to a specific combatant
@@ -283,7 +253,7 @@ function combineModifierReceipts(receipts) {
 		const heldReceipt = receipts[i];
 		for (let j = i + 1; j < receipts.length; j++) {
 			const checkingReceipt = receipts[j];
-			if (heldReceipt.type === checkingReceipt.type && areSetContentsCongruent(heldReceipt.succeeded, checkingReceipt.succeeded) && areSetContentsCongruent(heldReceipt.failed, checkingReceipt.failed)) {
+			if (heldReceipt.type === checkingReceipt.type && areSetContentsCongruent(heldReceipt.succeeded, checkingReceipt.succeeded)) {
 				heldReceipt.combineCombatantNames(checkingReceipt);
 				receipts.splice(j, 1);
 				j--;
@@ -293,9 +263,7 @@ function combineModifierReceipts(receipts) {
 	return receipts;
 }
 
-/**
- * @param {ModifierReceipt[]} receipts
- */
+/** @param {ModifierReceipt[]} receipts */
 function generateModifierResultLines(receipts) {
 	const resultLines = [];
 	for (const receipt of receipts) {
@@ -306,13 +274,6 @@ function generateModifierResultLines(receipts) {
 					addedFragments.push(`gain ${[...receipt.succeeded].join("")}`);
 				} else {
 					addedFragments.push(`gains ${[...receipt.succeeded].join("")}`);
-				}
-			}
-			if (receipt.failed.size > 0) {
-				if (receipt.combatantNames.size > 1) {
-					addedFragments.push(`were oblivious to ${[...receipt.failed].join("")}`);
-				} else {
-					addedFragments.push(`was oblivious to ${[...receipt.failed].join("")}`);
 				}
 			}
 
@@ -326,13 +287,6 @@ function generateModifierResultLines(receipts) {
 					removedFragments.push(`lose ${[...receipt.succeeded].join("")}`);
 				} else {
 					removedFragments.push(`loses ${[...receipt.succeeded].join("")}`);
-				}
-			}
-			if (receipt.failed.size > 0) {
-				if (receipt.combatantNames.size > 1) {
-					removedFragments.push(`retain ${[...receipt.failed].join("")}`);
-				} else {
-					removedFragments.push(`retains ${[...receipt.failed].join("")}`);
 				}
 			}
 
@@ -409,7 +363,6 @@ module.exports = {
 	gainHealth,
 	addModifier,
 	removeModifier,
-	enterStance,
 	combineModifierReceipts,
 	generateModifierResultLines,
 	changeStagger,

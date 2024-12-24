@@ -400,13 +400,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
-	if (delver.getModifierStacks("Iron Fist Stance") > 0) {
-		embed.addFields({ name: "Iron Fist Punch", value: buildGearDescriptionWithHolderStats("Iron Fist Punch", null, delver) });
-	} else if (delver.getModifierStacks("Floating Mist Stance") > 0) {
-		embed.addFields({ name: "Floating Mist Punch", value: buildGearDescriptionWithHolderStats("Floating Mist Punch", null, delver) });
-	} else {
-		embed.addFields({ name: "Punch", value: buildGearDescriptionWithHolderStats("Punch", null, delver) });
-	}
+	embed.addFields({ name: "Punch", value: buildGearDescriptionWithHolderStats("Punch", null, delver) });
 	for (let index = 0; index < Math.min(Math.max(delver.gear.length, gearCapacity), MAX_EMBED_FIELD_COUNT); index++) {
 		if (delver.gear[index]) {
 			const gearName = delver.gear[index].name;

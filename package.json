@@ -3,6 +3,7 @@
 		"start": "node index.js prod",
 		"start:dev": "node source/scripts/uploadCommandsToTestGuild.js && node index.js",
 		"clearCommands": "node source/scripts/clearCommands.js",
+		"clearApplicationEmoji": "node source/scripts/clearApplicationEmoji.js",
 		"initialize": "npm ci && node source/scripts/initialize"
 	},
 	"dependencies": {

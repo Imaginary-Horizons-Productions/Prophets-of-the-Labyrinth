@@ -29,12 +29,6 @@ Gain an extra level at the end of combat on kill
 **Available on**
 - Air Blades (Wind)
 
-### Agile
-Add Agility to user
-
-**Available on**
-- Floating Mist Stance (Light)
-
 ### Awesome
 Bonus damage if target is Stunned
 
@@ -77,7 +71,6 @@ Reduced cooldown
 - all Air Blades (Wind)
 - Censer (Fire)
 - Herb Basket (Earth)
-- Iron Fist Stance (Light)
 - Risky Mixture (Darkness)
 
 ### Charging
@@ -118,7 +111,6 @@ Can apply to allies
 - Buckler (Light)
 - Barrier (Wind)
 - Carrot (Earth)
-- Floating Mist Stance (Light)
 - Omamori (Water)
 
 ### Discounted
@@ -259,7 +251,6 @@ Add Lucky to the user
 **Available on**
 - all Omamori (Water)
 - Carrot (Earth)
-- Iron Fist Stance (Light)
 - Scutum (Fire)
 - Second Wind (Unaligned)
 
@@ -382,7 +373,6 @@ Adds Regen to target
 
 **Available on**
 - all Infinite Regenerations (Fire)
-- Floating Mist Stance (Light)
 - Medicine (Water)
 - Midas Staff (Water)
 - Second Wind (Unaligned)
@@ -539,8 +529,6 @@ Increases stats gained by level up
 - Wolf Ring (Unaligned)
 
 ## Unnamed Variants
-- Adds Floating Mist Stance to user (all Floating Mist Stances)
-- Adds Iron Fist Stance to user (all Iron Fist Stances)
 - Adds Empowerment to target (all Inspiration)
 - Also hits targets with Distracted (all War Cries)
 - Also hits allies with Vigilance (planned)

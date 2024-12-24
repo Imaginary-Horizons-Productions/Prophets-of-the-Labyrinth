@@ -13,8 +13,6 @@ for (const file of [
 	"_appease.js",
 	"_greed.js",
 	"_punch-base.js",
-	"_punch-floatingmist.js",
-	"_punch-ironfist.js",
 	"abacus-base.js",
 	"abacus-sharpened.js",
 	"abacus-thiefs.js",
@@ -85,10 +83,6 @@ for (const file of [
 	"firecracker-double.js",
 	"firecracker-midass.js",
 	"firecracker-toxic.js",
-	"floatingmiststance-agile.js",
-	"floatingmiststance-base.js",
-	"floatingmiststance-devoted.js",
-	"floatingmiststance-soothing.js",
 	"goadfutility-base.js",
 	"goadfutility-flanking.js",
 	"goadfutility-poised.js",
@@ -113,10 +107,6 @@ for (const file of [
 	"inspiration-guarding.js",
 	"inspiration-soothing.js",
 	"inspiration-sweeping.js",
-	"ironfiststance-accurate.js",
-	"ironfiststance-base.js",
-	"ironfiststance-chaining.js",
-	"ironfiststance-lucky.js",
 	"lance-base.js",
 	"lance-duelists.js",
 	"lance-shattering.js",
@@ -335,10 +325,7 @@ function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
 	getGearProperty(gearName, "descriptions").forEach(([type, description]) => {
 		if (type === "use") {
 			let totalStagger = getGearProperty(gearName, "stagger") ?? 0;
-			if (gearName === "Floating Mist Punch") {
-				totalStagger += 3 * holder.getModifierStacks("Floating Mist Stance");
-			}
-			if (getGearProperty(gearName, "essence") === holder.essence || gearName === "Iron Fist Punch") {
+			if (getGearProperty(gearName, "essence") === holder.essence) {
 				const targetingTags = getGearProperty(gearName, "targetingTags");
 				if (targetingTags) {
 					switch (targetingTags.team) {
@@ -364,34 +351,26 @@ function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
 	let damage = getGearProperty(gearName, "damage");
 	if (damage !== undefined) {
 		damage += holder.getPower();
-		if (gearName === "Iron Fist Punch") {
-			damage += 45 * holder.getModifierStacks("Iron Fist Stance");
-		}
 		text = text.replace(/@{damage}/g, `[${Math.floor(Math.min(damage, holder.getDamageCap()))}]`);
 	}
 
 	text = text.replace(/@{bonusSpeed}/g, `[${Math.max(0, holder.getSpeed(true) - 100)}]`);
 
-	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.essence : null);
+	return injectGearStats(text, gearName);
 }
 
 /**
  * @param {string} text
  * @param {string} gearName
- * @param {string | null} essenceOverride
  */
-function injectGearStats(text, gearName, essenceOverride) {
+function injectGearStats(text, gearName) {
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 		if (!modifier.name.startsWith("unparsed")) {
 			text = text.replace(new RegExp(`@{mod${index}}`, "g"), getApplicationEmojiMarkdown(modifier.name));
 		}
 		text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 	})
-	if (essenceOverride) {
-		text = text.replace(/@{essence}/g, getEmoji(essenceOverride))
-	} else {
-		text = text.replace(/@{essence}/g, getEmoji(getGearProperty(gearName, "essence")))
-	}
+	text = text.replace(/@{essence}/g, getEmoji(getGearProperty(gearName, "essence")))
 	return calculateTagContent(text, [
 		"critMultiplier",
 		"bonus",

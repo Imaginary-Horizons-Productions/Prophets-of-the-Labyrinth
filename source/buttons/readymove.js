@@ -57,19 +57,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		});
 		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
-			if (delver.getModifierStacks("Floating Mist Stance") > 0) {
-				usableMoves.unshift({ name: "Floating Mist Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
-			} else if (delver.getModifierStacks("Iron Fist Stance") > 0) {
-				usableMoves.unshift({ name: "Iron Fist Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
-			} else {
-				usableMoves.unshift({ name: "Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
-			}
+			usableMoves.unshift({ name: "Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
 		}
 		for (let i = 0; i < usableMoves.length; i++) {
 			const { name: gearName, charges, cooldown, gearIndex } = usableMoves[i];
 			const isOnCD = Boolean(cooldown) && (cooldown > 0);
 			const { type, team } = getGearProperty(gearName, "targetingTags");
-			const essenceEmoji = getEmoji(gearName === "Iron Fist Punch" ? delver.essence : getGearProperty(gearName, "essence"));
+			const essenceEmoji = getGearProperty(gearName, "essence");
 			if (type === "single" || type.startsWith("blast")) {
 				// Select Menu
 				let targetOptions = [];

@@ -1,13 +1,14 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
+const { changeStagger } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Flexigrass",
-	"Grants the user 4 @e{Agility}",
+	"Relieve 4 Stagger on the user",
 	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {
-		return generateModifierResultLines(addModifier([user], { name: "Agility", stacks: 4 }));
+		changeStagger([user], null, 4);
+		return `${user.name} is relieved of some Stagger.`;
 	}
 );
