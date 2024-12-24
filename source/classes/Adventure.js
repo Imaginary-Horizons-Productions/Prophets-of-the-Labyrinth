@@ -441,7 +441,7 @@ class Enemy extends Combatant {
 	}
 
 	getPower() {
-		return Math.floor(this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down"));
+		return Math.floor(this.power + this.getModifierStacks("Empowerment") - this.getModifierStacks("Disempowerment"));
 	}
 
 	/** @param {boolean} includeRoundSpeed */
@@ -469,8 +469,9 @@ class Enemy extends Combatant {
 		return Math.floor(this.poise);
 	}
 
+	/** Game Design: no damage cap for enemies to avoid accidental capping */
 	getDamageCap() {
-		return 450 + (this.level * 50) + this.getModifierStacks("Power Up");
+		return Infinity;
 	}
 };
 

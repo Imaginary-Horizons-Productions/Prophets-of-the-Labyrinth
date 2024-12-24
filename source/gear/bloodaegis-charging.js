@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 	"Darkness",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [powerUp], protection, critMultiplier, pactCost: [pactCostValue] } = module.exports;
+		const { essence, modifiers: [empowerment], protection, critMultiplier, pactCost: [pactCostValue] } = module.exports;
 		const paymentSentence = payHP(user, pactCostValue, adventure);
 		if (adventure.lives < 1) {
 			return [paymentSentence];
@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection([user], pendingProtection);
-		resultLines.push(...generateModifierResultLines(addModifier([user], powerUp)));
+		resultLines.push(...generateModifierResultLines(addModifier([user], empowerment)));
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
@@ -36,6 +36,6 @@ module.exports = new GearTemplate("Charging Blood Aegis",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Reinforced Blood Aegis", "Toxic Blood Aegis")
-	.setModifiers({ name: "Power Up", stacks: 25 })
+	.setModifiers({ name: "Empowerment", stacks: 25 })
 	.setPactCost([25, "@{pactCost} HP"])
 	.setProtection(125);

@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 	"Earth",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [powerUp], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [empowerment], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -20,13 +20,13 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 			pendingDamage *= critMultiplier;
 		}
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(
-			generateModifierResultLines(addModifier([user], powerUp)),
-			payHP(user, user.getModifierStacks("Power Up"), adventure)
+			generateModifierResultLines(addModifier([user], empowerment)),
+			payHP(user, user.getModifierStacks("Empowerment"), adventure)
 		);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Hunter's Certain Victory", "Reckless Certain Victory")
-	.setModifiers({ name: "Power Up", stacks: 25 })
+	.setModifiers({ name: "Empowerment", stacks: 25 })
 	.setDamage(40)
 	.setCritMultiplier(3)
-	.setPactCost([1, "Pay HP for your Power Up after the move"]);
+	.setPactCost([1, "Pay HP for your Empowerment after the move"]);

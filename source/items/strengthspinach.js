@@ -3,11 +3,11 @@ const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Strength Spinach",
-	"Grants the user 50 @e{Power Up}",
+	"Grants the user 50 @e{Empowerment}",
 	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {
-		return generateModifierResultLines(addModifier([user], { name: "Power Up", stacks: 50 }));
+		return generateModifierResultLines(addModifier([user], { name: "Empowerment", stacks: 50 }));
 	}
 ).setFlavorText({ name: "*Additional Notes*", value: "*It does what it says on the tin.*" });

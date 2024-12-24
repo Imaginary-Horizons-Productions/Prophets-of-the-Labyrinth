@@ -29,6 +29,6 @@ module.exports = new GearTemplate("Fatiguing Corrosion",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Fate-Sealing Corrosion", "Shattering Corrosion")
-	.setModifiers({ name: "Power Down", stacks: 20 }, { name: "Ineffectual", stacks: 2 })
+	.setModifiers({ name: "Disempowerment", stacks: 20 }, { name: "Ineffectual", stacks: 2 })
 	.setBonus(2) // Crit Stagger
 	.setCharges(15);

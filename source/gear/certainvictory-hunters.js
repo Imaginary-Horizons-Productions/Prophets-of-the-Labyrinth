@@ -11,9 +11,9 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [powerUp, huntersPowerUp], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [empowerment, huntersEmpowerment], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		const pendingPowerUp = { ...powerUp };
+		const pendingEmpowerment = { ...empowerment };
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -22,12 +22,12 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
 		if (target.hp < 1) {
-			pendingPowerUp.stacks += huntersPowerUp.stacks;
+			pendingEmpowerment.stacks += huntersEmpowerment.stacks;
 		}
-		return resultLines.concat(generateModifierResultLines(addModifier([user], powerUp)), payHP(user, user.getModifierStacks("Power Up"), adventure));
+		return resultLines.concat(generateModifierResultLines(addModifier([user], empowerment)), payHP(user, user.getModifierStacks("Empowerment"), adventure));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")
-	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Power Up", stacks: 30 })
+	.setModifiers({ name: "Empowerment", stacks: 25 }, { name: "Empowerment", stacks: 30 })
 	.setDamage(40)
-	.setPactCost([1, "Pay HP for your Power Up after the move"]);
+	.setPactCost([1, "Pay HP for your Empowerment after the move"]);

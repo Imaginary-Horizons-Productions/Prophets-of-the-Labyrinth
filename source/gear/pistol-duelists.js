@@ -12,7 +12,7 @@ module.exports = new GearTemplate(gearName,
 	"Unaligned",
 	350,
 	([target], user, adventure) => {
-		const { damage, bonus, critMultiplier, essence, modifiers: [powerUp] } = module.exports;
+		const { damage, bonus, critMultiplier, essence, modifiers: [empowerment] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const targetIndex = adventure.getCombatantIndex(target);
 		const userIndex = adventure.getCombatantIndex(user);
@@ -29,19 +29,19 @@ module.exports = new GearTemplate(gearName,
 		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
 		if (getCombatantCounters(target).includes(essence)) {
 			const inducedVulnerabilityCount = Object.keys(target.modifiers).filter(modifier => modifier.endsWith("Vulnerability")).length;
-			const pendingPowerUp = { name: "Power Up", stacks: Math.floor(powerUp.stacks / inducedVulnerabilityCount) };
+			const pendingEmpowerment = { name: "Empowerment", stacks: Math.floor(empowerment.stacks / inducedVulnerabilityCount) };
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			const selectedAllies = [];
 			for (let i = 0; i < user.roundRns[`${gearName}${SAFE_DELIMITER}allies`].length; i++) {
 				selectedAllies.push(allyTeam[user.roundRns[`${gearName}${SAFE_DELIMITER}allies`][i] % allyTeam.length]);
 			}
-			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(selectedAllies, pendingPowerUp))));
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(selectedAllies, pendingEmpowerment))));
 		}
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Double Pistol", "Flanking Pistol")
-	.setModifiers({ name: "Power Up", stacks: 30 })
+	.setModifiers({ name: "Empowerment", stacks: 30 })
 	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(75)

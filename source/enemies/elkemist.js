@@ -40,10 +40,10 @@ module.exports = new EnemyTemplate("Elkemist",
 }).addAction({
 	name: "Trouble",
 	essence: "Water",
-	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from @e{Power Up}) and gain a small amount of @e{Progress}`,
+	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from @e{Empowerment}) and gain a small amount of @e{Progress}`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		let damage = user.getPower() + 75 + user.getModifierStacks("Power Up");
+		let damage = user.getPower() + 75 + user.getModifierStacks("Empowerment");
 		if (user.crit) {
 			damage *= 2;
 		}
@@ -108,7 +108,7 @@ module.exports = new EnemyTemplate("Elkemist",
 	selector: selectAllFoes,
 	next: "random",
 	rnConfig: { "progress": { base: 0, crit: 15, random: 15 } }
-}).setFlavorText({ name: "Progress", value: `Each time the Elkemist reaches 100 @e{Progress}, it'll gain a large amount of @e{Power Up}. Stun the Elkemist to reduce its @e{Progress}.` });
+}).setFlavorText({ name: "Progress", value: `Each time the Elkemist reaches 100 @e{Progress}, it'll gain a large amount of @e{Empowerment} and @e{Excellence}. Stun the Elkemist to reduce its @e{Progress}.` });
 
 /**
  * @param {Enemy} elkemist
@@ -118,8 +118,9 @@ module.exports = new EnemyTemplate("Elkemist",
 function progressCheck(elkemist, wrappedProgressReceipt, resultLines) {
 	if (elkemist.getModifierStacks("Progress") >= 100) {
 		elkemist.modifiers.Progress = 0;
-		addModifier([elkemist], { name: "Power Up", stacks: 100, force: false });
-		resultLines.push(`Eureka! ${elkemist.name}'s ${getApplicationEmojiMarkdown("Progress")} yields ${getApplicationEmojiMarkdown("Power Up")}!`);
+		addModifier([elkemist], { name: "Empowerment", stacks: 100, force: false });
+		addModifier([elkemist], { name: "Excellence", stacks: 5, force: false });
+		resultLines.push(`Eureka! ${elkemist.name}'s ${getApplicationEmojiMarkdown("Progress")} yields ${getApplicationEmojiMarkdown("Empowerment")}!`);
 	} else {
 		resultLines.push(...generateModifierResultLines(wrappedProgressReceipt));
 	}

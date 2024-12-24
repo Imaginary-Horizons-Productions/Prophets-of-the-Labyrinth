@@ -32,7 +32,7 @@ const potlTips = [
 	"Gear that matches your essence relieves 1 Stagger for allies.",
 	"Gear that matches your essence inflicts 2 Stagger on foes.",
 	"Combatant speed varies every round.",
-	"Damage is capped to 500 in one attack without any Power Up.",
+	"Damage is capped to 199 in one attack without any Excellence.",
 	"Check party status even when there isn't a button for it with '/adventure party-stats'!",
 	"Check your hp and gear even when there isn't a button for it with '/adventure inspect-self'!",
 	"Combatants shrug off 1 Stagger each round by default.",

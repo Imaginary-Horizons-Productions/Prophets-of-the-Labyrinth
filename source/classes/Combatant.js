@@ -1,5 +1,3 @@
-const { SURPASSING_VALUE } = require("../constants");
-
 class Combatant {
 	/**
 	 * @param {string} nameInput
@@ -101,7 +99,7 @@ class Delver extends Combatant {
 	}
 
 	getPower() {
-		return Math.floor(this.power * (1 + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down") + this.gear.reduce((totalPower, gear) => {
+		return Math.floor(this.power * (1 + this.getModifierStacks("Empowerment") - this.getModifierStacks("Disempowerment") + this.gear.reduce((totalPower, gear) => {
 			if (parseInt(gear.power)) {
 				return totalPower + gear.power;
 			} else {
@@ -148,9 +146,9 @@ class Delver extends Combatant {
 		return Math.floor(this.getMaxHP() / 50);
 	}
 
+	/** Game Design: constrain damage cap increases to multiples of 10, so a damage number ending in 9 can be a more reliable tell of hitting damage cap */
 	getDamageCap() {
-		const capBoostFromGear = SURPASSING_VALUE * this.gear.reduce((surpassingCount, gear) => gear.name.startsWith("Surpassing") ? surpassingCount + 1 : surpassingCount, 0);
-		return 450 + (this.level * 50) + this.getModifierStacks("Power Up") + capBoostFromGear;
+		return 179 + 20 * (this.level + this.getModifierStacks("Excellence") - this.getModifierStacks("Degredation"));
 	}
 }
 

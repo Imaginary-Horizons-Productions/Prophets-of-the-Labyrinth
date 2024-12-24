@@ -7,9 +7,9 @@ module.exports = new GearTemplate("Greed",
 	"Unaligned",
 	0,
 	(targets, user, adventure) => {
-		const { modifiers: [midas, powerUp] } = module.exports;
+		const { modifiers: [midas, empowerment] } = module.exports;
 		const affectedTargets = targets.filter(target => target.archetype === "Treasure Elemental");
-		return generateModifierResultLines(combineModifierReceipts(addModifier(affectedTargets, powerUp).concat(addModifier(affectedTargets, midas))));
+		return generateModifierResultLines(combineModifierReceipts(addModifier(affectedTargets, empowerment).concat(addModifier(affectedTargets, midas))));
 	}
 ).setTargetingTags({ type: "all", team: "foe" })
-	.setModifiers({ name: "Curse of Midas", stacks: 1 }, { name: "Power Up", stacks: 20 });
+	.setModifiers({ name: "Curse of Midas", stacks: 1 }, { name: "Empowerment", stacks: 20 });

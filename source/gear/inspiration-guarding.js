@@ -12,20 +12,20 @@ module.exports = new GearTemplate("Guarding Inspiration",
 	"Wind",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [powerUp], bonus, protection } = module.exports;
-		const pendingPowerUp = { ...powerUp };
+		const { essence, modifiers: [empowerment], bonus, protection } = module.exports;
+		const pendingEmpowerment = { ...empowerment };
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
-			pendingPowerUp.stacks += bonus;
+			pendingEmpowerment.stacks += bonus;
 		}
 		addProtection(targets, protection);
-		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."), ...generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPowerUp)))];
+		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."), ...generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingEmpowerment)))];
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Soothing Inspiration", "Sweeping Inspiration")
-	.setModifiers({ name: "Power Up", stacks: 25 })
-	.setBonus(25) // Power Up stacks
+	.setModifiers({ name: "Empowerment", stacks: 25 })
+	.setBonus(25) // Empowerment stacks
 	.setProtection(25)
 	.setCharges(10);

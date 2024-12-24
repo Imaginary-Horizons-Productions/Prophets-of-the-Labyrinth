@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Accelerating Buckler",
 	"Light",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [powerUp], protection, critMultiplier } = module.exports;
+		const { essence, modifiers: [quicken], protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Accelerating Buckler",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection(targets, pendingProtection);
-		return [joinAsStatement(false, [user, ...targets].map(combatant => combatant.name), "gains", "gain", "protection."), ...generateModifierResultLines(addModifier([user], powerUp))];
+		return [joinAsStatement(false, [user, ...targets].map(combatant => combatant.name), "gains", "gain", "protection."), ...generateModifierResultLines(addModifier([user], quicken))];
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Devoted Buckler", "Guarding Buckler")

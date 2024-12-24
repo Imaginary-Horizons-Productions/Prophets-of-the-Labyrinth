@@ -81,7 +81,7 @@ Reduced cooldown
 - Risky Mixture (Darkness)
 
 ### Charging
-Adds Power Up to the user
+Adds Empowerment to the user
 
 **Available on**
 - all Certain Victory (Earth)
@@ -105,7 +105,7 @@ Change target's target to itself
 - all Shoulder Throws (Light)
 
 ### Corrosive
-Adds Power Down to target
+Adds Disempowerment to target
 
 **Available on**
 - all Corrosions (Fire)
@@ -230,7 +230,7 @@ Passively increases the user's Max HP
 - Scarf (Unaligned)
 
 ### Hunter's
-Gain Power Up on kill
+Gain Empowerment on kill
 
 **Available on**
 - Certain Victory (Earth)
@@ -541,8 +541,8 @@ Increases stats gained by level up
 ## Unnamed Variants
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
 - Adds Iron Fist Stance to user (all Iron Fist Stances)
-- Adds Power Up to target (all Inspiration)
+- Adds Empowerment to target (all Inspiration)
 - Also hits targets with Distracted (all War Cries)
 - Also hits allies with Vigilance (planned)
-- Adds Power Up to random ally if Essence Countering (all Pistols)
+- Adds Empowerment to random ally if Essence Countering (all Pistols)
 - Transfers debuffs to target (all Universal Problem Solvers)

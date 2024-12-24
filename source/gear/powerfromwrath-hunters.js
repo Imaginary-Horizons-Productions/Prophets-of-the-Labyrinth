@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 	"Darkness",
 	350,
 	(targets, user, adventure) => {
-		const { essence, damage, pactCost: [pactCostValue], modifiers: [powerUp] } = module.exports;
+		const { essence, damage, pactCost: [pactCostValue], modifiers: [empowerment] } = module.exports;
 		const resultLines = [payHP(user, pactCostValue, adventure)];
 		if (adventure.lives > 0) {
 			const furiousness = 2 - user.hp / user.getMaxHP();
@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 			resultLines.push(...dealDamage(targets, user, pendingDamage, false, essence, adventure));
 			const stillLivingTargets = targets.filter(target => target.hp > 0);
 			if (stillLivingTargets.length < targets.length) {
-				resultLines.push(...generateModifierResultLines(addModifier([user], powerUp)));
+				resultLines.push(...generateModifierResultLines(addModifier([user], empowerment)));
 			}
 		}
 		return resultLines;
@@ -34,4 +34,4 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 	.setSidegrades("Bashing Power from Wrath", "Staggering Power from Wrath")
 	.setPactCost([40, "@{pactCost} HP"])
 	.setDamage(40)
-	.setModifiers({ name: "Power Up", stacks: 15 });
+	.setModifiers({ name: "Empowerment", stacks: 15 });

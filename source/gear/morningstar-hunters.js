@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 	"Light",
 	350,
 	(targets, user, adventure) => {
-		const { essence, stagger, damage, critMultiplier, modifiers: [powerUp] } = module.exports;
+		const { essence, stagger, damage, critMultiplier, modifiers: [empowerment] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let pendingStagger = stagger;
 		if (user.essence === essence) {
@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length < targets.length) {
-			resultLines.push(...generateModifierResultLines(addModifier([user], powerUp)));
+			resultLines.push(...generateModifierResultLines(addModifier([user], empowerment)));
 		}
 		resultLines.push(joinAsStatement(false, stillLivingTargets.map(target => target.name), "was", "were", "Staggered."))
 		return resultLines;
@@ -35,4 +35,4 @@ module.exports = new GearTemplate("Hunter's Morning Star",
 	.setStagger(2)
 	.setCooldown(1)
 	.setDamage(40)
-	.setModifiers({ name: "Power Up", stacks: 15 });
+	.setModifiers({ name: "Empowerment", stacks: 15 });

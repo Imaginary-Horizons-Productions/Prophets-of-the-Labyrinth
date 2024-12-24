@@ -49,10 +49,10 @@ module.exports = new EnemyTemplate("Meteor Knight",
 }).addAction({
 	name: "Freefall Flare-Up",
 	essence: "Unaligned",
-	description: `Grant @e{Power Up} to all combatants (friend and foe); Protects non-delvers on crit`,
+	description: `Grant @e{Empowerment} to all combatants (friend and foe); Protects non-delvers on crit`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Power Up", stacks: 20 })));
+		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Empowerment", stacks: 20 })));
 		if (user.crit) {
 			const livingEnemies = adventure.room.enemies.filter(c => c.hp > 0);
 			addProtection(livingEnemies, 50);

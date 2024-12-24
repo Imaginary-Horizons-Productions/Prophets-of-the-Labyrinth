@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Charging War Cry",
 			targetSet.add(initialTarget.name);
 			targetArray.push(initialTarget);
 		}
-		const { essence, modifiers: [powerup, targetModifier], stagger, bonus } = module.exports;
+		const { essence, modifiers: [empowerment, targetModifier], stagger, bonus } = module.exports;
 		for (const enemy of adventure.room.enemies) {
 			if (enemy.hp > 0 && enemy.getModifierStacks(targetModifier.name) > 0 && !targetSet.has(enemy.name)) {
 				targetSet.add(enemy.name);
@@ -34,11 +34,11 @@ module.exports = new GearTemplate("Charging War Cry",
 			pendingStagger += bonus;
 		}
 		changeStagger(targetArray, user, pendingStagger);
-		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered."), ...generateModifierResultLines(addModifier([user], powerup))];
+		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered."), ...generateModifierResultLines(addModifier([user], empowerment))];
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Slowing War Cry", "Tormenting War Cry")
-	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Distracted", stacks: 0 })
+	.setModifiers({ name: "Empowerment", stacks: 25 }, { name: "Distracted", stacks: 0 })
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks
 	.setCooldown(1);
