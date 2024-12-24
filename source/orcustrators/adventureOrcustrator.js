@@ -367,8 +367,10 @@ function cacheRoundRn(adventure, user, moveName, config) {
 						}
 					}
 					break;
-				case "elements":
+				case "elementshift":
 				case "elementsNoUntyped":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(6, "battle"));
+					break;
 				case "weaknesses":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(7, "battle"))
 					break;
@@ -422,8 +424,8 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			const allyPool = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			return `${user.name}'s ${moveName} will affect ${listifyEN(user.roundRns[roundRnKeyname].map(rn => allyPool[rn % allyPool.length].name), false)}`;
 		}
-		case "elements": {
-			const elements = elementsList([])
+		case "elementshift": {
+			const elements = elementsList(["Untyped", user.element]);
 			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(elements[rn % elements.length])).join("")} on ${target.name}`;
 		}
 		case "elementsNoUntyped": {
