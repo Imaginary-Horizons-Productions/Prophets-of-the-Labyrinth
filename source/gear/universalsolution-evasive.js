@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, addModifier, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
@@ -13,9 +13,9 @@ module.exports = new GearTemplate(gearName,
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [poison, evade] } = module.exports;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		const { essence, modifiers: [poison, evade] } = module.exports;
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const addReciepts = [];

@@ -1,18 +1,18 @@
 const { GearTemplate } = require("../classes");
-const { dealDamage, addModifier, getCombatantWeaknesses, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts, getCombatantCounters } = require("../util/combatantUtil");
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 
 const gearName = "Duelist's Pistol";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Strike a foe for <@{damage} + @{bonus} if only attacker> @{element} damage, give a random ally <@{mod0Stacks} ÷ target's Weakness debuffs> @{mod0} if the foe is weak to @{element}"],
+		["use", "Strike a foe for <@{damage} + @{bonus} if only attacker> @{essence} damage, give a random ally <@{mod0Stacks} ÷ target's Vulnerability debuffs> @{mod0} if the foe is weak to @{essence}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
-	"Untyped",
+	"Unaligned",
 	350,
 	([target], user, adventure) => {
-		const { damage, bonus, critMultiplier, element, modifiers: [powerUp] } = module.exports;
+		const { damage, bonus, critMultiplier, essence, modifiers: [powerUp] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const targetIndex = adventure.getCombatantIndex(target);
 		const userIndex = adventure.getCombatantIndex(user);
@@ -23,13 +23,13 @@ module.exports = new GearTemplate(gearName,
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
-		if (getCombatantWeaknesses(target).includes(element)) {
-			const inducedWeaknessCount = Object.keys(target.modifiers).filter(modifier => modifier.endsWith("Weakness")).length;
-			const pendingPowerUp = { name: "Power Up", stacks: Math.floor(powerUp.stacks / inducedWeaknessCount) };
+		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
+		if (getCombatantCounters(target).includes(essence)) {
+			const inducedVulnerabilityCount = Object.keys(target.modifiers).filter(modifier => modifier.endsWith("Vulnerability")).length;
+			const pendingPowerUp = { name: "Power Up", stacks: Math.floor(powerUp.stacks / inducedVulnerabilityCount) };
 			const allyTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			const selectedAllies = [];
 			for (let i = 0; i < user.roundRns[`${gearName}${SAFE_DELIMITER}allies`].length; i++) {

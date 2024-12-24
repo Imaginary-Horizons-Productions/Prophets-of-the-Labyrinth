@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("War Cry",
 			targetSet.add(initialTarget.name);
 			targetArray.push(initialTarget);
 		}
-		const { element, stagger, bonus, modifiers: [targetModifier] } = module.exports;
+		const { essence, stagger, bonus, modifiers: [targetModifier] } = module.exports;
 		for (const enemy of adventure.room.enemies) {
 			if (enemy.hp > 0 && enemy.getModifierStacks(targetModifier.name) > 0 && !targetSet.has(enemy.name)) {
 				targetSet.add(enemy.name);
@@ -27,8 +27,8 @@ module.exports = new GearTemplate("War Cry",
 		}
 
 		let pendingStagger = stagger;
-		if (user.element === element) {
-			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
+		if (user.essence === essence) {
+			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
 			pendingStagger += bonus;

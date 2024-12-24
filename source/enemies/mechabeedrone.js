@@ -2,8 +2,8 @@ const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
-const { getEmoji } = require("../util/elementUtil.js");
-const { ELEMENT_MATCH_STAGGER_FOE, ELEMENT_MATCH_STAGGER_ALLY } = require("../constants.js");
+const { getEmoji } = require("../util/essenceUtil.js");
+const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Mechabee Drone",
 	"Darkness",
@@ -15,19 +15,19 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	false
 ).addAction({
 	name: "Sting",
-	element: "Darkness",
+	essence: "Darkness",
 	description: `Inflict minor ${getEmoji("Darkness")} damage and @e{Poison} on a single foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.element, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
+		return dealDamage(targets, user, damage, false, user.essence, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
 	},
 	selector: selectRandomFoe,
 	next: "Barrel Roll"
 }).addAction({
 	name: "Barrel Roll",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: "Gain @e{Evade}, gain @e{Agility} on Critical Hit",
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -35,14 +35,14 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		if (user.crit) {
 			receipts.push(...addModifier([user], { name: "Agility", stacks: 1 }));
 		}
-		changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectSelf,
 	next: "Call for Help"
 }).addAction({
 	name: "Call for Help",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: "Summon another Mechabee",
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -53,7 +53,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	next: "Self-Destruct"
 }).addAction({
 	name: "Self-Destruct",
-	element: "Darkness",
+	essence: "Darkness",
 	description: `Sacrifice self to deal large ${getEmoji("Darkness")} damage to all foes`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -62,9 +62,9 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 			damage *= 2;
 		}
 		user.hp = 0;
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 
-		return dealDamage(targets, user, damage, false, user.element, adventure);
+		return dealDamage(targets, user, damage, false, user.essence, adventure);
 	},
 	selector: selectAllFoes,
 	next: "Sting"

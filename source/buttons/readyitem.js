@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require('dis
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
 const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, SKIP_INTERACTION_HANDLING, POTL_ICON_URL } = require('../constants');
 const { getAdventure, setAdventure, checkNextRound, endRound } = require('../orcustrators/adventureOrcustrator');
-const { getColor } = require('../util/elementUtil');
+const { getColor } = require('../util/essenceUtil');
 const { getItem } = require('../items/_itemDictionary');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
@@ -21,7 +21,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const delverArchetypeTemplate = getArchetype(delver.archetype);
 		interaction.reply({
 			embeds: [
-				delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)).setTitle("Select an Item").setAuthor({ name: "Using an item takes your turn and has priority (it'll happen before non-priority actions)", iconURL: POTL_ICON_URL }), adventure)
+				delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.essence)).setTitle("Select an Item").setAuthor({ name: "Using an item takes your turn and has priority (it'll happen before non-priority actions)", iconURL: POTL_ICON_URL }), adventure)
 			],
 			components: [
 				new ActionRowBuilder().addComponents(

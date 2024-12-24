@@ -23,14 +23,14 @@ module.exports = new CommandWrapper(mainId, "Recommend this seed and Labyrinth t
 			return;
 		}
 
-		const partyElements = new Set();
+		const partyEssences = new Set();
 		for (const delver of adventure.delvers) {
-			if (delver.element && !partyElements.has(delver.element)) {
-				partyElements.add(delver.element);
+			if (delver.essence && !partyEssences.has(delver.essence)) {
+				partyEssences.add(delver.essence);
 			}
 		}
 		const personalizedMessage = interaction.options.getString("personalized-message");
-		recipient.send(`${interaction.member} has recommended you try a delve into the **${adventure.labyrinth}** with a seed **${adventure.initialSeed}**.${partyElements.size > 0 ? ` Their party had the following elements: ${listifyEN([...partyElements])}` : ""}${personalizedMessage ? `\nExtra Message: ${personalizedMessage}` : ""}`)
+		recipient.send(`${interaction.member} has recommended you try a delve into the **${adventure.labyrinth}** with a seed **${adventure.initialSeed}**.${partyEssences.size > 0 ? ` Their party had the following essences: ${listifyEN([...partyEssences])}` : ""}${personalizedMessage ? `\nExtra Message: ${personalizedMessage}` : ""}`)
 		interaction.reply({ content: `Delving into the **${adventure.labyrinth}** on seed **${adventure.initialSeed}** has been recommended to ${recipient}.`, ephemeral: true });
 	}
 ).setOptions(

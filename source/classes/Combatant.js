@@ -13,8 +13,8 @@ class Combatant {
 	id;
 	/** @type {string} archetype for delvers; lookup name for enemies */
 	archetype;
-	/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
-	element;
+	/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} */
+	essence;
 	level = 1;
 	maxHP = 300;
 	power = 0;
@@ -56,6 +56,16 @@ class Combatant {
 	 */
 	getModifierStacks(modifierName) {
 		return this.modifiers[modifierName] ?? 0
+	}
+
+	getEssenceCounterDamage() {
+		if (this.getModifierStacks("Resonance") > 0) {
+			return 2 * (40 + (10 * this.level));
+		} else if (this.getModifierStacks("Dissonance") > 0) {
+			return Math.floor((40 + (10 * this.level)) / 2);
+		} else {
+			return 40 + (10 * this.level);
+		}
 	}
 
 	/** @returns {number} */

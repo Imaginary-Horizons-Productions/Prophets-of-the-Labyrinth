@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Omamori",
@@ -11,10 +11,10 @@ module.exports = new GearTemplate("Omamori",
 	"Water",
 	200,
 	(targets, user, adventure) => {
-		const { element, modifiers: [lucky], protection, critMultiplier } = module.exports;
+		const { essence, modifiers: [lucky], protection, critMultiplier } = module.exports;
 		const pendingLucky = { ...lucky };
-		if (user.element === element) {
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+		if (user.essence === essence) {
+			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingLucky.stacks *= critMultiplier;

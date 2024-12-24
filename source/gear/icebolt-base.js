@@ -1,25 +1,25 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Ice Bolt",
 	[
-		["use", "Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on one foe"],
+		["use", "Inflict @{damage} @{essence} damage and @{mod0Stacks} @{mod0} on one foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Spell",
 	"Water",
 	200,
 	(targets, user, adventure) => {
-		const { element, damage, modifiers: [slow], critMultiplier } = module.exports;
+		const { essence, damage, modifiers: [slow], critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow))));
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Awesome Ice Bolt", "Distracting Ice Bolt", "Unlucky Ice Bolt")

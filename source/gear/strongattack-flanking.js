@@ -1,25 +1,25 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Flanking Strong Attack",
 	[
-		["use", "Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on a foe"],
+		["use", "Inflict @{damage} @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Technique",
-	"Untyped",
+	"Unaligned",
 	350,
 	(targets, user, adventure) => {
-		const { damage, element, critMultiplier, modifiers: [exposed] } = module.exports;
+		const { damage, essence, critMultiplier, modifiers: [exposed] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier(targets, exposed)));
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier(targets, exposed)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sharpened Strong Attack", "Staggering Strong Attack")

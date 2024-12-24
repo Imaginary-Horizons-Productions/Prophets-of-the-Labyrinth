@@ -4,7 +4,7 @@ const { addModifier, generateModifierResultLines } = require("../util/combatantU
 
 module.exports = new ItemTemplate("Quick Pepper",
 	"Grants the user 3 @e{Quicken}",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {

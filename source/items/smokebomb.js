@@ -4,7 +4,7 @@ const { addModifier, generateModifierResultLines } = require("../util/combatantU
 
 module.exports = new ItemTemplate("Smoke Bomb",
 	"Grants the user 2 @e{Evade}",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {

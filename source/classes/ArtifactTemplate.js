@@ -6,18 +6,18 @@ class ArtifactTemplate {
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
 	 * @param {string} scalingDescriptionInput
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementEnum
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essenceEnum
 	 */
-	constructor(nameInput, descriptionInput, scalingDescriptionInput, elementEnum) {
+	constructor(nameInput, descriptionInput, scalingDescriptionInput, essenceEnum) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
 		if (!scalingDescriptionInput) throw new BuildError("Falsy scalingDescriptionInput");
-		if (!elementEnum) throw new BuildError("Falsy elementEnum");
+		if (!essenceEnum) throw new BuildError("Falsy essenceEnum");
 
 		this.name = nameInput;
 		this.description = descriptionInput;
 		this.scalingDescription = scalingDescriptionInput;
-		this.element = elementEnum;
+		this.essence = essenceEnum;
 	}
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;

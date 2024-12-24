@@ -4,7 +4,7 @@ const { addModifier, generateModifierResultLines } = require("../util/combatantU
 
 module.exports = new ItemTemplate("Strength Spinach",
 	"Grants the user 50 @e{Power Up}",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {

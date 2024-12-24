@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { removeModifier, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js');
 
 const gearName = "Cleansing Barrier";
 module.exports = new GearTemplate(gearName,
@@ -13,10 +13,10 @@ module.exports = new GearTemplate(gearName,
 	"Wind",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [evade, vigilance], critMultiplier } = module.exports;
+		const { essence, modifiers: [evade, vigilance], critMultiplier } = module.exports;
 		const pendingVigilance = { ...vigilance };
-		if (user.element === element) {
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+		if (user.essence === essence) {
+			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingVigilance.stacks *= critMultiplier;

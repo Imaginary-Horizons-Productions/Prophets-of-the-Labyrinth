@@ -1,7 +1,7 @@
 const { CommandInteraction } = require("discord.js");
 const { getEnemy, enemyNames } = require("../../enemies/_enemyDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
-const { getEmoji } = require("../../util/elementUtil");
+const { getEmoji } = require("../../util/essenceUtil");
 const { listifyEN } = require("../../util/textUtil");
 const { injectApplicationEmojiMarkdown } = require("../../util/graphicsUtil");
 
@@ -17,7 +17,7 @@ async function executeSubcommand(interaction, ...args) {
 		return;
 	}
 
-	const enemyEmbed = embedTemplate().setTitle(`${enemyTemplate.name} ${getEmoji(enemyTemplate.element)}`)
+	const enemyEmbed = embedTemplate().setTitle(`${enemyTemplate.name} ${getEmoji(enemyTemplate.essence)}`)
 		.setDescription(`Base HP: ${enemyTemplate.maxHP}\nSpeed: ${enemyTemplate.speed}\nCrit Rate: ${enemyTemplate.critRate}%\nPoise: ${enemyTemplate.poiseExpression}\n-# In these formulae, "n" is the party size (if it appears).`);
 	const startingModifierEntries = Object.entries(enemyTemplate.startingModifiers);
 	const enemyFields = [];
@@ -26,7 +26,7 @@ async function executeSubcommand(interaction, ...args) {
 	}
 	enemyFields.push({
 		name: "Actions",
-		value: Object.values(enemyTemplate.actions).map(action => `- **${action.name}** ${getEmoji(action.element)} ${injectApplicationEmojiMarkdown(action.description)}`).join("\n")
+		value: Object.values(enemyTemplate.actions).map(action => `- **${action.name}** ${getEmoji(action.essence)} ${injectApplicationEmojiMarkdown(action.description)}`).join("\n")
 	})
 	if (enemyTemplate.flavorText) {
 		enemyFields.push({ name: enemyTemplate.flavorText.name, value: injectApplicationEmojiMarkdown(enemyTemplate.flavorText.value) });

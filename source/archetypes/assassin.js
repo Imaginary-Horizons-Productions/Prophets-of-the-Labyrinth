@@ -1,10 +1,10 @@
 const { ArchetypeTemplate, Combatant } = require("../classes");
 const { ZERO_WIDTH_WHITESPACE } = require("../constants");
-const { getCombatantWeaknesses } = require("../util/combatantUtil");
-const { getEmoji, getResistances } = require("../util/elementUtil");
+const { getCombatantCounters } = require("../util/combatantUtil");
+const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new ArchetypeTemplate("Assassin",
-	"They'll be able to predict which combatants will critically hit and assess combatant elemental affinities, lining up massive damage with their Daggers.",
+	"They'll be able to predict which combatants will critically hit and which essence to use to counter each combatant, lining up massive damage with their Daggers.",
 	"Wind",
 	{
 		maxHPGrowth: 25,
@@ -16,19 +16,18 @@ module.exports = new ArchetypeTemplate("Assassin",
 	["Daggers", "Cloak"],
 	(embed, adventure) => {
 		/** @param {Combatant} combatant */
-		function createElementAndCritField(combatant) {
-			const weaknesses = getCombatantWeaknesses(combatant);
-			const resistances = getResistances(combatant.element);
-			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.element)}`, value: `Critical Hit: ${combatant.crit ? "💥" : "🚫"}\nWeaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}\nResistances: ${resistances.map(resistance => getEmoji(resistance)).join(" ")}`, inline: true });
+		function createEssenceAndCritField(combatant) {
+			const counters = getCombatantCounters(combatant);
+			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.essence)}`, value: `Critical Hit: ${combatant.crit ? "💥" : "🚫"}\nCounters: ${counters.map(counter => getEmoji(counter)).join(" ")}`, inline: true });
 		}
 		// Separate Enemies and Delvers into different rows
-		adventure.room.enemies.filter(combatant => combatant.hp > 0).forEach(createElementAndCritField);
+		adventure.room.enemies.filter(combatant => combatant.hp > 0).forEach(createEssenceAndCritField);
 		embed.addFields({ name: ZERO_WIDTH_WHITESPACE, value: ZERO_WIDTH_WHITESPACE });
-		adventure.delvers.forEach(createElementAndCritField);
+		adventure.delvers.forEach(createEssenceAndCritField);
 		return embed.setDescription(`Assassin predictions for Round ${adventure.room.round}:`);
 	},
 	(combatant) => {
-		const weaknesses = getCombatantWeaknesses(combatant);
-		return `Weaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}`;
+		const counters = getCombatantCounters(combatant);
+		return `Counters: ${counters.map(counter => getEmoji(counter)).join(" ")}`;
 	}
 );

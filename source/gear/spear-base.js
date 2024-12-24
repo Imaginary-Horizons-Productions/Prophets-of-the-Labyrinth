@@ -1,24 +1,24 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Spear",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage"],
+		["use", "Strike a foe for @{damage} @{essence} damage"],
 		["Critical💥", "Inflict @{bonus} more Stagger"]
 	],
 	"Weapon",
 	"Earth",
 	200,
 	(targets, user, adventure) => {
-		const { element, bonus, damage } = module.exports;
+		const { essence, bonus, damage } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let pendingStagger = 0;
-		if (user.element === element) {
-			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
+		if (user.essence === essence) {
+			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (user.crit & stillLivingTargets.length > 0) {
 			pendingStagger += bonus;

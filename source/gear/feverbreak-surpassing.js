@@ -1,21 +1,21 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, removeModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 const { surpassingPassive } = require('./descriptions/passives');
 
 module.exports = new GearTemplate("Surpassing Fever Break",
 	[
 		surpassingPassive,
-		["use", `Deal <pending damage from @{mod0} and @{mod1}> @{element} damage to a foe then cure it of those debuffs`],
+		["use", `Deal <pending damage from @{mod0} and @{mod1}> @{essence} damage to a foe then cure it of those debuffs`],
 		["Critical💥", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Spell",
 	"Darkness",
 	350,
 	(targets, user, adventure) => {
-		const { element } = module.exports;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		const { essence } = module.exports;
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		let poisonDamage = 10;
 		let frailDamage = 20;
@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Surpassing Fever Break",
 			const poisons = target.getModifierStacks("Poison");
 			const frails = target.getModifierStacks("Frail");
 			const pendingDamage = poisonDamage * (poisons ** 2 + poisons) / 2 + frailDamage * frails;
-			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));
+			resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure));
 			if (!user.crit && target.hp > 0) {
 				receipts.push(...removeModifier(targets, { name: "Poison", stacks: "all" }).concat(removeModifier(targets, { name: "Frail", stacks: "all" })))
 			}

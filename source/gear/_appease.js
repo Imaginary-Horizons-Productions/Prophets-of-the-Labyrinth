@@ -4,7 +4,7 @@ const { removeModifier, combineModifierReceipts, generateModifierResultLines } =
 module.exports = new GearTemplate("Appease",
 	[["use", "Shrug off all insults"]],
 	"Action",
-	"Untyped",
+	"Unaligned",
 	0,
 	(targets, user, adventure) => {
 		const receipts = [];

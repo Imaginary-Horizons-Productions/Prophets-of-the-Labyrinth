@@ -3,5 +3,5 @@ const { ArtifactTemplate } = require("../classes");
 module.exports = new ArtifactTemplate("name",
 	"description",
 	"scaling description",
-	"element"
+	"essence"
 ).setFlavorText({ name: "heading", value: "text" });

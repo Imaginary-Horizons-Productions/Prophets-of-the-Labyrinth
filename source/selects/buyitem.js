@@ -3,7 +3,7 @@ const { SelectWrapper } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
-const { getColor } = require('../util/elementUtil');
+const { getColor } = require('../util/essenceUtil');
 const { getItem } = require('../items/_itemDictionary');
 const { injectApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 
@@ -29,7 +29,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 			return;
 		}
 
-		const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
+		const embed = new EmbedBuilder().setColor(getColor(adventure.room.essence))
 			.setAuthor(randomAuthorTip())
 			.setTitle("Buy this item?")
 			.addFields({ name, value: injectApplicationEmojiMarkdown(getItem(name).description) });

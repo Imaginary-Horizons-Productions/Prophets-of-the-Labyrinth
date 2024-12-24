@@ -4,7 +4,7 @@ const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, SKIP_INTERACTION_HANDLING } = r
 const { getAdventure, checkNextRound, endRound, setAdventure, cacheRoundRn } = require('../orcustrators/adventureOrcustrator');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getGearProperty } = require('../gear/_gearDictionary');
-const { getEmoji, getColor } = require('../util/elementUtil');
+const { getEmoji, getColor } = require('../util/essenceUtil');
 const { randomAuthorTip } = require('../util/embedUtil');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 
@@ -19,7 +19,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 		const delverArchetypeTemplate = getArchetype(delver.archetype);
-		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)).setTitle("Select a Move"), adventure)
+		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.essence)).setTitle("Select a Move"), adventure)
 		if (!embed.data.author) {
 			embed.setAuthor(randomAuthorTip());
 		}
@@ -69,7 +69,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			const { name: gearName, charges, cooldown, gearIndex } = usableMoves[i];
 			const isOnCD = Boolean(cooldown) && (cooldown > 0);
 			const { type, team } = getGearProperty(gearName, "targetingTags");
-			const elementEmoji = getEmoji(gearName === "Iron Fist Punch" ? delver.element : getGearProperty(gearName, "element"));
+			const essenceEmoji = getEmoji(gearName === "Iron Fist Punch" ? delver.essence : getGearProperty(gearName, "essence"));
 			if (type === "single" || type.startsWith("blast")) {
 				// Select Menu
 				let targetOptions = [];
@@ -80,7 +80,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (team === "ally" || team === "any") {
 					targetOptions = targetOptions.concat(delverOptions);
 				}
-				const placeholder = isOnCD ? `${elementEmoji} ${gearName} CD: ${cooldown} Rounds` : `${elementEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `(${charges} charges) ` : ""}on...`;
+				const placeholder = isOnCD ? `${essenceEmoji} ${gearName} CD: ${cooldown} Rounds` : `${essenceEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `(${charges} charges) ` : ""}on...`;
 				components.push(new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
 						.setPlaceholder(placeholder)
@@ -93,7 +93,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				components.push(new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
 						.setLabel(label)
-						.setEmoji(elementEmoji)
+						.setEmoji(essenceEmoji)
 						.setStyle(ButtonStyle.Secondary)
 						.setDisabled(isOnCD)
 				));

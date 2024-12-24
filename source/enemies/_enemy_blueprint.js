@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 
 module.exports = new EnemyTemplate("name",
-	"element",
+	"essence",
 	300,
 	100,
 	"3",
@@ -10,7 +10,7 @@ module.exports = new EnemyTemplate("name",
 	false
 ).addAction({
 	name: "name",
-	element: "element",
+	essence: "essence",
 	description: "",
 	priority: 0,
 	effect: ([target], user, adventure) => {

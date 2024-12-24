@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Staggering Poison Torrent",
@@ -11,14 +11,14 @@ module.exports = new GearTemplate("Staggering Poison Torrent",
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [poison], critMultiplier, stagger } = module.exports;
+		const { essence, modifiers: [poison], critMultiplier, stagger } = module.exports;
 		const pendingPoison = { ...poison };
 		let pendingStagger = stagger;
 		if (user.crit) {
 			pendingPoison.stacks *= critMultiplier;
 		}
-		if (user.element === element) {
-			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
+		if (user.essence === essence) {
+			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		changeStagger(targets, user, pendingStagger);
 		return ["All foes were Staggered.", ...generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPoison)))];

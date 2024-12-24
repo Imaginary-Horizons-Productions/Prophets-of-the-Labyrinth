@@ -4,7 +4,7 @@ const { addModifier, generateModifierResultLines } = require("../util/combatantU
 
 module.exports = new ItemTemplate("Creative Acorn",
 	"Grants the user 2 @e{Lucky}",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {

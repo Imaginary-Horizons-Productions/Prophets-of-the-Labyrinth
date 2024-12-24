@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes/index.js');
-const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { payHP, changeStagger, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil.js');
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil.js');
 
@@ -12,15 +12,15 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 	"Darkness",
 	350,
 	([target], user, adventure) => {
-		const { element, modifiers: [poison], protection, critMultiplier, pactCost: [pactCostValue] } = module.exports;
+		const { essence, modifiers: [poison], protection, critMultiplier, pactCost: [pactCostValue] } = module.exports;
 		const paymentSentence = payHP(user, pactCostValue, adventure);
 		if (adventure.lives < 1) {
 			return [paymentSentence];
 		}
 		const resultLines = [`Gaining protection, ${paymentSentence}`];
 		let pendingProtection = protection;
-		if (user.element === element) {
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+		if (user.essence === essence) {
+			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingProtection *= critMultiplier;

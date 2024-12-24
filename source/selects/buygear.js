@@ -4,7 +4,7 @@ const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
-const { getColor } = require('../util/elementUtil');
+const { getColor } = require('../util/essenceUtil');
 
 const mainId = "buygear";
 module.exports = new SelectWrapper(mainId, 3000,
@@ -35,7 +35,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		if (shoddyPenalty) {
 			charges = Math.ceil(charges * (100 - shoddyPenalty) / 100);
 		}
-		const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
+		const embed = new EmbedBuilder().setColor(getColor(adventure.room.essence))
 			.setAuthor(randomAuthorTip())
 			.setTitle("Buy this gear?")
 			.addFields({ name, value: buildGearDescription(name) });

@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { ELEMENT_MATCH_STAGGER_ALLY } = require("../constants");
+const { ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { addModifier, changeStagger, enterStance, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Floating Mist Stance",
@@ -11,9 +11,9 @@ module.exports = new GearTemplate("Floating Mist Stance",
 	"Light",
 	200,
 	(targets, user, adventure) => {
-		const { element, modifiers: [displayEvade, floatingMistStance] } = module.exports;
-		if (user.element === element) {
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+		const { essence, modifiers: [displayEvade, floatingMistStance] } = module.exports;
+		if (user.essence === essence) {
+			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		const receipts = enterStance(user, floatingMistStance);
 		if (user.crit) {

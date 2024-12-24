@@ -1,7 +1,7 @@
 const { Colors } = require("discord.js");
-const { PetTemplate, PetMoveTemplate, CombatantReference } = require("../classes");
+const { PetTemplate, PetMoveTemplate } = require("../classes");
 const { dealDamage, addModifier, generateModifierResultLines } = require("../util/combatantUtil");
-const { getEmoji } = require("../util/elementUtil");
+const { getEmoji } = require("../util/essenceUtil");
 
 const petName = "Red-Tailed Raptor";
 module.exports = new PetTemplate(petName, Colors.Red,

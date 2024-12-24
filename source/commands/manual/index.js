@@ -13,7 +13,7 @@ const { slashData: subcommandSlashData, executeDictionary: subcommandExecuteDict
 	"lookupmodifier.js",
 	"lookuppet.js",
 	"topicdamagecalculation.js",
-	"topicelements.js",
+	"topicessences.js",
 	"topiclevelingup.js",
 	"topicspeed.js",
 	"topicstagger.js"

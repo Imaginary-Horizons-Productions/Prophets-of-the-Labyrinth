@@ -2,7 +2,7 @@ const { ArchetypeTemplate } = require("../classes");
 
 module.exports = new ArchetypeTemplate("name",
 	"description",
-	"Untyped",
+	"essence",
 	{
 		maxHPGrowth: 25,
 		powerGrowth: 2.5,

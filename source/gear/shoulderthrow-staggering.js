@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Staggering Shoulder Throw",
@@ -11,9 +11,9 @@ module.exports = new GearTemplate("Staggering Shoulder Throw",
 	"Light",
 	350,
 	([target], user, adventure) => {
-		const { element, modifiers: [evade] } = module.exports;
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+		const { essence, modifiers: [evade] } = module.exports;
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const resultLines = [`${target.name} is Staggered.`];
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });

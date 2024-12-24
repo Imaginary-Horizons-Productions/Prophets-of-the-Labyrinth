@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Slowing War Cry",
 			targetSet.add(initialTarget.name);
 			targetArray.push(initialTarget);
 		}
-		const { element, modifiers: [slow, targetModifier], stagger, bonus } = module.exports;
+		const { essence, modifiers: [slow, targetModifier], stagger, bonus } = module.exports;
 		for (const enemy of adventure.room.enemies) {
 			if (enemy.hp > 0 && enemy.getModifierStacks(targetModifier.name) > 0 && !targetSet.has(enemy.name)) {
 				targetSet.add(enemy.name);
@@ -27,8 +27,8 @@ module.exports = new GearTemplate("Slowing War Cry",
 		}
 
 		let pendingStagger = stagger;
-		if (user.element === element) {
-			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
+		if (user.essence === essence) {
+			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
 			pendingStagger += bonus;

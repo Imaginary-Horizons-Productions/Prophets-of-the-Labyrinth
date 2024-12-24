@@ -3,7 +3,7 @@ const { SelectWrapper } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { getArtifact } = require('../artifacts/_artifactDictionary');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
-const { getEmoji, getColor } = require('../util/elementUtil');
+const { getEmoji, getColor } = require('../util/essenceUtil');
 const { randomFooterTip } = require('../util/embedUtil');
 
 const mainId = "artifact";
@@ -12,8 +12,8 @@ module.exports = new SelectWrapper(mainId, 3000,
 	(interaction, [pageIndex]) => {
 		const [artifactName, artifactCount] = interaction.values[0].split(SAFE_DELIMITER);
 		const artifact = getArtifact(artifactName);
-		const embed = new EmbedBuilder().setColor(getColor(artifact.element))
-			.setTitle(`${getEmoji(artifact.element)} ${artifactName} x ${artifactCount}`)
+		const embed = new EmbedBuilder().setColor(getColor(artifact.essence))
+			.setTitle(`${getEmoji(artifact.essence)} ${artifactName} x ${artifactCount}`)
 			.setDescription(artifact.dynamicDescription(Number(artifactCount)))
 			.addFields({ name: "Scaling", value: artifact.scalingDescription })
 			.setFooter(randomFooterTip());

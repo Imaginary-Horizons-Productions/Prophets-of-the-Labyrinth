@@ -2,7 +2,7 @@ const { CommandInteraction } = require("discord.js");
 const { itemExists, itemNames, getItem } = require("../../items/_itemDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getAdventure } = require("../../orcustrators/adventureOrcustrator");
-const { getColor } = require("../../util/elementUtil");
+const { getColor } = require("../../util/essenceUtil");
 const { injectApplicationEmojiMarkdown } = require("../../util/graphicsUtil");
 
 /**
@@ -16,8 +16,8 @@ async function executeSubcommand(interaction, ...args) {
 		return;
 	}
 
-	const { name: nameInTitleCaps, element, description, flavorText } = getItem(itemName);
-	const embed = embedTemplate().setColor(getColor(element))
+	const { name: nameInTitleCaps, essence, description, flavorText } = getItem(itemName);
+	const embed = embedTemplate().setColor(getColor(essence))
 		.setTitle(nameInTitleCaps)
 		.setDescription(injectApplicationEmojiMarkdown(description));
 	const adventure = getAdventure(interaction.channelId);

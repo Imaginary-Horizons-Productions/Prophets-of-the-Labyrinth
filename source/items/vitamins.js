@@ -4,7 +4,7 @@ const { levelUp } = require("../util/delverUtil");
 
 module.exports = new ItemTemplate("Vitamins",
 	"Increases the user's level by 2",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {

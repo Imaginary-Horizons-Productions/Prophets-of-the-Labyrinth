@@ -4,7 +4,7 @@ const { pathVoteField } = require("../util/messageComponentUtil");
 const enemies = [["name", "countExpression"], ["name", "countExpression"]];
 
 module.exports = new RoomTemplate("name",
-	"element",
+	"essence",
 	"description",
 	[
 		new ResourceTemplate("countExpression", "visibility", "type")

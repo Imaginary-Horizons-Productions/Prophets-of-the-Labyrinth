@@ -1,21 +1,21 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Staggering Stick",
 	[
-		["use", "Strike a foe for <@{damage} x @{bonus} if foe has priority> @{element} damage"],
+		["use", "Strike a foe for <@{damage} x @{bonus} if foe has priority> @{essence} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Technique",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { element, damage, bonus, critMultiplier, stagger } = module.exports;
+		const { essence, damage, bonus, critMultiplier, stagger } = module.exports;
 		let pendingDamage = damage + user.getPower();
 		let pendingStagger = stagger;
-		if (user.element === element) {
-			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
+		if (user.essence === essence) {
+			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		changeStagger([target], user, pendingStagger);
 
@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Staggering Stick",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, pendingDamage, false, element, adventure);
+		return dealDamage([target], user, pendingDamage, false, essence, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sharpened Stick", "Shattering Stick")

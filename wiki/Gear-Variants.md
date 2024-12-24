@@ -18,10 +18,10 @@ Adds Quicken to the user
 Passively increases the user's Crit Rate
 
 **Available on**
-- all Scarves (Untyped)
-- Boots of Comfort (Untyped)
-- Mighty Guantlet (Untyped)
-- Wolf Ring (Untyped)
+- all Scarves (Unaligned)
+- Boots of Comfort (Unaligned)
+- Mighty Guantlet (Unaligned)
+- Wolf Ring (Unaligned)
 
 ### Adventurer's
 Gain an extra level at the end of combat on kill
@@ -96,7 +96,7 @@ Cures a random debuff on target
 - Barrier (Wind)
 - Medicine (Water)
 - Omamori (Water)
-- Second Wind (Untyped)
+- Second Wind (Unaligned)
 
 ### Confusing
 Change target's target to itself
@@ -142,14 +142,14 @@ Doubles number of attacks, halves base damage (double power scaling)
 **Available on**
 - all Air Blades (Wind)
 - Firecracker (Fire)
-- Pistol (Untyped)
+- Pistol (Unaligned)
 
 ### Duelist's
 Bonus damage if only one attacking target
 
 **Available on**
 - Lance (Light)
-- Pistol (Untyped)
+- Pistol (Unaligned)
 
 ### Evasive
 Adds Evade to the user
@@ -183,9 +183,9 @@ Adds Exposed to target
 **Available on**
 - Goad Futility (Earth)
 - Life Drain (Darkness)
-- Pistol (Untyped)
+- Pistol (Unaligned)
 - Prismatic Blast (Light)
-- Strong Attack (Untyped)
+- Strong Attack (Unaligned)
 
 ### Furious
 Increases damage proprotional to user's missing HP
@@ -218,16 +218,16 @@ Heal the user
 
 **Available on**
 - all Life Drains (Darkness)
-- all Second Winds (Untyped)
+- all Second Winds (Unaligned)
 
 ### Hearty
 Passively increases the user's Max HP
 
 **Available on**
-- all Wolf Rings (Untyped)
-- Boots of Comfort (Untyped)
-- Mighty Gauntlet (Untyped)
-- Scarf (Untyped)
+- all Wolf Rings (Unaligned)
+- Boots of Comfort (Unaligned)
+- Mighty Gauntlet (Unaligned)
+- Scarf (Unaligned)
 
 ### Hunter's
 Gain Power Up on kill
@@ -261,7 +261,7 @@ Add Lucky to the user
 - Carrot (Earth)
 - Iron Fist Stance (Light)
 - Scutum (Fire)
-- Second Wind (Untyped)
+- Second Wind (Unaligned)
 
 ### Midas's
 Adds Curse of Midas to target
@@ -275,25 +275,25 @@ Adds Curse of Midas to target
 Passively increases user's poise
 
 **Available on**
-- all Wolf Rings (Untyped)
-- Chainmail (Untyped)
+- all Wolf Rings (Unaligned)
+- Chainmail (Unaligned)
 - Goad Futility (Earth)
 
 ### Potent
 Increased modifier stacks
 
 **Available on**
-- Sabotage Kit (Untyped)
+- Sabotage Kit (Unaligned)
 - Risky Mixture (Darkness)
 
 ### Powerful
 Passively increases user's power
 
 **Available on**
-- all Mighty Gauntlets (Untyped)
-- Accurate Mighty Gauntlet (Untyped)
-- Hearty Mighty Gauntlet (Untyped)
-- Swift Mighty Gauntlet (Untyped)
+- all Mighty Gauntlets (Unaligned)
+- Accurate Mighty Gauntlet (Unaligned)
+- Hearty Mighty Gauntlet (Unaligned)
+- Swift Mighty Gauntlet (Unaligned)
 
 ### Punishing
 Multiplies damage if target has priority
@@ -336,10 +336,10 @@ Adds protection to the user
 - Herb Basket (Earth)
 
 ### Sabotaging
-Adds a random modifier that converts one of target's neutral elements to a weakness
+Adds a random vulnerability modifier to target
 
 **Available on**
-- all Sabotage Kits (Untyped)
+- all Sabotage Kits (Unaligned)
 - Cauldron Stir (Water)
 
 ### Semi-Decimating
@@ -356,7 +356,7 @@ Increased damage
 - Daggers (Wind)
 - Abacus (Water)
 - Stick (Earth)
-- Strong Attack (Untyped)
+- Strong Attack (Unaligned)
 
 ### Shattering
 Adds Frail to target
@@ -365,7 +365,7 @@ Adds Frail to target
 - Corrosion (Fire)
 - Goad Futility (Earth)
 - Lance (Light)
-- Sabotage Kit (Untyped)
+- Sabotage Kit (Unaligned)
 - Stick (Earth)
 
 ### Slowing
@@ -385,7 +385,7 @@ Adds Regen to target
 - Floating Mist Stance (Light)
 - Medicine (Water)
 - Midas Staff (Water)
-- Second Wind (Untyped)
+- Second Wind (Unaligned)
 
 ### Staggering
 Add Stagger to target
@@ -397,7 +397,7 @@ Add Stagger to target
 - Power from Wrath (Darkness)
 - Shoulder Throw (Light)
 - Stick (Earth)
-- Strong Attack (Untyped)
+- Strong Attack (Unaligned)
 
 ### Supportive
 Reduces Stagger on target
@@ -411,7 +411,7 @@ Increases the user's damage cap
 **Available on**
 - Lance (Light)
 - Fever Break (Darkness)
-- Wolf Ring (Untyped)
+- Wolf Ring (Unaligned)
 
 ### Sweeping
 Targets whole team
@@ -427,10 +427,10 @@ Targets whole team
 Passively increases user's speed
 
 **Available on**
-- all Boots of Comfort (Untyped)
-- Mighty Gauntlet (Untyped)
-- Scarf (Untyped)
-- Wolf Ring (Untyped)
+- all Boots of Comfort (Unaligned)
+- Mighty Gauntlet (Unaligned)
+- Scarf (Unaligned)
+- Wolf Ring (Unaligned)
 
 ### Tamer's
 Target's pet acts immediately
@@ -507,7 +507,7 @@ Increased priority
 - all Bows (Wind)
 - Fever Break (Darkness)
 - Herb Basket (Earth)
-- Sabotage Kit (Untyped)
+- Sabotage Kit (Unaligned)
 
 ### Vexing
 Bonus damage if target has debuffs
@@ -534,9 +534,9 @@ Adds Impactful to the user
 Increases stats gained by level up
 
 **Available on**
-- Chainmail (Untyped)
-- Scarf (Untyped)
-- Wolf Ring (Untyped)
+- Chainmail (Unaligned)
+- Scarf (Unaligned)
+- Wolf Ring (Unaligned)
 
 ## Unnamed Variants
 - Adds Floating Mist Stance to user (all Floating Mist Stances)
@@ -544,5 +544,5 @@ Increases stats gained by level up
 - Adds Power Up to target (all Inspiration)
 - Also hits targets with Distracted (all War Cries)
 - Also hits allies with Vigilance (planned)
-- Adds Power Up to random ally if hitting weakness (all Pistols)
+- Adds Power Up to random ally if Essence Countering (all Pistols)
 - Transfers debuffs to target (all Universal Problem Solvers)

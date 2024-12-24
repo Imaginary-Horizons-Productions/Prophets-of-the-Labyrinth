@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { addModifier, changeStagger, addProtection, generateModifierResultLines } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
@@ -12,10 +12,10 @@ module.exports = new GearTemplate("Guarding Buckler",
 	"Light",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [powerUp], protection, critMultiplier } = module.exports;
+		const { essence, modifiers: [powerUp], protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingProtection *= critMultiplier;

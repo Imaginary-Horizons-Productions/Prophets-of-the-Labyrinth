@@ -6,7 +6,7 @@ const { Enemy, EnemyTemplate, Adventure } = require("../classes");
  * @param {boolean} includeCoward
  */
 function spawnEnemy(enemyTemplate, adventure, includeCoward = false) {
-	const enemy = new Enemy(enemyTemplate.name, enemyTemplate.element, enemyTemplate.shouldRandomizeHP, enemyTemplate.maxHP, enemyTemplate.power ?? 0, enemyTemplate.speed, enemyTemplate.poiseExpression, enemyTemplate.critRate, enemyTemplate.firstAction, { ...enemyTemplate.startingModifiers }, adventure);
+	const enemy = new Enemy(enemyTemplate.name, enemyTemplate.essence, enemyTemplate.shouldRandomizeHP, enemyTemplate.maxHP, enemyTemplate.power ?? 0, enemyTemplate.speed, enemyTemplate.poiseExpression, enemyTemplate.critRate, enemyTemplate.firstAction, { ...enemyTemplate.startingModifiers }, adventure);
 	if (includeCoward) {
 		enemy.modifiers.Coward = 1;
 	}

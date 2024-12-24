@@ -1,7 +1,7 @@
 const { CommandInteraction } = require("discord.js");
 const { gearExists, getGearProperty, buildGearDescription, GEAR_NAMES, injectGearStats } = require("../../gear/_gearDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
-const { getEmoji, getColor } = require("../../util/elementUtil");
+const { getEmoji, getColor } = require("../../util/essenceUtil");
 const { listifyEN } = require("../../util/textUtil");
 
 /**
@@ -36,11 +36,11 @@ async function executeSubcommand(interaction, ...args) {
 		fields.push(extraField);
 	}
 
-	const gearElement = getGearProperty(gearName, "element");
+	const gearEssence = getGearProperty(gearName, "essence");
 	interaction.reply({
 		embeds: [
-			embedTemplate().setColor(getColor(gearElement))
-				.setTitle(`${getGearProperty(gearName, "name")} ${getEmoji(gearElement)}`)
+			embedTemplate().setColor(getColor(gearEssence))
+				.setTitle(`${getGearProperty(gearName, "name")} ${getEmoji(gearEssence)}`)
 				.setDescription(buildGearDescription(gearName, true))
 				.addFields(fields)
 		],

@@ -4,7 +4,7 @@ const { addModifier, generateModifierResultLines } = require("../util/combatantU
 
 module.exports = new ItemTemplate("Flexigrass",
 	"Grants the user 4 @e{Agility}",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {

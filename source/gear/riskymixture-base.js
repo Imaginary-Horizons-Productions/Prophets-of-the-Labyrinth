@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_ALLY, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Risky Mixture",
@@ -11,12 +11,12 @@ module.exports = new GearTemplate("Risky Mixture",
 	"Darkness",
 	200,
 	([target], user, adventure) => {
-		const { element, modifiers: [poison, regen] } = module.exports;
-		if (user.element === element) {
+		const { essence, modifiers: [poison, regen] } = module.exports;
+		if (user.essence === essence) {
 			if (target.team === user.team) {
-				changeStagger([target], user, ELEMENT_MATCH_STAGGER_ALLY);
+				changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 			} else {
-				changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+				changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 			}
 		}
 		if (user.crit) {

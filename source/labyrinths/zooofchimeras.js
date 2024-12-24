@@ -13,7 +13,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 		Light: [],
 		Water: [],
 		Wind: [],
-		Untyped: [
+		Unaligned: [
 			"Clear Potion",
 			"Creative Acorn",
 			"Earthen Potion",
@@ -199,7 +199,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Unstoppable Air Blades"
 			]
 		},
-		Untyped: {
+		Unaligned: {
 			Cursed: [
 				"Cursed Blade",
 				"Cursed Tome"

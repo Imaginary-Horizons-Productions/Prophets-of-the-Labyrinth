@@ -1,27 +1,27 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Awesome Ice Bolt",
 	[
-		["use", "Inflict <@{damage} + @{bonus} if foe is stunned> @{element} damage and @{mod0Stacks} @{mod0} on one foe"],
+		["use", "Inflict <@{damage} + @{bonus} if foe is stunned> @{essence} damage and @{mod0Stacks} @{mod0} on one foe"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Spell",
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { element, damage, modifiers: [slow], critMultiplier, bonus } = module.exports;
+		const { essence, damage, modifiers: [slow], critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let stunnedDamage = pendingDamage + bonus;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 			stunnedDamage *= critMultiplier;
 		}
-		const resultLines = targets.reduce((array, target) => array.concat(dealDamage([target], user, target.isStunned ? stunnedDamage : pendingDamage, false, element, adventure)), []);
+		const resultLines = targets.reduce((array, target) => array.concat(dealDamage([target], user, target.isStunned ? stunnedDamage : pendingDamage, false, essence, adventure)), []);
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })

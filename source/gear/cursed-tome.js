@@ -5,7 +5,7 @@ module.exports = new GearTemplate("Cursed Tome",
 		["Passive", "Reduce your Poise by @{poise}"]
 	],
 	"Pact",
-	"Untyped",
+	"Unaligned",
 	-50,
 	(targets, user, adventure) => []
 ).setUpgrades("Blood Aegis", "Certain Victory", "Infinite Regeneration", "Power from Wrath", "Universal Solution", "Air Blades")
