@@ -4,7 +4,7 @@ const { gainHealth } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Health Potion",
 	"Heals the user by 25% of their max HP",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {

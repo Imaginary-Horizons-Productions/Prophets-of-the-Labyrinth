@@ -1,26 +1,26 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, addModifier, payHP, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Hunter's Certain Victory",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} (+@{mod1Stacks} on kill)"],
+		["use", "Strike a foe for @{damage} @{essence} damage, gain @{mod0Stacks} @{mod0} (+@{mod1Stacks} on kill)"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { element, modifiers: [powerUp, huntersPowerUp], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [powerUp, huntersPowerUp], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const pendingPowerUp = { ...powerUp };
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
 		if (target.hp < 1) {
 			pendingPowerUp.stacks += huntersPowerUp.stacks;
 		}

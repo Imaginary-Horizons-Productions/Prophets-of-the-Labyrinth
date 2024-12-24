@@ -2,7 +2,7 @@ const { ArchetypeTemplate } = require("../classes");
 
 module.exports = new ArchetypeTemplate("Fighter",
 	"They won't be able to predict anything and won't start with fancy gear, but have double normal stat growths.",
-	"Untyped",
+	"Unaligned",
 	{
 		maxHPGrowth: 50,
 		powerGrowth: 5,

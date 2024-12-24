@@ -7,21 +7,21 @@ class GearTemplate {
 	 * @param {string} nameInput
 	 * @param {[type: "Requirement" | "Passive" | "use" | "Critical💥", description: string][]} descriptionTuples
 	 * @param {"Offense" | "Defense" | "Support" | "Adventuring" | "Spell" | "Pact" | "Maneuver" | "Trinket" | "Action"} categoryInput
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementInput
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essenceEnum
 	 * @param {number} costInput
 	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} effectInput
 	 */
-	constructor(nameInput, descriptionTuples, categoryInput, elementInput, costInput, effectInput) {
+	constructor(nameInput, descriptionTuples, categoryInput, essenceEnum, costInput, effectInput) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!categoryInput) throw new BuildError("Falsy categoryInput");
-		if (!elementInput) throw new BuildError("Falsy elementInput");
+		if (!essenceEnum) throw new BuildError("Falsy essenceEnum");
 		if (!costInput && costInput !== 0) throw new BuildError("Nonzero falsy costInput");
 		if (!effectInput) throw new BuildError("Falsy effectInput");
 
 		this.name = nameInput;
 		this.descriptions = descriptionTuples;
 		this.category = categoryInput;
-		this.element = elementInput;
+		this.essence = essenceEnum;
 		this.cost = costInput;
 		this.effect = effectInput;
 	}
@@ -137,7 +137,7 @@ class GearTemplate {
 		return this;
 	}
 
-	/** For description creation purposes, this stagger is separate from Same Element Stagger and is assumed to always be applied. For conditional Stagger (eg on crit) use `setBonus()` instead.
+	/** For description creation purposes, this stagger is separate from Essence Match Stagger and is assumed to always be applied. For conditional Stagger (eg on crit) use `setBonus()` instead.
 	 * @param {number} integer
 	 */
 	setStagger(integer) {

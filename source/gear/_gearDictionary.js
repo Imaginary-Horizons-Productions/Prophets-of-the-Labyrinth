@@ -1,7 +1,8 @@
 const { BuildError, GearTemplate, Gear, Delver, Adventure } = require("../classes");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
-const { getEmoji } = require("../util/elementUtil");
+const { getEmoji } = require("../util/essenceUtil");
 const { italic } = require("discord.js");
+const { calculateTagContent } = require("../util/textUtil");
 
 /** @type {Record<string, GearTemplate>} */
 const GEAR = {};
@@ -337,7 +338,7 @@ function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
 			if (gearName === "Floating Mist Punch") {
 				totalStagger += 3 * holder.getModifierStacks("Floating Mist Stance");
 			}
-			if (getGearProperty(gearName, "element") === holder.element || gearName === "Iron Fist Punch") {
+			if (getGearProperty(gearName, "essence") === holder.essence || gearName === "Iron Fist Punch") {
 				const targetingTags = getGearProperty(gearName, "targetingTags");
 				if (targetingTags) {
 					switch (targetingTags.team) {
@@ -371,35 +372,37 @@ function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
 
 	text = text.replace(/@{bonusSpeed}/g, `[${Math.max(0, holder.getSpeed(true) - 100)}]`);
 
-	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.element : null);
+	return injectGearStats(text, gearName, gearName === "Iron Fist Punch" ? holder.essence : null);
 }
 
 /**
  * @param {string} text
  * @param {string} gearName
- * @param {string | null} elementOverride
+ * @param {string | null} essenceOverride
  */
-function injectGearStats(text, gearName, elementOverride) {
+function injectGearStats(text, gearName, essenceOverride) {
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 		if (!modifier.name.startsWith("unparsed")) {
 			text = text.replace(new RegExp(`@{mod${index}}`, "g"), getApplicationEmojiMarkdown(modifier.name));
 		}
 		text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 	})
-	if (elementOverride) {
-		text = text.replace(/@{element}/g, getEmoji(elementOverride))
+	if (essenceOverride) {
+		text = text.replace(/@{essence}/g, getEmoji(essenceOverride))
 	} else {
-		text = text.replace(/@{element}/g, getEmoji(getGearProperty(gearName, "element")))
+		text = text.replace(/@{essence}/g, getEmoji(getGearProperty(gearName, "essence")))
 	}
-	return text.replace(/@{critMultiplier}/g, getGearProperty(gearName, "critMultiplier"))
-		.replace(/@{bonus}/g, getGearProperty(gearName, "bonus"))
-		.replace(/@{bonus2}/g, getGearProperty(gearName, "bonus2"))
-		.replace(/@{protection}/g, getGearProperty(gearName, "protection"))
-		.replace(/@{healing}/g, getGearProperty(gearName, "healing"))
-		.replace(/@{maxHP}/g, getGearProperty(gearName, "maxHP"))
-		.replace(/@{power}/g, getGearProperty(gearName, "power"))
-		.replace(/@{speed}/g, getGearProperty(gearName, "speed"))
-		.replace(/@{critRate}/g, getGearProperty(gearName, "critRate"));
+	return calculateTagContent(text, [
+		"critMultiplier",
+		"bonus",
+		"bonus2",
+		"protection",
+		"healing",
+		"maxHP",
+		"power",
+		"speed",
+		"critRate"
+	].map(property => ({ tag: property, count: getGearProperty(gearName, property) })));
 }
 
 module.exports = {

@@ -4,7 +4,7 @@ const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustr
 const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING, ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
-const { getColor } = require('../util/elementUtil');
+const { getColor } = require('../util/essenceUtil');
 const { getNumberEmoji } = require('../util/textUtil');
 
 const mainId = "treasure";
@@ -62,7 +62,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				if (shoddyPenalty) {
 					charges = Math.ceil(charges * (100 - shoddyPenalty) / 100);
 				}
-				const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
+				const embed = new EmbedBuilder().setColor(getColor(adventure.room.essence))
 					.setAuthor(randomAuthorTip())
 					.setTitle("Pick this gear?")
 					.addFields({ name, value: buildGearDescription(name) });

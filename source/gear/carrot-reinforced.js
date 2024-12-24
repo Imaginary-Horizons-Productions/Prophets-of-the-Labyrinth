@@ -1,5 +1,5 @@
 const { GearTemplate, CombatantReference } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getPetMove } = require('../pets/_petDictionary');
 const { changeStagger, addProtection } = require('../util/combatantUtil');
@@ -13,10 +13,10 @@ module.exports = new GearTemplate("Reinforced Carrot",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { element, protection, critMultiplier } = module.exports;
+		const { essence, protection, critMultiplier } = module.exports;
 		let pendingProtection = protection;
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_ALLY);
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingProtection *= critMultiplier;

@@ -1,9 +1,9 @@
 const { EnemyTemplate } = require("../classes");
 const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
-const { getEmoji } = require("../util/elementUtil.js");
+const { getEmoji } = require("../util/essenceUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
-const { ELEMENT_MATCH_STAGGER_FOE, ELEMENT_MATCH_STAGGER_ALLY } = require("../constants.js");
+const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",
 	"Earth",
@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	false
 ).addAction({
 	name: "Bite",
-	element: "Earth",
+	essence: "Earth",
 	description: `Deals ${getEmoji("Earth")} damage to a single foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -23,14 +23,14 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.element, adventure);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
+		return dealDamage(targets, user, damage, false, user.essence, adventure);
 	},
 	selector: selectRandomFoe,
 	next: "random"
 }).addAction({
 	name: "Crystallize",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: `Gain protection and @e{Power Up}`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -38,7 +38,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		addProtection([user], 25);
 		if (user.crit) {
 			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 50 }).some(receipt => receipt.succeeded.size > 0);
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		} else {
 			addedPowerUp = addModifier([user], { name: "Power Up", stacks: 25 }).some(receipt => receipt.succeeded.size > 0);
 		}

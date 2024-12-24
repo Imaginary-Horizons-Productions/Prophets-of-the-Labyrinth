@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { ELEMENT_MATCH_STAGGER_ALLY } = require("../constants");
+const { ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { addModifier, changeStagger, enterStance, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { accuratePassive } = require("./descriptions/passives");
 
@@ -13,9 +13,9 @@ module.exports = new GearTemplate("Accurate Iron Fist Stance",
 	"Light",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [ironFistStance, frail] } = module.exports;
-		if (user.element === element) {
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+		const { essence, modifiers: [ironFistStance, frail] } = module.exports;
+		if (user.essence === essence) {
+			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		const receipts = enterStance(user, ironFistStance);
 		if (user.crit) {
@@ -31,4 +31,4 @@ module.exports = new GearTemplate("Accurate Iron Fist Stance",
 	.setBonus(45) // Punch damage boost
 	.setCooldown(2)
 	.setCritRate(5)
-	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's element to the bearer's and increases its damage by @{bonus} per stack" });
+	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's essence to the bearer's and increases its damage by @{bonus} per stack" });

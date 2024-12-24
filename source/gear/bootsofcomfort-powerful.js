@@ -5,7 +5,7 @@ module.exports = new GearTemplate("Powerful Boots of Comfort",
 		["Passive", "Increase your Speed by 20% and your Power by 10%"]
 	],
 	"Trinket",
-	"Untyped",
+	"Unaligned",
 	350,
 	(targets, user, adventure) => []
 ).setSidegrades("Accurate Boots of Comfort", "Swift Boots of Comfort")

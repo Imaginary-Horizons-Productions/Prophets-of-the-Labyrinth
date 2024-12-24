@@ -5,7 +5,7 @@ module.exports = new GearTemplate("Wolf Ring",
 		["Passive", "Increase your Max HP by 20%"]
 	],
 	"Trinket",
-	"Untyped",
+	"Unaligned",
 	200,
 	(targets, user, adventure) => []
 ).setUpgrades("Accurate Wolf Ring", "Powerful Wolf Ring", "Swift Wolf Ring")

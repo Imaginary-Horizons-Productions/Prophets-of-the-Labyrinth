@@ -13,7 +13,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 		Light: [],
 		Water: [],
 		Wind: [],
-		Untyped: [
+		Unaligned: [
 			"Clear Potion",
 			"Creative Acorn",
 			"Earthen Potion",
@@ -199,7 +199,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Unstoppable Air Blades"
 			]
 		},
-		Untyped: {
+		Unaligned: {
 			Cursed: [
 				"Cursed Blade",
 				"Cursed Tome"

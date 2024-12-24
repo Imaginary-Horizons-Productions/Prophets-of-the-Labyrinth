@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
+const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, addProtection, combineModifierReceipts, generateModifierResultLines } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	true
 ).addAction({
 	name: "Swarm Protocol",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: `Gain protection and command all Mechabees to Call for Help`,
 	priority: 1,
 	effect: (targets, user, adventure) => {
@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	combatFlavor: "The Queen demands reinforcements!"
 }).addAction({
 	name: "Formation Protocol",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: `Gain protection and grant @e{Quicken} and @e{Power Up} to all lower ranking mechabees`,
 	priority: 1,
 	effect: (targets, user, adventure) => {
@@ -49,7 +49,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	combatFlavor: "The Queen personally optimizes the flight formation."
 }).addAction({
 	name: "Assault Protocol",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: "Gain protection and command all Mechabees to Sting a single foe",
 	priority: 1,
 	effect: (targets, user, adventure) => {
@@ -69,7 +69,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	combatFlavor: "The Queen orders a full-on attack!"
 }).addAction({
 	name: "Sacrifice Protocol",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: "Gain protection and command a Mechabee to Self-Destruct",
 	priority: 1,
 	effect: ([target], user, adventure) => {
@@ -86,7 +86,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	combatFlavor: "The Queen employs desperate measures!"
 }).addAction({
 	name: "Deploy Drone",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: "Summon a Mechabee",
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -97,12 +97,12 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 	next: "a random protocol"
 }).addAction({
 	name: "Laser Array",
-	element: "Darkness",
+	essence: "Darkness",
 	description: "Inflict Darkness damage on a single foe",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let pendingDamage = 125;
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		if (user.crit) {
 			pendingDamage *= 2;
 		}

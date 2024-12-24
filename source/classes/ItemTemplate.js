@@ -6,15 +6,15 @@ class ItemTemplate {
 	/**
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} elementLabel
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essenceEnum
 	 * @param {number} costInput
 	 * @param {(self, adventure: Adventure) => CombatantReference[]} selectTargetsFunction
 	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} effectFunction
 	 */
-	constructor(nameInput, descriptionInput, elementLabel, costInput, selectTargetsFunction, effectFunction) {
+	constructor(nameInput, descriptionInput, essenceEnum, costInput, selectTargetsFunction, effectFunction) {
 		this.name = nameInput;
 		this.description = descriptionInput;
-		this.element = elementLabel;
+		this.essence = essenceEnum;
 		this.cost = costInput;
 		this.selectTargets = selectTargetsFunction;
 		this.effect = effectFunction;

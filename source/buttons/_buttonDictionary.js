@@ -13,7 +13,7 @@ for (const file of [
 	"collectartifact.js",
 	"deploy.js",
 	"deploypet.js",
-	"elementresearch.js",
+	"essenceresearch.js",
 	"eventartifact.js",
 	"gearcapup.js",
 	"getgoldonfire.js",

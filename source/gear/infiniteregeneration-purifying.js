@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes/index.js');
-const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
 const { addModifier, payHP, changeStagger, removeModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [regen], pactCost: [pactCostValue], critMultiplier } = module.exports;
+		const { essence, modifiers: [regen], pactCost: [pactCostValue], critMultiplier } = module.exports;
 		let pendingHPCost = pactCostValue;
 		if (user.crit) {
 			pendingHPCost /= critMultiplier;
@@ -21,8 +21,8 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 		if (adventure.lives < 1) {
 			return [paymentSentence];
 		}
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		const resultLines = [paymentSentence];
 		const receipts = addModifier(targets, regen);

@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { gainHealth, removeModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js');
 
 const gearName = "Cleansing Second Wind";
 module.exports = new GearTemplate(gearName,
@@ -10,13 +10,13 @@ module.exports = new GearTemplate(gearName,
 		["Critical💥", "Healing x@{critMultiplier}"]
 	],
 	"Technique",
-	"Untyped",
+	"Unaligned",
 	350,
 	(targets, user, adventure) => {
-		const { element, critMultiplier } = module.exports;
+		const { essence, critMultiplier } = module.exports;
 		let pendingHealing = user.getPower();
-		if (user.element === element) {
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+		if (user.essence === essence) {
+			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingHealing *= critMultiplier;

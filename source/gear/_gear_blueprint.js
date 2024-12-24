@@ -2,17 +2,16 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("name",
 	[
-		["Requirement", "text"],
 		["Passive", "text"],
 		["use", "move description"],
 		["Critical💥", "crit description"]
 	],
 	"category",
-	"element",
+	"essence",
 	200,
 	(targets, user, adventure) => {
-		const { element } = module.exports;
-		if (user.element === element) {
+		const { essence } = module.exports;
+		if (user.essence === essence) {
 
 		}
 		if (user.crit) {

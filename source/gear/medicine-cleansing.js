@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { addModifier, changeStagger, generateModifierResultLines, removeModifier } = require('../util/combatantUtil');
 
@@ -13,10 +13,10 @@ module.exports = new GearTemplate(gearName,
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { modifiers: [regen], critMultiplier, element } = module.exports;
+		const { modifiers: [regen], critMultiplier, essence } = module.exports;
 		const pendingRegen = { ...regen };
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
 			pendingRegen.stacks *= critMultiplier;

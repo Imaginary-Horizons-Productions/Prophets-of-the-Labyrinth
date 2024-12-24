@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shattering Goad Futility",
@@ -11,9 +11,9 @@ module.exports = new GearTemplate("Shattering Goad Futility",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { element, modifiers: [oblivious, unlucky, frail] } = module.exports;
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+		const { essence, modifiers: [oblivious, unlucky, frail] } = module.exports;
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const resultLines = [];
 		const receipts = addModifier([user], oblivious);

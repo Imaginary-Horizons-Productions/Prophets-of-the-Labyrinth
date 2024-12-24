@@ -1,17 +1,17 @@
 const { GearTemplate, Move } = require('../classes/index.js');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Battleaxe",
 	[
-		["use", "Strike a foe for <@{damage} + @{bonus} if after target> @{element} damage, gain @{mod0Stacks} @{mod0}"],
+		["use", "Strike a foe for <@{damage} + @{bonus} if after target> @{essence} damage, gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [exposed], damage, critMultiplier, bonus } = module.exports;
+		const { essence, modifiers: [exposed], damage, critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(targets[0]), team: targets[0].team });
@@ -19,13 +19,13 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
 			pendingDamage *= bonus;
 		}
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier([user], exposed)));
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([user], exposed)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Furious Battleaxe", "Thirsting Battleaxe")

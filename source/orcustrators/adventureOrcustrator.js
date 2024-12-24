@@ -14,9 +14,9 @@ const { getGearProperty } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
-const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getCombatantWeaknesses } = require("../util/combatantUtil");
-const { getWeaknesses, elementsList, getEmoji, getResistances } = require("../util/elementUtil");
+const { removeModifier, addModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getCombatantCounters } = require("../util/combatantUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
+const { essenceList, getCounteredEssences, getEmoji } = require("../util/essenceUtil.js");
 const { ensuredPathSave } = require("../util/fileUtil");
 const { anyDieSucceeds } = require("../util/mathUtil.js");
 const { clearComponents } = require("../util/messageComponentUtil");
@@ -205,16 +205,21 @@ function nextRoom(roomType, thread) {
 
 	// Generate current room
 	const roomTemplate = rollRoom(roomType, adventure);
-	adventure.room = new Room(roomTemplate.title, roomTemplate.element, roomTemplate.enemyList);
+	adventure.room = new Room(roomTemplate.title, roomTemplate.essence, roomTemplate.enemyList);
 	roomTemplate.init(adventure);
-	if (adventure.room.element === "@{adventure}") {
-		adventure.room.element = adventure.element;
-	} else if (adventure.room.element === "@{adventureWeakness}") {
-		const weaknessPool = getWeaknesses(adventure.element);
-		if (weaknessPool.length > 0) {
-			adventure.room.element = weaknessPool[adventure.generateRandomNumber(weaknessPool.length, "general")];
+	if (adventure.room.essence === "@{adventure}") {
+		adventure.room.essence = adventure.essence;
+	} else if (adventure.room.essence === "@{adventureCounter}") {
+		const essencePool = [];
+		for (const essence of essenceList(["Unaligned", adventure.essence])) {
+			if (getCounteredEssences(essence).includes(adventure.essence)) {
+				essencePool.push(essence);
+			}
+		}
+		if (essencePool.length > 0) {
+			adventure.room.essence = essencePool[adventure.generateRandomNumber(essencePool.length, "general")];
 		} else {
-			adventure.room.element = "Untyped";
+			adventure.room.essence = "Unaligned";
 		}
 	}
 
@@ -318,13 +323,13 @@ function endRoom(roomType, thread) {
 	nextRoom(roomType, thread);
 }
 
-const rnsConcerningTargets = new Set(["weaknesses", "buffs", "debuffs"]);
+const rnsConcerningTargets = new Set(["vulnerabilities", "buffs", "debuffs"]);
 
 /**
  * Cache the random result of a move, onto the roundRns of a combatant
  * @param {Adventure} adventure
  * @param {Combatant} user
- * @param {"foes" | "allies" | "elements" | string} moveName
+ * @param {"foes" | "allies" | "essences" | string} moveName
  * @param {Record<string, number|Record<string,number>>} config
  */
 function cacheRoundRn(adventure, user, moveName, config) {
@@ -367,9 +372,11 @@ function cacheRoundRn(adventure, user, moveName, config) {
 						}
 					}
 					break;
-				case "elements":
-				case "elementsNoUntyped":
-				case "weaknesses":
+				case "essenceShift":
+				case "essencesNoUnaligned":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(6, "battle"));
+					break;
+				case "vulnerabilities":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(7, "battle"))
 					break;
 				// assuming 256 (2 rn table digits) is a large enough bound on de/buffs
@@ -408,7 +415,7 @@ function cacheRoundRn(adventure, user, moveName, config) {
  * @param {Combatant} user
  * @param {Combatant} target
  * @param {string} moveName
- * @param {"foes" | "allies" | "elements" | string} key
+ * @param {"foes" | "allies" | "essences" | string} key
  */
 function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 	const roundRnKeyname = `${moveName}${SAFE_DELIMITER}${key}`;
@@ -422,18 +429,18 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			const allyPool = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 			return `${user.name}'s ${moveName} will affect ${listifyEN(user.roundRns[roundRnKeyname].map(rn => allyPool[rn % allyPool.length].name), false)}`;
 		}
-		case "elements": {
-			const elements = elementsList([])
-			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(elements[rn % elements.length])).join("")} on ${target.name}`;
+		case "essenceShift": {
+			const essences = essenceList(["Unaligned", user.element]);
+			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(essences[rn % essences.length])).join("")} on ${target.name}`;
 		}
-		case "elementsNoUntyped": {
-			const elementsNoUntyped = elementsList(["Untyped"])
-			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(elementsNoUntyped[rn % elementsNoUntyped.length])).join("")} on ${target.name}`;
+		case "essencesNoUnaligned": {
+			const essencesNoUnaligned = essenceList(["Unaligned"])
+			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(essencesNoUnaligned[rn % essencesNoUnaligned.length])).join("")} on ${target.name}`;
 		}
-		case "weaknesses": {
-			const ineligibleWeaknesses = getResistances(target.element).concat(getCombatantWeaknesses(target));
-			const weaknessPool = elementsList(ineligibleWeaknesses);
-			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${weaknessPool[rn % weaknessPool.length]} Weakness`)).join("")} on ${target.name}`;
+		case "vulnerabilites": {
+			const ineligibleEssences = getCombatantCounters(target);
+			const essencePool = essenceList(ineligibleEssences);
+			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${essencePool[rn % essencePool.length]} Vulnerability`)).join("")} on ${target.name}`;
 		}
 		case "buffs":
 			targetModifiers = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
@@ -543,8 +550,8 @@ function predictRoundRnOutcomes(adventure) {
  * Given a move and delver BUT NOT THE TARGET for a random-concerned-move that depends on targets, return a predicted outcome.
  * @param {Adventure} adventure
  * @param {Combatant} user
- * @param {"foes" | "allies" | "elements" | string} targetingTags
- * @param {"foes" | "allies" | "elements" | string} moveName
+ * @param {"foes" | "allies" | "essences" | string} targetingTags
+ * @param {"foes" | "allies" | "essences" | string} moveName
  * @param {Record<string, number>} config
  */
 function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName, key) {

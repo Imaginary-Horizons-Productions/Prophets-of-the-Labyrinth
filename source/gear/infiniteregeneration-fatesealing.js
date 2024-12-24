@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js');
 const { addModifier, payHP, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [regen, stasis], pactCost: [pactCostValue], critMultiplier } = module.exports;
+		const { essence, modifiers: [regen, stasis], pactCost: [pactCostValue], critMultiplier } = module.exports;
 		let pendingHPCost = pactCostValue;
 		const paymentSentence = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
@@ -23,8 +23,8 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 			pendingHPCost /= critMultiplier;
 			receipts.push(...addModifier(targets, stasis));
 		}
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}

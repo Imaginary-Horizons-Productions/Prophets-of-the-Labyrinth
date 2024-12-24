@@ -1,25 +1,25 @@
 const { GearTemplate } = require('../classes/index.js');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Lethal Shortsword",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage, then apply @{mod0Stacks} @{mod0} to both the foe and yourself"],
+		["use", "Strike a foe for @{damage} @{essence} damage, then apply @{mod0Stacks} @{mod0} to both the foe and yourself"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [exposed], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [exposed], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
-		if (user.element === element) {
-			changeStagger(stillLivingTargets, user, ELEMENT_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed))));
 	}

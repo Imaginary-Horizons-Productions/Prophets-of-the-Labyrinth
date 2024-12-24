@@ -1,7 +1,7 @@
 const { italic, bold } = require("discord.js");
 const { Combatant, Adventure, ModifierReceipt } = require("../classes");
 const { getInverse, getModifierDescription, getModifierCategory } = require("../modifiers/_modifierDictionary");
-const { getWeaknesses, getResistances, elementsList, getEmoji } = require("./elementUtil.js");
+const { getEmoji, getCounteredEssences, essenceList } = require("./essenceUtil.js");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 const { listifyEN } = require("./textUtil.js");
 const { areSetContentsCongruent } = require("./mathUtil.js");
@@ -48,28 +48,24 @@ function livesCheck(previousLives, currentLives) {
  * @param {Combatant} assailant
  * @param {number} damage
  * @param {boolean} isUnblockable
- * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} element
+ * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essence
  * @param {Adventure} adventure
  */
-function dealDamage(targets, assailant, damage, isUnblockable, element, adventure) {
+function dealDamage(targets, assailant, damage, isUnblockable, essence, adventure) {
 	const previousLifeCount = adventure.lives;
 	const results = [];
 	for (const target of targets) {
 		if (target.hp > 0) { // Skip if target is downed (necessary for multi-hit moves hitting same target)
-			if (!(`${element} Absorb` in target.modifiers)) {
+			if (!(`${essence} Absorption` in target.modifiers)) {
 				if (!("Evade" in target.modifiers) || isUnblockable) {
 					let pendingDamage = damage;
 					if ("Exposed" in target.modifiers) {
 						pendingDamage *= 1.5;
 						removeModifier([target], { name: "Exposed", stacks: 1, force: true });
 					}
-					const isWeakness = getCombatantWeaknesses(target).includes(element);
-					if (isWeakness) {
-						pendingDamage *= 2;
-					}
-					const isResistance = getResistances(target.element).includes(element);
-					if (isResistance) {
-						pendingDamage = pendingDamage / 2;
+					const isCounter = getCombatantCounters(target).includes(essence);
+					if (isCounter) {
+						pendingDamage += assailant.getEssenceCounterDamage();
 					}
 					pendingDamage = Math.ceil(pendingDamage);
 					let blockedDamage = 0;
@@ -86,7 +82,7 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 					}
 					pendingDamage = Math.min(pendingDamage, assailant.getDamageCap());
 					target.hp -= pendingDamage;
-					results.push(`${target.name} takes ${pendingDamage} ${getEmoji(element)} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}${downedCheck(target, adventure)}`);
+					results.push(`${target.name} takes ${pendingDamage} ${getEmoji(essence)} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isCounter ? "!" : "."}${downedCheck(target, adventure)}`);
 					if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
 						const midasGold = Math.floor(pendingDamage / 10 * target.modifiers["Curse of Midas"]);
 						adventure.room.addResource("Gold", "Currency", "loot", midasGold);
@@ -97,7 +93,7 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 					results.push(`${target.name} evades the attack!`);
 				}
 			} else {
-				results.push(gainHealth(target, damage, adventure, "Elemental Absorption"));
+				results.push(gainHealth(target, damage, adventure, "Essence Absorption"));
 			}
 		}
 	}
@@ -113,7 +109,7 @@ const MODIFIER_DAMAGE_PER_STACK = {
 	Frail: 20
 };
 
-/** modifier damage is unblockable, doesn't have an element, and doesn't interact with other modifiers (eg Exposed & Curse of Midas)
+/** modifier damage is unblockable, doesn't have an essence, and doesn't interact with other modifiers (eg Exposed & Curse of Midas)
  * @param {Combatant} target
  * @param {"Poison" | "Frail"} modifier
  * @param {Adventure} adventure
@@ -392,18 +388,18 @@ function modifiersToString(combatant, adventure) {
 	return modifiersText;
 }
 
-/** Assembles an array of the combatant's elemental weaknesses and modifier-induced weaknesses
+/** Assembles an array of the combatant's innate and modifier-induced counters
  * @param {Combatant} combatant
- * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")[]}
+ * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned")[]}
  */
-function getCombatantWeaknesses(combatant) {
-	const weaknesses = [...getWeaknesses(combatant.element)]; // avoid closure by making new array
-	elementsList().forEach(element => {
-		if (!weaknesses.includes(element) && `${element} Weakness` in combatant.modifiers) {
-			weaknesses.push(element);
+function getCombatantCounters(combatant) {
+	const counters = [];
+	essenceList().forEach(essence => {
+		if (`${essence} Vulnerability` in combatant.modifiers || getCounteredEssences(essence).includes(combatant.essence)) {
+			counters.push(essence);
 		}
 	})
-	return weaknesses;
+	return counters;
 }
 
 module.exports = {
@@ -419,5 +415,5 @@ module.exports = {
 	changeStagger,
 	addProtection,
 	modifiersToString,
-	getCombatantWeaknesses
+	getCombatantCounters
 };

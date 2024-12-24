@@ -8,16 +8,17 @@ const MODIFIERS = {};
 const MODIFIER_NAMES = [];
 
 for (const file of [
-	"absorb-darkness.js",
-	"absorb-earth.js",
-	"absorb-fire.js",
-	"absorb-light.js",
-	"absorb-untyped.js",
-	"absorb-water.js",
-	"absorb-wind.js",
+	"absorption-darkness.js",
+	"absorption-earth.js",
+	"absorption-fire.js",
+	"absorption-light.js",
+	"absorption-unaligned.js",
+	"absorption-water.js",
+	"absorption-wind.js",
 	"agility.js",
 	"coward.js",
 	"curse-of-midas.js",
+	"dissonance.js",
 	"distracted.js",
 	"evade.js",
 	"exposed.js",
@@ -38,6 +39,7 @@ for (const file of [
 	"progress.js",
 	"quicken.js",
 	"regen.js",
+	"resonance.js",
 	"retain.js",
 	"slow.js",
 	"stance-floating-mist.js",
@@ -45,13 +47,13 @@ for (const file of [
 	"the-target.js",
 	"unlucky.js",
 	"vigilance.js",
-	"weakness-darkness.js",
-	"weakness-earth.js",
-	"weakness-fire.js",
-	"weakness-light.js",
-	"weakness-untyped.js",
-	"weakness-water.js",
-	"weakness-wind.js"
+	"vulnerability-darkness.js",
+	"vulnerability-earth.js",
+	"vulnerability-fire.js",
+	"vulnerability-light.js",
+	"vulnerability-unaligned.js",
+	"vulnerability-water.js",
+	"vulnerability-wind.js"
 ]) {
 	/** @type {ModifierTemplate} */
 	const modifier = require(`./${file}`);

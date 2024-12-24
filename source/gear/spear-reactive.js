@@ -1,17 +1,17 @@
 const { GearTemplate, Move } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Reactive Spear",
 	[
-		["use", "Strike a foe for <@{damage} + @{bonus2} if after foe> @{element} damage"],
+		["use", "Strike a foe for <@{damage} + @{bonus2} if after foe> @{essence} damage"],
 		["Critical💥", "Inflict @{bonus} more Stagger"]
 	],
 	"Weapon",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { element, bonus, damage, bonus2 } = module.exports;
+		const { essence, bonus, damage, bonus2 } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let pendingStagger = 0;
 		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
@@ -20,10 +20,10 @@ module.exports = new GearTemplate("Reactive Spear",
 		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
 			pendingDamage += bonus2;
 		}
-		if (user.element === element) {
-			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
+		if (user.essence === essence) {
+			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
-		const resultLines = dealDamage([target], user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
 		if (user.crit) {
 			pendingStagger += bonus;
 			resultLines.push(`${target.name} is Staggered.`);

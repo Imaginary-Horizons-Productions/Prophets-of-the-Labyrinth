@@ -4,7 +4,7 @@ const { addModifier, generateModifierResultLines, combineModifierReceipts } = re
 module.exports = new GearTemplate("Greed",
 	[["use", "Add @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to all Treasure Elementals with priority"]],
 	"Action",
-	"Untyped",
+	"Unaligned",
 	0,
 	(targets, user, adventure) => {
 		const { modifiers: [midas, powerUp] } = module.exports;

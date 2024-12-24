@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { ELEMENT_MATCH_STAGGER_ALLY } = require("../constants");
+const { ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { addModifier, changeStagger, enterStance, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
 module.exports = new GearTemplate("Chaining Iron Fist Stance",
@@ -11,9 +11,9 @@ module.exports = new GearTemplate("Chaining Iron Fist Stance",
 	"Light",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [ironFistStance, frail] } = module.exports;
-		if (user.element === element) {
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+		const { essence, modifiers: [ironFistStance, frail] } = module.exports;
+		if (user.essence === essence) {
+			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		const receipts = enterStance(user, ironFistStance);
 		if (user.crit) {
@@ -28,4 +28,4 @@ module.exports = new GearTemplate("Chaining Iron Fist Stance",
 	.setModifiers({ name: "Iron Fist Stance", stacks: 1 }, { name: "Frail", stacks: 4 })
 	.setBonus(45) // Punch damage boost
 	.setCooldown(1)
-	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's element to the bearer's and increases its damage by @{bonus} per stack" });
+	.setFlavorText({ name: "Iron Fist Stance", value: "Changes Punch's essence to the bearer's and increases its damage by @{bonus} per stack" });

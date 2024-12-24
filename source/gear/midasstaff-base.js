@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_ALLY, ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Midas Staff",
@@ -11,16 +11,16 @@ module.exports = new GearTemplate("Midas Staff",
 	"Water",
 	200,
 	([target], user, adventure) => {
-		const { element, modifiers: [curse], bonus } = module.exports;
+		const { essence, modifiers: [curse], bonus } = module.exports;
 		const pendingCurse = { ...curse };
 		if (user.crit) {
 			pendingCurse.stacks += bonus;
 		}
-		if (user.element === element) {
+		if (user.essence === essence) {
 			if (target.team === user.team) {
-				changeStagger([target], user, ELEMENT_MATCH_STAGGER_ALLY);
+				changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 			} else {
-				changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+				changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 			}
 		}
 		return generateModifierResultLines(addModifier([target], pendingCurse));

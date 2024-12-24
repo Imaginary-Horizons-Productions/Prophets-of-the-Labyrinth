@@ -4,11 +4,11 @@ const { standardLabyrinthInfrastructure } = require("./shared");
 const RARITIES = ["Cursed", "Common", "Rare"];
 
 module.exports = new LabyrinthTemplate("Debug Dungeon",
-	"Untyped",
+	"Unaligned",
 	"This labyrinth contains whatever the devs were testing most recently. Balance not guaranteed!",
 	5,
 	[5],
-	Object.fromEntries(["Darkness", "Earth", "Fire", "Light", "Water", "Wind", "Untyped"].map(element => [element, [
+	Object.fromEntries(["Darkness", "Earth", "Fire", "Light", "Water", "Wind", "Unaligned"].map(essence => [essence, [
 		"Creative Acorn",
 		"Flexigrass",
 	]])),
@@ -62,7 +62,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Toxic Air Blades",
 			"Unstoppable Air Blades"
 		]])),
-		Untyped: Object.fromEntries(RARITIES.map(rarity => [rarity, [
+		Unaligned: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Pistol",
 			"Double Pistol",
 			"Duelist's Pistol",

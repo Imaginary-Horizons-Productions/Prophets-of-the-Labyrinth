@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js');
 
 const gearName = "Refreshing Breeze";
 module.exports = new GearTemplate(gearName,
@@ -13,9 +13,9 @@ module.exports = new GearTemplate(gearName,
 	"Wind",
 	200,
 	(targets, user, adventure) => {
-		const { element } = module.exports;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_ALLY);
+		const { essence } = module.exports;
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		const receipts = [];
 		targets.forEach(target => {

@@ -1,21 +1,21 @@
 const { GearTemplate, Move } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addModifier, dealDamage, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Harmful Shoulder Throw",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage then redirect them into targeting themself if they're slower"],
+		["use", "Strike a foe for @{damage} @{essence} damage then redirect them into targeting themself if they're slower"],
 		["Critical💥", "Gain @{mod0Stacks} @{mod0}"]
 	],
 	"Technique",
 	"Light",
 	350,
 	([target], user, adventure) => {
-		const { element, modifiers: [evade], damage } = module.exports;
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+		const { essence, modifiers: [evade], damage } = module.exports;
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		const resultLines = dealDamage([target], user, damage, false, element, adventure);
+		const resultLines = dealDamage([target], user, damage, false, essence, adventure);
 		if (target.hp > 0) {
 			const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 			const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });

@@ -1,15 +1,13 @@
-Keeping effects within elemental themes will help with elements not outclassing each other. Elements are ordered alphabetically but with Untyped last.
+Keeping effects within essence themes will help with essences not outclassing each other. Essences are ordered alphabetically but with Unaligned last.
 
-Elements take half damage from elements they resist and deal double damage to elements that are weak to them (which coincides with elements they resist).
+Combatants take increased damage from essences that counter their essence. The damage bonus scales with the assailant's level.
 
 ## 💀 Darkness
 Color: ![Colors.DarkPurple](https://placehold.co/15x15/71368A/71368A.png) `Colors.DarkPurple`
 
 Opposite: ✨ Light
 
-Resists: 🌿 Earth, 💨 Wind
-
-Weak to: 🔥 Fire, 💦 Water
+Counters: 🌿 Earth, 🌧️ Water
 
 Archetypes: Hemomancer
 
@@ -29,9 +27,7 @@ Color: ![Colors.DarkGreen](https://placehold.co/15x15/1F8B4C/1F8B4C.png) `Colors
 
 Opposite: 💨 Wind
 
-Resists: ✨ Light, 💦 Water
-
-Weak to: 💀 Darkness, 🔥 Fire
+Counters: ✨ Light, 🌧️ Water
 
 Archetypes: Knight, Detective
 
@@ -48,11 +44,9 @@ Archetypes: Knight, Detective
 ## 🔥 Fire
 Color: ![Colors.Orange](https://placehold.co/15x15/E67E22/E67E22.png) `Colors.Orange`
 
-Opposite: 💦 Water
+Opposite: 🌧️ Water
 
-Resists: 💀 Darkness, 🌿 Earth
-
-Weak to: ✨ Light, 💨 Wind
+Counters: 💀 Darkness, 🌿 Earth
 
 Archetypes: Ritualist, Legionnaire
 
@@ -70,9 +64,7 @@ Color: ![Colors.Yellow](https://placehold.co/15x15/FEE75C/FEE75C.png) `Colors.Ye
 
 Opposite: 💀 Darkness
 
-Resists: 🔥 Fire, 💦 Water
-
-Weak to: 🌿 Earth, 💨 Wind
+Counters: 🔥 Fire, 💨 Wind
 
 Archetypes: Martial Artist
 
@@ -87,14 +79,12 @@ Archetypes: Martial Artist
 - Organic
 - Blasting
 
-## 💦 Water
+## 🌧️ Water
 Color: ![Colors.Blue](https://placehold.co/15x15/3498DB/3498DB.png) `Colors.Blue`
 
 Opposite: 🔥 Fire
 
-Resists: 💀 Darkness, 💨 Wind
-
-Weak to: 🌿 Earth, ✨ Light
+Counters: ✨ Light, 💨 Wind
 
 Archetypes: Chemist
 
@@ -115,9 +105,7 @@ Color: ![Colors.Aqua](https://placehold.co/15x15/1ABC9C/1ABC9C.png) `Colors.Aqua
 
 Opposite: 🌿 Earth
 
-Resists: 🔥 Fire, ✨ Light
-
-Weak to: 💀 Darkness, 💦 Water
+Counters: 💀 Darkness, 🔥 Fire
 
 Archetypes: Assassin
 
@@ -134,14 +122,12 @@ Archetypes: Assassin
 - Thirsting
 - Vigilant
 
-## 🌐 Untyped
+## 🌐 Unaligned
 Color: ![Colors.Greyple](https://placehold.co/15x15/99AAB5/99AAB5.png) `Colors.Greyple`
 
-Opposite: 🌐 Untyped
+Opposite: 🌐 Unaligned
 
-Resists: (none)
-
-Weak to: (none)
+Counters: N/A
 
 Archetypes:
 

@@ -1,5 +1,5 @@
 const { GearTemplate, Move } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Evasive Heat Mirage",
@@ -11,10 +11,10 @@ module.exports = new GearTemplate("Evasive Heat Mirage",
 	"Fire",
 	350,
 	([target], user, adventure) => {
-		const { element, modifiers: [evade], critMultiplier } = module.exports;
+		const { essence, modifiers: [evade], critMultiplier } = module.exports;
 		const pendingEvade = { ...evade };
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
 			pendingEvade.stacks *= critMultiplier;

@@ -1,5 +1,5 @@
 const { GearTemplate } = require("../classes");
-const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants");
+const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants");
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
@@ -12,10 +12,10 @@ module.exports = new GearTemplate("Corrosion",
 	"Fire",
 	200,
 	(targets, user, adventure) => {
-		const { element, modifiers: [powerDown], bonus } = module.exports;
+		const { essence, modifiers: [powerDown], bonus } = module.exports;
 		let pendingStagger = 0;
-		if (user.element === element) {
-			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
+		if (user.essence === essence) {
+			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, powerDown)));
 		if (user.crit) {

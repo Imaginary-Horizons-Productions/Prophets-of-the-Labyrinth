@@ -42,7 +42,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 
 				const archetypeTemplate = getArchetype(delver.archetype);
-				delver.element = archetypeTemplate.element;
+				delver.essence = archetypeTemplate.essence;
 				let cursedIndex;
 				if ("Cursed Run" in adventure.challenges) {
 					cursedIndex = adventure.generateRandomNumber(archetypeTemplate.startingGear.length, "general");

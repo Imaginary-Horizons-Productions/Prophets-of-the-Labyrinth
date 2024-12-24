@@ -9,7 +9,7 @@ const { buildGearDescriptionWithHolderStats } = require("../gear/_gearDictionary
 const { getModifierDescription, getModifierCategory, getRoundDecrement, getMoveDecrement, getInverse } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
-const { getEmoji, getColor } = require("./elementUtil");
+const { getEmoji, getColor } = require("./essenceUtil");
 const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil");
 
@@ -29,8 +29,8 @@ const discordTips = [
 const potlTips = [
 	"Combatants lose their next turn (Stun) when their Stagger reaches their Poise.",
 	"Using items has priority.",
-	"Gear that matches your element removes 1 Stagger on allies.",
-	"Gear that matches your element adds 2 Stagger on foes.",
+	"Gear that matches your essence relieves 1 Stagger for allies.",
+	"Gear that matches your essence inflicts 2 Stagger on foes.",
 	"Combatant speed varies every round.",
 	"Damage is capped to 500 in one attack without any Power Up.",
 	"Check party status even when there isn't a button for it with '/adventure party-stats'!",
@@ -103,7 +103,7 @@ function generateRecruitEmbed(adventure) {
 			break;
 	}
 
-	return new EmbedBuilder().setColor(getColor(adventure.element))
+	return new EmbedBuilder().setColor(getColor(adventure.essence))
 		.setAuthor({ name: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png", url: "https://github.com/Imaginary-Horizons-Productions/prophets-of-the-labyrinth" })
 		.setTitle(adventure.name)
 		.setThumbnail(isAdventureCompleted ? "https://cdn.discordapp.com/attachments/545684759276421120/734092918369026108/completion.png" : "https://cdn.discordapp.com/attachments/545684759276421120/734093574031016006/bountyboard.png")
@@ -158,14 +158,14 @@ function generateAdventureConfigMessage() {
  * @param {string} descriptionOverride
  */
 function renderRoom(adventure, thread, descriptionOverride) {
-	const roomEmbed = new EmbedBuilder().setColor(getColor(adventure.room.element))
+	const roomEmbed = new EmbedBuilder().setColor(getColor(adventure.room.essence))
 		.setAuthor({ name: roomHeaderString(adventure), iconURL: thread.client.user.displayAvatarURL() })
 		.setTitle(adventure.room.title ?? "in setup")
 		.setFooter({ text: `Room #${adventure.depth}` });
 
 	const roomTemplate = getRoom(adventure.room.title);
 	if (descriptionOverride || roomTemplate) {
-		roomEmbed.setDescription(descriptionOverride || roomTemplate.description.replace("@{roomElement}", adventure.room.element));
+		roomEmbed.setDescription(descriptionOverride || roomTemplate.description.replace("@{roomEssence}", adventure.room.essence));
 	}
 
 	switch (adventure.state) {
@@ -364,7 +364,7 @@ async function generateVersionEmbed() {
  */
 function generateArtifactEmbed(artifactTemplate, count, adventure) {
 	const embed = embedTemplate()
-		.setTitle(`${getEmoji(artifactTemplate.element)} ${artifactTemplate.name} x ${count} `)
+		.setTitle(`${getEmoji(artifactTemplate.essence)} ${artifactTemplate.name} x ${count} `)
 		.setDescription(artifactTemplate.dynamicDescription(count))
 		.addFields({ name: "Scaling", value: artifactTemplate.scalingDescription });
 	if (artifactTemplate.flavorText) {
@@ -395,8 +395,8 @@ const BUTTON_STYLES_BY_MODIFIER_CATEGORY = {
 function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 	const hasLucky = delver.getModifierStacks("Lucky") > 0;
 	const hasUnlucky = delver.getModifierStacks("Unlucky") > 0;
-	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%${hasLucky ? " x 2 (Lucky)" : hasUnlucky ? " ÷ 2 (Unlucky)" : ""}\nPet: ${delver.pet ? delver.pet : "None"}\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
-	const embed = new EmbedBuilder().setColor(getColor(delver.element))
+	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%${hasLucky ? " x 2 (Lucky)" : hasUnlucky ? " ÷ 2 (Unlucky)" : ""}\nPet: ${delver.pet ? delver.pet : "None"}\n\n*(Your ${getEmoji(delver.essence)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
+	const embed = new EmbedBuilder().setColor(getColor(delver.essence))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
@@ -443,7 +443,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 function generatePartyStatsPayload(adventure) {
 	const guardsScouted = adventure.artifactGuardians.slice(0, adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians);
 	const gearCapacity = adventure.getGearCapacity();
-	const embed = new EmbedBuilder().setColor(getColor(adventure.element))
+	const embed = new EmbedBuilder().setColor(getColor(adventure.essence))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`Party Stats - ${adventure.name}`)
 		.setDescription(`Depth: ${adventure.depth}\nScore: ${adventure.getBaseScore().total}`)

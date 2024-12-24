@@ -2,7 +2,7 @@ const { LabyrinthTemplate } = require("../classes");
 const { standardLabyrinthInfrastructure } = require("./shared");
 
 module.exports = new LabyrinthTemplate("Everything Bagel",
-	"Untyped",
+	"Unaligned",
 	"Every and anything is possible in the great Everything Bagel of life! All content has an equal to chance to roll here, balance not guaranteed!",
 	15,
 	[15],
@@ -13,7 +13,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 		Light: [],
 		Water: [],
 		Wind: [],
-		Untyped: [
+		Unaligned: [
 			"Clear Potion",
 			"Creative Acorn",
 			"Earthen Potion",
@@ -263,7 +263,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Unstoppable Air Blades"
 			]
 		},
-		Untyped: {
+		Unaligned: {
 			Cursed: [
 				"Cursed Blade",
 				"Cursed Tome"

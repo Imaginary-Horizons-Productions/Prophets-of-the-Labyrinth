@@ -5,22 +5,22 @@ const { BuildError } = require("./BuildError");
 class RoomTemplate {
 	/** This read-only data class defines stats for a room
 	 * @param {string} titleText room titles double as the id, so must be unique
-	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped" | "@{adventure}" | "@{adventureOpposite}" | "@{adventureWeakness}"} elementEnum
+	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned" | "@{adventure}" | "@{adventureOpposite}" | "@{adventureCounter}"} essenceEnum
 	 * @param {string} descriptionInput
 	 * @param {ResourceTemplate[]} resourceArray
 	 * @param {(adventure: Adventure) => Record<string, string[]>} initializeFunction
 	 * @param {(roomEmbed: EmbedBuilder, adventure: Adventure) => {embeds: EmbedBuilder[], components: ActionRowBuilder[]}} buildRoomFunction
 	 */
-	constructor(titleText, elementEnum, descriptionInput, resourceArray, initializeFunction, buildRoomFunction) {
+	constructor(titleText, essenceEnum, descriptionInput, resourceArray, initializeFunction, buildRoomFunction) {
 		if (!titleText) throw new BuildError("Falsy titleText");
-		if (!elementEnum) throw new BuildError("Falsy elementEnum");
+		if (!essenceEnum) throw new BuildError("Falsy essenceEnum");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
 		if (!resourceArray) throw new BuildError("Falsy resourceArray");
 		if (!initializeFunction) throw new BuildError("Falsy buildHistoryFunction");
 		if (!buildRoomFunction) throw new BuildError("Falsy buildRoomFunction");
 
 		this.title = titleText;
-		this.element = elementEnum;
+		this.essence = essenceEnum;
 		this.description = descriptionInput;
 		this.resourceList = resourceArray;
 		this.init = initializeFunction;

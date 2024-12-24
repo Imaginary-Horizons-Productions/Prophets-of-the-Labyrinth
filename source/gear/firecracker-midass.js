@@ -1,26 +1,26 @@
 const { GearTemplate } = require('../classes/index.js');
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Midas's Firecracker",
 	[
-		["use", "Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{element} damage"],
+		["use", "Strike 3 random foes applying @{mod0Stacks} @{mod0} and @{damage} @{essence} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Weapon",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { element, modifiers: [curse], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [curse], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
-			if (user.element === element) {
-				changeStagger(stillLivingTargets, user, ELEMENT_MATCH_STAGGER_FOE);
+			if (user.essence === essence) {
+				changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
 			}
 			resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, curse))));
 		}

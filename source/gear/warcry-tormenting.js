@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 
 module.exports = new GearTemplate("Tormenting War Cry",
 	[
@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Tormenting War Cry",
 			targetSet.add(initialTarget.name);
 			targetArray.push(initialTarget);
 		}
-		const { element, stagger, bonus, modifiers: [targetModifier] } = module.exports;
+		const { essence, stagger, bonus, modifiers: [targetModifier] } = module.exports;
 		for (const enemy of adventure.room.enemies) {
 			if (enemy.hp > 0 && enemy.getModifierStacks(targetModifier.name) > 0 && !targetSet.has(enemy.name)) {
 				targetSet.add(enemy.name);
@@ -28,8 +28,8 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		}
 
 		let pendingStagger = stagger;
-		if (user.element === element) {
-			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
+		if (user.essence === essence) {
+			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
 			pendingStagger += bonus;

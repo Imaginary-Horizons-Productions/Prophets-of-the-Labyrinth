@@ -1,19 +1,19 @@
 const { GearTemplate } = require('../classes/index.js');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
 const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
 
 module.exports = new GearTemplate("Thief's Abacus",
 	[
-		["use", "Deal <@{damage} + 5% target max HP> @{element} damage to a foe, gain @{bonus}g on kill"],
+		["use", "Deal <@{damage} + 5% target max HP> @{essence} damage to a foe, gain @{bonus}g on kill"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Trinket",
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { element, damage, critMultiplier, bonus: bonusBounty } = module.exports;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		const { essence, damage, critMultiplier, bonus: bonusBounty } = module.exports;
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const resultLines = [];
 		let hunts = 0;
@@ -22,7 +22,7 @@ module.exports = new GearTemplate("Thief's Abacus",
 			if (user.crit) {
 				pendingDamage *= critMultiplier;
 			}
-			resultLines.push(...dealDamage([target], user, pendingDamage, false, element, adventure));
+			resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure));
 			if (target.hp < 1) {
 				hunts++;
 			}

@@ -5,7 +5,7 @@ module.exports = new GearTemplate("Swift Scarf",
 		["Passive", "Increase your Crit Rate by 20% and your Speed by 10%"]
 	],
 	"Trinket",
-	"Untyped",
+	"Unaligned",
 	350,
 	(targets, user, adventure) => []
 ).setSidegrades("Hearty Scarf", "Powerful Scarf")
