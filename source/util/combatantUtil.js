@@ -109,7 +109,7 @@ const MODIFIER_DAMAGE_PER_STACK = {
 	Frail: 20
 };
 
-/** modifier damage is unblockable, doesn't have an essence, and doesn't interact with other modifiers (eg Exposed & Curse of Midas)
+/** modifier damage doesn't have an essence and doesn't interact with other modifiers (eg Exposed & Curse of Midas)
  * @param {Combatant} target
  * @param {"Poison" | "Frail"} modifier
  * @param {Adventure} adventure
@@ -124,9 +124,18 @@ function dealModifierDamage(target, modifier, adventure) {
 		pendingDamage += funnelDamage;
 		adventure.updateArtifactStat("Spiral Funnel", `Extra ${modifier} Damage`, funnelDamage);
 	}
-
+	let blockedDamage = 0;
+	if (pendingDamage >= target.protection) {
+		pendingDamage -= target.protection;
+		blockedDamage = target.protection;
+		target.protection = 0;
+	} else {
+		target.protection -= pendingDamage;
+		blockedDamage = pendingDamage;
+		pendingDamage = 0;
+	}
 	target.hp -= pendingDamage;
-	const resultLines = [`${target.name} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`];
+	const resultLines = [`${target.name} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage${blockedDamage > 0 ? ` (${blockedDamage} blocked)` : ""}!${downedCheck(target, adventure)}`];
 
 	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
 	if (lifeLine) {
