@@ -52,9 +52,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const components = [];
 		const usableMoves = [];
 		delver.gear.forEach((gear, index) => {
-			if (gear.charges > 0) {
-				usableMoves.push({ ...gear, gearIndex: index })
-			}
+			usableMoves.push({ ...gear, gearIndex: index })
 		});
 		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
 			usableMoves.unshift({ name: "Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
@@ -62,8 +60,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		for (let i = 0; i < usableMoves.length; i++) {
 			const { name: gearName, charges, cooldown, gearIndex } = usableMoves[i];
 			const isOnCD = Boolean(cooldown) && (cooldown > 0);
+			const moraleRequirement = getGearProperty(gearName, "moraleRequirement");
+			const isMoraleLocked = moraleRequirement > adventure.room.morale;
+			const isOutOfCharges = charges < 1;
 			const { type, team } = getGearProperty(gearName, "targetingTags");
-			const essenceEmoji = getGearProperty(gearName, "essence");
+			const essenceEmoji = getEmoji(getGearProperty(gearName, "essence"));
 			if (type === "single" || type.startsWith("blast")) {
 				// Select Menu
 				let targetOptions = [];
@@ -74,22 +75,40 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (team === "ally" || team === "any") {
 					targetOptions = targetOptions.concat(delverOptions);
 				}
-				const placeholder = isOnCD ? `${essenceEmoji} ${gearName} CD: ${cooldown} Rounds` : `${essenceEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `(${charges} charges) ` : ""}on...`;
+				let placeholder = `${essenceEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `(${charges} charges) ` : ""}on...`;
+				if (isOnCD) {
+					placeholder = `${essenceEmoji} ${gearName} CD: ${cooldown} Rounds`;
+				}
+				if (isMoraleLocked) {
+					placeholder = `${essenceEmoji} ${gearName}: Requires ${moraleRequirement} Morale`;
+				}
+				if (isOutOfCharges) {
+					placeholder = `${essenceEmoji} ${gearName}: Out of Charges`;
+				}
 				components.push(new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
 						.setPlaceholder(placeholder)
 						.addOptions(targetOptions)
-						.setDisabled(isOnCD)
+						.setDisabled(isOnCD || isMoraleLocked || isOutOfCharges)
 				));
 			} else {
-				const label = isOnCD ? `${gearName} CD: ${cooldown} Rounds` : `Use ${gearName}${![0, Infinity].includes(charges) ? ` (${charges} charges)` : ""}`;
+				let label = `Use ${gearName}${![0, Infinity].includes(charges) ? ` (${charges} charges)` : ""}`;
+				if (isOnCD) {
+					label = `${gearName} CD: ${cooldown} Rounds`;
+				}
+				if (isMoraleLocked) {
+					label = `${gearName}: Requires ${moraleRequirement} Morale`;
+				}
+				if (isOutOfCharges) {
+					label = `${gearName}: Out of Charges`;
+				}
 				// Button
 				components.push(new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
 						.setLabel(label)
 						.setEmoji(essenceEmoji)
 						.setStyle(ButtonStyle.Secondary)
-						.setDisabled(isOnCD)
+						.setDisabled(isOnCD || isMoraleLocked || isOutOfCharges)
 				));
 			}
 		}

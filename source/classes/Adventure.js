@@ -302,6 +302,7 @@ class Room {
 	enemies = null;
 	/** @type {{[enemyName: string]: number} | null} */
 	enemyIdMap = null;
+	morale = 0;
 	actions = 0;
 	/** @type {Record<string, {name: string, type: "Gear" | "Artifact" | "Currency" | "challenge" | "Item", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
 	resources = {};
