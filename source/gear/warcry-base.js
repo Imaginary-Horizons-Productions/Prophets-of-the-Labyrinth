@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger } = require('../util/combatantUtil');
+const { changeStagger, concatTeamMembersWithModifier } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("War Cry",
@@ -11,20 +11,9 @@ module.exports = new GearTemplate("War Cry",
 	"Technique",
 	"Light",
 	200,
-	([initialTarget], user, adventure) => {
-		const targetSet = new Set();
-		const targetArray = [];
-		if (initialTarget.hp > 0) {
-			targetSet.add(initialTarget.name);
-			targetArray.push(initialTarget);
-		}
+	(targets, user, adventure) => {
 		const { essence, stagger, bonus, modifiers: [targetModifier] } = module.exports;
-		for (const enemy of adventure.room.enemies) {
-			if (enemy.hp > 0 && enemy.getModifierStacks(targetModifier.name) > 0 && !targetSet.has(enemy.name)) {
-				targetSet.add(enemy.name);
-				targetArray.push(enemy);
-			}
-		}
+		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
 
 		let pendingStagger = stagger;
 		if (user.essence === essence) {
@@ -33,8 +22,8 @@ module.exports = new GearTemplate("War Cry",
 		if (user.crit) {
 			pendingStagger += bonus;
 		}
-		changeStagger(targetArray, user, pendingStagger);
-		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
+		changeStagger(allTargets, user, pendingStagger);
+		return [joinAsStatement(false, allTargets.map(allTargets.name), "was", "were", "Staggered.")];
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Charging War Cry", "Slowing War Cry", "Tormenting War Cry")

@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
-const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts, concatTeamMembersWithModifier } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 
 module.exports = new GearTemplate("Slowing War Cry",
@@ -11,20 +11,9 @@ module.exports = new GearTemplate("Slowing War Cry",
 	"Technique",
 	"Light",
 	350,
-	([initialTarget], user, adventure) => {
-		const targetSet = new Set();
-		const targetArray = [];
-		if (initialTarget.hp > 0) {
-			targetSet.add(initialTarget.name);
-			targetArray.push(initialTarget);
-		}
+	(targets, user, adventure) => {
 		const { essence, modifiers: [slow, targetModifier], stagger, bonus } = module.exports;
-		for (const enemy of adventure.room.enemies) {
-			if (enemy.hp > 0 && enemy.getModifierStacks(targetModifier.name) > 0 && !targetSet.has(enemy.name)) {
-				targetSet.add(enemy.name);
-				targetArray.push(enemy);
-			}
-		}
+		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
 
 		let pendingStagger = stagger;
 		if (user.essence === essence) {
@@ -33,8 +22,8 @@ module.exports = new GearTemplate("Slowing War Cry",
 		if (user.crit) {
 			pendingStagger += bonus;
 		}
-		changeStagger(targetArray, user, pendingStagger);
-		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered."), ...generateModifierResultLines(combineModifierReceipts(addModifier(targetArray, slow)))];
+		changeStagger(allTargets, user, pendingStagger);
+		return [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered."), ...generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, slow)))];
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Charging War Cry", "Tormenting War Cry")

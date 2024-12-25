@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
+const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts, concatTeamMembersWithModifier } = require('../util/combatantUtil.js');
 const { joinAsStatement } = require('../util/textUtil.js');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants.js');
@@ -12,20 +12,9 @@ module.exports = new GearTemplate("Tormenting War Cry",
 	"Technique",
 	"Light",
 	350,
-	([initialTarget], user, adventure) => {
-		const targetSet = new Set();
-		const targetArray = [];
-		if (initialTarget.hp > 0) {
-			targetSet.add(initialTarget.name);
-			targetArray.push(initialTarget);
-		}
+	(targets, user, adventure) => {
 		const { essence, stagger, bonus, modifiers: [targetModifier] } = module.exports;
-		for (const enemy of adventure.room.enemies) {
-			if (enemy.hp > 0 && enemy.getModifierStacks(targetModifier.name) > 0 && !targetSet.has(enemy.name)) {
-				targetSet.add(enemy.name);
-				targetArray.push(enemy);
-			}
-		}
+		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
 
 		let pendingStagger = stagger;
 		if (user.essence === essence) {
@@ -34,10 +23,10 @@ module.exports = new GearTemplate("Tormenting War Cry",
 		if (user.crit) {
 			pendingStagger += bonus;
 		}
-		const resultLines = [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
-		changeStagger(targetArray, user, pendingStagger);
+		const resultLines = [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered.")];
+		changeStagger(allTargets, user, pendingStagger);
 		const receipts = [];
-		for (const target of targetArray) {
+		for (const target of allTargets) {
 			for (const modifier in target.modifiers) {
 				if (getModifierCategory(modifier) === "Debuff") {
 					receipts.push(...addModifier([target], { name: modifier, stacks: 1 }));
