@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
-const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shattering Stick",
 	[
@@ -25,8 +25,7 @@ module.exports = new GearTemplate("Shattering Stick",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		addModifier([target], frail);
-		return dealDamage([target], user, pendingDamage, false, element, adventure);
+		return dealDamage([target], user, pendingDamage, false, element, adventure).concat(generateModifierResultLines(addModifier([target], frail)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sharpened Stick", "Staggering Stick")

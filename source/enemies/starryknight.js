@@ -58,7 +58,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		let pendingDamage = user.getPower() + 50 * targets.length;
 		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, pendingDamage, false, "Light", adventure)
-			.concat(combineModifierReceipts(addNewRandomInsults(targets, user.crit ? 2 : 1, adventure)));
+			.concat(generateModifierResultLines(combineModifierReceipts(addNewRandomInsults(targets, user.crit ? 2 : 1, adventure))));
 	},
 	selector: selectAllFoes,
 	next: "random",
