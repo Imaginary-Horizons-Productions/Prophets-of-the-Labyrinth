@@ -63,6 +63,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				message.pin();
 			});
 			adventure.state = "ongoing";
+			adventure.lives = adventure.delvers.length + 1;
+			const startingGold = 100 + adventure.delvers.length * 50;
+			adventure.gold = startingGold;
+			adventure.peakGold = startingGold;
 			nextRoom(adventure.getChallengeIntensity("Into the Deep End") > 0 ? "Artifact Guardian" : "Battle", interaction.channel);
 		}
 	}
