@@ -469,20 +469,22 @@ function predictRoundRnOutcomes(adventure) {
 			isCloneAlive = counterpart.hp > 0 && counterpart.archetype === "Mirror Clone";
 		}
 		for (const gear of delver.gear) {
-			let rnConfig = getGearProperty(gear.name, "rnConfig")
-			let targetingTags = getGearProperty(gear.name, "targetingTags")
-			if (rnConfig) {
-				for (const key in rnConfig) {
-					if (rnsConcerningTargets.has(key)) {
-						outcomes.push(...predictRoundRnPossibleTargets(adventure, delver, targetingTags, gear.name, key));
-						if (isCloneAlive) {
-							outcomes.push(...predictRoundRnPossibleTargets(adventure, counterpart, targetingTags, gear.name, key));
+			if (gear.cooldown === 0) {
+				let rnConfig = getGearProperty(gear.name, "rnConfig")
+				let targetingTags = getGearProperty(gear.name, "targetingTags")
+				if (rnConfig) {
+					for (const key in rnConfig) {
+						if (rnsConcerningTargets.has(key)) {
+							outcomes.push(...predictRoundRnPossibleTargets(adventure, delver, targetingTags, gear.name, key));
+							if (isCloneAlive) {
+								outcomes.push(...predictRoundRnPossibleTargets(adventure, counterpart, targetingTags, gear.name, key));
+							}
 						}
-					}
-					else {
-						outcomes.push(predictRoundRnTargeted(adventure, delver, null, gear.name, key));
-						if (isCloneAlive) {
-							outcomes.push(predictRoundRnTargeted(adventure, counterpart, null, gear.name, key));
+						else {
+							outcomes.push(predictRoundRnTargeted(adventure, delver, null, gear.name, key));
+							if (isCloneAlive) {
+								outcomes.push(predictRoundRnTargeted(adventure, counterpart, null, gear.name, key));
+							}
 						}
 					}
 				}
@@ -682,10 +684,10 @@ function newRound(adventure, thread, lastRoundText) {
 	// generate rn prediction outcomes and splice x random outcomes to keep
 	const allOutcomes = predictRoundRnOutcomes(adventure);
 	const numChosenOutcomes = 5;
-	adventure.room.detectivePredicts = [];
+	adventure.room.randomOutcomesPredicts = [];
 	for (let i = 0; i < numChosenOutcomes; i++) {
 		if (allOutcomes.length > 0) {
-			adventure.room.detectivePredicts.push(...allOutcomes.splice(adventure.generateRandomNumber(allOutcomes.length, "battle"), 1));
+			adventure.room.randomOutcomesPredicts.push(...allOutcomes.splice(adventure.generateRandomNumber(allOutcomes.length, "battle"), 1));
 		}
 	}
 
