@@ -33,4 +33,4 @@ module.exports = new EnemyTemplate("Brute",
 	},
 	selector: selectRandomFoe,
 	next: "Mug or Mark"
-});
+}).setFlavorText({ name: "Resetting 'The Mark'", value: "Removing the 'The Mark' debuff will make the next Brute to act apply a new one. In addition to normal debuff curing, the debuff can be removed by dying." });
