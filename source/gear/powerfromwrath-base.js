@@ -4,15 +4,15 @@ const { payHP, dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Power from Wrath",
 	[
-		["use", "Pay @{hpCost} to strike a foe for <@{damage} x 1 to 2 based on your missing HP> @{element} damage"],
+		["use", "Strike a foe for <@{damage} x 1 to 2 based on your missing HP> @{element} damage"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",
 	"Darkness",
 	200,
 	(targets, user, adventure) => {
-		const { element, damage, hpCost } = module.exports;
-		const resultLines = [payHP(user, hpCost, adventure)];
+		const { element, damage, pactCost: [pactCostValue] } = module.exports;
+		const resultLines = [payHP(user, pactCostValue, adventure)];
 		if (adventure.lives > 0) {
 			const furiousness = 2 - user.hp / user.getMaxHP();
 			let pendingDamage = (user.getPower() + damage) * furiousness;
@@ -28,5 +28,5 @@ module.exports = new GearTemplate("Power from Wrath",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Bashing Power from Wrath", "Hunter's Power from Wrath", "Staggering Power from Wrath")
-	.setHPCost(40)
+	.setPactCost([40, "@{pactCost} HP"])
 	.setDamage(40);

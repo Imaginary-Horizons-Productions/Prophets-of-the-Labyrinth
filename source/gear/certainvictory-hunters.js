@@ -4,7 +4,7 @@ const { dealDamage, addModifier, payHP, changeStagger, generateModifierResultLin
 
 module.exports = new GearTemplate("Hunter's Certain Victory",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} (+@{mod1Stacks} on kill); pay HP for your @{mod0}"],
+		["use", "Strike a foe for @{damage} @{element} damage, gain @{mod0Stacks} @{mod0} (+@{mod1Stacks} on kill)"],
 		["Critical💥", "Damage x@{critMultiplier}"]
 	],
 	"Pact",
@@ -29,4 +29,5 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")
 	.setModifiers({ name: "Power Up", stacks: 25 }, { name: "Power Up", stacks: 30 })
-	.setDamage(40);
+	.setDamage(40)
+	.setPactCost([1, "Pay HP for your Power Up after the move"]);

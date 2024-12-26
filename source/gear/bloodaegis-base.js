@@ -4,15 +4,15 @@ const { payHP, changeStagger, addProtection } = require('../util/combatantUtil.j
 
 module.exports = new GearTemplate("Blood Aegis",
 	[
-		["use", "Pay @{hpCost} HP; gain @{protection} protection and intercept a later single target move"],
+		["use", "Gain @{protection} protection and intercept a later single target move"],
 		["Critical💥", "Protection x@{critMultiplier}"]
 	],
 	"Pact",
 	"Darkness",
 	200,
 	([target], user, adventure) => {
-		const { element, protection, critMultiplier, hpCost } = module.exports;
-		const paymentSentence = payHP(user, hpCost, adventure);
+		const { element, protection, critMultiplier, pactCost: [pactCostValue] } = module.exports;
+		const paymentSentence = payHP(user, pactCostValue, adventure);
 		if (adventure.lives < 1) {
 			return [paymentSentence];
 		}
@@ -35,5 +35,5 @@ module.exports = new GearTemplate("Blood Aegis",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Charging Blood Aegis", "Reinforced Blood Aegis", "Toxic Blood Aegis")
-	.setHPCost(25)
+	.setPactCost([25, `@{pactCost} HP`])
 	.setProtection(125);

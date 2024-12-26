@@ -5,7 +5,7 @@ const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
-const { getGearProperty, buildGearDescription } = require("../gear/_gearDictionary");
+const { buildGearDescriptionWithHolderStats } = require("../gear/_gearDictionary");
 const { getModifierDescription, getModifierCategory, getRoundDecrement, getMoveDecrement, getInverse } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
@@ -380,28 +380,6 @@ function generateArtifactEmbed(artifactTemplate, count, adventure) {
 	return embed;
 }
 
-/** Seen in /inspect-self, gear fields contain nearly all information about the gear they represent
- * @param {string} gearName
- * @param {number} charges
- * @param {Delver} holder
- * @returns {EmbedField} contents for a message embed field
- */
-function gearToEmbedField(gearName, charges, holder) {
-	/** @type {number} */
-	const maxCharges = getGearProperty(gearName, "maxCharges");
-	if ([Infinity, 0].includes(maxCharges)) {
-		return {
-			name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}`,
-			value: buildGearDescription(gearName, true, holder)
-		};
-	} else {
-		return {
-			name: `${gearName} ${getEmoji(gearName === "Iron Fist Punch" ? holder.element : getGearProperty(gearName, "element"))}`,
-			value: `${generateTextBar(charges, maxCharges, Math.min(maxCharges, 10))} ${charges} /${maxCharges} charges\n${buildGearDescription(gearName, true, holder)}`
-		};
-	}
-}
-
 const BUTTON_STYLES_BY_MODIFIER_CATEGORY = {
 	"Buff": ButtonStyle.Primary,
 	"Debuff": ButtonStyle.Danger,
@@ -423,15 +401,16 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
 	if (delver.getModifierStacks("Iron Fist Stance") > 0) {
-		embed.addFields(gearToEmbedField("Iron Fist Punch", Infinity, delver));
+		embed.addFields({ name: "Iron Fist Punch", value: buildGearDescriptionWithHolderStats("Iron Fist Punch", null, delver) });
 	} else if (delver.getModifierStacks("Floating Mist Stance") > 0) {
-		embed.addFields(gearToEmbedField("Floating Mist Punch", Infinity, delver));
+		embed.addFields({ name: "Floating Mist Punch", value: buildGearDescriptionWithHolderStats("Floating Mist Punch", null, delver) });
 	} else {
-		embed.addFields(gearToEmbedField("Punch", Infinity, delver));
+		embed.addFields({ name: "Punch", value: buildGearDescriptionWithHolderStats("Punch", null, delver) });
 	}
 	for (let index = 0; index < Math.min(Math.max(delver.gear.length, gearCapacity), MAX_EMBED_FIELD_COUNT); index++) {
 		if (delver.gear[index]) {
-			embed.addFields(gearToEmbedField(delver.gear[index].name, delver.gear[index].charges, delver));
+			const gearName = delver.gear[index].name;
+			embed.addFields({ name: gearName, value: buildGearDescriptionWithHolderStats(gearName, index, delver) });
 		} else {
 			embed.addFields({ name: `${ordinalSuffixEN(index + 1)} Gear Slot`, value: "No gear yet..." })
 		}
@@ -631,7 +610,6 @@ module.exports = {
 	roomHeaderString,
 	generateVersionEmbed,
 	generateArtifactEmbed,
-	gearToEmbedField,
 	inspectSelfPayload,
 	generatePartyStatsPayload,
 	generateStatsEmbed,

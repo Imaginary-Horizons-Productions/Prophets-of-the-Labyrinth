@@ -16,13 +16,9 @@ async function executeSubcommand(interaction, ...args) {
 	}
 
 	const fields = [
-		{ name: "Category", value: getGearProperty(gearName, "category") },
-		{ name: "Base Value", value: `${getGearProperty(gearName, "cost").toString()}g` }
+		{ name: "Category", value: getGearProperty(gearName, "category"), inline: true },
+		{ name: "Base Value", value: `${getGearProperty(gearName, "cost").toString()}g`, inline: true }
 	];
-	const maxCharges = getGearProperty(gearName, "maxCharges");
-	if (maxCharges > 0) {
-		fields.push({ name: "Max Charges", value: maxCharges.toString() });
-	}
 
 	const upgrades = getGearProperty(gearName, "upgrades");
 	if (upgrades.length > 0) {

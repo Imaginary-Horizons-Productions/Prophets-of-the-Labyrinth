@@ -4,15 +4,15 @@ const { addModifier, payHP, changeStagger, generateModifierResultLines } = requi
 
 module.exports = new GearTemplate("Discounted Infinite Regeneration",
 	[
-		["use", "Pay @{hpCost} HP to grant an ally @{mod0Stacks} @{mod0}"],
+		["use", "Grant an ally @{mod0Stacks} @{mod0}"],
 		["Critical💥", "HP Cost / @{critMultiplier}"]
 	],
 	"Pact",
 	"Fire",
 	100,
 	(targets, user, adventure) => {
-		const { element, modifiers: [regen], hpCost, critMultiplier } = module.exports;
-		let pendingHPCost = hpCost;
+		const { element, modifiers: [regen], pactCost: [pactCostValue], critMultiplier } = module.exports;
+		let pendingHPCost = pactCostValue;
 		if (user.crit) {
 			pendingHPCost /= critMultiplier;
 		}
@@ -28,4 +28,4 @@ module.exports = new GearTemplate("Discounted Infinite Regeneration",
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Fate-Sealing Infinite Regeneration", "Purifying Infinite Regeneration")
 	.setModifiers({ name: "Regen", stacks: 4 })
-	.setHPCost(50);
+	.setPactCost([50, "@{pactCost} HP"]);

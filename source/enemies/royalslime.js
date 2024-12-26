@@ -19,7 +19,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		const elementPool = elementsList(["Untyped", user.element]);
-		user.element = elementPool[user.roundRns[`Element Shift${SAFE_DELIMITER}elements`][0] % elementPool.length];
+		user.element = elementPool[user.roundRns[`Element Shift${SAFE_DELIMITER}elementshift`][0] % elementPool.length];
 		let addedAbsorb = false;
 		if (user.crit) {
 			addedAbsorb = addModifier([user], { name: `${user.element} Absorb`, stacks: 5 }).some(receipt => receipt.succeeded.size > 0);
@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 	},
 	selector: selectSelf,
 	next: "random",
-	rnConfig: { "elements": 1 }
+	rnConfig: { "elementshift": 1 }
 }).addAction({
 	name: "Rolling Tackle",
 	element: "@{adventure}",

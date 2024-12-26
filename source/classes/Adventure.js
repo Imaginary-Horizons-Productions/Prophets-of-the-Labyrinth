@@ -58,10 +58,8 @@ class Adventure {
 	depth = 1;
 	/** @type {Room} */
 	room = {};
-	/** @type {number} the index of the delver whos pet will act next */
-	nextPet = 0;
-	/** @type {number []} */
-	petRNs = [];
+	/** @type {{delverIndex: number, moveIndex: number, targetReferences: CombatantReference[], extras: number[]}} */
+	petRNs = { delverIndex: 0, moveIndex: 0, targetReferences: [], extras: [] };
 	/** @type {{[candidate: string]: {voterIds: string[], isHidden: boolean}}} */
 	roomCandidates = {};
 	lives = 2;

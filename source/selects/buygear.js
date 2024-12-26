@@ -2,8 +2,8 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, bold, EmbedBuilder } = req
 const { SelectWrapper } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { buildGearRecord, getGearProperty } = require('../gear/_gearDictionary');
-const { renderRoom, randomAuthorTip, gearToEmbedField } = require('../util/embedUtil');
+const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
+const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getColor } = require('../util/elementUtil');
 
 const mainId = "buygear";
@@ -38,7 +38,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		const embed = new EmbedBuilder().setColor(getColor(adventure.room.element))
 			.setAuthor(randomAuthorTip())
 			.setTitle("Buy this gear?")
-			.addFields(gearToEmbedField(name, charges, delver));
+			.addFields({ name, value: buildGearDescription(name) });
 		const components = [];
 		if (hasFreeGearSlots) {
 			components.push(
