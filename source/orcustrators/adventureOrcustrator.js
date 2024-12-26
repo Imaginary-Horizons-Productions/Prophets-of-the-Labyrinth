@@ -383,7 +383,7 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			return `${user.name}'s ${moveName} will affect ${listifyEN(user.roundRns[roundRnKeyname].map(rn => allyPool[rn % allyPool.length].name), false)}`;
 		}
 		case "essenceShift": {
-			const essences = essenceList(["Unaligned", user.element]);
+			const essences = essenceList(["Unaligned", user.essence]);
 			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(essences[rn % essences.length])).join("")} on ${target.name}`;
 		}
 		case "essencesNoUnaligned": {
