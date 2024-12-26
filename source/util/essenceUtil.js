@@ -5,37 +5,37 @@ const ESSENCES = {
 		color: Colors.DarkPurple,
 		emoji: "💀",
 		opposite: "Light",
-		counters: ["Earth", "Water"]
+		counters: ["Earth", "Light", "Water"]
 	},
 	Earth: {
 		color: Colors.DarkGreen,
 		emoji: "🌿",
 		opposite: "Wind",
-		counters: ["Light", "Water"]
+		counters: ["Light", "Water", "Wind"]
 	},
 	Fire: {
 		color: Colors.Orange,
 		emoji: "🔥",
 		opposite: "Water",
-		counters: ["Darkness", "Earth"]
+		counters: ["Darkness", "Earth", "Water"]
 	},
 	Light: {
 		color: Colors.Yellow,
 		emoji: "✨",
 		opposite: "Darkness",
-		counters: ["Fire", "Wind"]
+		counters: ["Darkness", "Fire", "Wind"]
 	},
 	Water: {
 		color: Colors.Blue,
 		emoji: "🌧️",
 		opposite: "Fire",
-		counters: ["Light", "Wind"]
+		counters: ["Fire", "Light", "Wind"]
 	},
 	Wind: {
 		color: Colors.Aqua,
 		emoji: "💨",
 		opposite: "Earth",
-		counters: ["Darkness", "Fire"]
+		counters: ["Darkness", "Earth", "Fire"]
 	},
 	Unaligned: {
 		color: Colors.Greyple,

@@ -1,6 +1,6 @@
 const { italic, bold } = require("discord.js");
 const { Combatant, Adventure, ModifierReceipt } = require("../classes");
-const { getInverse, getModifierDescription, getModifierCategory } = require("../modifiers/_modifierDictionary");
+const { getInverse, getModifierDescription } = require("../modifiers/_modifierDictionary");
 const { getEmoji, getCounteredEssences, essenceList } = require("./essenceUtil.js");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 const { listifyEN } = require("./textUtil.js");

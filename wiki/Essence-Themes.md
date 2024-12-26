@@ -7,7 +7,7 @@ Color: ![Colors.DarkPurple](https://placehold.co/15x15/71368A/71368A.png) `Color
 
 Opposite: ✨ Light
 
-Counters: 🌿 Earth, 🌧️ Water
+Counters: 🌿 Earth, ✨ Light, 🌧️ Water
 
 Archetypes: Hemomancer
 
@@ -27,7 +27,7 @@ Color: ![Colors.DarkGreen](https://placehold.co/15x15/1F8B4C/1F8B4C.png) `Colors
 
 Opposite: 💨 Wind
 
-Counters: ✨ Light, 🌧️ Water
+Counters: ✨ Light, 🌧️ Water, 💨 Wind
 
 Archetypes: Knight, Detective
 
@@ -46,7 +46,7 @@ Color: ![Colors.Orange](https://placehold.co/15x15/E67E22/E67E22.png) `Colors.Or
 
 Opposite: 🌧️ Water
 
-Counters: 💀 Darkness, 🌿 Earth
+Counters: 💀 Darkness, 🌿 Earth, 🌧️ Water
 
 Archetypes: Ritualist, Legionnaire
 
@@ -64,7 +64,7 @@ Color: ![Colors.Yellow](https://placehold.co/15x15/FEE75C/FEE75C.png) `Colors.Ye
 
 Opposite: 💀 Darkness
 
-Counters: 🔥 Fire, 💨 Wind
+Counters: 💀 Darkness, 🔥 Fire, 💨 Wind
 
 Archetypes: Martial Artist
 
@@ -84,7 +84,7 @@ Color: ![Colors.Blue](https://placehold.co/15x15/3498DB/3498DB.png) `Colors.Blue
 
 Opposite: 🔥 Fire
 
-Counters: ✨ Light, 💨 Wind
+Counters: 🔥 Fire, ✨ Light, 💨 Wind
 
 Archetypes: Chemist
 
@@ -105,7 +105,7 @@ Color: ![Colors.Aqua](https://placehold.co/15x15/1ABC9C/1ABC9C.png) `Colors.Aqua
 
 Opposite: 🌿 Earth
 
-Counters: 💀 Darkness, 🔥 Fire
+Counters: 💀 Darkness, 🌿 Earth, 🔥 Fire
 
 Archetypes: Assassin
 
