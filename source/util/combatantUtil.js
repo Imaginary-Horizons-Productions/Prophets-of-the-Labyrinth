@@ -61,7 +61,7 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 					let pendingDamage = damage;
 					if ("Exposed" in target.modifiers) {
 						pendingDamage *= 1.5;
-						removeModifier([target], { name: "Exposed", stacks: 1, force: true });
+						removeModifier([target], { name: "Exposed", stacks: 1 });
 					}
 					const isCounter = getCombatantCounters(target).includes(essence);
 					if (isCounter) {
@@ -89,7 +89,7 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 						results.push(`${getApplicationEmojiMarkdown("Curse of Midas")}: Loot +${midasGold}g`)
 					}
 				} else {
-					removeModifier([target], { name: "Evade", stacks: 1, force: true });
+					removeModifier([target], { name: "Evade", stacks: 1 });
 					results.push(`${target.name} evades the attack!`);
 				}
 			} else {
@@ -106,12 +106,13 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 
 const MODIFIER_DAMAGE_PER_STACK = {
 	Poison: 10,
-	Frail: 20
+	Frail: 20,
+	Misfortune: 30
 };
 
 /** modifier damage doesn't have an essence and doesn't interact with other modifiers (eg Exposed & Curse of Midas)
  * @param {Combatant} target
- * @param {"Poison" | "Frail"} modifier
+ * @param {"Poison" | "Frail" | "Misfortune"} modifier
  * @param {Adventure} adventure
  */
 function dealModifierDamage(target, modifier, adventure) {

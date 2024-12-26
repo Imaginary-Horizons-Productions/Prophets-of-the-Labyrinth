@@ -118,8 +118,8 @@ module.exports = new EnemyTemplate("Elkemist",
 function progressCheck(elkemist, wrappedProgressReceipt, resultLines) {
 	if (elkemist.getModifierStacks("Progress") >= 100) {
 		elkemist.modifiers.Progress = 0;
-		addModifier([elkemist], { name: "Empowerment", stacks: 100, force: false });
-		addModifier([elkemist], { name: "Excellence", stacks: 5, force: false });
+		addModifier([elkemist], { name: "Empowerment", stacks: 100 });
+		addModifier([elkemist], { name: "Excellence", stacks: 5 });
 		resultLines.push(`Eureka! ${elkemist.name}'s ${getApplicationEmojiMarkdown("Progress")} yields ${getApplicationEmojiMarkdown("Empowerment")}!`);
 	} else {
 		resultLines.push(...generateModifierResultLines(wrappedProgressReceipt));

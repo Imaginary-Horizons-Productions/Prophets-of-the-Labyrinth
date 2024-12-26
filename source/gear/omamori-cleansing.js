@@ -13,16 +13,16 @@ module.exports = new GearTemplate(gearName,
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [lucky], protection, critMultiplier } = module.exports;
-		const pendingLucky = { ...lucky };
+		const { essence, modifiers: [finesse], protection, critMultiplier } = module.exports;
+		const pendingFinesse = { ...finesse };
 		if (user.essence === essence) {
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
-			pendingLucky.stacks *= critMultiplier;
+			pendingFinesse.stacks *= critMultiplier;
 		}
 		addProtection([user], protection);
-		const receipts = addModifier([user], pendingLucky);
+		const receipts = addModifier([user], pendingFinesse);
 		const debuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		if (debuffs.length > 0) {
 			const rolledDebuff = debuffs[user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % debuffs.length];
@@ -32,7 +32,7 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Centering Omamori", "Devoted Omamori")
-	.setModifiers({ name: "Lucky", stacks: 2 })
+	.setModifiers({ name: "Finesse", stacks: 2 })
 	.setProtection(50)
 	.setCooldown(2)
 	.setRnConfig({ debuffs: 1 });

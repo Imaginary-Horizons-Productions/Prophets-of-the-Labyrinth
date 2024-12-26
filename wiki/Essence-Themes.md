@@ -144,6 +144,7 @@ Archetypes:
 ## Uncategorized Variants
 - Agile
 - Awesome
+- Balanced
 - Bashing
 - Bouncing
 - Centering
@@ -157,8 +158,8 @@ Archetypes:
 - Fatiguing
 - Harmful
 - Healing
-- Lucky
 - Midas's
+- Numbing
 - Potent
 - Purifying
 - Reactive
@@ -172,5 +173,4 @@ Archetypes:
 - Thief's
 - Tormenting
 - Unbreakable
-- Unlucky
 - Vexing

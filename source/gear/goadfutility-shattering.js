@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Shattering Goad Futility",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [oblivious, unlucky, frail] } = module.exports;
+		const { essence, modifiers: [oblivious, clumsiness, frail] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -25,11 +25,11 @@ module.exports = new GearTemplate("Shattering Goad Futility",
 		}
 		receipts.push(...addModifier([target], frail));
 		if (user.crit) {
-			receipts.push(...addModifier([target], unlucky));
+			receipts.push(...addModifier([target], clumsiness));
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts)).concat(resultLines);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Flanking Goad Futility", "Poised Goad Futility")
-	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Unlucky", stacks: 3 }, { name: "Frail", stacks: 4 })
+	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Clumsiness", stacks: 3 }, { name: "Frail", stacks: 4 })
 	.setCooldown(2);

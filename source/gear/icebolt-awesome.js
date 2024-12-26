@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Awesome Ice Bolt",
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Distracting Ice Bolt", "Unlucky Ice Bolt")
+	.setSidegrades("Distracting Ice Bolt", "Numbing Ice Bolt")
 	.setDamage(40)
 	.setModifiers({ name: "Slow", stacks: 2 })
 	.setCharges(15)
