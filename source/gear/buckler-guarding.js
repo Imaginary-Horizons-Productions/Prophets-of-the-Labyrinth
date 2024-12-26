@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Guarding Buckler",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection(targets, pendingProtection);
-		return [joinAsStatement(false, [user, ...targets].map(combatant => combatant.name), "gains", "gain", "protection."), ...generateModifierResultLines(addModifier([user], powerUp))];
+		return [joinAsStatement(false, targets.map(combatant => combatant.name), "gains", "gain", "protection."), ...generateModifierResultLines(addModifier([user], powerUp))];
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Accelerating Buckler", "Devoted Buckler")
