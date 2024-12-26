@@ -994,12 +994,12 @@ function endRound(adventure, thread) {
 				const { [`${gearName}${SAFE_DELIMITER}allies`]: cachedAllies, [`${gearName}${SAFE_DELIMITER}foes`]: cachedFoes } = cacheRoundRn(adventure, user, gearName, getGearProperty(gearName, "rnConfig"));
 				if (cachedAllies) {
 					for (let i = 0; i < cachedAllies.length; i++) {
-						move.addTarget(new CombatantReference("delver", cachedAllies[i]));
+						move.addTarget(new CombatantReference(move.userReference.team, cachedAllies[i]));
 					}
 				}
 				if (cachedFoes) {
 					for (let i = 0; i < cachedFoes.length; i++) {
-						move.addTarget(new CombatantReference("enemy", cachedFoes[i]));
+						move.addTarget(new CombatantReference(move.userReference.team === "delver" ? "enemy" : "delver", cachedFoes[i]));
 					}
 				}
 			} else if (targetingTags.type === "self") {
