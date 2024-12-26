@@ -548,7 +548,7 @@ function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
 
 	const roundDecrement = getRoundDecrement(modifierName);
 	if (roundDecrement !== 0) {
-		durationField.name += ` <-${roundDecrement} per round>`;
+		durationField.name += ` <-${roundDecrement} stack${roundDecrement === 1 ? "" : "s"} per round>`;
 		if (roundDecrement === "all") {
 			durationField.value = "Until next round";
 		} else if (count === roundDecrement) {
@@ -561,7 +561,7 @@ function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
 	}
 	const moveDecrement = getMoveDecrement(modifierName);
 	if (moveDecrement !== 0) {
-		durationField.name += ` <-${roundDecrement} per move>`;
+		durationField.name += ` <-${moveDecrement} stack${moveDecrement === 1 ? "" : "s"} per move>`;
 		if (moveDecrement === "all") {
 			durationField.value = "Until next move";
 		} else if (count === moveDecrement) {
