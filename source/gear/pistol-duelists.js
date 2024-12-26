@@ -17,7 +17,7 @@ module.exports = new GearTemplate(gearName,
 		const targetIndex = adventure.getCombatantIndex(target);
 		const userIndex = adventure.getCombatantIndex(user);
 		// Duelist's check
-		if (!adventure.room.moves.some(move => !(move.userReference.team === user.team && move.userReference.index === userIndex) && move.targets.some(moveTarget => moveTarget.team === target.team && moveTarget.index === targetIndex))) {
+		if (adventure.room.moves.every(move => (move.userReference.team === user.team && move.userReference.index === userIndex) && (move.userReference.team !== user.team) && move.targets.every(moveTarget => moveTarget.team !== targets[0].team || moveTarget.index !== targetIndex))) {
 			pendingDamage += bonus;
 		}
 		if (user.crit) {
