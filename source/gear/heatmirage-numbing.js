@@ -4,7 +4,7 @@ const { changeStagger, addModifier, generateModifierResultLines } = require('../
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { listifyEN } = require('../util/textUtil');
 
-module.exports = new GearTemplate("Klutzy Heat Mirage",
+module.exports = new GearTemplate("Numbing Heat Mirage",
 	[
 		["use", "Gain @{mod0Stacks} @{mod0} and inflict @{mod1Stacks} @{mod1} on a foe and intercept their later single target move"],
 		["Critical💥", "@{mod0} x@{critMultiplier}"]
