@@ -20,7 +20,7 @@ module.exports = new ArchetypeTemplate("Knight",
 			if (userReference.team === "enemy") {
 				const enemy = adventure.getCombatant(userReference);
 				if (enemy.hp > 0) {
-					if (name !== "@{clone}") {
+					if (name !== "Mirror Clone") {
 						currentRoundLines.push(`${bold(enemy.name)}: ${name} (Targets: ${listifyEN(targets.map(targetReference => adventure.getCombatant(targetReference).name), false) || "none"}${priority != 0 ? `, Priority: ${priority}` : ""})`);
 						nextRoundLines.push(`${bold(enemy.name)}: ${enemy.nextAction}`);
 					} else {
@@ -35,7 +35,7 @@ module.exports = new ArchetypeTemplate("Knight",
 		return embed.setDescription(`Knight predictions:`);
 	},
 	(combatant) => {
-		if (combatant.team === "delver") {
+		if (combatant.team === "delver" || combatant.archetype === "Mirror Clone") {
 			return "";
 		} else {
 			return `Move in 2 rounds: ${combatant.nextAction}`;

@@ -1,12 +1,12 @@
 const { EnemyTemplate } = require("../classes");
 
-module.exports = new EnemyTemplate("@{clone}",
+module.exports = new EnemyTemplate("Mirror Clone",
 	"@{custom}",
 	300,
 	100,
 	"6",
 	0,
-	"@{clone}",
+	"Mirror Clone",
 	true
 ).setPower(35)
 	.addAction({

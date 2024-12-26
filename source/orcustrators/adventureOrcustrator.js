@@ -506,7 +506,7 @@ function predictRoundRnOutcomes(adventure) {
 		let counterpart = adventure.getCombatant(new CombatantReference("enemy", i));
 		let isCloneAlive = false
 		if (counterpart) {
-			isCloneAlive = counterpart.hp > 0 && counterpart.archetype === "@{clone}"
+			isCloneAlive = counterpart.hp > 0 && counterpart.archetype === "Mirror Clone";
 		}
 		for (const gear of delver.gear) {
 			let rnConfig = getGearProperty(gear.name, "rnConfig")
@@ -675,7 +675,7 @@ function newRound(adventure, thread, lastRoundText) {
 
 				// Roll Enemy Moves
 				if (teamName === "enemy") {
-					if (combatant.archetype !== "@{clone}") {
+					if (combatant.archetype !== "Mirror Clone") {
 						const enemyTemplate = getEnemy(combatant.archetype);
 						let actionName = combatant.nextAction;
 						if (actionName === "random") {
@@ -700,7 +700,7 @@ function newRound(adventure, thread, lastRoundText) {
 						combatant.nextAction = enemyTemplate.actions[actionName].next;
 					} else {
 						adventure.room.moves.push(
-							new Move("@{clone}", "action", new CombatantReference(combatant.team, i))
+							new Move("Mirror Clone", "action", new CombatantReference(combatant.team, i))
 								.setSpeedByCombatant(combatant)
 						);
 						// (pre-/) roll for clones' use of delver gear rn's for this round
@@ -974,7 +974,7 @@ function endRound(adventure, thread) {
 
 		// Generate Reactive Moves by Enemies
 		const user = adventure.getCombatant(move.userReference);
-		if (user.archetype === "@{clone}") {
+		if (user.archetype === "Mirror Clone") {
 			const counterpartMove = adventure.room.findCombatantMove({ index: move.userReference.index, team: "delver" });
 			move.type = counterpartMove.type;
 			move.name = counterpartMove.name;

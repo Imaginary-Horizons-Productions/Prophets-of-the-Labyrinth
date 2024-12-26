@@ -21,7 +21,7 @@ module.exports = new ArchetypeTemplate("Beast Tamer",
 			if (userReference.team === "enemy") {
 				const enemy = adventure.getCombatant(userReference);
 				if (enemy.hp > 0) {
-					if (name !== "@{clone}") {
+					if (name !== "Mirror Clone") {
 						moveLines.push(`${bold(enemy.name)}: ${name} ${priority != 0 ? "(Priority: " + priority + ") " : ""}`);
 					} else {
 						moveLines.push(`${bold(enemy.name)}: Mimic ${adventure.delvers[userReference.index].name}`);

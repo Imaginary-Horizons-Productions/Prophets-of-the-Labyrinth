@@ -1,7 +1,7 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
-const enemies = [["@{clone}", "n"]];
+const enemies = [["Mirror Clone", "n"]];
 
 module.exports = new RoomTemplate("Hall of Mirrors",
 	"Untyped",
