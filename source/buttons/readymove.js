@@ -177,8 +177,36 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setSpeedByCombatant(delver)
 						.setPriority(getGearProperty(moveName, "priority") ?? 0);
 
-					newMove.addTarget(new CombatantReference(targetTeam, targetIndex));
-					targetIndices.push(targetIndex);
+					const targetType = getGearProperty(moveName, "targetingTags").type;
+					if (targetType.startsWith("blast")) {
+						const range = parseInt(targetType.split(SAFE_DELIMITER)[1] ?? 0);
+						const targetTeamMaxIndex = targetTeam === "delver" ? adventure.delvers.length - 1 : adventure.room.enemies.length - 1;
+
+						let targetsSelectedLeft = 0;
+						for (let index = targetIndex - 1; targetsSelectedLeft < range && index >= 0; index--) {
+							if (adventure.room.enemies[index].hp > 0) {
+								targetsSelectedLeft++;
+								targetIndices.unshift(index);
+							}
+						}
+
+						targetIndices.push(targetIndex);
+
+						let targetsSelectedRight = 0;
+						for (let index = targetIndex + 1; targetsSelectedRight < range && index <= targetTeamMaxIndex; index++) {
+							if (adventure.room.enemies[index].hp > 0) {
+								targetsSelectedRight++;
+								targetIndices.push(index);
+							}
+						}
+
+						targetIndices.forEach(index => {
+							newMove.addTarget(new CombatantReference(targetTeam, index));
+						});
+					} else {
+						newMove.addTarget(new CombatantReference(targetTeam, targetIndex));
+						targetIndices.push(targetIndex);
+					}
 					let overwritten = false;
 					for (let i = 0; i < adventure.room.moves.length; i++) {
 						const { userReference, type } = adventure.room.moves[i];
