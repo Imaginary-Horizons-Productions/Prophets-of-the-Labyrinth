@@ -388,6 +388,9 @@ function cacheRoundRn(adventure, user, moveName, config) {
 				case "potions":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(rollablePotions.length, "battle"))
 					break;
+				case "Mug or Mark":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(4, "battle"));
+					break;
 				default: {
 					const keyAsInt = parseInt(key);
 					if (!isNaN(keyAsInt)) {
@@ -455,6 +458,8 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			return `${user.name}'s ${moveName} produces a ${rollableHerbs[user.roundRns[roundRnKeyname][0] % rollableHerbs.length]}`;
 		case "potions":
 			return `${user.name}'s ${moveName} produces a ${rollablePotions[user.roundRns[roundRnKeyname][0] % rollablePotions.length]}`;
+		case "Mug or Mark":
+			return `${user.name} will apply ${user.roundRns[roundRnKeyname][0] + 2} stacks of The Mark if there isn't a mark yet.`;
 		default:
 			console.error(`Invalid config key ${key} for predictRoundRnTargeted`);
 	}

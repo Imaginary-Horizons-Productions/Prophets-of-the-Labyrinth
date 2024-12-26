@@ -1,7 +1,7 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("The Target",
-	"This is The Target of the Brutes' mugging efforts.",
+	"The Target of the Brutes' mugging efforts for @{stacks} more attacks",
 	"Debuff",
 	0,
 	0
