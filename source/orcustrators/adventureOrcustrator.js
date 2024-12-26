@@ -972,9 +972,39 @@ function endRound(adventure, thread) {
 			move.type = counterpartMove.type;
 			move.name = counterpartMove.name;
 			move.setPriority(counterpartMove.priority);
-			move.targets = counterpartMove.targets.map(target => {
-				return { team: target.team === "enemy" ? "delver" : "enemy", index: target.index };
-			})
+			const [gearName, gearIndex] = counterpartMove.name.split(SAFE_DELIMITER);
+			const targetingTags = getGearProperty(gearName, "targetingTags");
+			if (targetingTags.type === "single" || targetingTags.type.startsWith("blast")) {
+				move.targets = counterpartMove.targets.map(target => {
+					return { team: target.team === "enemy" ? "delver" : "enemy", index: target.index };
+				})
+			} else if (targetingTags.type === "all") {
+				if (targetingTags.team === "ally") {
+					for (let i = 0; i < adventure.room.enemies; i++) {
+						if (adventure.room.enemies[i].hp > 0) {
+							move.addTarget(new CombatantReference("enemy", i));
+						}
+					}
+				} else {
+					for (let i = 0; i < adventure.delvers.length; i++) {
+						move.addTarget(new CombatantReference("delver", i));
+					}
+				}
+			} else if (targetingTags.type.startsWith("random")) {
+				const { [`${gearName}${SAFE_DELIMITER}allies`]: cachedAllies, [`${gearName}${SAFE_DELIMITER}foes`]: cachedFoes } = cacheRoundRn(adventure, user, gearName, getGearProperty(gearName, "rnConfig"));
+				if (cachedAllies) {
+					for (let i = 0; i < cachedAllies.length; i++) {
+						move.addTarget(new CombatantReference("delver", cachedAllies[i]));
+					}
+				}
+				if (cachedFoes) {
+					for (let i = 0; i < cachedFoes.length; i++) {
+						move.addTarget(new CombatantReference("enemy", cachedFoes[i]));
+					}
+				}
+			} else if (targetingTags.type === "self") {
+				move.targets = [{ team: "enemy", index: move.userReference.index }];
+			}
 		}
 	}
 
