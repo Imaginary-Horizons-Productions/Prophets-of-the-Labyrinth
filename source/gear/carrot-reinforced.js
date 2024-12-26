@@ -48,6 +48,6 @@ module.exports = new GearTemplate("Reinforced Carrot",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setSidegrades("Devoted Carrot", "Lucky Carrot")
+	.setSidegrades("Devoted Carrot", "Balanced Carrot")
 	.setCooldown(1)
 	.setProtection(125);

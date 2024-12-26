@@ -4,7 +4,7 @@ const { changeStagger, addModifier, generateModifierResultLines } = require('../
 const { getApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { listifyEN } = require('../util/textUtil');
 
-module.exports = new GearTemplate("Unlucky Heat Mirage",
+module.exports = new GearTemplate("Klutzy Heat Mirage",
 	[
 		["use", "Gain @{mod0Stacks} @{mod0} and inflict @{mod1Stacks} @{mod1} on a foe and intercept their later single target move"],
 		["Critical💥", "@{mod0} x@{critMultiplier}"]
@@ -13,7 +13,7 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 	"Fire",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [evade, unlucky], critMultiplier } = module.exports;
+		const { essence, modifiers: [evade, clumsiness], critMultiplier } = module.exports;
 		const pendingEvade = { ...evade };
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
@@ -29,11 +29,11 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 			targetEffects.push("falls for the provocation");
 		}
-		const addedUnlucky = addModifier([target], unlucky).some(receipt => receipt.succeeded.size > 0);
-		if (addedUnlucky) {
-			targetEffects.push(`gains ${getApplicationEmojiMarkdown("Unlucky")}`);
+		const addedClumsiness = addModifier([target], clumsiness).some(receipt => receipt.succeeded.size > 0);
+		if (addedClumsiness) {
+			targetEffects.push(`gains ${getApplicationEmojiMarkdown("Clumsiness")}`);
 		} else {
-			targetEffects.push(`is oblivious to ${getApplicationEmojiMarkdown("Unlucky")}`);
+			targetEffects.push(`is oblivious to ${getApplicationEmojiMarkdown("Clumsiness")}`);
 		}
 		if (targetEffects.length > 0) {
 			resultLines.push(`${target.name} ${listifyEN(targetEffects)}.`);
@@ -42,5 +42,5 @@ module.exports = new GearTemplate("Unlucky Heat Mirage",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Evasive Heat Mirage", "Vigilant Heat Mirage")
-	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Unlucky", stacks: 2 })
+	.setModifiers({ name: "Evade", stacks: 2 }, { name: "Clumsiness", stacks: 2 })
 	.setCharges(10);

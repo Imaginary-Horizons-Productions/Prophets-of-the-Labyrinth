@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { gainHealth, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Lucky Second Wind",
+module.exports = new GearTemplate("Finessed Second Wind",
 	[
 		["use", "Regain @{damage} HP and gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Healing x@{critMultiplier}"]
@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Lucky Second Wind",
 	"Unaligned",
 	350,
 	(targets, user, adventure) => {
-		const { essence, critMultiplier, modifiers: [lucky] } = module.exports;
+		const { essence, critMultiplier, modifiers: [finesse] } = module.exports;
 		let pendingHealing = user.getPower();
 		if (user.essence === essence) {
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -19,10 +19,10 @@ module.exports = new GearTemplate("Lucky Second Wind",
 		if (user.crit) {
 			pendingHealing *= critMultiplier;
 		}
-		return [gainHealth(user, pendingHealing, adventure), ...generateModifierResultLines(addModifier([user]), lucky)];
+		return [gainHealth(user, pendingHealing, adventure), ...generateModifierResultLines(addModifier([user]), finesse)];
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Second Wind", "Soothing Second Wind")
-	.setModifiers({ name: "Lucky", stacks: 1 })
+	.setModifiers({ name: "Finesse", stacks: 1 })
 	.setCooldown(2)
 	.setDamage(0);

@@ -29,6 +29,6 @@ module.exports = new GearTemplate("Heat Mirage",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Evasive Heat Mirage", "Unlucky Heat Mirage", "Vigilant Heat Mirage")
+	.setUpgrades("Evasive Heat Mirage", "Numbing Heat Mirage", "Vigilant Heat Mirage")
 	.setModifiers({ name: "Evade", stacks: 2 })
 	.setCharges(10);

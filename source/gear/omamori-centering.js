@@ -12,27 +12,27 @@ module.exports = new GearTemplate("Centering Omamori",
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [lucky], protection, critMultiplier, stagger } = module.exports;
+		const { essence, modifiers: [finesse], protection, critMultiplier, stagger } = module.exports;
 		const hadStagger = user.stagger > 0;
 		let pendingStagger = stagger;
-		const pendingLucky = { ...lucky };
+		const pendingFinesse = { ...finesse };
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		changeStagger([user], user, pendingStagger);
 		if (user.crit) {
-			pendingLucky.stacks *= critMultiplier;
+			pendingFinesse.stacks *= critMultiplier;
 		}
 		addProtection([user], protection);
 		const userEffects = ["gains protection"];
 		if (hadStagger) {
 			userEffects.push("shrugs off some Stagger");
 		}
-		return [`${user.name} ${listifyEN(userEffects)}.`].concat(generateModifierResultLines(addModifier([user], pendingLucky)));
+		return [`${user.name} ${listifyEN(userEffects)}.`].concat(generateModifierResultLines(addModifier([user], pendingFinesse)));
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Omamori", "Devoted Omamori")
-	.setModifiers({ name: "Lucky", stacks: 2 })
+	.setModifiers({ name: "Finesse", stacks: 2 })
 	.setProtection(50)
 	.setStagger(-2)
 	.setCooldown(2);

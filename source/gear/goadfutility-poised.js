@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Poised Goad Futility",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [oblivious, unlucky] } = module.exports;
+		const { essence, modifiers: [oblivious, clumsiness] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -25,11 +25,11 @@ module.exports = new GearTemplate("Poised Goad Futility",
 			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		if (user.crit) {
-			receipts.push(...addModifier([target], unlucky));
+			receipts.push(...addModifier([target], clumsiness));
 		}
 		return generateModifierResultLines(receipts).concat(resultLines);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Flanking Goad Futility", "Shattering Goad Futility")
-	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Unlucky", stacks: 3 })
+	.setModifiers({ name: "Oblivious", stacks: 1 }, { name: "Clumsiness", stacks: 3 })
 	.setCooldown(2);

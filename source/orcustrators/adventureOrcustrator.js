@@ -659,9 +659,9 @@ function newRound(adventure, thread, lastRoundText) {
 
 				// Roll Critical Hit
 				let modifierCritBonus = 1;
-				if ("Lucky" in combatant.modifiers) {
+				if ("Finesse" in combatant.modifiers) {
 					modifierCritBonus = 2;
-				} else if ("Unlucky" in combatant.modifiers) {
+				} else if ("Clumsiness" in combatant.modifiers) {
 					modifierCritBonus = 0.5;
 				}
 				const baseCritChance = combatant.getCritRate() / 100 * modifierCritBonus;
@@ -892,7 +892,7 @@ function resolveMove(move, adventure) {
 		for (const modifier in user.modifiers) {
 			const moveDecrement = getMoveDecrement(modifier);
 			if (moveDecrement !== 0) {
-				removeModifier([user], { name: modifier, stacks: moveDecrement, force: true });
+				removeModifier([user], { name: modifier, stacks: moveDecrement });
 			}
 		}
 	}
@@ -1035,11 +1035,25 @@ function endRound(adventure, thread) {
 			changeStagger([combatant], null, -1);
 		}
 
+		const otherHappenings = [];
+		if ("Fortune" in combatant.modifiers && combatant.modifiers.Fortune % 7 === 0) {
+			addProtection([combatant], combatant.getModifierStacks("Fortune") * 30);
+			removeModifier([combatant], { name: "Fortune", stacks: "all" });
+			otherHappenings.push(`${combatant.name}'s Fortune becomes protection.`);
+		}
+		if ("Misfortune" in combatant.modifiers && combatant.modifiers.Misortune % 7 === 0) {
+			otherHappenings.push(dealModifierDamage(combatant, "Misfortune", adventure));
+			removeModifier([combatant], { name: "Misfortune", stacks: "all" });
+		}
+		if (otherHappenings.length > 0) {
+			lastRoundText += `Other Happenings\n-# ${otherHappenings.join("\n-# ")}`
+		}
+
 		// Decrement Modifiers
 		for (const modifier in combatant.modifiers) {
 			const roundDecrement = getRoundDecrement(modifier);
 			if (roundDecrement !== 0 && !RETAINING_MODIFIER_PAIRS.some(([retainee, retainer]) => modifier === retainee && retainer in combatant.modifiers)) {
-				removeModifier([combatant], { name: modifier, stacks: roundDecrement, force: true })
+				removeModifier([combatant], { name: modifier, stacks: roundDecrement })
 			}
 		}
 	}

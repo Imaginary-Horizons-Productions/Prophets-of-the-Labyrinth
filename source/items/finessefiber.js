@@ -2,12 +2,12 @@ const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
 
-module.exports = new ItemTemplate("Creative Acorn",
-	"Grants the user 15 @e{Fortune}",
+module.exports = new ItemTemplate("Finesse Fiber",
+	"Grants the user 2 @e{Finesse Fiber}",
 	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {
-		return generateModifierResultLines(addModifier([user], { name: "Fortune", stacks: 15 }));
+		return generateModifierResultLines(addModifier([user], { name: "Finesse", stacks: 2 }));
 	}
 );

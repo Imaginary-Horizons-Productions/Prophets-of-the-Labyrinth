@@ -37,6 +37,15 @@ Bonus damage if target is Stunned
 - Ice Bolt (Water)
 - Morning Star (Light)
 
+### Balanced
+Add Finesse to the user
+
+**Available on**
+- all Omamori (Water)
+- Carrot (Earth)
+- Scutum (Fire)
+- Second Wind (Unaligned)
+
 ### Bashing
 Add protection to damage dealt
 
@@ -245,15 +254,6 @@ Increased crit damage
 - Shortsword (Fire)
 - Spear (Wind)
 
-### Lucky
-Add Lucky to the user
-
-**Available on**
-- all Omamori (Water)
-- Carrot (Earth)
-- Scutum (Fire)
-- Second Wind (Unaligned)
-
 ### Midas's
 Adds Curse of Midas to target
 
@@ -261,6 +261,13 @@ Adds Curse of Midas to target
 - all Midas Staves (Water)
 - Firecracker (Fire)
 - Risky Mixture (Darkness)
+
+### Numbing
+Adds Clumsiness to target
+
+**Available on**
+- Heat Mirage (Fire)
+- Ice Bolt (Water)
 
 ### Poised
 Passively increases user's poise
@@ -472,13 +479,6 @@ Infinite charges
 
 **Available on**
 - Fever Break (Darkness)
-
-### Unlucky
-Adds Unlucky to target
-
-**Available on**
-- Heat Mirage (Fire)
-- Ice Bolt (Water)
 
 ### Unstoppable
 Deals Unblockable damage, usable while Stunned

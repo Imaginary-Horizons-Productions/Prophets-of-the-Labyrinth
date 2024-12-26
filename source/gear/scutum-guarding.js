@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Guarding Scutum",
 		return [`${target.name} and ${user.name} gain protection.`];
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setSidegrades("Lucky Scutum", "Sweeping Scutum")
+	.setSidegrades("Balanced Scutum", "Sweeping Scutum")
 	.setCooldown(1)
 	.setProtection(100)
 	.setBonus(75);

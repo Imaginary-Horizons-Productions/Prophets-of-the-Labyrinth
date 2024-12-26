@@ -10,7 +10,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 	[5],
 	Object.fromEntries(["Darkness", "Earth", "Fire", "Light", "Water", "Wind", "Unaligned"].map(essence => [essence, [
 		"Creative Acorn",
-		"Flexigrass",
+		"Finesse Fiber",
 	]])),
 	{
 		Darkness: Object.fromEntries(RARITIES.map(rarity => [rarity, [
@@ -27,8 +27,8 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		]])),
 		Earth: Object.fromEntries(RARITIES.map(rarity => [rarity, [
 			"Carrot",
+			"Balanced Carrot",
 			"Devoted Carrot",
-			"Lucky Carrot",
 			"Reinforced Carrot",
 			"Vigorous Warhammer",
 			"Reactive Spear",
