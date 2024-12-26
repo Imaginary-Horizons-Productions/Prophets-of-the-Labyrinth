@@ -6,7 +6,6 @@ const { generateRoutingRow, inspectSelfButton, pathVoteField } = require("../uti
 module.exports = new RoomTemplate("Rest Site & Training Dummy",
 	"@{adventure}",
 	"The room contains a campfire and a training dummy.",
-	[],
 	function (adventure) {
 		adventure.room.actions = adventure.delvers.length;
 

@@ -1,18 +1,17 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 const { SAFE_DELIMITER } = require("../constants");
 
 module.exports = new RoomTemplate("Free Gold?",
 	"Fire",
 	"A large pile of gold sits quietly in the middle of the room, seemingly alone.",
-	[
-		new ResourceTemplate("300", "internal", "Currency")
-	],
 	function (adventure) {
+		adventure.room.addResource("Gold", "Currency", "internal", 300);
 		adventure.room.history = {
 			"Burned": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		let reward = 300;

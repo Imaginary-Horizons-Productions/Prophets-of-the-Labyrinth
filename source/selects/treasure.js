@@ -59,7 +59,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				const hasFreeGearSlots = delver.gear.length < adventure.getGearCapacity();
 				let charges = getGearProperty(name, "maxCharges");
 				const shoddyPenalty = adventure.getChallengeIntensity("Shoddy Spellcraft");
-				const shoddyDuration = adventure.getChallengeDuration("Shoddy Craftsmanship");
+				const shoddyDuration = adventure.getChallengeDuration("Shoddy Spellcraft");
 				if (shoddyPenalty > 0 && shoddyDuration > 0) {
 					charges = Math.ceil(charges * (100 - shoddyPenalty) / 100);
 				}

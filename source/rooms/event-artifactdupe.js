@@ -8,13 +8,13 @@ const { generateRoutingRow, pathVoteField } = require("../util/messageComponentU
 module.exports = new RoomTemplate("Twin Pedestals",
 	"@{adventure}",
 	"There are two identical pedestals in this room. If you place an artifact on one, it'll duplicate onto the other.",
-	[],
 	function (adventure) {
 		adventure.room.actions = 1;
 
 		adventure.room.history = {
 			"Duped artifact": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		let duperLabel, duperOptions, isDuperDisabled, pillageLabel, pillageEmoji, isPillageDisabled;

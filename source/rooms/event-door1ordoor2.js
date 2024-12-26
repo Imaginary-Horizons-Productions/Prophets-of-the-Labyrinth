@@ -7,7 +7,6 @@ const { generateRoutingRow, partyStatsButton, pathVoteField } = require("../util
 module.exports = new RoomTemplate("Door 1 or Door 2?",
 	"@{adventureOpposite}",
 	"There are four doors in this room. Two of them are labelled with numbers \"Door 1\" and \"Door 2\" and have coin insert slots. The other two doors are the entrance and exit.",
-	[],
 	function (adventure) {
 		const ownedArtifacts = Object.keys(adventure.artifacts);
 		const door1Artifact = ownedArtifacts.length > 0 ? ownedArtifacts[adventure.generateRandomNumber(ownedArtifacts.length, "general")] : null;
@@ -16,6 +15,7 @@ module.exports = new RoomTemplate("Door 1 or Door 2?",
 			"Artifacts": [door1Artifact, door2Artifact],
 			"Option Picked": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		const partyHasNoArtifacts = adventure.room.history.Artifacts[0] === null;

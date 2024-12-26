@@ -1,15 +1,17 @@
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
+const { parseExpression } = require("../util/textUtil");
 
 const enemies = [["Mechabee Drone", "n*0.25"], ["Mechabee Soldier", "1"], ["Mechabee Drone", "n*0.25"]];
 
 module.exports = new RoomTemplate("Mechabee Fight",
 	"Earth",
 	"Some mechabees charge at you. In addition to starting a fight, it prompts you to wonder if mechabees are more mech or more bee.",
-	[
-		new ResourceTemplate("1", "internal", "levelsGained"),
-		new ResourceTemplate("25*n+35", "loot", "Currency")
-	],
-	function (adventure) { },
+	function (adventure) {
+		adventure.room.addResource("levelsGained", "levelsGained", "internal", 1);
+		const goldCount = Math.ceil(parseExpression("25*n+35", adventure.delvers.length) * (90 + adventure.generateRandomNumber(21, "general")) / 100);
+		adventure.room.addResource("Gold", "Currency", "loot", goldCount);
+		return [];
+	},
 	generateCombatRoomBuilder([])
 ).setEnemies(enemies);

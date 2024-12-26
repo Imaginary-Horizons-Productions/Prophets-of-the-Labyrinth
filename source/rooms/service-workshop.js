@@ -5,7 +5,6 @@ const { generateRoutingRow, pathVoteField } = require("../util/messageComponentU
 module.exports = new RoomTemplate("Abandoned Forge",
 	"@{adventure}",
 	"The forge in this room could be used to modify some of your upgraded gear to change its form.",
-	[],
 	function (adventure) {
 		let pendingActions = adventure.delvers.length;
 		const hammerCount = adventure.getArtifactCount("Best-in-Class Hammer");

@@ -3,12 +3,11 @@ const { ThreadChannel, Message, EmbedBuilder, italic, bold } = require("discord.
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
-const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE } = require("../constants.js");
+const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE } = require("../constants.js");
 
 const { getCompany, setCompany } = require("./companyOrcustrator");
 
-const { rollArtifact } = require("../artifacts/_artifactDictionary");
-const { rollChallenges, getChallenge } = require("../challenges/_challengeDictionary");
+const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getEnemy } = require("../enemies/_enemyDictionary");
 const { getGearProperty, gearExists } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
@@ -20,7 +19,7 @@ const { essenceList, getCounteredEssences, getEmoji } = require("../util/essence
 const { ensuredPathSave } = require("../util/fileUtil");
 const { anyDieSucceeds } = require("../util/mathUtil.js");
 const { clearComponents } = require("../util/messageComponentUtil");
-const { spawnEnemy } = require("../util/roomUtil");
+const { spawnEnemy, rollGearTier } = require("../util/roomUtil");
 const { parseExpression, listifyEN } = require("../util/textUtil");
 const { levelUp } = require("../util/delverUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
@@ -103,23 +102,6 @@ const roomTypesByRarity = {
 	5: ["Workshop", "Rest Site", "Merchant", "Artifact Guardian", "Library"],
 	10: ["Battle", "Event"]
 };
-
-/** @param {Adventure} adventure */
-function rollGearTier(adventure) {
-	const cloverCount = adventure.getArtifactCount("Negative-One Leaf Clover");
-	const baseUpgradeChance = 1 / 8;
-	const max = RN_TABLE_BASE ** 2;
-	const threshold = max * anyDieSucceeds(baseUpgradeChance, cloverCount);
-	adventure.updateArtifactStat("Negative-One Leaf Clover", "Expected Extra Rare Gear", (threshold / max) - baseUpgradeChance);
-	const roll = adventure.generateRandomNumber(max, "general");
-	if (roll >= 7 / 8 * max) {
-		return "Cursed";
-	} else if (roll < threshold) {
-		return "Rare";
-	} else {
-		return "Common";
-	}
-}
 
 /** Set up the upcoming room: roll options for rooms after, update adventure's room meta data object for current room, and generate room's resources
  * @param {"Artifact Guardian" | "Treasure" | "Workshop" | "Rest Site" | "Merchant" | "Battle" | "Event" | "Empty"} roomType
@@ -206,7 +188,21 @@ function nextRoom(roomType, thread) {
 	// Generate current room
 	const roomTemplate = rollRoom(roomType, adventure);
 	adventure.room = new Room(roomTemplate.title, roomTemplate.essence, roomTemplate.enemyList);
-	roomTemplate.init(adventure);
+	const labyrinthSpecificResources = roomTemplate.init(adventure);
+	for (const { type, count, visibility, forSale, uiGroup } of labyrinthSpecificResources) {
+		switch (type) {
+			case "Gear": {
+				const gear = rollGear(rollGearTier(adventure), adventure);
+				adventure.room.addResource(gear, type, visibility, count, uiGroup, forSale ? getGearProperty(gear, "cost") : 0);
+				break;
+			}
+			case "Item": {
+				const item = rollItem(adventure);
+				adventure.room.addResource(item, type, visibility, count, uiGroup, forSale ? getItem(item).cost : 0);
+				break;
+			}
+		}
+	}
 	if (adventure.room.essence === "@{adventure}") {
 		adventure.room.essence = adventure.essence;
 	} else if (adventure.room.essence === "@{adventureCounter}") {
@@ -220,52 +216,6 @@ function nextRoom(roomType, thread) {
 			adventure.room.essence = essencePool[adventure.generateRandomNumber(essencePool.length, "general")];
 		} else {
 			adventure.room.essence = "Unaligned";
-		}
-	}
-
-	// Initialize Resources
-	for (const { type: resourceType, count: unparsedCount, tier: unparsedTier, visibility, costExpression: unparsedCostExpression, uiGroup } of roomTemplate.resourceList) {
-		const count = Math.ceil(parseExpression(unparsedCount, adventure.delvers.length));
-		switch (resourceType) {
-			case "challenge":
-				rollChallenges(Math.min(MAX_SELECT_OPTIONS, count), adventure).forEach(challengeName => {
-					adventure.room.addResource(challengeName, resourceType, visibility, 1);
-				})
-				break;
-			case "Gear": {
-				let tier = unparsedTier;
-				for (let i = 0; i < Math.min(MAX_SELECT_OPTIONS, count); i++) {
-					if (unparsedTier === "?") {
-						tier = rollGearTier(adventure);
-					}
-					const gearName = rollGear(tier, adventure);
-					if (gearName) {
-						adventure.room.addResource(gearName, resourceType, visibility, 1, uiGroup, Math.ceil(parseExpression(unparsedCostExpression ?? "0", getGearProperty(gearName, "cost", resourceType))));
-					}
-				}
-				break;
-			}
-			case "Artifact": {
-				const artifact = rollArtifact(adventure);
-				adventure.room.addResource(artifact, resourceType, visibility, count, uiGroup);
-				break;
-			}
-			case "Item": {
-				const item = rollItem(adventure);
-				adventure.room.addResource(item, resourceType, visibility, count, uiGroup, Math.ceil(parseExpression(unparsedCostExpression, getItem(item).cost)));
-				break;
-			}
-			case "Currency": {
-				// Randomize loot gold
-				let goldCount = count;
-				if (visibility !== "internal") {
-					goldCount = Math.ceil(count * (90 + adventure.generateRandomNumber(21, "general")) / 100);
-				}
-				adventure.room.addResource("Gold", resourceType, visibility, goldCount, uiGroup);
-				break;
-			}
-			default:
-				adventure.room.addResource(resourceType, resourceType, visibility, count, uiGroup);
 		}
 	}
 
