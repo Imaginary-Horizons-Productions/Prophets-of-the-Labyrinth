@@ -13,10 +13,10 @@ const { ZERO_WIDTH_WHITESPACE } = require("../constants");
  */
 function downedCheck(target, adventure) {
 	if (target.hp <= 0) {
+		removeModifier([target], { name: "The Target", stacks: "all" });
 		if (target.team === "delver") {
 			target.hp = target.getMaxHP();
 			adventure.lives = Math.max(adventure.lives - 1, 0);
-			delete target.modifiers["The Target"];
 			return ` ${bold(`${target.name} was downed${adventure.lives > 0 ? " and revived" : ""}.`)}${ZERO_WIDTH_WHITESPACE}`; // need ZWW for md format nesting
 		} else {
 			target.hp = 0;
