@@ -311,6 +311,8 @@ class Room {
 	resources = {};
 	/** @type {Record<string, string[]>} */
 	history = {};
+	/** @type {string[]} */
+	randomOutcomesPredicts = [];
 
 	/** checks if the given resource has the given count in the room
 	 * @param {string} name
