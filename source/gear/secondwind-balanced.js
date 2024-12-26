@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { gainHealth, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Finessed Second Wind",
+module.exports = new GearTemplate("Balanced Second Wind",
 	[
 		["use", "Regain @{damage} HP and gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Healing x@{critMultiplier}"]
