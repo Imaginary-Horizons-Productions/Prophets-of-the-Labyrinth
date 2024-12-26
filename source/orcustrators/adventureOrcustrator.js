@@ -874,6 +874,15 @@ function resolveMove(move, adventure) {
 		}
 	} else {
 		headline = `💫 ${headline} is Stunned!`;
+		if ("Progress" in user.modifiers) {
+			results.push(`${user.name} loses some ${getApplicationEmojiMarkdown("Progress")}!`)
+			user.modifiers.Progress = Math.ceil(user.getModifierStacks("Progress") * 0.8);
+		}
+
+		if ("Frail" in user.modifiers) {
+			results.push(...dealModifierDamage(userReference, "Frail", adventure));
+			removeModifier([user], { name: "Frail", stacks: "all" });
+		}
 	}
 
 	if (move.type !== "pet") {
@@ -1047,25 +1056,6 @@ function endRound(adventure, thread) {
 			combatant.stagger = 0;
 		} else if (combatant.stagger >= combatant.getPoise()) {
 			combatant.isStunned = true;
-
-			if ("Progress" in combatant.modifiers) {
-				combatant.modifiers.Progress = Math.ceil(combatant.getModifierStacks("Progress") * 0.8);
-			}
-
-			if ("Frail" in combatant.modifiers) {
-				lastRoundText += dealModifierDamage(combatant, "Frail", adventure).join("\n-# ");
-				removeModifier([combatant], { name: "Frail", stacks: "all" });
-
-				const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);
-				if (payload) {
-					thread.send(payload).then(message => {
-						if (type === "endCombat") {
-							adventure.messageIds.battleRound = message.id;
-						}
-					})
-					return;
-				}
-			}
 		} else {
 			let staggerChange = -1;
 			if (combatant.getModifierStacks("Paralysis") > 0) {
