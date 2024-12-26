@@ -15,12 +15,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		const cost = adventure.calculateScoutingCost(type);
-		adventure.gold -= cost;
 		if (type === "Final Battle" && adventure.scouting.bosses === parseInt(count)) {
+			adventure.gold -= cost;
 			adventure.scouting.bosses++;
 			adventure.updateArtifactStat("Amethyst Spyglass", "Gold Saved", 150 - cost);
 			interaction.reply(`The merchant reveals that final battle for this adventure will be **${adventure.bosses[adventure.scouting.bossesEncountered]}** (you can review this with ${commandMention("adventure party-stats")}).`);
 		} else if (type === "Artifact Guardian" && adventure.scouting.artifactGuardians === parseInt(count)) {
+			adventure.gold -= cost;
 			adventure.updateArtifactStat("Amethyst Spyglass", "Gold Saved", 100 - cost);
 			interaction.reply(`The merchant reveals that the ${ordinalSuffixEN(adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians + 1)} artifact guardian for this adventure will be **${adventure.artifactGuardians[adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians]}** (you can review this with ${commandMention("adventure party-stats")}).`);
 			adventure.scouting.artifactGuardians++;
