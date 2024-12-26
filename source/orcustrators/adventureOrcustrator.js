@@ -806,7 +806,8 @@ function resolveMove(move, adventure) {
 				let isPlacebo = false;
 				if (move.userReference.team === "delver") {
 					const placeboDillution = adventure.getChallengeIntensity("Unlabelled Placebos");
-					if (placeboDillution > 0) {
+					const placeboDuration = adventure.getChallengeDuration("Unlabelled Placebos");
+					if (placeboDillution > 0 && placeboDuration > 0) {
 						isPlacebo = (placeboDillution - 1) === adventure.generateRandomNumber(placeboDillution, "battle");
 					}
 					adventure.decrementItem(moveName, 1);
