@@ -256,8 +256,8 @@ function getGearProperty(gearName, propertyName) {
 function buildGearRecord(gearName, adventure) {
 	const template = GEAR[gearName.toLowerCase()];
 	let charges = template.maxCharges;
-	const shoddyPenalty = adventure.getChallengeIntensity("Shoddy Craftsmanship");
-	const shoddyDuration = adventure.getChallengeDuration("Shoddy Craftsmanship");
+	const shoddyPenalty = adventure.getChallengeIntensity("Shoddy Spellcraft");
+	const shoddyDuration = adventure.getChallengeDuration("Shoddy Spellcraft");
 	if (shoddyPenalty > 0 && shoddyDuration > 0) {
 		charges = Math.ceil(charges * (100 - shoddyPenalty) / 100);
 	}

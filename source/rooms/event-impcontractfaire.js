@@ -6,11 +6,11 @@ const { getEmoji } = require("../util/essenceUtil");
 module.exports = new RoomTemplate("Imp Contract Faire",
 	"@{adventureCounter}",
 	"The next room contains several stalls with imps hawking suspicious contracts. One imp offers a lucrative opportunity (*given you allow your essence to be changed to @{roomEssence}). Another offers a sketcy procedure for improving party health.",
-	[],
 	function (adventure) {
 		adventure.room.history = {
 			"HP Donor": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		let swapEmoji, swapLabel, isSwapDisabled, shareEmoji, shareLabel, isShareDisabled;

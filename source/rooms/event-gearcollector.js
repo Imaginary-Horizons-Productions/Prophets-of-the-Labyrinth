@@ -1,20 +1,20 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 const { getNumberEmoji } = require("../util/textUtil");
+const { rollArtifact } = require("../artifacts/_artifactDictionary");
 
 module.exports = new RoomTemplate("Gear Collector",
 	"@{adventure}",
 	"The Gear Collector excitedly rushes past a mysterious black box to offer you gold to help complete their collection.",
-	[
-		new ResourceTemplate("1", "internal", "Artifact")
-	],
 	function (adventure) {
+		adventure.room.addResource(rollArtifact(adventure), "Artifact", "internal", 1);
 		adventure.room.actions = Math.ceil(adventure.delvers.length / 2);
 
 		adventure.room.history = {
 			"Traded for box": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		return {

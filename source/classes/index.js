@@ -14,7 +14,7 @@ const { ModifierTemplate, ModifierReceipt } = require("./ModifierTemplate");
 const { CombatantReference, Move } = require("./Move");
 const { PetTemplate, PetMoveTemplate } = require("./PetTemplate");
 const { Player } = require("./Player");
-const { ResourceTemplate, RoomTemplate } = require("./RoomTemplate");
+const { RoomTemplate } = require("./RoomTemplate");
 
 module.exports = {
 	Adventure,
@@ -43,7 +43,6 @@ module.exports = {
 	PetMoveTemplate,
 	PetTemplate,
 	Player,
-	ResourceTemplate,
 	Room,
 	RoomTemplate,
 	SelectWrapper,
