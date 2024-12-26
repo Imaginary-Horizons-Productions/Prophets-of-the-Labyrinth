@@ -1,7 +1,7 @@
 const { RoomTemplate, ResourceTemplate } = require("../classes");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
-const enemies = [["@{adventure} Slime", "0.5*n"], ["@{adventureOpposite} Ooze", "0.5*n"]];
+const enemies = [["Slime", "0.5*n"], ["Ooze", "0.5*n"]];
 
 module.exports = new RoomTemplate("Slime Fight",
 	"@{adventure}",

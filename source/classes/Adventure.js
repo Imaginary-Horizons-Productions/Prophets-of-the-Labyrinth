@@ -382,8 +382,16 @@ class Enemy extends Combatant {
 		}
 
 		if (nameInput !== "Mirror Clone") {
-			const parsedName = nameInput.replace(/@{adventure}/g, adventure.element).replace(/@{adventureOpposite}/g, getOpposite(adventure.element));
-			super(parsedName, "enemy");
+			switch (nameInput) {
+				case "Slime":
+					super(`${adventure.element} Slime`, "enemy");
+					break;
+				case "Ooze":
+					super(`${getOpposite(adventure.element)} Ooze`, "enemy");
+					break;
+				default:
+					super(parsedName, "enemy");
+			}
 			if (adventure.room.enemyIdMap[this.name]) {
 				adventure.room.enemyIdMap[this.name]++;
 				this.id = adventure.room.enemyIdMap[this.name];
