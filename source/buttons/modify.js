@@ -34,7 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					name: gear.name,
 					value: sidegrades.map(sidegrade => {
 						const description = buildGearDescription(sidegrade, false, delver);
-						return `${underline(sidegrade)} ${getEmoji(getGearProperty(upgrade, "essence"))}\n${description}`;
+						return `${underline(sidegrade)} ${getEmoji(getGearProperty(sidegrade, "essence"))}\n${description}`;
 					}).join("\n\n")
 				});
 				options.push({

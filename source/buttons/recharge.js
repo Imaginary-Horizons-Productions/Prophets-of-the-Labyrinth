@@ -4,7 +4,6 @@ const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
-const { getNumberEmoji } = require('../util/textUtil');
 
 const mainId = "recharge";
 module.exports = new ButtonWrapper(mainId, 3000,

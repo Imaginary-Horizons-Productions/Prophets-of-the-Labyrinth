@@ -55,8 +55,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			delver.archetype = player.favoriteArchetype;
 		}
 		adventure.delvers.push(delver);
-		adventure.lives++;
-		adventure.gainGold(50);
 		setAdventure(adventure);
 		company.adventuring.add(interaction.user.id);
 		setCompany(company);

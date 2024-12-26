@@ -3,7 +3,7 @@ const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
-module.exports = new EnemyTemplate("@{adventure} Slime",
+module.exports = new EnemyTemplate("Slime",
 	"@{adventure}",
 	200,
 	90,

@@ -6,8 +6,8 @@ const RARITIES = ["Cursed", "Common", "Rare"];
 module.exports = new LabyrinthTemplate("Debug Dungeon",
 	"Unaligned",
 	"This labyrinth contains whatever the devs were testing most recently. Balance not guaranteed!",
-	5,
-	[5],
+	10,
+	[10],
 	Object.fromEntries(["Darkness", "Earth", "Fire", "Light", "Water", "Wind", "Unaligned"].map(essence => [essence, [
 		"Creative Acorn",
 		"Finesse Fiber",
@@ -74,7 +74,7 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 		"Event": ["Apple Pie Wishing Well", "Door 1 or Door 2?", "Free Gold?", "Gear Collector", "Imp Contract Faire", "The Score Beggar", "Twin Pedestals", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
 		"Battle": ["Hawk Fight", "Frog Ranch", "Wild Fire-Arrow Frogs", "Mechabee Fight", "Slime Fight", "Tortoise Fight", "Meteor Knight Fight"],
 		"Artifact Guardian": ["Brute Convention"],
-		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors", "The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
+		"Final Battle": ["Hall of Mirrors"],
 		...standardLabyrinthInfrastructure
 	}
 );

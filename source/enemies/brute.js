@@ -1,6 +1,7 @@
 const { EnemyTemplate } = require("../classes");
+const { SAFE_DELIMITER } = require("../constants");
 const { selectRandomFoe } = require("../shared/actionComponents");
-const { generateModifierResultLines, addModifier, changeStagger, dealDamage } = require("../util/combatantUtil");
+const { generateModifierResultLines, addModifier, changeStagger, dealDamage, removeModifier } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new EnemyTemplate("Brute",
@@ -14,16 +15,18 @@ module.exports = new EnemyTemplate("Brute",
 ).addAction({
 	name: "Mug or Mark",
 	essence: "Unaligned",
-	description: `Deal ${getEmoji("Unaligned")} damage and moderate Stagger to The Target, or mark a random delver as The Target if there isn't one`,
+	description: `Deal ${getEmoji("Unaligned")} damage and moderate Stagger to The Target, or mark a random delver as The Target for a random number of attacks if there isn't one`,
 	priority: 0,
 	effect: ([target], user, adventure) => {
 		const markedTarget = adventure.delvers.find(delver => "The Target" in delver.modifiers);
 		if (!markedTarget) {
-			return generateModifierResultLines(addModifier([target], { name: "The Target", stacks: 1 }));
+			// Mark or Mug rolls on [0, 3] then adds 2 for the number of 'The Target' stacks it applies
+			return generateModifierResultLines(addModifier([target], { name: "The Target", stacks: user.roundRns[`Mug or Mark${SAFE_DELIMITER}Mug or Mark`][0] + 2 }));
 		} else {
 			const resultLines = dealDamage([markedTarget], user, 70, false, "Unaligned", adventure);
 			changeStagger([markedTarget], user, 3);
 			resultLines.push(`${markedTarget.name} is Staggered.`);
+			resultLines.push(...generateModifierResultLines(removeModifier([markedTarget], { name: "The Target", stacks: 1, force: true })));
 			if (user.crit) {
 				adventure.gold -= 5;
 				resultLines.push(`5g suddenly goes missing from the party's coffers.`);
@@ -32,5 +35,8 @@ module.exports = new EnemyTemplate("Brute",
 		}
 	},
 	selector: selectRandomFoe,
-	next: "Mug or Mark"
-});
+	next: "Mug or Mark",
+	rnConfig: {
+		"Mug or Mark": 1
+	}
+}).setFlavorText({ name: "Resetting 'The Mark'", value: "Removing the 'The Mark' debuff will make the next Brute to act apply a new one. Each time a Brute attacks a stack will be removed, dying will remove all stacks (normal debuff curing works as well)." });

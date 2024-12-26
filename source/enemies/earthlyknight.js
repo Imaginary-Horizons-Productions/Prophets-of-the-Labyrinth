@@ -32,7 +32,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 			if (targetBuffs.length > 0) {
-				const rolledBuff = targetBuffs[user.roundRns[`Damping Wallop${SAFE_DELIMITER}buffs`][0]];
+				const rolledBuff = targetBuffs[user.roundRns[`Damping Wallop${SAFE_DELIMITER}buffs`][0] % targetBuffs.length];
 				resultLines.push(...generateModifierResultLines(removeModifier([target], { name: rolledBuff, stacks: "all" })));
 			}
 		}

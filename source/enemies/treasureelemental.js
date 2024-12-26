@@ -59,4 +59,4 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 		},
 		selector: selectAllFoes,
 		next: "random"
-	});
+	}).setFlavorText({ name: "Greed", value: "Using the Greed button will add @e{Curse of Midas} and @e{Power Up} to Treasure Elementals." });

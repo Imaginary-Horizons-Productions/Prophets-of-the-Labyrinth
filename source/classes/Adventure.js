@@ -62,9 +62,12 @@ class Adventure {
 	petRNs = { delverIndex: 0, moveIndex: 0, targetReferences: [], extras: [] };
 	/** @type {{[candidate: string]: {voterIds: string[], isHidden: boolean}}} */
 	roomCandidates = {};
-	lives = 2;
-	gold = 100;
-	peakGold = 100;
+	/** @type {number} */
+	lives;
+	/** @type {number} */
+	gold;
+	/** @type {number} */
+	peakGold;
 	gearCapacity = 3;
 	/** @type {Record<string, {count: number; [statistic: string]: number}>} */
 	artifacts = {};
@@ -382,8 +385,18 @@ class Enemy extends Combatant {
 			return;
 		}
 
-		if (nameInput !== "@{clone}") {
-			const parsedName = nameInput.replace(/@{adventure}/g, adventure.essence).replace(/@{adventureOpposite}/g, getOpposite(adventure.essence));
+		if (nameInput !== "Mirror Clone") {
+			let parsedName;
+			switch (nameInput) {
+				case "Slime":
+					parsedName = `${adventure.essence} Slime`;
+					break;
+				case "Ooze":
+					parsedName = `${getOpposite(adventure.essence)} Ooze`;
+					break;
+				default:
+					parsedName = nameInput;
+			}
 			super(parsedName, "enemy");
 			if (adventure.room.enemyIdMap[this.name]) {
 				adventure.room.enemyIdMap[this.name]++;
