@@ -10,7 +10,7 @@ const { getCompany, setCompany } = require("./companyOrcustrator");
 const { rollArtifact } = require("../artifacts/_artifactDictionary");
 const { rollChallenges, getChallenge } = require("../challenges/_challengeDictionary");
 const { getEnemy } = require("../enemies/_enemyDictionary");
-const { getGearProperty } = require("../gear/_gearDictionary");
+const { getGearProperty, gearExists } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
@@ -580,8 +580,6 @@ function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName,
 	return results;
 }
 
-
-
 /**
  * Simulate the (consecutive) removal of modifiers by the indices indicated by the roundRnKey
  * @param {Combatant} target
@@ -973,37 +971,43 @@ function endRound(adventure, thread) {
 			move.name = counterpartMove.name;
 			move.setPriority(counterpartMove.priority);
 			const [gearName, gearIndex] = counterpartMove.name.split(SAFE_DELIMITER);
-			const targetingTags = getGearProperty(gearName, "targetingTags");
-			if (targetingTags.type === "single" || targetingTags.type.startsWith("blast")) {
+			if (gearExists(gearName)) {
+				const targetingTags = getGearProperty(gearName, "targetingTags");
+				if (targetingTags.type === "single" || targetingTags.type.startsWith("blast")) {
+					move.targets = counterpartMove.targets.map(target => {
+						return { team: target.team === "enemy" ? "delver" : "enemy", index: target.index };
+					})
+				} else if (targetingTags.type === "all") {
+					if (targetingTags.team === "ally") {
+						for (let i = 0; i < adventure.room.enemies; i++) {
+							if (adventure.room.enemies[i].hp > 0) {
+								move.addTarget(new CombatantReference("enemy", i));
+							}
+						}
+					} else {
+						for (let i = 0; i < adventure.delvers.length; i++) {
+							move.addTarget(new CombatantReference("delver", i));
+						}
+					}
+				} else if (targetingTags.type.startsWith("random")) {
+					const { [`${gearName}${SAFE_DELIMITER}allies`]: cachedAllies, [`${gearName}${SAFE_DELIMITER}foes`]: cachedFoes } = cacheRoundRn(adventure, user, gearName, getGearProperty(gearName, "rnConfig"));
+					if (cachedAllies) {
+						for (let i = 0; i < cachedAllies.length; i++) {
+							move.addTarget(new CombatantReference(move.userReference.team, cachedAllies[i]));
+						}
+					}
+					if (cachedFoes) {
+						for (let i = 0; i < cachedFoes.length; i++) {
+							move.addTarget(new CombatantReference(move.userReference.team === "delver" ? "enemy" : "delver", cachedFoes[i]));
+						}
+					}
+				} else if (targetingTags.type === "self") {
+					move.targets = [{ team: "enemy", index: move.userReference.index }];
+				}
+			} else {
 				move.targets = counterpartMove.targets.map(target => {
 					return { team: target.team === "enemy" ? "delver" : "enemy", index: target.index };
 				})
-			} else if (targetingTags.type === "all") {
-				if (targetingTags.team === "ally") {
-					for (let i = 0; i < adventure.room.enemies; i++) {
-						if (adventure.room.enemies[i].hp > 0) {
-							move.addTarget(new CombatantReference("enemy", i));
-						}
-					}
-				} else {
-					for (let i = 0; i < adventure.delvers.length; i++) {
-						move.addTarget(new CombatantReference("delver", i));
-					}
-				}
-			} else if (targetingTags.type.startsWith("random")) {
-				const { [`${gearName}${SAFE_DELIMITER}allies`]: cachedAllies, [`${gearName}${SAFE_DELIMITER}foes`]: cachedFoes } = cacheRoundRn(adventure, user, gearName, getGearProperty(gearName, "rnConfig"));
-				if (cachedAllies) {
-					for (let i = 0; i < cachedAllies.length; i++) {
-						move.addTarget(new CombatantReference(move.userReference.team, cachedAllies[i]));
-					}
-				}
-				if (cachedFoes) {
-					for (let i = 0; i < cachedFoes.length; i++) {
-						move.addTarget(new CombatantReference(move.userReference.team === "delver" ? "enemy" : "delver", cachedFoes[i]));
-					}
-				}
-			} else if (targetingTags.type === "self") {
-				move.targets = [{ team: "enemy", index: move.userReference.index }];
 			}
 		}
 	}
