@@ -30,7 +30,7 @@ for (const file of [
 	"frailty.js",
 	"impact.js",
 	"impotence.js",
-	"incompatability.js",
+	"incompatibility.js",
 	"insult-boring.js",
 	"insult-lacking-rhythm.js",
 	"insult-smelly.js",

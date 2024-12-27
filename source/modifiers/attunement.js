@@ -5,4 +5,4 @@ module.exports = new ModifierTemplate("Attunement",
 	"Buff",
 	1,
 	0
-).setInverse("Incompatability");
+).setInverse("Incompatibility");

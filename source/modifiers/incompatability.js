@@ -1,6 +1,6 @@
 const { ModifierTemplate } = require("../classes");
 
-module.exports = new ModifierTemplate("Incompatability",
+module.exports = new ModifierTemplate("Incompatibility",
 	"Halve Essence Counter damage",
 	"Debuff",
 	1,

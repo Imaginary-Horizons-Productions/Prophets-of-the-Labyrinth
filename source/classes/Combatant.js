@@ -59,7 +59,7 @@ class Combatant {
 	getEssenceCounterDamage() {
 		if (this.getModifierStacks("Attunement") > 0) {
 			return 2 * (40 + (10 * this.level));
-		} else if (this.getModifierStacks("Incompatability") > 0) {
+		} else if (this.getModifierStacks("Incompatibility") > 0) {
 			return Math.floor((40 + (10 * this.level)) / 2);
 		} else {
 			return 40 + (10 * this.level);
