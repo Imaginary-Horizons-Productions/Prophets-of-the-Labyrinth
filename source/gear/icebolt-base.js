@@ -25,4 +25,5 @@ module.exports = new GearTemplate("Ice Bolt",
 	.setUpgrades("Awesome Ice Bolt", "Distracting Ice Bolt", "Numbing Ice Bolt")
 	.setDamage(40)
 	.setModifiers({ name: "Torpidity", stacks: 2 })
-	.setCharges(15);
+	.setCharges(15)
+	.setCooldown(0);

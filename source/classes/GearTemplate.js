@@ -36,7 +36,7 @@ class GearTemplate {
 	rnConfig;
 
 	// Requirements
-	cooldown = 0;
+	cooldown;
 	maxCharges = Infinity;
 	moraleRequirement = 0;
 	/** @type {[integer: number, descriptionTemplate: string]} */

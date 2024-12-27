@@ -30,4 +30,5 @@ module.exports = new GearTemplate("Hunter's Certain Victory",
 	.setSidegrades("Lethal Certain Victory", "Reckless Certain Victory")
 	.setModifiers({ name: "Empowerment", stacks: 25 }, { name: "Empowerment", stacks: 30 })
 	.setDamage(40)
-	.setPactCost([1, "Pay HP for your Empowerment after the move"]);
+	.setPactCost([1, "Pay HP for your Empowerment after the move"])
+	.setCooldown(0);

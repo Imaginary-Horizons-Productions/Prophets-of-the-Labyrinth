@@ -34,4 +34,5 @@ module.exports = new GearTemplate("Flanking Life Drain",
 	.setModifiers({ name: "Exposure", stacks: 2 })
 	.setCharges(15)
 	.setDamage(40)
-	.setHealing(25);
+	.setHealing(25)
+	.setCooldown(0);

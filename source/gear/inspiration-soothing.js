@@ -25,4 +25,5 @@ module.exports = new GearTemplate("Soothing Inspiration",
 	.setSidegrades("Guarding Inspiration", "Sweeping Inspiration")
 	.setModifiers({ name: "Empowerment", stacks: 25 }, { name: "Regeneration", stacks: 2 })
 	.setBonus(25) // Empowerment stacks
-	.setCharges(10);
+	.setCharges(10)
+	.setCooldown(0);

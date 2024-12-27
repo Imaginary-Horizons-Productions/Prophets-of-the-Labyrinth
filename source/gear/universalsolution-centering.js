@@ -49,4 +49,5 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Evasive Universal Solution", "Harmful Universal Solution")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setStagger(-2)
-	.setRnConfig({ "debuffs": 2 });
+	.setRnConfig({ "debuffs": 2 })
+	.setCooldown(0);

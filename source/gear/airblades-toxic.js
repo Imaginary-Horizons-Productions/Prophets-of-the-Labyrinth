@@ -29,4 +29,5 @@ module.exports = new GearTemplate("Toxic Air Blades",
 	.setSidegrades("Adventurer's Air Blade", "Unstoppable Air Blade")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDamage(20)
-	.setPactCost([25, "@{pactCost} HP"]);
+	.setPactCost([25, "@{pactCost} HP"])
+	.setCooldown(0);

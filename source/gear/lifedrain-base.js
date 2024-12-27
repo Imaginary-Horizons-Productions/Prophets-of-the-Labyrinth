@@ -26,4 +26,5 @@ module.exports = new GearTemplate("Life Drain",
 	.setUpgrades("Flanking Life Drain", "Furious Life Drain", "Thirsting Life Drain")
 	.setCharges(15)
 	.setDamage(40)
-	.setHealing(25);
+	.setHealing(25)
+	.setCooldown(0);

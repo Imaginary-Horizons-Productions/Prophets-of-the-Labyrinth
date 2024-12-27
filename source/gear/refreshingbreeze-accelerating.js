@@ -39,4 +39,5 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Supportive Refreshing Breeze", "Swift Refreshing Breeze")
 	.setModifiers({ name: "Swiftness", stacks: 2 })
 	.setCharges(15)
-	.setRnConfig({ debuffs: 1 });
+	.setRnConfig({ debuffs: 1 })
+	.setCooldown(0);

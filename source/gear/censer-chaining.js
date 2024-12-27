@@ -30,4 +30,5 @@ module.exports = new GearTemplate("Chaining Censer",
 	.setSidegrades("Staggering Censer", "Tormenting Censer")
 	.setModifiers({ name: "Torpidity", stacks: 2 })
 	.setDamage(15)
+	.setCooldown(0)
 	.setBonus(75); // damage

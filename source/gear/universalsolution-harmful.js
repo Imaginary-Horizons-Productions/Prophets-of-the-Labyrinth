@@ -42,4 +42,5 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Centering Universal Solution", "Evasive Universal Solution")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setDamage(50)
-	.setRnConfig({ "debuffs": 2 });
+	.setRnConfig({ "debuffs": 2 })
+	.setCooldown(0);
