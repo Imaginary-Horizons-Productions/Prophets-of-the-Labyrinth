@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Distracting Poison Torrent",
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [poison, distracted], critMultiplier } = module.exports;
+		const { essence, modifiers: [poison, distraction], critMultiplier } = module.exports;
 		const pendingPoison = { ...poison };
 		if (user.crit) {
 			pendingPoison.stacks *= critMultiplier;
@@ -19,9 +19,9 @@ module.exports = new GearTemplate("Distracting Poison Torrent",
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPoison).concat(addModifier(targets, distracted))));
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingPoison).concat(addModifier(targets, distraction))));
 	}
 ).setTargetingTags({ type: "all", team: "foe" })
 	.setSidegrades("Harmful Poison Torrent", "Staggering Poison Torrent")
-	.setModifiers({ name: "Poison", stacks: 2 }, { name: "Distracted", stacks: 2 })
+	.setModifiers({ name: "Poison", stacks: 2 }, { name: "Distraction", stacks: 2 })
 	.setCharges(15);

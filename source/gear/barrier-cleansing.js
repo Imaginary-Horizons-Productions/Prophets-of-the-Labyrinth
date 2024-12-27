@@ -13,7 +13,7 @@ module.exports = new GearTemplate(gearName,
 	"Wind",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [evade, vigilance], critMultiplier } = module.exports;
+		const { essence, modifiers: [evasion, vigilance], critMultiplier } = module.exports;
 		const pendingVigilance = { ...vigilance };
 		if (user.essence === essence) {
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -21,7 +21,7 @@ module.exports = new GearTemplate(gearName,
 		if (user.crit) {
 			pendingVigilance.stacks *= critMultiplier;
 		}
-		const receipts = addModifier([user], pendingVigilance).concat(addModifier([user], evade));
+		const receipts = addModifier([user], pendingVigilance).concat(addModifier([user], evasion));
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		if (userDebuffs.length > 0) {
 			const rolledDebuff = userDebuffs[user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length];
@@ -31,6 +31,6 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Devoted Barrier", "Vigilant Barrier")
-	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 1 })
+	.setModifiers({ name: "Evasion", stacks: 3 }, { name: "Vigilance", stacks: 1 })
 	.setCharges(5)
 	.setRnConfig({ debuffs: 1 });

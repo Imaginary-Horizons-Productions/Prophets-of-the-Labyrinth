@@ -57,9 +57,9 @@ class Combatant {
 	}
 
 	getEssenceCounterDamage() {
-		if (this.getModifierStacks("Resonance") > 0) {
+		if (this.getModifierStacks("Attunement") > 0) {
 			return 2 * (40 + (10 * this.level));
-		} else if (this.getModifierStacks("Dissonance") > 0) {
+		} else if (this.getModifierStacks("Incompatibility") > 0) {
 			return Math.floor((40 + (10 * this.level)) / 2);
 		} else {
 			return 40 + (10 * this.level);
@@ -99,7 +99,7 @@ class Delver extends Combatant {
 	}
 
 	getPower() {
-		return Math.floor(this.power * (1 + this.getModifierStacks("Empowerment") - this.getModifierStacks("Disempowerment") + this.gear.reduce((totalPower, gear) => {
+		return Math.floor(this.power * (1 + this.getModifierStacks("Empowerment") - this.getModifierStacks("Weakness") + this.gear.reduce((totalPower, gear) => {
 			if (parseInt(gear.power)) {
 				return totalPower + gear.power;
 			} else {
@@ -121,13 +121,13 @@ class Delver extends Combatant {
 		if (includeRoundSpeed) {
 			totalSpeed += this.roundSpeed;
 		}
-		if ("Slow" in this.modifiers) {
-			const slowStacks = this.getModifierStacks("Slow");
-			totalSpeed -= slowStacks * 5;
+		if ("Torpidity" in this.modifiers) {
+			const torpidityStacks = this.getModifierStacks("Torpidity");
+			totalSpeed -= torpidityStacks * 5;
 		}
-		if ("Quicken" in this.modifiers) {
-			const quickenStacks = this.getModifierStacks("Quicken");
-			totalSpeed += quickenStacks * 5;
+		if ("Swiftness" in this.modifiers) {
+			const swiftenessStacks = this.getModifierStacks("Swiftness");
+			totalSpeed += swiftenessStacks * 5;
 		}
 		return Math.floor(totalSpeed);
 	}

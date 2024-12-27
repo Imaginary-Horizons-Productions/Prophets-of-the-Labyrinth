@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Slowing War Cry",
 	"Light",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [slow, targetModifier], stagger, bonus } = module.exports;
+		const { essence, modifiers: [torpidity, targetModifier], stagger, bonus } = module.exports;
 		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
 
 		let pendingStagger = stagger;
@@ -23,11 +23,11 @@ module.exports = new GearTemplate("Slowing War Cry",
 			pendingStagger += bonus;
 		}
 		changeStagger(allTargets, user, pendingStagger);
-		return [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered."), ...generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, slow)))];
+		return [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered."), ...generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, torpidity)))];
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Charging War Cry", "Tormenting War Cry")
-	.setModifiers({ name: "Slow", stacks: 1 }, { name: "Distracted", stacks: 0 })
+	.setModifiers({ name: "Torpidity", stacks: 1 }, { name: "Distraction", stacks: 0 })
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks
 	.setCooldown(1);

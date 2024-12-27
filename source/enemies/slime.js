@@ -29,13 +29,13 @@ module.exports = new EnemyTemplate("Slime",
 }).addAction({
 	name: "Goop Spray",
 	essence: "Unaligned",
-	description: "Inflict @e{Slow} on a single foe",
+	description: "Inflict @e{Torpidity} on a single foe",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		if (user.crit) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: user.crit ? 3 : 2 })));
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Torpidity", stacks: user.crit ? 3 : 2 })));
 	},
 	selector: selectRandomFoe,
 	next: "random"

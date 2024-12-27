@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Chaining Risky Mixture",
 	"Darkness",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [poison, regen] } = module.exports;
+		const { essence, modifiers: [poison, regeneration] } = module.exports;
 		if (user.essence === essence) {
 			if (target.team === user.team) {
 				changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -20,11 +20,11 @@ module.exports = new GearTemplate("Chaining Risky Mixture",
 			}
 		}
 		if (user.crit) {
-			return generateModifierResultLines(addModifier([target], regen));
+			return generateModifierResultLines(addModifier([target], regeneration));
 		} else {
 			return generateModifierResultLines(addModifier([target], poison));
 		}
 	}
 ).setTargetingTags({ type: "single", team: "any" })
 	.setSidegrades("Potent Risky Mixture", "Midas's Risky Mixture")
-	.setModifiers({ name: "Poison", stacks: 4 }, { name: "Regen", stacks: 4 });
+	.setModifiers({ name: "Poison", stacks: 4 }, { name: "Regeneration", stacks: 4 });

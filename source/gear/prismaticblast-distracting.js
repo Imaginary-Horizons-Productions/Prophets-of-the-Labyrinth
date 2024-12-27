@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Distracting Prismatic Blast",
 	"Light",
 	350,
 	(targets, user, adventure) => {
-		const { essence, damage, critMultiplier, modifiers: [distracted] } = module.exports;
+		const { essence, damage, critMultiplier, modifiers: [distraction] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -19,10 +19,10 @@ module.exports = new GearTemplate("Distracting Prismatic Blast",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, distracted))));
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, distraction))));
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "foe" })
 	.setSidegrades("Flanking Prismatic Blast", "Vexing Prismatic Blast")
-	.setModifiers({ name: "Distracted", stacks: 2 })
+	.setModifiers({ name: "Distraction", stacks: 2 })
 	.setCharges(15)
 	.setDamage(40);

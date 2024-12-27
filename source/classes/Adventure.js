@@ -457,7 +457,7 @@ class Enemy extends Combatant {
 	}
 
 	getPower() {
-		return Math.floor(this.power + this.getModifierStacks("Empowerment") - this.getModifierStacks("Disempowerment"));
+		return Math.floor(this.power + this.getModifierStacks("Empowerment") - this.getModifierStacks("Weakness"));
 	}
 
 	/** @param {boolean} includeRoundSpeed */
@@ -466,12 +466,12 @@ class Enemy extends Combatant {
 		if (includeRoundSpeed) {
 			totalSpeed += this.roundSpeed;
 		}
-		if ("Slow" in this.modifiers) {
-			const slowStacks = this.getModifierStacks("Slow");
-			totalSpeed -= slowStacks * 5;
+		if ("Torpidity" in this.modifiers) {
+			const torpidityStacks = this.getModifierStacks("Torpidity");
+			totalSpeed -= torpidityStacks * 5;
 		}
-		if ("Quicken" in this.modifiers) {
-			const quickenStacks = this.getModifierStacks("Quicken");
+		if ("Swiftness" in this.modifiers) {
+			const quickenStacks = this.getModifierStacks("Swiftness");
 			totalSpeed += quickenStacks * 5;
 		}
 		return Math.floor(totalSpeed);

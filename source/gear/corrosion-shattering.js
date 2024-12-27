@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Shattering Corrosion",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [powerDown, frail], bonus } = module.exports;
+		const { essence, modifiers: [weakness, frailty], bonus } = module.exports;
 		let pendingStagger = 0;
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
@@ -25,10 +25,10 @@ module.exports = new GearTemplate("Shattering Corrosion",
 		if (pendingStagger > 0) {
 			changeStagger(targets, user, pendingStagger);
 		}
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, powerDown).concat(addModifier(targets, frail)))));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, weakness).concat(addModifier(targets, frailty)))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Fate-Sealing Corrosion", "Fatiguing Corrosion")
-	.setModifiers({ name: "Disempowerment", stacks: 20 }, { name: "Frail", stacks: 4 })
+	.setModifiers({ name: "Weakness", stacks: 20 }, { name: "Frailty", stacks: 4 })
 	.setBonus(2) // Crit Stagger
 	.setCharges(15);

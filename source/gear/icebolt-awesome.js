@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Awesome Ice Bolt",
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { essence, damage, modifiers: [slow], critMultiplier, bonus } = module.exports;
+		const { essence, damage, modifiers: [torpidity], critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let stunnedDamage = pendingDamage + bonus;
 		if (user.essence === essence) {
@@ -22,11 +22,11 @@ module.exports = new GearTemplate("Awesome Ice Bolt",
 			stunnedDamage *= critMultiplier;
 		}
 		const resultLines = targets.reduce((array, target) => array.concat(dealDamage([target], user, target.isStunned ? stunnedDamage : pendingDamage, false, essence, adventure)), []);
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow))));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, torpidity))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Distracting Ice Bolt", "Numbing Ice Bolt")
 	.setDamage(40)
-	.setModifiers({ name: "Slow", stacks: 2 })
+	.setModifiers({ name: "Torpidity", stacks: 2 })
 	.setCharges(15)
 	.setBonus(75);

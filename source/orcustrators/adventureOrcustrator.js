@@ -115,8 +115,8 @@ function nextRoom(roomType, thread) {
 		if (adventure.challenges["Training Weights"]?.duration > 0) {
 			const stacks = adventure.challenges["Training Weights"].intensity;
 			delver.modifiers = {
-				"Slow": stacks,
-				"Exposed": stacks
+				"Torpidity": stacks,
+				"Exposure": stacks
 			};
 		} else {
 			delver.modifiers = {};
@@ -836,20 +836,20 @@ function resolveMove(move, adventure) {
 			user.modifiers.Progress = Math.ceil(user.getModifierStacks("Progress") * 0.8);
 		}
 
-		if ("Frail" in user.modifiers) {
-			results.push(...dealModifierDamage(userReference, "Frail", adventure));
-			removeModifier([user], { name: "Frail", stacks: "all" });
+		if ("Frailty" in user.modifiers) {
+			results.push(...dealModifierDamage(userReference, "Frailty", adventure));
+			removeModifier([user], { name: "Frailty", stacks: "all" });
 		}
 	}
 
 	if (move.type !== "pet") {
-		// Poison/Regen effect
+		// Poison/Regeneneration effect
 		if ("Poison" in user.modifiers) {
 			results.push(...dealModifierDamage(user, "Poison", adventure));
 		} else {
-			const regenStacks = user.getModifierStacks("Regen");
+			const regenStacks = user.getModifierStacks("Regeneration");
 			if (regenStacks) {
-				results.push(gainHealth(user, regenStacks * 10, adventure, "Regen"));
+				results.push(gainHealth(user, regenStacks * 10, adventure, "Regeneration"));
 			}
 		}
 
@@ -914,7 +914,7 @@ function gearUpkeep(moveName, index, user, adventure) {
 	return "";
 }
 
-const RETAINING_MODIFIER_PAIRS = [["Exposed", "Distracted"], ["Evade", "Vigilance"]];
+const RETAINING_MODIFIER_PAIRS = [["Exposure", "Distraction"], ["Evasion", "Vigilance"]];
 
 /** Generate reactive moves, randomize speed ties, then resolve moves
  * @param {Adventure} adventure
@@ -1060,7 +1060,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 		return { payload: completeAdventure(adventure, thread, "defeat", lastRoundText), type: "adventureDefeat" };
 	}
 
-	if (adventure.room.enemies.every(enemy => enemy.hp === 0 || "Coward" in enemy.modifiers)) {
+	if (adventure.room.enemies.every(enemy => enemy.hp === 0 || "Cowardice" in enemy.modifiers)) {
 		if ("endedCombat" in adventure.room.history) {
 			return { type: "endCombat" };
 		}

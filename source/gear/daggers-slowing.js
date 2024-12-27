@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Slowing Daggers",
 	"Wind",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [slow], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [torpidity], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -22,13 +22,13 @@ module.exports = new GearTemplate("Slowing Daggers",
 			if (user.essence === essence) {
 				changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
 			}
-			resultLines.push(...generateModifierResultLines(addModifier(stillLivingTargets, slow)));
+			resultLines.push(...generateModifierResultLines(addModifier(stillLivingTargets, torpidity)));
 		}
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sharpened Daggers", "Sweeping Daggers")
-	.setModifiers({ name: "Slow", stacks: 1 })
+	.setModifiers({ name: "Torpidity", stacks: 1 })
 	.setCooldown(1)
 	.setCritMultiplier(3)
 	.setDamage(40);

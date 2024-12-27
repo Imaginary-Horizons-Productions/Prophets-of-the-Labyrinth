@@ -13,8 +13,8 @@ module.exports = new GearTemplate(gearName,
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { modifiers: [regen], critMultiplier, essence } = module.exports;
-		const pendingRegen = { ...regen };
+		const { modifiers: [regeneration], critMultiplier, essence } = module.exports;
+		const pendingRegen = { ...regeneration };
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
@@ -34,6 +34,6 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Bouncing Medicine", "Soothing Medicine")
-	.setModifiers({ name: "Regen", stacks: 3 })
+	.setModifiers({ name: "Regeneration", stacks: 3 })
 	.setCooldown(1)
 	.setRnConfig({ debuffs: 1 });

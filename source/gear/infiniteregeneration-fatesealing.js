@@ -11,14 +11,14 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [regen, stasis], pactCost: [pactCostValue], critMultiplier } = module.exports;
+		const { essence, modifiers: [regeneration, stasis], pactCost: [pactCostValue], critMultiplier } = module.exports;
 		let pendingHPCost = pactCostValue;
 		const paymentSentence = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
 			return [paymentSentence];
 		}
 		const resultLines = [paymentSentence];
-		const receipts = addModifier(targets, regen);
+		const receipts = addModifier(targets, regeneration);
 		if (user.crit) {
 			pendingHPCost /= critMultiplier;
 			receipts.push(...addModifier(targets, stasis));
@@ -30,5 +30,5 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Discounted Infinite Regeneration", "Purifying Infinite Regeneration")
-	.setModifiers({ name: "Regen", stacks: 4 }, { name: "Retain", stacks: 1 })
+	.setModifiers({ name: "Regeneration", stacks: 4 }, { name: "Retain", stacks: 1 })
 	.setPactCost([50, "@{pactCost} HP"]);

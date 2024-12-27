@@ -36,3 +36,6 @@ Please use `camelCase` unless one of the following exceptions apply:
      - File names should match the customIds, but use underscores instead of spaces (like `Proper_Noun_Case.js`)
    - Others avoid a delimiter character, making them `alllowercase`, as we sometimes concatenate arguments to interaction customIds, which have a max length
 - Emoji image file names match the display name of their entity with white space replaced by underscore (eg `Curse_of_Midas.png`)
+
+### Game Mechanic Names
+- Modifier names should be nouns to be grammatically correct with result texts and include proper nouns for game specific modifiers (eg "Evasion" instead of "Evade", "Poison" instead of "Poisoned")

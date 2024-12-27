@@ -12,7 +12,7 @@ module.exports = new GearTemplate(gearName,
 	"Unaligned",
 	350,
 	(targets, user, adventure) => {
-		const { damage, critMultiplier, essence, modifiers: [empowerment, exposed] } = module.exports;
+		const { damage, critMultiplier, essence, modifiers: [empowerment, exposure] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -21,7 +21,7 @@ module.exports = new GearTemplate(gearName,
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-		const receipts = addModifier(targets, exposed);
+		const receipts = addModifier(targets, exposure);
 		if (targets.some(target => getCombatantCounters(target).includes(essence))) {
 			const inducedVulnerabilityCount = Object.keys(targets[0].modifiers).filter(modifier => modifier.endsWith("Vulnerability")).length;
 			const pendingEmpowerment = { name: "Empowerment", stacks: Math.floor(empowerment.stacks / inducedVulnerabilityCount) };
@@ -36,7 +36,7 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Double Pistol", "Duelist's Pistol")
-	.setModifiers({ name: "Empowerment", stacks: 30 }, { name: "Exposed", stacks: 2 })
+	.setModifiers({ name: "Empowerment", stacks: 30 }, { name: "Exposure", stacks: 2 })
 	.setCooldown(1)
 	.setDamage(40)
 	.setRnConfig({ "allies": 1 });

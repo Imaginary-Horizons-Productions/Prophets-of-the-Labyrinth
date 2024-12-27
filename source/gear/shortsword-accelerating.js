@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [exposed, quicken], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [exposure, swiftness], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
@@ -23,10 +23,10 @@ module.exports = new GearTemplate("Accelerating Shortsword",
 				changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 			}
 		}
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed).concat(addModifier([user], quicken)))));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposure).concat(addModifier([user], swiftness)))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Lethal Shortsword", "Toxic Shortsword")
-	.setModifiers({ name: "Exposed", stacks: 1 }, { name: "Quicken", stacks: 1 })
+	.setModifiers({ name: "Exposure", stacks: 1 }, { name: "Swiftness", stacks: 1 })
 	.setCooldown(1)
 	.setDamage(40);

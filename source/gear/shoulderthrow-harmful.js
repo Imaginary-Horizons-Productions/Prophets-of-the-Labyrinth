@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Harmful Shoulder Throw",
 	"Light",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [evade], damage } = module.exports;
+		const { essence, modifiers: [evasion], damage } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -25,12 +25,12 @@ module.exports = new GearTemplate("Harmful Shoulder Throw",
 			}
 		}
 		if (user.crit) {
-			resultLines.push(...generateModifierResultLines(addModifier([user], evade)));
+			resultLines.push(...generateModifierResultLines(addModifier([user], evasion)));
 		}
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Evasive Shoulder Throw", "Staggering Shoulder Throw")
 	.setCooldown(2)
-	.setModifiers({ name: "Evade", stacks: 1 })
+	.setModifiers({ name: "Evasion", stacks: 1 })
 	.setDamage(15);

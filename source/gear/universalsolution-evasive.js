@@ -13,7 +13,7 @@ module.exports = new GearTemplate(gearName,
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [poison, evade] } = module.exports;
+		const { essence, modifiers: [poison, evasion] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -34,9 +34,9 @@ module.exports = new GearTemplate(gearName,
 				removeModifier([user], { name: debuff, stacks: "all" });
 			}
 		}
-		return generateModifierResultLines(combineModifierReceipts(addReciepts.concat(addModifier([user], poison), addModifier([user], evade))));
+		return generateModifierResultLines(combineModifierReceipts(addReciepts.concat(addModifier([user], poison), addModifier([user], evasion))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Centering Universal Solution", "Harmful Universal Solution")
-	.setModifiers({ name: "Poison", stacks: 3 }, { name: "Evade", stacks: 2 })
+	.setModifiers({ name: "Poison", stacks: 3 }, { name: "Evasion", stacks: 2 })
 	.setRnConfig({ "debuffs": 2 });

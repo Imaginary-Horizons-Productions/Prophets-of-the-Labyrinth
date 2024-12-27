@@ -11,23 +11,23 @@ module.exports = new GearTemplate("Toxic Shortsword",
 	"Fire",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [exposed, poison], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [exposure, poison], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
-		const receipts = addModifier([user], exposed);
+		const receipts = addModifier([user], exposure);
 		if (target.hp > 0) {
 			if (user.essence === essence) {
 				changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 			}
-			receipts.push(...addModifier([target], poison), ...addModifier([target], exposed));
+			receipts.push(...addModifier([target], poison), ...addModifier([target], exposure));
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Accelerating Shortsword", "Lethal Shortsword")
-	.setModifiers({ name: "Exposed", stacks: 1 }, { name: "Poison", stacks: 3 })
+	.setModifiers({ name: "Exposure", stacks: 1 }, { name: "Poison", stacks: 3 })
 	.setCooldown(1)
 	.setDamage(40);

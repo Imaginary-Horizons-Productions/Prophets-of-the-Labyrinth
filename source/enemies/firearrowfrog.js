@@ -27,7 +27,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 }).addAction({
 	name: "Burrow",
 	essence: "Unaligned",
-	description: "Gain Evade",
+	description: "Gain @e{Evasion}",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let stacks = 2;
@@ -35,20 +35,20 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 			stacks *= 3;
 		}
 		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
-		return generateModifierResultLines(addModifier([user], { name: "Evade", stacks }));
+		return generateModifierResultLines(addModifier([user], { name: "Evasion", stacks }));
 	},
 	selector: selectSelf,
 	next: "Venom Cannon"
 }).addAction({
 	name: "Goop Spray",
 	essence: "Unaligned",
-	description: "Slow a single foe",
+	description: "Inflict @e{Torpidity} on a single foe",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		if (user.crit) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: user.crit ? 3 : 2 })));
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Torpidity", stacks: user.crit ? 3 : 2 })));
 	},
 	selector: selectRandomFoe,
 	next: "Venom Cannon"

@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Evasive Bow",
 	"Wind",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [evade], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [evasion], damage, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -19,11 +19,11 @@ module.exports = new GearTemplate("Evasive Bow",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([user], evade)));
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([user], evasion)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Thief's Bow", "Unstoppable Bow")
-	.setModifiers({ name: "Evade", stacks: 2 })
+	.setModifiers({ name: "Evasion", stacks: 2 })
 	.setCooldown(1)
 	.setDamage(40)
 	.setPriority(1);

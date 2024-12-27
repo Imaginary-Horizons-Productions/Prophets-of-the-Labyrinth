@@ -5,4 +5,4 @@ module.exports = new ModifierTemplate("Empowerment",
 	"Buff",
 	0,
 	0
-).setInverse("Disempowerment");
+).setInverse("Weakness");

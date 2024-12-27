@@ -3,7 +3,7 @@ const { ZERO_WIDTH_WHITESPACE } = require("../constants");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Legionnaire",
-	`They'll be able to predict who enemies are targeting and which combatants will score Critical Hits. They'll be able to coodinate for big damage by inflicting @e{Exposed} on foes with their Shortsword.`,
+	`They'll be able to predict who enemies are targeting and which combatants will score Critical Hits. They'll be able to coodinate for big damage by inflicting @e{Exposure} on foes with their Shortsword.`,
 	"Fire",
 	{
 		maxHPGrowth: 25,

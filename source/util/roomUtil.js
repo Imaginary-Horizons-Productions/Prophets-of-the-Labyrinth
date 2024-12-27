@@ -10,7 +10,7 @@ const { anyDieSucceeds } = require("./mathUtil");
 function spawnEnemy(enemyTemplate, adventure, includeCoward = false) {
 	const enemy = new Enemy(enemyTemplate.name, enemyTemplate.essence, enemyTemplate.shouldRandomizeHP, enemyTemplate.maxHP, enemyTemplate.power ?? 0, enemyTemplate.speed, enemyTemplate.poiseExpression, enemyTemplate.critRate, enemyTemplate.firstAction, { ...enemyTemplate.startingModifiers }, adventure);
 	if (includeCoward) {
-		enemy.modifiers.Coward = 1;
+		enemy.modifiers.Cowardice = 1;
 	}
 	if (adventure.room.enemies) {
 		adventure.room.enemies.push(enemy);

@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Shattering Stick",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { essence, damage, bonus, critMultiplier, modifiers: [frail] } = module.exports;
+		const { essence, damage, bonus, critMultiplier, modifiers: [frailty] } = module.exports;
 		let pendingDamage = damage + user.getPower();
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
@@ -25,11 +25,11 @@ module.exports = new GearTemplate("Shattering Stick",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([target], frail)));
+		return dealDamage([target], user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([target], frailty)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sharpened Stick", "Staggering Stick")
 	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(2)
-	.setModifiers({ name: "Frail", stacks: 4 });
+	.setModifiers({ name: "Frailty", stacks: 4 });

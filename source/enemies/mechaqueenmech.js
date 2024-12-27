@@ -36,12 +36,12 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 }).addAction({
 	name: "Formation Protocol",
 	essence: "Unaligned",
-	description: `Gain protection and grant @e{Quicken} and @e{Empowerment} to all lower ranking mechabees`,
+	description: `Gain protection and grant @e{Swiftness} and @e{Empowerment} to all lower ranking mechabees`,
 	priority: 1,
 	effect: (targets, user, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
 		addProtection([user], user.crit ? 60 : 30);
-		const receipts = addModifier(filteredTargets, { name: "Quicken", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Empowerment", stacks: 3 }));
+		const receipts = addModifier(filteredTargets, { name: "Swiftness", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Empowerment", stacks: 3 }));
 		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	},
 	selector: selectAllAllies,

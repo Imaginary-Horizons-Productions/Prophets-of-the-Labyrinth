@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Furious Battleaxe",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [exposed], damage, critMultiplier } = module.exports;
+		const { essence, modifiers: [exposure], damage, critMultiplier } = module.exports;
 		const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
 		let pendingDamage = (user.getPower() + damage) * furiousness;
 		if (user.essence === essence) {
@@ -20,10 +20,10 @@ module.exports = new GearTemplate("Furious Battleaxe",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([user], exposed)));
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([user], exposure)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Reactive Battleaxe", "Thirsting Battleaxe")
-	.setModifiers({ name: "Exposed", stacks: 1 })
+	.setModifiers({ name: "Exposure", stacks: 1 })
 	.setCooldown(1)
 	.setDamage(90);
