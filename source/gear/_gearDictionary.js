@@ -269,6 +269,7 @@ function buildGearDescription(gearName) {
 	if (!gearExists(gearName)) {
 		return "";
 	}
+	const cooldown = getGearProperty(gearName, "cooldown");
 	const maxCharges = getGearProperty(gearName, "maxCharges");
 	const moraleRequirement = getGearProperty(gearName, "moraleRequirement");
 	const pactCost = getGearProperty(gearName, "pactCost");
@@ -279,8 +280,7 @@ function buildGearDescription(gearName) {
 		descriptionTexts.push(`${italic("Morale Required")}: ${moraleRequirement}`);
 	} else if (pactCost) {
 		descriptionTexts.push(`${italic("Pact Cost")}: ${pactCost[1].replace(/@{pactCost}/g, pactCost[0])}`);
-	} else {
-		const cooldown = getGearProperty(gearName, "cooldown");
+	} else if (cooldown !== undefined) {
 		descriptionTexts.push(`${italic("Cooldown")}: ${cooldown} Round${cooldown === 1 ? "" : "s"}`);
 	}
 	getGearProperty(gearName, "descriptions").forEach(([type, description]) => {
@@ -311,6 +311,7 @@ function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
 	const maxCharges = getGearProperty(gearName, "maxCharges");
 	const moraleRequirement = getGearProperty(gearName, "moraleRequirement");
 	const pactCost = getGearProperty(gearName, "pactCost");
+	const cooldown = getGearProperty(gearName, "cooldown");
 	const descriptionTexts = [];
 	if (maxCharges !== Infinity) {
 		descriptionTexts.push(`${italic("Remaining Charges")}: ${gearRecord.charges}`);
@@ -319,8 +320,7 @@ function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
 	} else if (pactCost) {
 		// Game Design: do not calculate Pact Cost for the current context; that should be player responsibility
 		descriptionTexts.push(`${italic("Pact Cost")}: ${pactCost[1].replace(/@{pactCost}/g, pactCost[0])}`);
-	} else {
-		const cooldown = getGearProperty(gearName, "cooldown");
+	} else if (cooldown !== undefined) {
 		descriptionTexts.push(`${italic("Cooldown")}: ${cooldown} Round${cooldown === 1 ? "" : "s"}`);
 	}
 	getGearProperty(gearName, "descriptions").forEach(([type, description]) => {

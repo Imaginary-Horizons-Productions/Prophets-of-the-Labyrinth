@@ -27,4 +27,5 @@ module.exports = new GearTemplate("Staggering Poison Torrent",
 	.setSidegrades("Distracting Poison Torrent", "Harmful Poison Torrent")
 	.setModifiers({ name: "Poison", stacks: 2 })
 	.setCharges(15)
-	.setStagger(2);
+	.setStagger(2)
+	.setCooldown(0);

@@ -28,4 +28,5 @@ module.exports = new GearTemplate("Air Blades",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Adventurer's Air Blade", "Toxic Air Blade", "Unstoppable Air Blade")
 	.setDamage(20)
-	.setPactCost([25, "@{pactCost} HP"]);
+	.setPactCost([25, "@{pactCost} HP"])
+	.setCooldown(0);

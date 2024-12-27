@@ -40,4 +40,5 @@ module.exports = new GearTemplate("Urgent Fever Break",
 	.setSidegrades("Surpassing Fever Break", "Unlimited Fever Break")
 	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frailty", stacks: 0 })
 	.setCharges(5)
-	.setPriority(1);
+	.setPriority(1)
+	.setCooldown(0);

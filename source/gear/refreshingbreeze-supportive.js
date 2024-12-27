@@ -42,4 +42,5 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Accelerating Refreshing Breeze", "Swift Refreshing Breeze")
 	.setCharges(15)
 	.setStagger(-2)
-	.setRnConfig({ debuffs: 1 });
+	.setRnConfig({ debuffs: 1 })
+	.setCooldown(0);

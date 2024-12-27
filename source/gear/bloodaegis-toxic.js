@@ -41,4 +41,5 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 	.setSidegrades("Charging Blood Aegis", "Reinforced Blood Aegis")
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setPactCost([25, "@{pactCost} HP"])
-	.setProtection(125);
+	.setProtection(125)
+	.setCooldown(0);

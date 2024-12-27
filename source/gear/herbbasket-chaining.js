@@ -34,4 +34,5 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Reinforced Herb Basket", "Urgent Herb Basket")
 	.setBonus(1) // Herb count
 	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
-	.setRnConfig({ herbs: 1 });
+	.setRnConfig({ herbs: 1 })
+	.setCooldown(0);

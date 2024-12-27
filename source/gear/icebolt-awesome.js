@@ -29,4 +29,5 @@ module.exports = new GearTemplate("Awesome Ice Bolt",
 	.setDamage(40)
 	.setModifiers({ name: "Torpidity", stacks: 2 })
 	.setCharges(15)
-	.setBonus(75);
+	.setBonus(75)
+	.setCooldown(0);

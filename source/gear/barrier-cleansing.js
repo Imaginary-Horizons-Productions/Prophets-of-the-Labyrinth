@@ -33,4 +33,5 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Devoted Barrier", "Vigilant Barrier")
 	.setModifiers({ name: "Evasion", stacks: 3 }, { name: "Vigilance", stacks: 1 })
 	.setCharges(5)
-	.setRnConfig({ debuffs: 1 });
+	.setRnConfig({ debuffs: 1 })
+	.setCooldown(0);

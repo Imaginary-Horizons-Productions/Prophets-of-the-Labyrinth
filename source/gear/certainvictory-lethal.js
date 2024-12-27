@@ -29,4 +29,5 @@ module.exports = new GearTemplate("Lethal Certain Victory",
 	.setModifiers({ name: "Empowerment", stacks: 25 })
 	.setDamage(40)
 	.setCritMultiplier(3)
-	.setPactCost([1, "Pay HP for your Empowerment after the move"]);
+	.setPactCost([1, "Pay HP for your Empowerment after the move"])
+	.setCooldown(0);

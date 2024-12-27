@@ -22,4 +22,5 @@ module.exports = new GearTemplate("Punch",
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
+	.setCooldown(0)
 	.setDamage(0);

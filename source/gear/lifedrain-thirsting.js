@@ -30,4 +30,5 @@ module.exports = new GearTemplate("Thirsting Life Drain",
 	.setCharges(15)
 	.setDamage(40)
 	.setHealing(25)
-	.setBonus(60);
+	.setBonus(60)
+	.setCooldown(0);

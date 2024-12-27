@@ -29,4 +29,5 @@ module.exports = new GearTemplate("Bashing Power from Wrath",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Hunter's Power from Wrath", "Staggering Power from Wrath")
 	.setPactCost([40, "@{pactCost} HP"])
-	.setDamage(40);
+	.setDamage(40)
+	.setCooldown(0);

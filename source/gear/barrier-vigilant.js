@@ -24,4 +24,5 @@ module.exports = new GearTemplate("Vigilant Barrier",
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Barrier", "Devoted Barrier")
 	.setModifiers({ name: "Evasion", stacks: 3 }, { name: "Vigilance", stacks: 2 })
-	.setCharges(5);
+	.setCharges(5)
+	.setCooldown(0);

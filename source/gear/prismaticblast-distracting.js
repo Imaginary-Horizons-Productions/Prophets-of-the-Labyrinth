@@ -25,4 +25,5 @@ module.exports = new GearTemplate("Distracting Prismatic Blast",
 	.setSidegrades("Flanking Prismatic Blast", "Vexing Prismatic Blast")
 	.setModifiers({ name: "Distraction", stacks: 2 })
 	.setCharges(15)
-	.setDamage(40);
+	.setDamage(40)
+	.setCooldown(0);

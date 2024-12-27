@@ -33,4 +33,5 @@ module.exports = new GearTemplate("Fate-Sealing Corrosion",
 	.setSidegrades("Fatiguing Corrosion", "Shattering Corrosion")
 	.setModifiers({ name: "Weakness", stacks: 20 }, { name: "Retain", stacks: 1 })
 	.setBonus(2) // Crit Stagger
-	.setCharges(15);
+	.setCharges(15)
+	.setCooldown(0);

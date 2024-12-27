@@ -43,4 +43,5 @@ module.exports = new GearTemplate("Vexing Prismatic Blast",
 	.setSidegrades("Distracting Prismatic Blast", "Flanking Prismatic Blast")
 	.setCharges(15)
 	.setBonus(50) // vexing damage
-	.setDamage(40);
+	.setDamage(40)
+	.setCooldown(0);

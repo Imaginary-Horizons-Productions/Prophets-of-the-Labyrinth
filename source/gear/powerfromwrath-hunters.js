@@ -34,4 +34,5 @@ module.exports = new GearTemplate("Hunter's Power from Wrath",
 	.setSidegrades("Bashing Power from Wrath", "Staggering Power from Wrath")
 	.setPactCost([40, "@{pactCost} HP"])
 	.setDamage(40)
-	.setModifiers({ name: "Empowerment", stacks: 15 });
+	.setModifiers({ name: "Empowerment", stacks: 15 })
+	.setCooldown(0);
