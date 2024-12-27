@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 	"Fire",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [slow], damage, bonus } = module.exports;
+		const { essence, modifiers: [torpidity], damage, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 		if (target.hp > 0) {
 			const receipts = [];
 			if (user.crit) {
-				receipts.push(...addModifier([target], slow));
+				receipts.push(...addModifier([target], torpidity));
 			}
 			for (const modifier of targetDebuffs) {
 				receipts.push(...addModifier([target], { name: modifier, stacks: 1 }));
@@ -36,7 +36,7 @@ module.exports = new GearTemplate("Tormenting Censer",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Chaining Censer", "Staggering Censer")
-	.setModifiers({ name: "Slow", stacks: 2 })
+	.setModifiers({ name: "Torpidity", stacks: 2 })
 	.setDamage(15)
 	.setBonus(75) // damage
 	.setCooldown(1);

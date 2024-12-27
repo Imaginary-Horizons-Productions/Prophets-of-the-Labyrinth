@@ -58,11 +58,11 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 	for (const target of targets) {
 		if (target.hp > 0) { // Skip if target is downed (necessary for multi-hit moves hitting same target)
 			if (!(`${essence} Absorption` in target.modifiers)) {
-				if (!("Evade" in target.modifiers) || isUnblockable) {
+				if (!("Evasion" in target.modifiers) || isUnblockable) {
 					let pendingDamage = damage;
-					if ("Exposed" in target.modifiers) {
+					if ("Exposure" in target.modifiers) {
 						pendingDamage *= 1.5;
-						removeModifier([target], { name: "Exposed", stacks: 1 });
+						removeModifier([target], { name: "Exposure", stacks: 1 });
 					}
 					const isCounter = getCombatantCounters(target).includes(essence);
 					if (isCounter) {
@@ -90,7 +90,7 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 						results.push(`${getApplicationEmojiMarkdown("Curse of Midas")}: Loot +${midasGold}g`)
 					}
 				} else {
-					removeModifier([target], { name: "Evade", stacks: 1 });
+					removeModifier([target], { name: "Evasion", stacks: 1 });
 					results.push(`${target.name} evades the attack!`);
 				}
 			} else {
@@ -107,13 +107,13 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 
 const MODIFIER_DAMAGE_PER_STACK = {
 	Poison: 10,
-	Frail: 20,
+	Frailty: 20,
 	Misfortune: 30
 };
 
-/** modifier damage doesn't have an essence and doesn't interact with other modifiers (eg Exposed & Curse of Midas)
+/** modifier damage doesn't have an essence and doesn't interact with other modifiers (eg Exposure & Curse of Midas)
  * @param {Combatant} target
- * @param {"Poison" | "Frail" | "Misfortune"} modifier
+ * @param {"Poison" | "Frailty" | "Misfortune"} modifier
  * @param {Adventure} adventure
  */
 function dealModifierDamage(target, modifier, adventure) {
@@ -319,10 +319,10 @@ function changeStagger(combatants, applier, value) {
 		if (!combatant.isStunned) {
 			let pendingStagger = value;
 			if (applier && pendingStagger > 0) {
-				if (applier.getModifierStacks("Impactful") > 0) {
+				if (applier.getModifierStacks("Impact") > 0) {
 					pendingStagger++;
 				}
-				if (applier.getModifierStacks("Ineffectual") > 0) {
+				if (applier.getModifierStacks("Impotence") > 0) {
 					pendingStagger--;
 				}
 			}

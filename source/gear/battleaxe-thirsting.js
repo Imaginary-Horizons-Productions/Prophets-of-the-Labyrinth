@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [exposed], damage, critMultiplier, healing } = module.exports;
+		const { essence, modifiers: [exposure], damage, critMultiplier, healing } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -27,11 +27,11 @@ module.exports = new GearTemplate("Thirsting Battleaxe",
 			}
 		})
 		resultLines.push(gainHealth(user, healing * killCount, adventure));
-		return resultLines.concat(generateModifierResultLines(addModifier([user], exposed)));
+		return resultLines.concat(generateModifierResultLines(addModifier([user], exposure)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Furious Battleaxe", "Reactive Battleaxe")
-	.setModifiers({ name: "Exposed", stacks: 1 })
+	.setModifiers({ name: "Exposure", stacks: 1 })
 	.setCooldown(1)
 	.setDamage(90)
 	.setHealing(60);

@@ -4,7 +4,7 @@ Adding the a variant prefix to the beginning of the gear's name adds the listed 
 ## Implemented Variants
 
 ### Accelerating
-Adds Quicken to the user
+Adds Swiftness to the user
 
 **Available on**
 - all Bucklers (Light)
@@ -107,7 +107,7 @@ Change target's target to itself
 - all Shoulder Throws (Light)
 
 ### Corrosive
-Adds Disempowerment to target
+Adds Weakness to target
 
 **Available on**
 - all Corrosions (Fire)
@@ -130,7 +130,7 @@ Reduced base price
 - Midas Staff (Water)
 
 ### Distracting
-Add Distracted to target
+Add Distraction to target
 
 **Available on**
 - Ice Bolt (Water)
@@ -153,7 +153,7 @@ Bonus damage if only one attacking target
 - Pistol (Unaligned)
 
 ### Evasive
-Adds Evade to the user
+Adds Evasion to the user
 
 **Available on**
 - all Barriers (Wind)
@@ -173,13 +173,13 @@ Adds Retain to target on crit
 - Infinite Regeneration (Fire)
 
 ### Fatiguing
-Adds Ineffectual to target on crit
+Adds Impotence to target on crit
 
 **Available on**
 - Corrosion (Fire)
 
 ### Flanking
-Adds Exposed to target
+Adds Exposure to target
 
 **Available on**
 - Goad Futility (Earth)
@@ -319,7 +319,7 @@ Kills target at or below hp threshold
 - all Scythes (Darkness)
 
 ### Reckless
-Increased damage, but adds Exposed to user
+Increased damage, but adds Exposure to user
 
 **Available on**
 - all Battleaxes (Fire)
@@ -357,7 +357,7 @@ Increased damage
 - Strong Attack (Unaligned)
 
 ### Shattering
-Adds Frail to target
+Adds Frailty to target
 
 **Available on**
 - Corrosion (Fire)
@@ -367,7 +367,7 @@ Adds Frail to target
 - Stick (Earth)
 
 ### Slowing
-Adds Slow to target
+Adds Torpidity to target
 
 **Available on**
 - all Ice Bolts (Water)
@@ -376,7 +376,7 @@ Adds Slow to target
 - Warhammer (Earth)
 
 ### Soothing
-Adds Regen to target
+Adds Regeneration to target
 
 **Available on**
 - all Infinite Regenerations (Fire)
@@ -515,7 +515,7 @@ Adds Vigilance to user
 - Heat Mirage (Fire)
 
 ### Vigorous
-Adds Impactful to the user
+Adds Impact to the user
 
 **Available on**
 - Warhammer (Earth)
@@ -530,7 +530,7 @@ Increases stats gained by level up
 
 ## Unnamed Variants
 - Adds Empowerment to target (all Inspiration)
-- Also hits targets with Distracted (all War Cries)
+- Also hits targets with Distraction (all War Cries)
 - Also hits allies with Vigilance (planned)
 - Adds Empowerment to random ally if Essence Countering (all Pistols)
 - Transfers debuffs to target (all Universal Problem Solvers)

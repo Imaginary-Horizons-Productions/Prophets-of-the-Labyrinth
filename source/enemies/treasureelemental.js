@@ -48,14 +48,14 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	}).addAction({
 		name: "Heavy Pockets",
 		essence: "Unaligned",
-		description: "Inflict @e{Slow} on all foes",
+		description: "Inflict @e{Torpidity} on all foes",
 		priority: 0,
 		effect: (targets, user, adventure) => {
 			let stacks = 2;
 			if (user.crit) {
 				stacks *= 2;
 			}
-			return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks })));
+			return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Torpidity", stacks })));
 		},
 		selector: selectAllFoes,
 		next: "random"

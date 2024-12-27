@@ -1,7 +1,7 @@
 const { ModifierTemplate } = require("../classes");
 
-module.exports = new ModifierTemplate("Distracted",
-	"Retain @e{Exposed} between rounds",
+module.exports = new ModifierTemplate("Distraction",
+	"Retain @e{Exposure} between rounds",
 	"Debuff",
 	0,
 	1

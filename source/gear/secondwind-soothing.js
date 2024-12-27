@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Soothing Second Wind",
 	"Unaligned",
 	350,
 	(targets, user, adventure) => {
-		const { essence, critMultiplier, modifiers: [regen] } = module.exports;
+		const { essence, critMultiplier, modifiers: [regeneration] } = module.exports;
 		let pendingHealing = user.getPower();
 		if (user.essence === essence) {
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -19,10 +19,10 @@ module.exports = new GearTemplate("Soothing Second Wind",
 		if (user.crit) {
 			pendingHealing *= critMultiplier;
 		}
-		return [gainHealth(user, pendingHealing, adventure), ...generateModifierResultLines(addModifier([user], regen))];
+		return [gainHealth(user, pendingHealing, adventure), ...generateModifierResultLines(addModifier([user], regeneration))];
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Second Wind", "Balanced Second Wind")
 	.setCooldown(2)
 	.setDamage(0)
-	.setModifiers({ name: "Regen", stacks: 2 });
+	.setModifiers({ name: "Regeneration", stacks: 2 });

@@ -13,11 +13,11 @@ module.exports = new GearTemplate(gearName,
 	"Wind",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [quicken] } = module.exports;
+		const { essence, modifiers: [swiftness] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		const receipts = addModifier(targets, quicken);
+		const receipts = addModifier(targets, swiftness);
 		for (const target of targets) {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			if (targetDebuffs.length > 0) {
@@ -37,6 +37,6 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "all", team: "ally" })
 	.setSidegrades("Supportive Refreshing Breeze", "Swift Refreshing Breeze")
-	.setModifiers({ name: "Quicken", stacks: 2 })
+	.setModifiers({ name: "Swiftness", stacks: 2 })
 	.setCharges(15)
 	.setRnConfig({ debuffs: 1 });

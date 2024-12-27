@@ -27,15 +27,15 @@ module.exports = new GearTemplate("Unlimited Fever Break",
 		const receipts = [];
 		for (const target of targets) {
 			const poisons = target.getModifierStacks("Poison");
-			const frails = target.getModifierStacks("Frail");
+			const frails = target.getModifierStacks("Frailty");
 			const pendingDamage = poisonDamage * (poisons ** 2 + poisons) / 2 + frailDamage * frails;
 			resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure));
 			if (!user.crit && target.hp > 0) {
-				receipts.push(...removeModifier(targets, { name: "Poison", stacks: "all" }).concat(removeModifier(targets, { name: "Frail", stacks: "all" })));
+				receipts.push(...removeModifier(targets, { name: "Poison", stacks: "all" }).concat(removeModifier(targets, { name: "Frailty", stacks: "all" })));
 			}
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Surpassing Fever Break", "Urgent Fever Break")
-	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frail", stacks: 0 });
+	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frailty", stacks: 0 });

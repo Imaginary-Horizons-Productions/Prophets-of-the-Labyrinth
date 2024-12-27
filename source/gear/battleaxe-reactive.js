@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [exposed], damage, critMultiplier, bonus } = module.exports;
+		const { essence, modifiers: [exposure], damage, critMultiplier, bonus } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(targets[0]), team: targets[0].team });
@@ -25,11 +25,11 @@ module.exports = new GearTemplate("Reactive Battleaxe",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([user], exposed)));
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([user], exposure)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Furious Battleaxe", "Thirsting Battleaxe")
-	.setModifiers({ name: "Exposed", stacks: 1 })
+	.setModifiers({ name: "Exposure", stacks: 1 })
 	.setCooldown(1)
 	.setDamage(90)
 	.setBonus(75); // Reactive damage

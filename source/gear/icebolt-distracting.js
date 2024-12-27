@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Distracting Ice Bolt",
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { essence, damage, modifiers: [slow, distracted], critMultiplier } = module.exports;
+		const { essence, damage, modifiers: [torpidity, distraction], critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -19,10 +19,10 @@ module.exports = new GearTemplate("Distracting Ice Bolt",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, slow).concat(addModifier(targets, distracted)))));
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, torpidity).concat(addModifier(targets, distraction)))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Awesome Ice Bolt", "Clumsiness Ice Bolt")
 	.setDamage(40)
-	.setModifiers({ name: "Slow", stacks: 2 }, { name: "Distracted", stacks: 2 })
+	.setModifiers({ name: "Torpidity", stacks: 2 }, { name: "Distraction", stacks: 2 })
 	.setCharges(15);

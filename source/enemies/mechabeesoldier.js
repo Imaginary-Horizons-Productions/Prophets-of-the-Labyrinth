@@ -27,10 +27,10 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 }).addAction({
 	name: "Barrel Roll",
 	essence: "Unaligned",
-	description: "Gain @e{Evade}, shrug off 2 Stagger on Critical Hit",
+	description: "Gain @e{Evasion}, shrug off 2 Stagger on Critical Hit",
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		const receipts = addModifier([user], { name: "Evade", stacks: 2 });
+		const receipts = addModifier([user], { name: "Evasion", stacks: 2 });
 		const resultLines = [];
 		let pendingStagger = ESSENCE_MATCH_STAGGER_ALLY;
 		if (user.crit) {

@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Slowing Warhammer",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [slow], damage, bonus, critMultiplier } = module.exports;
+		const { essence, modifiers: [torpidity], damage, bonus, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (target.isStunned) {
 			pendingDamage += bonus;
@@ -22,11 +22,11 @@ module.exports = new GearTemplate("Slowing Warhammer",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([target], slow)));
+		return dealDamage([target], user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([target], torpidity)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Unstoppable Warhammer", "Vigorous Warhammer")
-	.setModifiers({ name: "Slow", stacks: 1 })
+	.setModifiers({ name: "Torpidity", stacks: 1 })
 	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(75); // damage

@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Discounted Infinite Regeneration",
 	"Fire",
 	100,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [regen], pactCost: [pactCostValue], critMultiplier } = module.exports;
+		const { essence, modifiers: [regeneration], pactCost: [pactCostValue], critMultiplier } = module.exports;
 		let pendingHPCost = pactCostValue;
 		if (user.crit) {
 			pendingHPCost /= critMultiplier;
@@ -23,9 +23,9 @@ module.exports = new GearTemplate("Discounted Infinite Regeneration",
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		return [paymentSentence, ...generateModifierResultLines(addModifier(targets, regen))];
+		return [paymentSentence, ...generateModifierResultLines(addModifier(targets, regeneration))];
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Fate-Sealing Infinite Regeneration", "Purifying Infinite Regeneration")
-	.setModifiers({ name: "Regen", stacks: 4 })
+	.setModifiers({ name: "Regeneration", stacks: 4 })
 	.setPactCost([50, "@{pactCost} HP"]);

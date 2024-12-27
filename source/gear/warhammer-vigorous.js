@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Vigorous Warhammer",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { essence, damage, bonus, critMultiplier, modifiers: [impactful] } = module.exports;
+		const { essence, damage, bonus, critMultiplier, modifiers: [impact] } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		if (target.isStunned) {
 			pendingDamage += bonus;
@@ -22,11 +22,11 @@ module.exports = new GearTemplate("Vigorous Warhammer",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([user], impactful)));
+		return dealDamage([target], user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([user], impact)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Slowing Warhammer", "Unstoppable Warhammer")
-	.setModifiers({ name: "Impactful", stacks: 2 })
+	.setModifiers({ name: "Impact", stacks: 2 })
 	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(75); // Awesome damage

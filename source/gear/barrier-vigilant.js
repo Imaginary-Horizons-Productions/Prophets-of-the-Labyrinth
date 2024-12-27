@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Vigilant Barrier",
 	"Wind",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [evade, vigilance], critMultiplier } = module.exports;
+		const { essence, modifiers: [evasion, vigilance], critMultiplier } = module.exports;
 		const pendingVigilance = { ...vigilance };
 		if (user.essence === essence) {
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -19,9 +19,9 @@ module.exports = new GearTemplate("Vigilant Barrier",
 		if (user.crit) {
 			pendingVigilance.stacks *= critMultiplier;
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier([user], pendingVigilance).concat(addModifier([user], evade))));
+		return generateModifierResultLines(combineModifierReceipts(addModifier([user], pendingVigilance).concat(addModifier([user], evasion))));
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setSidegrades("Cleansing Barrier", "Devoted Barrier")
-	.setModifiers({ name: "Evade", stacks: 3 }, { name: "Vigilance", stacks: 2 })
+	.setModifiers({ name: "Evasion", stacks: 3 }, { name: "Vigilance", stacks: 2 })
 	.setCharges(5);

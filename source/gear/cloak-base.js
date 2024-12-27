@@ -13,19 +13,19 @@ module.exports = new GearTemplate("Cloak",
 	"Wind",
 	200,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [evade], bonus } = module.exports;
-		const pendingEvade = { ...evade };
+		const { essence, modifiers: [evasion], bonus } = module.exports;
+		const pendingEvasion = { ...evasion };
 		if (user.essence === essence) {
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		if (user.crit) {
-			pendingEvade.stacks += bonus;
+			pendingEvasion.stacks += bonus;
 		}
-		return generateModifierResultLines(addModifier([user], pendingEvade));
+		return generateModifierResultLines(addModifier([user], pendingEvasion));
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setUpgrades("Accelerating Cloak", "Accurate Cloak", "Evasive Cloak")
-	.setModifiers({ name: "Evade", stacks: 2 })
-	.setBonus(1) // Evade stacks
+	.setModifiers({ name: "Evasion", stacks: 2 })
+	.setBonus(1) // Evasion stacks
 	.setCritRate(5)
 	.setCooldown(1);

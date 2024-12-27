@@ -66,14 +66,14 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "\"Share\" the Spotlight",
 	essence: "Unaligned",
-	description: `Inflict @e{Exposed} and random insults on all foes, gain protection on a crit`,
+	description: `Inflict @e{Exposure} and random insults on all foes, gain protection on a crit`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		if (user.crit) {
 			addProtection([user], 100);
 		}
-		const receipts = addModifier(targets, { name: "Exposed", stacks: 1 }).concat(addNewRandomInsults(targets, 1, adventure));
+		const receipts = addModifier(targets, { name: "Exposure", stacks: 1 }).concat(addNewRandomInsults(targets, 1, adventure));
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectAllFoes,
@@ -81,7 +81,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "Boast",
 	essence: "Light",
-	description: `Inflict @e{Distracted} and ${getEmoji("Light")} damage on a single foe`,
+	description: `Inflict @e{Distraction} and ${getEmoji("Light")} damage on a single foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -89,7 +89,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
-		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Distracted", stacks: 4 })));
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Distraction", stacks: 4 })));
 	},
 	selector: selectRandomFoe,
 	next: "random"

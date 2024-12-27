@@ -5,4 +5,4 @@ module.exports = new ModifierTemplate("Poison",
 	"Debuff",
 	1,
 	0
-).setInverse("Regen");
+).setInverse("Regeneration");

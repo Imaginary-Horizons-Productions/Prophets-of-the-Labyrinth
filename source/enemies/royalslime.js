@@ -69,13 +69,13 @@ module.exports = new EnemyTemplate("Royal Slime",
 }).addAction({
 	name: "Goop Deluge",
 	essence: "Unaligned",
-	description: "Inflict @e{Slow} on all foes",
+	description: "Inflict @e{Torpidity} on all foes",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		if (user.crit) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Slow", stacks: user.crit ? 3 : 2 })));
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Torpidity", stacks: user.crit ? 3 : 2 })));
 	},
 	selector: selectAllFoes,
 	next: "random"

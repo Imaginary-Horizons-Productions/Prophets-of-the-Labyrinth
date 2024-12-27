@@ -12,7 +12,7 @@ module.exports = new EnemyTemplate("Asteroid",
 	0,
 	"Fragment",
 	false
-).addStartingModifier("Coward", 1)
+).addStartingModifier("Cowardice", 1)
 	.addAction({
 		name: "Fragment",
 		essence: "Earth",

@@ -13,7 +13,7 @@ module.exports = new GearTemplate(gearName,
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { essence, damage, modifiers: [powerdown] } = module.exports;
+		const { essence, damage, modifiers: [weakness] } = module.exports;
 		const pendingDamage = damage + user.getPower();
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -25,11 +25,11 @@ module.exports = new GearTemplate(gearName,
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
 
-		return resultLines.concat(generateModifierResultLines(addModifier(targets, powerdown)));
+		return resultLines.concat(generateModifierResultLines(addModifier(targets, weakness)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Sabotaging Cauldron Stir", "Toxic Cauldron Stir")
-	.setModifiers({ name: "Disempowerment", stacks: 10 })
+	.setModifiers({ name: "Weakness", stacks: 10 })
 	.setCooldown(1)
 	.setDamage(40)
 	.setRnConfig({ potions: 1 });

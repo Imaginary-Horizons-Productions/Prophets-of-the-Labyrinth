@@ -11,13 +11,13 @@ module.exports = new GearTemplate("Evasive Shoulder Throw",
 	"Light",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [evade] } = module.exports;
+		const { essence, modifiers: [evasion] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		const pendingEvade = { ...evade };
+		const pendingEvasion = { ...evasion };
 		if (user.crit) {
-			pendingEvade.stacks++;
+			pendingEvasion.stacks++;
 		}
 		const resultLines = [];
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
@@ -26,9 +26,9 @@ module.exports = new GearTemplate("Evasive Shoulder Throw",
 			targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
 			resultLines.push(`${target.name} is redirected into targeting themself.`);
 		}
-		return resultLines.concat(generateModifierResultLines(addModifier([user], pendingEvade)));
+		return resultLines.concat(generateModifierResultLines(addModifier([user], pendingEvasion)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Harmful Shoulder Throw", "Staggering Shoulder Throw")
 	.setCooldown(2)
-	.setModifiers({ name: "Evade", stacks: 1 });
+	.setModifiers({ name: "Evasion", stacks: 1 });

@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 	"Water",
 	350,
 	([target], user, adventure) => {
-		const { essence, modifiers: [curse, regen], bonus } = module.exports;
+		const { essence, modifiers: [curse, regeneration], bonus } = module.exports;
 		const pendingCurse = { ...curse };
 		if (user.crit) {
 			pendingCurse.stacks += bonus;
@@ -23,11 +23,11 @@ module.exports = new GearTemplate("Soothing Midas Staff",
 				changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 			}
 		}
-		const receipts = addModifier([target], pendingCurse).concat(addModifier([target], regen));
+		const receipts = addModifier([target], pendingCurse).concat(addModifier([target], regeneration));
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}
 ).setTargetingTags({ type: "single", team: "any" })
 	.setSidegrades("Accelerating Midas Staff", "Discounted Midas Staff")
-	.setModifiers({ name: "Curse of Midas", stacks: 2 }, { name: "Regen", stacks: 2 })
+	.setModifiers({ name: "Curse of Midas", stacks: 2 }, { name: "Regeneration", stacks: 2 })
 	.setBonus(1) // Curse of Midas stacks
 	.setCooldown(2);

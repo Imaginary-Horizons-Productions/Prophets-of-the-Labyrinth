@@ -11,15 +11,15 @@ module.exports = new GearTemplate("Heat Mirage",
 	"Fire",
 	200,
 	([target], user, adventure) => {
-		const { essence, modifiers: [evade], critMultiplier } = module.exports;
-		const pendingEvade = { ...evade };
+		const { essence, modifiers: [evasion], critMultiplier } = module.exports;
+		const pendingEvasion = { ...evasion };
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		if (user.crit) {
-			pendingEvade.stacks *= critMultiplier;
+			pendingEvasion.stacks *= critMultiplier;
 		}
-		const resultLines = generateModifierResultLines(addModifier([user], pendingEvade));
+		const resultLines = generateModifierResultLines(addModifier([user], pendingEvasion));
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
@@ -30,5 +30,5 @@ module.exports = new GearTemplate("Heat Mirage",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Evasive Heat Mirage", "Numbing Heat Mirage", "Vigilant Heat Mirage")
-	.setModifiers({ name: "Evade", stacks: 2 })
+	.setModifiers({ name: "Evasion", stacks: 2 })
 	.setCharges(10);

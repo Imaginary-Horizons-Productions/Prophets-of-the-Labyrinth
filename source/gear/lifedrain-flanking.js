@@ -11,7 +11,7 @@ module.exports = new GearTemplate("Flanking Life Drain",
 	"Darkness",
 	350,
 	(targets, user, adventure) => {
-		const { essence, modifiers: [exposed], damage, healing, critMultiplier } = module.exports;
+		const { essence, modifiers: [exposure], damage, healing, critMultiplier } = module.exports;
 		let pendingDamage = user.getPower() + damage;
 		let pendingHealing = healing;
 		if (user.essence === essence) {
@@ -24,14 +24,14 @@ module.exports = new GearTemplate("Flanking Life Drain",
 		resultLines.push(gainHealth(user, pendingHealing, adventure));
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
 		if (stillLivingTargets.length > 0) {
-			resultLines.push(...generateModifierResultLines(addModifier(stillLivingTargets, exposed)));
+			resultLines.push(...generateModifierResultLines(addModifier(stillLivingTargets, exposure)));
 		}
 
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Furios Life Drain", "Thirsting Life Drain")
-	.setModifiers({ name: "Exposed", stacks: 2 })
+	.setModifiers({ name: "Exposure", stacks: 2 })
 	.setCharges(15)
 	.setDamage(40)
 	.setHealing(25);

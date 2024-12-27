@@ -27,7 +27,7 @@ module.exports = new GearTemplate("War Cry",
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setUpgrades("Charging War Cry", "Slowing War Cry", "Tormenting War Cry")
-	.setModifiers({ name: "Distracted", stacks: 0 })
+	.setModifiers({ name: "Distraction", stacks: 0 })
 	.setStagger(2)
 	.setBonus(2) // Stagger stacks
 	.setCooldown(1);
