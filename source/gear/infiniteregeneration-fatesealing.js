@@ -13,11 +13,10 @@ module.exports = new GearTemplate("Fate-Sealing Infinite Regeneration",
 	(targets, user, adventure) => {
 		const { essence, modifiers: [regeneration, stasis], pactCost: [pactCostValue], critMultiplier } = module.exports;
 		let pendingHPCost = pactCostValue;
-		const paymentSentence = payHP(user, pendingHPCost, adventure);
+		const resultLines = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
-			return [paymentSentence];
+			return resultLines;
 		}
-		const resultLines = [paymentSentence];
 		const receipts = addModifier(targets, regeneration);
 		if (user.crit) {
 			pendingHPCost /= critMultiplier;

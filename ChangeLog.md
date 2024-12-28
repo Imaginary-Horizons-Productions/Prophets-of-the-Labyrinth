@@ -1,5 +1,7 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.17.0:
+- New Artifact: Add Blocker
+## Prophets of the Labyrinth v0.17.0:
 ### Pets
 Delvers can now bring pets with them on adventure. One of the party's pets will use a supportive move (or Loaf Around) each even round. You pick which pet to bring during the preparation phase or with `/set-favorite pet`. Your pet kennel is tracked per server so you can have different loadouts with different friend groups. Pets can be leveled-up per kennel, which gets them to stop Loafing Around or upgrades their moves.
 ### Beast Tamer

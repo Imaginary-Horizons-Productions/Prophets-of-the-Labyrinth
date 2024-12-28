@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Adventurer's Air Blades",
 	350,
 	(targets, user, adventure) => {
 		const { essence, pactCost: [pactCostValue], damage, critMultiplier } = module.exports;
-		const resultLines = [payHP(user, pactCostValue, adventure)];
+		const resultLines = payHP(user, pactCostValue, adventure);
 		if (adventure.lives < 1) {
 			return resultLines;
 		}

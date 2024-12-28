@@ -16,6 +16,7 @@ const ROLL_TABLE = {
 }
 
 for (const file of [
+	"addblocker.js",
 	"amethystspyglass.js",
 	"boatparts.js",
 	"bestinclasshammer.js",

@@ -13,11 +13,11 @@ module.exports = new GearTemplate("Toxic Blood Aegis",
 	350,
 	([target], user, adventure) => {
 		const { essence, modifiers: [poison], protection, critMultiplier, pactCost: [pactCostValue] } = module.exports;
-		const paymentSentence = payHP(user, pactCostValue, adventure);
+		const paymentLines = payHP(user, pactCostValue, adventure);
 		if (adventure.lives < 1) {
-			return [paymentSentence];
+			return paymentLines;
 		}
-		const resultLines = [`Gaining protection, ${paymentSentence}`];
+		const resultLines = [`Gaining protection, ${paymentLines[0]}`].concat(paymentLines.slice(1));
 		let pendingProtection = protection;
 		if (user.essence === essence) {
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);

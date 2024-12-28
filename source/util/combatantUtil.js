@@ -12,19 +12,31 @@ const { ZERO_WIDTH_WHITESPACE } = require("../constants");
  * @param {Adventure} adventure
  */
 function downedCheck(target, adventure) {
+	const lines = {
+		addendum: "",
+		extraLines: []
+	}
 	if (target.hp <= 0) {
 		removeModifier([target], { name: "The Target", stacks: "all" });
 		if (target.team === "delver") {
 			target.hp = target.getMaxHP();
 			adventure.lives = Math.max(adventure.lives - 1, 0);
-			return ` ${bold(`${target.name} was downed${adventure.lives > 0 ? " and revived" : ""}.`)}${ZERO_WIDTH_WHITESPACE}`; // need ZWW for md format nesting
+			lines.addendum = ` ${bold(`${target.name} was downed${adventure.lives > 0 ? " and revived" : ""}.`)}${ZERO_WIDTH_WHITESPACE}`; // need ZWW for md format nesting
 		} else {
 			target.hp = 0;
-			return ` ${bold(`${target.name} was downed`)}.${ZERO_WIDTH_WHITESPACE}`;
+			if ("Cowardice" in target.modifiers) {
+				const addBlockerCount = adventure.getArtifactCount("Add Blocker");
+				if (addBlockerCount > 0) {
+					const singleProtection = 150 * addBlockerCount;
+					addProtection(adventure.delvers, singleProtection);
+					adventure.updateArtifactStat("Add Blocker", "Protection Gained", singleProtection * adventure.delvers.length);
+					lines.extraLines.push("The Add Blocker grants all delvers protection.");
+				}
+			}
+			lines.addendum = ` ${bold(`${target.name} was downed`)}.${ZERO_WIDTH_WHITESPACE}`;
 		}
-	} else {
-		return "";
 	}
+	return lines;
 }
 
 /**
@@ -83,7 +95,20 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 					}
 					pendingDamage = Math.min(pendingDamage, assailant.getDamageCap());
 					target.hp -= pendingDamage;
-					results.push(`${target.name} takes ${pendingDamage} ${getEmoji(essence)} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isCounter ? "!" : "."}${downedCheck(target, adventure)}`);
+					let damageLine = `${target.name} takes ${pendingDamage} ${getEmoji(essence)} damage`;
+					if (blockedDamage > 0) {
+						damageLine += ` (${blockedDamage} was blocked)`;
+					}
+					if (isCounter) {
+						damageLine += "!";
+					} else {
+						damageLine += ".";
+					}
+					const downedLines = downedCheck(target, adventure);
+					if (downedLines.addendum !== "") {
+						damageLine += downedLines.addendum;
+					}
+					results.push(damageLine, ...downedLines.extraLines);
 					if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
 						const midasGold = Math.floor(pendingDamage / 10 * target.modifiers["Curse of Midas"]);
 						adventure.room.addResource("Gold", "Currency", "loot", midasGold);
@@ -137,7 +162,15 @@ function dealModifierDamage(target, modifier, adventure) {
 		pendingDamage = 0;
 	}
 	target.hp -= pendingDamage;
-	const resultLines = [`${target.name} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage${blockedDamage > 0 ? ` (${blockedDamage} blocked)` : ""}!${downedCheck(target, adventure)}`];
+	let damageLine = `${target.name} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!`;
+	if (blockedDamage > 0) {
+		damageLine += ` (${blockedDamage} blocked)`;
+	}
+	const downedLines = downedCheck(target, adventure);
+	if (downedLines.addendum !== "") {
+		damageLine += downedLines.addendum;
+	}
+	const resultLines = [damageLine].concat(downedLines.extraLines);
 
 	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
 	if (lifeLine) {
@@ -154,12 +187,18 @@ function dealModifierDamage(target, modifier, adventure) {
 function payHP(user, damage, adventure) {
 	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
-	let resultText = `${user.name} pays ${damage} HP.${downedCheck(user, adventure)}`;
+	let paymentLine = `${user.name} pays ${damage} HP.`;
+	const downedLines = downedCheck(user, adventure);
+	if (downedLines.addendum !== "") {
+		paymentLine += downedLines.addendum;
+	}
+	const resultLines = [paymentLine];
+	resultLines.push(...downedLines.extraLines);
 	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
 	if (lifeLine) {
-		resultText += ` ${lifeLine}`;
+		resultLines.push(lifeLine);
 	}
-	return resultText;
+	return resultLines;
 }
 
 /**
