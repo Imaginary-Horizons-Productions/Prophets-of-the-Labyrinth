@@ -5,6 +5,7 @@ const { isSponsor } = require('../util/fileUtil');
 const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator');
 const { getAdventure, setAdventure, fetchRecruitMessage } = require('../orcustrators/adventureOrcustrator');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
+const { commandMention } = require('../util/textUtil');
 
 const mainId = "join";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -12,7 +13,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	async (interaction, [guildId, adventureId, context]) => {
 		const company = getCompany(interaction.guildId);
 		if (!isSponsor(interaction.user.id) && company.adventuring.has(interaction.user.id)) {
-			interaction.reply({ content: "Delving in more than one adventure per server is a premium perk. Use `/support` for more details.", ephemeral: true });
+			interaction.reply({ content: `Delving in more than one adventure per server is a premium perk. Use ${commandMention("support")} for more details.`, ephemeral: true });
 			return;
 		}
 
@@ -24,7 +25,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		if (adventure.state !== "config") {
-			interaction.reply({ content: "This adventure has already started, but you can recruit for your own with `/delve`.", ephemeral: true });
+			interaction.reply({ content: `This adventure has already started, but you can recruit for your own with ${commandMention("delve")}.`, ephemeral: true });
 			return;
 		}
 
