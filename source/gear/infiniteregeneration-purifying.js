@@ -17,14 +17,13 @@ module.exports = new GearTemplate("Purifying Infinite Regeneration",
 		if (user.crit) {
 			pendingHPCost /= critMultiplier;
 		}
-		const paymentSentence = payHP(user, pendingHPCost, adventure);
+		const resultLines = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
-			return [paymentSentence];
+			return resultLines;
 		}
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		const resultLines = [paymentSentence];
 		const receipts = addModifier(targets, regeneration);
 		for (const target of targets) {
 			Object.keys(target.modifiers).forEach(modifier => {

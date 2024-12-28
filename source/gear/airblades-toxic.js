@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Toxic Air Blades",
 	350,
 	(targets, user, adventure) => {
 		const { essence, pactCost: [pactCostValue], damage, critMultiplier, modifiers: [poison] } = module.exports;
-		const resultLines = [payHP(user, pactCostValue, adventure)];
+		const resultLines = payHP(user, pactCostValue, adventure);
 		if (adventure.lives < 1) {
 			return resultLines;
 		}

@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Power from Wrath",
 	200,
 	(targets, user, adventure) => {
 		const { essence, damage, pactCost: [pactCostValue] } = module.exports;
-		const resultLines = [payHP(user, pactCostValue, adventure)];
+		const resultLines = payHP(user, pactCostValue, adventure);
 		if (adventure.lives > 0) {
 			const furiousness = 2 - user.hp / user.getMaxHP();
 			let pendingDamage = (user.getPower() + damage) * furiousness;

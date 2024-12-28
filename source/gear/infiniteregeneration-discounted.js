@@ -16,14 +16,14 @@ module.exports = new GearTemplate("Discounted Infinite Regeneration",
 		if (user.crit) {
 			pendingHPCost /= critMultiplier;
 		}
-		const paymentSentence = payHP(user, pendingHPCost, adventure);
+		const paymentLines = payHP(user, pendingHPCost, adventure);
 		if (adventure.lives < 1) {
-			return [paymentSentence];
+			return paymentLines;
 		}
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		return [paymentSentence, ...generateModifierResultLines(addModifier(targets, regeneration))];
+		return paymentLines.concat(generateModifierResultLines(addModifier(targets, regeneration)));
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Fate-Sealing Infinite Regeneration", "Purifying Infinite Regeneration")
