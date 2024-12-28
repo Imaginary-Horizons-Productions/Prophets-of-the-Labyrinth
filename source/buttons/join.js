@@ -50,7 +50,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const delver = new Delver(interaction.user.id, interaction.user.username, adventureId);
 		const player = getPlayer(interaction.user.id, interaction.guildId);
 		if (player.favoritePet !== "") {
-			delver.pet = player.favoritePet;
+			delver.pet = {
+				type: player.favoritePet,
+				level: player.pets[player.favoritePet]
+			};
 		}
 		if (player.favoriteArchetype !== "") {
 			delver.archetype = player.favoriteArchetype;

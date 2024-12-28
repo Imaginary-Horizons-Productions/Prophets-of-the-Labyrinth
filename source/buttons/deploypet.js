@@ -52,15 +52,19 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				switch (mainId) {
 					case "pet":
-						const isSwitching = Boolean(delver.pet);
-						const pet = collectedInteraction.values[0];
-						delver.pet = pet;
+						const isSwitching = delver.pet.type === "";
+						const selectedPet = collectedInteraction.values[0];
+						delver.pet = {
+							type: selectedPet,
+							level: getPlayer(interaction.user.id, interaction.guildId).pets[selectedPet]
+						};
+
 
 						// Send confirmation text
-						interaction.channel.send({ content: `${bold(interaction.user.displayName)} ${isSwitching ? "has switched to" : "will be"} bringing their ${bold(pet)} pet.` });
+						interaction.channel.send({ content: `${bold(interaction.user.displayName)} ${isSwitching ? "has switched to" : "will be"} bringing their ${bold(selectedPet)} pet.` });
 						break;
 					case "clear":
-						delver.pet = "";
+						delver.pet = { type: "", level: 0 };
 						interaction.channel.send({ content: `${bold(interaction.user.displayName)} has decided not to bring a pet.` });
 						break;
 				}

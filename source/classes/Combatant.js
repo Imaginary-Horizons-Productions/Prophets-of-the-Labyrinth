@@ -77,7 +77,10 @@ class Delver extends Combatant {
 	isReady = false;
 	/** @type {Gear[]} */
 	gear = [];
-	pet = "";
+	pet = {
+		type: "",
+		level: 0
+	};
 	startingArtifact = "";
 
 	getMaxHP() {

@@ -16,7 +16,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const player = getPlayer(interaction.user.id, interaction.guild.id);
 		const petOptions = [];
 		for (const petName in player.pets) {
-			if (petName !== delver.pet) {
+			if (petName !== delver.pet.type) {
 				petOptions.push({
 					label: petName,
 					description: `Level ${player.pets[petName]}`,
@@ -30,7 +30,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		interaction.reply({
-			content: `Select a new pet to bring on the adventure! Your current pet (${delver.pet}) will be sent home.`,
+			content: `Select a new pet to bring on the adventure! Your current pet (${delver.pet.type}) will be sent home.`,
 			components: [
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder()
@@ -55,7 +55,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					adventure.gold -= cost;
 					const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 					const pet = collectedInteraction.values[0];
-					delver.pet = pet;
+					delver.pet = { type: pet, level: getPlayer(interaction.user.id, interaction.guildId).pets[pet] };
 
 					// Send confirmation text
 					interaction.channel.send({ content: `${bold(interaction.user.displayName)} has switched to bringing their ${bold(pet)} pet.` });

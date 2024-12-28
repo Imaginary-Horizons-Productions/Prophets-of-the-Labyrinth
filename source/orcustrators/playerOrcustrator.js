@@ -4,6 +4,8 @@ const { Player } = require("../classes");
 const { getCompany, setCompany } = require("./companyOrcustrator");
 
 const { ensuredPathSave } = require("../util/fileUtil.js");
+const { rollArchetypes } = require("../archetypes/_archetypeDictionary.js");
+const { rollPets } = require("../pets/_petDictionary.js");
 
 const dirPath = "./saves"
 const fileName = "players.json";
@@ -32,10 +34,17 @@ async function loadPlayers() {
  */
 function getPlayer(playerId, guildId) {
 	if (!playerDictionary.has(playerId)) {
-		setPlayer(new Player(playerId));
-		let guildProfile = getCompany(guildId);
-		guildProfile.userIds.push(playerId);
-		setCompany(guildProfile);
+		const player = new Player(playerId);
+		rollArchetypes(3, false).forEach(archetype => {
+			player.archetypes[archetype] = 0;
+		})
+		rollPets(1, false).forEach(pet => {
+			player.pets[pet] = 1;
+		})
+		setPlayer(player);
+		const company = getCompany(guildId);
+		company.userIds.push(playerId);
+		setCompany(company);
 	}
 	return playerDictionary.get(playerId);
 }
