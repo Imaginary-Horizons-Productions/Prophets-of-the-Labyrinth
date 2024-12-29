@@ -993,57 +993,12 @@ function endRound(adventure, thread) {
 		}
 		lastRoundText += resolveMove(move, adventure);
 
-		if (adventure.lives <= 0) {
-			adventure.room.round++;
-			thread.send(completeAdventure(adventure, thread, "defeat", lastRoundText));
-			return;
-		}
-
-		if (adventure.room.enemies.every(enemy => enemy.hp === 0 || "Cowardice" in enemy.modifiers)) {
-			if ("endedCombat" in adventure.room.history) {
-				return;
-			}
-			adventure.room.history.endedCombat = [];
-
-			if (adventure.depth >= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
-				thread.send(completeAdventure(adventure, thread, "success", lastRoundText));
-				return;
-			}
-
-			for (const resourceName in adventure.room.resources) {
-				const resource = adventure.room.resources[resourceName];
-				if (resource.type === "levelsGained") {
-					const [_, index] = resourceName.split(SAFE_DELIMITER);
-					if (!index) {
-						for (const delver of adventure.delvers) {
-							levelUp(delver, resource.count, adventure);
-						}
-					} else {
-						levelUp(adventure.delvers[index], resource.count, adventure);
-					}
+		const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);
+		if (payload) {
+			thread.send(payload).then(message => {
+				if (type === "endCombat") {
+					adventure.messageIds.battleRound = message.id;
 				}
-			}
-
-			// Gear drops
-			const gearThreshold = 1;
-			const gearMax = 16;
-			if (adventure.generateRandomNumber(gearMax, "general") < gearThreshold) {
-				const tier = rollGearTier(adventure);
-				const droppedGear = rollGear(tier, adventure);
-				if (droppedGear) {
-					adventure.room.addResource(droppedGear, "Gear", "loot", 1);
-				}
-			}
-
-			// Item drops
-			const itemThreshold = 1;
-			const itemMax = 8;
-			if (adventure.generateRandomNumber(itemMax, "general") < itemThreshold) {
-				adventure.room.addResource(rollItem(adventure), "Item", "loot", 1);
-			}
-
-			thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
-				adventure.messageIds.battleRound = message.id;
 			})
 			return;
 		}
@@ -1092,6 +1047,64 @@ function endRound(adventure, thread) {
 	}
 
 	newRound(adventure, thread, lastRoundText);
+}
+
+/**
+ * @param {Adventure} adventure
+ * @param {ThreadChannel} thread
+ * @param {string} lastRoundText
+ */
+function checkEndCombat(adventure, thread, lastRoundText) {
+	if (adventure.lives <= 0) {
+		adventure.room.round++;
+		return { payload: completeAdventure(adventure, thread, "defeat", lastRoundText), type: "adventureDefeat" };
+	}
+
+	if (adventure.room.enemies.every(enemy => enemy.hp === 0 || "Cowardice" in enemy.modifiers)) {
+		if ("endedCombat" in adventure.room.history) {
+			return { type: "endCombat" };
+		}
+		adventure.room.history.endedCombat = [];
+
+		if (adventure.depth >= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
+			return { payload: completeAdventure(adventure, thread, "success", lastRoundText), type: "adventureSuccess" };
+		}
+
+		for (const resourceName in adventure.room.resources) {
+			const resource = adventure.room.resources[resourceName];
+			if (resource.type === "levelsGained") {
+				const [_, index] = resourceName.split(SAFE_DELIMITER);
+				if (!index) {
+					for (const delver of adventure.delvers) {
+						levelUp(delver, resource.count, adventure);
+					}
+				} else {
+					levelUp(adventure.delvers[index], resource.count, adventure);
+				}
+			}
+		}
+
+		// Gear drops
+		const gearThreshold = 1;
+		const gearMax = 16;
+		if (adventure.generateRandomNumber(gearMax, "general") < gearThreshold) {
+			const tier = rollGearTier(adventure);
+			const droppedGear = rollGear(tier, adventure);
+			if (droppedGear) {
+				adventure.room.addResource(droppedGear, "Gear", "loot", 1);
+			}
+		}
+
+		// Item drops
+		const itemThreshold = 1;
+		const itemMax = 8;
+		if (adventure.generateRandomNumber(itemMax, "general") < itemThreshold) {
+			adventure.room.addResource(rollItem(adventure), "Item", "loot", 1);
+		}
+
+		return { payload: renderRoom(adventure, thread, lastRoundText), type: "endCombat" };
+	}
+	return { type: "continueCombat" };
 }
 
 /** The round ends when all combatants have readied all their moves
