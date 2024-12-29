@@ -307,7 +307,7 @@ class Room {
 	enemyIdMap = null;
 	morale = 0;
 	actions = 0;
-	/** @type {Record<string, {name: string, type: "Gear" | "Artifact" | "Currency" | "challenge" | "Item", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
+	/** @type {Record<string, {name: string, type: "Gear" | "Artifact" | "Currency" | "challenge" | "Item" | "levelsGained", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
 	resources = {};
 	/** @type {Record<string, string[]>} */
 	history = {};
