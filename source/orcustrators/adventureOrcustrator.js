@@ -1031,6 +1031,16 @@ function endRound(adventure, thread) {
 			lastRoundText += `Other Happenings\n-# ${otherHappenings.join("\n-# ")}`
 		}
 
+		const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);
+		if (payload) {
+			thread.send(payload).then(message => {
+				if (type === "endCombat") {
+					adventure.messageIds.battleRound = message.id;
+				}
+			})
+			return;
+		}
+
 		// Decrement Modifiers
 		for (const modifier in combatant.modifiers) {
 			const roundDecrement = getRoundDecrement(modifier);
