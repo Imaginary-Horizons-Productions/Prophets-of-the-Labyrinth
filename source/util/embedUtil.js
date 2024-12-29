@@ -222,7 +222,7 @@ function addScoreField(embed, adventure, guildId) {
 		challengeMultiplier *= challenge.scoreMultiplier;
 	})
 	const skippedArtifactsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.startingArtifact ? count : count + 1, 0) / adventure.delvers.length);
-	const skippedPetsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.pet ? count : count + 1, 0) / adventure.delvers.length);
+	const skippedPetsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.pet.type === "" ? count : count + 1, 0) / adventure.delvers.length);
 	const floatingMultiplierBonus = 1 + (adventure.getArtifactCount("Floating Multiplier") / 4);
 	// Skip multiplicative bonuses if score is negative
 	if (finalScore > 0) {
@@ -395,7 +395,7 @@ const BUTTON_STYLES_BY_MODIFIER_CATEGORY = {
 function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 	const hasFinesse = delver.getModifierStacks("Finesse") > 0;
 	const hasClumsiness = delver.getModifierStacks("Clumsiness") > 0;
-	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%${hasFinesse ? " x 2 (Finesse)" : hasClumsiness ? " ÷ 2 (Clumsiness)" : ""}\nPet: ${delver.pet ? delver.pet : "None"}\n\n*(Your ${getEmoji(delver.essence)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
+	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%${hasFinesse ? " x 2 (Finesse)" : hasClumsiness ? " ÷ 2 (Clumsiness)" : ""}\nPet: ${delver.pet.type !== "" ? delver.pet.type : "None"}\n\n*(Your ${getEmoji(delver.essence)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
 	const embed = new EmbedBuilder().setColor(getColor(delver.essence))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
@@ -514,13 +514,14 @@ function generateStatsEmbed(user, guildId) {
 		}
 	}
 	const totalArtifacts = getArtifactCounts();
+	const totalAchetypes = getArchetypesCount();
 	return embedTemplate().setTitle(`Player Stats: ${user.displayName}`)
 		.setThumbnail(POTL_ICON_URL)
 		.setDescription(`${availability}\n\nTotal Score: ${Object.values(player.scores).map(score => score.total).reduce((total, current) => total += current, 0)}`)
 		.addFields(
 			{ name: `Best Archetype: ${bestArchetype}`, value: `High Score: ${highScore}` },
 			{ name: "Favorites", value: `Archetype: ${player.favoriteArchetype ? player.favoriteArchetype : "Not Set"}\nPet: ${player.favoritePet ? player.favoritePet : "Not Set"}` },
-			{ name: "Collection", value: `Artifacts Collected: ${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)\nArchetypes Collected: ${Object.keys(player.archetypes).length}/${getArchetypesCount()} (${Math.floor(Object.keys(player.archetypes).length / getArchetypesCount()) * 100}%)\nPets Collected: ${Object.keys(player.pets).length}/${PET_NAMES.length} (${Math.floor(Object.keys(player.pets).length / PET_NAMES.length) * 100}%)` }
+			{ name: "Collection", value: `Artifacts Collected: ${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)\nArchetypes Collected: ${Object.keys(player.archetypes).length}/${totalAchetypes} (${Math.floor(Object.keys(player.archetypes).length / totalAchetypes) * 100}%)\nPets Collected: ${Object.keys(player.pets).length}/${PET_NAMES.length} (${Math.floor(Object.keys(player.pets).length / PET_NAMES.length) * 100}%)` }
 		)
 }
 
@@ -582,8 +583,8 @@ function generatePetEmbed(petName, player) {
 	const petTemplate = getPetTemplate(petName);
 	const petLevel = player.pets[petName] ?? 0;
 	const moveSets = [1, 2, 3, 4].map(level => {
-		const [firstMoveName, firstMoveDescription] = getPetMoveDescription(petName, 0, level);
-		const [secondMoveName, secondMoveDescription] = getPetMoveDescription(petName, 1, level);
+		const [firstMoveName, firstMoveDescription] = getPetMoveDescription({ type: petName, level }, 0);
+		const [secondMoveName, secondMoveDescription] = getPetMoveDescription({ type: petName, level }, 1);
 		return { name: `Level ${level}${petLevel === level ? " - Your Pet's Here!" : ""}`, value: `${firstMoveName} - ${firstMoveDescription}\n${secondMoveName} - ${secondMoveDescription}` };
 	});
 	return new EmbedBuilder().setColor(petTemplate.color)

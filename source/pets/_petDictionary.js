@@ -1,5 +1,4 @@
 const { BuildError, PetTemplate, PetMoveTemplate, Adventure, CombatantReference } = require("../classes");
-const { getPlayer } = require("../orcustrators/playerOrcustrator");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 
 /** @type {Record<string, PetTemplate>} */
@@ -27,12 +26,11 @@ function getPetTemplate(petName) {
 }
 
 /**
- * @param {string} petName
+ * @param {{ petName: string, level: number }} petRecord
  * @param {number} index
- * @param {number} level
  */
-function getPetMoveDescription(petName, index, level) {
-	const move = getPetMove(petName, index, level);
+function getPetMoveDescription({ type: petName, level }, index) {
+	const move = getPetMove({ type: petName, level }, index);
 	if (move.modifiers) {
 		let description = move.description;
 		move.modifiers.forEach((modifier, index) => {
@@ -45,14 +43,49 @@ function getPetMoveDescription(petName, index, level) {
 	}
 }
 
+/**
+ * @param {{ type: string, level: number }} petRecord
+ * @param {number} moveIndex
+ */
+function getPetMove({ type: petName, level }, moveIndex) {
+	if (moveIndex === 1 && level === 1) {
+		return new PetMoveTemplate("Loaf Around", "The pet loafs around", () => [], (targets, owner, adventure) => {
+			return [`${owner.name}'s ${petName} loafs around.`];
+		})
+	}
+	return PETS[petName.toLowerCase()].moves[moveIndex][Math.ceil((level - moveIndex) / 2) - 1];
+}
+
+/**
+ * @param {number} count
+ * @param {boolean} allowDupes
+ */
+function rollPets(count, allowDupes) {
+	/** @type {string[]} */
+	const results = [];
+	const pool = [...PET_NAMES];
+	for (let i = 0; i < count; i++) {
+		const randomIndex = Math.floor(pool.length * Math.random());
+		if (allowDupes) {
+			const archetype = pool[randomIndex];
+			if (!results.includes(archetype)) {
+				results.push(archetype);
+			}
+		} else {
+			results.push(pool.splice(randomIndex, 1));
+		}
+	}
+	return results;
+}
+
 /** @param {Adventure} adventure */
 function generatePetRNs(adventure) {
 	const owner = adventure.delvers[adventure.petRNs.delverIndex];
-	if (owner.pet !== "") {
+	if (owner.pet.type !== "") {
 		adventure.petRNs.moveIndex = adventure.generateRandomNumber(2, "general");
 		adventure.petRNs.targetReferences = [];
 		adventure.petRNs.extras = [];
-		const moveTemplate = getPetMove(owner.pet, adventure.petRNs.moveIndex, getPlayer(owner.id, adventure.guildId).pets[owner.pet]);
+		const moveTemplate = getPetMove(owner.pet, adventure.petRNs.moveIndex);
 		if (moveTemplate.rnConfig) {
 			moveTemplate.rnConfig.forEach(rnType => {
 				switch (rnType) {
@@ -73,24 +106,11 @@ function generatePetRNs(adventure) {
 	}
 }
 
-/**
- * @param {string} petName
- * @param {number} moveIndex
- * @param {number} petLevel
- */
-function getPetMove(petName, moveIndex, petLevel) {
-	if (moveIndex === 1 && petLevel === 1) {
-		return new PetMoveTemplate("Loaf Around", "The pet loafs around", () => [], (targets, owner, adventure) => {
-			return [`${owner.name}'s ${petName} loafs around.`];
-		})
-	}
-	return PETS[petName.toLowerCase()].moves[moveIndex][Math.ceil((petLevel - moveIndex) / 2) - 1];
-}
-
 module.exports = {
 	PET_NAMES,
 	getPetTemplate,
 	getPetMoveDescription,
 	getPetMove,
+	rollPets,
 	generatePetRNs
 }

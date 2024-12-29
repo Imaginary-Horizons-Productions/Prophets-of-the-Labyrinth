@@ -5,7 +5,6 @@ class Player {
 	constructor(idInput) {
 		this.id = idInput;
 		this.nextFreeRoll = Date.now();
-		this.unlockRandomArchetype(3);
 	}
 	/** @type {{[guildId: string]: {total: number, high: number}}} */
 	scores = {};
@@ -17,28 +16,6 @@ class Player {
 	pets = {};
 	favoriteArchetype = "";
 	favoritePet = "";
-
-	/** @param {number} count */
-	unlockRandomArchetype(count) {
-		/** @type {string[]} */
-		const rolledArchetypes = [];
-		for (let i = 0; i < count; i++) {
-			const pool = Object.entries(this.archetypes).reduce((pool, [archetype, highScore]) => {
-				if (highScore === null) {
-					pool.push(archetype);
-				}
-				return pool;
-			}, []);
-
-			if (pool.length < 1) {
-				break;
-			}
-			const rolledArchetype = pool[Math.floor(pool.length * Math.random())];
-			rolledArchetypes.push(rolledArchetype);
-			this.archetypes[rolledArchetype] = 0;
-		}
-		return rolledArchetypes;
-	}
 };
 
 module.exports = {

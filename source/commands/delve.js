@@ -52,7 +52,10 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 				const delver = new Delver(interaction.user.id, interaction.member.displayName, thread.id);
 				const player = getPlayer(interaction.user.id, interaction.guildId);
 				if (player.favoritePet !== "") {
-					delver.pet = player.favoritePet;
+					delver.pet = {
+						type: player.favoritePet,
+						level: player.pets[player.favoritePet]
+					};
 				}
 				if (player.favoriteArchetype !== "") {
 					delver.archetype = player.favoriteArchetype;

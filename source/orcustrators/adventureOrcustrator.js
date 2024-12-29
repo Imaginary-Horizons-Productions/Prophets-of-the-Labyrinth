@@ -694,8 +694,8 @@ function newRound(adventure, thread, lastRoundText) {
 	if (adventure.room.round % 2 === 1) {
 		// Generate pet move
 		const owner = adventure.delvers[adventure.petRNs.delverIndex];
-		if (owner.pet) {
-			const petMoveTemplate = getPetMove(owner.pet, adventure.petRNs.moveIndex, getPlayer(owner.id, thread.guildId).pets[owner.pet]);
+		if (owner.pet.type !== "") {
+			const petMoveTemplate = getPetMove(owner.pet, adventure.petRNs.moveIndex);
 			const petMove = new Move(petMoveTemplate.name, "pet", { team: "delver", index: adventure.petRNs.delverIndex })
 				.setSpeedByValue(100);
 			petMoveTemplate.selector(owner, adventure.petRNs).forEach(reference => {
@@ -773,8 +773,8 @@ function resolveMove(move, adventure) {
 				break;
 			}
 			case "pet":
-				headline = `${user.name}'s ${bold(user.pet)} `;
-				effect = getPetMove(user.pet, adventure.petRNs.moveIndex, getPlayer(user.id, adventure.guildId).pets[user.pet]).effect;
+				headline = `${user.name}'s ${bold(user.pet.type)} `;
+				effect = getPetMove(user.pet, adventure.petRNs.moveIndex).effect;
 				break;
 		}
 
@@ -1112,7 +1112,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
  */
 function checkNextRound({ petRNs, room, delvers }) {
 	const readiedMoves = room.moves.length;
-	const petMoves = delvers[petRNs.delverIndex].pet !== "" ? room.round % 2 : 0;
+	const petMoves = delvers[petRNs.delverIndex].pet.type !== "" ? room.round % 2 : 0;
 	const movesThisRound = room.enemies.length + delvers.length + petMoves;
 	return readiedMoves === movesThisRound;
 }
@@ -1144,7 +1144,7 @@ function completeAdventure(adventure, thread, endState, descriptionOverride) {
 	clearComponents(adventure.messageIds.battleRound, messageManager);
 	clearComponents(adventure.messageIds.room, messageManager);
 
-	if (adventure.room.resources.Gold?.count > 0) {
+	if (adventure.room.resources?.Gold?.count > 0) {
 		adventure.gainGold(adventure.room.resources.Gold.count);
 	}
 	adventure.state = endState;
