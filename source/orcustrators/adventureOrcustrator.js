@@ -876,20 +876,23 @@ function gearUpkeep(moveName, index, user, adventure) {
 		const gear = user.gear[index];
 		const gearCategory = getGearProperty(moveName, "category");
 
-		let cdReduction = 0;
-		if (gearCategory === "Offense") {
-			const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");
-			if (weaponPolishCount > 0) {
-				const chargeSaveChance = 1 - 0.85 ** weaponPolishCount;
-				const max = RN_TABLE_BASE ** 2;
-				adventure.updateArtifactStat("Weapon Polish", "Expected Cooldown Saved", chargeSaveChance.toFixed(2));
-				if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
-					cdReduction = 1;
-					adventure.updateArtifactStat("Weapon Polish", "Actual Cooldown Saved", 1);
+		const cooldown = getGearProperty(gear.name, "cooldown");
+		if (cooldown !== undefined) {
+			let cdReduction = 0;
+			if (gearCategory === "Offense") {
+				const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");
+				if (weaponPolishCount > 0) {
+					const chargeSaveChance = 1 - 0.85 ** weaponPolishCount;
+					const max = RN_TABLE_BASE ** 2;
+					adventure.updateArtifactStat("Weapon Polish", "Expected Cooldown Saved", chargeSaveChance.toFixed(2));
+					if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
+						cdReduction = 1;
+						adventure.updateArtifactStat("Weapon Polish", "Actual Cooldown Saved", 1);
+					}
 				}
 			}
+			gear.cooldown = Math.max(0, cooldown - cdReduction);
 		}
-		gear.cooldown = Math.max(0, getGearProperty(gear.name, "cooldown") - cdReduction);
 
 		if (gearCategory === "Spell") {
 			const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
