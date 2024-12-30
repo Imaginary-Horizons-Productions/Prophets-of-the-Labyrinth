@@ -1,15 +1,17 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
+const { unstoppablePassive } = require('./descriptions/passives');
 
-module.exports = new GearTemplate("Fever Break",
+module.exports = new GearTemplate("Unstoppable Fever Break",
 	[
+		unstoppablePassive,
 		["use", `Deal <pending damage from @{mod0} and @{mod1}> @{essence} damage to all foes, then cure them of those debuffs`],
 		["Critical💥", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Maneuver",
 	"Darkness",
-	200,
+	350,
 	(targets, user, adventure) => {
 		const { essence, moraleRequirement } = module.exports;
 		if (adventure.room.morale < moraleRequirement) {
@@ -33,7 +35,7 @@ module.exports = new GearTemplate("Fever Break",
 			const poisonStacks = target.getModifierStacks("Poison");
 			const frailtyStacks = target.getModifierStacks("Frailty");
 			const pendingDamage = poisonDamage * (poisonStacks ** 2 + poisonStacks) / 2 + frailDamage * frailtyStacks;
-			resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure));
+			resultLines.push(...dealDamage([target], user, pendingDamage, true, essence, adventure));
 			if (!user.crit && target.hp > 0) {
 				receipts.push(...removeModifier([target], { name: "Poison", stacks: "all" }).concat(removeModifier([target], { name: "Frailty", stacks: "all" })));
 			}
@@ -41,6 +43,6 @@ module.exports = new GearTemplate("Fever Break",
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "all", team: "foe" })
-	.setUpgrades("Fatiguing Fever Break", "Unstoppable Fever Break")
+	.setSidegrades("Fatiguing Fever Break")
 	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frailty", stacks: 0 })
 	.setMoraleRequirement(2);

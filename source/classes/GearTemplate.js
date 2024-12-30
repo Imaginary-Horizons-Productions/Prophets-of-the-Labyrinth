@@ -38,9 +38,9 @@ class GearTemplate {
 	// Requirements
 	cooldown;
 	maxCharges = Infinity;
-	moraleRequirement = 0;
 	/** @type {[integer: number, descriptionTemplate: string]} */
 	pactCost;
+	moraleRequirement = 0;
 
 	// Attributes
 	critMultiplier = 2;
@@ -101,15 +101,21 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {number} integer */
-	setDamage(integer) {
-		this.damage = integer;
+	/** @param {[integer: number, descriptionTemplate: string]} pactTuple */
+	setPactCost(pactTuple) {
+		this.pactCost = pactTuple;
 		return this;
 	}
 
-	/** @param {number} numberInput */
-	setCritMultiplier(numberInput) {
-		this.critMultiplier = numberInput;
+	/** @param {number} integer */
+	setMoraleRequirement(integer) {
+		this.moraleRequirement = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
+	setDamage(integer) {
+		this.damage = integer;
 		return this;
 	}
 
@@ -119,15 +125,15 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {[integer: number, descriptionTemplate: string]} pactTuple */
-	setPactCost(pactTuple) {
-		this.pactCost = pactTuple;
-		return this;
-	}
-
 	/** @param {number} integer */
 	setHealing(integer) {
 		this.healing = integer;
+		return this;
+	}
+
+	/** @param {number} numberInput */
+	setCritMultiplier(numberInput) {
+		this.critMultiplier = numberInput;
 		return this;
 	}
 

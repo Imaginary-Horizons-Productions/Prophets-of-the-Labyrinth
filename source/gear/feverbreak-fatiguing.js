@@ -1,17 +1,17 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
+const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Fever Break",
+module.exports = new GearTemplate("Fatiguing Fever Break",
 	[
-		["use", `Deal <pending damage from @{mod0} and @{mod1}> @{essence} damage to all foes, then cure them of those debuffs`],
+		["use", `Inflict all foes with <pending damage from @{mod0} and @{mod1}> @{essence} damage and @{mod2Stacks} @{mod2}, then cure them of those debuffs`],
 		["Critical💥", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Maneuver",
 	"Darkness",
-	200,
+	350,
 	(targets, user, adventure) => {
-		const { essence, moraleRequirement } = module.exports;
+		const { essence, moraleRequirement, modifiers } = module.exports;
 		if (adventure.room.morale < moraleRequirement) {
 			return ["...but the party didn't have enough Morale to pull it off."];
 		}
@@ -38,9 +38,10 @@ module.exports = new GearTemplate("Fever Break",
 				receipts.push(...removeModifier([target], { name: "Poison", stacks: "all" }).concat(removeModifier([target], { name: "Frailty", stacks: "all" })));
 			}
 		}
+		receipts.push(...addModifier(targets, modifiers[2]));
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}
 ).setTargetingTags({ type: "all", team: "foe" })
-	.setUpgrades("Fatiguing Fever Break", "Unstoppable Fever Break")
-	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frailty", stacks: 0 })
+	.setSidegrades("Unstoppable Fever Break")
+	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frailty", stacks: 0 }, { name: "Impotence", stacks: 2 })
 	.setMoraleRequirement(2);

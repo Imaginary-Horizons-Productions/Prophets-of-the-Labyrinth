@@ -9,18 +9,9 @@ Opposite: ✨ Light
 
 Counters: 🌿 Earth, ✨ Light, 🌧️ Water
 
-Archetypes: Hemomancer
+Roles: Offense, Defense
 
-### Common Variants
-- Evasive
-- Furious
-- Slowing
-- Reaper's
-- Unstoppable
-
-### Uncommon Variants
-- Sweeping
-- Toxic
+Archetypes:
 
 ## 🌿 Earth
 Color: ![Colors.DarkGreen](https://placehold.co/15x15/1F8B4C/1F8B4C.png) `Colors.DarkGreen`
@@ -29,17 +20,9 @@ Opposite: 💨 Wind
 
 Counters: ✨ Light, 🌧️ Water, 💨 Wind
 
-Archetypes: Knight, Detective
+Roles: Defense, Adventuring
 
-### Common Variants
-- Charging
-- Guarding
-- Hunter's
-- Organic
-- Staggering
-
-### Uncommon Variants
-- Flanking
+Archetypes:
 
 ## 🔥 Fire
 Color: ![Colors.Orange](https://placehold.co/15x15/E67E22/E67E22.png) `Colors.Orange`
@@ -48,16 +31,9 @@ Opposite: 🌧️ Water
 
 Counters: 💀 Darkness, 🌿 Earth, 🌧️ Water
 
-Archetypes: Ritualist, Legionnaire
+Roles: Offense, Adventuring
 
-### Common Variants
-- Corroding
-- Flanking
-- Reckless
-- Sweeping
-
-### Uncommon Variants
-- Furious
+Archetypes:
 
 ## ✨ Light
 Color: ![Colors.Yellow](https://placehold.co/15x15/FEE75C/FEE75C.png) `Colors.Yellow`
@@ -66,18 +42,9 @@ Opposite: 💀 Darkness
 
 Counters: 💀 Darkness, 🔥 Fire, 💨 Wind
 
-Archetypes: Martial Artist
+Roles: Support, Adventuring
 
-### Common Variants
-- Kinetic
-- Soothing
-- Staggering
-- Unstoppable
-- Urgent
-
-### Uncommon Variants
-- Organic
-- Blasting
+Archetypes:
 
 ## 🌧️ Water
 Color: ![Colors.Blue](https://placehold.co/15x15/3498DB/3498DB.png) `Colors.Blue`
@@ -86,19 +53,9 @@ Opposite: 🔥 Fire
 
 Counters: 🔥 Fire, ✨ Light, 💨 Wind
 
-Archetypes: Chemist
+Roles: Defense, Support
 
-### Common Variants
-- Hunter's
-- Slowing
-- Soothing
-- Sweeping
-- Toxic
-
-### Uncommon Variants
-- Accelerating
-- Thirsting
-- Unstoppable
+Archetypes:
 
 ## 💨 Wind
 Color: ![Colors.Aqua](https://placehold.co/15x15/1ABC9C/1ABC9C.png) `Colors.Aqua`
@@ -107,20 +64,9 @@ Opposite: 🌿 Earth
 
 Counters: 💀 Darkness, 🌿 Earth, 🔥 Fire
 
-Archetypes: Assassin
+Roles: Offense, Support
 
-### Common Variants
-- Accelerating
-- Evasive
-- Lethal
-- Urgent
-
-### Uncommon Variants
-- Adventurer's
-- Staggering
-- Sweeping
-- Thirsting
-- Vigilant
+Archetypes:
 
 ## 🌐 Unaligned
 Color: ![Colors.Greyple](https://placehold.co/15x15/99AAB5/99AAB5.png) `Colors.Greyple`
@@ -130,47 +76,3 @@ Opposite: 🌐 Unaligned
 Counters: N/A
 
 Archetypes:
-
-### Common Variants
-- Accurate
-- Hearty
-- Poised
-- Powerful
-- Swift
-- Wise
-
-### Uncommon Variants
-
-## Uncategorized Variants
-- Agile
-- Awesome
-- Balanced
-- Bashing
-- Bouncing
-- Centering
-- Cleansing
-- Corrosive
-- Devoted
-- Discounted
-- Double
-- Duelist's
-- Fate-Sealing
-- Fatiguing
-- Harmful
-- Healing
-- Midas's
-- Numbing
-- Potent
-- Purifying
-- Reactive
-- Reinforced
-- Semi-Decimating
-- Sharpened
-- Shattering
-- Surpassing
-- Supportive
-- Taunting
-- Thief's
-- Tormenting
-- Unbreakable
-- Vexing

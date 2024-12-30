@@ -12,7 +12,7 @@ module.exports = new ArchetypeTemplate("Knight",
 		critRateGrowth: 0.25,
 		poiseGrowth: 0
 	},
-	["Lance", "Buckler"],
+	[],
 	(embed, adventure) => {
 		const currentRoundLines = [];
 		const nextRoundLines = [];
