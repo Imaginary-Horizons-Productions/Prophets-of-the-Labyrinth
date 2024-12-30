@@ -34,7 +34,7 @@ module.exports = new ArchetypeTemplate("Beast Tamer",
 		return embed.setDescription("Beast Tamer predictions:").addFields({ name: `Next Pet Move (Round ${2 + adventure.room.round - (adventure.room.round % 2)})`, value: `${nextPetOwner.name}'s ${nextPetOwner.pet.type} will use ${bold(moveName)}${adventure.petRNs.targetReferences.length > 0 ? ` on ${listifyEN(adventure.petRNs.targetReferences.map(reference => italic(adventure.getCombatant(reference).name)))}` : ""}\n${italic(moveDescription)}` });
 	},
 	(combatant) => {
-		if (combatant.pet.type) {
+		if (combatant.pet?.type) {
 			return combatant.pet.type;
 		} else {
 			return "";
