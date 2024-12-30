@@ -58,7 +58,7 @@ class GearTemplate {
 	bonus;
 	/** @type {number} */
 	bonus2;
-	/** @type {{name: string, stacks: number}[]} */
+	/** @type {{ name: string, stacks: number | { description: string, generator: (user: Combatant) => number } }[]} */
 	modifiers;
 	maxHP = 0;
 	power = 0;
@@ -163,7 +163,7 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {...{name: string, stacks: number}} modifiersArray */
+	/** @param {...{ name: string, stacks: number | { description: string, generator: (user: Combatant) => number } }} modifiersArray */
 	setModifiers(...modifiersArray) {
 		this.modifiers = modifiersArray;
 		return this;

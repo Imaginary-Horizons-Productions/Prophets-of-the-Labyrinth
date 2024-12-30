@@ -128,6 +128,17 @@ function buildGearDescription(gearName) {
 		.replace(/@{protection}/g, `(${getGearProperty(gearName, "protection")} + Max HP / 5)`)
 		.replace(/@{bonusSpeed}/g, "(Speed over 100)");
 
+	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
+		if (!modifier.name.startsWith("unparsed")) {
+			text = text.replace(new RegExp(`@{mod${index}}`, "g"), getApplicationEmojiMarkdown(modifier.name));
+		}
+		if (typeof modifier.stacks === "number") {
+			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
+		} else {
+			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), `(${modifier.stacks.description})`);
+		}
+	})
+
 	return injectGearStats(text, gearName);
 }
 
@@ -191,6 +202,17 @@ function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
 	const bonusSpeed = holder.getSpeed(true) - 100;
 	text = text.replace(/@{bonusSpeed}/g, `[${Math.max(0, bonusSpeed)}]`);
 
+	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
+		if (!modifier.name.startsWith("unparsed")) {
+			text = text.replace(new RegExp(`@{mod${index}}`, "g"), getApplicationEmojiMarkdown(modifier.name));
+		}
+		if (typeof modifier.stacks === "number") {
+			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
+		} else {
+			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), `[${modifier.stacks.generator(holder)}]`);
+		}
+	})
+
 	return injectGearStats(text, gearName);
 }
 
@@ -199,12 +221,6 @@ function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
  * @param {string} gearName
  */
 function injectGearStats(text, gearName) {
-	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
-		if (!modifier.name.startsWith("unparsed")) {
-			text = text.replace(new RegExp(`@{mod${index}}`, "g"), getApplicationEmojiMarkdown(modifier.name));
-		}
-		text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
-	})
 	text = text.replace(/@{essence}/g, getEmoji(getGearProperty(gearName, "essence")))
 	return calculateTagContent(text, [
 		"critMultiplier",
