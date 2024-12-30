@@ -60,8 +60,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		for (let i = 0; i < usableMoves.length; i++) {
 			const { name: gearName, charges, cooldown, gearIndex } = usableMoves[i];
 			const isOnCD = Boolean(cooldown) && (cooldown > 0);
-			const moraleRequirement = getGearProperty(gearName, "moraleRequirement");
-			const isMoraleLocked = moraleRequirement > adventure.room.morale;
 			const isOutOfCharges = charges < 1;
 			const { type, team } = getGearProperty(gearName, "targetingTags");
 			const essenceEmoji = getEmoji(getGearProperty(gearName, "essence"));
@@ -79,9 +77,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (isOnCD) {
 					placeholder = `${essenceEmoji} ${gearName} CD: ${cooldown} Rounds`;
 				}
-				if (isMoraleLocked) {
-					placeholder = `${essenceEmoji} ${gearName}: Requires ${moraleRequirement} Morale`;
-				}
 				if (isOutOfCharges) {
 					placeholder = `${essenceEmoji} ${gearName}: Out of Charges`;
 				}
@@ -89,15 +84,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
 						.setPlaceholder(placeholder)
 						.addOptions(targetOptions)
-						.setDisabled(isOnCD || isMoraleLocked || isOutOfCharges)
+						.setDisabled(isOnCD || isOutOfCharges)
 				));
 			} else {
 				let label = `Use ${gearName}${![0, Infinity].includes(charges) ? ` (${charges} charges)` : ""}`;
 				if (isOnCD) {
 					label = `${gearName} CD: ${cooldown} Rounds`;
-				}
-				if (isMoraleLocked) {
-					label = `${gearName}: Requires ${moraleRequirement} Morale`;
 				}
 				if (isOutOfCharges) {
 					label = `${gearName}: Out of Charges`;
@@ -108,7 +100,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setLabel(label)
 						.setEmoji(essenceEmoji)
 						.setStyle(ButtonStyle.Secondary)
-						.setDisabled(isOnCD || isMoraleLocked || isOutOfCharges)
+						.setDisabled(isOnCD || isOutOfCharges)
 				));
 			}
 		}

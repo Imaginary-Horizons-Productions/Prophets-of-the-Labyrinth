@@ -12,7 +12,7 @@ module.exports = new ArchetypeTemplate("Legionnaire",
 		critRateGrowth: 0.25,
 		poiseGrowth: 0
 	},
-	["Shortsword", "Scutum"],
+	[],
 	(embed, adventure) => {
 		adventure.room.enemies.filter(combatant => combatant.hp > 0).forEach(combatant => {
 			const individualIndex = adventure.getCombatantIndex(combatant);

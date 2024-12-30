@@ -10,7 +10,7 @@ module.exports = new ArchetypeTemplate("Fighter",
 		critRateGrowth: 0.5,
 		poiseGrowth: 0
 	},
-	["Strong Attack", "Second Wind"],
+	[],
 	(embed, adventure) => {
 		const descriptions = [
 			`I'm a fighter.`,

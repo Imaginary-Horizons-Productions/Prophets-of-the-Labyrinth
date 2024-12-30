@@ -13,7 +13,7 @@ module.exports = new ArchetypeTemplate("Detective",
 		critRateGrowth: 0.25,
 		poiseGrowth: 0
 	},
-	["Pistol", "Sabotage Kit"],
+	[],
 	(embed, adventure) => {
 		/** @param {Combatant} combatant */
 		function createElementField(combatant) {

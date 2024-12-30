@@ -13,7 +13,7 @@ module.exports = new ArchetypeTemplate("Beast Tamer",
 		critRateGrowth: 1,
 		poiseGrowth: 0
 	},
-	["Stick", "Carrot"],
+	[],
 	(embed, adventure) => {
 		const moveLines = [];
 		adventure.room.moves.forEach(({ userReference, name, priority }) => {
@@ -35,7 +35,7 @@ module.exports = new ArchetypeTemplate("Beast Tamer",
 	},
 	(combatant) => {
 		if (combatant.pet?.type) {
-			return combatant.pet.type;
+			return `Pet: ${combatant.pet.type}`;
 		} else {
 			return "";
 		}

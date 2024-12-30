@@ -14,59 +14,52 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 	]])),
 	{
 		Darkness: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Blood Aegis",
-			"Power from Wrath",
-			"Bashing Power from Wrath",
-			"Hunter's Power from Wrath",
-			"Staggering Power from Wrath",
-			"Toxic Blood Aegis",
-			"Furious Life Drain",
-			"Thirsting Life Drain",
-			"Chaining Risky Mixture",
-			"Midas's Risky Mixture",
-		]])),
+			"Fever Break",
+			"Fatiguing Fever Break",
+			"Unstoppable Fever Break"
+	]])),
 		Earth: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Carrot",
-			"Balanced Carrot",
-			"Devoted Carrot",
-			"Reinforced Carrot",
-			"Vigorous Warhammer",
-			"Reactive Spear",
-			"Stick",
-			"Staggering Stick",
-			"Shattering Stick",
-			"Sharpened Stick"
-		]])),
+			"Sandstorm Formation",
+			"Balanced Sandstorm Formation",
+			"Soothing Sandstorm Formation"
+	]])),
 		Fire: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Double Firecracker",
-		]])),
+			"Bonfire Formation",
+			"Charging Bonfire Formation",
+			"Hastening Bonfire Formation"
+	]])),
 		Light: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Buckler",
-			"Accelerating Buckler",
-			"Devoted Buckler",
-			"Guarding Buckler",
-			"Lance",
-			"Duelist's Lance",
-			"Shattering Lance",
-			"Surpassing Lance"
-		]])),
+			"Reveal Flaw",
+			"Distracting Reveal Flaw",
+			"Numbing Reveal Flaw"
+	]])),
 		Water: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Universal Solution",
-			"Centering Universal Solution",
-			"Evasive Universal Solution",
-			"Harmful Universal Solution"
-		]])),
+			"Conjured Ice Armaments",
+			"Supportive Conjured Ice Armaments",
+			"Vigilant Conjured Ice Armaments"
+	]])),
 		Wind: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Air Blades",
-			"Adventurer's Air Blades",
-			"Toxic Air Blades",
-			"Unstoppable Air Blades"
+			"Tornado Formation",
+			"Charging Tornado Formation",
+			"Supportive Tornado Formation"
 		]])),
 		Unaligned: Object.fromEntries(RARITIES.map(rarity => [rarity, [
-			"Pistol",
-			"Double Pistol",
-			"Duelist's Pistol",
-			"Flanking Pistol",
+			"Boots of Comfort",
+			"Mighty Gauntlet",
+			"Scarf",
+			"Wolf Ring",
+			"Accurate Boots of Comfort",
+			"Hearty Boots of Comfort",
+			"Powerful Boots of Comfort",
+			"Accurate Mighty Gauntlet",
+			"Hearty Mighty Gauntlet",
+			"Swift Mighty Gauntlet",
+			"Hearty Scarf",
+			"Powerful Scarf",
+			"Swift Scarf",
+			"Accurate Wolf Ring",
+			"Powerful Wolf Ring",
+			"Swift Wolf Ring"
 		]]))
 	},
 	{

@@ -13,7 +13,7 @@ module.exports = new ArchetypeTemplate("Ritualist",
 		critRateGrowth: 0.25,
 		poiseGrowth: 0
 	},
-	["Censer", "Corrosion"],
+	[],
 	(embed, adventure) => {
 		embed.addFields({
 			name: "Enemies",

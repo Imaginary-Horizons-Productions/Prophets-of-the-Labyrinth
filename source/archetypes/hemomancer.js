@@ -12,7 +12,7 @@ module.exports = new ArchetypeTemplate("Hemomancer",
 		critRateGrowth: 0.25,
 		poiseGrowth: 0
 	},
-	["Life Drain", "Blood Aegis"],
+	[],
 	(embed, adventure) => {
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
 			.concat(adventure.delvers)

@@ -44,231 +44,75 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Cursed: [
 			],
 			Common: [
-				"Blood Aegis",
-				"Fever Break",
-				"Life Drain",
-				"Power from Wrath",
-				"Risky Mixture",
-				"Scythe",
+				"Fever Break"
 			],
 			Rare: [
-				"Charging Blood Aegis",
-				"Reinforced Blood Aegis",
-				"Toxic Blood Aegis",
-				"Unlimited Fever Break",
-				"Urgent Fever Break",
-				"Surpassing Fever Break",
-				"Flanking Life Drain",
-				"Furious Life Drain",
-				"Thirsting Life Drain",
-				"Bashing Power from Wrath",
-				"Hunter's Power from Wrath",
-				"Staggering Power from Wrath",
-				"Midas's Risky Mixture",
-				"Potent Risky Mixture",
-				"Chaining Risky Mixture",
-				"Lethal Scythe",
-				"Toxic Scythe",
-				"Unstoppable Scythe",
+				"Fatiguing Fever Break",
+				"Unstoppable Fever Break"
 			]
 		},
 		Earth: {
 			Cursed: [
 			],
 			Common: [
-				"Carrot",
-				"Certain Victory",
-				"Goad Futility",
-				"Herb Basket",
-				"Spear",
-				"Stick",
-				"Warhammer"
+				"Sandstorm Formation"
 			],
 			Rare: [
-				"Devoted Carrot",
-				"Balanced Carrot",
-				"Reinforced Carrot",
-				"Hunter's Certain Victory",
-				"Lethal Certain Victory",
-				"Reckless Certain Victory",
-				"Flanking Goad Futility",
-				"Poised Goad Futility",
-				"Shattering Goad Futility",
-				"Chaining Herb Basket",
-				"Reinforced Herb Basket",
-				"Urgent Herb Basket",
-				"Lethal Spear",
-				"Reactive Spear",
-				"Sweeping Spear",
-				"Sharpened Stick",
-				"Shattering Stick",
-				"Staggering Stick",
-				"Slowing Warhammer",
-				"Unstoppable Warhammer",
-				"Vigorous Warhammer",
+				"Balanced Sandstorm Formation",
+				"Soothing Sandstorm Formation"
 			]
 		},
 		Fire: {
 			Cursed: [
 			],
 			Common: [
-				"Battleaxe",
-				"Censer",
-				"Corrosion",
-				"Firecracker",
-				"Heat Mirage",
-				"Infinite Regeneration",
-				"Scutum",
-				"Shortsword"
+				"Bonfire Formation"
 			],
 			Rare: [
-				"Furious Battleaxe",
-				"Reactive Battleaxe",
-				"Thirsting Battleaxe",
-				"Staggering Censer",
-				"Tormenting Censer",
-				"Chaining Censer",
-				"Fate-Sealing Corrosion",
-				"Fatiguing Corrosion",
-				"Shattering Corrosion",
-				"Double Firecracker",
-				"Midas's Firecracker",
-				"Toxic Firecracker",
-				"Evasive Heat Mirage",
-				"Numbing Heat Mirage",
-				"Vigilant Heat Mirage",
-				"Discounted Infinite Regeneration",
-				"Fate-Sealing Infinite Regeneration",
-				"Purifying Infinite Regeneration",
-				"Guarding Scutum",
-				"Balanced Scutum",
-				"Sweeping Scutum",
-				"Accelerating Shortsword",
-				"Lethal Shortsword",
-				"Toxic Shortsword"
+				"Charging Bonfire Formation",
+				"Hastening Bonfire Formation"
 			]
 		},
 		Light: {
 			Cursed: [
 			],
 			Common: [
-				"Buckler",
-				"Lance",
-				"Morning Star",
-				"Prismatic Blast",
-				"Shoulder Throw",
-				"War Cry"
+				"Reveal Flaw"
 			],
 			Rare: [
-				"Accelerating Buckler",
-				"Devoted Buckler",
-				"Guarding Buckler",
-				"Duelist's Lance",
-				"Shattering Lance",
-				"Surpassing Lance",
-				"Awesome Morning Star",
-				"Bashing Morning Star",
-				"Hunter's Morning Star",
-				"Distracting Prismatic Blast",
-				"Flanking Prismatic Blast",
-				"Vexing Prismatic Blast",
-				"Evasive Shoulder Throw",
-				"Harmful Shoulder Throw",
-				"Staggering Shoulder Throw",
-				"Charging War Cry",
-				"Slowing War Cry",
-				"Tormenting War Cry"
+				"Distracting Reveal Flaw",
+				"Numbing Reveal Flaw"
 			]
 		},
 		Water: {
 			Cursed: [
 			],
 			Common: [
-				"Abacus",
-				"Cauldron Stir",
-				"Ice Bolt",
-				"Medicine",
-				"Midas Staff",
-				"Omamori",
-				"Poison Torrent",
-				"Universal Solution"
+				"Conjured Ice Armaments"
 			],
 			Rare: [
-				"Sharpened Abacus",
-				"Thief's Abacus",
-				"Unstoppable Abacus",
-				"Corrosive Cauldron Stir",
-				"Sabotaging Cauldron Stir",
-				"Toxic Cauldron Stir",
-				"Awesome Ice Bolt",
-				"Distracting Ice Bolt",
-				"Numbing Ice Bolt",
-				"Bouncing Medicine",
-				"Cleansing Medicine",
-				"Soothing Medicine",
-				"Accelerating Midas Staff",
-				"Discounted Midas Staff",
-				"Soothing Midas Staff",
-				"Centering Omamori",
-				"Cleansing Omamori",
-				"Devoted Omamori",
-				"Distracting Poison Torrent",
-				"Harmful Poison Torrent",
-				"Staggering Poison Torrent",
-				"Centering Universal Solution",
-				"Evasive Universal Solution",
-				"Harmful Universal Solution"
+				"Supportive Conjured Ice Armaments",
+				"Vigilant Conjured Ice Armaments"
 			]
 		},
 		Wind: {
 			Cursed: [
 			],
 			Common: [
-				"Barrier",
-				"Bow",
-				"Cloak",
-				"Daggers",
-				"Inspiration",
-				"Refreshing Breeze",
-				"Air Blades"
+				"Tornado Formation"
 			],
 			Rare: [
-				"Cleansing Barrier",
-				"Devoted Barrier",
-				"Vigilant Barrier",
-				"Evasive Bow",
-				"Thief's Bow",
-				"Unstoppable Bow",
-				"Accelerating Cloak",
-				"Accurate Cloak",
-				"Evasive Cloak",
-				"Sharpened Daggers",
-				"Slowing Daggers",
-				"Sweeping Daggers",
-				"Guarding Inspiration",
-				"Soothing Inspiration",
-				"Sweeping Inspiration",
-				"Accelerating Refreshing Breeze",
-				"Supportive Refreshing Breeze",
-				"Swift Refreshing Breeze",
-				"Adventurer's Air Blades",
-				"Toxic Air Blades",
-				"Unstoppable Air Blades"
+				"Charging Tornado Formation",
+				"Supportive Tornado Formation"
 			]
 		},
 		Unaligned: {
 			Cursed: [
-				"Cursed Blade",
-				"Cursed Tome"
 			],
 			Common: [
 				"Boots of Comfort",
 				"Mighty Gauntlet",
-				"Pistol",
-				"Sabotage Kit",
 				"Scarf",
-				"Second Wind",
-				"Strong Attack",
 				"Wolf Ring"
 			],
 			Rare: [
@@ -278,21 +122,9 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Accurate Mighty Gauntlet",
 				"Hearty Mighty Gauntlet",
 				"Swift Mighty Gauntlet",
-				"Double Pistol",
-				"Duelist's Pistol",
-				"Flanking Pistol",
-				"Potent Sabotage Kit",
-				"Shattering Sabotage Kit",
-				"Urgent Sabotage Kit",
 				"Hearty Scarf",
 				"Powerful Scarf",
 				"Swift Scarf",
-				"Cleansing Second Wind",
-				"Balanced Second Wind",
-				"Soothing Second Wind",
-				"Flanking Strong Attack",
-				"Sharpened Strong Attack",
-				"Staggering Strong Attack",
 				"Accurate Wolf Ring",
 				"Powerful Wolf Ring",
 				"Swift Wolf Ring"

@@ -13,7 +13,7 @@ module.exports = new ArchetypeTemplate("Assassin",
 		critRateGrowth: 0.25,
 		poiseGrowth: 0
 	},
-	["Daggers", "Cloak"],
+	[],
 	(embed, adventure) => {
 		/** @param {Combatant} combatant */
 		function createEssenceAndCritField(combatant) {

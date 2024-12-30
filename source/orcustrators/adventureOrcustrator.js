@@ -390,9 +390,8 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			const essencesNoUnaligned = essenceList(["Unaligned"])
 			return `${user.name}'s ${moveName} attunes ${user.roundRns[roundRnKeyname].map(rn => getEmoji(essencesNoUnaligned[rn % essencesNoUnaligned.length])).join("")} on ${target.name}`;
 		}
-		case "vulnerabilites": {
-			const ineligibleEssences = getCombatantCounters(target);
-			const essencePool = essenceList(ineligibleEssences);
+		case "vulnerabilities": {
+			const essencePool = essenceList(["Unaligned"]);
 			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname].map(rn => getApplicationEmojiMarkdown(`${essencePool[rn % essencePool.length]} Vulnerability`)).join("")} on ${target.name}`;
 		}
 		case "buffs":

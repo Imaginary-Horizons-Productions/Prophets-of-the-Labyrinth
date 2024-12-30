@@ -12,7 +12,7 @@ module.exports = new ArchetypeTemplate("Chemist",
 		critRateGrowth: 0.25,
 		poiseGrowth: 0
 	},
-	["Cauldron Stir", "Medicine"],
+	[],
 	(embed, adventure) => {
 		const eligibleCombatants = adventure.room.enemies.concat(adventure.delvers).filter(combatant => combatant.hp > 0);
 		eligibleCombatants.forEach(combatant => {

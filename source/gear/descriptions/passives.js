@@ -1,4 +1,3 @@
 module.exports = {
-	accuratePassive: ["Passive", "Gain @{critRate} Crit Rate"],
-	swiftPassive: ["Passive", "Gain @{speed} Speed"]
+	unstoppablePassive: "This gear can be used while Stunned and ignores Evasion and protection"
 };
