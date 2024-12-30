@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Charging Tornado Formation",
 		}
 		const resultLines = dealDamage(targets, user, damage + user.getPower(), false, essence, adventure);
 		const reciepts = [];
-		const pendingSwiftness = { ...swiftness };
+		const pendingSwiftness = { name: swiftness.name, stacks: swiftness.stacks.generator(user) };
 		const userTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 		if (user.crit) {
 			pendingSwiftness.stacks *= critMultiplier;
@@ -33,4 +33,4 @@ module.exports = new GearTemplate("Charging Tornado Formation",
 	.setSidegrades("Supportive Storm Formation")
 	.setMoraleRequirement(1)
 	.setDamage(40)
-	.setModifiers({ name: "Swiftness", stacks: 2 }, { name: "Empowerment", stacks: 25 });
+	.setModifiers({ name: "Swiftness", stacks: { description: "2 + Bonus Speed / 5", generator: (user) => 2 + Math.floor((user.getSpeed(true) - 100) / 5) } }, { name: "Empowerment", stacks: 25 });

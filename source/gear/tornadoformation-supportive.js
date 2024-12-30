@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Supportive Tornado Formation",
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const resultLines = dealDamage(targets, user, damage + user.getPower(), false, essence, adventure);
-		const pendingStagger = { ...swiftness };
+		const pendingStagger = { name: swiftness.name, stacks: swiftness.stacks.generator(user) };
 		const userTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 		if (user.crit) {
 			pendingStagger.stacks *= critMultiplier;
@@ -34,5 +34,5 @@ module.exports = new GearTemplate("Supportive Tornado Formation",
 	.setSidegrades("Charging Storm Formation")
 	.setMoraleRequirement(1)
 	.setDamage(40)
-	.setModifiers({ name: "Swiftness", stacks: 2 })
+	.setModifiers({ name: "Swiftness", stacks: { description: "2 + Bonus Speed / 5", generator: (user) => 2 + Math.floor((user.getSpeed(true) - 100) / 5) } })
 	.setBonus(2); // Stagger relieved
