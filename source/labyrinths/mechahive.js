@@ -44,20 +44,26 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			Cursed: [
 			],
 			Common: [
-				"Fever Break"
+				"Fever Break",
+				"Warhammer"
 			],
 			Rare: [
 				"Fatiguing Fever Break",
-				"Unstoppable Fever Break"
+				"Unstoppable Fever Break",
+				"Fatiguing Warhammer",
+				"Vigorous Warhammer"
 			]
 		},
 		Earth: {
 			Cursed: [
 			],
 			Common: [
+				"Flail",
 				"Sandstorm Formation"
 			],
 			Rare: [
+				"Bouncing Flail",
+				"Incompatible Flail",
 				"Balanced Sandstorm Formation",
 				"Soothing Sandstorm Formation"
 			]
@@ -66,9 +72,12 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			Cursed: [
 			],
 			Common: [
-				"Bonfire Formation"
+				"Bonfire Formation",
+				"Longsword"
 			],
 			Rare: [
+				"Double Longsword",
+				"Reactive Longsword",
 				"Charging Bonfire Formation",
 				"Hastening Bonfire Formation"
 			]
@@ -77,9 +86,12 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			Cursed: [
 			],
 			Common: [
+				"Battle Standard",
 				"Reveal Flaw"
 			],
 			Rare: [
+				"Thief's Battle Standard",
+				"Tormenting Battle Standard",
 				"Distracting Reveal Flaw",
 				"Numbing Reveal Flaw"
 			]
@@ -88,9 +100,12 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			Cursed: [
 			],
 			Common: [
-				"Conjured Ice Armaments"
+				"Conjured Ice Armaments",
+				"Net Launcher"
 			],
 			Rare: [
+				"Kinetic Net Launcher",
+				"Staggering Net Launcher",
 				"Supportive Conjured Ice Armaments",
 				"Vigilant Conjured Ice Armaments"
 			]
@@ -99,9 +114,12 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			Cursed: [
 			],
 			Common: [
+				"Greatsword",
 				"Tornado Formation"
 			],
 			Rare: [
+				"Chaining Greatsword",
+				"Distracting Greatsword",
 				"Charging Tornado Formation",
 				"Supportive Tornado Formation"
 			]
