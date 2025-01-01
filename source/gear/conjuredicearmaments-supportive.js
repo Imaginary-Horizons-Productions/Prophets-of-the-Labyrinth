@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Supportive Conjured Ice Armaments",
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		let pendingProtection = protection + Math.floor(user.getMaxHP() / 5);
+		let pendingProtection = protection + Math.floor(user.getBonusHP() / 5);
 		if (user.crit) {
 			pendingProtection *= critMultiplier;
 		}
@@ -32,5 +32,5 @@ module.exports = new GearTemplate("Supportive Conjured Ice Armaments",
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "ally" })
 	.setSidegrades("Vigilant Conjured Ice Armaments")
 	.setMoraleRequirement(1)
-	.setProtection(65)
+	.setProtection(125)
 	.setBonus(2); // Stagger relieved

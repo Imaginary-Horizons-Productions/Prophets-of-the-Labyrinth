@@ -23,9 +23,18 @@ for (const file of [
 	"bootsofcomfort-base.js",
 	"bootsofcomfort-hearty.js",
 	"bootsofcomfort-powerful.js",
+	"buckler-base.js",
+	"buckler-guarding.js",
+	"buckler-supportive.js",
+	"cloak-accurate.js",
+	"cloak-base.js",
+	"cloak-powerful.js",
 	"conjuredicearmaments-base.js",
 	"conjuredicearmaments-supportive.js",
 	"conjuredicearmaments-vigilant.js",
+	"enchantmentsiphon-base.js",
+	"enchantmentsiphon-flanking.js",
+	"enchantmentsiphon-tormenting.js",
 	"feverbreak-base.js",
 	"feverbreak-fatiguing.js",
 	"feverbreak-unstoppable.js",
@@ -37,7 +46,7 @@ for (const file of [
 	"greatsword-distracting.js",
 	"longsword-base.js",
 	"longsword-double.js",
-	"longsword-reactive.js",
+	"longsword-lethal.js",
 	"mightygauntlet-accurate.js",
 	"mightygauntlet-base.js",
 	"mightygauntlet-hearty.js",
@@ -45,6 +54,9 @@ for (const file of [
 	"netlauncher-base.js",
 	"netlauncher-kinetic.js",
 	"netlauncher-staggering.js",
+	"parryingdagger-base.js",
+	"parryingdagger-devoted.js",
+	"parryingdagger-hastening.js",
 	"revealflaw-base.js",
 	"revealflaw-distracting.js",
 	"revealflaw-numbing.js",
@@ -55,12 +67,18 @@ for (const file of [
 	"scarf-hearty.js",
 	"scarf-powerful.js",
 	"scarf-swift.js",
+	"smokescreen-base.js",
+	"smokescreen-chaining.js",
+	"smokescreen-double.js",
+	"spikedshield-base.js",
+	"spikedshield-furious.js",
+	"spikedshield-reinforced.js",
 	"tornadoformation-base.js",
 	"tornadoformation-charging.js",
 	"tornadoformation-supportive.js",
 	"warhammer-base.js",
 	"warhammer-fatiguing.js",
-	"warhammer-vigorous.js",
+	"warhammer-toxic.js",
 	"wolfring-accurate.js",
 	"wolfring-base.js",
 	"wolfring-powerful.js",
@@ -143,8 +161,8 @@ function buildGearDescription(gearName) {
 	let text = descriptionTexts.join("\n");
 
 	text = text.replace(/@{damage}/g, `(${getGearProperty(gearName, "damage")} + Power)`)
-		.replace(/@{protection}/g, `(${getGearProperty(gearName, "protection")} + Max HP / 5)`)
-		.replace(/@{bonusSpeed}/g, "(Speed over 100)");
+		.replace(/@{protection}/g, `(${getGearProperty(gearName, "protection")} + Bonus HP / 5)`)
+		.replace(/@{bonusSpeed}/g, "(Bonus Speed)");
 
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 		if (!modifier.name.startsWith("unparsed")) {
@@ -214,10 +232,10 @@ function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
 	const damage = getGearProperty(gearName, "damage") + holder.getPower();
 	text = text.replace(/@{damage}/g, `[${Math.floor(Math.min(damage, holder.getDamageCap()))}]`);
 
-	const protection = getGearProperty(gearName, "protection") + Math.floor(holder.getMaxHP() / 5);
+	const protection = getGearProperty(gearName, "protection") + Math.floor(holder.getBonusHP() / 5);
 	text = text.replace(/@{protection}/g, `[${protection}]`);
 
-	const bonusSpeed = holder.getSpeed(true) - 100;
+	const bonusSpeed = holder.getBonusSpeed();
 	text = text.replace(/@{bonusSpeed}/g, `[${Math.max(0, bonusSpeed)}]`);
 
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {

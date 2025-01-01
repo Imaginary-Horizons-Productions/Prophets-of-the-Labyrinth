@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Fatiguing Warhammer",
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier(targets, impotence)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Vigorous Warhammer")
+	.setSidegrades("Toxic Warhammer")
 	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(75) // Reactive Damage

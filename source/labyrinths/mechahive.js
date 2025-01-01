@@ -45,13 +45,16 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			],
 			Common: [
 				"Fever Break",
+				"Spiked Shield",
 				"Warhammer"
 			],
 			Rare: [
 				"Fatiguing Fever Break",
 				"Unstoppable Fever Break",
+				"Furious Spiked Shield",
+				"Reinforced Spiked Shield",
 				"Fatiguing Warhammer",
-				"Vigorous Warhammer"
+				"Toxic Warhammer"
 			]
 		},
 		Earth: {
@@ -59,13 +62,16 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			],
 			Common: [
 				"Flail",
-				"Sandstorm Formation"
+				"Sandstorm Formation",
+				"Smokescreen"
 			],
 			Rare: [
 				"Bouncing Flail",
 				"Incompatible Flail",
 				"Balanced Sandstorm Formation",
-				"Soothing Sandstorm Formation"
+				"Soothing Sandstorm Formation",
+				"Chaining Smokescreen",
+				"Double Smokescreen"
 			]
 		},
 		Fire: {
@@ -73,13 +79,16 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			],
 			Common: [
 				"Bonfire Formation",
+				"Cloak",
 				"Longsword"
 			],
 			Rare: [
-				"Double Longsword",
-				"Reactive Longsword",
 				"Charging Bonfire Formation",
-				"Hastening Bonfire Formation"
+				"Hastening Bonfire Formation",
+				"Accurate Cloak",
+				"Powerful Cloak",
+				"Double Longsword",
+				"Lethal Longsword",
 			]
 		},
 		Light: {
@@ -87,11 +96,14 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			],
 			Common: [
 				"Battle Standard",
+				"Parrying Dagger",
 				"Reveal Flaw"
 			],
 			Rare: [
 				"Thief's Battle Standard",
 				"Tormenting Battle Standard",
+				"Devoted Parrying Dagger",
+				"Hastening Parrying Dagger",
 				"Distracting Reveal Flaw",
 				"Numbing Reveal Flaw"
 			]
@@ -100,10 +112,13 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			Cursed: [
 			],
 			Common: [
+				"Buckler",
 				"Conjured Ice Armaments",
 				"Net Launcher"
 			],
 			Rare: [
+				"Guarding Buckler",
+				"Supportive Buckler",
 				"Kinetic Net Launcher",
 				"Staggering Net Launcher",
 				"Supportive Conjured Ice Armaments",
@@ -114,10 +129,13 @@ module.exports = new LabyrinthTemplate("Mechahive",
 			Cursed: [
 			],
 			Common: [
+				"Enchantment Siphon",
 				"Greatsword",
 				"Tornado Formation"
 			],
 			Rare: [
+				"Flanking Enchantment Siphon",
+				"Tormenting Enchantment Siphon",
 				"Chaining Greatsword",
 				"Distracting Greatsword",
 				"Charging Tornado Formation",
