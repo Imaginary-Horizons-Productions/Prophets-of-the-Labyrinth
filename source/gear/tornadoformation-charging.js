@@ -33,4 +33,4 @@ module.exports = new GearTemplate("Charging Tornado Formation",
 	.setSidegrades("Supportive Storm Formation")
 	.setMoraleRequirement(1)
 	.setDamage(40)
-	.setModifiers({ name: "Swiftness", stacks: { description: "2 + Bonus Speed / 5", generator: (user) => 2 + Math.floor((user.getSpeed(true) - 100) / 5) } }, { name: "Empowerment", stacks: 25 });
+	.setModifiers({ name: "Swiftness", stacks: { description: "2 + Bonus Speed / 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } }, { name: "Empowerment", stacks: 25 });

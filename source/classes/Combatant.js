@@ -34,6 +34,10 @@ class Combatant {
 	/** @returns {number} */
 	getMaxHP() { throw new Error(`getMaxHP not implemented in child class ${this.constructor.name}`) }
 
+	getBonusHP() {
+		return Math.max(0, this.getMaxHP() - 300);
+	}
+
 	/** @returns {number} */
 	getPower() { throw new Error(`getPower not implemented in child class ${this.constructor.name}`) }
 
@@ -42,6 +46,10 @@ class Combatant {
 	 * @returns {number}
 	 */
 	getSpeed(includeRoundSpeed) { throw new Error(`getSpeed not implemented in child class ${this.constructor.name}`) }
+
+	getBonusSpeed() {
+		return Math.max(0, this.getSpeed(true) - 100);
+	}
 
 	/** @returns {number} */
 	getCritRate() { throw new Error(`getCritRate not implemented in child class ${this.constructor.name}`) }

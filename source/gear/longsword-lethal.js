@@ -1,27 +1,21 @@
-const { GearTemplate, Move } = require('../classes');
+const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger } = require('../util/combatantUtil');
 
-module.exports = new GearTemplate("Reactive Longsword",
+module.exports = new GearTemplate("Lethal Longsword",
 	[
-		["use", "Deal <@{damage} + @{bonus} if after foe> @{essence} damage to a single foe, gain an extra level after combat if they're downed"],
+		["use", "Deal <@{damage}> @{essence} damage to a single foe, gain an extra level after combat if they're downed"],
 		["Critical💥", "Damage x @{critMultiplier}"]
 	],
 	"Offense",
 	"Fire",
 	350,
 	(targets, user, adventure) => {
-		const { essence, damage, bonus, critMultiplier } = module.exports;
+		const { essence, damage, critMultiplier } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		let pendingDamage = damage + user.getPower();
-		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
-		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(targets[0]), team: targets[0].team });
-
-		if (Move.compareMoveSpeed(userMove, targetMove) > 0) {
-			pendingDamage += bonus;
-		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
@@ -42,4 +36,4 @@ module.exports = new GearTemplate("Reactive Longsword",
 	.setSidegrades("Double Longsword")
 	.setCooldown(2)
 	.setDamage(40)
-	.setBonus(75);
+	.setCritMultiplier(3);

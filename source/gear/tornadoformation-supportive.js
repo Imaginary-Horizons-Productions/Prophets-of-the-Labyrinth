@@ -34,5 +34,5 @@ module.exports = new GearTemplate("Supportive Tornado Formation",
 	.setSidegrades("Charging Storm Formation")
 	.setMoraleRequirement(1)
 	.setDamage(40)
-	.setModifiers({ name: "Swiftness", stacks: { description: "2 + Bonus Speed / 5", generator: (user) => 2 + Math.floor((user.getSpeed(true) - 100) / 5) } })
+	.setModifiers({ name: "Swiftness", stacks: { description: "2 + Bonus Speed / 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } })
 	.setBonus(2); // Stagger relieved

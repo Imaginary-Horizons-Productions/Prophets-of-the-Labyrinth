@@ -15,7 +15,7 @@ module.exports = new GearTemplate("Kinetic Net Launcher",
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		let pendingDamage = damage + user.getPower() + Math.max(0, user.getSpeed(true) - 100);
+		let pendingDamage = damage + user.getPower() + user.getBonusSpeed();
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}

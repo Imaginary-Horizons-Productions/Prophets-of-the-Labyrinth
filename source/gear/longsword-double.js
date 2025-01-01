@@ -33,6 +33,6 @@ module.exports = new GearTemplate("Double Longsword",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Reactive Longsword")
+	.setSidegrades("Lethal Longsword")
 	.setCooldown(2)
 	.setDamage(20);
