@@ -46,6 +46,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Common: [
 				"Fever Break",
 				"Spiked Shield",
+				"War Cry",
 				"Warhammer"
 			],
 			Rare: [
@@ -53,6 +54,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Unstoppable Fever Break",
 				"Furious Spiked Shield",
 				"Reinforced Spiked Shield",
+				"Flanking War Cry",
+				"Weakening War Cry",
 				"Fatiguing Warhammer",
 				"Toxic Warhammer"
 			]
@@ -61,11 +64,14 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Cursed: [
 			],
 			Common: [
+				"Carrot",
 				"Flail",
 				"Sandstorm Formation",
 				"Smokescreen"
 			],
 			Rare: [
+				"Balanced Carrot",
+				"Guarding Carrot",
 				"Bouncing Flail",
 				"Incompatible Flail",
 				"Balanced Sandstorm Formation",
@@ -80,6 +86,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Common: [
 				"Bonfire Formation",
 				"Cloak",
+				"Elemental Scroll",
 				"Longsword"
 			],
 			Rare: [
@@ -87,6 +94,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Hastening Bonfire Formation",
 				"Accurate Cloak",
 				"Powerful Cloak",
+				"Balanced Elemental Scroll",
+				"Surpassing Elemental Scroll",
 				"Double Longsword",
 				"Lethal Longsword"
 			]
@@ -115,26 +124,32 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Buckler",
 				"Supportive Buckler",
 				"Conjured Ice Armaments",
+				"Medic's Kit",
 				"Net Launcher"
 			],
 			Rare: [
 				"Guarding Buckler",
 				"Supportive Buckler",
+				"Supportive Conjured Ice Armaments",
+				"Vigilant Conjured Ice Armaments",
+				"Inspiring Medic's Kit",
+				"Warning Medic's Kit",
 				"Kinetic Net Launcher",
 				"Staggering Net Launcher",
-				"Supportive Conjured Ice Armaments",
-				"Vigilant Conjured Ice Armaments"
 			]
 		},
 		Wind: {
 			Cursed: [
 			],
 			Common: [
+				"Arcane Sledge",
 				"Enchantment Siphon",
 				"Greatsword",
 				"Tornado Formation"
 			],
 			Rare: [
+				"Fatiguing Arcane Sledge",
+				"Kinetic Arcane Sledge",
 				"Flanking Enchantment Siphon",
 				"Tormenting Enchantment Siphon",
 				"Chaining Greatsword",

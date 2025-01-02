@@ -46,6 +46,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Common: [
 				"Fever Break",
 				"Spiked Shield",
+				"War Cry",
 				"Warhammer"
 			],
 			Rare: [
@@ -53,6 +54,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Unstoppable Fever Break",
 				"Furious Spiked Shield",
 				"Reinforced Spiked Shield",
+				"Flanking War Cry",
+				"Weakening War Cry",
 				"Fatiguing Warhammer",
 				"Toxic Warhammer"
 			]
@@ -61,11 +64,14 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Cursed: [
 			],
 			Common: [
+				"Carrot",
 				"Flail",
 				"Sandstorm Formation",
 				"Smokescreen"
 			],
 			Rare: [
+				"Balanced Carrot",
+				"Guarding Carrot",
 				"Bouncing Flail",
 				"Incompatible Flail",
 				"Balanced Sandstorm Formation",
@@ -80,6 +86,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Common: [
 				"Bonfire Formation",
 				"Cloak",
+				"Elemental Scroll",
 				"Longsword"
 			],
 			Rare: [
@@ -87,6 +94,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Hastening Bonfire Formation",
 				"Accurate Cloak",
 				"Powerful Cloak",
+				"Balanced Elemental Scroll",
+				"Surpassing Elemental Scroll",
 				"Double Longsword",
 				"Lethal Longsword"
 			]
@@ -96,12 +105,15 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			],
 			Common: [
 				"Battle Standard",
+				"Midas Staff",
 				"Parrying Dagger",
 				"Reveal Flaw"
 			],
 			Rare: [
 				"Thief's Battle Standard",
 				"Tormenting Battle Standard",
+				"Accelerating Midas Staff",
+				"Discounted Midas Staff",
 				"Devoted Parrying Dagger",
 				"Hastening Parrying Dagger",
 				"Distracting Reveal Flaw",
@@ -114,26 +126,32 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Common: [
 				"Buckler",
 				"Conjured Ice Armaments",
+				"Medic's Kit",
 				"Net Launcher"
 			],
 			Rare: [
 				"Guarding Buckler",
 				"Supportive Buckler",
+				"Supportive Conjured Ice Armaments",
+				"Vigilant Conjured Ice Armaments",
+				"Inspiring Medic's Kit",
+				"Warning Medic's Kit",
 				"Kinetic Net Launcher",
 				"Staggering Net Launcher",
-				"Supportive Conjured Ice Armaments",
-				"Vigilant Conjured Ice Armaments"
 			]
 		},
 		Wind: {
 			Cursed: [
 			],
 			Common: [
+				"Arcane Sledge",
 				"Enchantment Siphon",
 				"Greatsword",
 				"Tornado Formation"
 			],
 			Rare: [
+				"Fatiguing Arcane Sledge",
+				"Kinetic Arcane Sledge",
 				"Flanking Enchantment Siphon",
 				"Tormenting Enchantment Siphon",
 				"Chaining Greatsword",
