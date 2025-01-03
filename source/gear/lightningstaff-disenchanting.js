@@ -37,4 +37,4 @@ module.exports = new GearTemplate("Disenchanting Lightning Staff",
 	.setSidegrades("Hexing Lightning Staff")
 	.setCooldown(2)
 	.setRnConfig({ foes: 3, buffs: 1 })
-	.setBonus(1);
+	.setBonus(1); // Debuffs removed

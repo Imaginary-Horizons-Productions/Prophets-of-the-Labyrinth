@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Fever Break",
 	200,
 	(targets, user, adventure) => {
 		const { essence, moraleRequirement } = module.exports;
-		if (adventure.room.morale < moraleRequirement) {
+		if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
 			return ["...but the party didn't have enough Morale to pull it off."];
 		}
 

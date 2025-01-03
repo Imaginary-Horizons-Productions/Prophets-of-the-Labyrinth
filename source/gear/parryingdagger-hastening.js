@@ -38,4 +38,4 @@ module.exports = new GearTemplate("Hastening Parrying Dagger",
 	.setCooldown(1)
 	.setProtection(75)
 	.setModifiers({ name: "Finesse", stacks: 1 })
-	.setBonus(1);
+	.setBonus(1); // Cooldown reduction

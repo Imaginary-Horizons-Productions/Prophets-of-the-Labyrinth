@@ -1,31 +1,40 @@
 const { GearTemplate, CombatantReference } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { rollableHerbs } = require('../shared/herbs');
 const { changeStagger } = require('../util/combatantUtil');
-const { listifyEN } = require('../util/textUtil');
 
-module.exports = new GearTemplate("Enticing Herb Basket",
+module.exports = new GearTemplate("Enticing Forbidden Knowledge",
 	[
-		["use", "Entice an ally's pet to use their first move and add @{bonus} random herb to loot"],
-		["Critical💥", "Herbs gathered x @{critMultiplier}"]
+		["use", "Grant a single ally @{bonus} extra level up after combat and entice their pet to use its first move"],
+		["Critical💥", "Reduce your target's cooldowns by @{bonus2}"]
 	],
-	"Adventuring",
-	"Earth",
+	"Pact",
+	"Light",
 	350,
 	([target], user, adventure) => {
-		const { critMultiplier, essence } = module.exports;
+		const { essence, pactCost } = module.exports;
+		if (user.team === "delver") {
+			if (adventure.room.morale < pactCost[0]) {
+				return ["...but the party didn't have enough Morale to pull it off."];
+			}
+			adventure.room.morale -= pactCost[0];
+			adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(target)}`, "levelsGained", "loot", 1);
+		}
+		const resultLines = [`${target.name} gains a level's worth of cursed knowledge. The party's Morale falls.`];
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
-		const resultLines = [];
 		if (user.crit) {
-			adventure.room.addResource(randomHerb, "Item", "loot", critMultiplier);
-			resultLines.push(`${user.name} gathers a double-batch of ${randomHerb}.`);
-		} else {
-			adventure.room.addResource(randomHerb, "Item", "loot", 1);
-			resultLines.push(`${user.name} gathers a batch of ${randomHerb}.`);
+			let didCooldown = false;
+			target.gear?.forEach(gear => {
+				if (gear.cooldown > 1) {
+					didCooldown = true;
+					gear.cooldown -= bonus;
+				}
+			})
+			if (didCooldown) {
+				resultLines.push(`${target.name}'s cooldowns were hastened.`);
+			}
 		}
 		const ownerIndex = adventure.getCombatantIndex(target);
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
@@ -52,8 +61,6 @@ module.exports = new GearTemplate("Enticing Herb Basket",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setSidegrades("Guarding Herb Basket")
-	.setCooldown(1)
-	.setBonus(1) // Herbs gathered
-	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
-	.setRnConfig({ herbs: 1 });
+	.setPactCost([2, "Consume @{pactCost} Morale"])
+	.setBonus(1) // Level-Ups
+	.setBonus2(1); // Cooldown Reduction

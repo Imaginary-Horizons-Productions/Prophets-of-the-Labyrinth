@@ -33,7 +33,7 @@ module.exports = new GearTemplate("Guarding Herb Basket",
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setSidegrades("Enticing Herb Basket")
 	.setCooldown(1)
-	.setBonus(1)
+	.setBonus(1) // Herbs gathered
 	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
 	.setRnConfig({ herbs: 1 })
 	.setProtection(50);

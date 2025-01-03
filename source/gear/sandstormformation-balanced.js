@@ -13,7 +13,7 @@ module.exports = new GearTemplate("Balanced Sandstorm Formation",
 	350,
 	(targets, user, adventure) => {
 		const { essence, moraleRequirement, bonus, modifiers: [impact, finesse] } = module.exports;
-		if (adventure.room.morale < moraleRequirement) {
+		if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
 			return ["...but the party didn't have enough Morale to pull it off."];
 		}
 

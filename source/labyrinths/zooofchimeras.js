@@ -44,6 +44,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			Cursed: [
 			],
 			Common: [
+				"Blood Aegis",
 				"Fever Break",
 				"Ring of Conquest",
 				"Spiked Shield",
@@ -51,6 +52,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Warhammer"
 			],
 			Rare: [
+				"Toxic Blood Aegis",
+				"Urgent Blood Aegis",
 				"Fatiguing Fever Break",
 				"Unstoppable Fever Break",
 				"Hearty Ring of Conquest",
@@ -67,6 +70,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			Cursed: [
 			],
 			Common: [
+				"Bounty Fist",
 				"Carrot",
 				"Flail",
 				"Herb Basket",
@@ -74,6 +78,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Smokescreen"
 			],
 			Rare: [
+				"Midas's Bounty Fist",
+				"Thirsting Bounty Fist",
 				"Balanced Carrot",
 				"Guarding Carrot",
 				"Bouncing Flail",
@@ -94,7 +100,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Cloak",
 				"Elemental Scroll",
 				"Longsword",
-				"Musket"
+				"Musket",
+				"Overburn Explosion"
 			],
 			Rare: [
 				"Charging Bonfire Formation",
@@ -106,7 +113,9 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Double Longsword",
 				"Lethal Longsword",
 				"Discounted Musket",
-				"Hunter's Musket"
+				"Hunter's Musket",
+				"Accurate Overburn Explosion",
+				"Unstoppable Overburn Explosion"
 			]
 		},
 		Light: {
@@ -114,6 +123,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			],
 			Common: [
 				"Battle Standard",
+				"Forbidden Knowledge",
 				"Midas Staff",
 				"Parrying Dagger",
 				"Reveal Flaw",
@@ -122,6 +132,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			Rare: [
 				"Thief's Battle Standard",
 				"Tormenting Battle Standard",
+				"Enticing Forbidden Knowledge",
+				"Soothing Forbidden Knowledge",
 				"Accelerating Midas Staff",
 				"Discounted Midas Staff",
 				"Devoted Parrying Dagger",
@@ -140,6 +152,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Conjured Ice Armaments",
 				"Medic's Kit",
 				"Net Launcher",
+				"Universal Solution",
 				"Wave Crash"
 			],
 			Rare: [
@@ -151,6 +164,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Warning Medic's Kit",
 				"Kinetic Net Launcher",
 				"Staggering Net Launcher",
+				"Centering Universal Solution",
+				"Tormenting Universal Solution",
 				"Disenchanting Wave Crash",
 				"Fatiguing Wave Crash"
 			]
@@ -163,6 +178,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Enchantment Siphon",
 				"Greatsword",
 				"Lightning Staff",
+				"Tempestuous Wrath",
 				"Tornado Formation"
 			],
 			Rare: [
@@ -174,6 +190,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Distracting Greatsword",
 				"Disenchanting Lightning Staff",
 				"Hexing Lightning Staff",
+				"Flanking Tempestuous Wrath",
+				"Opportunist's Tempestuous Wrath",
 				"Charging Tornado Formation",
 				"Supportive Tornado Formation"
 			]

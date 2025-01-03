@@ -38,4 +38,4 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Warning Medic's Kit")
 	.setCooldown(2)
 	.setRnConfig({ debuffs: 1 })
-	.setBonus(1);
+	.setBonus(1); // Morale

@@ -36,6 +36,6 @@ module.exports = new GearTemplate(gearName,
 	.setSidegrades("Kinetic Arcane Sledge")
 	.setCooldown(1)
 	.setDamage(40)
-	.setBonus(1)
+	.setBonus(1) // Buffs removed
 	.setRnConfig({ buffs: 2 })
 	.setModifiers({ name: "Impotence", stacks: { description: "2 + Bonus Speed / 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed / 10) } });

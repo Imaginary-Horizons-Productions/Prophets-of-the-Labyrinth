@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Tornado Formation",
 	200,
 	(targets, user, adventure) => {
 		const { essence, moraleRequirement, damage, modifiers: [swiftness], critMultiplier } = module.exports;
-		if (adventure.room.morale < moraleRequirement) {
+		if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
 			return ["...but the party didn't have enough Morale to pull it off."];
 		}
 
