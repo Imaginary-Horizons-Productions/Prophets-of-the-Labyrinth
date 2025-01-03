@@ -159,7 +159,8 @@ class Delver extends Combatant {
 
 	/** Game Design: constrain damage cap increases to multiples of 10, so a damage number ending in 9 can be a more reliable tell of hitting damage cap */
 	getDamageCap() {
-		return 179 + 20 * (this.level + this.getModifierStacks("Excellence") - this.getModifierStacks("Degredation"));
+		const ringOfPowerCount = Object.keys(this.gear).filter(gearName => gearName.includes("Ring of Power")).length;
+		return 179 + 20 * (this.level + this.getModifierStacks("Excellence") - this.getModifierStacks("Degredation") + (ringOfPowerCount * 3));
 	}
 }
 

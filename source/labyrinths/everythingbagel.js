@@ -45,6 +45,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			],
 			Common: [
 				"Fever Break",
+				"Ring of Conquest",
 				"Spiked Shield",
 				"War Cry",
 				"Warhammer"
@@ -52,6 +53,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Rare: [
 				"Fatiguing Fever Break",
 				"Unstoppable Fever Break",
+				"Hearty Ring of Conquest",
+				"Powerful Ring of Conquest",
 				"Furious Spiked Shield",
 				"Reinforced Spiked Shield",
 				"Flanking War Cry",
@@ -66,6 +69,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			Common: [
 				"Carrot",
 				"Flail",
+				"Herb Basket",
 				"Sandstorm Formation",
 				"Smokescreen"
 			],
@@ -74,6 +78,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Guarding Carrot",
 				"Bouncing Flail",
 				"Incompatible Flail",
+				"Enticing Herb Basket",
+				"Guarding Herb Basket",
 				"Balanced Sandstorm Formation",
 				"Soothing Sandstorm Formation",
 				"Chaining Smokescreen",
@@ -87,7 +93,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Bonfire Formation",
 				"Cloak",
 				"Elemental Scroll",
-				"Longsword"
+				"Longsword",
+				"Musket"
 			],
 			Rare: [
 				"Charging Bonfire Formation",
@@ -97,7 +104,9 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Balanced Elemental Scroll",
 				"Surpassing Elemental Scroll",
 				"Double Longsword",
-				"Lethal Longsword"
+				"Lethal Longsword",
+				"Discounted Musket",
+				"Hunter's Musket"
 			]
 		},
 		Light: {
@@ -105,16 +114,22 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			],
 			Common: [
 				"Battle Standard",
+				"Midas Staff",
 				"Parrying Dagger",
-				"Reveal Flaw"
+				"Reveal Flaw",
+				"Ring of Knowledge"
 			],
 			Rare: [
 				"Thief's Battle Standard",
 				"Tormenting Battle Standard",
+				"Accelerating Midas Staff",
+				"Discounted Midas Staff",
 				"Devoted Parrying Dagger",
 				"Hastening Parrying Dagger",
 				"Distracting Reveal Flaw",
-				"Numbing Reveal Flaw"
+				"Numbing Reveal Flaw",
+				"Accurate Ring of Knowledge",
+				"Swift Ring of Knowledge"
 			]
 		},
 		Water: {
@@ -122,10 +137,10 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 			],
 			Common: [
 				"Buckler",
-				"Supportive Buckler",
 				"Conjured Ice Armaments",
 				"Medic's Kit",
-				"Net Launcher"
+				"Net Launcher",
+				"Wave Crash"
 			],
 			Rare: [
 				"Guarding Buckler",
@@ -136,6 +151,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Warning Medic's Kit",
 				"Kinetic Net Launcher",
 				"Staggering Net Launcher",
+				"Disenchanting Wave Crash",
+				"Fatiguing Wave Crash"
 			]
 		},
 		Wind: {
@@ -145,6 +162,7 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Arcane Sledge",
 				"Enchantment Siphon",
 				"Greatsword",
+				"Lightning Staff",
 				"Tornado Formation"
 			],
 			Rare: [
@@ -154,6 +172,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Tormenting Enchantment Siphon",
 				"Chaining Greatsword",
 				"Distracting Greatsword",
+				"Disenchanting Lightning Staff",
+				"Hexing Lightning Staff",
 				"Charging Tornado Formation",
 				"Supportive Tornado Formation"
 			]
