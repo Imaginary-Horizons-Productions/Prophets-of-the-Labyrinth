@@ -3,7 +3,7 @@ const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
-module.exports = new GearTemplate("Vigilant Conjured Ice Armaments",
+module.exports = new GearTemplate("Vigilant Steam Wall",
 	[
 		["use", "Grant @{protection} protection to and @{mod0Stacks} @{mod0} for an ally and adjacent allies"],
 		["Critical💥", "Protection x @{critMultiplier}"]
@@ -14,7 +14,7 @@ module.exports = new GearTemplate("Vigilant Conjured Ice Armaments",
 	(targets, user, adventure) => {
 		const { essence, moraleRequirement, protection, critMultiplier, modifiers: [vigilance] } = module.exports;
 		if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
-			return ["...but the party didn't have enough Morale to pull it off."];
+			return ["...but the party didn't have enough morale to pull it off."];
 		}
 
 		if (user.essence === essence) {
@@ -28,7 +28,7 @@ module.exports = new GearTemplate("Vigilant Conjured Ice Armaments",
 		return [joinAsStatement(false, targets.map(target => target.name), "gain", "gains", "protection.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, vigilance))));
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "ally" })
-	.setSidegrades("Supportive Conjured Ice Armaments")
+	.setSidegrades("Supportive Steam Wall")
 	.setMoraleRequirement(1)
 	.setProtection(125)
 	.setModifiers({ name: "Vigilance", stacks: 2 });
