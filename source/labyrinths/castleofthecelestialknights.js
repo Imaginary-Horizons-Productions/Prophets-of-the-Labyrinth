@@ -44,6 +44,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Cursed: [
 			],
 			Common: [
+				"Blood Aegis",
 				"Fever Break",
 				"Ring of Conquest",
 				"Spiked Shield",
@@ -51,6 +52,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Warhammer"
 			],
 			Rare: [
+				"Toxic Blood Aegis",
+				"Urgent Blood Aegis",
 				"Fatiguing Fever Break",
 				"Unstoppable Fever Break",
 				"Hearty Ring of Conquest",
@@ -67,6 +70,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Cursed: [
 			],
 			Common: [
+				"Bounty Fist",
 				"Carrot",
 				"Flail",
 				"Herb Basket",
@@ -74,6 +78,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Smokescreen"
 			],
 			Rare: [
+				"Midas's Bounty Fist",
+				"Thirsting Bounty Fist",
 				"Balanced Carrot",
 				"Guarding Carrot",
 				"Bouncing Flail",
@@ -93,8 +99,9 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Bonfire Formation",
 				"Cloak",
 				"Elemental Scroll",
+				"Longsword",
 				"Musket",
-				"Longsword"
+				"Overburn Explosion"
 			],
 			Rare: [
 				"Charging Bonfire Formation",
@@ -103,10 +110,12 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Powerful Cloak",
 				"Balanced Elemental Scroll",
 				"Surpassing Elemental Scroll",
+				"Double Longsword",
+				"Lethal Longsword",
 				"Discounted Musket",
 				"Hunter's Musket",
-				"Double Longsword",
-				"Lethal Longsword"
+				"Accurate Overburn Explosion",
+				"Unstoppable Overburn Explosion"
 			]
 		},
 		Light: {
@@ -114,6 +123,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			],
 			Common: [
 				"Battle Standard",
+				"Forbidden Knowledge",
 				"Midas Staff",
 				"Parrying Dagger",
 				"Reveal Flaw",
@@ -122,6 +132,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Rare: [
 				"Thief's Battle Standard",
 				"Tormenting Battle Standard",
+				"Enticing Forbidden Knowledge",
+				"Soothing Forbidden Knowledge",
 				"Accelerating Midas Staff",
 				"Discounted Midas Staff",
 				"Devoted Parrying Dagger",
@@ -140,6 +152,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Conjured Ice Armaments",
 				"Medic's Kit",
 				"Net Launcher",
+				"Universal Solution",
 				"Wave Crash"
 			],
 			Rare: [
@@ -151,6 +164,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Warning Medic's Kit",
 				"Kinetic Net Launcher",
 				"Staggering Net Launcher",
+				"Centering Universal Solution",
+				"Tormenting Universal Solution",
 				"Disenchanting Wave Crash",
 				"Fatiguing Wave Crash"
 			]
@@ -163,6 +178,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Enchantment Siphon",
 				"Greatsword",
 				"Lightning Staff",
+				"Tempestuous Wrath",
 				"Tornado Formation"
 			],
 			Rare: [
@@ -174,6 +190,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Distracting Greatsword",
 				"Disenchanting Lightning Staff",
 				"Hexing Lightning Staff",
+				"Flanking Tempestuous Wrath",
+				"Opportunist's Tempestuous Wrath",
 				"Charging Tornado Formation",
 				"Supportive Tornado Formation"
 			]

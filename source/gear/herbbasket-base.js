@@ -27,6 +27,6 @@ module.exports = new GearTemplate("Herb Basket",
 ).setTargetingTags({ type: "none", team: "none" })
 	.setUpgrades("Enticing Herb Basket", "Guarding Herb Basket")
 	.setCooldown(1)
-	.setBonus(1)
+	.setBonus(1) // Herbs gathered
 	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
 	.setRnConfig({ herbs: 1 });

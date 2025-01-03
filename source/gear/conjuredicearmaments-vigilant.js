@@ -13,7 +13,7 @@ module.exports = new GearTemplate("Vigilant Conjured Ice Armaments",
 	350,
 	(targets, user, adventure) => {
 		const { essence, moraleRequirement, protection, critMultiplier, modifiers: [vigilance] } = module.exports;
-		if (adventure.room.morale < moraleRequirement) {
+		if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
 			return ["...but the party didn't have enough Morale to pull it off."];
 		}
 

@@ -35,5 +35,5 @@ module.exports = new GearTemplate("Disenchanting Wave Crash",
 	.setCooldown(1)
 	.setModifiers({ name: "Incompatibility", stacks: 2 })
 	.setDamage(40)
-	.setBonus(1)
+	.setBonus(1) // Buffs removed
 	.setRnConfig({ buffs: 1 });

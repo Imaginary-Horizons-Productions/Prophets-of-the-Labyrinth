@@ -36,5 +36,5 @@ module.exports = new GearTemplate(gearName,
 	.setUpgrades("Fatiguing Arcane Sledge", "Kinetic Arcane Sledge")
 	.setCooldown(1)
 	.setDamage(40)
-	.setBonus(1)
+	.setBonus(1) // Buffs removed
 	.setRnConfig({ buffs: 2 });
