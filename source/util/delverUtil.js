@@ -17,7 +17,7 @@ function levelUp(delver, levels, adventure) {
 	}
 	let growthBonus = 1 + manualGrowth;
 	for (const gearName in delver.gear) {
-		if (gearName.startsWith("Wise")) {
+		if (gearName.includes("Ring of Knowledge")) {
 			growthBonus += 0.1;
 		}
 	}

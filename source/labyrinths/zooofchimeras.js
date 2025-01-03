@@ -45,6 +45,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			],
 			Common: [
 				"Fever Break",
+				"Ring of Conquest",
 				"Spiked Shield",
 				"War Cry",
 				"Warhammer"
@@ -52,6 +53,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			Rare: [
 				"Fatiguing Fever Break",
 				"Unstoppable Fever Break",
+				"Hearty Ring of Conquest",
+				"Powerful Ring of Conquest",
 				"Furious Spiked Shield",
 				"Reinforced Spiked Shield",
 				"Flanking War Cry",
@@ -66,6 +69,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 			Common: [
 				"Carrot",
 				"Flail",
+				"Herb Basket",
 				"Sandstorm Formation",
 				"Smokescreen"
 			],
@@ -74,6 +78,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Guarding Carrot",
 				"Bouncing Flail",
 				"Incompatible Flail",
+				"Enticing Herb Basket",
+				"Guarding Herb Basket",
 				"Balanced Sandstorm Formation",
 				"Soothing Sandstorm Formation",
 				"Chaining Smokescreen",
@@ -87,7 +93,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Bonfire Formation",
 				"Cloak",
 				"Elemental Scroll",
-				"Longsword"
+				"Longsword",
+				"Musket"
 			],
 			Rare: [
 				"Charging Bonfire Formation",
@@ -98,6 +105,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Surpassing Elemental Scroll",
 				"Double Longsword",
 				"Lethal Longsword",
+				"Discounted Musket",
+				"Hunter's Musket"
 			]
 		},
 		Light: {
@@ -107,7 +116,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Battle Standard",
 				"Midas Staff",
 				"Parrying Dagger",
-				"Reveal Flaw"
+				"Reveal Flaw",
+				"Ring of Knowledge"
 			],
 			Rare: [
 				"Thief's Battle Standard",
@@ -117,7 +127,9 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Devoted Parrying Dagger",
 				"Hastening Parrying Dagger",
 				"Distracting Reveal Flaw",
-				"Numbing Reveal Flaw"
+				"Numbing Reveal Flaw",
+				"Accurate Ring of Knowledge",
+				"Swift Ring of Knowledge"
 			]
 		},
 		Water: {
@@ -127,7 +139,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Buckler",
 				"Conjured Ice Armaments",
 				"Medic's Kit",
-				"Net Launcher"
+				"Net Launcher",
+				"Wave Crash"
 			],
 			Rare: [
 				"Guarding Buckler",
@@ -138,6 +151,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Warning Medic's Kit",
 				"Kinetic Net Launcher",
 				"Staggering Net Launcher",
+				"Disenchanting Wave Crash",
+				"Fatiguing Wave Crash"
 			]
 		},
 		Wind: {
@@ -147,6 +162,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Arcane Sledge",
 				"Enchantment Siphon",
 				"Greatsword",
+				"Lightning Staff",
 				"Tornado Formation"
 			],
 			Rare: [
@@ -156,6 +172,8 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Tormenting Enchantment Siphon",
 				"Chaining Greatsword",
 				"Distracting Greatsword",
+				"Disenchanting Lightning Staff",
+				"Hexing Lightning Staff",
 				"Charging Tornado Formation",
 				"Supportive Tornado Formation"
 			]

@@ -45,6 +45,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			],
 			Common: [
 				"Fever Break",
+				"Ring of Conquest",
 				"Spiked Shield",
 				"War Cry",
 				"Warhammer"
@@ -52,6 +53,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Rare: [
 				"Fatiguing Fever Break",
 				"Unstoppable Fever Break",
+				"Hearty Ring of Conquest",
+				"Powerful Ring of Conquest",
 				"Furious Spiked Shield",
 				"Reinforced Spiked Shield",
 				"Flanking War Cry",
@@ -66,6 +69,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 			Common: [
 				"Carrot",
 				"Flail",
+				"Herb Basket",
 				"Sandstorm Formation",
 				"Smokescreen"
 			],
@@ -74,6 +78,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Guarding Carrot",
 				"Bouncing Flail",
 				"Incompatible Flail",
+				"Enticing Herb Basket",
+				"Guarding Herb Basket",
 				"Balanced Sandstorm Formation",
 				"Soothing Sandstorm Formation",
 				"Chaining Smokescreen",
@@ -87,6 +93,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Bonfire Formation",
 				"Cloak",
 				"Elemental Scroll",
+				"Musket",
 				"Longsword"
 			],
 			Rare: [
@@ -96,6 +103,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Powerful Cloak",
 				"Balanced Elemental Scroll",
 				"Surpassing Elemental Scroll",
+				"Discounted Musket",
+				"Hunter's Musket",
 				"Double Longsword",
 				"Lethal Longsword"
 			]
@@ -107,7 +116,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Battle Standard",
 				"Midas Staff",
 				"Parrying Dagger",
-				"Reveal Flaw"
+				"Reveal Flaw",
+				"Ring of Knowledge"
 			],
 			Rare: [
 				"Thief's Battle Standard",
@@ -117,7 +127,9 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Devoted Parrying Dagger",
 				"Hastening Parrying Dagger",
 				"Distracting Reveal Flaw",
-				"Numbing Reveal Flaw"
+				"Numbing Reveal Flaw",
+				"Accurate Ring of Knowledge",
+				"Swift Ring of Knowledge"
 			]
 		},
 		Water: {
@@ -127,7 +139,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Buckler",
 				"Conjured Ice Armaments",
 				"Medic's Kit",
-				"Net Launcher"
+				"Net Launcher",
+				"Wave Crash"
 			],
 			Rare: [
 				"Guarding Buckler",
@@ -138,6 +151,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Warning Medic's Kit",
 				"Kinetic Net Launcher",
 				"Staggering Net Launcher",
+				"Disenchanting Wave Crash",
+				"Fatiguing Wave Crash"
 			]
 		},
 		Wind: {
@@ -147,6 +162,7 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Arcane Sledge",
 				"Enchantment Siphon",
 				"Greatsword",
+				"Lightning Staff",
 				"Tornado Formation"
 			],
 			Rare: [
@@ -156,6 +172,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 				"Tormenting Enchantment Siphon",
 				"Chaining Greatsword",
 				"Distracting Greatsword",
+				"Disenchanting Lightning Staff",
+				"Hexing Lightning Staff",
 				"Charging Tornado Formation",
 				"Supportive Tornado Formation"
 			]
