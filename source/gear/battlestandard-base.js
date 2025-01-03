@@ -5,7 +5,7 @@ const { changeStagger, dealDamage } = require('../util/combatantUtil');
 module.exports = new GearTemplate("Battle Standard",
 	[
 		["use", "Deal @{damage} @{essence} damage to a single foe"],
-		["Critical💥", "Damage x @{critMultiplier}, gain @{bonus} Morale"]
+		["Critical💥", "Damage x @{critMultiplier}, increase the party's morale by @{bonus}"]
 	],
 	"Offense",
 	"Light",
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Battle Standard",
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 			adventure.room.morale += bonus;
-			resultLines.push("The party's Morale is increased!")
+			resultLines.push("The party's morale is increased!")
 		}
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(resultLines);
 	}

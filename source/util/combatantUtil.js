@@ -430,6 +430,7 @@ function concatTeamMembersWithModifier(targets, team, modifier) {
 }
 
 module.exports = {
+	downedCheck,
 	dealDamage,
 	dealModifierDamage,
 	payHP,

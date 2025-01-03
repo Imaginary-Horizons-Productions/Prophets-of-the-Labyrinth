@@ -7,7 +7,7 @@ const gearName = "Medic's Kit";
 module.exports = new GearTemplate(gearName,
 	[
 		["use", "Cure a random debuff from each ally"],
-		["Critical💥", "Debuffs cured x@{critMultiplier}"]
+		["Critical💥", "Debuffs cured x @{critMultiplier}"]
 	],
 	"Support",
 	"Water",
@@ -36,4 +36,4 @@ module.exports = new GearTemplate(gearName,
 ).setTargetingTags({ type: "all", team: "ally" })
 	.setUpgrades("Inspiring Medic's Kit", "Warning Medic's Kit")
 	.setCooldown(2)
-	.setRnConfig({ debuffs: 1 });
+	.setRnConfig({ debuffs: 2 });

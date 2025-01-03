@@ -6,7 +6,7 @@ const { changeStagger, dealDamage, generateModifierResultLines, combineModifierR
 module.exports = new GearTemplate("Tormenting Battle Standard",
 	[
 		["use", "Deal @{damage} @{essence} damage to a single foe and add @{bonus2} stack to each of their debuffs"],
-		["Critical💥", "Damage x @{critMultiplier}, gain @{bonus} Morale"]
+		["Critical💥", "Damage x @{critMultiplier}, increase the party's morale by @{bonus}"]
 	],
 	"Offense",
 	"Light",
@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Tormenting Battle Standard",
 		resultLines.push(...generateModifierResultLines(combineModifierReceipts(reciepts)));
 		if (user.crit) {
 			adventure.room.morale += bonus;
-			resultLines.push("The party's Morale is increased!")
+			resultLines.push("The party's morale is increased!")
 		}
 		return resultLines;
 	}

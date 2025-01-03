@@ -7,7 +7,7 @@ const gearName = "Inspiring Medic's Kit";
 module.exports = new GearTemplate(gearName,
 	[
 		["use", "Cure a random debuff from each ally and increase the party's morale by @{bonus}"],
-		["Critical💥", "Debuffs cured x@{critMultiplier}"]
+		["Critical💥", "Debuffs cured x @{critMultiplier}"]
 	],
 	"Support",
 	"Water",
@@ -32,10 +32,10 @@ module.exports = new GearTemplate(gearName,
 			}
 		}
 		adventure.room.morale += bonus;
-		return generateModifierResultLines(combineModifierReceipts(receipts)).concat("The party's Morale is increased!");
+		return generateModifierResultLines(combineModifierReceipts(receipts)).concat("The party's morale is increased!");
 	}
 ).setTargetingTags({ type: "all", team: "ally" })
 	.setSidegrades("Warning Medic's Kit")
 	.setCooldown(2)
-	.setRnConfig({ debuffs: 1 })
+	.setRnConfig({ debuffs: 2 })
 	.setBonus(1); // Morale
