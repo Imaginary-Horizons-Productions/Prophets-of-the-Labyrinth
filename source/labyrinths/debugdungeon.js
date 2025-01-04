@@ -170,6 +170,13 @@ module.exports = new LabyrinthTemplate("Debug Dungeon",
 			"Toxic Wind Burst"
 		]])),
 		Unaligned: Object.fromEntries(RARITIES.map(rarity => [rarity, [
+			"Cursed Blade",
+			"Cursed Shield",
+			"Cursed Doll",
+			"Cursed Bag",
+			"Cursed Tome",
+			"Cursed Grimore",
+			"Cursed Scroll",
 			"Boots of Comfort",
 			"Mighty Gauntlet",
 			"Scarf",

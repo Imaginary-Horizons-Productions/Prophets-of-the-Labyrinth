@@ -234,6 +234,13 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 		},
 		Unaligned: {
 			Cursed: [
+				"Cursed Blade",
+				"Cursed Shield",
+				"Cursed Doll",
+				"Cursed Bag",
+				"Cursed Tome",
+				"Cursed Grimore",
+				"Cursed Scroll"
 			],
 			Common: [
 				"Boots of Comfort",
