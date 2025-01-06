@@ -26,7 +26,6 @@ const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { rollableHerbs } = require("../shared/herbs");
 const { rollablePotions } = require("../shared/potions");
 const { getPetMove, generatePetRNs } = require("../pets/_petDictionary.js");
-const { getPlayer } = require("./playerOrcustrator.js");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();
