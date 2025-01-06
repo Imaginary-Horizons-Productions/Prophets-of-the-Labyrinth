@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, MessagePayload, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
 const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
@@ -285,7 +285,6 @@ function addScoreField(embed, adventure, guildId) {
 			playerIds: adventure.delvers.map(delver => delver.id),
 			adventure: adventure.name
 		};
-		setCompany(company);
 	}
 	adventure.delvers.forEach(delver => {
 		if (adventure.state !== "giveup") {
@@ -305,6 +304,7 @@ function addScoreField(embed, adventure, guildId) {
 		}
 		company.adventuring.delete(delver.id);
 	})
+	setCompany(company);
 }
 
 /** Generates the string for a scoreline or omits the line (returns empty string) if value is the identity for stackType

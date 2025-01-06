@@ -5,8 +5,6 @@ const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = 
 
 const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE } = require("../constants.js");
 
-const { getCompany, setCompany } = require("./companyOrcustrator");
-
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getEnemy } = require("../enemies/_enemyDictionary");
 const { getGearProperty, gearExists } = require("../gear/_gearDictionary");
@@ -1160,9 +1158,6 @@ function completeAdventure(adventure, thread, endState, descriptionOverride) {
 	}
 	adventure.state = endState;
 	setAdventure(adventure);
-	const company = getCompany(thread.guild.id);
-	adventure.delvers.forEach(delver => company.adventuring.delete(delver.id));
-	setCompany(company);
 	return renderRoom(adventure, thread, descriptionOverride);
 }
 
