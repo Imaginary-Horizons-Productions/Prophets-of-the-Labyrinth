@@ -33,4 +33,4 @@ module.exports = new GearTemplate(gearName,
 	.setUpgrades("Hastening Medicine", "Urgent Medicine")
 	.setCharges(15)
 	.setBonus(1) // Debuffs cured
-	.setRnConfig({ debuffs: 2 }); //TODONOW check if crit cures are predicted (shouldn't be)
+	.setRnConfig({ debuffs: 2 });

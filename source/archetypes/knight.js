@@ -1,44 +1,42 @@
-const { bold } = require("discord.js");
 const { ArchetypeTemplate } = require("../classes");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Knight",
-	`They'll be able to predict who enemies are targeting with which moves. They'll gain deal extra damage scaling with their Speed with their Lance.`,
-	"Light",
-	{
-		maxHPGrowth: 25,
-		powerGrowth: 2.5,
-		speedGrowth: 0.5,
-		critRateGrowth: 0.25,
-		poiseGrowth: 0
-	},
-	[],
+	["Templar", "Paladin", "General", "Juggernaut"],
+	"They'll be able to predict who enemies are targeting with which moves and the order combatants will act in. Their Lance will grant them protection.",
+	"Water",
 	(embed, adventure) => {
-		const currentRoundLines = [];
-		const nextRoundLines = [];
-		adventure.room.moves.forEach(({ userReference, name, targets, priority }) => {
-			if (userReference.team === "enemy") {
-				const enemy = adventure.getCombatant(userReference);
-				if (enemy.hp > 0) {
-					if (name !== "Mirror Clone") {
-						currentRoundLines.push(`${bold(enemy.name)}: ${name} (Targets: ${listifyEN(targets.map(targetReference => adventure.getCombatant(targetReference).name), false) || "none"}${priority != 0 ? `, Priority: ${priority}` : ""})`);
-						nextRoundLines.push(`${bold(enemy.name)}: ${enemy.nextAction}`);
-					} else {
-						currentRoundLines.push(`${bold(enemy.name)}: Mimic ${adventure.delvers[userReference.index].name}`);
-						nextRoundLines.push(`${bold(enemy.name)}: Mimic ${adventure.delvers[userReference.index].name}`);
-					}
-				}
+		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
+			.concat(adventure.delvers)
+			.sort((first, second) => second.getSpeed(true) - first.getSpeed(true));
+		activeCombatants.forEach(combatant => {
+			const move = adventure.room.findCombatantMove({ team: combatant.team, index: adventure.getCombatantIndex(combatant) });
+			if (move?.name === "Mirror Clone") {
+				embed.addFields({ name: combatant.name, value: `Move: Mimic ${adventure.delvers[move.userReference.index].name} Speed: ${combatant.getSpeed(true)}` });
+			} else if (move) {
+				embed.addFields({ name: combatant.name, value: `Move: ${move.name} (Targets: ${listifyEN(targets.map(targetReference => adventure.getCombatant(targetReference).name), false) || "none"})\nSpeed: ${combatant.getSpeed(true)}${priority > 0 ? ` (Priority ${priority})` : ""}` });
+			} else {
+				// Missing move because delver hasn't decided yet
+				embed.addFields({ name: combatant.name, value: `Speed: ${combatant.getSpeed(true)}` });
 			}
-		})
-		embed.addFields({ name: `Enemy Moves (Round ${adventure.room.round + 1})`, value: currentRoundLines.join("\n") });
-		embed.addFields({ name: `Enemy Moves (Round ${adventure.room.round + 2})`, value: nextRoundLines.join("\n") });
-		return embed.setDescription(`Knight predictions:`);
+		});
+		return embed.setDescription(`Knight predictions for Round ${adventure.room.round + 1}:`);
 	},
 	(combatant) => {
-		if (combatant.team === "delver" || combatant.archetype === "Mirror Clone") {
-			return "";
-		} else {
-			return `Move in 2 rounds: ${combatant.nextAction}`;
-		}
+		return `Speed: ${combatant.getSpeed(true)}`;
+	},
+	{
+		base: "Lance",
+		General: "Bashing Lance",
+		Templar: "Taunting Lance",
+		Paladin: "Accelerating Lance",
+		Juggernaut: "Juggernaut's Lance"
+	},
+	["Buckler"],
+	{
+		maxHPGrowth: 50,
+		powerGrowth: 2.5,
+		speedGrowth: 1,
+		critRateGrowth: 0.25
 	}
 );

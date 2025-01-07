@@ -88,7 +88,6 @@ class Delver extends Combatant {
 		super(nameInput, "delver");
 		this.id = idInput;
 		this.adventureId = adventureIdInput;
-		this.power = 35;
 	}
 	isReady = false;
 	/** @type {Gear[]} */
@@ -97,7 +96,9 @@ class Delver extends Combatant {
 		type: "",
 		level: 0
 	};
+	specialization = "base";
 	startingArtifact = "";
+	power = 35;
 
 	getMaxHP() {
 		return Math.floor(this.maxHP) * (1 + this.gear.reduce((totalGearMaxHP, gear) => {

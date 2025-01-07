@@ -68,7 +68,7 @@ class Adventure {
 	gold;
 	/** @type {number} */
 	peakGold;
-	gearCapacity = 3;
+	gearCapacity = 2;
 	/** @type {Record<string, {count: number; [statistic: string]: number}>} */
 	artifacts = {};
 	/** @type {{[itemName: string]: number}} */
@@ -156,7 +156,7 @@ class Adventure {
 
 	getGearCapacity() {
 		let count = this.gearCapacity + this.getArtifactCount("Hammerspace Holster") - this.getChallengeIntensity("Can't Hold All this Value");
-		count = Math.min(MAX_MESSAGE_ACTION_ROWS, count);
+		count = Math.min(MAX_MESSAGE_ACTION_ROWS - 1, count); // Need to leave space for Archetype Action
 		count = Math.max(1, count);
 		return count;
 	}

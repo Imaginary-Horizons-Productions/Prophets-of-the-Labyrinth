@@ -10,7 +10,7 @@ class Player {
 	scores = {};
 	/** @type {{[adventureId: string]: string}} adventureId for the adventure unlocked, pointing to artifact name */
 	artifacts = { "start": "Phoenix Fruit Blossom" };
-	/** @type {{[archetypeName: string]: number}} value is high score */
+	/** @type {{[archetypeName: string]: { specializationsUnlocked: number, highScore: number }}} */
 	archetypes = {};
 	/** @type {{[petName: string]: number}} value is pet level (which should be on range [1-4])*/
 	pets = {};

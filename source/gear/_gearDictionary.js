@@ -12,7 +12,6 @@ const GEAR_NAMES = [];
 for (const file of [
 	"_appease.js",
 	"_greed.js",
-	"_punch-base.js",
 	"arcanesledge-base.js",
 	"arcanesledge-fatiguing.js",
 	"arcanesledge-kinetic.js",
@@ -38,6 +37,11 @@ for (const file of [
 	"carrot-balanced.js",
 	"carrot-base.js",
 	"carrot-guarding.js",
+	"cauldronstir-base.js",
+	"cauldronstir-incompatible.js",
+	"cauldronstir-innovative.js",
+	"cauldronstir-sabotaging.js",
+	"cauldronstir-toxic.js",
 	"cloak-accurate.js",
 	"cloak-base.js",
 	"cloak-powerful.js",
@@ -51,6 +55,16 @@ for (const file of [
 	"cursed-scroll.js",
 	"cursed-shield.js",
 	"cursed-tome.js",
+	"daggers-attuned",
+	"daggers-balanced",
+	"daggers-base",
+	"daggers-centering",
+	"daggers-distracting",
+	"deckofcards-base.js",
+	"deckofcards-evasive.js",
+	"deckofcards-numbing.js",
+	"deckofcards-omenous.js",
+	"deckofcards-tormenting.js",
 	"elementalscroll-balanced.js",
 	"elementalscroll-base.js",
 	"elementalscroll-surpassing.js",
@@ -69,6 +83,11 @@ for (const file of [
 	"flamescythes-base.js",
 	"flamescythes-thiefs.js",
 	"flamescythes-toxic.js",
+	"flourish-base.js",
+	"flourish-bouncing.js",
+	"flourish-shattering.js",
+	"flourish-staggering.js",
+	"flourish-urgent.js",
 	"forbiddenknowledge-base.js",
 	"forbiddenknowledge-enticing.js",
 	"forbiddenknowledge-soothing.js",
@@ -84,6 +103,16 @@ for (const file of [
 	"illumination-balanced.js",
 	"illumination-base.js",
 	"illumination-inspiring.js",
+	"lance-accelerating.js",
+	"lance-base.js",
+	"lance-bashing.js",
+	"lance-juggernauts.js",
+	"lance-taunting.js",
+	"lifedrain-base.js",
+	"lifedrain-fatiguing.js",
+	"lifedrain-furious.js",
+	"lifedrain-reapers.js",
+	"lifedrain-thirsting.js",
 	"lightningstaff-base.js",
 	"lightningstaff-disenchanting.js",
 	"lightningstaff-hexing.js",
@@ -137,15 +166,30 @@ for (const file of [
 	"shadowofconfusion-base.js",
 	"shadowofconfusion-incompatible.js",
 	"shadowofconfusion-shattering.js",
+	"shortsword-base.js",
+	"shortsword-flanking.js",
+	"shortsword-hexing.js",
+	"shortsword-midass.js",
+	"shortsword-vigilant.js",
 	"smokescreen-base.js",
 	"smokescreen-chaining.js",
 	"smokescreen-double.js",
+	"spear-base.js",
+	"spear-disenchanting.js",
+	"spear-flanking.js",
+	"spear-hastening.js",
+	"spear-weakening.js",
 	"spikedshield-base.js",
 	"spikedshield-furious.js",
 	"spikedshield-reinforced.js",
 	"steamwall-base.js",
 	"steamwall-supportive.js",
 	"steamwall-vigilant.js",
+	"stick-base.js",
+	"stick-convalescence.js",
+	"stick-flanking.js",
+	"stick-hunters.js",
+	"stick-thiefs.js",
 	"tempestuouswrath-base.js",
 	"tempestuouswrath-flanking.js",
 	"tempestuouswrath-opportunists.js",
@@ -277,21 +321,20 @@ function buildGearDescription(gearName) {
 
 /**
  * @param {string} gearName
- * @param {number} gearIndex for charges lookup if holder has multiple of same gear type
  * @param {Delver} holder
+ * @param {number | null} gearIndex for charges lookup if holder has multiple of same gear type
  */
-function buildGearDescriptionWithHolderStats(gearName, gearIndex, holder) {
+function buildGearDescriptionWithHolderStats(gearName, holder, gearIndex) {
 	if (!gearExists(gearName)) {
 		return "";
 	}
-	const gearRecord = holder.gear[gearIndex];
 	const maxCharges = getGearProperty(gearName, "maxCharges");
 	const moraleRequirement = getGearProperty(gearName, "moraleRequirement");
 	const pactCost = getGearProperty(gearName, "pactCost");
 	const cooldown = getGearProperty(gearName, "cooldown");
 	const descriptionTexts = [];
 	if (maxCharges !== Infinity) {
-		descriptionTexts.push(`${italic("Remaining Charges")}: ${gearRecord.charges}`);
+		descriptionTexts.push(`${italic("Remaining Charges")}: ${holder.gear[gearIndex].charges}`);
 	} else if (moraleRequirement > 0) {
 		descriptionTexts.push(`${italic("Morale Required")}: ${moraleRequirement}`);
 	} else if (pactCost) {

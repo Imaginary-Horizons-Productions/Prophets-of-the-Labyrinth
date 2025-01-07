@@ -36,6 +36,7 @@ for (const file of [
 	"startingartifacts.js",
 	"stealwishingwellcore.js",
 	"switchpet.js",
+	"switchspecialization.js",
 	"trainingdummy.js",
 	"upgrade.js"
 ]) {

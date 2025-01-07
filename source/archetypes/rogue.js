@@ -3,17 +3,10 @@ const { ZERO_WIDTH_WHITESPACE } = require("../constants");
 const { getCombatantCounters } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 
-module.exports = new ArchetypeTemplate("Assassin",
-	"They'll be able to predict which combatants will critically hit and which essence to use to counter each combatant, lining up massive damage with their Daggers.",
-	"Wind",
-	{
-		maxHPGrowth: 25,
-		powerGrowth: 2.5,
-		speedGrowth: 0.5,
-		critRateGrowth: 0.25,
-		poiseGrowth: 0
-	},
-	[],
+module.exports = new ArchetypeTemplate("Rogue",
+	["Assassin", "Acrobat", "Charlatan", "Juggler"],
+	"They'll be able to predict which combatants will critically hit and which essence to use to counter each combatant. Their Daggers gives them @e{Excellence}.",
+	"Fire",
 	(embed, adventure) => {
 		/** @param {Combatant} combatant */
 		function createEssenceAndCritField(combatant) {
@@ -29,5 +22,19 @@ module.exports = new ArchetypeTemplate("Assassin",
 	(combatant) => {
 		const counters = getCombatantCounters(combatant);
 		return `Counters: ${counters.map(counter => getEmoji(counter)).join(" ")}`;
+	},
+	{
+		base: "Daggers",
+		Assassin: "Attuned Daggers",
+		Acrobat: "Balanced Daggers",
+		Charlatan: "Distracting Daggers",
+		Juggler: "Centering Daggers"
+	},
+	["Parrying Dagger"],
+	{
+		maxHPGrowth: 25,
+		powerGrowth: 5,
+		speedGrowth: 0.5,
+		critRateGrowth: 0.5
 	}
 );

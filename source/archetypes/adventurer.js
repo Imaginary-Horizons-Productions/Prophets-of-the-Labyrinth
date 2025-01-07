@@ -1,20 +1,12 @@
 const { ArchetypeTemplate } = require("../classes");
 
-module.exports = new ArchetypeTemplate("Fighter",
-	"They won't be able to predict anything and won't start with fancy gear, but have double normal stat growths.",
-	"Unaligned",
-	{
-		maxHPGrowth: 50,
-		powerGrowth: 5,
-		speedGrowth: 1,
-		critRateGrowth: 0.5,
-		poiseGrowth: 0
-	},
-	[],
+module.exports = new ArchetypeTemplate("Adventurer",
+	["Pirate", "Omenbringer", "Sentinel", "Vanguard"],
+	"They won't be able to predict anything, but have double normal stat growths. Their Shortsword grants them @e{Finesse}.",
+	"Fire",
 	(embed, adventure) => {
 		const descriptions = [
-			`I'm a fighter.`,
-			`I don't have any fancy gear.`,
+			`I'm an adventurer.`,
 			`I have double stat growths!`,
 			"¯\\_(ツ)\_/¯",
 			`This delve into ${adventure.name} is exciting!`,
@@ -27,5 +19,20 @@ module.exports = new ArchetypeTemplate("Fighter",
 		}
 		return embed.setDescription(`Fighter predictions for Round ${adventure.room.round + 1}:\n${descriptions[Date.now() % descriptions.length]}`);
 	},
-	(combatant) => ""
+	(combatant) => "",
+	{
+		base: "Shortsword",
+		Omenbringer: "Hexing Shortsword",
+		Sentinel: "Vigilant Shortsword",
+		Vanguard: "Flanking Shortsword",
+		Pirate: "Midas's Shortsword"
+	},
+	["Cloak"],
+	{
+		maxHPGrowth: 50,
+		powerGrowth: 5,
+		speedGrowth: 1,
+		critRateGrowth: 0.5,
+		poiseGrowth: 0
+	}
 );
