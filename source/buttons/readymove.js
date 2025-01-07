@@ -1,8 +1,8 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, bold } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
-const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, SKIP_INTERACTION_HANDLING } = require('../constants');
+const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, checkNextRound, endRound, setAdventure, cacheRoundRn } = require('../orcustrators/adventureOrcustrator');
-const { getArchetype } = require('../archetypes/_archetypeDictionary');
+const { getArchetype, getArchetypeActionName } = require('../archetypes/_archetypeDictionary');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getEmoji, getColor } = require('../util/essenceUtil');
 const { randomAuthorTip } = require('../util/embedUtil');
@@ -50,13 +50,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return optionPayload;
 		});
 		const components = [];
-		const usableMoves = [];
+		const usableMoves = [{ name: getArchetypeActionName(delver.archetype, delver.specialization), charges: Infinity, cooldown: 0, gearIndex: "@{archetypeAction}" }];
 		delver.gear.forEach((gear, index) => {
 			usableMoves.push({ ...gear, gearIndex: index })
 		});
-		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
-			usableMoves.unshift({ name: "Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
-		}
 		for (let i = 0; i < usableMoves.length; i++) {
 			const { name: gearName, charges, cooldown, gearIndex } = usableMoves[i];
 			const isOnCD = Boolean(cooldown) && (cooldown > 0);
@@ -215,7 +212,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					let overwritten = false;
 					for (let i = 0; i < adventure.room.moves.length; i++) {
 						const { userReference, type } = adventure.room.moves[i];
-						if (userReference.team === delver.team && userReference.index === userIndex && type !== "pet") {
+						// Early-out soonest by ordering conditions by descending selectiveness: "index" has [0, 3] matches, "team" has delvers.length matches, and "not pet" [moves.length - 1, moves.length] matches
+						if (userReference.index === userIndex && userReference.team === delver.team && type !== "pet") {
 							adventure.room.moves.splice(i, 1);
 							overwritten = true;
 							break;

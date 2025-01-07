@@ -37,7 +37,7 @@ module.exports = new GearTemplate(gearName,
 		return resultLines.concat(`${user.name}'s ${gearName} consumed ${goldUsed}g.`);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Midas's Bounty Fist", "Thirsting Bounty Fist")
+	.setSidegrades("Midas's Bounty Fist")
 	.setPactCost([10, "@{pactCost}% of party gold"])
 	.setDamage(40)
 	.setHealing(25);

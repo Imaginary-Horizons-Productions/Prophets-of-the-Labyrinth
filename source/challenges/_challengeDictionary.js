@@ -2,8 +2,11 @@ const { ChallengeTemplate, Adventure } = require("../classes");
 
 /** @type {Record<string, ChallengeTemplate>} */
 const CHALLENGES = {};
+/** @type {string[]} */
 const CHALLENGE_NAMES = [];
+/** @type {string[]} */
 const STARTING_CHALLENGES = [];
+/** @type {string[]} */
 const ROLLABLE_CHALLENGES = [];
 
 for (const file of [

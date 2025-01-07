@@ -1,11 +1,9 @@
 const fs = require("fs");
-const { ThreadChannel, Message, EmbedBuilder, italic, bold } = require("discord.js");
+const { ThreadChannel, Message, EmbedBuilder, bold } = require("discord.js");
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
 const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE } = require("../constants.js");
-
-const { getCompany, setCompany } = require("./companyOrcustrator");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getEnemy } = require("../enemies/_enemyDictionary");
@@ -13,7 +11,7 @@ const { getGearProperty, gearExists } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
-const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, getCombatantCounters } = require("../util/combatantUtil");
+const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection } = require("../util/combatantUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { essenceList, getCounteredEssences, getEmoji } = require("../util/essenceUtil.js");
 const { ensuredPathSave } = require("../util/fileUtil");
@@ -26,7 +24,7 @@ const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { rollableHerbs } = require("../shared/herbs");
 const { rollablePotions } = require("../shared/potions");
 const { getPetMove, generatePetRNs } = require("../pets/_petDictionary.js");
-const { getPlayer } = require("./playerOrcustrator.js");
+const { getArchetypeActionName } = require("../archetypes/_archetypeDictionary.js");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();
@@ -346,6 +344,9 @@ function cacheRoundRn(adventure, user, moveName, config) {
 				case "Mug or Mark":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(4, "battle"));
 					break;
+				case "Deck of Cards":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(8, "battle"));
+					break;
 				default: {
 					const keyAsInt = parseInt(key);
 					if (!isNaN(keyAsInt)) {
@@ -414,6 +415,8 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			return `${user.name}'s ${moveName} produces a ${rollablePotions[user.roundRns[roundRnKeyname][0] % rollablePotions.length]}`;
 		case "Mug or Mark":
 			return `${user.name} will apply ${user.roundRns[roundRnKeyname][0] + 2} stacks of The Mark if there isn't a mark yet.`;
+		case "Deck of Cards":
+			return `${user.name}'s Deck of Cards will inflict ${user.roundRns[roundRnKeyname][0] + 2} stacks of Misfortune.`;
 		default:
 			console.error(`Invalid config key ${key} for predictRoundRnTargeted`);
 	}
@@ -596,12 +599,12 @@ function newRound(adventure, thread, lastRoundText) {
 						adventure.updateArtifactStat("Peacock Charm", "Protection Generated", peacockProtection);
 					}
 					// (pre-/) roll for delver gear rn's for this round
-					combatant.gear.forEach(gear => {
-						let rnConfig = getGearProperty(gear.name, "rnConfig");
+					for (const actionName of combatant.gear.map(gear => gear.name).concat(getArchetypeActionName(combatant.archetype, combatant.specialization))) {
+						const rnConfig = getGearProperty(actionName, "rnConfig");
 						if (rnConfig) {
-							cacheRoundRn(adventure, combatant, gear.name, rnConfig);
-						};
-					})
+							cacheRoundRn(adventure, combatant, actionName, rnConfig);
+						}
+					}
 					if ("Panacea" in adventure.items) {
 						cacheRoundRn(adventure, combatant, "Panacea", { debuffs: 2 })
 					}
@@ -665,13 +668,13 @@ function newRound(adventure, thread, lastRoundText) {
 								.setSpeedByCombatant(combatant)
 						);
 						// (pre-/) roll for clones' use of delver gear rn's for this round
-						let counterpart = adventure.getCombatant(new CombatantReference("delver", i))
-						counterpart.gear.forEach(gear => {
-							let rnConfig = getGearProperty(gear.name, "rnConfig");
+						const counterpart = adventure.getCombatant(new CombatantReference("delver", i))
+						for (const actionName of counterpart.gear.map(gear => gear.name).concat(getArchetypeActionName(counterpart.archetype, counterpart.specialization))) {
+							const rnConfig = getGearProperty(actionName, "rnConfig");
 							if (rnConfig) {
-								cacheRoundRn(adventure, combatant, gear.name, rnConfig);
+								cacheRoundRn(adventure, combatant, actionName, rnConfig);
 							}
-						})
+						}
 						if ("Panacea" in adventure.items) {
 							cacheRoundRn(adventure, combatant, "Panacea", { debuffs: 2 });
 						}
@@ -735,21 +738,22 @@ function resolveMove(move, adventure) {
 		}
 
 		let effect;
-		let combatFlavor;
 		switch (move.type) {
 			case "action":
 				if (move.userReference.team !== "delver") {
 					const action = getEnemy(user.archetype).actions[moveName];
 					effect = action.effect;
+					headline += `used ${moveName}`;
 					if (action.combatFlavor) {
-						combatFlavor = action.combatFlavor;
+						headline += action.combatFlavor;
 					}
 				}
 				break;
 			case "gear": {
 				effect = getGearProperty(moveName, "effect");
+				headline += `used ${moveName}`;
 				const targetingTags = getGearProperty(moveName, "targetingTags");
-				if (move.userReference.team === "delver") {
+				if (user.team === "delver") {
 					const loadedDiceCount = adventure.getArtifactCount("Loaded Dice");
 					if (loadedDiceCount > 0 && targetingTags.type.startsWith("random")) {
 						adventure.updateArtifactStat("Loaded Dice", "Extra Targets", loadedDiceCount);
@@ -759,7 +763,7 @@ function resolveMove(move, adventure) {
 			}
 			case "item": {
 				let isPlacebo = false;
-				if (move.userReference.team === "delver") {
+				if (user.team === "delver") {
 					const placeboDillution = adventure.getChallengeIntensity("Unlabelled Placebos");
 					const placeboDuration = adventure.getChallengeDuration("Unlabelled Placebos");
 					if (placeboDillution > 0 && placeboDuration > 0) {
@@ -767,17 +771,17 @@ function resolveMove(move, adventure) {
 					}
 					adventure.decrementItem(moveName, 1);
 				}
-				const { effect: itemEffect } = getItem(isPlacebo ? "Placebo" : moveName);
-				effect = itemEffect;
+				effect = getItem(isPlacebo ? "Placebo" : moveName).effect;
+				headline += `used ${moveName}`;
 				break;
 			}
 			case "pet":
-				headline = `${user.name}'s ${bold(user.pet.type)} `;
 				effect = getPetMove(user.pet, adventure.petRNs.moveIndex).effect;
+				headline = `${user.name}'s ${bold(user.pet.type)} used ${moveName}`;
 				break;
 		}
 
-		headline += `used ${moveName}`;
+		let shouldDoGearUpkeep = user.team === "delver" && move.type === "gear" && index !== "@{archetypeAction}" && !["Appease", "Greed"].includes(moveName);
 		if (move.targets.length > 0) {
 			const livingTargets = [];
 			const deadTargets = [];
@@ -797,27 +801,56 @@ function resolveMove(move, adventure) {
 				}
 
 				results.push(...effect(livingTargets, user, adventure, adventure.petRNs));
-				if (move.type === "gear" && move.userReference.team === "delver") {
-					const breakText = gearUpkeep(moveName, index, user, adventure);
-					if (breakText) {
-						results.push(breakText);
-					}
-				}
-			} else if (move.targets.length === 1) {
-				headline += `, but ${adventure.getCombatant(move.targets[0]).name} was already dead!`;
 			} else {
-				headline += `, but all targets were already dead!`;
+				shouldDoGearUpkeep = false;
+				if (move.targets.length === 1) {
+					headline += `, but ${adventure.getCombatant(move.targets[0]).name} was already dead!`;
+				} else {
+					headline += `, but all targets were already dead!`;
+				}
 			}
 		} else {
 			results.push(...effect([], user, adventure, adventure.petRNs));
 		}
 
-		if (combatFlavor) {
-			headline += ` ${italic(combatFlavor)}`;
-			if (move.type === "gear" && move.userReference.team === "delver") {
-				const breakText = gearUpkeep(moveName, index, user, adventure);
-				if (breakText) {
-					results.push(breakText);
+		if (shouldDoGearUpkeep) {
+			const gear = user.gear[index];
+			const gearCategory = getGearProperty(moveName, "category");
+
+			const cooldown = getGearProperty(gear.name, "cooldown");
+			if (cooldown !== undefined) {
+				let cdReduction = 0;
+				if (gearCategory === "Offense") {
+					const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");
+					if (weaponPolishCount > 0) {
+						const chargeSaveChance = 1 - 0.85 ** weaponPolishCount;
+						const max = RN_TABLE_BASE ** 2;
+						adventure.updateArtifactStat("Weapon Polish", "Expected Cooldown Saved", chargeSaveChance.toFixed(2));
+						if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
+							cdReduction = 1;
+							adventure.updateArtifactStat("Weapon Polish", "Actual Cooldown Saved", 1);
+						}
+					}
+				}
+				gear.cooldown = Math.max(0, cooldown - cdReduction);
+			}
+
+			if (gearCategory === "Spell") {
+				const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
+				if (crystalShardCount > 0) {
+					const chargeSaveChance = 1 - 0.85 ** crystalShardCount;
+					const max = RN_TABLE_BASE ** 2;
+					adventure.updateArtifactStat("Crystal Shard", "Expected Charges Saved", chargeSaveChance.toFixed(2));
+					if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
+						adventure.updateArtifactStat("Crystal Shard", "Actual Charges Saved", 1);
+					}
+				}
+			}
+
+			if (getGearProperty(moveName, "maxCharges") > 0) {
+				gear.charges--;
+				if (gear.charges < 1) {
+					results.push(`${user.name}'s ${moveName} is exhausted!`);
 				}
 			}
 		}
@@ -862,58 +895,6 @@ function resolveMove(move, adventure) {
 	}
 
 	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
-}
-
-/** Decrement charges and set cooldown of gear moves
- * @param {string} moveName
- * @param {number} index
- * @param {Combatant} user
- * @param {Adventure} adventure
- */
-function gearUpkeep(moveName, index, user, adventure) {
-	if (!["Punch", "Appease", "Greed"].includes(moveName) && user.team === "delver") {
-		const gear = user.gear[index];
-		const gearCategory = getGearProperty(moveName, "category");
-
-		const cooldown = getGearProperty(gear.name, "cooldown");
-		if (cooldown !== undefined) {
-			let cdReduction = 0;
-			if (gearCategory === "Offense") {
-				const weaponPolishCount = adventure.getArtifactCount("Weapon Polish");
-				if (weaponPolishCount > 0) {
-					const chargeSaveChance = 1 - 0.85 ** weaponPolishCount;
-					const max = RN_TABLE_BASE ** 2;
-					adventure.updateArtifactStat("Weapon Polish", "Expected Cooldown Saved", chargeSaveChance.toFixed(2));
-					if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
-						cdReduction = 1;
-						adventure.updateArtifactStat("Weapon Polish", "Actual Cooldown Saved", 1);
-					}
-				}
-			}
-			gear.cooldown = Math.max(0, cooldown - cdReduction);
-		}
-
-		if (gearCategory === "Spell") {
-			const crystalShardCount = adventure.getArtifactCount("Crystal Shard");
-			if (crystalShardCount > 0) {
-				const chargeSaveChance = 1 - 0.85 ** crystalShardCount;
-				const max = RN_TABLE_BASE ** 2;
-				adventure.updateArtifactStat("Crystal Shard", "Expected Charges Saved", chargeSaveChance.toFixed(2));
-				if (adventure.generateRandomNumber(max, "battle") < max * chargeSaveChance) {
-					adventure.updateArtifactStat("Crystal Shard", "Actual Charges Saved", 1);
-					return "";
-				}
-			}
-		}
-
-		if (getGearProperty(moveName, "maxCharges") > 0) {
-			gear.charges--;
-			if (gear.charges < 1) {
-				return `${user.name}'s ${moveName} is exhausted!`;
-			}
-		}
-	}
-	return "";
 }
 
 const RETAINING_MODIFIER_PAIRS = [["Exposure", "Distraction"], ["Evasion", "Vigilance"]];
@@ -1161,9 +1142,6 @@ function completeAdventure(adventure, thread, endState, descriptionOverride) {
 	}
 	adventure.state = endState;
 	setAdventure(adventure);
-	const company = getCompany(thread.guild.id);
-	adventure.delvers.forEach(delver => company.adventuring.delete(delver.id));
-	setCompany(company);
 	return renderRoom(adventure, thread, descriptionOverride);
 }
 

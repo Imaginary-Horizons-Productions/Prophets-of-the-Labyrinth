@@ -25,9 +25,9 @@ module.exports = new RoomTemplate("Guildstop: For All Your Adventuring Needs",
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`switchspecialization${SAFE_DELIMITER}${specializationSwitchCost}`)
 						.setEmoji("🆔")
-						.setLabel(`${specializationSwitchCost}g: Switch Specializations (Coming Soon)`)
+						.setLabel(`${specializationSwitchCost}g: Switch Specializations`)
 						.setStyle(ButtonStyle.Primary)
-						.setDisabled(true || adventure.gold < specializationSwitchCost),
+						.setDisabled(adventure.gold < specializationSwitchCost),
 					new ButtonBuilder().setCustomId(`switchpet${SAFE_DELIMITER}${petSwitchCost}`)
 						.setEmoji("🐾")
 						.setLabel(`${petSwitchCost}g: Switch Pets`)

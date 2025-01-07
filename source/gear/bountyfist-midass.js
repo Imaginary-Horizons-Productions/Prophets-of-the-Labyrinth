@@ -25,7 +25,7 @@ module.exports = new GearTemplate(gearName,
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier(targets, curseOfMidas)), `${user.name}'s ${gearName} consumed ${goldUsed}g.`);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Midas's Bounty Fist", "Thirsting Bounty Fist")
+	.setSidegrades("Thirsting Bounty Fist")
 	.setPactCost([10, "@{pactCost}% of party gold"])
 	.setDamage(40)
 	.setModifiers({ name: "Curse of Midas", stacks: 2 });
