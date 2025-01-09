@@ -17,12 +17,12 @@ const ROLL_TABLE = {
 
 for (const file of [
 	"amethystspyglass.js",
-	"boatparts.js",
+	"bejeweledtreasuresphere.js",
 	"bestinclasshammer.js",
+	"boatparts.js",
 	"celestialknightinsignia.js",
 	"crystalshard.js",
 	"enchantedmap.js",
-	"floatingmultiplier.js",
 	"hammerspaceholster.js",
 	"hawktailfeather.js",
 	"healthinsuranceloophole.js",

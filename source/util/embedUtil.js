@@ -223,7 +223,7 @@ function addScoreField(embed, adventure, guildId) {
 	})
 	const skippedArtifactsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.startingArtifact ? count : count + 1, 0) / adventure.delvers.length);
 	const skippedPetsMultiplier = 1 + (adventure.delvers.reduce((count, delver) => delver.pet.type === "" ? count : count + 1, 0) / adventure.delvers.length);
-	const floatingMultiplierBonus = 1 + (adventure.getArtifactCount("Floating Multiplier") / 4);
+	const floatingMultiplierBonus = 1 + (adventure.getArtifactCount("Bejeweled Treasureshpere") / 4);
 	// Skip multiplicative bonuses if score is negative
 	if (finalScore > 0) {
 		finalScore *= challengeMultiplier;
@@ -231,7 +231,7 @@ function addScoreField(embed, adventure, guildId) {
 		finalScore = Math.max(1, finalScore * skippedArtifactsMultiplier);
 		breakdownText += generateScoreline("multiplicative", "Artifact Skip Multiplier", skippedArtifactsMultiplier);
 		breakdownText += generateScoreline("multiplicative", "Pet Skip Multiplier", skippedPetsMultiplier);
-		breakdownText += generateScoreline("multiplicative", "Floating Multiplier Bonus", floatingMultiplierBonus);
+		breakdownText += generateScoreline("multiplicative", "Bejeweled Treasureshpere Bonus", floatingMultiplierBonus);
 		switch (adventure.state) {
 			case "success":
 				embed.setTitle(`Success in ${adventure.labyrinth}`);
@@ -258,7 +258,7 @@ function addScoreField(embed, adventure, guildId) {
 			breakdownText += `Pet Skip Multiplier: ~~x${skippedPetsMultiplier}~~ x1\n`;
 		}
 		if (floatingMultiplierBonus > 1) {
-			breakdownText += `Floating Multiplier Bonus: ~~x${floatingMultiplierBonus}~~ x1\n`;
+			breakdownText += `Bejeweled Treasureshpere Bonus: ~~x${floatingMultiplierBonus}~~ x1\n`;
 		}
 		switch (adventure.state) {
 			case "success":
