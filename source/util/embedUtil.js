@@ -1,15 +1,15 @@
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, EmbedField, MessagePayload, Message, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, MessagePayload, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT, ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require("../constants");
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { buildGearDescriptionWithHolderStats } = require("../gear/_gearDictionary");
 const { getModifierDescription, getModifierCategory, getRoundDecrement, getMoveDecrement, getInverse } = require("../modifiers/_modifierDictionary");
 const { getRoom } = require("../rooms/_roomDictionary");
 
-const { getEmoji, getColor } = require("./elementUtil");
+const { getEmoji, getColor } = require("./essenceUtil");
 const { ordinalSuffixEN, generateTextBar, getNumberEmoji, trimForSelectOptionDescription, listifyEN } = require("./textUtil");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil");
 
@@ -18,7 +18,7 @@ const { getPlayer, setPlayer } = require("../orcustrators/playerOrcustrator");
 const { getArtifactCounts } = require("../artifacts/_artifactDictionary");
 const { isSponsor } = require("./fileUtil");
 const { getPetTemplate, getPetMoveDescription, PET_NAMES } = require("../pets/_petDictionary");
-const { getArchetypesCount } = require("../archetypes/_archetypeDictionary");
+const { getArchetypesCount, getArchetypeActionName } = require("../archetypes/_archetypeDictionary");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -29,10 +29,10 @@ const discordTips = [
 const potlTips = [
 	"Combatants lose their next turn (Stun) when their Stagger reaches their Poise.",
 	"Using items has priority.",
-	"Gear that matches your element removes 1 Stagger on allies.",
-	"Gear that matches your element adds 2 Stagger on foes.",
+	"Gear that matches your essence relieves 1 Stagger for allies.",
+	"Gear that matches your essence inflicts 2 Stagger on foes.",
 	"Combatant speed varies every round.",
-	"Damage is capped to 500 in one attack without any Power Up.",
+	"Damage is capped to 199 in one attack without any Excellence.",
 	"Check party status even when there isn't a button for it with '/adventure party-stats'!",
 	"Check your hp and gear even when there isn't a button for it with '/adventure inspect-self'!",
 	"Combatants shrug off 1 Stagger each round by default.",
@@ -103,7 +103,7 @@ function generateRecruitEmbed(adventure) {
 			break;
 	}
 
-	return new EmbedBuilder().setColor(getColor(adventure.element))
+	return new EmbedBuilder().setColor(getColor(adventure.essence))
 		.setAuthor({ name: "Imaginary Horizons Productions", iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png", url: "https://github.com/Imaginary-Horizons-Productions/prophets-of-the-labyrinth" })
 		.setTitle(adventure.name)
 		.setThumbnail(isAdventureCompleted ? "https://cdn.discordapp.com/attachments/545684759276421120/734092918369026108/completion.png" : "https://cdn.discordapp.com/attachments/545684759276421120/734093574031016006/bountyboard.png")
@@ -158,14 +158,14 @@ function generateAdventureConfigMessage() {
  * @param {string} descriptionOverride
  */
 function renderRoom(adventure, thread, descriptionOverride) {
-	const roomEmbed = new EmbedBuilder().setColor(getColor(adventure.room.element))
+	const roomEmbed = new EmbedBuilder().setColor(getColor(adventure.room.essence))
 		.setAuthor({ name: roomHeaderString(adventure), iconURL: thread.client.user.displayAvatarURL() })
 		.setTitle(adventure.room.title ?? "in setup")
 		.setFooter({ text: `Room #${adventure.depth}` });
 
 	const roomTemplate = getRoom(adventure.room.title);
 	if (descriptionOverride || roomTemplate) {
-		roomEmbed.setDescription(descriptionOverride || roomTemplate.description.replace("@{roomElement}", adventure.room.element));
+		roomEmbed.setDescription(descriptionOverride || roomTemplate.description.replace("@{roomEssence}", adventure.room.essence));
 	}
 
 	switch (adventure.state) {
@@ -285,7 +285,6 @@ function addScoreField(embed, adventure, guildId) {
 			playerIds: adventure.delvers.map(delver => delver.id),
 			adventure: adventure.name
 		};
-		setCompany(company);
 	}
 	adventure.delvers.forEach(delver => {
 		if (adventure.state !== "giveup") {
@@ -298,13 +297,14 @@ function addScoreField(embed, adventure, guildId) {
 			} else {
 				player.scores[guildId] = { total: finalScore, high: finalScore };
 			}
-			if (finalScore > player.archetypes[delver.archetype]) {
-				player.archetypes[delver.archetype] = finalScore;
+			if (finalScore > player.archetypes[delver.archetype].highScore) {
+				player.archetypes[delver.archetype].highScore = finalScore;
 			}
 			setPlayer(player);
 		}
 		company.adventuring.delete(delver.id);
 	})
+	setCompany(company);
 }
 
 /** Generates the string for a scoreline or omits the line (returns empty string) if value is the identity for stackType
@@ -364,7 +364,7 @@ async function generateVersionEmbed() {
  */
 function generateArtifactEmbed(artifactTemplate, count, adventure) {
 	const embed = embedTemplate()
-		.setTitle(`${getEmoji(artifactTemplate.element)} ${artifactTemplate.name} x ${count} `)
+		.setTitle(`${getEmoji(artifactTemplate.essence)} ${artifactTemplate.name} x ${count} `)
 		.setDescription(artifactTemplate.dynamicDescription(count))
 		.addFields({ name: "Scaling", value: artifactTemplate.scalingDescription });
 	if (artifactTemplate.flavorText) {
@@ -393,28 +393,28 @@ const BUTTON_STYLES_BY_MODIFIER_CATEGORY = {
  * @returns {MessagePayload}
  */
 function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
-	const hasLucky = delver.getModifierStacks("Lucky") > 0;
-	const hasUnlucky = delver.getModifierStacks("Unlucky") > 0;
-	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%${hasLucky ? " x 2 (Lucky)" : hasUnlucky ? " ÷ 2 (Unlucky)" : ""}\nPet: ${delver.pet.type !== "" ? delver.pet.type : "None"}\n\n*(Your ${getEmoji(delver.element)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)*`;
-	const embed = new EmbedBuilder().setColor(getColor(delver.element))
+	const hasFinesse = delver.getModifierStacks("Finesse") > 0;
+	const hasClumsiness = delver.getModifierStacks("Clumsiness") > 0;
+	const fields = [
+		{ name: "Primary Stats", value: `${generateTextBar(delver.hp, delver.getMaxHP(), 10)} ${delver.hp}/${delver.getMaxHP()} HP${delver.protection > 0 ? `+ ${delver.protection} Protection` : ""}\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${Math.floor(delver.getCritRate())}%${hasFinesse ? " x 2 (Finesse)" : hasClumsiness ? " ÷ 2 (Clumsiness)" : ""}`, inline: true },
+		{ name: "Secondary Stats", value: `Poise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nDamage Cap: ${delver.getDamageCap()}\nEssence Counter Damage: ${delver.getEssenceCounterDamage()}`, inline: true },
+		{ name: "Archetype Action and Gear", value: `Your ${getEmoji(delver.essence)} moves add ${ESSENCE_MATCH_STAGGER_FOE} Stagger to foes and relieve ${ESSENCE_MATCH_STAGGER_ALLY * -1} Stagger on allies.` },
+		{ name: `${getArchetypeActionName(delver.archetype, delver.specialization)} (Archetype Action)`, value: buildGearDescriptionWithHolderStats(getArchetypeActionName(delver.archetype, delver.specialization), delver, null) }
+	];
+	const description = `Specialization: ${delver.specialization === "base" ? "N/A" : delver.specialization}\nPet: ${delver.pet.type !== "" ? delver.pet.type : "None"}`;
+	const embed = new EmbedBuilder().setColor(getColor(delver.essence))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
-	if (delver.getModifierStacks("Iron Fist Stance") > 0) {
-		embed.addFields({ name: "Iron Fist Punch", value: buildGearDescriptionWithHolderStats("Iron Fist Punch", null, delver) });
-	} else if (delver.getModifierStacks("Floating Mist Stance") > 0) {
-		embed.addFields({ name: "Floating Mist Punch", value: buildGearDescriptionWithHolderStats("Floating Mist Punch", null, delver) });
-	} else {
-		embed.addFields({ name: "Punch", value: buildGearDescriptionWithHolderStats("Punch", null, delver) });
-	}
 	for (let index = 0; index < Math.min(Math.max(delver.gear.length, gearCapacity), MAX_EMBED_FIELD_COUNT); index++) {
 		if (delver.gear[index]) {
 			const gearName = delver.gear[index].name;
-			embed.addFields({ name: gearName, value: buildGearDescriptionWithHolderStats(gearName, index, delver) });
+			fields.push({ name: gearName, value: buildGearDescriptionWithHolderStats(gearName, delver, index) });
 		} else {
-			embed.addFields({ name: `${ordinalSuffixEN(index + 1)} Gear Slot`, value: "No gear yet..." })
+			fields.push({ name: `${ordinalSuffixEN(index + 1)} Gear Slot`, value: "No gear yet..." });
 		}
 	}
+	embed.addFields(fields);
 	const components = [];
 	if (Object.keys(delver.modifiers).length) {
 		const actionRow = [];
@@ -443,7 +443,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 function generatePartyStatsPayload(adventure) {
 	const guardsScouted = adventure.artifactGuardians.slice(0, adventure.scouting.artifactGuardiansEncountered + adventure.scouting.artifactGuardians);
 	const gearCapacity = adventure.getGearCapacity();
-	const embed = new EmbedBuilder().setColor(getColor(adventure.element))
+	const embed = new EmbedBuilder().setColor(getColor(adventure.essence))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`Party Stats - ${adventure.name}`)
 		.setDescription(`Depth: ${adventure.depth}\nScore: ${adventure.getBaseScore().total}`)
@@ -513,21 +513,22 @@ function generateStatsEmbed(user, guildId) {
 	let bestArchetype = "N/A";
 	let highScore = 0;
 	for (const archetype in player.archetypes) {
-		const score = player.archetypes[archetype];
+		const score = player.archetypes[archetype].highScore;
 		if (score > highScore) {
 			bestArchetype = archetype;
 			highScore = score;
 		}
 	}
 	const totalArtifacts = getArtifactCounts();
-	const totalAchetypes = getArchetypesCount();
+	const totalSpecializations = getArchetypesCount() * 4;
+	const totalSpecializationsUnlocked = Object.values(player.archetypes).reduce((total, { specializationsUnlocked }) => total + specializationsUnlocked, 0);
 	return embedTemplate().setTitle(`Player Stats: ${user.displayName}`)
 		.setThumbnail(POTL_ICON_URL)
 		.setDescription(`${availability}\n\nTotal Score: ${Object.values(player.scores).map(score => score.total).reduce((total, current) => total += current, 0)}`)
 		.addFields(
 			{ name: `Best Archetype: ${bestArchetype}`, value: `High Score: ${highScore}` },
 			{ name: "Favorites", value: `Archetype: ${player.favoriteArchetype ? player.favoriteArchetype : "Not Set"}\nPet: ${player.favoritePet ? player.favoritePet : "Not Set"}` },
-			{ name: "Collection", value: `Artifacts Collected: ${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)\nArchetypes Collected: ${Object.keys(player.archetypes).length}/${totalAchetypes} (${Math.floor(Object.keys(player.archetypes).length / totalAchetypes * 100)}%)\nPets Collected: ${Object.keys(player.pets).length}/${PET_NAMES.length} (${Math.floor(Object.keys(player.pets).length / PET_NAMES.length * 100)}%)` }
+			{ name: "Collection", value: `Artifacts Collected: ${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)\nSpecializations Unlocked: ${totalSpecializationsUnlocked}/${totalSpecializations} (${Math.floor(totalSpecializationsUnlocked / totalSpecializations * 100)}%)\nPets Collected: ${Object.keys(player.pets).length}/${PET_NAMES.length} (${Math.floor(Object.keys(player.pets).length / PET_NAMES.length * 100)}%)` }
 		)
 }
 

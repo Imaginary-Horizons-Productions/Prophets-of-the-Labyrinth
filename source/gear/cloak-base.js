@@ -1,31 +1,27 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants.js');
-const { addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil.js');
-const { accuratePassive } = require('./descriptions/passives.js');
+const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
+const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Cloak",
 	[
-		accuratePassive,
 		["use", "Gain @{mod0Stacks} @{mod0}"],
-		["Critical💥", "@{mod0} +@{bonus}"]
+		["Critical💥", "@{mod0} x @{critMultiplier}"]
 	],
-	"Armor",
-	"Wind",
+	"Defense",
+	"Fire",
 	200,
 	(targets, user, adventure) => {
-		const { element, modifiers: [evade], bonus } = module.exports;
-		const pendingEvade = { ...evade };
-		if (user.element === element) {
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
+		const { essence, modifiers: [evasion], critMultiplier } = module.exports;
+		if (user.essence === essence) {
+			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
+		const pendingEvasion = { name: evasion.name, stacks: evasion.stacks.generator(user) };
 		if (user.crit) {
-			pendingEvade.stacks += bonus;
+			pendingEvasion.stacks *= critMultiplier;
 		}
-		return generateModifierResultLines(addModifier([user], pendingEvade));
+		return generateModifierResultLines(addModifier([user], pendingEvasion));
 	}
 ).setTargetingTags({ type: "self", team: "ally" })
-	.setUpgrades("Accelerating Cloak", "Accurate Cloak", "Evasive Cloak")
-	.setModifiers({ name: "Evade", stacks: 2 })
-	.setBonus(1) // Evade stacks
-	.setCritRate(5)
-	.setCooldown(1);
+	.setUpgrades("Accurate Cloak", "Powerful Cloak")
+	.setCooldown(1)
+	.setModifiers({ name: "Evasion", stacks: { description: "2 + Bonus HP ÷ 50", generator: (user) => 2 + Math.floor(user.getBonusHP() / 50) } });

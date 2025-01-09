@@ -1,7 +1,7 @@
 const { italic, bold } = require("discord.js");
 const { Combatant, Adventure, ModifierReceipt } = require("../classes");
-const { getInverse, getModifierDescription, getModifierCategory } = require("../modifiers/_modifierDictionary");
-const { getWeaknesses, getResistances, elementsList, getEmoji } = require("./elementUtil.js");
+const { getInverse, getModifierDescription } = require("../modifiers/_modifierDictionary");
+const { getEmoji, getCounteredEssences, essenceList } = require("./essenceUtil.js");
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 const { listifyEN } = require("./textUtil.js");
 const { areSetContentsCongruent } = require("./mathUtil.js");
@@ -12,19 +12,31 @@ const { ZERO_WIDTH_WHITESPACE } = require("../constants");
  * @param {Adventure} adventure
  */
 function downedCheck(target, adventure) {
+	const lines = {
+		addendum: "",
+		extraLines: []
+	}
 	if (target.hp <= 0) {
 		removeModifier([target], { name: "The Target", stacks: "all" });
 		if (target.team === "delver") {
 			target.hp = target.getMaxHP();
 			adventure.lives = Math.max(adventure.lives - 1, 0);
-			return ` ${bold(`${target.name} was downed${adventure.lives > 0 ? " and revived" : ""}.`)}${ZERO_WIDTH_WHITESPACE}`; // need ZWW for md format nesting
+			lines.addendum = ` ${bold(`${target.name} was downed${adventure.lives > 0 ? " and revived" : ""}.`)}${ZERO_WIDTH_WHITESPACE}`; // need ZWW for md format nesting
 		} else {
 			target.hp = 0;
-			return ` ${bold(`${target.name} was downed`)}.${ZERO_WIDTH_WHITESPACE}`;
+			if ("Cowardice" in target.modifiers) {
+				const addBlockerCount = adventure.getArtifactCount("Add Blocker");
+				if (addBlockerCount > 0) {
+					const singleProtection = 150 * addBlockerCount;
+					addProtection(adventure.delvers, singleProtection);
+					adventure.updateArtifactStat("Add Blocker", "Protection Gained", singleProtection * adventure.delvers.length);
+					lines.extraLines.push("The Add Blocker grants all delvers protection.");
+				}
+			}
+			lines.addendum = ` ${bold(`${target.name} was downed`)}.${ZERO_WIDTH_WHITESPACE}`;
 		}
-	} else {
-		return "";
 	}
+	return lines;
 }
 
 /**
@@ -49,28 +61,24 @@ function livesCheck(previousLives, currentLives) {
  * @param {Combatant} assailant
  * @param {number} damage
  * @param {boolean} isUnblockable
- * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} element
+ * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essence
  * @param {Adventure} adventure
  */
-function dealDamage(targets, assailant, damage, isUnblockable, element, adventure) {
+function dealDamage(targets, assailant, damage, isUnblockable, essence, adventure) {
 	const previousLifeCount = adventure.lives;
 	const results = [];
 	for (const target of targets) {
 		if (target.hp > 0) { // Skip if target is downed (necessary for multi-hit moves hitting same target)
-			if (!(`${element} Absorb` in target.modifiers)) {
-				if (!("Evade" in target.modifiers) || isUnblockable) {
+			if (!(`${essence} Absorption` in target.modifiers)) {
+				if (!("Evasion" in target.modifiers) || isUnblockable) {
 					let pendingDamage = damage;
-					if ("Exposed" in target.modifiers) {
+					if ("Exposure" in target.modifiers) {
 						pendingDamage *= 1.5;
-						removeModifier([target], { name: "Exposed", stacks: 1, force: true });
+						removeModifier([target], { name: "Exposure", stacks: 1 });
 					}
-					const isWeakness = getCombatantWeaknesses(target).includes(element);
-					if (isWeakness) {
-						pendingDamage *= 2;
-					}
-					const isResistance = getResistances(target.element).includes(element);
-					if (isResistance) {
-						pendingDamage = pendingDamage / 2;
+					const isCounter = getCombatantCounters(target).includes(essence);
+					if (isCounter) {
+						pendingDamage += assailant.getEssenceCounterDamage();
 					}
 					pendingDamage = Math.ceil(pendingDamage);
 					let blockedDamage = 0;
@@ -87,18 +95,31 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 					}
 					pendingDamage = Math.min(pendingDamage, assailant.getDamageCap());
 					target.hp -= pendingDamage;
-					results.push(`${target.name} takes ${pendingDamage} ${getEmoji(element)} damage${blockedDamage > 0 ? ` (${blockedDamage} was blocked)` : ""}${isWeakness ? "!!!" : isResistance ? "." : "!"}${downedCheck(target, adventure)}`);
+					let damageLine = `${target.name} takes ${pendingDamage} ${getEmoji(essence)} damage`;
+					if (blockedDamage > 0) {
+						damageLine += ` (${blockedDamage} was blocked)`;
+					}
+					if (isCounter) {
+						damageLine += "!";
+					} else {
+						damageLine += ".";
+					}
+					const downedLines = downedCheck(target, adventure);
+					if (downedLines.addendum !== "") {
+						damageLine += downedLines.addendum;
+					}
+					results.push(damageLine, ...downedLines.extraLines);
 					if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
 						const midasGold = Math.floor(pendingDamage / 10 * target.modifiers["Curse of Midas"]);
 						adventure.room.addResource("Gold", "Currency", "loot", midasGold);
 						results.push(`${getApplicationEmojiMarkdown("Curse of Midas")}: Loot +${midasGold}g`)
 					}
 				} else {
-					removeModifier([target], { name: "Evade", stacks: 1, force: true });
+					removeModifier([target], { name: "Evasion", stacks: 1 });
 					results.push(`${target.name} evades the attack!`);
 				}
 			} else {
-				results.push(gainHealth(target, damage, adventure, "Elemental Absorption"));
+				results.push(gainHealth(target, damage, adventure, "Essence Absorption"));
 			}
 		}
 	}
@@ -111,12 +132,13 @@ function dealDamage(targets, assailant, damage, isUnblockable, element, adventur
 
 const MODIFIER_DAMAGE_PER_STACK = {
 	Poison: 10,
-	Frail: 20
+	Frailty: 20,
+	Misfortune: 30
 };
 
-/** modifier damage is unblockable, doesn't have an element, and doesn't interact with other modifiers (eg Exposed & Curse of Midas)
+/** modifier damage doesn't have an essence and doesn't interact with other modifiers (eg Exposure & Curse of Midas)
  * @param {Combatant} target
- * @param {"Poison" | "Frail"} modifier
+ * @param {"Poison" | "Frailty" | "Misfortune"} modifier
  * @param {Adventure} adventure
  */
 function dealModifierDamage(target, modifier, adventure) {
@@ -129,9 +151,26 @@ function dealModifierDamage(target, modifier, adventure) {
 		pendingDamage += funnelDamage;
 		adventure.updateArtifactStat("Spiral Funnel", `Extra ${modifier} Damage`, funnelDamage);
 	}
-
+	let blockedDamage = 0;
+	if (pendingDamage >= target.protection) {
+		pendingDamage -= target.protection;
+		blockedDamage = target.protection;
+		target.protection = 0;
+	} else {
+		target.protection -= pendingDamage;
+		blockedDamage = pendingDamage;
+		pendingDamage = 0;
+	}
 	target.hp -= pendingDamage;
-	const resultLines = [`${target.name} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!${downedCheck(target, adventure)}`];
+	let damageLine = `${target.name} takes ${pendingDamage} ${getApplicationEmojiMarkdown(modifier)} damage!`;
+	if (blockedDamage > 0) {
+		damageLine += ` (${blockedDamage} blocked)`;
+	}
+	const downedLines = downedCheck(target, adventure);
+	if (downedLines.addendum !== "") {
+		damageLine += downedLines.addendum;
+	}
+	const resultLines = [damageLine].concat(downedLines.extraLines);
 
 	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
 	if (lifeLine) {
@@ -148,12 +187,18 @@ function dealModifierDamage(target, modifier, adventure) {
 function payHP(user, damage, adventure) {
 	const previousLifeCount = adventure.lives;
 	user.hp -= damage;
-	let resultText = `${user.name} pays ${damage} HP.${downedCheck(user, adventure)}`;
+	let paymentLine = `${user.name} pays ${damage} HP.`;
+	const downedLines = downedCheck(user, adventure);
+	if (downedLines.addendum !== "") {
+		paymentLine += downedLines.addendum;
+	}
+	const resultLines = [paymentLine];
+	resultLines.push(...downedLines.extraLines);
 	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
 	if (lifeLine) {
-		resultText += ` ${lifeLine}`;
+		resultLines.push(lifeLine);
 	}
-	return resultText;
+	return resultLines;
 }
 
 /**
@@ -188,33 +233,26 @@ function gainHealth(combatant, healing, adventure, source) {
  * @param {object} modifierData
  * @param {string} modifierData.name
  * @param {number} modifierData.stacks removes all if not parsable to an integer
- * @param {boolean} modifierData.force whether to ignore the Oblivious check
  */
-function addModifier(combatants, { name: modifier, stacks: pendingStacks, force = false }) {
+function addModifier(combatants, { name: modifier, stacks: pendingStacks }) {
 	const receipts = [];
 	for (const combatant of combatants) {
-		// Oblivious only blocks buffs and debuffs
-		if (force || !("Oblivious" in combatant.modifiers && getModifierCategory(modifier) !== "State")) {
-			const inverse = getInverse(modifier);
-			const inverseStacks = combatant.modifiers[inverse];
-			if (inverseStacks) {
-				removeModifier([combatant], { name: inverse, stacks: pendingStacks, force: true });
-				if (inverseStacks < pendingStacks) {
-					combatant.modifiers[modifier] = pendingStacks - inverseStacks;
-				}
-			} else {
-				if (combatant.modifiers[modifier]) {
-					combatant.modifiers[modifier] += pendingStacks;
-				} else {
-					combatant.modifiers[modifier] = pendingStacks;
-				}
+		const inverse = getInverse(modifier);
+		const inverseStacks = combatant.modifiers[inverse];
+		if (inverseStacks) {
+			removeModifier([combatant], { name: inverse, stacks: pendingStacks });
+			if (inverseStacks < pendingStacks) {
+				combatant.modifiers[modifier] = pendingStacks - inverseStacks;
 			}
-
-			receipts.push(new ModifierReceipt(combatant.name, "add", [getApplicationEmojiMarkdown(modifier)], []));
 		} else {
-			removeModifier([combatant], { name: "Oblivious", stacks: 1, force: true });
-			receipts.push(new ModifierReceipt(combatant.name, "add", [], [getApplicationEmojiMarkdown(modifier)]));
+			if (combatant.modifiers[modifier]) {
+				combatant.modifiers[modifier] += pendingStacks;
+			} else {
+				combatant.modifiers[modifier] = pendingStacks;
+			}
 		}
+
+		receipts.push(new ModifierReceipt(combatant.name, "add", [getApplicationEmojiMarkdown(modifier)], []));
 	}
 	return receipts;
 }
@@ -224,44 +262,21 @@ function addModifier(combatants, { name: modifier, stacks: pendingStacks, force 
  * @param {object} modifierData
  * @param {string} modifierData.name
  * @param {number} modifierData.stacks removes all if not parsable to an integer
- * @param {boolean} modifierData.force whether to ignore the Retain check (eg buffs/debuffs consuming themselves)
  */
-function removeModifier(combatants, { name: modifier, stacks, force = false }) {
+function removeModifier(combatants, { name: modifier, stacks }) {
 	const receipts = [];
 	for (const combatant of combatants) {
-		// Retain only protects buffs and debuffs
-		if (force || !("Retain" in combatant.modifiers && getModifierCategory(modifier) !== "State")) {
-			const didHaveModifier = modifier in combatant.modifiers;
-			if (isNaN(parseInt(stacks)) || stacks >= combatant.modifiers[modifier]) {
-				delete combatant.modifiers[modifier];
-			} else if (modifier in combatant.modifiers) {
-				combatant.modifiers[modifier] -= stacks;
-			}
-			if (didHaveModifier) {
-				receipts.push(new ModifierReceipt(combatant.name, "remove", [getApplicationEmojiMarkdown(modifier)], []));
-			}
-		} else {
-			removeModifier([combatant], { name: "Retain", stacks: 1, force: true });
-			receipts.push(new ModifierReceipt(combatant.name, "remove", [], [getApplicationEmojiMarkdown(modifier)]))
+		const didHaveModifier = modifier in combatant.modifiers;
+		if (isNaN(parseInt(stacks)) || stacks >= combatant.modifiers[modifier]) {
+			delete combatant.modifiers[modifier];
+		} else if (modifier in combatant.modifiers) {
+			combatant.modifiers[modifier] -= stacks;
+		}
+		if (didHaveModifier) {
+			receipts.push(new ModifierReceipt(combatant.name, "remove", [getApplicationEmojiMarkdown(modifier)], []));
 		}
 	}
 	return receipts;
-}
-
-const ALL_STANCES = ["Iron Fist Stance", "Floating Mist Stance"];
-
-/** Exits all stances aside from the given one, then adds the given stance
- * @param {Combatant} combatant
- * @param {{name: "Iron Fist Stance" | "Floating Mist Stance", stacks: number}} stanceModifier
- */
-function enterStance(combatant, stanceModifier) {
-	const receipts = [];
-	ALL_STANCES.filter(stanceToCheck => stanceToCheck !== stanceModifier.name).forEach(stanceToRemove => {
-		if (stanceToRemove in combatant.modifiers) {
-			receipts.push(...removeModifier([combatant], { name: stanceToRemove, stacks: "all", force: true }));
-		}
-	});
-	return receipts.concat(addModifier([combatant], stanceModifier));
 }
 
 /**  Consolidation convention set by game design as "name then modifier set" to minimize the number of lines required to describe all changes to a specific combatant
@@ -288,7 +303,7 @@ function combineModifierReceipts(receipts) {
 		const heldReceipt = receipts[i];
 		for (let j = i + 1; j < receipts.length; j++) {
 			const checkingReceipt = receipts[j];
-			if (heldReceipt.type === checkingReceipt.type && areSetContentsCongruent(heldReceipt.succeeded, checkingReceipt.succeeded) && areSetContentsCongruent(heldReceipt.failed, checkingReceipt.failed)) {
+			if (heldReceipt.type === checkingReceipt.type && areSetContentsCongruent(heldReceipt.succeeded, checkingReceipt.succeeded)) {
 				heldReceipt.combineCombatantNames(checkingReceipt);
 				receipts.splice(j, 1);
 				j--;
@@ -298,9 +313,7 @@ function combineModifierReceipts(receipts) {
 	return receipts;
 }
 
-/**
- * @param {ModifierReceipt[]} receipts
- */
+/** @param {ModifierReceipt[]} receipts */
 function generateModifierResultLines(receipts) {
 	const resultLines = [];
 	for (const receipt of receipts) {
@@ -311,13 +324,6 @@ function generateModifierResultLines(receipts) {
 					addedFragments.push(`gain ${[...receipt.succeeded].join("")}`);
 				} else {
 					addedFragments.push(`gains ${[...receipt.succeeded].join("")}`);
-				}
-			}
-			if (receipt.failed.size > 0) {
-				if (receipt.combatantNames.size > 1) {
-					addedFragments.push(`were oblivious to ${[...receipt.failed].join("")}`);
-				} else {
-					addedFragments.push(`was oblivious to ${[...receipt.failed].join("")}`);
 				}
 			}
 
@@ -331,13 +337,6 @@ function generateModifierResultLines(receipts) {
 					removedFragments.push(`lose ${[...receipt.succeeded].join("")}`);
 				} else {
 					removedFragments.push(`loses ${[...receipt.succeeded].join("")}`);
-				}
-			}
-			if (receipt.failed.size > 0) {
-				if (receipt.combatantNames.size > 1) {
-					removedFragments.push(`retain ${[...receipt.failed].join("")}`);
-				} else {
-					removedFragments.push(`retains ${[...receipt.failed].join("")}`);
 				}
 			}
 
@@ -359,10 +358,10 @@ function changeStagger(combatants, applier, value) {
 		if (!combatant.isStunned) {
 			let pendingStagger = value;
 			if (applier && pendingStagger > 0) {
-				if (applier.getModifierStacks("Impactful") > 0) {
+				if (applier.getModifierStacks("Impact") > 0) {
 					pendingStagger++;
 				}
-				if (applier.getModifierStacks("Ineffectual") > 0) {
+				if (applier.getModifierStacks("Impotence") > 0) {
 					pendingStagger--;
 				}
 			}
@@ -393,32 +392,56 @@ function modifiersToString(combatant, adventure) {
 	return modifiersText;
 }
 
-/** Assembles an array of the combatant's elemental weaknesses and modifier-induced weaknesses
+/** Assembles an array of the combatant's innate and modifier-induced counters
  * @param {Combatant} combatant
- * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped")[]}
+ * @returns {("Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned")[]}
  */
-function getCombatantWeaknesses(combatant) {
-	const weaknesses = [...getWeaknesses(combatant.element)]; // avoid closure by making new array
-	elementsList().forEach(element => {
-		if (!weaknesses.includes(element) && `${element} Weakness` in combatant.modifiers) {
-			weaknesses.push(element);
+function getCombatantCounters(combatant) {
+	const counters = [];
+	essenceList().forEach(essence => {
+		if (`${essence} Vulnerability` in combatant.modifiers || getCounteredEssences(essence).includes(combatant.essence)) {
+			counters.push(essence);
 		}
 	})
-	return weaknesses;
+	return counters;
+}
+
+/**
+ * @param {Combatant[]} targets
+ * @param {Combatant[]} team
+ * @param {string} modifier
+ */
+function concatTeamMembersWithModifier(targets, team, modifier) {
+	const targetSet = new Set();
+	const targetArray = [];
+	for (const target of targets) {
+		if (target.hp > 0) {
+			targetSet.add(target.name);
+			targetArray.push(target);
+		}
+	}
+	for (const member of team) {
+		if (member.hp > 0 && member.getModifierStacks(modifier) > 0 && !targetSet.has(member.name)) {
+			targetSet.add(member.name);
+			targetArray.push(member);
+		}
+	}
+	return targetArray;
 }
 
 module.exports = {
+	downedCheck,
 	dealDamage,
 	dealModifierDamage,
 	payHP,
 	gainHealth,
 	addModifier,
 	removeModifier,
-	enterStance,
 	combineModifierReceipts,
 	generateModifierResultLines,
 	changeStagger,
 	addProtection,
 	modifiersToString,
-	getCombatantWeaknesses
+	getCombatantCounters,
+	concatTeamMembersWithModifier
 };

@@ -2,10 +2,10 @@ const { EnemyTemplate } = require("../classes");
 const { SAFE_DELIMITER } = require("../constants");
 const { selectRandomFoe } = require("../shared/actionComponents");
 const { generateModifierResultLines, addModifier, changeStagger, dealDamage, removeModifier } = require("../util/combatantUtil");
-const { getEmoji } = require("../util/elementUtil");
+const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new EnemyTemplate("Brute",
-	"Untyped",
+	"Unaligned",
 	200,
 	95,
 	"5",
@@ -14,8 +14,8 @@ module.exports = new EnemyTemplate("Brute",
 	false
 ).addAction({
 	name: "Mug or Mark",
-	element: "Untyped",
-	description: `Deal ${getEmoji("Untyped")} damage and moderate Stagger to The Target, or mark a random delver as The Target for a random number of attacks if there isn't one`,
+	essence: "Unaligned",
+	description: `Deal ${getEmoji("Unaligned")} damage and moderate Stagger to The Target, or mark a random delver as The Target for a random number of attacks if there isn't one`,
 	priority: 0,
 	effect: ([target], user, adventure) => {
 		const markedTarget = adventure.delvers.find(delver => "The Target" in delver.modifiers);
@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Brute",
 			// Mark or Mug rolls on [0, 3] then adds 2 for the number of 'The Target' stacks it applies
 			return generateModifierResultLines(addModifier([target], { name: "The Target", stacks: user.roundRns[`Mug or Mark${SAFE_DELIMITER}Mug or Mark`][0] + 2 }));
 		} else {
-			const resultLines = dealDamage([markedTarget], user, 70, false, "Untyped", adventure);
+			const resultLines = dealDamage([markedTarget], user, 70, false, "Unaligned", adventure);
 			changeStagger([markedTarget], user, 3);
 			resultLines.push(`${markedTarget.name} is Staggered.`);
 			resultLines.push(...generateModifierResultLines(removeModifier([markedTarget], { name: "The Target", stacks: 1, force: true })));

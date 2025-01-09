@@ -6,7 +6,7 @@ const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { getNumberEmoji } = require('../util/textUtil');
 const { transformGear } = require('../util/delverUtil');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
-const { getEmoji } = require('../util/elementUtil');
+const { getEmoji } = require('../util/essenceUtil');
 
 const mainId = "modify";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -34,7 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					name: gear.name,
 					value: sidegrades.map(sidegrade => {
 						const description = buildGearDescription(sidegrade, false, delver);
-						return `${underline(sidegrade)} ${getEmoji(getGearProperty(sidegrade, "element"))}\n${description}`;
+						return `${underline(sidegrade)} ${getEmoji(getGearProperty(sidegrade, "essence"))}\n${description}`;
 					}).join("\n\n")
 				});
 				options.push({

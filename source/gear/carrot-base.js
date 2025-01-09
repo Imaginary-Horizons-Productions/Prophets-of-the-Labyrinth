@@ -1,27 +1,26 @@
 const { GearTemplate, CombatantReference } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addProtection } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Carrot",
 	[
-		["use", "Gain @{protection} protection and entice an ally's pet to use its first move this turn"],
-		["Critical💥", "Protection x@{critMultiplier}"]
+		["use", "Grant @{mod0Stacks} @{mod0} to an ally and entice their pet to use its first move"],
+		["Critical💥", "@{mod0} + @{critMultiplier}"]
 	],
-	"Technique",
+	"Support",
 	"Earth",
 	200,
 	([target], user, adventure) => {
-		const { element, protection, critMultiplier } = module.exports;
-		let pendingProtection = protection;
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_ALLY);
+		const { essence, modifiers: [regeneration], critMultiplier } = module.exports;
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
+		const pendingRegeneration = { name: regeneration.name, stacks: regeneration.stacks.generator(user) };
 		if (user.crit) {
-			pendingProtection *= critMultiplier;
+			pendingRegeneration += critMultiplier;
 		}
-		addProtection([user], protection);
-		const resultLines = [`${user.name} gains protection.`];
+		const resultLines = addModifier([target], pendingRegeneration);
 		const ownerIndex = adventure.getCombatantIndex(target);
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 		if (owner.pet?.type) {
@@ -47,6 +46,7 @@ module.exports = new GearTemplate("Carrot",
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setUpgrades("Devoted Carrot", "Lucky Carrot", "Reinforced Carrot")
+	.setUpgrades("Guarding Carrot", "Balanced Carrot")
 	.setCooldown(1)
-	.setProtection(50);
+	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed ÷ 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
+	.setCritMultiplier(1);

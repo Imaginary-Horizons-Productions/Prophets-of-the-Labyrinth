@@ -24,7 +24,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		adventure.room.history["HP Donor"].push(delver.name);
 		const hpLost = Math.min(100, delver.hp);
 		const hpGained = hpLost;
-		const resultText = `${payHP(delver, hpLost, adventure)} Everyone else gains ${hpGained} hp.`;
+		const resultText = `${payHP(delver, hpLost, adventure).join(" ")} Everyone else gains ${hpGained} hp.`;
 		adventure.delvers.forEach(delver => {
 			if (delver.id != interaction.user.id) {
 				gainHealth(delver, hpGained, adventure);

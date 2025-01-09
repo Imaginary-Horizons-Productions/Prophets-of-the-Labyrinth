@@ -1,25 +1,25 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
-const { getEmoji } = require("../util/elementUtil");
+const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new RoomTemplate("Imp Contract Faire",
-	"@{adventureWeakness}",
-	"The next room contains several stalls with imps hawking suspicious contracts. One imp offers a lucrative opportunity (*given you allow your element to be changed to @{roomElement}). Another offers a sketcy procedure for improving party health.",
-	[],
+	"@{adventureCounter}",
+	"The next room contains several stalls with imps hawking suspicious contracts. One imp offers a lucrative opportunity (*given you allow your essence to be changed to @{roomEssence}). Another offers a sketcy procedure for improving party health.",
 	function (adventure) {
 		adventure.room.history = {
 			"HP Donor": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		let swapEmoji, swapLabel, isSwapDisabled, shareEmoji, shareLabel, isShareDisabled;
-		swapEmoji = getEmoji(adventure.room.element);
-		isSwapDisabled = !adventure.delvers.some(delver => delver.element !== adventure.room.element);
+		swapEmoji = getEmoji(adventure.room.essence);
+		isSwapDisabled = !adventure.delvers.some(delver => delver.essence !== adventure.room.essence);
 		if (isSwapDisabled) {
 			swapLabel = "No eligible delvers";
 		} else {
-			swapLabel = `Change element [+200g, change to ${adventure.room.element}]`;
+			swapLabel = `Change essence [+200g, change to ${adventure.room.essence}]`;
 		}
 
 		if (adventure.room.history["HP Donor"].length < 1) {
@@ -35,7 +35,7 @@ module.exports = new RoomTemplate("Imp Contract Faire",
 			embeds: [roomEmbed.addFields(pathVoteField)],
 			components: [
 				new ActionRowBuilder().addComponents(
-					new ButtonBuilder().setCustomId("elementresearch")
+					new ButtonBuilder().setCustomId("essenceresearch")
 						.setStyle(ButtonStyle.Primary)
 						.setEmoji(swapEmoji)
 						.setLabel(swapLabel)

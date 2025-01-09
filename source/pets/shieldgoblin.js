@@ -1,6 +1,6 @@
 const { Colors } = require("discord.js");
-const { PetTemplate, PetMoveTemplate, CombatantReference } = require("../classes");
-const { getEmoji } = require("../util/elementUtil");
+const { PetTemplate, PetMoveTemplate } = require("../classes");
+const { getEmoji } = require("../util/essenceUtil");
 const { dealDamage, changeStagger } = require("../util/combatantUtil");
 
 const petName = "Shield Goblin";

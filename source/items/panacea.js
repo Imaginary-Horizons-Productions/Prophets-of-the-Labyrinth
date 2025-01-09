@@ -6,7 +6,7 @@ const { SAFE_DELIMITER } = require('../constants.js');
 const itemName = "Panacea";
 module.exports = new ItemTemplate(itemName,
 	"Cure the user of up to 2 random debuffs",
-	"Untyped",
+	"Unaligned",
 	30,
 	(self, adventure) => {
 		return [[self.team, adventure.getCombatantIndex(self)]];

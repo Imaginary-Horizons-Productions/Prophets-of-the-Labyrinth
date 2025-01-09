@@ -4,7 +4,7 @@ const { ArtifactTemplate, Adventure } = require("../classes");
 const ARTIFACTS = {};
 const ARTIFACT_NAMES = [];
 
-/** @type {{"Earth": ArtifactTemplate[], "Wind": ArtifactTemplate[], "Water": ArtifactTemplate[], "Fire": ArtifactTemplate[], "Untyped": ArtifactTemplate[]}} */
+/** @type {{"Earth": ArtifactTemplate[], "Wind": ArtifactTemplate[], "Water": ArtifactTemplate[], "Fire": ArtifactTemplate[], "Unaligned": ArtifactTemplate[]}} */
 const ROLL_TABLE = {
 	Darkness: [],
 	Earth: [],
@@ -12,10 +12,11 @@ const ROLL_TABLE = {
 	Light: [],
 	Wind: [],
 	Water: [],
-	Untyped: []
+	Unaligned: []
 }
 
 for (const file of [
+	"addblocker.js",
 	"amethystspyglass.js",
 	"bejeweledtreasuresphere.js",
 	"bestinclasshammer.js",
@@ -40,7 +41,7 @@ for (const file of [
 	const artifact = require(`./${file}`);
 	ARTIFACTS[artifact.name.toLowerCase()] = artifact;
 	ARTIFACT_NAMES.push(artifact.name);
-	ROLL_TABLE[artifact.element].push(artifact.name);
+	ROLL_TABLE[artifact.essence].push(artifact.name);
 }
 
 /** @param {string} artifactName */
@@ -55,7 +56,7 @@ function getArtifactCounts() {
 /** @param {Adventure} adventure */
 function rollArtifact(adventure) {
 	/** @type {string[]} */
-	const artifactPool = adventure.getElementPool().reduce((artifacts, element) => artifacts.concat(ROLL_TABLE[element]), []);
+	const artifactPool = adventure.getPartyEssences().reduce((artifacts, essence) => artifacts.concat(ROLL_TABLE[essence]), []);
 	return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 }
 
@@ -65,7 +66,7 @@ function rollArtifact(adventure) {
  */
 function rollArtifactWithExclusions(adventure, exclusions = []) {
 	/** @type {string[]} */
-	const artifactPool = adventure.getElementPool().reduce((artifacts, element) => artifacts.concat(ROLL_TABLE[element]), []).filter(artifact => !exclusions.includes(artifact));
+	const artifactPool = adventure.getPartyEssences().reduce((artifacts, essence) => artifacts.concat(ROLL_TABLE[essence]), []).filter(artifact => !exclusions.includes(artifact));
 	if (artifactPool.length > 0) {
 		return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 	} else {

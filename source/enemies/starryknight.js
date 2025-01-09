@@ -3,8 +3,8 @@ const { EnemyTemplate, Combatant, Adventure } = require("../classes");
 const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
 const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
-const { getEmoji } = require("../util/elementUtil");
-const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants");
+const { getEmoji } = require("../util/essenceUtil");
+const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants");
 
 module.exports = new EnemyTemplate("Starry Knight",
 	"Light",
@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	true
 ).addAction({
 	name: "Mock the Accursed",
-	element: "Light",
+	essence: "Light",
 	description: `Deal ${getEmoji("Light")} damage to a single foe; increases with foe's debuffs, cursed gear, and unfinished challenges`,
 	priority: 0,
 	effect: ([target], user, adventure) => {
@@ -37,7 +37,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 			}
 		}
 		let pendingDamage = user.getPower() + 100 + (50 * (unfinishedChallenges.length + targetDebuffCount + targetCursedGearCount));
-		changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+		changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
@@ -51,12 +51,12 @@ module.exports = new EnemyTemplate("Starry Knight",
 	next: "random"
 }).addAction({
 	name: "Center of Attention",
-	element: "Light",
+	essence: "Light",
 	description: `Inflict ${getEmoji("Light")} damage and apply insults on all foes (damage increases with foe team size)`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let pendingDamage = user.getPower() + 50 * targets.length;
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		return dealDamage(targets, user, pendingDamage, false, "Light", adventure)
 			.concat(generateModifierResultLines(combineModifierReceipts(addNewRandomInsults(targets, user.crit ? 2 : 1, adventure))));
 	},
@@ -65,31 +65,31 @@ module.exports = new EnemyTemplate("Starry Knight",
 	combatFlavor: "\"Fear not! I have enough Star Power to take you all on!\""
 }).addAction({
 	name: "\"Share\" the Spotlight",
-	element: "Untyped",
-	description: `Inflict @e{Exposed} and random insults on all foes, gain protection on a crit`,
+	essence: "Unaligned",
+	description: `Inflict @e{Exposure} and random insults on all foes, gain protection on a crit`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		if (user.crit) {
 			addProtection([user], 100);
 		}
-		const receipts = addModifier(targets, { name: "Exposed", stacks: 1 }).concat(addNewRandomInsults(targets, 1, adventure));
+		const receipts = addModifier(targets, { name: "Exposure", stacks: 1 }).concat(addNewRandomInsults(targets, 1, adventure));
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	},
 	selector: selectAllFoes,
 	next: "random"
 }).addAction({
 	name: "Boast",
-	element: "Light",
-	description: `Inflict @e{Distracted} and ${getEmoji("Light")} damage on a single foe`,
+	essence: "Light",
+	description: `Inflict @e{Distraction} and ${getEmoji("Light")} damage on a single foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		let pendingDamage = user.getPower() + 100;
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
-		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Distracted", stacks: 4 })));
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Distraction", stacks: 4 })));
 	},
 	selector: selectRandomFoe,
 	next: "random"

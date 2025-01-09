@@ -1,33 +1,28 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_ALLY, ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
-const { addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
+const { ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Accelerating Midas Staff",
 	[
-		["use", "Apply @{mod0Stacks} @{mod0} to a combatant, then gain @{mod1Stacks} @{mod1}"],
-		["Critical💥", "@{mod0} +@{bonus}"]
+		["use", "Grant @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to a single combatant"],
+		["Critical💥", "@{mod0} + @{critMultiplier}"]
 	],
-	"Trinket",
-	"Water",
+	"Support",
+	"Light",
 	350,
-	([target], user, adventure) => {
-		const { element, modifiers: [curse, quicken], bonus } = module.exports;
-		const pendingCurse = { ...curse };
+	(targets, user, adventure) => {
+		const { essence, modifiers: [curseOfMidas, swiftness], critMultiplier } = module.exports;
+		if (user.essence === essence) {
+			changeStagger(targets, user, targets[0].team === user.team ? ESSENCE_MATCH_STAGGER_ALLY : ESSENCE_MATCH_STAGGER_FOE);
+		}
+		const pendingCurse = { ...curseOfMidas };
 		if (user.crit) {
-			pendingCurse.stacks += bonus;
+			pendingCurse.stacks += critMultiplier;
 		}
-		if (user.element === element) {
-			if (target.team === user.team) {
-				changeStagger([target], user, ELEMENT_MATCH_STAGGER_ALLY);
-			} else {
-				changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
-			}
-		}
-		const receipts = addModifier([target], pendingCurse).concat(addModifier([user], quicken));
-		return generateModifierResultLines(combineModifierReceipts(receipts));
+		return generateModifierResultLines(addModifier(targets, pendingCurse).concat(addModifier(targets, swiftness)));
 	}
 ).setTargetingTags({ type: "single", team: "any" })
-	.setSidegrades("Discounted Midas Staff", "Soothing Midas Staff")
-	.setModifiers({ name: "Curse of Midas", stacks: 2 }, { name: "Quicken", stacks: 1 })
-	.setBonus(1) // Curse of Midas stacks
-	.setCooldown(2);
+	.setUpgrades("Discounted Midas Staff")
+	.setCooldown(1)
+	.setModifiers({ name: "Curse of Midas", stacks: 2 }, { name: "Swiftness", stacks: 3 })
+	.setCritMultiplier(1);

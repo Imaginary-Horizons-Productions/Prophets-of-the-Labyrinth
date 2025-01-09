@@ -2,13 +2,13 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Swift Wolf Ring",
 	[
-		["Passive", "Gain @{poise} Poise and @{speed} Speed"]
+		["Passive", "Increase your Max HP by 20% and Speed by 10%"]
 	],
 	"Trinket",
-	"Untyped",
+	"Unaligned",
 	350,
 	(targets, user, adventure) => []
-).setSidegrades("Surpassing Wolf Ring", "Wise Wolf Ring")
-	.setPoise(2)
-	.setSpeed(5)
+).setSidegrades("Accurate Wolf Ring", "Powerful Wolf Ring")
+	.setMaxHP(20)
+	.setSpeed(10)
 	.setCharges(0);

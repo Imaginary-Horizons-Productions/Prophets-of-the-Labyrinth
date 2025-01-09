@@ -1,6 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 const { listifyEN, getNumberEmoji } = require("../util/textUtil");
@@ -9,16 +9,15 @@ const { generateRoutingRow, pathVoteField } = require("../util/messageComponentU
 module.exports = new RoomTemplate("Treasure! Gear or Items?",
 	"@{adventure}",
 	"Two treasure boxes sit on opposite ends of a seesaw suspended above pits of molten rock. They are labled 'Gear' and 'Item Bundle' respectively, and it looks as if taking one will surely cause the other to plummet into the pit below.",
-	[
-		new ResourceTemplate("2", "always", "Gear").setTier("?").setCostExpression("0"),
-		new ResourceTemplate("2", "always", "Item").setCostExpression("0")
-	],
 	function (adventure) {
 		adventure.room.actions = 1;
 
 		adventure.room.history = {
 			"Treasure picked": []
 		};
+		return [{ type: "Item", count: 2 + adventure.delvers.length, visibility: "always", forSale: false }].concat(
+			Array(2).fill(null).map(() => ({ type: "Gear", count: 1, visibility: "always", forSale: false }))
+		);
 	},
 	function (roomEmbed, adventure) {
 		if (adventure.room.actions > 0) {

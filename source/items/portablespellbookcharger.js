@@ -4,7 +4,7 @@ const { selectSelf } = require("../shared/actionComponents");
 
 module.exports = new ItemTemplate("Portable Spellbook Charger",
 	"Fully recharge all the user's Spells",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {

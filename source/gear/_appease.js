@@ -4,12 +4,12 @@ const { removeModifier, combineModifierReceipts, generateModifierResultLines } =
 module.exports = new GearTemplate("Appease",
 	[["use", "Shrug off all insults"]],
 	"Action",
-	"Untyped",
+	"Unaligned",
 	0,
 	(targets, user, adventure) => {
 		const receipts = [];
 		for (const insult of ["Boring", "Lacking Rhythm", "Smelly", "Stupid", "Ugly"]) {
-			receipts.push(...removeModifier([user], { name: insult, stacks: "all", force: true }));
+			receipts.push(...removeModifier([user], { name: insult, stacks: "all" }));
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}

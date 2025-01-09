@@ -1,8 +1,8 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, changeStagger } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectAllOtherCombatants } = require("../shared/actionComponents.js");
-const { getEmoji } = require("../util/elementUtil.js");
-const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
+const { getEmoji } = require("../util/essenceUtil.js");
+const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Asteroid",
 	"Earth",
@@ -12,10 +12,10 @@ module.exports = new EnemyTemplate("Asteroid",
 	0,
 	"Fragment",
 	false
-).addStartingModifier("Coward", 1)
+).addStartingModifier("Cowardice", 1)
 	.addAction({
 		name: "Fragment",
-		element: "Earth",
+		essence: "Earth",
 		description: `Inflict ${getEmoji("Earth")} damage to delver, and loses some health`,
 		priority: 0,
 		effect: (targets, user, adventure) => {
@@ -24,14 +24,14 @@ module.exports = new EnemyTemplate("Asteroid",
 			if (user.crit) {
 				damage *= 2;
 			}
-			changeStagger(targets, ELEMENT_MATCH_STAGGER_FOE);
-			return dealDamage(targets, user, damage, false, user.element, adventure).concat(dealDamage([user], user, recoilDmg, true, "Untyped", adventure));
+			changeStagger(targets, ESSENCE_MATCH_STAGGER_FOE);
+			return dealDamage(targets, user, damage, false, user.essence, adventure).concat(dealDamage([user], user, recoilDmg, true, "Unaligned", adventure));
 		},
 		selector: selectRandomFoe,
 		next: "random"
 	}).addAction({
 		name: "Bolide Burst",
-		element: "Earth",
+		essence: "Earth",
 		description: `Sacrifice self to attack all combatants with ${getEmoji("Earth")} damage equal to its remaining HP`,
 		priority: 0,
 		effect: (targets, user, adventure) => {
@@ -40,8 +40,8 @@ module.exports = new EnemyTemplate("Asteroid",
 				damage *= 2;
 			}
 			user.hp = 0;
-			changeStagger(targets, ELEMENT_MATCH_STAGGER_FOE);
-			return [...dealDamage(targets, user, damage, false, user.element, adventure), `${user.name} is downed.`];
+			changeStagger(targets, ESSENCE_MATCH_STAGGER_FOE);
+			return [...dealDamage(targets, user, damage, false, user.essence, adventure), `${user.name} is downed.`];
 		},
 		selector: selectAllOtherCombatants,
 		next: "random"

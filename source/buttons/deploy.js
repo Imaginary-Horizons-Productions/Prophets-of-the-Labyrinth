@@ -2,7 +2,7 @@ const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
-const { getEmoji } = require('../util/elementUtil');
+const { getEmoji } = require('../util/essenceUtil');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SKIP_INTERACTION_HANDLING } = require('../constants');
@@ -18,7 +18,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			const archetype = getArchetype(archetypeName);
 			if (archetype) {
 				archetypeOptions.push({
-					label: `${archetypeName} ${getEmoji(archetype.element)}`,
+					label: `${archetypeName} ${getEmoji(archetype.essence)}`,
 					description: trimForSelectOptionDescription(`Gear: ${listifyEN(archetype.startingGear, false)}`),
 					value: archetypeName
 				})
@@ -27,7 +27,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		}
 		interaction.reply({
-			content: `Select your archetype for this adventure!\n\nArchetypes can predict different information in combat and have different weaknesses and resistances based on their element.`,
+			content: `Select your archetype for this adventure!\n\nArchetypes can predict different information in combat and are countered by varying damage types based on their essence.`,
 			components: [
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder()

@@ -1,34 +1,42 @@
-const { italic } = require("discord.js");
 const { ArchetypeTemplate } = require("../classes");
-const { ZERO_WIDTH_WHITESPACE } = require("../constants");
+const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Martial Artist",
-	"They'll be able to predict enemy moves in two rounds and how much Stagger it'll take to Stun them. They'll also be able enhance their Punches with various stances.",
-	"Light",
-	{
-		maxHPGrowth: 25,
-		powerGrowth: 2.5,
-		speedGrowth: 0.5,
-		critRateGrowth: 0.25,
-		poiseGrowth: 0
-	},
-	["Iron Fist Stance", "Floating Mist Stance"],
+	["Fencer", "Pugilist", "Deadeye", "Ninja"],
+	"They'll be able to assess combatant how much Stagger to Stun each combatant and what moves enemies will be using this and next round. Their Flourish inflicts @e{Distraction} on their target.",
+	"Darkness",
 	(embed, adventure) => {
-		adventure.room.enemies.filter(enemy => enemy.hp > 0).forEach(combatant => {
-			embed.addFields({ name: combatant.name, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}\nRound ${adventure.room.round + 2} Move: ${italic(combatant.nextAction)}`, inline: true });
-		});
-		embed.addFields({ name: ZERO_WIDTH_WHITESPACE, value: ZERO_WIDTH_WHITESPACE });
-		adventure.delvers.forEach(combatant => {
-			embed.addFields({ name: combatant.name, value: `${combatant.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`}`, inline: true });
-		});
-		return embed.setDescription(`Martial Artist predictions:`);
+		embed.addFields({
+			name: "Enemies",
+			value: adventure.room.enemies.filter(combatant => combatant.hp > 0).map(enemy => {
+				const move = adventure.room.findCombatantMove(enemy);
+				return `${enemy.name}\n${enemy.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(enemy.stagger, enemy.getPoise(), enemy.getPoise())}`}\nRound ${adventure.room.round + 1} Move: ${move.name}\nRound ${adventure.room.round + 2} Move: ${enemy.nextAction}`;
+			}).join("\n\n")
+		})
+		embed.addFields({
+			name: "Delvers",
+			value: adventure.delvers.map(delver => {
+				return `${delver.name}\n${delver.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())}`}`;
+			}).join("\n\n")
+		})
+		return embed.setDescription("Martial Artist predictions:");
 	},
 	(combatant) => {
-		if (combatant.isStunned) {
-			return "💫 Stunned";
-		} else {
-			return `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`;
-		}
+		return `Has Debuffs: ${Object.keys(combatant.modifiers).some(modifier => getModifierCategory(modifier) === "Debuff") ? "✅" : "🚫"}`;
+	},
+	{
+		base: "Flourish",
+		Fencer: "Shattering Flourish",
+		Pugilist: "Staggering Flourish",
+		Deadeye: "Urgent Flourish",
+		Ninja: "Bouncing Flourish"
+	},
+	["War Cry"],
+	{
+		maxHPGrowth: 50,
+		powerGrowth: 5,
+		speedGrowth: 0.5,
+		critRateGrowth: 0.25
 	}
 );

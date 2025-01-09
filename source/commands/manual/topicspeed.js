@@ -11,7 +11,7 @@ async function executeSubcommand(interaction, ...args) {
 		interaction.reply({
 			embeds: [
 				embedTemplate().setTitle("Speed")
-					.setDescription("Within a round, the combatant with the highest total speed gets to resolve their move first. Combatant speed is now static however: it randomly varies from round to round, can be increased with the Quicken modifier, or decreased with the Slow modifier.\n\n\
+					.setDescription("Within a round, the combatant with the highest total speed gets to resolve their move first. Combatant speed is now static however: it randomly varies from round to round, can be increased with the Swiftness modifier, or decreased with the Torpidity modifier.\n\n\
 					Additionally, moves can have priority, which allows them resolve before moves with lower or no priority regardless of speed.")
 					.setTimestamp(stats.mtime)
 			],

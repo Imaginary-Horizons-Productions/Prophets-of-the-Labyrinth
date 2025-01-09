@@ -1,5 +1,3 @@
-const { SURPASSING_VALUE } = require("../constants");
-
 class Combatant {
 	/**
 	 * @param {string} nameInput
@@ -13,8 +11,8 @@ class Combatant {
 	id;
 	/** @type {string} archetype for delvers; lookup name for enemies */
 	archetype;
-	/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} */
-	element;
+	/** @type {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} */
+	essence;
 	level = 1;
 	maxHP = 300;
 	power = 0;
@@ -36,6 +34,10 @@ class Combatant {
 	/** @returns {number} */
 	getMaxHP() { throw new Error(`getMaxHP not implemented in child class ${this.constructor.name}`) }
 
+	getBonusHP() {
+		return Math.max(0, this.getMaxHP() - 300);
+	}
+
 	/** @returns {number} */
 	getPower() { throw new Error(`getPower not implemented in child class ${this.constructor.name}`) }
 
@@ -44,6 +46,10 @@ class Combatant {
 	 * @returns {number}
 	 */
 	getSpeed(includeRoundSpeed) { throw new Error(`getSpeed not implemented in child class ${this.constructor.name}`) }
+
+	getBonusSpeed() {
+		return Math.max(0, this.getSpeed(true) - 100);
+	}
 
 	/** @returns {number} */
 	getCritRate() { throw new Error(`getCritRate not implemented in child class ${this.constructor.name}`) }
@@ -56,6 +62,16 @@ class Combatant {
 	 */
 	getModifierStacks(modifierName) {
 		return this.modifiers[modifierName] ?? 0
+	}
+
+	getEssenceCounterDamage() {
+		if (this.getModifierStacks("Attunement") > 0) {
+			return 2 * (40 + (10 * this.level));
+		} else if (this.getModifierStacks("Incompatibility") > 0) {
+			return Math.floor((40 + (10 * this.level)) / 2);
+		} else {
+			return 40 + (10 * this.level);
+		}
 	}
 
 	/** @returns {number} */
@@ -72,7 +88,6 @@ class Delver extends Combatant {
 		super(nameInput, "delver");
 		this.id = idInput;
 		this.adventureId = adventureIdInput;
-		this.power = 35;
 	}
 	isReady = false;
 	/** @type {Gear[]} */
@@ -81,26 +96,28 @@ class Delver extends Combatant {
 		type: "",
 		level: 0
 	};
+	specialization = "base";
 	startingArtifact = "";
+	power = 35;
 
 	getMaxHP() {
-		return Math.floor(this.maxHP) + this.gear.reduce((totalGearMaxHP, gear) => {
+		return Math.floor(this.maxHP) * (1 + this.gear.reduce((totalGearMaxHP, gear) => {
 			if (parseInt(gear.maxHP)) {
 				return totalGearMaxHP + gear.maxHP;
 			} else {
 				return totalGearMaxHP;
 			}
-		}, 0);
+		}, 0) / 100);
 	}
 
 	getPower() {
-		return Math.floor(this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down") + this.gear.reduce((totalPower, gear) => {
+		return Math.floor(this.power * (1 + this.getModifierStacks("Empowerment") - this.getModifierStacks("Weakness") + this.gear.reduce((totalPower, gear) => {
 			if (parseInt(gear.power)) {
 				return totalPower + gear.power;
 			} else {
 				return totalPower;
 			}
-		}, 0));
+		}, 0) / 100));
 	}
 
 	/** @param {boolean} includeRoundSpeed */
@@ -112,44 +129,39 @@ class Delver extends Combatant {
 				return totalGearSpeed;
 			}
 		}, 0);
-		let totalSpeed = this.speed + gearSpeed;
+		let totalSpeed = this.speed * (1 + gearSpeed / 100);
 		if (includeRoundSpeed) {
 			totalSpeed += this.roundSpeed;
 		}
-		if ("Slow" in this.modifiers) {
-			const slowStacks = this.getModifierStacks("Slow");
-			totalSpeed -= slowStacks * 5;
+		if ("Torpidity" in this.modifiers) {
+			const torpidityStacks = this.getModifierStacks("Torpidity");
+			totalSpeed -= torpidityStacks * 5;
 		}
-		if ("Quicken" in this.modifiers) {
-			const quickenStacks = this.getModifierStacks("Quicken");
-			totalSpeed += quickenStacks * 5;
+		if ("Swiftness" in this.modifiers) {
+			const swiftenessStacks = this.getModifierStacks("Swiftness");
+			totalSpeed += swiftenessStacks * 5;
 		}
 		return Math.floor(totalSpeed);
 	}
 
 	getCritRate() {
-		return Math.floor(this.critRate + this.gear.reduce((totalCritRate, gear) => {
+		return Math.floor(this.critRate * (1 + this.gear.reduce((totalCritRate, gear) => {
 			if (parseInt(gear.critRate)) {
 				return totalCritRate + gear.critRate;
 			} else {
 				return totalCritRate;
 			}
-		}, 0));
+		}, 0)));
 	}
 
 	getPoise() {
-		return Math.floor(this.poise + this.gear.reduce((totalGearPoise, gear) => {
-			if (parseInt(gear.poise)) {
-				return totalGearPoise + gear.poise;
-			} else {
-				return totalGearPoise;
-			}
-		}, 0));
+		return Math.floor(this.getMaxHP() / 50);
 	}
 
+	/** Game Design: constrain damage cap increases to multiples of 10, so a damage number ending in 9 can be a more reliable tell of hitting damage cap */
 	getDamageCap() {
-		const capBoostFromGear = SURPASSING_VALUE * this.gear.reduce((surpassingCount, gear) => gear.name.startsWith("Surpassing") ? surpassingCount + 1 : surpassingCount, 0);
-		return 450 + (this.level * 50) + this.getModifierStacks("Power Up") + capBoostFromGear;
+		const ringOfPowerCount = Object.keys(this.gear).filter(gearName => gearName.includes("Ring of Power")).length;
+		return 179 + 20 * (this.level + this.getModifierStacks("Excellence") - this.getModifierStacks("Degredation") + (ringOfPowerCount * 3));
 	}
 }
 
@@ -161,16 +173,14 @@ class Gear {
 	 * @param {number} powerInput
 	 * @param {number} speedInput
 	 * @param {number} critRateInput
-	 * @param {number} poiseInput
 	 */
-	constructor(nameInput, chargesInput, maxHPInput, powerInput, speedInput, critRateInput, poiseInput) {
+	constructor(nameInput, chargesInput, maxHPInput, powerInput, speedInput, critRateInput) {
 		this.name = nameInput;
 		this.charges = chargesInput;
 		this.maxHP = maxHPInput;
 		this.power = powerInput;
 		this.speed = speedInput;
 		this.critRate = critRateInput;
-		this.poise = poiseInput;
 	}
 	cooldown = 0;
 };

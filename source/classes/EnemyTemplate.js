@@ -3,12 +3,12 @@ const { BuildError } = require("./BuildError");
 const { Combatant } = require("./Combatant");
 const { CombatantReference } = require("./Move");
 
-/** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} CombatantElement */
+/** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} Essence */
 
 class EnemyTemplate {
 	/**
 	 * @param {string} nameInput
-	 * @param {CombatantElement | "@{adventure}" | "@{adventureOpposite}" | "@{custom}"} elementEnum
+	 * @param {Essence | "@{adventure}" | "@{adventureOpposite}" | "@{custom}"} essenceEnum
 	 * @param {number} maxHPInput
 	 * @param {number} speedInput
 	 * @param {string} poiseExpressionInput expression, where n = delver count, that parses to number of Stagger to Stun
@@ -16,9 +16,9 @@ class EnemyTemplate {
 	 * @param {string} firstActionName use "random" for random move in enemy's move pool
 	 * @param {boolean} isBoss sets enemy to not randomize HP and adds 15 critRate
 	 */
-	constructor(nameInput, elementEnum, maxHPInput, speedInput, poiseExpressionInput, critRateBonus, firstActionName, isBoss) {
+	constructor(nameInput, essenceEnum, maxHPInput, speedInput, poiseExpressionInput, critRateBonus, firstActionName, isBoss) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
-		if (!elementEnum) throw new BuildError("Falsy elementEnum");
+		if (!essenceEnum) throw new BuildError("Falsy essenceEnum");
 		if (!maxHPInput) throw new BuildError("Falsy maxHPInput");
 		if (!speedInput) throw new BuildError("Falsy speedInput");
 		if (!poiseExpressionInput) throw new BuildError("Falsy poiseExpression");
@@ -28,7 +28,7 @@ class EnemyTemplate {
 		if (!firstActionName) throw new BuildError("Falsy firstActionName");
 
 		this.name = nameInput;
-		this.element = elementEnum;
+		this.essence = essenceEnum;
 		this.maxHP = maxHPInput;
 		this.speed = speedInput;
 		/** @type {string} expression, where n = delver count */
@@ -37,7 +37,7 @@ class EnemyTemplate {
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
 	}
-	/** @type {Record<string, {name: string, element: CombatantElement | "@{adventure}" | "@{adventureOpposite}", priority: number, effect: (targets: Combatant[], user: Combatant, adventure: Adventure) => string, selector: (self: Combatant, adventure: Adventure) => CombatantReference[], next: string, combatFlavor?: string }>} */
+	/** @type {Record<string, {name: string, essence: Essence | "@{adventure}" | "@{adventureOpposite}", priority: number, effect: (targets: Combatant[], user: Combatant, adventure: Adventure) => string, selector: (self: Combatant, adventure: Adventure) => CombatantReference[], next: string, combatFlavor?: string }>} */
 	actions = {};
 	/** @type {[modifierName: string]: number} */
 	startingModifiers = {};
@@ -62,7 +62,7 @@ class EnemyTemplate {
 	/** Set the name, effect, target selector, and move selector of an enemy attack
 	 * @param {object} actionsInput
 	 * @param {string} actionsInput.name
-	 * @param {CombatantElement | "@{adventure}" | "@{adventureOpposite}"} actionsInput.element
+	 * @param {Essence | "@{adventure}" | "@{adventureOpposite}"} actionsInput.essence
 	 * @param {string} actionsInput.description
 	 * @param {number} actionsInput.priority
 	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} actionsInput.effect

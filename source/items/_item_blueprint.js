@@ -2,7 +2,7 @@ const { ItemTemplate } = require("../classes");
 
 module.exports = new ItemTemplate("name",
 	"description",
-	"Untyped",
+	"Unaligned",
 	30,
 	(self, adventure) => {
 		return [[self.team, adventure.getCombatantIndex(self)]];

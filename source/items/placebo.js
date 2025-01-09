@@ -3,7 +3,7 @@ const { selectNone } = require("../shared/actionComponents");
 
 module.exports = new ItemTemplate("Placebo",
 	"Gain 25 score.",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectNone,
 	(targets, user, adventure) => {

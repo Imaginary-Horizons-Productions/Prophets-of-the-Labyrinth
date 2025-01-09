@@ -1,28 +1,26 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
-const { dealDamage, changeStagger } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { dealDamage, changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Daggers",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage"],
-		["Critical💥", "Damage x@{critMultiplier}"]
+		["use", "Deal @{damage} @{essence} damage to a single foe and gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Damage x @{critMultiplier}"]
 	],
-	"Weapon",
-	"Wind",
-	200,
+	"Action",
+	"Fire",
+	0,
 	(targets, user, adventure) => {
-		const { element, damage, critMultiplier } = module.exports;
-		let pendingDamage = user.getPower() + damage;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
-		}
+		const { essence, critMultiplier, modifiers: [excellence] } = module.exports;
+		let pendingDamage = user.getPower();
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+		return resultLines.concat(generateModifierResultLines(addModifier([user], excellence)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Sharpened Daggers", "Sweeping Daggers", "Slowing Daggers")
-	.setCooldown(1)
-	.setDamage(40)
-	.setCritMultiplier(3);
+	.setDamage(0)
+	.setModifiers({ name: "Excellence", stacks: 2 });

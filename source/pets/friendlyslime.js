@@ -22,7 +22,7 @@ module.exports = new PetTemplate(petName, Colors.Aqua,
 					receipts.push(...addModifier(targets, thisMove.modifiers[1]))
 					return generateModifierResultLines(combineModifierReceipts(receipts));
 				}).setRnConfig(["enemyIndex"])
-				.setModifiers({ name: "Poison", stacks: 2 }, { name: "Slow", stacks: 2 })
+				.setModifiers({ name: "Poison", stacks: 2 }, { name: "Torpidity", stacks: 2 })
 		],
 		[
 			new PetMoveTemplate("Amateur Alchemy", "Add a random Potion to loot 1/5 of the time", (owner, petRNs) => [],

@@ -1,18 +1,20 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { pathVoteField, generateRoutingRow } = require("../util/messageComponentUtil");
 const { SAFE_DELIMITER } = require("../constants");
+const { rollChallenges } = require("../challenges/_challengeDictionary");
 
 module.exports = new RoomTemplate("Guildstop: For All Your Adventuring Needs",
 	"@{adventure}",
 	"The Adventurer's Guild has a contact point setup inside the dungeon. Specialization and Pet switching services are offered formally, while the gathering of other adventurers provides the opportunity to take on new challenges.",
-	[
-		new ResourceTemplate("2", "internal", "challenge")
-	],
 	function (adventure) {
+		rollChallenges(2, adventure).forEach(challenge => {
+			adventure.room.addResource(challenge, "challenge", "internal", 1);
+		})
 		adventure.room.history = {
 			"New challenges": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		const specializationSwitchCost = 50;
@@ -23,9 +25,9 @@ module.exports = new RoomTemplate("Guildstop: For All Your Adventuring Needs",
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`switchspecialization${SAFE_DELIMITER}${specializationSwitchCost}`)
 						.setEmoji("🆔")
-						.setLabel(`${specializationSwitchCost}g: Switch Specializations (Coming Soon)`)
+						.setLabel(`${specializationSwitchCost}g: Switch Specializations`)
 						.setStyle(ButtonStyle.Primary)
-						.setDisabled(true || adventure.gold < specializationSwitchCost),
+						.setDisabled(adventure.gold < specializationSwitchCost),
 					new ButtonBuilder().setCustomId(`switchpet${SAFE_DELIMITER}${petSwitchCost}`)
 						.setEmoji("🐾")
 						.setLabel(`${petSwitchCost}g: Switch Pets`)

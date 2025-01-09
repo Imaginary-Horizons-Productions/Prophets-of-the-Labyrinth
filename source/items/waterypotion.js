@@ -3,11 +3,11 @@ const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Watery Potion",
-	"Grants the user 3 @e{Water Absorb}",
-	"Untyped",
+	"Grants the user 3 @e{Water Absorption}",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {
-		return generateModifierResultLines(addModifier([user], { name: "Water Absorb", stacks: 3 }));
+		return generateModifierResultLines(addModifier([user], { name: "Water Absorption", stacks: 3 }));
 	}
 ).setFlavorText({ name: "*Additional Note*", value: "Apply directly to the forehead." });

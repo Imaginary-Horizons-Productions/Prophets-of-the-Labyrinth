@@ -1,37 +1,37 @@
 const { ArchetypeTemplate } = require("../classes");
-const { getModifierCategory } = require("../modifiers/_modifierDictionary");
-const { modifiersToString } = require("../util/combatantUtil");
+const { POTL_ICON_URL } = require("../constants");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Ritualist",
-	"They'll be able to assess combatant modifiers and how much Stagger to Stun them. They'll also be able to inflict great harm on foes suffering debuffs with their Censer.",
-	"Fire",
-	{
-		maxHPGrowth: 25,
-		powerGrowth: 2.5,
-		speedGrowth: 0.5,
-		critRateGrowth: 0.25,
-		poiseGrowth: 0
-	},
-	["Censer", "Corrosion"],
+	["Hemomancer", "Warlock", "Illusionist", "Reaper"],
+	"They'll be able to predict the order combatants will act in and assess HP levels. Their Life Drain will allow them to regain HP.",
+	"Darkness",
 	(embed, adventure) => {
-		embed.addFields({
-			name: "Enemies",
-			value: adventure.room.enemies.filter(combatant => combatant.hp > 0).map(enemy => {
-				const modifiersText = modifiersToString(enemy, adventure);
-				return `${enemy.name}\n${enemy.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(enemy.stagger, enemy.getPoise(), enemy.getPoise())}`}\n${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}`;
-			}).join("\n\n")
-		})
-		embed.addFields({
-			name: "Delvers",
-			value: adventure.delvers.map(delver => {
-				const modifiersText = modifiersToString(delver, adventure);
-				return `${delver.name}\n${delver.isStunned ? "💫 Stunned" : `Stagger: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())}`}\n${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}`;
-			}).join("\n\n")
-		})
-		return embed.setDescription(`Ritualist predictions for Round ${adventure.room.round}:`);
+		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
+			.concat(adventure.delvers)
+			.sort((first, second) => {
+				return second.getSpeed(true) - first.getSpeed(true);
+			});
+		activeCombatants.forEach(combatant => {
+			embed.addFields({ name: combatant.name, value: `${generateTextBar(combatant.hp, combatant.getMaxHP(), 16)} ${combatant.hp}/${combatant.getMaxHP()} HP${combatant.protection ? `, ${combatant.protection} Protection` : ""}\nSpeed: ${combatant.getSpeed(true)}` });
+		});
+		return embed.setDescription(`Ritualist predictions for Round ${adventure.room.round + 1}:`).setAuthor({ name: "Combatants may act out of order if they have priority or are tied in speed.", iconURL: POTL_ICON_URL });
 	},
 	(combatant) => {
-		return `Has Debuffs: ${Object.keys(combatant.modifiers).some(modifier => getModifierCategory(modifier) === "Debuff") ? "✅" : "🚫"}`;
+		return `Speed: ${combatant.getSpeed(true)}`;
+	},
+	{
+		base: "Life Drain",
+		Warlock: "Furious Life Drain",
+		Hemomancer: "Thirsting Life Drain",
+		Illusionist: "Fatiguing Life Drain",
+		Reaper: "Reaper's Life Drain"
+	},
+	["Blood Aegis"],
+	{
+		maxHPGrowth: 50,
+		powerGrowth: 5,
+		speedGrowth: 0.5,
+		critRateGrowth: 0.25
 	}
 );

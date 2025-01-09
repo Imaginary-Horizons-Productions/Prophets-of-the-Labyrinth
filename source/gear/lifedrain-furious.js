@@ -1,30 +1,27 @@
-const { GearTemplate } = require('../classes/index.js');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
-const { dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil.js');
+const { GearTemplate } = require('../classes');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { gainHealth, dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Furious Life Drain",
 	[
-		["use", "Strike a foe for <@{damage} x 1 to 1.5 based on your missing HP> @{element} damage, then gain @{healing} HP"],
-		["Critical💥", "Healing x@{critMultiplier}"]
+		["use", "Deal <@{damage} x 1 to 1.5 based on your missing HP> @{essence} damage to a single foe and regain @{healing} HP"],
+		["Critical💥", "Healing x @{critMultiplier}"]
 	],
-	"Spell",
+	"Action",
 	"Darkness",
-	350,
+	0,
 	(targets, user, adventure) => {
-		const { element, damage, healing, critMultiplier } = module.exports;
-		const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
-		let pendingDamage = (user.getPower() + damage) * furiousness;
+		const { essence, healing, critMultiplier } = module.exports;
 		let pendingHealing = healing;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
-		}
 		if (user.crit) {
 			pendingHealing *= critMultiplier;
 		}
-		return [...dealDamage(targets, user, pendingDamage, false, element, adventure), gainHealth(user, pendingHealing, adventure)];
+		const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
+		const resultLines = dealDamage(targets, user, user.getPower() * furiousness, false, essence, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+		return resultLines.concat(gainHealth(user, pendingHealing, adventure));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Flanking Life Drain", "Thirsting Life Drain")
-	.setCharges(15)
-	.setDamage(40)
-	.setHealing(25); // gold
+	.setDamage(0)
+	.setHealing(25);

@@ -11,6 +11,6 @@ module.exports = new EnemyTemplate("Mirror Clone",
 ).setPower(35)
 	.addAction({
 		name: "Mirroring Moves",
-		element: "Untyped",
+		essence: "Unaligned",
 		description: "Clones come with the same gear and will use the same move on a mirrored target as the delver they've copied."
 	});

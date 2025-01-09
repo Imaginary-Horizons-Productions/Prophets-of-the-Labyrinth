@@ -1,30 +1,26 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
-const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Shortsword",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage, then apply @{mod0Stacks} @{mod0} to both the foe and yourself"],
-		["Critical💥", "Damage x@{critMultiplier}"]
+		["use", "Deal @{damage} @{essence} damage to a single foe and gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Damage x @{critMultiplier}"]
 	],
-	"Weapon",
+	"Action",
 	"Fire",
-	200,
+	0,
 	(targets, user, adventure) => {
-		const { element, modifiers: [exposed], damage, critMultiplier } = module.exports;
-		let pendingDamage = user.getPower() + damage;
+		const { essence, critMultiplier, modifiers: [finesse] } = module.exports;
+		let pendingDamage = user.getPower();
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 		const stillLivingTargets = targets.filter(target => target.hp > 0);
-		if (user.element === element) {
-			changeStagger(stillLivingTargets, user, ELEMENT_MATCH_STAGGER_FOE);
-		}
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user, ...stillLivingTargets], exposed))));
+		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+		return resultLines.concat(generateModifierResultLines(addModifier([user], finesse)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Accelerating Shortsword", "Lethal Shortsword", "Toxic Shortsword")
-	.setModifiers({ name: "Exposed", stacks: 1 })
-	.setCooldown(1)
-	.setDamage(40);
+	.setDamage(0)
+	.setModifiers({ name: "Finesse", stacks: 1 });

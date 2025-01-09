@@ -6,7 +6,7 @@ const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getNumberEmoji } = require('../util/textUtil');
 const { transformGear } = require('../util/delverUtil');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
-const { getEmoji } = require('../util/elementUtil');
+const { getEmoji } = require('../util/essenceUtil');
 
 const mainId = "upgrade";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -34,7 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					name: gear.name,
 					value: upgrades.map(upgrade => {
 						const description = buildGearDescription(upgrade, false);
-						return `${underline(upgrade)} ${getEmoji(getGearProperty(upgrade, "element"))}\n${description}`;
+						return `${underline(upgrade)} ${getEmoji(getGearProperty(upgrade, "essence"))}\n${description}`;
 					}).join("\n\n")
 				});
 				options.push({

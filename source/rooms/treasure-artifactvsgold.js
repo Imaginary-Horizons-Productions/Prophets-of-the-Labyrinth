@@ -1,6 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
@@ -9,16 +9,16 @@ const { listifyEN, getNumberEmoji } = require("../util/textUtil");
 module.exports = new RoomTemplate("Treasure! Artifact or Gold?",
 	"@{adventure}",
 	"Two treasure boxes sit on opposite ends of a seesaw suspended above pits of molten rock. They are labled 'Artifact' and 'Gold' respectively, and it looks as if taking one will surely cause the other to plummet into the pit below.",
-	[
-		new ResourceTemplate("1", "always", "Artifact").setCostExpression("0"),
-		new ResourceTemplate("250*n", "always", "Currency").setCostExpression("0")
-	],
 	function (adventure) {
 		adventure.room.actions = 1;
 
 		adventure.room.history = {
 			"Treasure picked": []
 		};
+		const goldCount = Math.ceil(parseExpression("250*n", adventure.delvers.length) * (90 + adventure.generateRandomNumber(21, "general")) / 100);
+		adventure.room.addResource("Gold", "Currency", "always", goldCount);
+		adventure.room.addResource(rollArtifact(adventure), "Artifact", "always", 1);
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		if (adventure.room.actions > 0) {

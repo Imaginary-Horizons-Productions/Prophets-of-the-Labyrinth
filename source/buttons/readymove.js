@@ -1,10 +1,10 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, bold } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
-const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, SKIP_INTERACTION_HANDLING } = require('../constants');
+const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, checkNextRound, endRound, setAdventure, cacheRoundRn } = require('../orcustrators/adventureOrcustrator');
-const { getArchetype } = require('../archetypes/_archetypeDictionary');
+const { getArchetype, getArchetypeActionName } = require('../archetypes/_archetypeDictionary');
 const { getGearProperty } = require('../gear/_gearDictionary');
-const { getEmoji, getColor } = require('../util/elementUtil');
+const { getEmoji, getColor } = require('../util/essenceUtil');
 const { randomAuthorTip } = require('../util/embedUtil');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 
@@ -19,7 +19,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 		const delverArchetypeTemplate = getArchetype(delver.archetype);
-		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.element)).setTitle("Select a Move"), adventure)
+		const embed = delverArchetypeTemplate.predict(new EmbedBuilder().setColor(getColor(adventure.room.essence)).setTitle("Select a Move"), adventure)
 		if (!embed.data.author) {
 			embed.setAuthor(randomAuthorTip());
 		}
@@ -50,26 +50,16 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return optionPayload;
 		});
 		const components = [];
-		const usableMoves = [];
+		const usableMoves = [{ name: getArchetypeActionName(delver.archetype, delver.specialization), charges: Infinity, cooldown: 0, gearIndex: "@{archetypeAction}" }];
 		delver.gear.forEach((gear, index) => {
-			if (gear.charges > 0) {
-				usableMoves.push({ ...gear, gearIndex: index })
-			}
+			usableMoves.push({ ...gear, gearIndex: index })
 		});
-		if (usableMoves.length < MAX_MESSAGE_ACTION_ROWS) {
-			if (delver.getModifierStacks("Floating Mist Stance") > 0) {
-				usableMoves.unshift({ name: "Floating Mist Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
-			} else if (delver.getModifierStacks("Iron Fist Stance") > 0) {
-				usableMoves.unshift({ name: "Iron Fist Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
-			} else {
-				usableMoves.unshift({ name: "Punch", charges: Infinity, cooldown: 0, gearIndex: -1 });
-			}
-		}
 		for (let i = 0; i < usableMoves.length; i++) {
 			const { name: gearName, charges, cooldown, gearIndex } = usableMoves[i];
 			const isOnCD = Boolean(cooldown) && (cooldown > 0);
+			const isOutOfCharges = charges < 1;
 			const { type, team } = getGearProperty(gearName, "targetingTags");
-			const elementEmoji = getEmoji(gearName === "Iron Fist Punch" ? delver.element : getGearProperty(gearName, "element"));
+			const essenceEmoji = getEmoji(getGearProperty(gearName, "essence"));
 			if (type === "single" || type.startsWith("blast")) {
 				// Select Menu
 				let targetOptions = [];
@@ -80,22 +70,34 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (team === "ally" || team === "any") {
 					targetOptions = targetOptions.concat(delverOptions);
 				}
-				const placeholder = isOnCD ? `${elementEmoji} ${gearName} CD: ${cooldown} Rounds` : `${elementEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `(${charges} charges) ` : ""}on...`;
+				let placeholder = `${essenceEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `(${charges} charges) ` : ""}on...`;
+				if (isOnCD) {
+					placeholder = `${essenceEmoji} ${gearName} CD: ${cooldown} Rounds`;
+				}
+				if (isOutOfCharges) {
+					placeholder = `${essenceEmoji} ${gearName}: Out of Charges`;
+				}
 				components.push(new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
 						.setPlaceholder(placeholder)
 						.addOptions(targetOptions)
-						.setDisabled(isOnCD)
+						.setDisabled(isOnCD || isOutOfCharges)
 				));
 			} else {
-				const label = isOnCD ? `${gearName} CD: ${cooldown} Rounds` : `Use ${gearName}${![0, Infinity].includes(charges) ? ` (${charges} charges)` : ""}`;
+				let label = `Use ${gearName}${![0, Infinity].includes(charges) ? ` (${charges} charges)` : ""}`;
+				if (isOnCD) {
+					label = `${gearName} CD: ${cooldown} Rounds`;
+				}
+				if (isOutOfCharges) {
+					label = `${gearName}: Out of Charges`;
+				}
 				// Button
 				components.push(new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
 						.setLabel(label)
-						.setEmoji(elementEmoji)
+						.setEmoji(essenceEmoji)
 						.setStyle(ButtonStyle.Secondary)
-						.setDisabled(isOnCD)
+						.setDisabled(isOnCD || isOutOfCharges)
 				));
 			}
 		}
@@ -210,7 +212,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					let overwritten = false;
 					for (let i = 0; i < adventure.room.moves.length; i++) {
 						const { userReference, type } = adventure.room.moves[i];
-						if (userReference.team === delver.team && userReference.index === userIndex && type !== "pet") {
+						// Early-out soonest by ordering conditions by descending selectiveness: "index" has [0, 3] matches, "team" has delvers.length matches, and "not pet" [moves.length - 1, moves.length] matches
+						if (userReference.index === userIndex && userReference.team === delver.team && type !== "pet") {
 							adventure.room.moves.splice(i, 1);
 							overwritten = true;
 							break;

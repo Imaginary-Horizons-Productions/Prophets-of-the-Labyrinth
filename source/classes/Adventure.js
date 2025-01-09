@@ -2,11 +2,11 @@ const crypto = require("crypto");
 const { MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, GAME_VERSION } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
-const { elementsList, getOpposite } = require("../util/elementUtil.js");
+const { essenceList, getOpposite } = require("../util/essenceUtil.js");
 const { parseExpression } = require("../util/textUtil.js");
 
-/** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Untyped"} CombatantElement */
-const allElements = elementsList();
+/** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} Essence */
+const ESSENCES = essenceList();
 const DESCRIPTORS = ["Shining", "New", "Dusty", "Old", "Floating", "Undersea", "Future", "Intense"];
 
 class Adventure {
@@ -23,15 +23,15 @@ class Adventure {
 		this.guildId = guildIdInput;
 		this.labyrinth = labyrinthInput;
 		this.leaderId = leaderIdInput;
-		this.element = allElements[this.generateRandomNumber(allElements.length, "general")];
-		this.name = `${DESCRIPTORS[this.generateRandomNumber(DESCRIPTORS.length, "general")]} ${labyrinthInput} of ${this.element}`;
+		this.essence = ESSENCES[this.generateRandomNumber(ESSENCES.length, "general")];
+		this.name = `${DESCRIPTORS[this.generateRandomNumber(DESCRIPTORS.length, "general")]} ${labyrinthInput} of ${this.essence}`;
 	}
 	/** @type {string} should match the id of the adventure's thread */
 	id;
 	/** @type {string} */
 	name;
-	/** @type {CombatantElement} */
-	element;
+	/** @type {Essence} */
+	essence;
 	/** @type {"config" | "ongoing" | "success" | "defeat" | "giveup"} */
 	state = "config";
 	static endStates = ["success", "defeat", "giveup"];
@@ -68,7 +68,7 @@ class Adventure {
 	gold;
 	/** @type {number} */
 	peakGold;
-	gearCapacity = 3;
+	gearCapacity = 2;
 	/** @type {Record<string, {count: number; [statistic: string]: number}>} */
 	artifacts = {};
 	/** @type {{[itemName: string]: number}} */
@@ -126,14 +126,14 @@ class Adventure {
 		};
 	}
 
-	/** Get an array with Untyped and all elements in the party
-	 * @returns {CombatantElement[]}
+	/** Get an array with Unaligned and all essences in the party
+	 * @returns {Essence[]}
 	 */
-	getElementPool() {
-		const pool = ["Untyped"];
+	getPartyEssences() {
+		const pool = ["Unaligned"];
 		this.delvers.forEach(delver => {
-			if (!pool.includes(delver.element)) {
-				return pool.push(delver.element);
+			if (!pool.includes(delver.essence)) {
+				return pool.push(delver.essence);
 			}
 		})
 		return pool;
@@ -156,7 +156,7 @@ class Adventure {
 
 	getGearCapacity() {
 		let count = this.gearCapacity + this.getArtifactCount("Hammerspace Holster") - this.getChallengeIntensity("Can't Hold All this Value");
-		count = Math.min(MAX_MESSAGE_ACTION_ROWS, count);
+		count = Math.min(MAX_MESSAGE_ACTION_ROWS - 1, count); // Need to leave space for Archetype Action
 		count = Math.max(1, count);
 		return count;
 	}
@@ -284,12 +284,12 @@ class Challenge {
 class Room {
 	/** This read-write instance class describes a room in an adventure
 	 * @param {string} titleInput
-	 * @param {CombatantElement} elementEnum
+	 * @param {Essence} essenceEnum
 	 * @param {[enemyName: string, countExpression: string][]} enemyList
 	 */
-	constructor(titleInput, elementEnum, enemyList) {
+	constructor(titleInput, essenceEnum, enemyList) {
 		this.title = titleInput;
-		this.element = elementEnum;
+		this.essence = essenceEnum;
 		if (enemyList && enemyList.length > 0) {
 			this.round = -1;
 			this.moves = [];
@@ -305,11 +305,14 @@ class Room {
 	enemies = null;
 	/** @type {{[enemyName: string]: number} | null} */
 	enemyIdMap = null;
+	morale = 0;
 	actions = 0;
 	/** @type {Record<string, {name: string, type: "Gear" | "Artifact" | "Currency" | "challenge" | "Item", visibility: "loot" | "always" | "internal", count: number, uiGroup?: string, cost?: number}>} */
 	resources = {};
 	/** @type {Record<string, string[]>} */
 	history = {};
+	/** @type {string[]} */
+	randomOutcomesPredicts = [];
 
 	/** checks if the given resource has the given count in the room
 	 * @param {string} name
@@ -366,7 +369,7 @@ class Room {
 class Enemy extends Combatant {
 	/** This read-write instance class defines an enemy currently in combat
 	 * @param {string} nameInput
-	 * @param {CombatantElement} elementEnum
+	 * @param {Essence} essenceEnum
 	 * @param {boolean} shouldRandomizeHP
 	 * @param {number} hpInput
 	 * @param {number} powerInput
@@ -377,9 +380,9 @@ class Enemy extends Combatant {
 	 * @param {{[modifierName: string]: number}} startingModifiersShallowCopy
 	 * @param {Adventure} adventure
 	 */
-	constructor(nameInput, elementEnum, shouldRandomizeHP, hpInput, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, adventure) {
+	constructor(nameInput, essenceEnum, shouldRandomizeHP, hpInput, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, adventure) {
 		// allows parameterless class casting on load without crashing
-		if (elementEnum === undefined) {
+		if (essenceEnum === undefined) {
 			super(nameInput, "enemy");
 			return;
 		}
@@ -388,10 +391,10 @@ class Enemy extends Combatant {
 			let parsedName;
 			switch (nameInput) {
 				case "Slime":
-					parsedName = `${adventure.element} Slime`;
+					parsedName = `${adventure.essence} Slime`;
 					break;
 				case "Ooze":
-					parsedName = `${getOpposite(adventure.element)} Ooze`;
+					parsedName = `${getOpposite(adventure.essence)} Ooze`;
 					break;
 				default:
 					parsedName = nameInput;
@@ -416,16 +419,16 @@ class Enemy extends Combatant {
 			const pendingHP = Math.ceil(hpInput * hpPercent / 100);
 			this.hp = pendingHP;
 			this.maxHP = pendingHP;
-			switch (elementEnum) {
+			switch (essenceEnum) {
 				case "@{adventure}":
-					/** @type {CombatantElement} */
-					this.element = adventure.element;
+					/** @type {Essence} */
+					this.essence = adventure.essence;
 					break;
 				case "@{adventureOpposite}":
-					this.element = getOpposite(adventure.element);
+					this.essence = getOpposite(adventure.essence);
 					break;
 				default:
-					this.element = elementEnum;
+					this.essence = essenceEnum;
 			}
 			this.nextAction = firstActionName;
 			this.modifiers = startingModifiersShallowCopy;
@@ -439,7 +442,7 @@ class Enemy extends Combatant {
 			const pendingHP = hpInput + counterpart.gear.reduce((totalMaxHP, currentGear) => totalMaxHP + currentGear.maxHP, 0);
 			this.hp = pendingHP;
 			this.maxHP = pendingHP;
-			this.element = counterpart.element;
+			this.essence = counterpart.essence;
 			this.power = powerInput + counterpart.gear.reduce((totalPower, currentGear) => totalPower + currentGear.power, 0);
 			this.speed = speedInput + counterpart.gear.reduce((totalSpeed, currentGear) => totalSpeed + currentGear.speed, 0);
 			this.poise = parseExpression(poiseExpression, adventure.delvers.length) + counterpart.gear.reduce((totalPoise, currentGear) => totalPoise + currentGear.poise, 0);
@@ -454,7 +457,7 @@ class Enemy extends Combatant {
 	}
 
 	getPower() {
-		return Math.floor(this.power + this.getModifierStacks("Power Up") - this.getModifierStacks("Power Down"));
+		return Math.floor(this.power + this.getModifierStacks("Empowerment") - this.getModifierStacks("Weakness"));
 	}
 
 	/** @param {boolean} includeRoundSpeed */
@@ -463,12 +466,12 @@ class Enemy extends Combatant {
 		if (includeRoundSpeed) {
 			totalSpeed += this.roundSpeed;
 		}
-		if ("Slow" in this.modifiers) {
-			const slowStacks = this.getModifierStacks("Slow");
-			totalSpeed -= slowStacks * 5;
+		if ("Torpidity" in this.modifiers) {
+			const torpidityStacks = this.getModifierStacks("Torpidity");
+			totalSpeed -= torpidityStacks * 5;
 		}
-		if ("Quicken" in this.modifiers) {
-			const quickenStacks = this.getModifierStacks("Quicken");
+		if ("Swiftness" in this.modifiers) {
+			const quickenStacks = this.getModifierStacks("Swiftness");
 			totalSpeed += quickenStacks * 5;
 		}
 		return Math.floor(totalSpeed);
@@ -482,8 +485,9 @@ class Enemy extends Combatant {
 		return Math.floor(this.poise);
 	}
 
+	/** Game Design: no damage cap for enemies to avoid accidental capping */
 	getDamageCap() {
-		return 450 + (this.level * 50) + this.getModifierStacks("Power Up");
+		return Infinity;
 	}
 };
 

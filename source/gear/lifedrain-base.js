@@ -1,29 +1,26 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
-const { dealDamage, gainHealth, changeStagger } = require('../util/combatantUtil.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { gainHealth, dealDamage, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Life Drain",
 	[
-		["use", "Strike a foe for @{damage} @{element} damage, then gain @{healing} HP"],
-		["Critical💥", "Healing x@{critMultiplier}"]
+		["use", "Deal @{damage} @{essence} damage to a single foe and regain @{healing} HP"],
+		["Critical💥", "Healing x @{critMultiplier}"]
 	],
-	"Spell",
+	"Action",
 	"Darkness",
-	200,
+	0,
 	(targets, user, adventure) => {
-		const { element, damage, healing, critMultiplier } = module.exports;
-		let pendingDamage = user.getPower() + damage;
+		const { essence, healing, critMultiplier } = module.exports;
 		let pendingHealing = healing;
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
-		}
 		if (user.crit) {
 			pendingHealing *= critMultiplier;
 		}
-		return [...dealDamage(targets, user, pendingDamage, false, element, adventure), gainHealth(user, pendingHealing, adventure)];
+		const resultLines = dealDamage(targets, user, user.getPower(), false, essence, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+		return resultLines.concat(gainHealth(user, pendingHealing, adventure));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Flanking Life Drain", "Furious Life Drain", "Thirsting Life Drain")
-	.setCharges(15)
-	.setDamage(40)
+	.setDamage(0)
 	.setHealing(25);

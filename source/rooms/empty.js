@@ -4,10 +4,11 @@ const { SAFE_DELIMITER } = require("../constants");
 const { pathVoteField } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Empty Room",
-	"Untyped",
+	"Unaligned",
 	"This room is empty. Lucky you?",
-	[],
-	function (adventure) { },
+	function (adventure) {
+		return [];
+	},
 	function (roomEmbed, adventure) {
 		return {
 			embeds: [roomEmbed.addFields(pathVoteField)],

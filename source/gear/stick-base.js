@@ -1,34 +1,26 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
-const { dealDamage, changeStagger } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { dealDamage, generateModifierResultLines, addModifier, combineModifierReceipts, changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Stick",
 	[
-		["use", "Strike a foe for <@{damage} x @{bonus} if foe has priority> @{element} damage"],
-		["Critical💥", "Damage x@{critMultiplier}"]
+		["use", "Inflict @{damage} @{essence} damage and @{mod0Stacks} @{mod0} on a single foe"],
+		["Critical💥", "Damage x @{critMultiplier}"]
 	],
-	"Technique",
+	"Action",
 	"Earth",
-	200,
-	([target], user, adventure) => {
-		const { element, damage, bonus, critMultiplier } = module.exports;
-		let pendingDamage = damage + user.getPower();
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
-		}
-
-		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
-		if (targetMove.priority > 0) {
-			pendingDamage *= bonus;
-		}
-
+	0,
+	(targets, user, adventure) => {
+		const { essence, critMultiplier, modifiers: [impotence] } = module.exports;
+		let pendingDamage = user.getPower();
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, pendingDamage, false, element, adventure);
+		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, impotence))));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Sharpened Stick", "Shattering Stick", "Staggering Stick")
-	.setCooldown(1)
-	.setDamage(40)
-	.setBonus(2);
+	.setDamage(0)
+	.setModifiers({ name: "Impotence", stacks: 3 });

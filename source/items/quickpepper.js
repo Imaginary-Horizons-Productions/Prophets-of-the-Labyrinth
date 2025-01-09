@@ -3,11 +3,11 @@ const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Quick Pepper",
-	"Grants the user 3 @e{Quicken}",
-	"Untyped",
+	"Grants the user 3 @e{Swiftness}",
+	"Unaligned",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {
-		return generateModifierResultLines(addModifier([user], { name: "Quicken", stacks: 3 }));
+		return generateModifierResultLines(addModifier([user], { name: "Swiftness", stacks: 3 }));
 	}
 );

@@ -1,31 +1,31 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants.js');
-const { dealDamage, changeStagger } = require('../util/combatantUtil.js');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { changeStagger, dealDamage } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Warhammer",
 	[
-		["use", "Strike a foe for <@{damage} + @{bonus} if foe is stunned> @{element} damage"],
-		["Critical💥", "Damage x@{critMultiplier}"]
+		["use", "Deal <@{damage} + @{bonus} if target is Stunned> @{essence} damage to a single foe"],
+		["Critical💥", "Damage x @{critMultiplier}"]
 	],
-	"Weapon",
-	"Earth",
+	"Offense",
+	"Darkness",
 	200,
-	([target], user, adventure) => {
-		const { element, damage, bonus, critMultiplier } = module.exports;
-		let pendingDamage = user.getPower() + damage;
-		if (target.isStunned) {
-			pendingDamage += bonus;
+	(targets, user, adventure) => {
+		const { essence, damage, bonus, critMultiplier } = module.exports;
+		if (user.essence === essence) {
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		if (user.element === element) {
-			changeStagger([target], user, ELEMENT_MATCH_STAGGER_FOE);
+		let pendingDamage = damage + user.getPower();
+		if (targets[0].isStunned) {
+			pendingDamage += bonus;
 		}
 		if (user.crit) {
 			pendingDamage *= critMultiplier;
 		}
-		return dealDamage([target], user, pendingDamage, false, element, adventure);
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Slowing Warhammer", "Unstoppable Warhammer", "Vigorous Warhammer")
+	.setUpgrades("Fatiguing Warhammer", "Toxic Warhammer")
 	.setCooldown(1)
 	.setDamage(40)
-	.setBonus(75); // damage
+	.setBonus(75); // Reactive Damage

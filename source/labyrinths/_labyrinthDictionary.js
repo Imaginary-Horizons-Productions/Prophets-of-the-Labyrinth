@@ -16,17 +16,17 @@ for (const file of [
 ]) {
 	/** @type {LabyrinthTemplate} */
 	const labyrinth = require(`./${file}`);
-	for (const element in labyrinth.availableItems) {
-		for (const item of labyrinth.availableItems[element]) {
+	for (const essence in labyrinth.availableItems) {
+		for (const item of labyrinth.availableItems[essence]) {
 			if (!itemExists(item)) {
 				throw new BuildError(`Unregistered item name in ${labyrinth.name}: ${item}`);
 			}
 		}
 	}
 
-	for (const element in labyrinth.availableGear) {
-		for (const rarity in labyrinth.availableGear[element]) {
-			for (const gear of labyrinth.availableGear[element][rarity]) {
+	for (const essence in labyrinth.availableGear) {
+		for (const rarity in labyrinth.availableGear[essence]) {
+			for (const gear of labyrinth.availableGear[essence][rarity]) {
 				if (!gearExists(gear)) {
 					throw new BuildError(`Unregistered gear name in ${labyrinth.name}: ${gear}`);
 				}
@@ -72,17 +72,17 @@ function getLabyrinthProperty(labyrinthName, propertyName) {
  * @returns {string}
  */
 function rollItem(adventure) {
-	const itemPool = adventure.getElementPool().flatMap((element) => LABYRINTHS[adventure.labyrinth.toLowerCase()].availableItems[element]);
+	const itemPool = adventure.getPartyEssences().flatMap((essence) => LABYRINTHS[adventure.labyrinth.toLowerCase()].availableItems[essence]);
 
 	return itemPool[adventure.generateRandomNumber(itemPool.length, "general")];
 }
 
-/** Filters by party element pool and given tier, then rolls a random gear's name
+/** Filters by party essence pool and given tier, then rolls a random gear's name
  * @param {"Cursed" | "Common" | "Rare"} tier
  * @param {Adventure} adventure
  */
 function rollGear(tier, adventure) {
-	const pool = adventure.getElementPool().flatMap(element => LABYRINTHS[adventure.labyrinth.toLowerCase()].availableGear[element][tier]);
+	const pool = adventure.getPartyEssences().flatMap(essence => LABYRINTHS[adventure.labyrinth.toLowerCase()].availableGear[essence][tier]);
 	if (pool.length > 0) {
 		return pool[adventure.generateRandomNumber(pool.length, "general")];
 	} else {

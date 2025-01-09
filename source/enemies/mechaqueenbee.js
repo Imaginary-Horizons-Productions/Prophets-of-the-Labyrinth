@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
+const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	true
 ).addAction({
 	name: "Swarm Protocol",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: `Gain protection and command all Mechabees to Call for Help`,
 	priority: 1,
 	effect: (targets, user, adventure) => {
@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	combatFlavor: "The Queen demands reinforcements!"
 }).addAction({
 	name: "Assault Protocol",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: "Gain protection and command all Mechabees to Sting a single foe",
 	priority: 1,
 	effect: (targets, user, adventure) => {
@@ -55,13 +55,13 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	combatFlavor: "The Queen orders a full-on attack!"
 }).addAction({
 	name: "Formation Protocol",
-	element: "Untyped",
-	description: `Gain protection and grant @e{Quicken} and @e{Power Up} to all lower ranking mechabees`,
+	essence: "Unaligned",
+	description: `Gain protection and grant @e{Swiftness} and @e{Empowerment} to all lower ranking mechabees`,
 	priority: 1,
 	effect: (targets, user, adventure) => {
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
 		addProtection([user], user.crit ? 60 : 30);
-		const receipts = addModifier(filteredTargets, { name: "Quicken", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Power Up", stacks: 3 }));
+		const receipts = addModifier(filteredTargets, { name: "Swiftness", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Empowerment", stacks: 3 }));
 		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	},
 	selector: selectAllAllies,
@@ -69,7 +69,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	combatFlavor: "The Queen personally optimizes the flight formation."
 }).addAction({
 	name: "Sacrifice Protocol",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: "Gain protection and command a Mechabee to Self-Destruct",
 	priority: 1,
 	effect: ([target], user, adventure) => {
@@ -86,7 +86,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	combatFlavor: "The Queen employs desperate measures!"
 }).addAction({
 	name: "Deploy Drone",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: "Summon a Mechabee",
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -97,11 +97,11 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	next: "a random protocol"
 }).addAction({
 	name: "V.E.N.O.Missile",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: `Inflict @e{Poison} on a single foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		return generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 5 : 3 }));
 	},
 	selector: selectRandomFoe,

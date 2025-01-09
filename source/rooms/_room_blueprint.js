@@ -1,14 +1,11 @@
-const { RoomTemplate, ResourceTemplate } = require("../classes");
+const { RoomTemplate } = require("../classes");
 const { pathVoteField } = require("../util/messageComponentUtil");
 
 const enemies = [["name", "countExpression"], ["name", "countExpression"]];
 
 module.exports = new RoomTemplate("name",
-	"element",
+	"essence",
 	"description",
-	[
-		new ResourceTemplate("countExpression", "visibility", "type")
-	],
 	function (adventure) {
 		adventure.room.actions = 0;
 

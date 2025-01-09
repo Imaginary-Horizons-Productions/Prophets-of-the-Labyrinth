@@ -1,26 +1,20 @@
 const { GearTemplate } = require('../classes');
-const { changeStagger } = require('../util/combatantUtil');
-const { listifyEN } = require('../util/textUtil');
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_ALLY } = require('../constants');
 const { rollableHerbs } = require('../shared/herbs');
+const { listifyEN } = require('../util/textUtil');
 
-const gearName = "Herb Basket";
-module.exports = new GearTemplate(gearName,
+module.exports = new GearTemplate("Herb Basket",
 	[
 		["use", "Add @{bonus} random herb to loot"],
-		["Critical💥", "Herbs gathered x@{critMultiplier}"]
+		["Critical💥", "Herbs gathered x @{critMultiplier}"]
 	],
-	"Trinket",
+	"Adventuring",
 	"Earth",
 	200,
 	(targets, user, adventure) => {
-		const { element, bonus, critMultiplier } = module.exports;
-		let pendingHerbCount = bonus;
+		const { critMultiplier } = module.exports;
+		let pendingHerbCount = 1;
 		if (user.crit) {
 			pendingHerbCount *= critMultiplier;
-		}
-		if (user.element === element) {
-			changeStagger([user], user, ELEMENT_MATCH_STAGGER_ALLY);
 		}
 		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "Item", "loot", pendingHerbCount);
@@ -31,8 +25,8 @@ module.exports = new GearTemplate(gearName,
 		}
 	}
 ).setTargetingTags({ type: "none", team: "none" })
-	.setUpgrades("Chaining Herb Basket", "Reinforced Herb Basket", "Urgent Herb Basket")
-	.setBonus(1) // Herb count
+	.setUpgrades("Enticing Herb Basket", "Guarding Herb Basket")
 	.setCooldown(1)
+	.setBonus(1) // Herbs gathered
 	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
 	.setRnConfig({ herbs: 1 });

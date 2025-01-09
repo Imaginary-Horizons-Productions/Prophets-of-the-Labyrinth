@@ -5,7 +5,7 @@ const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new ItemTemplate("Protection Potion",
 	"Adds 50 protection to all allies",
-	"Untyped",
+	"Unaligned",
 	30,
 	selectAllAllies,
 	(targets, user, adventure) => {

@@ -2,12 +2,12 @@ const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, removeModifier, changeStagger, generateModifierResultLines } = require("../util/combatantUtil.js");
 const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
-const { getEmoji } = require("../util/elementUtil.js");
+const { getEmoji } = require("../util/essenceUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
 
 const asteroid = require("./asteroid.js");
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Earthly Knight",
 	"Earth",
@@ -19,7 +19,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 	false
 ).addAction({
 	name: "Damping Wallop",
-	element: "Earth",
+	essence: "Earth",
 	description: `Inflict ${getEmoji("Earth")} damage and remove a random buff`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -27,8 +27,8 @@ module.exports = new EnemyTemplate("Earthly Knight",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
-		const resultLines = dealDamage(targets, user, damage, false, user.element, adventure);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
+		const resultLines = dealDamage(targets, user, damage, false, user.essence, adventure);
 		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 			if (targetBuffs.length > 0) {
@@ -43,7 +43,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 	rnConfig: { "buffs": 1 }
 }).addAction({
 	name: "Tremor Smash",
-	element: "Earth",
+	essence: "Earth",
 	description: `Deal minor ${getEmoji("Earth")} to all foes and stagger them`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -52,13 +52,13 @@ module.exports = new EnemyTemplate("Earthly Knight",
 			damage *= 2;
 		}
 		changeStagger(targets, user, 2);
-		return [...dealDamage(targets, user, damage, false, user.element, adventure), joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered.")];
+		return [...dealDamage(targets, user, damage, false, user.essence, adventure), joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered.")];
 	},
 	selector: selectAllFoes,
 	next: "random"
 }).addAction({
 	name: "Call Asteroid",
-	element: "Untyped",
+	essence: "Unaligned",
 	description: "Summon an Asteroid",
 	priority: 0,
 	effect: (targets, user, adventure) => {

@@ -1,44 +1,32 @@
 const { GearTemplate } = require('../classes');
-const { ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { changeStagger, concatTeamMembersWithModifier } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("War Cry",
 	[
 		["use", "Stagger a single foe and all foes with @{mod0}"],
-		["Critical💥", "Stagger +@{bonus}"]
+		["Critical💥", "Stagger x @{critMultiplier}"]
 	],
-	"Technique",
-	"Light",
+	"Support",
+	"Darkness",
 	200,
-	([initialTarget], user, adventure) => {
-		const targetSet = new Set();
-		const targetArray = [];
-		if (initialTarget.hp > 0) {
-			targetSet.add(initialTarget.name);
-			targetArray.push(initialTarget);
-		}
-		const { element, stagger, bonus, modifiers: [targetModifier] } = module.exports;
-		for (const enemy of adventure.room.enemies) {
-			if (enemy.hp > 0 && enemy.getModifierStacks(targetModifier.name) > 0 && !targetSet.has(enemy.name)) {
-				targetSet.add(enemy.name);
-				targetArray.push(enemy);
-			}
-		}
+	(targets, user, adventure) => {
+		const { essence, stagger, critMultiplier, modifiers: [targetModifier] } = module.exports;
+		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
 
 		let pendingStagger = stagger;
-		if (user.element === element) {
-			pendingStagger += ELEMENT_MATCH_STAGGER_FOE;
+		if (user.essence === essence) {
+			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
-			pendingStagger += bonus;
+			pendingStagger *= critMultiplier;
 		}
-		changeStagger(targetArray, user, pendingStagger);
-		return [joinAsStatement(false, [...targetSet], "was", "were", "Staggered.")];
+		changeStagger(allTargets, user, pendingStagger);
+		return [joinAsStatement(false, allTargets.map(allTargets.name), "was", "were", "Staggered.")];
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setUpgrades("Charging War Cry", "Slowing War Cry", "Tormenting War Cry")
-	.setModifiers({ name: "Distracted", stacks: 0 })
-	.setStagger(2)
-	.setBonus(2) // Stagger stacks
-	.setCooldown(1);
+	.setUpgrades("Flanking War Cry", "Weakening Warcry")
+	.setCooldown(1)
+	.setModifiers({ name: "Distraction", stacks: 0 })
+	.setStagger(2);

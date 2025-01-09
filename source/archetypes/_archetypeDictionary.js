@@ -4,16 +4,15 @@ const { ArchetypeTemplate, BuildError } = require("../classes");
 const ARCHETYPES = {};
 
 for (const file of [
-	"assassin.js",
+	"adventurer.js",
 	"beasttamer.js",
 	"chemist.js",
-	"detective.js",
-	"fighter.js",
-	"hemomancer.js",
 	"knight.js",
-	"legionnaire.js",
 	"martialartist.js",
-	"ritualist.js"
+	"ritualist.js",
+	"rogue.js",
+	"tactician.js",
+	"trickster.js"
 ]) {
 	/** @type {ArchetypeTemplate} */
 	const archetype = require(`./${file}`);
@@ -26,6 +25,14 @@ for (const file of [
 /** @param {string} archetypeName */
 function getArchetype(archetypeName) {
 	return ARCHETYPES[archetypeName];
+}
+
+/**
+ * @param {string} archetype
+ * @param {string} specialzation
+ */
+function getArchetypeActionName(archetype, specialzation) {
+	return ARCHETYPES[archetype].archetypeActions[specialzation];
 }
 
 /**
@@ -56,6 +63,7 @@ function getArchetypesCount() {
 
 module.exports = {
 	getArchetype,
+	getArchetypeActionName,
 	rollArchetypes,
 	getArchetypesCount
 };

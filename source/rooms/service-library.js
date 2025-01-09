@@ -7,11 +7,11 @@ const { ordinalSuffixEN } = require("../util/textUtil");
 module.exports = new RoomTemplate("A Serene Library",
 	"@{adventure}",
 	"A quick stop at the library gives the party the chance to recharge Spells and research foes in the area.",
-	[],
 	function (adventure) {
 		adventure.room.history = {
 			Rechargers: []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		const rechargeCost = 50;

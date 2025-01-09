@@ -38,12 +38,12 @@ module.exports = {
 	SKIP_INTERACTION_HANDLING: "❌",
 
 	// Game Values
-	GAME_VERSION: "v0.17.0",
+	GAME_VERSION: "v0.18.0",
 	POTL_ICON_URL: "https://images-ext-1.discordapp.net/external/wclKLsXO0RRUYVqULk4xBWnqyeepTl4MPdQAvwmYA4w/https/cdn.discordapp.com/avatars/950469509628702740/97f4ae84c14c2b88fbf569de061bac88.webp",
 	RN_TABLE_BASE: 16,
 	MAX_DELVER_COUNT: Math.floor(module.exports.MAX_SELECT_OPTIONS / 3),
 	EMPTY_SELECT_OPTION_SET: [{ label: "If the menu is stuck, switch channels and come back.", description: "This usually happens when two players use the same select at the same time.", value: "empty" }],
 	SURPASSING_VALUE: 250,
-	ELEMENT_MATCH_STAGGER_FOE: 2,
-	ELEMENT_MATCH_STAGGER_ALLY: -1
+	ESSENCE_MATCH_STAGGER_FOE: 2,
+	ESSENCE_MATCH_STAGGER_ALLY: -1
 };

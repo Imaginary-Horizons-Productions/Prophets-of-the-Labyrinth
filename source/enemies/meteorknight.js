@@ -1,9 +1,9 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectAllCombatants } = require("../shared/actionComponents.js");
-const { getEmoji } = require("../util/elementUtil.js");
+const { getEmoji } = require("../util/essenceUtil.js");
 const { joinAsStatement } = require("../util/textUtil.js");
-const { ELEMENT_MATCH_STAGGER_FOE } = require("../constants.js");
+const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	false
 ).addAction({
 	name: "Sonic Slash",
-	element: "Fire",
+	essence: "Fire",
 	description: `Inflict ${getEmoji("Fire")} damage with Priority`,
 	priority: 1,
 	effect: (targets, user, adventure) => {
@@ -23,14 +23,14 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		if (user.crit) {
 			damage *= 2;
 		}
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.element, adventure);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
+		return dealDamage(targets, user, damage, false, user.essence, adventure);
 	},
 	selector: selectRandomFoe,
 	next: "random"
 }).addAction({
 	name: "Armored Avalanche",
-	element: "Fire",
+	essence: "Fire",
 	description: `Deals ${getEmoji("Fire")} damage, with bonus damage to targets without protection`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
@@ -39,20 +39,20 @@ module.exports = new EnemyTemplate("Meteor Knight",
 		let results = [];
 		for (const target of targets) {
 			const pendingDamage = (user.crit ? 2 : 1) * ((target.protection > 0 ? 0 : bonusDamage) + baseDamage);
-			results.push(...dealDamage([target], user, pendingDamage, false, user.element, adventure));
+			results.push(...dealDamage([target], user, pendingDamage, false, user.essence, adventure));
 		}
-		changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		return results;
 	},
 	selector: selectRandomFoe,
 	next: "random"
 }).addAction({
 	name: "Freefall Flare-Up",
-	element: "Untyped",
-	description: `Grant @e{Power Up} to all combatants (friend and foe); Protects non-delvers on crit`,
+	essence: "Unaligned",
+	description: `Grant @e{Empowerment} to all combatants (friend and foe); Protects non-delvers on crit`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Power Up", stacks: 20 })));
+		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Empowerment", stacks: 20 })));
 		if (user.crit) {
 			const livingEnemies = adventure.room.enemies.filter(c => c.hp > 0);
 			addProtection(livingEnemies, 50);

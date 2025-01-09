@@ -1,34 +1,34 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, addModifier, changeStagger, generateModifierResultLines } = require('../util/combatantUtil');
-const { SAFE_DELIMITER, ELEMENT_MATCH_STAGGER_FOE } = require('../constants');
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { rollablePotions } = require('../shared/potions');
+const { dealDamage, changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
 
 const gearName = "Toxic Cauldron Stir";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Apply @{mod0Stacks} @{mod0} and @{damage} @{element} damage to a foe"],
-		["Critical💥", "Add a random potion to loot"]
+		["use", "Inflict @{damage} @{element} damage and @{mod0Stacks} @{mod0} on a single foe"],
+		["Critical💥", "Damage x @{critMultiplier}, add @{bonus} random potion to loot"]
 	],
-	"Weapon",
-	"Water",
-	350,
+	"Action",
+	"Light",
+	0,
 	(targets, user, adventure) => {
-		const { element, damage, modifiers: [poison] } = module.exports;
-		const pendingDamage = damage + user.getPower();
-		if (user.element === element) {
-			changeStagger(targets, user, ELEMENT_MATCH_STAGGER_FOE);
-		}
-		const resultLines = [dealDamage(targets, user, pendingDamage, false, element, adventure)];
+		const { element, critMultiplier, bonus, modifiers: [poison] } = module.exports;
+		const resultLines = [];
+		let pendingDamage = user.getPower();
 		if (user.crit) {
+			pendingDamage *= critMultiplier;
 			const rolledPotion = rollablePotions[user.roundRns[`${gearName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
-			adventure.room.addResource(rolledPotion, "Item", "loot", 1);
+			adventure.room.addResource(rolledPotion, "Item", "loot", bonus);
 			resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 		}
-		return resultLines.concat(generateModifierResultLines(addModifier(targets, poison)));
+		resultLines.unshift(...dealDamage(targets, user, pendingDamage, false, element, adventure));
+		const stillLivingTargets = targets.filter(target => target.hp > 0);
+		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+		return resultLines.concat(generateModifierResultLines(addModifier(stillLivingTargets, poison)));
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
-	.setSidegrades("Corrosive Cauldron Stir", "Sabotaging Cauldron Stir")
-	.setCooldown(1)
-	.setModifiers({ name: "Poison", stacks: 4 })
-	.setDamage(40)
-	.setRnConfig({ potions: 1 });
+	.setDamage(0)
+	.setBonus(1)
+	.setRnConfig({ potions: 1 })
+	.setModifiers({ name: "Poison", stacks: 3 });
