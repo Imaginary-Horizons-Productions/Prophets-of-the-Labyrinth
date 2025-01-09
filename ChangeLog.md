@@ -5,7 +5,7 @@ Delvers can now bring pets with them on adventure. One of the party's pets will 
 ### Beast Tamer
 This new Archetype predicts pet and enemy moves (and if enemies have priority). Their Carrot gear entices an allied pet to act immediately and their Stick punishes foes that act with priority.
 ### Knight Rework
-This rework's goal is to increase ways to support the Knight and provide speed increases a less volatile payoff. The Knight's damage will probably go down, but there are other big changes coming soon that we want to see the dust settle on before attempting compensation buffs.
+This rework's aims to increase ways to support the Knight and provide speed increases a less volatile payoff. The Knight's damage may go down, but there are big changes coming soon that we want to see the dust settle on before attempting compensation buffs.
 - Lance: damage increases with ~~Power Up~~ -> speed over 100 (variant name: Kinetic)
 - Lance: ~~Accelerating~~ -> Duelist's (Quicken + Kinetic short-circuits gameplay)
 - Lance: ~~Unstoppable~~ -> Surpassing (increase Damage Cap in lieu of Power Up)
@@ -16,17 +16,17 @@ This rework's goal is to increase ways to support the Knight and provide speed i
 - New Gear: Universal Solution, Air Blades
 - Reactive variants are back to a flat bonus
 - Fixed delvers being able to get above max HP when acquiring Cursed Blade
-- Fixed Reckless Certain Victory not reporting its user paying HP
+- Fixed Reckless Certain Victory not reporting its HP cost
 - Made Double variant consistent: double hit count at half base power (double power scaling)
 - Pistol: Power Up stacks are divided by the number of Weakness debuffs the target has (to nerf the team of 6 Detectives)
 - Reinforced Blood Aegis: ~~250~~ -> 200 protection (was a bigger increase than other Reinforced variants)
 - War Cries: also target ~~Exposed~~ -> Distracted foes
 - Corrosion: ~~Harmful~~ -> Fatiguing
 - Warhammer: ~~Reactive~~ -> Vigorous
-- Gear that isn't a Spell or Pact now has a cooldown instead of durability. Spell durability is now called "charges". Pacts don't have charges; they cost other resources instead.
-- ~~Shoddy Craftsmanship~~ -> Shoddy Spellcraft (challenge): increased the charge reduction to 50% (it affects less gear)
-- ~~Repair Kit~~ -> Portable Spellbook Charger: now fully restores charges to Spells
-- Organic and Thick variants have been replaced with Chaining
+- Gear (except Spells and Pacts) now has cooldowns instead of durability. Spell durability is now called "charges". Pacts don't have charges; they cost other resources instead.
+- ~~Shoddy Craftsmanship~~ -> Shoddy Spellcraft (challenge): charge reduction increased to 50% (it affects less gear)
+- ~~Repair Kit~~ -> Portable Spellbook Charger: now fully restores Spell charges
+- Organic and Thick variants replaced with Chaining
    - Fever Break: ~~Organic~~ -> Unlimited (infinite charges)
 - Crystal Shard (artifact) now reduces chance of charge use
 - Weapon Polish (artifact) now grants a chance to reduce Weapon cooldowns by 1 round
@@ -38,22 +38,23 @@ This rework's goal is to increase ways to support the Knight and provide speed i
 - New Artifact Guardian: Brute Convention
 ### Invariant Service Rooms
 These rooms now always have the following services:
-Guildstop - Switch Specializations (Coming Soon), Switch Pets, Take on a new Challenge
-Library - Recharge Spells, Scouting
-Merchant - Buy Gear, Buy Artifacts (Coming Soon), Buy Items, Expand Gear Capacity
+Guildstop - Switch Specialization (Coming Soon), Switch Pet, New Challenge
+Library - Recharge Spells, Scout
+Merchant - Buy Gear, Artifacts (Coming Soon), and Items, Gear Capacity Up
 Rest Site - Heal, Level-Up
 Workshop - Upgrade Gear, Modify Gear
 ### Command Improvements
 - Added `/manual modifier-info`, `/manual challenge-info` & `/set-favorite archetype`
 - Added context menu option to check PotL stats (Apps -> PotL Stats)
 - Renamed `/give-up` to `/adventure retreat`
-- Fixed `/adventure party-stats` not showing the Final Battle after scouting
+- Fixed `/adventure party-stats` not showing the Final Battle scouting
 ### Other Changes
-- New Challenge: Cursed Run - a random starting gear piece is replaced with cursed gear
+- New Challenge: Cursed Run - replace a random starting gear piece with cursed gear
 - New Items: Creative Acorn, Flexigrass
 - Vitamins (item) now grant 2 levels instead of 50 max HP
 - Fixed Curse of Midas reporting generating fractional gold, not scaling with stacks, and being added to party gold immediately
 - Optional combat adds are marked with the Coward state
+- Floating Multiplier (artifact) renamed to Bejeweled Treasuresphere
 ## Prophets of the Labyrinth v0.16.0:
 ### Archetypes
 - Changed Detective to Untyped
