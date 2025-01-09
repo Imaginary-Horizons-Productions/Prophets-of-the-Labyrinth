@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Rallying Encouragement",
 	.setCharges(15)
 	.setModifiers({
 		name: "Excellence", stacks: {
-			description: "2 + Bonus Speed / 10",
+			description: "2 + Bonus Speed ÷ 10",
 			generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 10)
 		}
 	}, {

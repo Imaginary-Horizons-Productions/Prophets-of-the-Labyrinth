@@ -26,5 +26,5 @@ module.exports = new GearTemplate("Powerful Cloak",
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setUpgrades("Accurate Cloak", "Powerful Cloak")
 	.setCooldown(1)
-	.setModifiers({ name: "Evasion", stacks: { description: "2 + Bonus HP / 50", generator: (user) => 2 + Math.floor(user.getBonusHP() / 50) } })
+	.setModifiers({ name: "Evasion", stacks: { description: "2 + Bonus HP ÷ 50", generator: (user) => 2 + Math.floor(user.getBonusHP() / 50) } })
 	.setPower(10);

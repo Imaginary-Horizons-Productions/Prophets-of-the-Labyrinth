@@ -38,4 +38,4 @@ module.exports = new GearTemplate(gearName,
 	.setDamage(40)
 	.setBonus(1) // Buffs removed
 	.setRnConfig({ buffs: 2 })
-	.setModifiers({ name: "Impotence", stacks: { description: "2 + Bonus Speed / 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed / 10) } });
+	.setModifiers({ name: "Impotence", stacks: { description: "2 + Bonus Speed ÷ 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed / 10) } });
