@@ -42,4 +42,4 @@ module.exports = new GearTemplate("Soothing Forbidden Knowledge",
 	.setPactCost([2, "Consume @{pactCost} morale"])
 	.setBonus(1) // Level-Ups
 	.setBonus2(1) // Cooldown Reduction
-	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed / 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
+	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed ÷ 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })

@@ -2,7 +2,7 @@ const fs = require("fs");
 const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, MessagePayload, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT } = require("../constants");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT, ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require("../constants");
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { buildGearDescriptionWithHolderStats } = require("../gear/_gearDictionary");
@@ -395,20 +395,26 @@ const BUTTON_STYLES_BY_MODIFIER_CATEGORY = {
 function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 	const hasFinesse = delver.getModifierStacks("Finesse") > 0;
 	const hasClumsiness = delver.getModifierStacks("Clumsiness") > 0;
-	const description = `${generateTextBar(delver.hp, delver.getMaxHP(), 11)} ${delver.hp}/${delver.getMaxHP()} HP\nProtection: ${delver.protection}\nPoise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${delver.getCritRate()}%${hasFinesse ? " x 2 (Finesse)" : hasClumsiness ? " ÷ 2 (Clumsiness)" : ""}\nSpecialization: ${delver.specialization === "base" ? "N/A" : delver.specialization}\nPet: ${delver.pet.type !== "" ? delver.pet.type : "None"}\n\n${italic(`(Your ${getEmoji(delver.essence)} moves add 2 Stagger to enemies and remove 1 Stagger from allies.)`)}`;
+	const fields = [
+		{ name: "Primary Stats", value: `${generateTextBar(delver.hp, delver.getMaxHP(), 10)} ${delver.hp}/${delver.getMaxHP()} HP${delver.protection > 0 ? `+ ${delver.protection} Protection` : ""}\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${Math.floor(delver.getCritRate())}%${hasFinesse ? " x 2 (Finesse)" : hasClumsiness ? " ÷ 2 (Clumsiness)" : ""}`, inline: true },
+		{ name: "Secondary Stats", value: `Poise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nDamage Cap: ${delver.getDamageCap()}\nEssence Counter Damage: ${delver.getEssenceCounterDamage()}`, inline: true },
+		{ name: "Archetype Action and Gear", value: `Your ${getEmoji(delver.essence)} moves add ${ESSENCE_MATCH_STAGGER_FOE} Stagger to foes and relieve ${ESSENCE_MATCH_STAGGER_ALLY * -1} Stagger on allies.` },
+		{ name: `${getArchetypeActionName(delver.archetype, delver.specialization)} (Archetype Action)`, value: buildGearDescriptionWithHolderStats(getArchetypeActionName(delver.archetype, delver.specialization), delver, null) }
+	];
+	const description = `Specialization: ${delver.specialization === "base" ? "N/A" : delver.specialization}\nPet: ${delver.pet.type !== "" ? delver.pet.type : "None"}`;
 	const embed = new EmbedBuilder().setColor(getColor(delver.essence))
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
-	embed.addFields({ name: getArchetypeActionName(delver.archetype, delver.specialization), value: buildGearDescriptionWithHolderStats(getArchetypeActionName(delver.archetype, delver.specialization), delver, null) });
 	for (let index = 0; index < Math.min(Math.max(delver.gear.length, gearCapacity), MAX_EMBED_FIELD_COUNT); index++) {
 		if (delver.gear[index]) {
 			const gearName = delver.gear[index].name;
-			embed.addFields({ name: gearName, value: buildGearDescriptionWithHolderStats(gearName, index, delver) });
+			fields.push({ name: gearName, value: buildGearDescriptionWithHolderStats(gearName, delver, index) });
 		} else {
-			embed.addFields({ name: `${ordinalSuffixEN(index + 1)} Gear Slot`, value: "No gear yet..." })
+			fields.push({ name: `${ordinalSuffixEN(index + 1)} Gear Slot`, value: "No gear yet..." });
 		}
 	}
+	embed.addFields(fields);
 	const components = [];
 	if (Object.keys(delver.modifiers).length) {
 		const actionRow = [];

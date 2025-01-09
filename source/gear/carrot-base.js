@@ -48,5 +48,5 @@ module.exports = new GearTemplate("Carrot",
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setUpgrades("Guarding Carrot", "Balanced Carrot")
 	.setCooldown(1)
-	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed / 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
+	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed ÷ 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
 	.setCritMultiplier(1);

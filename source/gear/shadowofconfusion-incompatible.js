@@ -30,5 +30,5 @@ module.exports = new GearTemplate("Incompatible Shadow of Confusion",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Shattering Shadow of Confusion")
 	.setCharges(15)
-	.setModifiers({ name: "Evasion", stacks: { description: "2 + Bonus HP / 50", generator: (user) => 2 + Math.floor(user.getBonusHP() / 50) } },
+	.setModifiers({ name: "Evasion", stacks: { description: "2 + Bonus HP ÷ 50", generator: (user) => 2 + Math.floor(user.getBonusHP() / 50) } },
 		{ name: "Incompatible", stacks: 3 });

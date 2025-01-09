@@ -32,7 +32,7 @@ function getArchetype(archetypeName) {
  * @param {string} specialzation
  */
 function getArchetypeActionName(archetype, specialzation) {
-	return ARCHETYPES[archetype].archetypeActions[specialzation].name;
+	return ARCHETYPES[archetype].archetypeActions[specialzation];
 }
 
 /**

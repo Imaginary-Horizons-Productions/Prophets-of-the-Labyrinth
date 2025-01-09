@@ -1,7 +1,7 @@
 const { bold, italic } = require("discord.js");
 const { ArchetypeTemplate } = require("../classes");
 const { getPetMoveDescription } = require("../pets/_petDictionary");
-const { listifyEN } = require("../util/textUtil");
+const { listifyEN, generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Beast Tamer",
 	["Survivalist", "Marauder", "Hunter", "Wildkin"],

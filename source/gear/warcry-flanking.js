@@ -28,5 +28,5 @@ module.exports = new GearTemplate("Flanking War Cry",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Weakening Warcry")
 	.setCooldown(1)
-	.setModifiers({ name: "Distraction", stacks: 0 }, { name: "Exposure", stacks: { description: "2 + Bonus Speed / 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } })
+	.setModifiers({ name: "Distraction", stacks: 0 }, { name: "Exposure", stacks: { description: "2 + Bonus Speed ÷ 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } })
 	.setStagger(2);

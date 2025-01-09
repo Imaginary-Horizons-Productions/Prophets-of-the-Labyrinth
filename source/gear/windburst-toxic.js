@@ -24,4 +24,4 @@ module.exports = new GearTemplate("Toxic Wind Burst",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Inspiring Wind Burst")
 	.setCharges(15)
-	.setModifiers({ name: "Distraction", stacks: { description: "2 + Bonus Speed / 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } }, { name: "Poison", stacks: 3 });
+	.setModifiers({ name: "Distraction", stacks: { description: "2 + Bonus Speed ÷ 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } }, { name: "Poison", stacks: 3 });

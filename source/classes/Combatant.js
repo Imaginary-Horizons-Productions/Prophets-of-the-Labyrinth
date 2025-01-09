@@ -151,7 +151,7 @@ class Delver extends Combatant {
 			} else {
 				return totalCritRate;
 			}
-		}, 0)) / 100);
+		}, 0)));
 	}
 
 	getPoise() {

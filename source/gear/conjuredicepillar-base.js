@@ -24,4 +24,4 @@ module.exports = new GearTemplate("Conjured Ice Pillar",
 ).setTargetingTags({ type: "self", team: "ally" })
 	.setUpgrades("Devoted Conjured Ice Pillar", "Taunting Conjured Ice Pillar")
 	.setCharges(15)
-	.setModifiers({ name: "Evasion", stacks: { description: "2 + Bonus HP / 50", generator: (user) => 2 + Math.floor(user.getBonusHP() / 50) } }, { name: "Vigilance", stacks: 1 });
+	.setModifiers({ name: "Evasion", stacks: { description: "2 + Bonus HP ÷ 50", generator: (user) => 2 + Math.floor(user.getBonusHP() / 50) } }, { name: "Vigilance", stacks: 1 });

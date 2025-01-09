@@ -28,4 +28,4 @@ module.exports = new GearTemplate("Accelerating Water's Stillness",
 	.setSidegrades("Cleansing Water's Stillness")
 	.setCharges(15)
 	.setStagger(-2)
-	.setModifiers({ name: "Vigilance", stacks: 0 }, { name: "Swiftness", stacks: { description: "2 + Bonus Speed / 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } });
+	.setModifiers({ name: "Vigilance", stacks: 0 }, { name: "Swiftness", stacks: { description: "2 + Bonus Speed ÷ 10", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } });

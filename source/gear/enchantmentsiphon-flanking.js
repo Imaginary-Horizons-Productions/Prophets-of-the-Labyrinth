@@ -33,4 +33,4 @@ module.exports = new GearTemplate("Flanking Enchantment Siphon",
 	.setSidegrades("Tormenting Enchantment Siphon")
 	.setCooldown(1)
 	.setProtection(0)
-	.setModifiers({ name: "Exposure", stacks: { description: "1 + Bonus Speed / 10", generator: (user) => 1 + Math.floor(user.getBonusSpeed() / 10) } });
+	.setModifiers({ name: "Exposure", stacks: { description: "1 + Bonus Speed ÷ 10", generator: (user) => 1 + Math.floor(user.getBonusSpeed() / 10) } });

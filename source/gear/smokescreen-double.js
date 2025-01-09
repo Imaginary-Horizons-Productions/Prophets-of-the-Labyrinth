@@ -25,4 +25,4 @@ module.exports = new GearTemplate("Double Smokescreen",
 ).setTargetingTags({ type: `random${SAFE_DELIMITER}${bounceCount}`, team: "ally" })
 	.setUpgrades("Chaining Smokescreen", "Double Smokescreen")
 	.setCooldown(1)
-	.setModifiers({ name: "Evasion", stacks: { description: "1 + Bonus HP / 50", generator: (user) => 1 + Math.floor(user.getBonusHP() / 50) } });
+	.setModifiers({ name: "Evasion", stacks: { description: "1 + Bonus HP ÷ 50", generator: (user) => 1 + Math.floor(user.getBonusHP() / 50) } });
