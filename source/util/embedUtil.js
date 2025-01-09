@@ -527,7 +527,7 @@ function generateStatsEmbed(user, guildId) {
 		.addFields(
 			{ name: `Best Archetype: ${bestArchetype}`, value: `High Score: ${highScore}` },
 			{ name: "Favorites", value: `Archetype: ${player.favoriteArchetype ? player.favoriteArchetype : "Not Set"}\nPet: ${player.favoritePet ? player.favoritePet : "Not Set"}` },
-			{ name: "Collection", value: `Artifacts Collected: ${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)\nArchetypes Collected: ${Object.keys(player.archetypes).length}/${totalAchetypes} (${Math.floor(Object.keys(player.archetypes).length / totalAchetypes) * 100}%)\nPets Collected: ${Object.keys(player.pets).length}/${PET_NAMES.length} (${Math.floor(Object.keys(player.pets).length / PET_NAMES.length) * 100}%)` }
+			{ name: "Collection", value: `Artifacts Collected: ${Object.values(player.artifacts).length}/${totalArtifacts} Artifacts (${Math.floor(Object.values(player.artifacts).length / totalArtifacts * 100)}%)\nArchetypes Collected: ${Object.keys(player.archetypes).length}/${totalAchetypes} (${Math.floor(Object.keys(player.archetypes).length / totalAchetypes * 100)}%)\nPets Collected: ${Object.keys(player.pets).length}/${PET_NAMES.length} (${Math.floor(Object.keys(player.pets).length / PET_NAMES.length * 100)}%)` }
 		)
 }
 
