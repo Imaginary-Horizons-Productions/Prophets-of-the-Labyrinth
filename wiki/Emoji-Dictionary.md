@@ -28,6 +28,7 @@ Here is a list of reserved emoji and their meanings:
 * 🔋 Recharge Spells
 * 🔭 Scouting
 * 🏆 Take on a Challenge
+* 🔐 A Locked Feature (Specialization)
 
 ## Modifier Emoji Convention
 ### Buffs

@@ -1,6 +1,47 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.18.0:
+This update introduces the concept of roles to the game. Having roles as reference points allows parties to ask questions like "do we need more Defense?" or "who do we fit this Support effect on?" instead of only "is this new thing good?". This also gave us the chance to find some of our weird holdovers, like the gamewarpingly good Abacus being Water because it was the Chemist's starting gear at one point. The four roles are: Offense, Defense, Support, and Adventuring. We decided on them by categorizing all the effects in the game, then adding more effects to flesh out the roles that were lower on count (most effects in the game were Offense). Four is a pretty convenient number of roles to have for a few mathematical reasons, but which effects actually make up each of the roles is still subject to some tuning.
+### Essence Overhaul
+The system formerly known as Elemental Weakness/Resistance was too extreme for the amount of strategy it involved. Weakness and Resistance too often made adventures feel either free or oppressive for a mechanic that players had to roll well to succeed at. Elemental Relationships were also hard to remember.
+
+The new system is called Essence Countering. Now, each Essence deals bonus damage against two others it counters and its opposite. This bonus is an additive increase based on the user's level, and there aren't any penalties against foes who counter the assailant. The Essence Counter damage is applied after Critical Hit doubling; the exponential scaling was a large contributor to damage numbers getting out of control.
+
+Other Changes:
+- Added modifiers Attunement and Incompatibility for double/halving Essence Coutner damage
+- Reorganized Essence Relationships so having both Essences of an opposite pair grants full coverage
+- "Untyped" has been renamed to "Unaligned"
+- Each Essence now favors 2 of the 4 roles
+   - Darkness: Offense & Defense
+   - Earth: Defense & Adventuring
+   - Fire: Offense & Adventuring
+   - Light: Support & Adventuring
+   - Water: Defense & Support
+   - Wind: Offense & Support
+### Gear Overhaul
+All gear has been redesigned from the ground up to support strategic decisions around aligning with role.
+- Each Essence now has gear for each of the 4 roles, 1 Spell for each of its favored roles, 1 Pact, and 1 Maneuver (total 8)
+- Gear categories are now: Offense, Defense, Support, Adventuring, Spell, Pact, and Maneuver
+   - Maneuvers are a new category that has powerful effects but require the party's Morale to be at a certain level to be used (Morale is gained from various effects and lasts until end of combat)
+   - There is now a Cursed gear for each gear category
+- Gear now has only potential 2 upgrades, one for each of the favored roles of the gear's Essence
+   - For example: Fever Break, as a Darkness gear, now has an Offense upgrade and a Defense upgrade
+- Passive gear now provides a % bonus to certain stats and now covers each stat combination
+- Gear that didn't fit in the new structure may make a return as Event or Labyrinth specific gear
+- Many more effects scale with their user's stats including protection and modifier stacks
+### Archetype Overhaul
+Archetypes have also been overhauled to fit with the concept of roles. Instead of Punch, each Archetype now has an Archetype Action that deals some damage without consuming resources plus an unique effect. Archetype Actions can be upgraded by taking on an Archetype Specialization at the Guildstop room (which always shows up halfway through a floor). Each Archetype has 4 Specializations, 1 for each role.
+
+Other Changes:
+- Archetype Essences have been reorganized to align with their favored roles
+- Archetype level-up stats now vary based on their favored roles
+- Archetype predicts have been tuned for better gameplay usability
+- New Command: `/manual archetype`
+### Other Changes
+- Modifiers have been renamed for consistency: they're all nouns now
+- New Modifiers: Fortune, Misfortune, Excellence, Degredation
 - New Artifact: Add Blocker
+- Gear and Item drop chance from battle increased to 1/4 (from 1/16 and 1/8 respectively)
+- Fix merchant only stocking duplicates of the same item
 ## Prophets of the Labyrinth v0.17.0:
 ### Pets
 Delvers can now bring pets with them on adventure. One of the party's pets will use a supportive move (or Loaf Around) each even round. You pick which pet to bring during the preparation phase or with `/set-favorite pet`. Your pet kennel is tracked per server so you can have different loadouts with different friend groups. Pets can be leveled-up per kennel, which gets them to stop Loafing Around or upgrades their moves.

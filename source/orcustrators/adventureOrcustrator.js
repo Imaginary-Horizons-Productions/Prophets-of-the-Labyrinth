@@ -1079,7 +1079,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 
 		// Gear drops
 		const gearThreshold = 1;
-		const gearMax = 16;
+		const gearMax = 4;
 		if (adventure.generateRandomNumber(gearMax, "general") < gearThreshold) {
 			const tier = rollGearTier(adventure);
 			const droppedGear = rollGear(tier, adventure);
@@ -1090,7 +1090,7 @@ function checkEndCombat(adventure, thread, lastRoundText) {
 
 		// Item drops
 		const itemThreshold = 1;
-		const itemMax = 8;
+		const itemMax = 4;
 		if (adventure.generateRandomNumber(itemMax, "general") < itemThreshold) {
 			adventure.room.addResource(rollItem(adventure), "Item", "loot", 1);
 		}
