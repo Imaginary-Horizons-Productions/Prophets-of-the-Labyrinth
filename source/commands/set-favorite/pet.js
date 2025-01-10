@@ -1,4 +1,4 @@
-const { CommandInteraction, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
+const { CommandInteraction, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require("discord.js");
 const { SKIP_INTERACTION_HANDLING } = require("../../constants");
 const { setPlayer, getPlayer } = require("../../orcustrators/playerOrcustrator");
 
@@ -14,7 +14,7 @@ async function executeSubcommand(interaction, ...[player]) {
 	}));
 
 	if (petOptions.length < 1) {
-		interaction.reply({ content: "You don't have any pets yet.", ephemeral: true });
+		interaction.reply({ content: "You don't have any pets yet.", flags: [MessageFlags.Ephemeral] });
 		return;
 	}
 
@@ -27,15 +27,15 @@ async function executeSubcommand(interaction, ...[player]) {
 					.addOptions(petOptions)
 			)
 		],
-		ephemeral: true,
-		fetchReply: true
-	}).then(reply => {
+		flags: [MessageFlags.Ephemeral],
+		withResponse: true
+	}).then(({ resource: { message: reply } }) => {
 		const collector = reply.createMessageComponentCollector({ max: 1 });
 		collector.on("collect", collectedInteraction => {
 			const recentPlayer = getPlayer(interaction.user.id, reply.guildId);
 			const newBestFriend = collectedInteraction.values[0];
 			recentPlayer.favoritePet = newBestFriend;
-			collectedInteraction.reply({ content: `Your favorite pet has been set to ${newBestFriend}.`, ephemeral: true });
+			collectedInteraction.reply({ content: `Your favorite pet has been set to ${newBestFriend}.`, flags: [MessageFlags.Ephemeral] });
 			setPlayer(recentPlayer);
 		})
 

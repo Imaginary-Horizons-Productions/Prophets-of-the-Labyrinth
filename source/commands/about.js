@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { InteractionContextType } = require('discord.js');
+const { InteractionContextType, MessageFlags } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { GAME_VERSION } = require('../constants');
 const { embedTemplate } = require('../util/embedUtil');
@@ -24,7 +24,7 @@ module.exports = new CommandWrapper(mainId, "Get info and contributors to PotL",
 							{ name: "Embed Thumbnails & Icons", value: "[game-icons.net](https://game-icons.net/)" }
 						]).setTimestamp(stats.mtime)
 				],
-				ephemeral: true
+				flags: [MessageFlags.Ephemeral]
 			});
 		})
 	}

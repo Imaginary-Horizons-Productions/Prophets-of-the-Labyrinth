@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getApplicationEmojiMarkdown } = require("../../util/graphicsUtil");
 
@@ -16,7 +16,7 @@ async function executeSubcommand(interaction, ...args) {
 					.addFields({ name: "The Damage Cap", value: `The maximum amount of damage that can be done in one shot after protection is 199. This cap is raised by 20 when leveling up and for each stack of ${getApplicationEmojiMarkdown("Excellence")} a user has.` })
 					.setTimestamp(stats.mtime)
 			],
-			ephemeral: true
+			flags: [MessageFlags.Ephemeral]
 		});
 	})
 };

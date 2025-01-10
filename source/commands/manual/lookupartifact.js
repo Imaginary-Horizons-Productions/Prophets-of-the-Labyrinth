@@ -1,4 +1,4 @@
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { getArtifact, artifactNames } = require("../../artifacts/_artifactDictionary");
 const { generateArtifactEmbed } = require("../../util/embedUtil");
 
@@ -10,11 +10,11 @@ async function executeSubcommand(interaction, ...args) {
 	const artifactName = interaction.options.getString("artifact-name");
 	const artifactTemplate = getArtifact(artifactName);
 	if (!artifactTemplate) {
-		interaction.reply({ content: `Could not find an artifact named ${artifactName}.`, ephemeral: true });
+		interaction.reply({ content: `Could not find an artifact named ${artifactName}.`, flags: [MessageFlags.Ephemeral] });
 		return;
 	}
 
-	interaction.reply({ embeds: [generateArtifactEmbed(artifactTemplate, 1, null)], ephemeral: true });
+	interaction.reply({ embeds: [generateArtifactEmbed(artifactTemplate, 1, null)], flags: [MessageFlags.Ephemeral] });
 };
 
 module.exports = {

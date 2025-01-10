@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { InteractionContextType } = require('discord.js');
+const { InteractionContextType, MessageFlags } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { embedTemplate } = require('../util/embedUtil');
 
@@ -20,7 +20,7 @@ module.exports = new CommandWrapper(mainId, "List ways to support PotL", null, f
 						.setFooter({ text: "Thanks in advanced!", iconURL: interaction.client.user.displayAvatarURL() })
 						.setTimestamp(stats.mtime)
 				],
-				ephemeral: true
+				flags: [MessageFlags.Ephemeral]
 			})
 		})
 	}

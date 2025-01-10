@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -13,19 +13,19 @@ module.exports = new SelectWrapper(mainId, 3000,
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure.delvers.some(delver => delver.id === interaction.user.id)) {
-			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
+			interaction.reply({ content: "You aren't in this adventure.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		const [name, menuIndex] = interaction.values[0].split(SAFE_DELIMITER);
 		const { count, cost } = adventure.room.resources[name];
 		if (count < 1) {
-			interaction.reply({ content: `There are no more ${name} for sale.`, ephemeral: true });
+			interaction.reply({ content: `There are no more ${name} for sale.`, flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (adventure.gold < cost) {
-			interaction.reply({ content: "You don't have enough money to buy that.", ephemeral: true });
+			interaction.reply({ content: "You don't have enough money to buy that.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -42,9 +42,9 @@ module.exports = new SelectWrapper(mainId, 3000,
 						.setLabel(`Buy: ${cost}g`)
 				)
 			],
-			ephemeral: true,
-			fetchReply: true
-		}).then(reply => {
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				if (name in adventure.room.resources) {

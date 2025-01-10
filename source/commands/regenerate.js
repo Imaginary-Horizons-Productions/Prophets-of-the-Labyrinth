@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, InteractionContextType } = require('discord.js');
+const { PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
 const { CommandWrapper, Adventure } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { renderRoom } = require('../util/embedUtil');
@@ -10,7 +10,7 @@ module.exports = new CommandWrapper(mainId, "Regenerate the current room message
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure || Adventure.endStates.includes(adventure.state)) {
-			interaction.reply({ content: "This channel doesn't appear to be an active adventure's thread.", ephemeral: true });
+			interaction.reply({ content: "This channel doesn't appear to be an active adventure's thread.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -18,7 +18,7 @@ module.exports = new CommandWrapper(mainId, "Regenerate the current room message
 			clearComponents(messageId, interaction.channel.messages);
 		})
 
-		interaction.reply({ ...renderRoom(adventure, interaction.channel), fetchReply: true }).then(message => {
+		interaction.reply({ ...renderRoom(adventure, interaction.channel), withResponse: true }).then(({ resource: { message } }) => {
 			if (adventure.room.enemies) {
 				adventure.messageIds.battleRound = message.id;
 			} else {

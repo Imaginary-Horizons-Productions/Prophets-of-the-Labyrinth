@@ -1,4 +1,4 @@
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { itemExists, itemNames, getItem } = require("../../items/_itemDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getAdventure } = require("../../orcustrators/adventureOrcustrator");
@@ -12,7 +12,7 @@ const { injectApplicationEmojiMarkdown } = require("../../util/graphicsUtil");
 async function executeSubcommand(interaction, ...args) {
 	const itemName = interaction.options.getString("item-name");
 	if (!itemExists(itemName)) {
-		interaction.reply({ content: `Stats on **${itemName}** could not be found. Check for typos!`, ephemeral: true });
+		interaction.reply({ content: `Stats on **${itemName}** could not be found. Check for typos!`, flags: [MessageFlags.Ephemeral] });
 		return;
 	}
 
@@ -28,7 +28,7 @@ async function executeSubcommand(interaction, ...args) {
 	if (flavorText) {
 		embed.addFields(flavorText);
 	}
-	interaction.reply({ embeds: [embed], ephemeral: true });
+	interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
 };
 
 module.exports = {

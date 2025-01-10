@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, InteractionContextType } = require('discord.js');
+const { PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
 const { CommandWrapper, Adventure } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 
@@ -8,12 +8,12 @@ module.exports = new CommandWrapper(mainId, "Remind delvers to input their vote 
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure || Adventure.endStates.includes(adventure.state)) {
-			interaction.reply({ content: "This channel doesn't appear to be an active adventure thread.", ephemeral: true });
+			interaction.reply({ content: "This channel doesn't appear to be an active adventure thread.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (!adventure.delvers.some(delver => delver.id === interaction.user.id)) {
-			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
+			interaction.reply({ content: "You aren't in this adventure.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 

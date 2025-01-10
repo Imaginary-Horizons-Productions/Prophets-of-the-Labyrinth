@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const { ButtonWrapper, Move, CombatantReference } = require('../classes');
 const { getAdventure, setAdventure, checkNextRound, endRound } = require('../orcustrators/adventureOrcustrator');
 
@@ -11,7 +12,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "You don't appear to be participating in this adventure.", ephemeral: true });
+			interaction.reply({ content: "You don't appear to be participating in this adventure.", flags: [MessageFlags.Ephemeral] });
 		}
 
 		const delverIndex = adventure.getCombatantIndex(delver);

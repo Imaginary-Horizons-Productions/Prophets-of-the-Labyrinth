@@ -1,6 +1,6 @@
 const { CommandWrapper } = require('../classes');
 const { generateStatsEmbed } = require('../util/embedUtil');
-const { InteractionContextType } = require('discord.js');
+const { InteractionContextType, MessageFlags } = require('discord.js');
 
 const mainId = "player-stats";
 module.exports = new CommandWrapper(mainId, "Get the overall PotL stats for a user", null, false, [InteractionContextType.Guild], 3000,
@@ -8,7 +8,7 @@ module.exports = new CommandWrapper(mainId, "Get the overall PotL stats for a us
 		const user = interaction.options.getUser("user") || interaction.user;
 		interaction.reply({
 			embeds: [generateStatsEmbed(user, interaction.guildId)],
-			ephemeral: true
+			flags: [MessageFlags.Ephemeral]
 		});
 	}
 ).setOptions(

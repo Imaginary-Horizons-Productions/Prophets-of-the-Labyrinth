@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
@@ -13,7 +13,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
+			interaction.reply({ content: "You aren't in this adventure.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -75,9 +75,9 @@ module.exports = new SelectWrapper(mainId, 2000,
 				interaction.reply({
 					embeds: [embed],
 					components,
-					ephemeral: true,
-					fetchReply: true
-				}).then(reply => {
+					flags: [MessageFlags.Ephemeral],
+					withResponse: true
+				}).then(({ resource: { message: reply } }) => {
 					const collector = reply.createMessageComponentCollector({ max: 1 });
 					collector.on("collect", collectedInteraction => {
 						const [mainId, startedDepth, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);

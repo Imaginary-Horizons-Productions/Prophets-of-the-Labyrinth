@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { inspectSelfPayload } = require('../util/embedUtil');
@@ -9,7 +10,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 		interaction.reply(inspectSelfPayload(delver, adventure.getGearCapacity(), adventure.room.enemies !== null))

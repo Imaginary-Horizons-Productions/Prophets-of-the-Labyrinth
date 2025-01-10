@@ -1,4 +1,4 @@
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { getEnemy, enemyNames } = require("../../enemies/_enemyDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getEmoji } = require("../../util/essenceUtil");
@@ -13,7 +13,7 @@ async function executeSubcommand(interaction, ...args) {
 	const enemyName = interaction.options.getString("enemy-name");
 	const enemyTemplate = getEnemy(enemyName);
 	if (!enemyTemplate) {
-		interaction.reply({ content: `Could not find an enemy named ${enemyName}.`, ephemeral: true });
+		interaction.reply({ content: `Could not find an enemy named ${enemyName}.`, flags: [MessageFlags.Ephemeral] });
 		return;
 	}
 
@@ -32,7 +32,7 @@ async function executeSubcommand(interaction, ...args) {
 		enemyFields.push({ name: enemyTemplate.flavorText.name, value: injectApplicationEmojiMarkdown(enemyTemplate.flavorText.value) });
 	}
 	enemyEmbed.addFields(enemyFields)
-	interaction.reply({ embeds: [enemyEmbed], ephemeral: true });
+	interaction.reply({ embeds: [enemyEmbed], flags: [MessageFlags.Ephemeral] });
 };
 
 module.exports = {

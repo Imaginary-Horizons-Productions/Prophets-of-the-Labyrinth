@@ -436,7 +436,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 		}
 		components.push(new ActionRowBuilder().addComponents(...actionRow));
 	}
-	return { embeds: [embed], components, ephemeral: true };
+	return { embeds: [embed], components, flags: [MessageFlags.Ephemeral] };
 }
 
 /** @param {Adventure} adventure */
@@ -497,7 +497,7 @@ function generatePartyStatsPayload(adventure) {
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 		))
 	}
-	return { embeds: [embed], components: infoSelects, ephemeral: true };
+	return { embeds: [embed], components: infoSelects, flags: [MessageFlags.Ephemeral] };
 }
 
 /**

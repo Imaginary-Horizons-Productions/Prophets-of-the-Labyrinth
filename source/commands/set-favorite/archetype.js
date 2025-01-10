@@ -1,4 +1,4 @@
-const { CommandInteraction, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
+const { CommandInteraction, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require("discord.js");
 const { Player } = require("../../classes");
 const { getPlayer, setPlayer } = require("../../orcustrators/playerOrcustrator");
 const { SKIP_INTERACTION_HANDLING } = require("../../constants");
@@ -22,15 +22,15 @@ async function executeSubcommand(interaction, ...[player]) {
 					.addOptions(archetypeOptions)
 			)
 		],
-		ephemeral: true,
-		fetchReply: true
-	}).then(reply => {
+		flags: [MessageFlags.Ephemeral],
+		withResponse: true
+	}).then(({ resource: { message: reply } }) => {
 		const collector = reply.createMessageComponentCollector({ max: 1 });
 		collector.on("collect", collectedInteraction => {
 			const recentPlayer = getPlayer(interaction.user.id, reply.guildId);
 			const selectedArchetype = collectedInteraction.values[0];
 			recentPlayer.favoriteArchetype = selectedArchetype;
-			collectedInteraction.reply({ content: `Your favorite archetype has been set to ${selectedArchetype}.`, ephemeral: true });
+			collectedInteraction.reply({ content: `Your favorite archetype has been set to ${selectedArchetype}.`, flags: [MessageFlags.Ephemeral] });
 			setPlayer(recentPlayer);
 		})
 

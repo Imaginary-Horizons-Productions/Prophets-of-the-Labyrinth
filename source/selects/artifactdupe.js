@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -9,7 +10,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure.delvers.some(delver => delver.id === interaction.user.id)) {
-			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
+			interaction.reply({ content: "You aren't in this adventure.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 

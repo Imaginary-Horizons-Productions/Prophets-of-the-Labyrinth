@@ -1,4 +1,4 @@
-const { AttachmentBuilder, InteractionContextType } = require('discord.js');
+const { AttachmentBuilder, InteractionContextType, MessageFlags } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { generateVersionEmbed } = require('../util/embedUtil');
 
@@ -8,13 +8,13 @@ module.exports = new CommandWrapper(mainId, "Get the PotL change log", null, fal
 	(interaction) => {
 		if (interaction.options.getString("notes-length") === "last-version") {
 			generateVersionEmbed().then(embed => {
-				interaction.reply({ embeds: [embed], ephemeral: true });
+				interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
 			}).catch(console.error);
 		} else {
 			interaction.reply({
 				content: "Here are all the changes so far: ",
 				files: [new AttachmentBuilder("./ChangeLog.md")],
-				ephemeral: true
+				flags: [MessageFlags.Ephemeral]
 			});
 		}
 	}

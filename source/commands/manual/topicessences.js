@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 const { essenceList, getEmoji, getOpposite } = require("../../util/essenceUtil");
 const { getCounteredEssences } = require("../../util/essenceUtil");
@@ -27,7 +27,7 @@ async function executeSubcommand(interaction, ...args) {
 						)
 					).setTimestamp(stats.mtime)
 			],
-			ephemeral: true
+			flags: [MessageFlags.Ephemeral]
 		});
 	})
 };

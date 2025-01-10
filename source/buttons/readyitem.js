@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
 const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, SKIP_INTERACTION_HANDLING, POTL_ICON_URL } = require('../constants');
 const { getAdventure, setAdventure, checkNextRound, endRound } = require('../orcustrators/adventureOrcustrator');
@@ -15,7 +15,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 		const delverArchetypeTemplate = getArchetype(delver.archetype);
@@ -33,8 +33,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 							value: item
 						}), [])))
 			],
-			ephemeral: true,
-			fetchReply: true
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
 		}).then(reply => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", (collectedInteraction) => {

@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { getArtifact } = require('../artifacts/_artifactDictionary');
@@ -26,6 +26,6 @@ module.exports = new SelectWrapper(mainId, 3000,
 		Object.entries(artifactCopy).forEach(([statistic, value]) => {
 			embed.addFields({ name: statistic, value: value.toString() });
 		})
-		interaction.reply({ embeds: [embed], ephemeral: true });
+		interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
 	}
 );

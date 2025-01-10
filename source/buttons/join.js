@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, MessageFlags } = require('discord.js');
 const { ButtonWrapper, Delver } = require('../classes');
 const { MAX_DELVER_COUNT, ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
@@ -13,24 +13,24 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	async (interaction, [guildId, adventureId, context]) => {
 		const company = getCompany(interaction.guildId);
 		if (!isSponsor(interaction.user.id) && company.adventuring.has(interaction.user.id)) {
-			interaction.reply({ content: `Delving in more than one adventure per server is a premium perk. Use ${commandMention("support")} for more details.`, ephemeral: true });
+			interaction.reply({ content: `Delving in more than one adventure per server is a premium perk. Use ${commandMention("support")} for more details.`, flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		const adventure = getAdventure(adventureId);
 		if (!adventure) {
 			interaction.message.edit({ components: [] });
-			interaction.reply({ content: "The adventure you tried joining could not be found.", ephemeral: true });
+			interaction.reply({ content: "The adventure you tried joining could not be found.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (adventure.state !== "config") {
-			interaction.reply({ content: `This adventure has already started, but you can recruit for your own with ${commandMention("delve")}.`, ephemeral: true });
+			interaction.reply({ content: `This adventure has already started, but you can recruit for your own with ${commandMention("delve")}.`, flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (adventure.delvers.some(delver => delver.id === interaction.user.id)) {
-			interaction.reply({ content: "You are already part of this adventure!", ephemeral: true });
+			interaction.reply({ content: "You are already part of this adventure!", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -42,7 +42,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 		if (adventure.delvers.length === MAX_DELVER_COUNT) {
 			recruitMessage.edit({ components: [] });
-			interaction.update({ content: `The maximum number of delvers on an adventure is ${MAX_DELVER_COUNT}.`, components: [], ephemeral: true });
+			interaction.update({ content: `The maximum number of delvers on an adventure is ${MAX_DELVER_COUNT}.`, components: [], flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 

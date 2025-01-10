@@ -2,7 +2,7 @@ const { ButtonWrapper } = require('../classes');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { buildGearRecord } = require('../gear/_gearDictionary');
 const { getAdventure, nextRoom, fetchRecruitMessage, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { bold } = require('discord.js');
+const { bold, MessageFlags } = require('discord.js');
 const { commandMention } = require('../util/textUtil');
 
 const cursedGearByPurpose = ["Cursed Blade", "Cursed Tome"];
@@ -14,12 +14,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "You can join this adventure with the button outside the thread.", ephemeral: true });
+			interaction.reply({ content: "You can join this adventure with the button outside the thread.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (!delver.archetype) {
-			interaction.reply({ content: "You must pick an archetype before you can ready up.", ephemeral: true });
+			interaction.reply({ content: "You must pick an archetype before you can ready up.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -59,7 +59,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 			})
 
-			interaction.channel.send({ content: `The adventure has begun (and closed to new delvers joining)! You can use ${commandMention("adventure party-stats")} or ${commandMention("adventure inspect-self")} to check adventure status. You can also use ${commandMention("manual")} to look up various information on the game.`, fetchReply: true }).then(message => {
+			interaction.channel.send({ content: `The adventure has begun (and closed to new delvers joining)! You can use ${commandMention("adventure party-stats")} or ${commandMention("adventure inspect-self")} to check adventure status. You can also use ${commandMention("manual")} to look up various information on the game.`, withResponse: true }).then(({ resource: { message } }) => {
 				message.pin();
 			});
 			adventure.state = "ongoing";
