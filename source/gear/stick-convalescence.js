@@ -3,7 +3,7 @@ const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { removeModifier, dealDamage, generateModifierResultLines, addModifier, combineModifierReceipts, changeStagger } = require('../util/combatantUtil');
 
-const actionName = "Convalecense Stick";
+const actionName = "Convalescence Stick";
 module.exports = new GearTemplate(actionName,
 	[
 		["use", "Inflict @{damage} @{essence} damage and @{mod0Stacks} @{mod0} on a single foe, then shrug off @{bonus} random debuff"],

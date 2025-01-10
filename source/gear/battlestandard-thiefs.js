@@ -4,14 +4,14 @@ const { changeStagger, dealDamage } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Thief's Battle Standard",
 	[
-		["use", "Deal @{damage} @{essence} damage to a single foe, gain @{bonus2}g if they're downed"],
+		["use", "Deal @{damage} @{essence} damage to a single foe, gain @{secondBonus}g if they're downed"],
 		["Critical💥", "Damage x @{critMultiplier}, increase the party's morale by @{bonus}"]
 	],
 	"Offense",
 	"Light",
 	350,
 	(targets, user, adventure) => {
-		const { essence, damage, bonus, bonus2 } = module.exports;
+		const { essence, damage, bonus, secondBonus } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -30,7 +30,7 @@ module.exports = new GearTemplate("Thief's Battle Standard",
 			}
 		})
 		if (killCount > 0) {
-			const totalBounty = killCount * bonus2;
+			const totalBounty = killCount * secondBonus;
 			adventure.room.addResource("Gold", "Currency", "loot", totalBounty);
 			resultLines.push(`${user.name} pillages ${totalBounty}g.`);
 		}
@@ -42,4 +42,4 @@ module.exports = new GearTemplate("Thief's Battle Standard",
 	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(1) // Morale
-	.setBonus2(30); // Bounty
+	.setSecondBonus(30); // Bounty

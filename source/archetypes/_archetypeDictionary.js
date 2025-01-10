@@ -22,6 +22,10 @@ for (const file of [
 	ARCHETYPES[archetype.name] = archetype;
 }
 
+function getAllArchetypeNames() {
+	return Object.keys(ARCHETYPES);
+}
+
 /** @param {string} archetypeName */
 function getArchetype(archetypeName) {
 	return ARCHETYPES[archetypeName];
@@ -62,6 +66,7 @@ function getArchetypesCount() {
 }
 
 module.exports = {
+	getAllArchetypeNames,
 	getArchetype,
 	getArchetypeActionName,
 	rollArchetypes,

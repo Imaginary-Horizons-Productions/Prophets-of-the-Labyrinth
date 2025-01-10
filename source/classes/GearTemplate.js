@@ -57,7 +57,7 @@ class GearTemplate {
 	/** @type {number} */
 	bonus;
 	/** @type {number} */
-	bonus2;
+	secondBonus;
 	/** @type {{ name: string, stacks: number | { description: string, generator: (user: Combatant) => number } }[]} */
 	modifiers;
 	maxHP = 0;
@@ -158,8 +158,8 @@ class GearTemplate {
 	}
 
 	/** @param {number} integer */
-	setBonus2(integer) {
-		this.bonus2 = integer;
+	setSecondBonus(integer) {
+		this.secondBonus = integer;
 		return this;
 	}
 

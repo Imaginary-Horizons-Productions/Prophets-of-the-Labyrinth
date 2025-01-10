@@ -4,7 +4,8 @@ const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Ritualist",
 	["Hemomancer", "Warlock", "Illusionist", "Reaper"],
-	"They'll be able to predict the order combatants will act in and assess HP levels. Their Life Drain will allow them to regain HP.",
+	"A Ritualist can predict the order combatants will act in and assess HP levels.",
+	"Their Life Drain will allow them to regain HP.",
 	"Darkness",
 	(embed, adventure) => {
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)

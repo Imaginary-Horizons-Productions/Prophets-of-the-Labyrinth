@@ -49,13 +49,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		// Update game logic
 		const delver = new Delver(interaction.user.id, interaction.user.username, adventureId);
 		const player = getPlayer(interaction.user.id, interaction.guildId);
-		if (player.favoritePet !== "") {
+		if (player.favoritePet) {
 			delver.pet = {
 				type: player.favoritePet,
 				level: player.pets[player.favoritePet]
 			};
 		}
-		if (player.favoriteArchetype !== "") {
+		if (player.favoriteArchetype) {
 			delver.archetype = player.favoriteArchetype;
 		}
 		adventure.delvers.push(delver);

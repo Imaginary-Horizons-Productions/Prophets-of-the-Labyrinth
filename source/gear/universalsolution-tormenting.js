@@ -6,14 +6,14 @@ const { changeStagger, generateModifierResultLines, combineModifierReceipts, add
 const gearName = "Tormenting Universal Solution";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Transfer a random @{bonus} of your debuffs to a single foe then add @{bonus2} stack to each of their debuffs"],
+		["use", "Transfer a random @{bonus} of your debuffs to a single foe then add @{secondBonus} stack to each of their debuffs"],
 		["Critical💥", "Transfer all of your debuffs"]
 	],
 	"Pact",
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { essence, bonus, modifiers: [poison], bonus2 } = module.exports;
+		const { essence, bonus, modifiers: [poison], secondBonus } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -34,7 +34,7 @@ module.exports = new GearTemplate(gearName,
 		for (const target of targets) {
 			for (const modifier in target.modifiers) {
 				if (getModifierCategory(modifier) === "Debuff") {
-					reciepts.push(...addModifier([target], { name: modifier, stacks: bonus2 }));
+					reciepts.push(...addModifier([target], { name: modifier, stacks: secondBonus }));
 				}
 			}
 		}
@@ -47,4 +47,4 @@ module.exports = new GearTemplate(gearName,
 	.setBonus(2) // Debuffs transfered
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setRnConfig({ debuffs: 2 })
-	.setBonus2(1); // Debuff stacks incremented
+	.setSecondBonus(1); // Debuff stacks incremented

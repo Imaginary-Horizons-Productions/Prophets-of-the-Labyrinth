@@ -5,7 +5,7 @@ const { dealDamage, generateModifierResultLines, addModifier } = require('../uti
 const actionName = "Evasive Deck of Cards";
 module.exports = new GearTemplate(actionName,
 	[
-		["use", "Deal @{damage} @{essence} damage and inflict between @{bonus} and @{bonus2} stacks of @{mod0} randomly and gain @{mod1Stacks} @{mod1} on a single foe"],
+		["use", "Deal @{damage} @{essence} damage and inflict between @{bonus} and @{secondBonus} stacks of @{mod0} randomly and gain @{mod1Stacks} @{mod1} on a single foe"],
 		["Critical💥", "Damage x @{critMultiplier}"]
 	],
 	"Action",
@@ -25,7 +25,7 @@ module.exports = new GearTemplate(actionName,
 	.setDamage(0)
 	.setModifiers({ name: "Misfortune", stacks: 0 }, { name: "Evasion", stacks: 2 })
 	.setBonus(2) // Min stacks
-	.setBonus2(9) // Max stacks
+	.setSecondBonus(9) // Max stacks
 	.setRnConfig({
 		["Deck of Cards"]: 1
 	});

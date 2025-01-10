@@ -5,7 +5,7 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 module.exports = new GearTemplate("Soothing Forbidden Knowledge",
 	[
 		["use", "Grant a single ally @{mod0Stacks} @{mod0} and @{bonus} extra level up after combat"],
-		["Critical💥", "Reduce your target's cooldowns by @{bonus2}"]
+		["Critical💥", "Reduce your target's cooldowns by @{secondBonus}"]
 	],
 	"Pact",
 	"Light",
@@ -41,5 +41,5 @@ module.exports = new GearTemplate("Soothing Forbidden Knowledge",
 ).setTargetingTags({ type: "single", team: "ally" })
 	.setPactCost([2, "Consume @{pactCost} morale"])
 	.setBonus(1) // Level-Ups
-	.setBonus2(1) // Cooldown Reduction
+	.setSecondBonus(1) // Cooldown Reduction
 	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed ÷ 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })

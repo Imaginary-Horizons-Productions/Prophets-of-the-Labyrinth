@@ -14,7 +14,8 @@ function generateCritAndModifierField(team, adventure) {
 
 module.exports = new ArchetypeTemplate("Tactician",
 	["Spellblade", "Historian", "Infiltrator", "Legionnaire"],
-	"They'll be able to predict which combatants will score Critical Hits and what modifiers they have as well as the party's morale. Their Spear increases party morale on a Critical Hit.",
+	"A Tactician can predict which combatants will score Critical Hits and what modifiers they have as well as the party's morale.",
+	"Their Spear increases party morale on a Critical Hit.",
 	"Light",
 	(embed, adventure) => {
 		embed.addFields(generateCritAndModifierField(adventure.room.enemies.filter(combatant => combatant.hp > 0), adventure));

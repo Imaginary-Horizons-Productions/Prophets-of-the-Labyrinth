@@ -5,7 +5,8 @@ const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new ArchetypeTemplate("Rogue",
 	["Assassin", "Acrobat", "Charlatan", "Juggler"],
-	"They'll be able to predict which combatants will critically hit and which essence to use to counter each combatant. Their Daggers gives them @e{Excellence}.",
+	"A Rogue can predict which combatants will critically hit and which essence to use to counter each combatant.",
+	"Their Daggers gives them @e{Excellence}.",
 	"Fire",
 	(embed, adventure) => {
 		/** @param {Combatant} combatant */

@@ -1,5 +1,5 @@
 # Prophets of the Labyrinth Change Log
-## Prophets of the Labyrinth v0.17.0:
+## Prophets of the Labyrinth v0.18.0:
 - New Artifact: Add Blocker
 ## Prophets of the Labyrinth v0.17.0:
 ### Pets

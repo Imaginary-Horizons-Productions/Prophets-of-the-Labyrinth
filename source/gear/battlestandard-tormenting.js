@@ -5,14 +5,14 @@ const { changeStagger, dealDamage, generateModifierResultLines, combineModifierR
 
 module.exports = new GearTemplate("Tormenting Battle Standard",
 	[
-		["use", "Deal @{damage} @{essence} damage to a single foe and add @{bonus2} stack to each of their debuffs"],
+		["use", "Deal @{damage} @{essence} damage to a single foe and add @{secondBonus} stack to each of their debuffs"],
 		["Critical💥", "Damage x @{critMultiplier}, increase the party's morale by @{bonus}"]
 	],
 	"Offense",
 	"Light",
 	350,
 	(targets, user, adventure) => {
-		const { essence, damage, bonus, bonus2 } = module.exports;
+		const { essence, damage, bonus, secondBonus } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Tormenting Battle Standard",
 		for (const target of targets) {
 			for (const modifier in target.modifiers) {
 				if (getModifierCategory(modifier) === "Debuff") {
-					reciepts.push(...addModifier([target], { name: modifier, stacks: bonus2 }));
+					reciepts.push(...addModifier([target], { name: modifier, stacks: secondBonus }));
 				}
 			}
 		}
@@ -41,4 +41,4 @@ module.exports = new GearTemplate("Tormenting Battle Standard",
 	.setCooldown(1)
 	.setDamage(40)
 	.setBonus(1) // Morale
-	.setBonus2(1); // Debuff increment
+	.setSecondBonus(1); // Debuff increment

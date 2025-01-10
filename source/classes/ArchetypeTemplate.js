@@ -8,6 +8,7 @@ class ArchetypeTemplate {
 	 * @param {string} nameInput
 	 * @param {string[]} specializationNames
 	 * @param {string} descriptionInput
+	 * @param {string} archetypeActionSummary
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essenceEnum
 	 * @param {(embed: EmbedBuilder, adventure: Adventure ) => EmbedBuilder} predictFunction
 	 * @param {(combatant: Combatant) => string} miniPredictFunction
@@ -15,10 +16,11 @@ class ArchetypeTemplate {
 	 * @param {string[]} startingGearNames
 	 * @param {{maxHPGrowth: number, powerGrowth: number, speedGrowth: number, critRateGrowth: number, poiseGrowth: number}} growthRates
 	 */
-	constructor(nameInput, specializationNames, descriptionInput, essenceEnum, predictFunction, miniPredictFunction, archetypeActionsMap, startingGearNames, { maxHPGrowth, powerGrowth, speedGrowth, critRateGrowth }) {
+	constructor(nameInput, specializationNames, descriptionInput, archetypeActionSummary, essenceEnum, predictFunction, miniPredictFunction, archetypeActionsMap, startingGearNames, { maxHPGrowth, powerGrowth, speedGrowth, critRateGrowth }) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!specializationNames) throw new BuildError("Falsy specializationNames");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
+		if (!archetypeActionSummary) throw new BuildError("Falsy archetypeActionSummary");
 		if (!essenceEnum) throw new BuildError("Falsy essenceEnum");
 		if (!predictFunction) throw new BuildError("Falsy predictFunction");
 		if (!miniPredictFunction) throw new BuildError("Falsy miniPredictFunction");
@@ -28,6 +30,7 @@ class ArchetypeTemplate {
 		this.name = nameInput;
 		this.specializations = specializationNames;
 		this.description = descriptionInput;
+		this.archetypeActionSummary = archetypeActionSummary;
 		this.essence = essenceEnum;
 		this.predict = predictFunction;
 		this.miniPredict = miniPredictFunction;

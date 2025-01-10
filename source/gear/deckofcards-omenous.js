@@ -5,7 +5,7 @@ const { dealDamage, generateModifierResultLines, addModifier, getCombatantCounte
 const actionName = "Omenous Deck of Cards";
 module.exports = new GearTemplate(actionName,
 	[
-		["use", "Inflict @{damage} @{essence} damage and between @{bonus} and @{bonus2} stacks of @{mod0} randomly (doubled if Essence Countering) on a single foe"],
+		["use", "Inflict @{damage} @{essence} damage and between @{bonus} and @{secondBonus} stacks of @{mod0} randomly (doubled if Essence Countering) on a single foe"],
 		["Critical💥", "Damage x @{critMultiplier}"]
 	],
 	"Action",
@@ -32,7 +32,7 @@ module.exports = new GearTemplate(actionName,
 	.setDamage(0)
 	.setModifiers({ name: "Misfortune", stacks: 0 })
 	.setBonus(2) // Min stacks
-	.setBonus2(9) // Max stacks
+	.setSecondBonus(9) // Max stacks
 	.setRnConfig({
 		["Deck of Cards"]: 1
 	});

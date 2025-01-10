@@ -5,6 +5,7 @@ const { createSubcommandMappings } = require('../../util/fileUtil');
 const mainId = "manual";
 const { slashData: subcommandSlashData, executeDictionary: subcommandExecuteDictionary } = createSubcommandMappings(mainId, [
 	"beginnersguide.js",
+	"lookuparchetype.js",
 	"lookupartifact.js",
 	"lookupchallenge.js",
 	"lookupenemy.js",
