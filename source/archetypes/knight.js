@@ -3,7 +3,8 @@ const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Knight",
 	["Templar", "Paladin", "General", "Juggernaut"],
-	"They'll be able to predict who enemies are targeting with which moves and the order combatants will act in. Their Lance will grant them protection.",
+	"A Knight can predict who enemies are targeting with which moves and the order combatants will act in.",
+	"Their Lance will grant them protection.",
 	"Water",
 	(embed, adventure) => {
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)

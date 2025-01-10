@@ -11,7 +11,8 @@ function createModifierField(combatant) {
 
 module.exports = new ArchetypeTemplate("Trickster",
 	["Bard", "Gambler", "Doomsayer", "Dancer"],
-	"They'll be able to assess combatant modifiers and random outcomes of moves. Their Deck of Cards will inflict a random amount of @e{Misfortune} on their target.",
+	"A Trickster can assess combatant modifiers and random outcomes of moves.",
+	"Their Deck of Cards will inflict a random amount of @e{Misfortune} on their target.",
 	"Wind",
 	(embed, adventure) => {
 		// Separate Enemies and Delvers into different rows

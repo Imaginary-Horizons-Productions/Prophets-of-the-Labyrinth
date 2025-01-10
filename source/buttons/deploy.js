@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, bold } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
@@ -54,7 +54,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				setAdventure(adventure);
 
 				// Send confirmation text
-				interaction.channel.send(`**${interaction.user.displayName}** ${isSwitching ? "has switched to" : "will be playing as"} **${archetype}**. ${injectApplicationEmojiMarkdown(getArchetype(archetype).description)}`);
+				const { description, archetypeActionSummary } = getArchetype(archetype);
+				interaction.channel.send(`${bold(interaction.user.displayName)} ${isSwitching ? "has switched to" : "will be playing as"} **${archetype}**. ${description} ${injectApplicationEmojiMarkdown(archetypeActionSummary)}`);
 			})
 
 			collector.on("end", () => {

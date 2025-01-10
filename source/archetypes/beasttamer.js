@@ -5,7 +5,8 @@ const { listifyEN, generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Beast Tamer",
 	["Survivalist", "Marauder", "Hunter", "Wildkin"],
-	"They'll be able to predict what moves pets are using, what level the enemies are and how much HP they have. Their Stick inflicts @e{Impotence} on their target.",
+	"A Beast Tamer can predict what moves pets are using, what level the enemies are and how much HP they have.",
+	"Their Stick inflicts @e{Impotence} on their target.",
 	"Earth",
 	(embed, adventure) => {
 		const nextPetOwner = adventure.delvers[adventure.petRNs.delverIndex];

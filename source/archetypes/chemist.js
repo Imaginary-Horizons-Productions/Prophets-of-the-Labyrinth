@@ -4,7 +4,8 @@ const { getEmoji } = require("../util/essenceUtil.js");
 
 module.exports = new ArchetypeTemplate("Chemist",
 	["Saboteur", "Researcher", "Poisoner", "Druid"],
-	"They'll be able to assess combatant modifiers and which essence to use to counter them. They'll also be able to make items with their Cauldron Stir.",
+	"A Chemist can assess combatant modifiers and which essence to use to counter them.",
+	"They'll also be able to make items with their Cauldron Stir.",
 	"Light",
 	(embed, adventure) => {
 		const eligibleCombatants = adventure.room.enemies.concat(adventure.delvers).filter(combatant => combatant.hp > 0);

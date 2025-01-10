@@ -4,7 +4,8 @@ const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Martial Artist",
 	["Fencer", "Pugilist", "Deadeye", "Ninja"],
-	"They'll be able to assess combatant how much Stagger to Stun each combatant and what moves enemies will be using this and next round. Their Flourish inflicts @e{Distraction} on their target.",
+	"A Martial Artist assess combatant how much Stagger to Stun each combatant and what moves enemies will be using this and next round.",
+	"Their Flourish inflicts @e{Distraction} on their target.",
 	"Darkness",
 	(embed, adventure) => {
 		embed.addFields({

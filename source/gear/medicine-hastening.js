@@ -7,13 +7,13 @@ const gearName = "Hastening Medicine";
 module.exports = new GearTemplate(gearName,
 	[
 		["use", "Cure @{bonus} random debuff on a single ally"],
-		["Critical💥", "Debuffs cured x @{critMultiplier}, reduce the target's cooldowns by @{bonus2}"]
+		["Critical💥", "Debuffs cured x @{critMultiplier}, reduce the target's cooldowns by @{secondBonus}"]
 	],
 	"Spell",
 	"Earth",
 	350,
 	([target], user, adventure) => {
-		const { essence, bonus, critMultiplier, bonus2 } = module.exports;
+		const { essence, bonus, critMultiplier, secondBonus } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
@@ -25,7 +25,7 @@ module.exports = new GearTemplate(gearName,
 			target.gear?.forEach(gear => {
 				if (gear.cooldown > 1) {
 					didCooldown = true;
-					gear.cooldown -= bonus2;
+					gear.cooldown -= secondBonus;
 				}
 			})
 			if (didCooldown) {
@@ -45,4 +45,4 @@ module.exports = new GearTemplate(gearName,
 	.setCharges(15)
 	.setBonus(1) // Debuffs cured
 	.setRnConfig({ debuffs: 2 })
-	.setBonus2(1); // Cooldown reduction
+	.setSecondBonus(1); // Cooldown reduction

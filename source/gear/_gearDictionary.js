@@ -401,7 +401,7 @@ function injectGearStats(text, gearName) {
 	return calculateTagContent(text, [
 		"critMultiplier",
 		"bonus",
-		"bonus2",
+		"secondBonus",
 		"healing",
 		"maxHP",
 		"power",

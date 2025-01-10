@@ -36,7 +36,7 @@ function getPlayer(playerId, guildId) {
 	if (!playerDictionary.has(playerId)) {
 		const player = new Player(playerId);
 		rollArchetypes(3, false).forEach(archetype => {
-			player.archetypes[archetype] = 0;
+			player.archetypes[archetype] = { specializationsUnlocked: 1, highScore: 0 };
 		})
 		rollPets(1, false).forEach(pet => {
 			player.pets[pet] = 1;

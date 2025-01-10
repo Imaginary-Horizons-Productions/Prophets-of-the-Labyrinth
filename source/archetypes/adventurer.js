@@ -2,7 +2,8 @@ const { ArchetypeTemplate } = require("../classes");
 
 module.exports = new ArchetypeTemplate("Adventurer",
 	["Pirate", "Omenbringer", "Sentinel", "Vanguard"],
-	"They won't be able to predict anything, but have double normal stat growths. Their Shortsword grants them @e{Finesse}.",
+	"An Adventurer doesn't predict anything, but has double normal stat growths.",
+	"Their Shortsword grants them @e{Finesse}.",
 	"Fire",
 	(embed, adventure) => {
 		const descriptions = [

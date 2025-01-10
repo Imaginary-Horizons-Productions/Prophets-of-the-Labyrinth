@@ -5,13 +5,13 @@ const { changeStagger, dealDamage } = require('../util/combatantUtil');
 module.exports = new GearTemplate("Hastening Spear",
 	[
 		["use", "Deal @{damage} @{essence} damage to a single foe"],
-		["Critical💥", "Damage x @{critMultiplier}, increase party morale by @{bonus}, reduce your cooldowns by @{bonus2}"]
+		["Critical💥", "Damage x @{critMultiplier}, increase party morale by @{bonus}, reduce your cooldowns by @{secondBonus}"]
 	],
 	"Action",
 	"Light",
 	0,
 	(targets, user, adventure) => {
-		const { essence, critMultiplier, bonus } = module.exports;
+		const { essence, critMultiplier, bonus, secondBonus } = module.exports;
 		let pendingDamage = user.getPower();
 		const resultLines = [];
 		if (user.crit) {
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Hastening Spear",
 			resultLines.push("The party's morale is increased!");
 			user.gear?.forEach(gear => {
 				if (gear.cooldown > 1) {
-					gear.cooldown -= bonus;
+					gear.cooldown -= secondBonus;
 				}
 			})
 			resultLines.push(`${user.name}'s cooldowns are hastened.`);
@@ -33,4 +33,4 @@ module.exports = new GearTemplate("Hastening Spear",
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setDamage(0)
 	.setBonus(1) // Morale
-	.setBonus(1); // Cooldown reduction
+	.setSecondBonus(1); // Cooldown reduction

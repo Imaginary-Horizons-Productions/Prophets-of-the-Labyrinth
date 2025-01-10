@@ -6,14 +6,14 @@ const { changeStagger, generateModifierResultLines, combineModifierReceipts, add
 const gearName = "Centering Universal Solution";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Transfer a random @{bonus} of your debuffs to a single foe and shrug off @{bonus2} Stagger"],
+		["use", "Transfer a random @{bonus} of your debuffs to a single foe and shrug off @{secondBonus} Stagger"],
 		["Critical💥", "Transfer all of your debuffs"]
 	],
 	"Pact",
 	"Water",
 	350,
 	(targets, user, adventure) => {
-		const { essence, bonus, modifiers: [poison], bonus2 } = module.exports;
+		const { essence, bonus, modifiers: [poison], secondBonus } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -31,7 +31,7 @@ module.exports = new GearTemplate(gearName,
 				reciepts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 			}
 		}
-		changeStagger([user], bonus2);
+		changeStagger([user], secondBonus);
 		reciepts.push(...addModifier([user], poison));
 		return generateModifierResultLines(combineModifierReceipts(reciepts)).concat(`${user.name} shrugs off some Stagger.`);
 	}
@@ -41,4 +41,4 @@ module.exports = new GearTemplate(gearName,
 	.setBonus(2) // Debuffs transfered
 	.setModifiers({ name: "Poison", stacks: 3 })
 	.setRnConfig({ debuffs: 2 })
-	.setBonus2(2); // Stagger relieved
+	.setSecondBonus(2); // Stagger relieved
