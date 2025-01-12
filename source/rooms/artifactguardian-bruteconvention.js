@@ -1,7 +1,7 @@
 const { rollArtifact } = require("../artifacts/_artifactDictionary");
 const { RoomTemplate } = require("../classes");
+const { parseExpression } = require("../util/mathUtil");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
-const { parseExpression } = require("../util/textUtil");
 
 const enemies = [["Brute", "n*2"]];
 

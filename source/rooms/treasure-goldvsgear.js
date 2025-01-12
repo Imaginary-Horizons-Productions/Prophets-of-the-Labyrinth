@@ -3,6 +3,7 @@ const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 
+const { parseExpression } = require("../util/mathUtil");
 const { listifyEN, getNumberEmoji } = require("../util/textUtil");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 

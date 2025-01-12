@@ -1,6 +1,6 @@
 const { RoomTemplate } = require("../classes");
+const { parseExpression } = require("../util/mathUtil");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
-const { parseExpression } = require("../util/textUtil");
 
 const enemies = [["Earthly Knight", "0.5*n"], ["Meteor Knight", "1"], ["Asteroid", "0.25*n-1"]];
 

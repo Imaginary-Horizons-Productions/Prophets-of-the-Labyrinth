@@ -407,7 +407,10 @@ function injectGearStats(text, gearName) {
 		"power",
 		"speed",
 		"critRate"
-	].map(property => ({ tag: property, count: getGearProperty(gearName, property) })));
+	].reduce((map, property) => {
+		map[property] = getGearProperty(gearName, property);
+		return map;
+	}, {}));
 }
 
 module.exports = {

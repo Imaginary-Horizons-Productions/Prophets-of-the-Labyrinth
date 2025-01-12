@@ -1,4 +1,5 @@
 const { commandIds } = require("../constants");
+const { parseExpression } = require("./mathUtil");
 
 /** @type {Record<number, string>} */
 const NUMBER_EMOJI = {
@@ -41,42 +42,23 @@ function generateTextBar(numerator, denominator, barLength) {
 	return bar;
 }
 
-const operationMap = {
-	'+': (first, second) => first + second,
-	'~': (first, second) => first - second,
-	'*': (first, second) => first * second,
-	'/': (first, second) => first / second,
-	'^': (first, second) => first ** second,
-};
-
-/** Calculate the value represented by a mathematical expression (supported operations: addition, subtration, multiplication, division, power)
- * @param {string} expression
- * @param {number} nValue - the value to replace "n" with
- */
-function parseExpression(expression, nValue) {
-	const operations = expression.replace(/[^+~*/^]/g, "");
-	const terms = expression.split(/[+~*/^]/g).map(term => term === "n" ? nValue : Number(term));
-	return terms.reduce((total, term, index) => operationMap[operations[index - 1]](total, term));
-}
-
-/** Replace all @{tag}s in the text with the evaluation of the expression in the tag with n as count
+/** Replace all \@{expression}s in `text` with the evaluation of the expression with `tagMap key` as `tagMap value`
  * @param {string} text
- * @param {{tag: string, count: number}[]} tags
+ * @param {Record<string, number>} tagMap
  */
-function calculateTagContent(text, tags) {
-	for (const { tag, count } of tags) {
-		const taggedGlobal = new RegExp(`@{([^@{}]*?${tag}[^@{}]*?)}`, "g");
-		const untagged = new RegExp(tag, "g");
-		const taggedSingle = new RegExp(`@{([^@{}]*?${tag}[^@{}]*?)}`);
+function calculateTagContent(text, tagMap) {
+	for (const tag in tagMap) {
+		const tagPattern = `@{([^@{}]*?${tag}[^@{}]*?)}`;
+		const tagText = new RegExp(tag, "g");
 
-		for (const match of text.matchAll(taggedGlobal)) {
-			const countExpression = match?.[1].replace(untagged, "n");
+		for (const match of text.matchAll(new RegExp(tagPattern, "g"))) {
+			const countExpression = match?.[1].replace(tagText, "n");
 			if (countExpression) {
-				let parsedExpression = parseExpression(countExpression, count);
+				let parsedExpression = parseExpression(countExpression, tagMap[tag]);
 				if (typeof parsedExpression === "number" && !Number.isInteger(parsedExpression)) {
 					parsedExpression = parsedExpression.toFixed(2);
 				}
-				text = text.replace(taggedSingle, parsedExpression);
+				text = text.replace(new RegExp(tagPattern), parsedExpression);
 			}
 		}
 	}
@@ -173,7 +155,6 @@ function joinAsStatement(shouldListifyExclusively, entities, singularVerb, plura
 module.exports = {
 	getNumberEmoji,
 	generateTextBar,
-	parseExpression,
 	calculateTagContent,
 	ordinalSuffixEN,
 	trimForSelectOptionDescription,

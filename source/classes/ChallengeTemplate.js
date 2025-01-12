@@ -66,11 +66,7 @@ class ChallengeTemplate {
 	 */
 	dynamicDescription(intensity, duration, reward, markdownAllowed) {
 		const emojiParsed = markdownAllowed ? injectApplicationEmojiMarkdown(this.description) : injectApplicationEmojiName(this.description);
-		return calculateTagContent(emojiParsed, [
-			{ tag: 'intensity', count: intensity },
-			{ tag: 'duration', count: duration },
-			{ tag: 'reward', count: reward }
-		]);
+		return calculateTagContent(emojiParsed, { intensity, duration, reward });
 	}
 };
 

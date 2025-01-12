@@ -24,7 +24,7 @@ class ArtifactTemplate {
 
 	/** @param {number} copies */
 	dynamicDescription(copies) {
-		return calculateTagContent(this.description, [{ tag: 'copies', count: copies }]);
+		return calculateTagContent(this.description, { copies });
 	}
 
 	/** @param {import("discord.js").EmbedField} embedFieldData */

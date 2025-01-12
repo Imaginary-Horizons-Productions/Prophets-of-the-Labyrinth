@@ -15,10 +15,10 @@ const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtec
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { essenceList, getCounteredEssences, getEmoji } = require("../util/essenceUtil.js");
 const { ensuredPathSave } = require("../util/fileUtil");
-const { anyDieSucceeds } = require("../util/mathUtil.js");
+const { anyDieSucceeds, parseExpression } = require("../util/mathUtil.js");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy, rollGearTier } = require("../util/roomUtil");
-const { parseExpression, listifyEN } = require("../util/textUtil");
+const { listifyEN } = require("../util/textUtil");
 const { levelUp } = require("../util/delverUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { rollableHerbs } = require("../shared/herbs");

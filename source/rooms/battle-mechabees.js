@@ -1,6 +1,6 @@
 const { RoomTemplate } = require("../classes");
+const { parseExpression } = require("../util/mathUtil");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
-const { parseExpression } = require("../util/textUtil");
 
 const enemies = [["Mechabee Drone", "n*0.25"], ["Mechabee Soldier", "1"], ["Mechabee Drone", "n*0.25"]];
 
