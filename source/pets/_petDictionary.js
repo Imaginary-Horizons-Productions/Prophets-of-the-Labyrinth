@@ -50,7 +50,16 @@ function getPetMoveDescription({ type: petName, level }, index) {
 function getPetMove({ type: petName, level }, moveIndex) {
 	if (moveIndex === 1 && level === 1) {
 		return new PetMoveTemplate("Loaf Around", "The pet loafs around", () => [], (targets, owner, adventure) => {
-			return [`${owner.name}'s ${petName} loafs around.`];
+			const descriptions = [
+				`${owner.name}'s ${petName} loafs around.`,
+				`${owner.name}'s ${petName} is doing a rock impression.`,
+				`${owner.name}'s ${petName} does a little hop.`,
+				`${owner.name}'s ${petName} loafs around.`,
+				`${owner.name}'s ${petName} decided to take a nap.`,
+				`${owner.name}'s ${petName} demands additional lumber.`,
+				`${owner.name}'s ${petName} is (now) on cooldown.`
+			];
+			return descriptions[Date.now() % descriptions.length];
 		})
 	}
 	return PETS[petName.toLowerCase()].moves[moveIndex][Math.ceil((level - moveIndex) / 2) - 1];
