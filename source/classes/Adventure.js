@@ -3,7 +3,7 @@ const { MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, GAME_VERSION } = require("../con
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
 const { essenceList, getOpposite } = require("../util/essenceUtil.js");
-const { parseExpression } = require("../util/textUtil.js");
+const { parseExpression } = require("../util/mathUtil.js");
 
 /** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} Essence */
 const ESSENCES = essenceList();

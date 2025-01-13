@@ -18,7 +18,7 @@ async function executeSubcommand(interaction, ...args) {
 	const embed = embedTemplate().setTitle(challengeTemplate.name)
 		.setDescription(challengeTemplate.dynamicDescription(challengeTemplate.intensity, challengeTemplate.duration, challengeTemplate.reward, true))
 		.addFields(
-			{ name: "Sources", value: `Preparation Phase: ${challengeTemplate.startingChallenge ? "✅" : "🚫"}\nMysterious Challenger: ${challengeTemplate.rollableChallenge ? "✅" : "🚫"}`, inline: true },
+			{ name: "Sources", value: `Preparation Phase: ${challengeTemplate.startingChallenge ? "✅" : "🚫"}\nGuildstop: ${challengeTemplate.rollableChallenge ? "✅" : "🚫"}`, inline: true },
 			{ name: "Score Multiplier", value: `x${challengeTemplate.scoreMultiplier}`, inline: true }
 		);
 	interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });

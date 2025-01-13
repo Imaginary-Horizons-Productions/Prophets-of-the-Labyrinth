@@ -302,7 +302,7 @@ function buildGearDescription(gearName) {
 	let text = descriptionTexts.join("\n");
 
 	text = text.replace(/@{damage}/g, `(${getGearProperty(gearName, "damage")} + Power)`)
-		.replace(/@{protection}/g, `(${getGearProperty(gearName, "protection")} + Bonus HP / 5)`)
+		.replace(/@{protection}/g, `(${getGearProperty(gearName, "protection")} + Bonus HP ÷ 5)`)
 		.replace(/@{bonusSpeed}/g, "(Bonus Speed)");
 
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
@@ -407,7 +407,10 @@ function injectGearStats(text, gearName) {
 		"power",
 		"speed",
 		"critRate"
-	].map(property => ({ tag: property, count: getGearProperty(gearName, property) })));
+	].reduce((map, property) => {
+		map[property] = getGearProperty(gearName, property);
+		return map;
+	}, {}));
 }
 
 module.exports = {

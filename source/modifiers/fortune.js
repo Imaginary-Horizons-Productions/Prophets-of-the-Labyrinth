@@ -1,7 +1,7 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Fortune",
-	"If stacks is divisible by 7 at end of round, convert all @e{Fortune} into <30 x stacks> protection",
+	"If stack count is divisible by 7 at end of round, convert all @e{Fortune} into <@{stacks*30}> protection",
 	"Buff",
 	0,
 	1

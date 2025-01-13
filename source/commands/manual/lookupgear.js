@@ -27,7 +27,7 @@ async function executeSubcommand(interaction, ...args) {
 
 	const sidegrades = getGearProperty(gearName, "sidegrades");
 	if (sidegrades.length > 0) {
-		fields.push({ name: "Can be Modified Into", value: listifyEN(sidegrades, true) });
+		fields.push({ name: "Modifies Into", value: listifyEN(sidegrades, true) });
 	}
 
 	const extraField = getGearProperty(gearName, "flavorText");

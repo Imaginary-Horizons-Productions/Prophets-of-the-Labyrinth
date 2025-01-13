@@ -1,7 +1,7 @@
 const { RoomTemplate } = require("../classes");
 const { rollArtifact } = require("../artifacts/_artifactDictionary");
+const { parseExpression } = require("../util/mathUtil");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
-const { parseExpression } = require("../util/textUtil");
 
 const enemies = [["Royal Slime", "0.5*n"]];
 
