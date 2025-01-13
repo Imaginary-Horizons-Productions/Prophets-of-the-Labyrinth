@@ -17,23 +17,23 @@ module.exports = new RoomTemplate("The Score Beggar",
 		if (adventure.room.history["Traded for Flask"].length < 1) {
 			tradeButtons.addComponents(
 				new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}score`)
-					.setStyle(ButtonStyle.Primary)
+					.setStyle(ButtonStyle.Success)
 					.setEmoji("⚕️")
-					.setLabel("Take the flask [-50 score, +1 life]")
+					.setLabel("Take the flask [-50 score: +1 life]")
 			);
 			if ("Placebo" in adventure.items) {
 				tradeButtons.addComponents(
 					new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}placebo`)
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji("⚕️")
-						.setLabel("Trade a Placebo [-1 Placebo, +1 life]")
+						.setLabel("Trade a Placebo [-1 Placebo: +1 life]")
 				)
 			}
 		} else {
 			if (adventure.room.history["Traded for Flask"][0] === "score") {
 				tradeButtons.addComponents(
 					new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}score`)
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji("✔️")
 						.setLabel("Score traded")
 						.setDisabled(true),
@@ -41,7 +41,7 @@ module.exports = new RoomTemplate("The Score Beggar",
 				if ("Placebo" in adventure.items) {
 					tradeButtons.addComponents(
 						new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}placebo`)
-							.setStyle(ButtonStyle.Primary)
+							.setStyle(ButtonStyle.Success)
 							.setEmoji("✖️")
 							.setLabel("No flasks left")
 							.setDisabled(true)
@@ -50,12 +50,12 @@ module.exports = new RoomTemplate("The Score Beggar",
 			} else {
 				tradeButtons.addComponents(
 					new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}score`)
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji("✖️")
 						.setLabel("No flasks left")
 						.setDisabled(true),
 					new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}placebo`)
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji("✔️")
 						.setLabel("Placebo traded")
 						.setDisabled(true)

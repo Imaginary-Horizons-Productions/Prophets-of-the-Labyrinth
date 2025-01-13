@@ -37,7 +37,7 @@ module.exports = new RoomTemplate("Abandoned Forge",
 			components: [
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId("upgrade")
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(upgradeEmoji)
 						.setLabel("Upgrade gear")
 						.setDisabled(isUpgradeDisabled),

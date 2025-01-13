@@ -39,3 +39,14 @@ Please use `camelCase` unless one of the following exceptions apply:
 
 ### Game Mechanic Names
 - Modifier names should be nouns to be grammatically correct with result texts and include proper nouns for game specific modifiers (eg "Evasion" instead of "Evade", "Poison" instead of "Poisoned")
+
+### Message Components
+- Button and Select option labels should follow the pattern `(emoji) name [cost: effect]`
+- Button styles should be picked based on behavior:
+   - Primary: Casts a vote among the party
+   - Secondary: Provides more information without committing resources
+   - Success: Progress action that commits resources
+   - Danger: Risky action that commits resources
+- Buttons that trigger effects that consume room actions should have the number emoji of the number of room actions consumed as their emoji
+- Select Menus that trigger effects that consume room actions should have the number emoji of the number of room actions consumed at the beginning of their placeholder
+- Add 💬 to the beginning of the placeholder of Select Menus that send a confirmation message/button before changing state

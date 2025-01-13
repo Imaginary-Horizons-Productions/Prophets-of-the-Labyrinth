@@ -21,11 +21,11 @@ const extraCombatButtonsMap = {
 	"appease": (adventure) => new ButtonBuilder().setCustomId(`appease${SAFE_DELIMITER}${adventure.room.round}`)
 		.setEmoji("🙇")
 		.setLabel("Appease the Starry Knight")
-		.setStyle(ButtonStyle.Secondary),
+		.setStyle(ButtonStyle.Success),
 	"greed": (adventure) => new ButtonBuilder().setCustomId(`greed${SAFE_DELIMITER}${adventure.room.round}`)
 		.setEmoji("💰")
 		.setLabel("Greed")
-		.setStyle(ButtonStyle.Secondary)
+		.setStyle(ButtonStyle.Success)
 };
 
 /** Creates the room builder function for combat rooms
@@ -43,11 +43,11 @@ function generateCombatRoomBuilder(extraButtons) {
 				new ButtonBuilder().setCustomId("readymove")
 					.setEmoji("⚔")
 					.setLabel("Ready a Move")
-					.setStyle(ButtonStyle.Primary),
+					.setStyle(ButtonStyle.Success),
 				new ButtonBuilder().setCustomId("readyitem")
 					.setEmoji("🧪")
 					.setLabel("Ready an Item")
-					.setStyle(ButtonStyle.Primary)
+					.setStyle(ButtonStyle.Success)
 					.setDisabled(!Object.values(adventure.items).some(quantity => quantity > 0))
 			];
 			for (const buttonType of extraButtons) {
@@ -100,11 +100,22 @@ function generateLootRow(adventure) {
 	for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 		if (visibility === "loot") {
 			if (count > 0) {
-				options.push({
-					label: type === "Currency" ? `${count} ${name}` : `${name} x ${count}`,
-					description: type,
-					value: `${name}${SAFE_DELIMITER}${options.length}`
-				});
+				const option = { description: type, value: `${name}${SAFE_DELIMITER}${options.length}` };
+				switch (type) {
+					case "Gear":
+						options.label = `💬 ${name} x ${count}`;
+						break;
+					case "Artifact":
+						options.label = `${name} x ${count}`;
+						break;
+					case "Currency":
+						options.label = `${count} ${name}`;
+						break;
+					case "Item":
+						options.label = `${name} x ${count}`;
+						break;
+				}
+				options.push(option);
 			}
 		}
 	}
@@ -130,7 +141,7 @@ function generateRoutingRow(adventure) {
 			const [roomType, depth] = candidateTag.split(SAFE_DELIMITER);
 			return new ButtonBuilder().setCustomId(`routevote${SAFE_DELIMITER}${candidateTag}`)
 				.setLabel(`Path Vote: ${adventure.roomCandidates[candidateTag].isHidden ? `Unknown ${index + 1}` : roomType}`)
-				.setStyle(ButtonStyle.Secondary)
+				.setStyle(ButtonStyle.Primary)
 		}));
 }
 

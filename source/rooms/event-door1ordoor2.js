@@ -28,19 +28,19 @@ module.exports = new RoomTemplate("Door 1 or Door 2?",
 		let door1Label, door1Emoji, door2Label, door2Emoji;
 		roomEmbed.addFields({ name: "A Sixth Sense", value: `You get the feeling that Door 1 will have a random duplicate of an artifact the party owns, while Door 2 will have a random artifact the party doesn't own.${partyHasNoArtifacts || partyHasAllArtifacts ? ` ${italic(`You also get the feeling there's nothing behind Door ${partyHasNoArtifacts ? "1" : "2"}.`)}` : ""}` });
 		if (!partyHasPicked) {
-			door1Label = `${door1Cost}g: Pick Door 1`;
+			door1Label = `Pick Door 1 [${door1Cost}g]`;
 			door1Emoji = "❔";
 			door2Label = `${door2Cost}g: Pick Door 2`;
 			door2Emoji = "❔";
 		} else if (adventure.room.history["Option Picked"][0] === "0") {
-			door1Label = `${door1Cost}g: ${adventure.room.history.Artifacts[0]}`;
+			door1Label = `${adventure.room.history.Artifacts[0]} [${door1Cost}g]`;
 			door1Emoji = "✔️";
 			door2Label = "Didn't Pick Door 2";
 			door2Emoji = "✖️";
 		} else {
 			door1Label = "Didn't Pick Door 1";
 			door1Emoji = "✖️";
-			door2Label = `${door2Cost}g: ${adventure.room.history.Artifacts[1]}`;
+			door2Label = `${adventure.room.history.Artifacts[1]} [${door2Cost}g]`;
 			door2Emoji = "✔️";
 		}
 		return {
@@ -48,12 +48,12 @@ module.exports = new RoomTemplate("Door 1 or Door 2?",
 			components: [
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`eventartifact${SAFE_DELIMITER}0${SAFE_DELIMITER}${door1Cost}`)
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(door1Emoji)
 						.setLabel(door1Label)
 						.setDisabled(partyHasPicked || partyCannotAffordDoor1 || partyHasNoArtifacts),
 					new ButtonBuilder().setCustomId(`eventartifact${SAFE_DELIMITER}1${SAFE_DELIMITER}${door2Cost}`)
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(door2Emoji)
 						.setLabel(door2Label)
 						.setDisabled(partyHasPicked || partyCannotAffordDoor2 || partyHasAllArtifacts),

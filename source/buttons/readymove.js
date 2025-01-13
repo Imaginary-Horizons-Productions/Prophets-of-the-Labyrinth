@@ -70,12 +70,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				if (team === "ally" || team === "any") {
 					targetOptions = targetOptions.concat(delverOptions);
 				}
-				let placeholder = `${essenceEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `(${charges} charges) ` : ""}on...`;
+				let placeholder = `${essenceEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `[${charges} Charges] ` : ""}on...`;
 				if (isOnCD) {
-					placeholder = `${essenceEmoji} ${gearName} CD: ${cooldown} Rounds`;
+					placeholder = `${essenceEmoji} ${gearName} [CD: ${cooldown} Rounds]`;
 				}
 				if (isOutOfCharges) {
-					placeholder = `${essenceEmoji} ${gearName}: Out of Charges`;
+					placeholder = `${essenceEmoji} ${gearName} [Out of Charges]`;
 				}
 				components.push(new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
@@ -84,12 +84,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setDisabled(isOnCD || isOutOfCharges)
 				));
 			} else {
-				let label = `Use ${gearName}${![0, Infinity].includes(charges) ? ` (${charges} charges)` : ""}`;
+				let label = `Use ${gearName}${![0, Infinity].includes(charges) ? ` [${charges} Charges]` : ""}`;
 				if (isOnCD) {
-					label = `${gearName} CD: ${cooldown} Rounds`;
+					label = `${gearName} [CD: ${cooldown} Rounds]`;
 				}
 				if (isOutOfCharges) {
-					label = `${gearName}: Out of Charges`;
+					label = `${gearName} [Out of Charges]`;
 				}
 				// Button
 				components.push(new ActionRowBuilder().addComponents(

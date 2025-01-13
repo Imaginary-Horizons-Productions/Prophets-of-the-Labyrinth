@@ -16,7 +16,7 @@ module.exports = new RoomTemplate("Empty Room",
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`routevote${SAFE_DELIMITER}Battle${SAFE_DELIMITER}${adventure.depth}`)
 						.setLabel("Move on to a Battle")
-						.setStyle(ButtonStyle.Secondary)
+						.setStyle(ButtonStyle.Primary)
 				)
 			]
 		};

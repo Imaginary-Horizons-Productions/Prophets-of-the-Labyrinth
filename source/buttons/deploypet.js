@@ -28,7 +28,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder()
 						.setCustomId(`${SKIP_INTERACTION_HANDLING}pet`)
-						.setPlaceholder("Select an pet...")
+						.setPlaceholder("🐾 Select a pet...")
 						.addOptions(petOptions)
 				),
 				new ActionRowBuilder().addComponents(

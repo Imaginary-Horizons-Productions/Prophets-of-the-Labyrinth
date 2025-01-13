@@ -29,6 +29,7 @@ Here is a list of reserved emoji and their meanings:
 * 🔭 Scouting
 * 🏆 Take on a Challenge
 * 🔐 A Locked Feature (Specialization)
+* 💬 Select Option provides more information, doesn't commit resources
 
 ## Modifier Emoji Convention
 ### Buffs

@@ -59,7 +59,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 						new ActionRowBuilder().addComponents(
 							new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}take${SAFE_DELIMITER}${adventure.depth}`)
 								.setStyle(ButtonStyle.Success)
-								.setLabel(`Take: ${name}`)
+								.setLabel(`Take a ${name}`)
 						)
 					);
 				} else {
@@ -67,8 +67,8 @@ module.exports = new SelectWrapper(mainId, 2000,
 					components.push(new ActionRowBuilder().addComponents(
 						delver.gear.map((gear, index) => {
 							return new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}replace${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${index}`)
-								.setStyle(ButtonStyle.Secondary)
-								.setLabel(`Replace: ${gear.name}`)
+								.setStyle(ButtonStyle.Danger)
+								.setLabel(`Replace ${gear.name}`)
 						})
 					));
 				}

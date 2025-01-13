@@ -45,12 +45,12 @@ module.exports = new RoomTemplate("Rest Site & Training Dummy",
 				new ActionRowBuilder().addComponents(
 					inspectSelfButton,
 					new ButtonBuilder().setCustomId(`rest${SAFE_DELIMITER}${healPercent}`)
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(restEmoji)
 						.setLabel(restLabel)
 						.setDisabled(!hasRoomActions),
 					new ButtonBuilder().setCustomId("trainingdummy")
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(trainingEmoji)
 						.setLabel(trainingLabel)
 						.setDisabled(!hasRoomActions)

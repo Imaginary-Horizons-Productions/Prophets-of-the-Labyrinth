@@ -27,7 +27,7 @@ module.exports = new RoomTemplate("Gear Collector",
 						.setEmoji(getNumberEmoji(1))
 						.setDisabled(adventure.room.actions < 1),
 					new ButtonBuilder().setCustomId("blackbox")
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Danger)
 						.setEmoji("◼")
 						.setLabel("A black box?")
 						.setDisabled(adventure.room.history["Traded for box"].length > 0)

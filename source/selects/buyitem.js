@@ -39,7 +39,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(SKIP_INTERACTION_HANDLING)
 						.setStyle(ButtonStyle.Success)
-						.setLabel(`Buy: ${cost}g`)
+						.setLabel(`Buy for ${cost}g`)
 				)
 			],
 			flags: [MessageFlags.Ephemeral],
