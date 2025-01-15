@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, bold } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, bold, MessageFlags } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, checkNextRound, endRound, setAdventure, cacheRoundRn } = require('../orcustrators/adventureOrcustrator');
@@ -15,7 +15,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 		const delverArchetypeTemplate = getArchetype(delver.archetype);
@@ -58,50 +58,53 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			const { name: gearName, charges, cooldown, gearIndex } = usableMoves[i];
 			const isOnCD = Boolean(cooldown) && (cooldown > 0);
 			const isOutOfCharges = charges < 1;
-			const { type, team } = getGearProperty(gearName, "targetingTags");
-			const essenceEmoji = getEmoji(getGearProperty(gearName, "essence"));
-			if (type === "single" || type.startsWith("blast")) {
-				// Select Menu
-				let targetOptions = [];
-				if (team === "foe" || team === "any") {
-					targetOptions = targetOptions.concat(enemyOptions);
-				}
+			const targetingTags = getGearProperty(gearName, "targetingTags");
+			if (targetingTags) {
+				const { type, team } = targetingTags;
+				const essenceEmoji = getEmoji(getGearProperty(gearName, "essence"));
+				if (type === "single" || type.startsWith("blast")) {
+					// Select Menu
+					let targetOptions = [];
+					if (team === "foe" || team === "any") {
+						targetOptions = targetOptions.concat(enemyOptions);
+					}
 
-				if (team === "ally" || team === "any") {
-					targetOptions = targetOptions.concat(delverOptions);
+					if (team === "ally" || team === "any") {
+						targetOptions = targetOptions.concat(delverOptions);
+					}
+					let placeholder = `${essenceEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `[${charges} Charges] ` : ""}on...`;
+					if (isOnCD) {
+						placeholder = `${essenceEmoji} ${gearName} [CD: ${cooldown} Rounds]`;
+					}
+					if (isOutOfCharges) {
+						placeholder = `${essenceEmoji} ${gearName} [Out of Charges]`;
+					}
+					components.push(new ActionRowBuilder().addComponents(
+						new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
+							.setPlaceholder(placeholder)
+							.addOptions(targetOptions)
+							.setDisabled(isOnCD || isOutOfCharges)
+					));
+				} else {
+					let label = `Use ${gearName}${![0, Infinity].includes(charges) ? ` [${charges} Charges]` : ""}`;
+					if (isOnCD) {
+						label = `${gearName} [CD: ${cooldown} Rounds]`;
+					}
+					if (isOutOfCharges) {
+						label = `${gearName} [Out of Charges]`;
+					}
+					// Button
+					components.push(new ActionRowBuilder().addComponents(
+						new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
+							.setLabel(label)
+							.setEmoji(essenceEmoji)
+							.setStyle(ButtonStyle.Secondary)
+							.setDisabled(isOnCD || isOutOfCharges)
+					));
 				}
-				let placeholder = `${essenceEmoji} Use ${gearName} ${![0, Infinity].includes(charges) ? `(${charges} charges) ` : ""}on...`;
-				if (isOnCD) {
-					placeholder = `${essenceEmoji} ${gearName} CD: ${cooldown} Rounds`;
-				}
-				if (isOutOfCharges) {
-					placeholder = `${essenceEmoji} ${gearName}: Out of Charges`;
-				}
-				components.push(new ActionRowBuilder().addComponents(
-					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
-						.setPlaceholder(placeholder)
-						.addOptions(targetOptions)
-						.setDisabled(isOnCD || isOutOfCharges)
-				));
-			} else {
-				let label = `Use ${gearName}${![0, Infinity].includes(charges) ? ` (${charges} charges)` : ""}`;
-				if (isOnCD) {
-					label = `${gearName} CD: ${cooldown} Rounds`;
-				}
-				if (isOutOfCharges) {
-					label = `${gearName}: Out of Charges`;
-				}
-				// Button
-				components.push(new ActionRowBuilder().addComponents(
-					new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}${SAFE_DELIMITER}${gearName}${SAFE_DELIMITER}${gearIndex}`)
-						.setLabel(label)
-						.setEmoji(essenceEmoji)
-						.setStyle(ButtonStyle.Secondary)
-						.setDisabled(isOnCD || isOutOfCharges)
-				));
 			}
 		}
-		interaction.reply({ embeds: [embed], components, ephemeral: true, fetchReply: true }).then(reply => {
+		interaction.reply({ embeds: [embed], components, flags: [MessageFlags.Ephemeral], withResponse: true }).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const [_, startedDepth, round, moveName, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
@@ -182,27 +185,24 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					const targetType = getGearProperty(moveName, "targetingTags").type;
 					if (targetType.startsWith("blast")) {
 						const range = parseInt(targetType.split(SAFE_DELIMITER)[1] ?? 0);
-						const targetTeamMaxIndex = targetTeam === "delver" ? adventure.delvers.length - 1 : adventure.room.enemies.length - 1;
-
-						let targetsSelectedLeft = 0;
-						for (let index = targetIndex - 1; targetsSelectedLeft < range && index >= 0; index--) {
-							if (adventure.room.enemies[index].hp > 0) {
-								targetsSelectedLeft++;
-								targetIndices.unshift(index);
-							}
+						let combatantIndicesIndex;
+						const combatantIndicies = [];
+						if (targetTeam === "delver") {
+							combatantIndicesIndex = targetIndex;
+							adventure.delvers.forEach((delver, index) => {
+								combatantIndicies.push(index)
+							});
+						} else {
+							adventure.room.enemies.forEach((enemy, index) => {
+								if (index === targetIndex) {
+									combatantIndicesIndex = index;
+								}
+								if (enemy.hp > 0) {
+									combatantIndicies.push(index);
+								}
+							})
 						}
-
-						targetIndices.push(targetIndex);
-
-						let targetsSelectedRight = 0;
-						for (let index = targetIndex + 1; targetsSelectedRight < range && index <= targetTeamMaxIndex; index++) {
-							if (adventure.room.enemies[index].hp > 0) {
-								targetsSelectedRight++;
-								targetIndices.push(index);
-							}
-						}
-
-						targetIndices.forEach(index => {
+						combatantIndicies.slice(Math.max(0, combatantIndicesIndex - range), combatantIndicesIndex + range + 1).forEach(index => {
 							newMove.addTarget(new CombatantReference(targetTeam, index));
 						});
 					} else {

@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer, setPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -12,13 +12,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure?.delvers.some(delver => delver.id === interaction.user.id)) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		const playerProfile = getPlayer(interaction.user.id, interaction.guild.id);
 		if (interaction.channelId in playerProfile.artifacts) {
-			interaction.reply({ content: "You've already collected an artifact from this adventure.", ephemeral: true });
+			interaction.reply({ content: "You've already collected an artifact from this adventure.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -41,9 +41,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					.addOptions(options.length > 0 ? options : EMPTY_SELECT_OPTION_SET)
 					.setDisabled(options.length < 1)
 			)],
-			ephemeral: true,
-			fetchReply: true
-		}).then(reply => {
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(({ resource: { message: reply } }) => {
 			if (reply) {
 				const collector = reply.createMessageComponentCollector({ max: 1 });
 				collector.on("collect", collectedInteraction => {
@@ -51,7 +51,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					const player = getPlayer(collectedInteraction.user.id, collectedInteraction.guildId);
 					player.artifacts[collectedInteraction.channelId] = artifactName;
 					setPlayer(player);
-					collectedInteraction.channel.send({ content: `${collectedInteraction.user.displayName} decides to hold onto a **${artifactName}**. They'll be able to bring it on future adventures.`, ephemeral: true });
+					collectedInteraction.channel.send({ content: `${collectedInteraction.user.displayName} decides to hold onto a **${artifactName}**. They'll be able to bring it on future adventures.`, flags: [MessageFlags.Ephemeral] });
 				})
 
 				collector.on("end", async (interactionCollection) => {

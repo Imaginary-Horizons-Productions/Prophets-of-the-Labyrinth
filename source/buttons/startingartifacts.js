@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -12,7 +12,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure?.delvers.some(delver => delver.id === interaction.user.id)) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -69,9 +69,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setLabel("Deselect Starting Artifact")
 				)
 			],
-			ephemeral: true,
-			fetchReply: true
-		}).then(reply => {
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);

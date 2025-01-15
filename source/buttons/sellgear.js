@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -12,7 +12,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -43,9 +43,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 							.setOptions(saleOptions)
 					)
 				],
-				ephemeral: true,
-				fetchReply: true
-			}).then(reply => {
+				flags: [MessageFlags.Ephemeral],
+				withResponse: true
+			}).then(({ resource: { message: reply } }) => {
 				const collector = reply.createMessageComponentCollector({ max: 1 });
 				collector.on("collect", collectedInteraction => {
 					const [_, startedDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
@@ -88,7 +88,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 							.setDisabled(true)
 					)
 				],
-				ephemeral: true
+				flags: [MessageFlags.Ephemeral]
 			})
 		}
 	}

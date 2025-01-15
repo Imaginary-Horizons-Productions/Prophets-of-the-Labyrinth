@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, bold } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, bold, MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
@@ -14,12 +14,12 @@ module.exports = new SelectWrapper(mainId, 2000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "You aren't in this adventure.", ephemeral: true });
+			interaction.reply({ content: "You aren't in this adventure.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (adventure.room.actions < 1) {
-			interaction.reply({ content: "There aren't any more treasure picks to use.", ephemeral: true });
+			interaction.reply({ content: "There aren't any more treasure picks to use.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -74,7 +74,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 							new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}take${SAFE_DELIMITER}${adventure.depth}`)
 								.setStyle(ButtonStyle.Success)
 								.setEmoji(getNumberEmoji(1))
-								.setLabel(`Pick: ${name}`)
+								.setLabel(`Pick a ${name}`)
 						)
 					);
 				} else {
@@ -82,18 +82,18 @@ module.exports = new SelectWrapper(mainId, 2000,
 					components.push(new ActionRowBuilder().addComponents(
 						delver.gear.map((gear, index) => {
 							return new ButtonBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}replace${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${index}`)
-								.setStyle(ButtonStyle.Secondary)
+								.setStyle(ButtonStyle.Danger)
 								.setEmoji(getNumberEmoji(1))
-								.setLabel(`Replace: ${gear.name}`)
+								.setLabel(`Replace ${gear.name}`)
 						})
 					));
 				}
 				interaction.reply({
 					embeds: [embed],
 					components,
-					ephemeral: true,
-					fetchReply: true
-				}).then(reply => {
+					flags: [MessageFlags.Ephemeral],
+					withResponse: true
+				}).then(({ resource: { message: reply } }) => {
 					const collector = reply.createMessageComponentCollector({ max: 1 });
 					collector.on("collect", collectedInteraction => {
 						const [mainId, startedDepth, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);

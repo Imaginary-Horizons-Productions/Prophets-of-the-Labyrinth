@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 
 /**
@@ -15,7 +15,7 @@ async function executeSubcommand(interaction, ...args) {
 					Additionally, moves can have priority, which allows them resolve before moves with lower or no priority regardless of speed.")
 					.setTimestamp(stats.mtime)
 			],
-			ephemeral: true
+			flags: [MessageFlags.Ephemeral]
 		});
 	})
 };

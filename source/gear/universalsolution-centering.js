@@ -4,6 +4,8 @@ const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier, removeModifier } = require('../util/combatantUtil');
 
 const gearName = "Centering Universal Solution";
+const debuffsTransfered = 2;
+const poisonStacks = 3;
 module.exports = new GearTemplate(gearName,
 	[
 		["use", "Transfer a random @{bonus} of your debuffs to a single foe and shrug off @{secondBonus} Stagger"],
@@ -37,8 +39,8 @@ module.exports = new GearTemplate(gearName,
 	}
 ).setTargetingTags({ type: "single", team: "foe" })
 	.setSidegrades("Tormenting Universal Solution")
-	.setPactCost([3, "Gain @{pactCost} @e{Poison}"])
-	.setBonus(2) // Debuffs transfered
-	.setModifiers({ name: "Poison", stacks: 3 })
-	.setRnConfig({ debuffs: 2 })
+	.setPactCost([poisonStacks, "Gain @{pactCost} @e{Poison} afterwards"])
+	.setBonus(debuffsTransfered)
+	.setModifiers({ name: "Poison", stacks: poisonStacks })
+	.setRnConfig({ debuffs: debuffsTransfered })
 	.setSecondBonus(2); // Stagger relieved

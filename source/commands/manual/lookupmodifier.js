@@ -1,4 +1,4 @@
-const { CommandInteraction, bold } = require("discord.js");
+const { CommandInteraction, bold, MessageFlags } = require("discord.js");
 const { generateModifierEmbed } = require("../../util/embedUtil");
 const { MODIFIER_NAMES } = require("../../modifiers/_modifierDictionary");
 
@@ -10,11 +10,11 @@ async function executeSubcommand(interaction, ...args) {
 	const modifierName = interaction.options.getString("modifier-name");
 	const nameInTitleCaps = MODIFIER_NAMES.find(name => name.toLowerCase() === modifierName.toLowerCase());
 	if (!nameInTitleCaps) {
-		interaction.reply({ content: `Stats on ${bold(modifierName)} could not be found. Check for typos!`, ephemeral: true });
+		interaction.reply({ content: `Stats on ${bold(modifierName)} could not be found. Check for typos!`, flags: [MessageFlags.Ephemeral] });
 		return;
 	}
 
-	interaction.reply({ embeds: [generateModifierEmbed(nameInTitleCaps, 1, 6, 0)], ephemeral: true });
+	interaction.reply({ embeds: [generateModifierEmbed(nameInTitleCaps, 1, 6, 0)], flags: [MessageFlags.Ephemeral] });
 };
 
 module.exports = {

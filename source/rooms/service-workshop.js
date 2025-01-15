@@ -18,6 +18,7 @@ module.exports = new RoomTemplate("Abandoned Forge",
 			"Upgraders": [],
 			"Modders": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		let upgradeEmoji, isUpgradeDisabled, modifyEmoji, isModifyDisabled;
@@ -37,7 +38,7 @@ module.exports = new RoomTemplate("Abandoned Forge",
 			components: [
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId("upgrade")
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(upgradeEmoji)
 						.setLabel("Upgrade gear")
 						.setDisabled(isUpgradeDisabled),

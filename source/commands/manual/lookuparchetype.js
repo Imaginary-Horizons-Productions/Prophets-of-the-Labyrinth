@@ -1,4 +1,4 @@
-const { CommandInteraction, bold } = require("discord.js");
+const { CommandInteraction, bold, MessageFlags } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getEmoji, getColor } = require("../../util/essenceUtil");
 const { listifyEN } = require("../../util/textUtil");
@@ -16,7 +16,7 @@ async function executeSubcommand(interaction, ...args) {
 	const archetypeName = interaction.options.getString("archetype-name");
 	const nameInTitleCase = ARCHETYPE_NAMES.find(archetype => archetype.toLowerCase() === archetypeName.toLowerCase());
 	if (!nameInTitleCase) {
-		interaction.reply({ content: `Stats on ${bold(archetypeName)} could not be found. Check for typos!`, ephemeral: true });
+		interaction.reply({ content: `Stats on ${bold(archetypeName)} could not be found. Check for typos!`, flags: [MessageFlags.Ephemeral] });
 		return;
 	}
 
@@ -42,7 +42,7 @@ async function executeSubcommand(interaction, ...args) {
 				.setDescription(archetype.description)
 				.addFields(fields)
 		],
-		ephemeral: true
+		flags: [MessageFlags.Ephemeral]
 	});
 };
 

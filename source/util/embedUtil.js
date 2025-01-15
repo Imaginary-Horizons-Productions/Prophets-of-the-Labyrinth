@@ -122,18 +122,18 @@ function generateAdventureConfigMessage() {
 			new ActionRowBuilder().addComponents(
 				new ButtonBuilder().setCustomId("ready")
 					.setLabel("Ready!")
-					.setStyle(ButtonStyle.Success),
+					.setStyle(ButtonStyle.Primary),
 				new ButtonBuilder().setCustomId("deploy")
 					.setEmoji("🆔")
 					.setLabel("Pick Archetype")
-					.setStyle(ButtonStyle.Primary),
+					.setStyle(ButtonStyle.Success),
 				new ButtonBuilder().setCustomId("deploypet")
 					.setEmoji("🐾")
 					.setLabel("Bring a Pet")
-					.setStyle(ButtonStyle.Secondary),
+					.setStyle(ButtonStyle.Success),
 				new ButtonBuilder().setCustomId("startingartifacts")
 					.setLabel("Pick Starting Artifact")
-					.setStyle(ButtonStyle.Secondary)
+					.setStyle(ButtonStyle.Success)
 			),
 			new ActionRowBuilder().addComponents(
 				new StringSelectMenuBuilder().setCustomId("startingchallenges")
@@ -436,7 +436,7 @@ function inspectSelfPayload(delver, gearCapacity, roomHasEnemies) {
 		}
 		components.push(new ActionRowBuilder().addComponents(...actionRow));
 	}
-	return { embeds: [embed], components, ephemeral: true };
+	return { embeds: [embed], components, flags: [MessageFlags.Ephemeral] };
 }
 
 /** @param {Adventure} adventure */
@@ -497,7 +497,7 @@ function generatePartyStatsPayload(adventure) {
 				.setOptions(EMPTY_SELECT_OPTION_SET)
 		))
 	}
-	return { embeds: [embed], components: infoSelects, ephemeral: true };
+	return { embeds: [embed], components: infoSelects, flags: [MessageFlags.Ephemeral] };
 }
 
 /**

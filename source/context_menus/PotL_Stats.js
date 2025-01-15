@@ -1,4 +1,4 @@
-const { InteractionContextType } = require('discord.js');
+const { InteractionContextType, MessageFlags } = require('discord.js');
 const { UserContextMenuWrapper } = require('../classes');
 const { generateStatsEmbed } = require('../util/embedUtil');
 
@@ -7,7 +7,7 @@ module.exports = new UserContextMenuWrapper(mainId, null, false, [InteractionCon
 	(interaction) => {
 		interaction.reply({
 			embeds: [generateStatsEmbed(interaction.targetUser, interaction.guildId)],
-			ephemeral: true
+			flags: [MessageFlags.Ephemeral]
 		});
 	}
 );

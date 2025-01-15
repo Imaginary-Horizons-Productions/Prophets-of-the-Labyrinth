@@ -105,7 +105,7 @@ module.exports = new RoomTemplate("Mysterious Merchant",
 					new ButtonBuilder().setCustomId(`gearcapup${SAFE_DELIMITER}${capUpCost}`)
 						.setStyle(ButtonStyle.Success)
 						.setEmoji("🎒")
-						.setLabel(`${capUpCost}g: Increase Party Gear Capacity`)
+						.setLabel(`Increase Party Gear Capacity [${capUpCost}g]`)
 						.setDisabled(adventure.gold < capUpCost)
 				),
 				generateRoutingRow(adventure)

@@ -1,7 +1,7 @@
 const { GearTemplate, CombatantReference } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Carrot",
 	[
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Carrot",
 		if (user.crit) {
 			pendingRegeneration += critMultiplier;
 		}
-		const resultLines = addModifier([target], pendingRegeneration);
+		const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration));
 		const ownerIndex = adventure.getCombatantIndex(target);
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 		if (owner.pet?.type) {
@@ -41,7 +41,7 @@ module.exports = new GearTemplate("Carrot",
 						petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 				}
 			})
-			resultLines.push(`${target.name}'s ${owner.pet} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
+			resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
 		}
 		return resultLines;
 	}

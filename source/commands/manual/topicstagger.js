@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 
 /**
@@ -15,7 +15,7 @@ async function executeSubcommand(interaction, ...args) {
 					.addFields({ name: "Essence Match Stagger", value: "When a combatant makes a move that matches their essence, their target gets a bonus effect. If the target is an ally, they are relieved of 1 Stagger. If the target is an enemy, they suffer 2 additional Stagger." })
 					.setTimestamp(stats.mtime)
 			],
-			ephemeral: true
+			flags: [MessageFlags.Ephemeral]
 		});
 	})
 };

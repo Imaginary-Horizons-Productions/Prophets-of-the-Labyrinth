@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, bold } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, bold, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
@@ -12,17 +12,17 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (adventure.room.history["Traded for box"].length > 0) {
-			interaction.reply({ content: "The black box has already been opened.", ephemeral: true });
+			interaction.reply({ content: "The black box has already been opened.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (delver.gear.length < 1) {
-			interaction.reply({ content: "You don't have any gear to trade.", ephemeral: true });
+			interaction.reply({ content: "You don't have any gear to trade.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -42,9 +42,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						})))
 				)
 			],
-			ephemeral: true,
-			fetchReply: true
-		}).then(reply => {
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", (collectedInteraction) => {
 				const adventure = getAdventure(collectedInteraction.channelId);
@@ -54,7 +54,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 
 				if (adventure.room.history["Traded for box"].length > 0) {
-					collectedInteraction.reply({ content: "The black box has already been opened.", ephemeral: true });
+					collectedInteraction.reply({ content: "The black box has already been opened.", flags: [MessageFlags.Ephemeral] });
 					return;
 				}
 

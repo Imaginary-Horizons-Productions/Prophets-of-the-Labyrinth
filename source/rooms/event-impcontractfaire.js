@@ -36,14 +36,14 @@ module.exports = new RoomTemplate("Imp Contract Faire",
 			components: [
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId("essenceresearch")
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Danger)
 						.setEmoji(swapEmoji)
 						.setLabel(swapLabel)
 						.setDisabled(isSwapDisabled)
 				),
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId("hpshare")
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Danger)
 						.setEmoji(shareEmoji)
 						.setLabel(shareLabel)
 						.setDisabled(isShareDisabled)

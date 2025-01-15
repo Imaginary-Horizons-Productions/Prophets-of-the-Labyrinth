@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ComponentType, StringSelectMenuBuilder, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ComponentType, StringSelectMenuBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { SAFE_DELIMITER, ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { getAdventure, endRoom } = require('../orcustrators/adventureOrcustrator');
@@ -10,7 +10,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	(interaction, [candidate, depth]) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure?.delvers.some(delver => delver.id === interaction.user.id)) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 

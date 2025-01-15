@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, bold } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, bold, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
@@ -11,12 +11,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 		const player = getPlayer(interaction.user.id, interaction.guild.id);
 		const specializationOptions = [];
-		for (const specialization of getArchetype().specializations.slice(0, player.archetypes[delver.archetype].specializationsUnlocked)) {
+		for (const specialization of getArchetype(delver.archetype).specializations.slice(0, player.archetypes[delver.archetype].specializationsUnlocked)) {
 			if (specialization !== delver.specialization) {
 				specializationOptions.push({
 					label: specialization,
@@ -26,7 +26,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		}
 		if (specializationOptions.length < 1) {
-			interaction.reply({ content: "You haven't unlocked any other specializations for this archetype.", ephemeral: true });
+			interaction.reply({ content: "You haven't unlocked any other specializations for this archetype.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -40,14 +40,14 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.addOptions(specializationOptions)
 				)
 			],
-			ephemeral: true,
-			fetchReply: true
-		}).then(reply => {
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(interaction.channelId);
 				if (!adventure) {
-					collectedInteraction.reply({ content: "A valid adventure could not be found.", ephemeral: true });
+					collectedInteraction.reply({ content: "A valid adventure could not be found.", flags: [MessageFlags.Ephemeral] });
 					return;
 				}
 

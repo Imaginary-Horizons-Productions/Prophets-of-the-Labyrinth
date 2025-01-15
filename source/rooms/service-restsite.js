@@ -13,6 +13,7 @@ module.exports = new RoomTemplate("Rest Site & Training Dummy",
 			"Rested": [],
 			"Trained": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		const healPercent = Math.trunc(30 * (1 - (adventure.getChallengeIntensity("Restless") / 100)));
@@ -45,12 +46,12 @@ module.exports = new RoomTemplate("Rest Site & Training Dummy",
 				new ActionRowBuilder().addComponents(
 					inspectSelfButton,
 					new ButtonBuilder().setCustomId(`rest${SAFE_DELIMITER}${healPercent}`)
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(restEmoji)
 						.setLabel(restLabel)
 						.setDisabled(!hasRoomActions),
 					new ButtonBuilder().setCustomId("trainingdummy")
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(trainingEmoji)
 						.setLabel(trainingLabel)
 						.setDisabled(!hasRoomActions)

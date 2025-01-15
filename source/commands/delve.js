@@ -15,19 +15,19 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 	/** Start a new adventure */
 	(interaction) => {
 		if (interaction.channel.type !== ChannelType.GuildText) {
-			interaction.reply({ content: "Please start your adventure in a text channel (threads cannot be made in thread channels).", ephemeral: true });
+			interaction.reply({ content: "Please start your adventure in a text channel (threads cannot be made in thread channels).", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		const labyrinthName = interaction.options.getString("labyrinth");
 		if (!labyrinthExists(labyrinthName)) {
-			interaction.reply({ content: `There isn't a labyrinth named **${labyrinthName}** (input is case-sensitive).`, ephemeral: true });
+			interaction.reply({ content: `There isn't a labyrinth named **${labyrinthName}** (input is case-sensitive).`, flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		const company = getCompany(interaction.guildId);
 		if (!isSponsor(interaction.user.id) && company.adventuring.has(interaction.user.id)) {
-			interaction.reply({ content: "Delving in more than one adventure per server is a premium perk. Use `/support` for more details.", ephemeral: true });
+			interaction.reply({ content: "Delving in more than one adventure per server is a premium perk. Use `/support` for more details.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -45,8 +45,8 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 						.setLabel("Join")
 						.setStyle(ButtonStyle.Success)
 				)],
-				fetchReply: true
-			}).then(recruitMessage => {
+				withResponse: true
+			}).then(({ resource: { message: recruitMessage } }) => {
 				adventure.setId(thread.id);
 				adventure.messageIds.recruit = recruitMessage.id;
 				const delver = new Delver(interaction.user.id, interaction.member.displayName, thread.id);
@@ -73,7 +73,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 			thread.send(generateAdventureConfigMessage());
 		}).catch(error => {
 			if (error.code === 50001) {
-				interaction.reply({ content: "The Prophets of the Labyrinth bot doesn't have permission to make threads in this channel.", ephemeral: true });
+				interaction.reply({ content: "The Prophets of the Labyrinth bot doesn't have permission to make threads in this channel.", flags: [MessageFlags.Ephemeral] });
 			} else {
 				console.error(error);
 			}

@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, bold } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, bold, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
@@ -36,14 +36,14 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.addOptions(archetypeOptions)
 				)
 			],
-			ephemeral: true,
-			fetchReply: true
-		}).then(reply => {
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(interaction.channelId);
 				if (adventure?.state !== "config") {
-					collectedInteraction.reply({ content: "A valid adventure could not be found.", ephemeral: true });
+					collectedInteraction.reply({ content: "A valid adventure could not be found.", flags: [MessageFlags.Ephemeral] });
 					return;
 				}
 

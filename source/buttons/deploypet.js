@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, bold, ButtonStyle, ButtonBuilder } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, bold, ButtonStyle, ButtonBuilder, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -18,7 +18,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			})
 		}
 		if (petOptions.length < 1) {
-			interaction.reply({ content: "You don't currently have any pets to bring on adventure.", ephemeral: true });
+			interaction.reply({ content: "You don't currently have any pets to bring on adventure.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -28,7 +28,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder()
 						.setCustomId(`${SKIP_INTERACTION_HANDLING}pet`)
-						.setPlaceholder("Select an pet...")
+						.setPlaceholder("🐾 Select a pet...")
 						.addOptions(petOptions)
 				),
 				new ActionRowBuilder().addComponents(
@@ -37,14 +37,14 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setLabel("Deselect Pet")
 				)
 			],
-			ephemeral: true,
-			fetchReply: true
-		}).then(reply => {
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(interaction.channelId);
 				if (adventure?.state !== "config") {
-					collectedInteraction.reply({ content: "A valid adventure could not be found.", ephemeral: true });
+					collectedInteraction.reply({ content: "A valid adventure could not be found.", flags: [MessageFlags.Ephemeral] });
 					return;
 				}
 
@@ -52,7 +52,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				switch (mainId) {
 					case "pet":
-						const isSwitching = delver.pet.type === "";
+						const isSwitching = Boolean(delver.pet.type);
 						const selectedPet = collectedInteraction.values[0];
 						delver.pet = {
 							type: selectedPet,

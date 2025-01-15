@@ -1,8 +1,8 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
+const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING, MAX_EMBED_FIELD_VALUE_LENGTH } = require('../constants');
 const { getNumberEmoji } = require('../util/textUtil');
 const { transformGear } = require('../util/delverUtil');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
@@ -15,13 +15,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		const actionCost = 1;
 		if (adventure.room.actions < actionCost) {
-			interaction.reply({ content: "The workshop's supplies have been exhausted.", ephemeral: true });
+			interaction.reply({ content: "The workshop's supplies have been exhausted.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -30,12 +30,24 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		delver.gear.forEach((gear, index) => {
 			const upgrades = getGearProperty(gear.name, "upgrades");
 			if (upgrades.length > 0) {
+				const upgradeTexts = upgrades.map(upgrade => {
+					const description = buildGearDescription(upgrade, false);
+					return `${underline(upgrade)} ${getEmoji(getGearProperty(upgrade, "essence"))}\n${description}`;
+				});
+				let validatedText = "";
+				let andMoreText = "...and more!";
+				for (let i = 0; i < upgradeTexts.length; i++) {
+					const nextText = upgradeTexts[i];
+					if (validatedText.length + nextText.length > MAX_EMBED_FIELD_VALUE_LENGTH - andMoreText.length) {
+						validatedText += andMoreText;
+						break;
+					} else {
+						validatedText += `${nextText}\n\n`;
+					}
+				}
 				upgradesPreviews.push({
 					name: gear.name,
-					value: upgrades.map(upgrade => {
-						const description = buildGearDescription(upgrade, false);
-						return `${underline(upgrade)} ${getEmoji(getGearProperty(upgrade, "essence"))}\n${description}`;
-					}).join("\n\n")
+					value: validatedText
 				});
 				options.push({
 					label: gear.name,
@@ -44,7 +56,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		})
 		if (options.length < 1) {
-			interaction.reply({ content: "You don't have any gear that can be upgraded.", ephemeral: true });
+			interaction.reply({ content: "You don't have any gear that can be upgraded.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -63,9 +75,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setOptions(options)
 				)
 			],
-			ephemeral: true,
-			fetchReply: true
-		}).then(reply => {
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);

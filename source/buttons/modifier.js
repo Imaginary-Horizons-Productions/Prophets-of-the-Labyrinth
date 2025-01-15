@@ -1,4 +1,4 @@
-const { EmbedBuilder, Colors } = require('discord.js');
+const { EmbedBuilder, Colors, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { modifiersToString } = require('../util/combatantUtil');
@@ -10,13 +10,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	(interaction, [modifierName]) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure) {
-			interaction.reply({ content: "This adventure is no longer active.", ephemeral: true });
+			interaction.reply({ content: "This adventure is no longer active.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 		if (modifierName !== "MORE") {
-			interaction.reply({ embeds: [generateModifierEmbed(modifierName, delver.modifiers[modifierName], delver.getPoise(), adventure.getArtifactCount("Spiral Funnel"))], ephemeral: true });
+			interaction.reply({ embeds: [generateModifierEmbed(modifierName, delver.modifiers[modifierName], delver.getPoise(), adventure.getArtifactCount("Spiral Funnel"))], flags: [MessageFlags.Ephemeral] });
 		} else {
 			interaction.reply({
 				embeds: [
@@ -25,7 +25,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setTitle("All Modifiers")
 						.setDescription(modifiersToString(delver, adventure))
 				],
-				ephemeral: true
+				flags: [MessageFlags.Ephemeral]
 			});
 		}
 	}

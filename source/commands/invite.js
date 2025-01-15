@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, InteractionContextType } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -9,12 +9,12 @@ module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", P
 	(interaction) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure) {
-			interaction.reply({ content: "Please send invites from adventure threads.", ephemeral: true });
+			interaction.reply({ content: "Please send invites from adventure threads.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (adventure.state !== "config") {
-			interaction.reply({ content: "Invites cannot be sent after an adventure has started.", ephemeral: true });
+			interaction.reply({ content: "Invites cannot be sent after an adventure has started.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -27,7 +27,7 @@ module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", P
 					.setStyle(ButtonStyle.Success)
 			)]
 		});
-		interaction.reply({ content: "Invite sent!", ephemeral: true });
+		interaction.reply({ content: "Invite sent!", flags: [MessageFlags.Ephemeral] });
 	}
 ).setOptions(
 	{ type: "User", name: "invitee", description: "The user's mention", required: true }

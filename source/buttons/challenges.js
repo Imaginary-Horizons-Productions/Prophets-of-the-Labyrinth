@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
 const { ButtonWrapper, Challenge } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getChallenge } = require('../challenges/_challengeDictionary');
@@ -12,7 +12,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure?.delvers.some(delver => delver.id === interaction.user.id)) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -29,7 +29,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				.setPlaceholder("Select a challenge...")
 				.addOptions(options)
 		)];
-		interaction.reply({ content: "Shoot for glory (and higher scores)! Add a challenge to the run:", components, ephemeral: true, fetchReply: true }).then(reply => {
+		interaction.reply({ content: "Shoot for glory (and higher scores)! Add a challenge to the run:", components, flags: [MessageFlags.Ephemeral], withResponse: true }).then(({ response: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);

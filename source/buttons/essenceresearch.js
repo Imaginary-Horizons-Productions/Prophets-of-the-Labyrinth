@@ -2,6 +2,7 @@ const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getEmoji } = require('../util/essenceUtil');
 const { renderRoom } = require('../util/embedUtil');
+const { MessageFlags } = require('discord.js');
 
 const mainId = "essenceresearch";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -10,12 +11,12 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		if (delver.essence === adventure.room.essence) {
-			interaction.reply({ content: `You are already ${adventure.room.essence}.`, ephemeral: true });
+			interaction.reply({ content: `You are already ${adventure.room.essence}.`, flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 

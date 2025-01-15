@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Supportive Steam Wall",
 		addProtection(targets, pendingProtection);
 		changeStagger(targets, user, bonus);
 		const targetNames = targets.map(target => target.name);
-		return [joinAsStatement(false, targetNames, "gain", "gains", "protection."), joinAsStatement(false, targetNames, "is", "are", "relieved of Stagger.")];
+		return [joinAsStatement(false, targetNames, "gains", "gain", "protection."), joinAsStatement(false, targetNames, "is", "are", "relieved of Stagger.")];
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "ally" })
 	.setSidegrades("Vigilant Steam Wall")

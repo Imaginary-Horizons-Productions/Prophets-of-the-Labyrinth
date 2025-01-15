@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { gainHealth } = require('../util/combatantUtil');
@@ -10,7 +11,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 

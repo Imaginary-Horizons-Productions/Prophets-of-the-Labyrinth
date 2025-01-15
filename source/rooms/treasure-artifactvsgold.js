@@ -6,6 +6,7 @@ const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
 const { parseExpression } = require("../util/mathUtil");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 const { listifyEN, getNumberEmoji } = require("../util/textUtil");
+const { rollArtifact } = require("../artifacts/_artifactDictionary");
 
 module.exports = new RoomTemplate("Treasure! Artifact or Gold?",
 	"@{adventure}",

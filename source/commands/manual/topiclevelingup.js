@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 
 /**
@@ -14,7 +14,7 @@ async function executeSubcommand(interaction, ...args) {
 					.setDescription("Delvers will level up and gain stats after each battle. They'll gain 1 level after normal combat, 3 after artifact guardians, and 5 after final bosses.")
 					.setTimestamp(stats.mtime)
 			],
-			ephemeral: true
+			flags: [MessageFlags.Ephemeral]
 		});
 	})
 };

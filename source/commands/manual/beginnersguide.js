@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 
 /**
@@ -18,7 +18,7 @@ async function executeSubcommand(interaction, ...args) {
 						{ name: "Combat", value: "When you encounter enemies, each player will be prompted to pick a move to do during the next turn. When everyone has selected their move, the game will report the results. Each character archetype starts with different gear and, importantly, predicts different information about the upcoming round (eg enemy HP or who's going to Critically Hit). Make sure to share your relevant info with everyone!" }
 					).setTimestamp(stats.mtime)
 			],
-			ephemeral: true
+			flags: [MessageFlags.Ephemeral]
 		});
 	})
 };

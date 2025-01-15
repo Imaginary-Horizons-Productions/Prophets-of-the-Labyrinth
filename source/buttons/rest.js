@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { setAdventure, getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { gainHealth } = require('../util/combatantUtil');
@@ -10,13 +11,13 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
 		const actionCost = 1;
 		if (adventure.room.actions < actionCost) {
-			interaction.reply({ content: "No more actions can be taken in this room.", ephemeral: true });
+			interaction.reply({ content: "No more actions can be taken in this room.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 

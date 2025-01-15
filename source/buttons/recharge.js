@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline, bold } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline, bold, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -12,7 +12,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 		if (!delver) {
-			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", ephemeral: true });
+			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -33,7 +33,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		})
 
 		if (options.length < 1) {
-			interaction.reply({ content: "None of your Spells need recharge.", ephemeral: true });
+			interaction.reply({ content: "None of your Spells need recharge.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
@@ -49,9 +49,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					.setPlaceholder(`${cost}g: Recharge a Spell...`)
 					.setOptions(options)
 			)],
-			ephemeral: true,
-			fetchReply: true
-		}).then(reply => {
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);

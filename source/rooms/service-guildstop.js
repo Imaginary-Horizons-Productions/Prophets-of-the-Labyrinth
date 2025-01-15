@@ -25,16 +25,16 @@ module.exports = new RoomTemplate("Guildstop: For All Your Adventuring Needs",
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`switchspecialization${SAFE_DELIMITER}${specializationSwitchCost}`)
 						.setEmoji("🆔")
-						.setLabel(`${specializationSwitchCost}g: Switch Specializations`)
-						.setStyle(ButtonStyle.Primary)
+						.setLabel(`Switch Specializations [${specializationSwitchCost}g]`)
+						.setStyle(ButtonStyle.Secondary)
 						.setDisabled(adventure.gold < specializationSwitchCost),
 					new ButtonBuilder().setCustomId(`switchpet${SAFE_DELIMITER}${petSwitchCost}`)
 						.setEmoji("🐾")
-						.setLabel(`${petSwitchCost}g: Switch Pets`)
+						.setLabel(`Switch Pets [${petSwitchCost}g]`)
 						.setStyle(ButtonStyle.Secondary)
 						.setDisabled(adventure.gold < petSwitchCost),
 					new ButtonBuilder().setCustomId("challenges")
-						.setStyle(ButtonStyle.Danger)
+						.setStyle(ButtonStyle.Secondary)
 						.setEmoji("🏆")
 						.setLabel("Take on a Challenge")
 						.setDisabled(adventure.room.history["New challenges"].length > 0)

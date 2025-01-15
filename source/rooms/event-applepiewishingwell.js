@@ -53,7 +53,7 @@ module.exports = new RoomTemplate("Apple Pie Wishing Well",
 				),
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId("stealwishingwellcore")
-						.setStyle(ButtonStyle.Primary)
+						.setStyle(ButtonStyle.Danger)
 						.setEmoji(stealEmoji)
 						.setLabel(stealLabel)
 						.setDisabled(isStealDisabled)

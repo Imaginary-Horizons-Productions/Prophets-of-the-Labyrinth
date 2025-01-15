@@ -1,4 +1,4 @@
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 const { CHALLENGE_NAMES, getChallenge } = require("../../challenges/_challengeDictionary");
 
@@ -10,7 +10,7 @@ async function executeSubcommand(interaction, ...args) {
 	const challengeName = interaction.options.getString("challenge-name");
 	const nameInTitleCaps = CHALLENGE_NAMES.find(name => name.toLowerCase() === challengeName.toLowerCase());
 	if (!nameInTitleCaps) {
-		interaction.reply({ content: `Could not find an challenge named ${challengeName}.`, ephemeral: true });
+		interaction.reply({ content: `Could not find an challenge named ${challengeName}.`, flags: [MessageFlags.Ephemeral] });
 		return;
 	}
 
@@ -21,7 +21,7 @@ async function executeSubcommand(interaction, ...args) {
 			{ name: "Sources", value: `Preparation Phase: ${challengeTemplate.startingChallenge ? "✅" : "🚫"}\nGuildstop: ${challengeTemplate.rollableChallenge ? "✅" : "🚫"}`, inline: true },
 			{ name: "Score Multiplier", value: `x${challengeTemplate.scoreMultiplier}`, inline: true }
 		);
-	interaction.reply({ embeds: [embed], ephemeral: true });
+	interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
 };
 
 module.exports = {

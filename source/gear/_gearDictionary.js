@@ -1,5 +1,5 @@
 const { BuildError, GearTemplate, Gear, Delver, Adventure } = require("../classes");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil");
+const { getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { getEmoji } = require("../util/essenceUtil");
 const { italic } = require("discord.js");
 const { calculateTagContent } = require("../util/textUtil");
@@ -296,7 +296,7 @@ function buildGearDescription(gearName) {
 		if (type === "use") {
 			descriptionTexts.push(`${italic(`${getGearProperty(gearName, "stagger") ?? 0} Stagger`)}: ${description}`);
 		} else {
-			descriptionTexts.push(`${italic(type)}: ${description}`);
+			descriptionTexts.push(`${italic(type)}: ${injectApplicationEmojiMarkdown(description)}`);
 		}
 	});
 	let text = descriptionTexts.join("\n");

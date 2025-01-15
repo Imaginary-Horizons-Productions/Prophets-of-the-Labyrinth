@@ -1,4 +1,4 @@
-const { CommandInteraction } = require("discord.js");
+const { CommandInteraction, MessageFlags } = require("discord.js");
 const { gearExists, getGearProperty, buildGearDescription, GEAR_NAMES, injectGearStats } = require("../../gear/_gearDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getEmoji, getColor } = require("../../util/essenceUtil");
@@ -11,7 +11,7 @@ const { listifyEN } = require("../../util/textUtil");
 async function executeSubcommand(interaction, ...args) {
 	const gearName = interaction.options.getString("gear-name");
 	if (!gearExists(gearName)) {
-		interaction.reply({ content: `Stats on **${gearName}** could not be found. Check for typos!`, ephemeral: true });
+		interaction.reply({ content: `Stats on **${gearName}** could not be found. Check for typos!`, flags: [MessageFlags.Ephemeral] });
 		return;
 	}
 
@@ -44,7 +44,7 @@ async function executeSubcommand(interaction, ...args) {
 				.setDescription(buildGearDescription(gearName, true))
 				.addFields(fields)
 		],
-		ephemeral: true
+		flags: [MessageFlags.Ephemeral]
 	});
 };
 

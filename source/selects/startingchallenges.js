@@ -2,13 +2,14 @@ const { SelectWrapper } = require('../classes');
 const { getAdventure, setAdventure, fetchRecruitMessage } = require('../orcustrators/adventureOrcustrator');
 const { getChallenge } = require('../challenges/_challengeDictionary');
 const { generateRecruitEmbed } = require('../util/embedUtil');
+const { MessageFlags } = require('discord.js');
 
 const mainId = "startingchallenges";
 module.exports = new SelectWrapper(mainId, 3000,
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		if (!adventure) {
-			interaction.reply({ content: "This adventure seems to have already ended.", ephemeral: true });
+			interaction.reply({ content: "This adventure seems to have already ended.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
 
