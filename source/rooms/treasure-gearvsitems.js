@@ -25,7 +25,7 @@ module.exports = new RoomTemplate("Treasure! Gear or Items?",
 			for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 				if (visibility === "always" && count > 0) {
 					options.push({
-						label: `${type !== "Gear" ? `${getNumberEmoji(1)} ` : ""}${name} x ${count}`,
+						label: type === "Gear" ? `💬 ${name}` : `${getNumberEmoji(1)} ${name} x ${count}`,
 						description: type,
 						value: `${name}${SAFE_DELIMITER}${options.length}`
 					});

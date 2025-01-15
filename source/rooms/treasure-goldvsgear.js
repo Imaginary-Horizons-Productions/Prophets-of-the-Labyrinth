@@ -26,7 +26,7 @@ module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 			for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 				if (visibility === "always" && count > 0) {
 					options.push({
-						label: type === "Currency" ? `${getNumberEmoji(1)} ${count} ${name}` : `${name} x ${count}`,
+						label: type === "Currency" ? `${getNumberEmoji(1)} ${count} ${name}` : `💬 ${name}`,
 						description: type,
 						value: `${name}${SAFE_DELIMITER}${options.length}`
 					});
