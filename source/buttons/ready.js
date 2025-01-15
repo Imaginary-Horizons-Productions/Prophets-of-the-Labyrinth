@@ -59,7 +59,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 			})
 
-			interaction.channel.send({ content: `The adventure has begun (and closed to new delvers joining)! You can use ${commandMention("adventure party-stats")} or ${commandMention("adventure inspect-self")} to check adventure status. You can also use ${commandMention("manual")} to look up various information on the game.`, withResponse: true }).then(({ resource: { message } }) => {
+			interaction.channel.send({ content: `The adventure has begun (and closed to new delvers joining)! You can use ${commandMention("adventure party-stats")} or ${commandMention("adventure inspect-self")} to check adventure status. You can also use ${commandMention("manual")} to look up various information on the game.`, withResponse: true }).then((message) => {
 				message.pin();
 			});
 			adventure.state = "ongoing";

@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, generateModifierResultLines, addModifier, addProtection } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Guarding Buckler",
 	[
@@ -19,6 +19,7 @@ module.exports = new GearTemplate("Guarding Buckler",
 		if (user.crit) {
 			pendingProtection *= critMultiplier;
 		}
+		addProtection(targets, pendingProtection);
 		return [`${targets[0].name} gains protection.`].concat(generateModifierResultLines(addModifier([user], swiftness)));
 	}
 ).setTargetingTags({ type: "single", team: "ally" })

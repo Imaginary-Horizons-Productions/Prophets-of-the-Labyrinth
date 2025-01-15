@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, generateModifierResultLines, addModifier, addProtection } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Supportive Buckler",
 	[
@@ -22,6 +22,7 @@ module.exports = new GearTemplate("Supportive Buckler",
 		if (user.crit) {
 			pendingProtection *= critMultiplier;
 		}
+		addProtection(targets, pendingProtection);
 		if (hadStagger) {
 			return [`${targets[0].name} gains protection and shrugs off some Stagger.`].concat(generateModifierResultLines(addModifier([user], swiftness)));
 		} else {

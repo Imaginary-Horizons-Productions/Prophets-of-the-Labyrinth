@@ -16,7 +16,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 		const player = getPlayer(interaction.user.id, interaction.guild.id);
 		const specializationOptions = [];
-		for (const specialization of getArchetype().specializations.slice(0, player.archetypes[delver.archetype].specializationsUnlocked)) {
+		for (const specialization of getArchetype(delver.archetype).specializations.slice(0, player.archetypes[delver.archetype].specializationsUnlocked)) {
 			if (specialization !== delver.specialization) {
 				specializationOptions.push({
 					label: specialization,

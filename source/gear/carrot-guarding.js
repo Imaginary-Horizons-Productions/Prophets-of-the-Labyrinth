@@ -42,12 +42,12 @@ module.exports = new GearTemplate("Guarding Carrot",
 						petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 				}
 			})
-			resultLines.push(`${target.name}'s ${owner.pet} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
+			resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
 		}
 		return resultLines;
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setUpgrades("Guarding Carrot", "Balanced Carrot")
+	.setSidegrades("Balanced Carrot")
 	.setCooldown(1)
 	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed ÷ 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
 	.setCritMultiplier(1)

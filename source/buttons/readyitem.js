@@ -35,7 +35,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			],
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true
-		}).then(reply => {
+		}).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", (collectedInteraction) => {
 				const adventure = getAdventure(collectedInteraction.channelId);

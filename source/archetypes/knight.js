@@ -1,4 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
+const { SAFE_DELIMITER } = require("../constants");
 const { listifyEN } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Knight",
@@ -15,7 +16,8 @@ module.exports = new ArchetypeTemplate("Knight",
 			if (move?.name === "Mirror Clone") {
 				embed.addFields({ name: combatant.name, value: `Move: Mimic ${adventure.delvers[move.userReference.index].name} Speed: ${combatant.getSpeed(true)}` });
 			} else if (move) {
-				embed.addFields({ name: combatant.name, value: `Move: ${move.name} (Targets: ${listifyEN(targets.map(targetReference => adventure.getCombatant(targetReference).name), false) || "none"})\nSpeed: ${combatant.getSpeed(true)}${priority > 0 ? ` (Priority ${priority})` : ""}` });
+				const [moveName] = move.name.split(SAFE_DELIMITER);
+				embed.addFields({ name: combatant.name, value: `Move: ${moveName} (Targets: ${listifyEN(move.targets.map(targetReference => adventure.getCombatant(targetReference).name), false) || "none"})\nSpeed: ${combatant.getSpeed(true)}${move.priority > 0 ? ` (Priority ${move.priority})` : ""}` });
 			} else {
 				// Missing move because delver hasn't decided yet
 				embed.addFields({ name: combatant.name, value: `Speed: ${combatant.getSpeed(true)}` });

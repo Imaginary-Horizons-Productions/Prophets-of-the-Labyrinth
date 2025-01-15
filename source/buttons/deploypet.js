@@ -52,7 +52,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
 				switch (mainId) {
 					case "pet":
-						const isSwitching = delver.pet.type === "";
+						const isSwitching = Boolean(delver.pet.type);
 						const selectedPet = collectedInteraction.values[0];
 						delver.pet = {
 							type: selectedPet,

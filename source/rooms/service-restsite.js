@@ -13,6 +13,7 @@ module.exports = new RoomTemplate("Rest Site & Training Dummy",
 			"Rested": [],
 			"Trained": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		const healPercent = Math.trunc(30 * (1 - (adventure.getChallengeIntensity("Restless") / 100)));

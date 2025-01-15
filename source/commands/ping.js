@@ -22,7 +22,7 @@ module.exports = new CommandWrapper(mainId, "Remind delvers to input their vote 
 		if (inCombat) {
 			adventure.room.moves.forEach(move => {
 				if (move.userReference.team === "delver") {
-					const userId = adventure.delvers[move.userIndex].id;
+					const userId = adventure.delvers[move.userReference.index].id;
 					if (mentions.has(userId)) {
 						mentions.delete(userId);
 					}

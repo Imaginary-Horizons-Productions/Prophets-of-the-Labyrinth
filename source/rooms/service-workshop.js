@@ -18,6 +18,7 @@ module.exports = new RoomTemplate("Abandoned Forge",
 			"Upgraders": [],
 			"Modders": []
 		};
+		return [];
 	},
 	function (roomEmbed, adventure) {
 		let upgradeEmoji, isUpgradeDisabled, modifyEmoji, isModifyDisabled;

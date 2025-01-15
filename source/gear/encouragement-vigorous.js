@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Vigorous Encouragement",
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingExcellence).concat(addModifier(targets, pendingEmpowerment), addModifier(targets, impact))));
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setUpgrades("Rallying Encouragement", "Vigorous Encouragement")
+	.setSidegrades("Rallying Encouragement")
 	.setCharges(15)
 	.setModifiers({
 		name: "Excellence", stacks: {

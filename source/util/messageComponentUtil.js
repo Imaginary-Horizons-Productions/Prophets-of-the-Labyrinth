@@ -103,16 +103,16 @@ function generateLootRow(adventure) {
 				const option = { description: type, value: `${name}${SAFE_DELIMITER}${options.length}` };
 				switch (type) {
 					case "Gear":
-						options.label = `💬 ${name} x ${count}`;
+						option.label = `💬 ${name} x ${count}`;
 						break;
 					case "Artifact":
-						options.label = `${name} x ${count}`;
+						option.label = `${name} x ${count}`;
 						break;
 					case "Currency":
-						options.label = `${count} ${name}`;
+						option.label = `${count} ${name}`;
 						break;
 					case "Item":
-						options.label = `${name} x ${count}`;
+						option.label = `${name} x ${count}`;
 						break;
 				}
 				options.push(option);

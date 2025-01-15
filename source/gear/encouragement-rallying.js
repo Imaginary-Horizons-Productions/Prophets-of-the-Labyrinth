@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Rallying Encouragement",
 		return generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, pendingExcellence).concat(addModifier(allTargets, pendingEmpowerment))));
 	}
 ).setTargetingTags({ type: "single", team: "ally" })
-	.setUpgrades("Rallying Encouragement", "Vigorous Encouragement")
+	.setSidegrades("Vigorous Encouragement")
 	.setCharges(15)
 	.setModifiers({
 		name: "Excellence", stacks: {
@@ -37,4 +37,4 @@ module.exports = new GearTemplate("Rallying Encouragement",
 			description: "25 + Bonus Speed",
 			generator: (user) => 25 + user.getBonusSpeed()
 		}
-	});
+	}, { name: "Vigilance", stacks: 0 });
