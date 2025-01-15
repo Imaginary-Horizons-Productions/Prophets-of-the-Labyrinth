@@ -59,7 +59,7 @@ function getPetMove({ type: petName, level }, moveIndex) {
 				`${owner.name}'s ${petName} demands additional lumber.`,
 				`${owner.name}'s ${petName} is (now) on cooldown.`
 			];
-			return descriptions[Date.now() % descriptions.length];
+			return [descriptions[Date.now() % descriptions.length]];
 		})
 	}
 	return PETS[petName.toLowerCase()].moves[moveIndex][Math.ceil((level - moveIndex) / 2) - 1];

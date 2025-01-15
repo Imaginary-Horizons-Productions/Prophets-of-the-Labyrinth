@@ -4,6 +4,7 @@ const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { setAdventure, getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getArchetype, getArchetypeActionName } = require('../archetypes/_archetypeDictionary');
+const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "switchspecialization";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -60,6 +61,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 					// Send confirmation text
 					interaction.channel.send({ content: `${bold(interaction.user.displayName)} has switched to the ${bold(specialization)} specialization.` });
+					interaction.message.edit(renderRoom(adventure, interaction.channel));
 					setAdventure(adventure);
 				}
 			})
