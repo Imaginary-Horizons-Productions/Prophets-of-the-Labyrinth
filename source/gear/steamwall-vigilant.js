@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Vigilant Steam Wall",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection(targets, pendingProtection);
-		return [joinAsStatement(false, targets.map(target => target.name), "gain", "gains", "protection.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, vigilance))));
+		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, vigilance))));
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "ally" })
 	.setSidegrades("Supportive Steam Wall")

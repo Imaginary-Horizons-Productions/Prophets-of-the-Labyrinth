@@ -1,7 +1,7 @@
 const { GearTemplate, CombatantReference } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Balanced Carrot",
 	[
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Balanced Carrot",
 		if (user.crit) {
 			pendingRegeneration += critMultiplier;
 		}
-		const resultLines = addModifier([target], pendingRegeneration).concat(addModifier([target], finesse));
+		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier([target], pendingRegeneration).concat(addModifier([target], finesse))));
 		const ownerIndex = adventure.getCombatantIndex(target);
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 		if (owner.pet?.type) {

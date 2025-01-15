@@ -25,7 +25,7 @@ module.exports = new GearTemplate("Steam Wall",
 			pendingProtection *= critMultiplier;
 		}
 		addProtection(targets, pendingProtection);
-		return [joinAsStatement(false, targets.map(target => target.name), "gain", "gains", "protection.")];
+		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")];
 	}
 ).setTargetingTags({ type: `blast${SAFE_DELIMITER}1`, team: "ally" })
 	.setUpgrades("Supportive Steam Wall", "Vigilant Steam Wall")

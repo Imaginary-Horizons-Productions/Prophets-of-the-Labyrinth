@@ -1,7 +1,7 @@
 const { GearTemplate, CombatantReference } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addModifier, addProtection } = require('../util/combatantUtil');
+const { changeStagger, addModifier, addProtection, generateModifierResultLines } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Guarding Carrot",
 	[
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Guarding Carrot",
 			pendingRegeneration += critMultiplier;
 		}
 		addProtection([target], protection);
-		const resultLines = addModifier([target], pendingRegeneration).concat(`${target.name} gains protection.`);
+		const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration)).concat(`${target.name} gains protection.`);
 		const ownerIndex = adventure.getCombatantIndex(target);
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 		if (owner.pet?.type) {

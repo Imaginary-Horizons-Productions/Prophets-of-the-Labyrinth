@@ -2,7 +2,7 @@ const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underli
 const { ButtonWrapper } = require('../classes');
 const { getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
+const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING, MAX_EMBED_FIELD_VALUE_LENGTH } = require('../constants');
 const { getNumberEmoji } = require('../util/textUtil');
 const { transformGear } = require('../util/delverUtil');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
@@ -30,12 +30,24 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		delver.gear.forEach((gear, index) => {
 			const upgrades = getGearProperty(gear.name, "upgrades");
 			if (upgrades.length > 0) {
+				const upgradeTexts = upgrades.map(upgrade => {
+					const description = buildGearDescription(upgrade, false);
+					return `${underline(upgrade)} ${getEmoji(getGearProperty(upgrade, "essence"))}\n${description}`;
+				});
+				let validatedText = "";
+				let andMoreText = "...and more!";
+				for (let i = 0; i < upgradeTexts.length; i++) {
+					const nextText = upgradeTexts[i];
+					if (validatedText.length + nextText.length > MAX_EMBED_FIELD_VALUE_LENGTH - andMoreText.length) {
+						validatedText += andMoreText;
+						break;
+					} else {
+						validatedText += `${nextText}\n\n`;
+					}
+				}
 				upgradesPreviews.push({
 					name: gear.name,
-					value: upgrades.map(upgrade => {
-						const description = buildGearDescription(upgrade, false);
-						return `${underline(upgrade)} ${getEmoji(getGearProperty(upgrade, "essence"))}\n${description}`;
-					}).join("\n\n")
+					value: validatedText
 				});
 				options.push({
 					label: gear.name,
