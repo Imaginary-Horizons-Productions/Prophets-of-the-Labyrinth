@@ -111,7 +111,7 @@ class Delver extends Combatant {
 	}
 
 	getPower() {
-		return Math.floor(this.power * (1 + this.getModifierStacks("Empowerment") - this.getModifierStacks("Weakness") + this.gear.reduce((totalPower, gear) => {
+		return Math.floor((this.power + this.getModifierStacks("Empowerment") - this.getModifierStacks("Weakness")) * (1 + this.gear.reduce((totalPower, gear) => {
 			if (parseInt(gear.power)) {
 				return totalPower + gear.power;
 			} else {
