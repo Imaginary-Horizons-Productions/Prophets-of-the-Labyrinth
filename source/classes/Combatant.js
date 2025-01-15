@@ -98,7 +98,7 @@ class Delver extends Combatant {
 	};
 	specialization = "base";
 	startingArtifact = "";
-	power = 35;
+	power = 75;
 
 	getMaxHP() {
 		return Math.floor(this.maxHP) * (1 + this.gear.reduce((totalGearMaxHP, gear) => {
