@@ -1,11 +1,12 @@
-const { EmbedBuilder, MessageFlags } = require('discord.js');
+const { MessageFlags } = require('discord.js');
 const { ButtonWrapper, Delver } = require('../classes');
-const { MAX_DELVER_COUNT, ZERO_WIDTH_WHITESPACE } = require('../constants');
+const { MAX_DELVER_COUNT } = require('../constants');
 const { isSponsor } = require('../util/fileUtil');
 const { getCompany, setCompany } = require('../orcustrators/companyOrcustrator');
 const { getAdventure, setAdventure, fetchRecruitMessage } = require('../orcustrators/adventureOrcustrator');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { commandMention } = require('../util/textUtil');
+const { generateRecruitEmbed } = require('../util/embedUtil');
 
 const mainId = "join";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -71,26 +72,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		});
 
 		// Update recruit message
-		let partyList = `<@${adventure.leaderId}> 👑`;
-		for (let delver of adventure.delvers) {
-			if (delver.id !== adventure.leaderId) {
-				partyList += `\n<@${delver.id}>`;
-			}
-		}
-		const embeds = [];
-		const [{ data: recruitEmbed }] = recruitMessage.embeds;
-		if (recruitEmbed) {
-			embeds.push(new EmbedBuilder(recruitEmbed).spliceFields(0, 1, { name: `${adventure.delvers.length} Party Member${adventure.delvers.length === 1 ? "" : "s"}`, value: partyList }));
-		}
-		let components = recruitMessage.components;
-		if (adventure.delvers.length === MAX_DELVER_COUNT) {
-			components = [];
-		}
-		recruitMessage.edit({ embeds, components });
 		if (context === "invite") {
-			interaction.update({ components: [] })
+			recruitMessage.edit({ embeds: [generateRecruitEmbed(adventure)], components });
+			interaction.update({ components: [] });
 		} else {
-			interaction.update({ content: ZERO_WIDTH_WHITESPACE })
+			let components = recruitMessage.components;
+			if (adventure.delvers.length === MAX_DELVER_COUNT) {
+				components = [];
+			}
+			interaction.update({ embeds: [generateRecruitEmbed(adventure)], components });
 		}
 	}
 );
