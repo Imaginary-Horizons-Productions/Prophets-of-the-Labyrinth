@@ -82,7 +82,12 @@ function rollItem(adventure) {
  * @param {Adventure} adventure
  */
 function rollGear(tier, adventure) {
-	const pool = adventure.getPartyEssences().flatMap(essence => LABYRINTHS[adventure.labyrinth.toLowerCase()].availableGear[essence][tier]);
+	let pendingTier = tier;
+	const cursedRunDuration = adventure.getChallengeDuration("Cursed Run");
+	if (cursedRunDuration > 0) {
+		pendingTier = "Cursed";
+	}
+	const pool = adventure.getPartyEssences().flatMap(essence => LABYRINTHS[adventure.labyrinth.toLowerCase()].availableGear[essence][pendingTier]);
 	if (pool.length > 0) {
 		return pool[adventure.generateRandomNumber(pool.length, "general")];
 	} else {
