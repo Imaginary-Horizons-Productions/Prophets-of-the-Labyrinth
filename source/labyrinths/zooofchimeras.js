@@ -211,7 +211,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 				"Tempestuous Wrath",
 				"Tornado Formation",
 				"Vacuum Implosion",
-				"Water's Stillness"
+				"Wind Burst"
 			],
 			Rare: [
 				"Fatiguing Arcane Sledge",
