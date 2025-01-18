@@ -5,12 +5,12 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 module.exports = new GearTemplate("Shattering Shadow of Confusion",
 	[
 		["use", "Redirect a slower foe into targeting themself and inflict @{mod1Stacks} @{mod1}"],
-		["Critical💥", "Gain @{mod0Stacks} @{mod0}"]
+		["Critical💥", "Gain <@{mod0Stacks}> @{mod0}"]
 	],
 	"Spell",
-	"Darkness",
-	350,
-	([target], user, adventure) => {
+	"Darkness"
+).setCost(350)
+	.setEffect(([target], user, adventure) => {
 		const { essence, modifiers: [evade, frailty] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
@@ -23,12 +23,11 @@ module.exports = new GearTemplate("Shattering Shadow of Confusion",
 			resultLines.push(`${target.name} is redirected into targeting themself.`);
 		}
 		if (user.crit) {
-			resultLines.push(...generateModifierResultLines(addModifier([user], evade)));
+			resultLines.push(...generateModifierResultLines(addModifier([user], { name: evade.name, stacks: evade.stacks.calculate(user) })));
 		}
 		return resultLines.concat(generateModifierResultLines(addModifier([target], frailty)));
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Incompatible Shadow of Confusion")
 	.setCharges(15)
-	.setModifiers({ name: "Evasion", stacks: { description: "2 + Bonus HP ÷ 50", generator: (user) => 2 + Math.floor(user.getBonusHP() / 50) } },
+	.setModifiers({ name: "Evasion", stacks: { description: "2 + 2% Bonus HP", calculate: (user) => 2 + Math.floor(user.getBonusHP() / 50) } },
 		{ name: "Frailty", stacks: 3 });

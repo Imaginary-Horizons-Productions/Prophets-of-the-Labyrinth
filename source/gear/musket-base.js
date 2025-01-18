@@ -1,22 +1,23 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
 const { changeStagger, dealDamage } = require('../util/combatantUtil');
+const { damageScalingGenerator } = require('./shared/scalings');
 
 const gearName = "Musket";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Deal @{damage} @{essence} damage to a single foe"],
+		["use", "Deal <@{damage}> @{essence} damage to a single foe"],
 		["Critical💥", "Reset this gear's cooldown"]
 	],
 	"Adventuring",
-	"Fire",
-	200,
-	(targets, user, adventure) => {
-		const { essence, damage, cooldown } = module.exports;
+	"Fire"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { damage }, cooldown } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		const resultLines = dealDamage(targets, user, damage, false, essence, adventure);
+		const resultLines = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 		if (user.crit && user.gear) {
 			const move = adventure.room.findCombatantMove({ team: user.team, index: adventure.getCombatantIndex(user) });
 			const [_, gearIndex] = move.name.split(SAFE_DELIMITER);
@@ -24,8 +25,7 @@ module.exports = new GearTemplate(gearName,
 			resultLines.push(`${user.name} reloads their ${gearName} immediately!`);
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setUpgrades("Discounted Musket", "Hunter's Musket")
 	.setCooldown(3)
-	.setDamage(120);
+	.setScalings({ damage: damageScalingGenerator(120) });

@@ -2,17 +2,18 @@ const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { addModifier, generateModifierResultLines, dealDamage, changeStagger, removeModifier, combineModifierReceipts } = require('../util/combatantUtil');
+const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Disenchanting Wave Crash",
 	[
-		["use", "Inflict @{mod0Stacks} @{mod0} and remove @{bonus} random buff from a single foe"],
-		["Critical💥", "Deal @{damage} @{essence} damage"]
+		["use", "Inflict @{mod0Stacks} @{mod0} and remove @{buffsRemoved} random buff from a single foe"],
+		["Critical💥", "Deal <@{damage}> @{essence} damage"]
 	],
 	"Adventuring",
-	"Water",
-	350,
-	(targets, user, adventure) => {
-		const { essence, modifiers: [incompatibility], damage } = module.exports;
+	"Water"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, modifiers: [incompatibility], scalings: { damage } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -26,14 +27,15 @@ module.exports = new GearTemplate("Disenchanting Wave Crash",
 		}
 		const resultLines = generateModifierResultLines(combineModifierReceipts(reciepts));
 		if (user.crit) {
-			resultLines.push(...dealDamage(targets, user, damage + user.getPower(), false, essence, adventure));
+			resultLines.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure));
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Fatiguing Wave Crash")
 	.setCooldown(1)
 	.setModifiers({ name: "Incompatibility", stacks: 2 })
-	.setDamage(40)
-	.setBonus(1) // Buffs removed
+	.setScalings({
+		damage: damageScalingGenerator(40),
+		buffsRemoved: 1
+	})
 	.setRnConfig({ buffs: 1 });

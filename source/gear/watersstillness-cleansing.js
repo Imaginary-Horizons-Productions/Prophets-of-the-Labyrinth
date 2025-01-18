@@ -6,13 +6,13 @@ const { joinAsStatement } = require('../util/textUtil');
 const gearName = "Cleansing Water's Stillness";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Relieve Stagger and cure @{bonus} random debuff for a single ally and all allies with @{mod0}"],
-		["Critical💥", "Stagger relieved x @{critMultiplier}"]
+		["use", "Relieve Stagger and cure @{debuffsCured} random debuff for a single ally and all allies with @{mod0}"],
+		["Critical💥", "Stagger relieved x @{critBonus}"]
 	],
 	"Spell",
-	"Water",
-	350,
-	(targets, user, adventure) => {
+	"Water"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
 		const { essence, modifiers: [targetModifier], stagger, critMultiplier } = module.exports;
 		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.delvers : adventure.room.enemies, targetModifier.name);
 		let pendingStaggerRelief = stagger;
@@ -38,11 +38,13 @@ module.exports = new GearTemplate(gearName,
 			}
 		}
 		return [joinAsStatement(false, allTargets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
 	.setSidegrades("Accelerating Water's Stillness")
 	.setCharges(15)
 	.setStagger(-2)
 	.setModifiers({ name: "Vigilance", stacks: 0 })
-	.setBonus(1)
+	.setScalings({
+		debuffsCured: 1,
+		critBonus: 2
+	})
 	.setRnConfig({ debuffs: 1 });

@@ -2,31 +2,32 @@ const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, addProtection, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
+const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Tormenting Enchantment Siphon",
 	[
-		["use", "Remove a single foe's protection and add @{bonus} stack to each of their debuffs, gain <@{protection} + removed protection> protection"],
-		["Critical💥", "Protection x @{critMultiplier}"]
+		["use", "Remove a single foe's protection and add @{debuffIncrement} stack to each of their debuffs, gain <@{protection} + removed protection> protection"],
+		["Critical💥", "Protection x @{critBonus}"]
 	],
 	"Defense",
-	"Wind",
-	350,
-	([target], user, adventure) => {
-		const { essence, protection, critMultiplier, bonus } = module.exports;
+	"Wind"
+).setCost(350)
+	.setEffect(([target], user, adventure) => {
+		const { essence, scalings: { protection, critBonus, debuffIncrement } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const stolenProtection = target.protection;
 		target.protection = 0;
-		let pendingProtection = protection + Math.floor(user.getMaxHP() / 5) + stolenProtection;
+		let pendingProtection = protection.calculate(user) + stolenProtection;
 		if (user.crit) {
-			pendingProtection *= critMultiplier;
+			pendingProtection *= critBonus;
 		}
 		addProtection([user], pendingProtection);
 		const reciepts = [];
 		for (const modifier in target.modifiers) {
 			if (getModifierCategory(modifier) === "Debuff") {
-				reciepts.push(...addModifier([target], { name: modifier, stacks: bonus }));
+				reciepts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
 			}
 		}
 		if (stolenProtection > 0) {
@@ -34,9 +35,11 @@ module.exports = new GearTemplate("Tormenting Enchantment Siphon",
 		} else {
 			return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
 		}
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Flanking Enchantment Siphon")
 	.setCooldown(1)
-	.setProtection(0)
-	.setBonus(1); // Debuff increment
+	.setScalings({
+		protection: protectionScalingGenerator(0),
+		critBonus: 2,
+		debuffIncrement: 1
+	});

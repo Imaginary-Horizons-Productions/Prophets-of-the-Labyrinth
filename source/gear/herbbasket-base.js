@@ -4,17 +4,17 @@ const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Herb Basket",
 	[
-		["use", "Add @{bonus} random herb to loot"],
-		["Critical💥", "Herbs gathered x @{critMultiplier}"]
+		["use", "Add @{herbCount} random herb to loot"],
+		["Critical💥", "Herbs gathered x @{critBonus}"]
 	],
 	"Adventuring",
-	"Earth",
-	200,
-	(targets, user, adventure) => {
-		const { critMultiplier } = module.exports;
-		let pendingHerbCount = 1;
+	"Earth"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { scalings: { herbCount, critBonus } } = module.exports;
+		let pendingHerbCount = herbCount;
 		if (user.crit) {
-			pendingHerbCount *= critMultiplier;
+			pendingHerbCount *= critBonus;
 		}
 		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "Item", "loot", pendingHerbCount);
@@ -23,10 +23,12 @@ module.exports = new GearTemplate("Herb Basket",
 		} else {
 			return [`${user.name} gathers a batch of ${randomHerb}.`];
 		}
-	}
-).setTargetingTags({ type: "none", team: "none" })
+	}, { type: "none", team: "none" })
 	.setUpgrades("Enticing Herb Basket", "Guarding Herb Basket")
 	.setCooldown(1)
-	.setBonus(1) // Herbs gathered
+	.setScalings({
+		herbCount: 1,
+		critBonus: 2
+	})
 	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
 	.setRnConfig({ herbs: 1 });

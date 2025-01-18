@@ -6,35 +6,38 @@ const { changeStagger, dealDamage, generateModifierResultLines, combineModifierR
 const bounceCount = 3;
 module.exports = new GearTemplate("Disenchanting Lightning Staff",
 	[
-		["use", `Deal @{damage} @{essence} damage and remove @{bonus} random debuff from ${bounceCount} random foes`],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", `Deal <@{damage}> @{essence} damage and remove @{buffRemovals} random buff from ${bounceCount} random foes`],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Adventuring",
-	"Wind",
-	350,
-	(targets, user, adventure) => {
-		const { essence, damage, critMultiplier } = module.exports;
+	"Wind"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { damage, critBonus, buffRemovals } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		let pendingDamage = damage + user.getPower();
+		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= critBonus;
 		}
 		const reciepts = [];
 		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 			if (targetBuffs.length > 0) {
-				for (let i = 0; i < pendingBuffRemovals; i++) {
+				for (let i = 0; i < buffRemovals; i++) {
 					const selectedBuff = targetBuffs.splice(user.roundRns(`${gearName}${SAFE_DELIMITER}buffs`), 1);
 					reciepts.push(...removeModifier([target], { name: selectedBuff, stacks: "all" }));
 				}
 			}
 		}
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
-	}
-).setTargetingTags({ type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
+	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
 	.setSidegrades("Hexing Lightning Staff")
 	.setCooldown(2)
 	.setRnConfig({ foes: 3, buffs: 1 })
-	.setBonus(1); // Debuffs removed
+	.setScalings({
+		damage: { description: "50% Power", calculate: (user) => Math.floor(user.getPower() / 2) },
+		critBonus: 2,
+		buffRemovals: 1
+	});

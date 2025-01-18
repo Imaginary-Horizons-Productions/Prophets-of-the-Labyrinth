@@ -1,28 +1,31 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { kineticDamageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Kinetic Net Launcher",
 	[
-		["use", "Inflict <@{damage} + @{bonusSpeed}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Offense",
-	"Water",
-	350,
-	(targets, user, adventure) => {
-		const { essence, damage, critMultiplier, modifiers: [torpidity] } = module.exports;
+	"Water"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { damage, critBonus }, modifiers: [torpidity] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		let pendingDamage = damage + user.getPower() + user.getBonusSpeed();
+		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= critBonus;
 		}
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier(targets, torpidity)));
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Staggering Net Launcher")
 	.setCooldown(1)
-	.setDamage(40)
+	.setScalings({
+		damage: kineticDamageScalingGenerator(40),
+		critBonus: 2
+	})
 	.setModifiers({ name: "Torpidity", stacks: 4 });

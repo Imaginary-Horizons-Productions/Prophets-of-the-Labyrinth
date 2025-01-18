@@ -4,14 +4,14 @@ const { changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Inspiring Illumination",
 	[
-		["use", "Reduce a single ally's cooldowns by @{bonus} and increase the party's morale by @{secondBonus}"],
-		["Critical💥", "Increase the party's morale by @{secondBonus}"]
+		["use", "Reduce a single ally's cooldowns by @{cooldownReduction} and increase the party's morale by @{baseMorale}"],
+		["Critical💥", "Increase the party's morale by @{critMorale}"]
 	],
 	"Spell",
-	"Light",
-	350,
-	(targets, user, adventure) => {
-		const { essence, bonus, secondBonus } = module.exports;
+	"Light"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { cooldownReduction, baseMorale, critMorale } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Inspiring Illumination",
 			target.gear?.forEach(gear => {
 				if (gear.cooldown > 1) {
 					didCooldown = true;
-					gear.cooldown -= bonus;
+					gear.cooldown -= cooldownReduction;
 				}
 			})
 			if (didCooldown) {
@@ -29,13 +29,15 @@ module.exports = new GearTemplate("Inspiring Illumination",
 			}
 		}
 		if (user.crit) {
-			adventure.room.morale += secondBonus;
+			adventure.room.morale += critMorale;
 		}
-		adventure.room.morale += secondBonus;
+		adventure.room.morale += baseMorale;
 		resultLines.push("The party's morale is increased!");
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
 	.setCharges(15)
-	.setBonus(1) // Cooldown reduction
-	.setSecondBonus(1); // Morale
+	.setScalings({
+		cooldownReduction: 1,
+		baseMorale: 1,
+		critMorale: 1
+	});

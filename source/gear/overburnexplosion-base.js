@@ -1,24 +1,25 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { concatTeamMembersWithModifier, changeStagger, dealDamage } = require('../util/combatantUtil');
+const { damageScalingGenerator } = require('./shared/scalings');
 
-module.exports = new GearTemplate("Accurate Overburn Explosion",
+module.exports = new GearTemplate("Overburn Explosion",
 	[
-		["use", "Deal @{damage} @{essence} damage to a single foe and all foes with @{mod0}"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", "Deal <@{damage}> @{essence} damage to a single foe and all foes with @{mod0}"],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Pact",
-	"Fire",
-	200,
-	(targets, user, adventure) => {
-		const { essence, modifiers: [targetModifier], damage, critMultiplier, pactCost } = module.exports;
+	"Fire"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, modifiers: [targetModifier], scalings: { damage, critBonus }, pactCost } = module.exports;
 		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
 		if (user.essence === essence) {
 			changeStagger(allTargets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		let pendingDamage = damage + user.getPower();
+		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= critBonus;
 		}
 		const resultLines = dealDamage(allTargets, user, pendingDamage, false, essence, adventure);
 		if (user.gear) {
@@ -28,9 +29,11 @@ module.exports = new GearTemplate("Accurate Overburn Explosion",
 			resultLines.push(`${user.name} is burnt out.`);
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setUpgrades("Accurate Overburn Explosion", "Unstoppable Overburn Explosion")
 	.setPactCost([2, "Set all your gears' cooldowns to @{pactCost}"])
 	.setModifiers({ name: "Distraction", stacks: 0 })
-	.setDamage(200);
+	.setScalings({
+		damage: damageScalingGenerator(200),
+		critBonus: 2
+	});

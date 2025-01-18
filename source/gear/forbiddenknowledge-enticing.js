@@ -5,20 +5,20 @@ const { changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Enticing Forbidden Knowledge",
 	[
-		["use", "Grant a single ally @{bonus} extra level up after combat and entice their pet to use its first move"],
-		["Critical💥", "Reduce your target's cooldowns by @{secondBonus}"]
+		["use", "Grant a single ally @{levelUps} extra level up after combat and entice their pet to use its first move"],
+		["Critical💥", "Reduce your target's cooldowns by @{cooldownReduction}"]
 	],
 	"Pact",
-	"Light",
-	350,
-	([target], user, adventure) => {
-		const { essence, pactCost } = module.exports;
+	"Light"
+).setCost(350)
+	.setEffect(([target], user, adventure) => {
+		const { essence, pactCost, scalings: { levelUps, cooldownReduction } } = module.exports;
 		if (user.team === "delver") {
 			if (adventure.room.morale < pactCost[0]) {
 				return ["...but the party didn't have enough morale to pull it off."];
 			}
 			adventure.room.morale -= pactCost[0];
-			adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(target)}`, "levelsGained", "loot", 1);
+			adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(target)}`, "levelsGained", "loot", levelUps);
 		}
 		const resultLines = [`${target.name} gains a level's worth of cursed knowledge. The party's morale falls.`];
 		if (user.essence === essence) {
@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Enticing Forbidden Knowledge",
 			target.gear?.forEach(gear => {
 				if (gear.cooldown > 1) {
 					didCooldown = true;
-					gear.cooldown -= bonus;
+					gear.cooldown -= cooldownReduction;
 				}
 			})
 			if (didCooldown) {
@@ -59,8 +59,10 @@ module.exports = new GearTemplate("Enticing Forbidden Knowledge",
 			resultLines.push(`${target.name}'s ${owner.pet} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
+	.setSidegrades("Soothing Forbidden Knowledge")
 	.setPactCost([2, "Consume @{pactCost} morale"])
-	.setBonus(1) // Level-Ups
-	.setSecondBonus(1); // Cooldown Reduction
+	.setScalings({
+		levelUps: 1,
+		cooldownReduction: 1
+	});

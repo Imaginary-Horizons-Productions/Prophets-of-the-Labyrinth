@@ -8,13 +8,13 @@ const gearName = "Distracting Reveal Flaw";
 module.exports = new GearTemplate(gearName,
 	[
 		["use", "Inflict @{mod0Stacks} Vulnerability to a random essence on all foes"],
-		["Critical💥", "Inflict @{critMultiplier} extra Stagger"]
+		["Critical💥", "Inflict @{critBonus} extra Stagger"]
 	],
 	"Maneuver",
-	"Light",
-	350,
-	(targets, user, adventure) => {
-		const { essence, moraleRequirement, modifiers: [vulnerability, distraction], critMultiplier } = module.exports;
+	"Light"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, moraleRequirement, modifiers: [vulnerability, distraction], scalings: { critBonus } } = module.exports;
 		if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
 			return ["...but the party didn't have enough morale to pull it off."];
 		}
@@ -29,16 +29,16 @@ module.exports = new GearTemplate(gearName,
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
-			pendingStagger += critMultiplier;
+			pendingStagger += critBonus;
 			resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
 		}
 		if (pendingStagger > 0) {
 			changeStagger(targets, user, pendingStagger);
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "all", team: "foe" })
+	}, { type: "all", team: "foe" })
 	.setSidegrades("Numbing Reveal Flaw")
 	.setMoraleRequirement(1)
 	.setModifiers({ name: "unparsed random vulnerability", stacks: 2 }, { name: "Distraction", stacks: 2 })
-	.setRnConfig({ vulnerabilities: 1 });
+	.setRnConfig({ vulnerabilities: 1 })
+	.setScalings({ critBonus: 2 });

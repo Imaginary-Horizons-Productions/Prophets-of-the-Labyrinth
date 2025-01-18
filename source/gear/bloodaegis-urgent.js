@@ -1,17 +1,18 @@
 const { GearTemplate, Move } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { payHP, changeStagger, addProtection } = require('../util/combatantUtil');
+const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Urgent Blood Aegis",
 	[
-		["use", "Gain @{protection} protection and intercept your target's later single target move with priority"],
-		["Critical💥", "Protection x @{critMultiplier}"]
+		["use", "Gain <@{protection}> protection and intercept your target's later single target move with priority"],
+		["Critical💥", "Protection x @{critBonus}"]
 	],
 	"Pact",
-	"Darkness",
-	350,
-	([target], user, adventure) => {
-		const { essence, pactCost, protection, critMultiplier } = module.exports;
+	"Darkness"
+).setCost(350)
+	.setEffect(([target], user, adventure) => {
+		const { essence, pactCost, scalings: { protection, critBonus } } = module.exports;
 		const paymentSentence = payHP(user, user.level * pactCost[0], adventure);
 		if (adventure.lives < 1) {
 			return [paymentSentence];
@@ -19,9 +20,9 @@ module.exports = new GearTemplate("Urgent Blood Aegis",
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		let pendingProtection = protection + Math.floor(user.getBonusHP() / 5);
+		let pendingProtection = protection.calculate(user);
 		if (user.crit) {
-			pendingProtection *= critMultiplier;
+			pendingProtection *= critBonus;
 		}
 		addProtection([user], pendingProtection);
 		const resultLines = [`Gaining protection, ${paymentSentence}`];
@@ -32,9 +33,11 @@ module.exports = new GearTemplate("Urgent Blood Aegis",
 			resultLines.push(`${target.name} falls for the provocation.`);
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Toxic Blood Aegis")
 	.setPactCost([5, "Pay (@{pactCost} x your level) HP"])
-	.setProtection(125)
-	.setPriority(1);
+	.setScalings({
+		protection: protectionScalingGenerator(125),
+		critBonus: 2,
+		priority: 1
+	});

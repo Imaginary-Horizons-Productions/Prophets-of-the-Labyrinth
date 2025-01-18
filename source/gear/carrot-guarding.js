@@ -2,25 +2,26 @@ const { GearTemplate, CombatantReference } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
 const { changeStagger, addModifier, addProtection, generateModifierResultLines } = require('../util/combatantUtil');
+const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Guarding Carrot",
 	[
-		["use", "Grant @{mod0Stacks} @{mod0} and @{protection} protection to an ally and entice their pet to use its first move"],
+		["use", "Grant <@{mod0Stacks}> @{mod0} and <@{protection}> protection to an ally and entice their pet to use its first move"],
 		["Critical💥", "@{mod0} + @{critMultiplier}"]
 	],
 	"Support",
-	"Earth",
-	200,
-	([target], user, adventure) => {
-		const { essence, modifiers: [regeneration], critMultiplier, protection } = module.exports;
+	"Earth"
+).setCost(200)
+	.setEffect(([target], user, adventure) => {
+		const { essence, modifiers: [regeneration], scalings: { critBonus, protection } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		const pendingRegeneration = { name: regeneration.name, stacks: regeneration.stacks.generator(user) };
+		const pendingRegeneration = { name: regeneration.name, stacks: regeneration.stacks.calculate(user) };
 		if (user.crit) {
-			pendingRegeneration += critMultiplier;
+			pendingRegeneration += critBonus;
 		}
-		addProtection([target], protection);
+		addProtection([target], protection.calculate(user));
 		const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration)).concat(`${target.name} gains protection.`);
 		const ownerIndex = adventure.getCombatantIndex(target);
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
@@ -45,10 +46,11 @@ module.exports = new GearTemplate("Guarding Carrot",
 			resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
 	.setSidegrades("Balanced Carrot")
 	.setCooldown(1)
-	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed ÷ 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
-	.setCritMultiplier(1)
-	.setProtection(50);
+	.setModifiers({ name: "Regeneration", stacks: { description: "2 + 5% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
+	.setScalings({
+		critBonus: 1,
+		protection: protectionScalingGenerator(50)
+	});

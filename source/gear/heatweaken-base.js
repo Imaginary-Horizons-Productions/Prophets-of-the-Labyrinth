@@ -6,23 +6,23 @@ const bounceCount = 3;
 module.exports = new GearTemplate("Heat Weaken",
 	[
 		["use", `Inflict @{mod0Stacks} @{mod0} on ${bounceCount} random foes`],
-		["Critical💥", "@{mod0} x @{critMultiplier}"]
+		["Critical💥", "@{mod0} x @{critBonus}"]
 	],
 	"Spell",
-	"Fire",
-	200,
-	(targets, user, adventure) => {
-		const { essence, modifiers: [frailty], critMultiplier } = module.exports;
+	"Fire"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, modifiers: [frailty], scalings: { critBonus } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const pendingFrailty = { ...frailty };
 		if (user.crit) {
-			pendingFrailty.stacks *= critMultiplier;
+			pendingFrailty.stacks *= critBonus;
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingFrailty)));
-	}
-).setTargetingTags({ type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
+	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
 	.setUpgrades("Numbing Heat Weaken", "Staggering Heat Weaken")
 	.setCharges(15)
-	.setModifiers({ name: "Frailty", stacks: 2 });
+	.setModifiers({ name: "Frailty", stacks: 2 })
+	.setScalings({ critBonus: 2 });

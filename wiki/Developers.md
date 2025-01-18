@@ -25,7 +25,7 @@ Welcome prospective developers! We're so glad you've interested in helping out.
 - This project uses tabs for indentation to reduce file size and keypresses during code navigation
 - Bot feedback messages should be written in 3rd-person passive tense (to avoid unnecesary personification) and make requests in polite language
     - Example: "Your bounty could not be posted. Please remove phrases disallowed by the server from the title and try again."
-- In User Facing text, use `÷` instead of `/` and `x` instead of `*` because the approved operator symbols have greater wide-spread understanding
+- In User Facing text, use percentages instead of `÷` or `/` and `x` instead of `*` because the approved operator symbols have greater wide-spread understanding
 
 ### File and Directory Naming Convention
 Please use `camelCase` unless one of the following exceptions apply:

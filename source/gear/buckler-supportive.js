@@ -1,17 +1,18 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, generateModifierResultLines, addModifier, addProtection } = require('../util/combatantUtil');
+const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Supportive Buckler",
 	[
-		["use", "Grant an ally @{protection} protection and relieve them of @{stagger*-1} Stagger, then gain @{mod0Stacks} @{mod0}"],
-		["Critical💥", "Protection x @{critMultiplier}"]
+		["use", "Grant an ally <@{protection}> protection, then gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Protection x @{critBonus}"]
 	],
 	"Defense",
-	"Water",
-	350,
-	(targets, user, adventure) => {
-		const { essence, stagger, protection, critMultiplier, modifiers: [swiftness] } = module.exports;
+	"Water"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, stagger, scalings: { protection, critBonus }, modifiers: [swiftness] } = module.exports;
 		let hadStagger = targets[0].stagger > 0;
 		let pendingStagger = stagger;
 		if (user.essence === essence) {
@@ -20,7 +21,7 @@ module.exports = new GearTemplate("Supportive Buckler",
 		changeStagger(targets, user, pendingStagger);
 		let pendingProtection = protection + Math.floor(user.getBonusHP() / 5);
 		if (user.crit) {
-			pendingProtection *= critMultiplier;
+			pendingProtection *= critBonus;
 		}
 		addProtection(targets, pendingProtection);
 		if (hadStagger) {
@@ -28,10 +29,12 @@ module.exports = new GearTemplate("Supportive Buckler",
 		} else {
 			return [`${targets[0].name} gains protection.`].concat(generateModifierResultLines(addModifier([user], swiftness)));
 		}
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
 	.setSidegrades("Guarding Buckler")
 	.setCooldown(1)
-	.setProtection(75)
 	.setStagger(-2)
+	.setScalings({
+		protection: protectionScalingGenerator(75),
+		critBonus: 2
+	})
 	.setModifiers({ name: "Swiftness", stacks: 3 });

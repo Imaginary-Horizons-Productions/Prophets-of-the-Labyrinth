@@ -15,6 +15,7 @@ const { CombatantReference, Move } = require("./Move");
 const { PetTemplate, PetMoveTemplate } = require("./PetTemplate");
 const { Player } = require("./Player");
 const { RoomTemplate } = require("./RoomTemplate");
+const { Scaling } = require("./Scaling");
 
 module.exports = {
 	Adventure,
@@ -45,6 +46,7 @@ module.exports = {
 	Player,
 	Room,
 	RoomTemplate,
+	Scaling,
 	SelectWrapper,
 	UserContextMenuWrapper
 };

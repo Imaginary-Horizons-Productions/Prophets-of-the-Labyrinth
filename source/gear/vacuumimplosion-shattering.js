@@ -1,35 +1,38 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Shattering Vacuum Implosion",
 	[
-		["use", "Inflict <@{damage} + @{bonus} if only attacker> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", "Inflict <@{damage} (+ @{duelistsBonus} if only attacker)> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe"],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Spell",
-	"Wind",
-	350,
-	([target], user, adventure) => {
-		const { essence, damage, bonus, critMultiplier, modifiers: [frailty] } = module.exports;
+	"Wind"
+).setCost(350)
+	.setEffect(([target], user, adventure) => {
+		const { essence, scalings: { damage, duelistsBonus, critBonus }, modifiers: [frailty] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		let pendingDamage = damage + user.getPower();
+		let pendingDamage = damage.calculate(user);
 		// Duelist's check
 		const userIndex = adventure.getCombatantIndex(user);
 		const targetIndex = adventure.getCombatant(target);
 		if (adventure.room.moves.every(move => (move.userReference.team === user.team && move.userReference.index === userIndex) && (move.userReference.team !== user.team) && move.targets.every(moveTarget => moveTarget.team !== target.team || moveTarget.index !== targetIndex))) {
-			pendingDamage += bonus;
+			pendingDamage += duelistsBonus;
 		}
 		if (user.crit) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= critBonus;
 		}
 		return dealDamage([target], user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([target], frailty)));
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Urgent Vacuum Implosion")
 	.setCharges(15)
-	.setDamage(40)
-	.setBonus(75)
+	.setScalings({
+		damage: damageScalingGenerator(40),
+		duelistsBonus: 75,
+		critBonus: 2
+	})
 	.setModifiers({ name: "Frailty", stacks: 3 });

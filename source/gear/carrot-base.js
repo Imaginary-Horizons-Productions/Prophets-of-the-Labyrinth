@@ -5,20 +5,20 @@ const { changeStagger, addModifier, generateModifierResultLines } = require('../
 
 module.exports = new GearTemplate("Carrot",
 	[
-		["use", "Grant @{mod0Stacks} @{mod0} to an ally and entice their pet to use its first move"],
-		["Critical💥", "@{mod0} + @{critMultiplier}"]
+		["use", "Grant <@{mod0Stacks}> @{mod0} to an ally and entice their pet to use its first move"],
+		["Critical💥", "@{mod0} + @{critBonus}"]
 	],
 	"Support",
-	"Earth",
-	200,
-	([target], user, adventure) => {
-		const { essence, modifiers: [regeneration], critMultiplier } = module.exports;
+	"Earth"
+).setCost(200)
+	.setEffect(([target], user, adventure) => {
+		const { essence, modifiers: [regeneration], scalings: { critBonus } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		const pendingRegeneration = { name: regeneration.name, stacks: regeneration.stacks.generator(user) };
+		const pendingRegeneration = { name: regeneration.name, stacks: regeneration.stacks.calculate(user) };
 		if (user.crit) {
-			pendingRegeneration += critMultiplier;
+			pendingRegeneration += critBonus;
 		}
 		const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration));
 		const ownerIndex = adventure.getCombatantIndex(target);
@@ -44,9 +44,8 @@ module.exports = new GearTemplate("Carrot",
 			resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
 	.setUpgrades("Guarding Carrot", "Balanced Carrot")
 	.setCooldown(1)
-	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed ÷ 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
-	.setCritMultiplier(1);
+	.setModifiers({ name: "Regeneration", stacks: { description: "2 + 5% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
+	.setScalings({ critBonus: 1 });

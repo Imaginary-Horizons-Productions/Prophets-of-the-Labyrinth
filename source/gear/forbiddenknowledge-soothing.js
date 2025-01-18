@@ -4,32 +4,32 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 
 module.exports = new GearTemplate("Soothing Forbidden Knowledge",
 	[
-		["use", "Grant a single ally @{mod0Stacks} @{mod0} and @{bonus} extra level up after combat"],
-		["Critical💥", "Reduce your target's cooldowns by @{secondBonus}"]
+		["use", "Grant a single ally <@{mod0Stacks}> @{mod0} and @{levelUps} extra level up after combat"],
+		["Critical💥", "Reduce your target's cooldowns by @{cooldownReduction}"]
 	],
 	"Pact",
-	"Light",
-	350,
-	([target], user, adventure) => {
-		const { essence, pactCost, modifiers: [regeneration] } = module.exports;
+	"Light"
+).setCost(350)
+	.setEffect(([target], user, adventure) => {
+		const { essence, pactCost, modifiers: [regeneration], scalings: { levelUps, cooldownReduction } } = module.exports;
 		if (user.team === "delver") {
 			if (adventure.room.morale < pactCost[0]) {
 				return ["...but the party didn't have enough morale to pull it off."];
 			}
 			adventure.room.morale -= pactCost[0];
-			adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(target)}`, "levelsGained", "loot", 1);
+			adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(target)}`, "levelsGained", "loot", levelUps);
 		}
 		const resultLines = [`${target.name} gains a level's worth of cursed knowledge. The party's morale falls.`];
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		resultLines.push(...generateModifierResultLines(addModifier([target], { name: regeneration.name, stacks: regeneration.stacks.generator(user) })));
+		resultLines.push(...generateModifierResultLines(addModifier([target], { name: regeneration.name, stacks: regeneration.stacks.calculate(user) })));
 		if (user.crit) {
 			let didCooldown = false;
 			target.gear?.forEach(gear => {
 				if (gear.cooldown > 1) {
 					didCooldown = true;
-					gear.cooldown -= bonus;
+					gear.cooldown -= cooldownReduction;
 				}
 			})
 			if (didCooldown) {
@@ -37,9 +37,11 @@ module.exports = new GearTemplate("Soothing Forbidden Knowledge",
 			}
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
+	.setSidegrades("Enticing Forbidden Knowledge")
 	.setPactCost([2, "Consume @{pactCost} morale"])
-	.setBonus(1) // Level-Ups
-	.setSecondBonus(1) // Cooldown Reduction
-	.setModifiers({ name: "Regeneration", stacks: { description: "2 + Bonus Speed ÷ 20", generator: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
+	.setScalings({
+		levelUps: 1,
+		cooldownReduction: 1
+	})
+	.setModifiers({ name: "Regeneration", stacks: { description: "2 + 5% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })

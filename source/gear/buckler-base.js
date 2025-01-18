@@ -1,29 +1,32 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, generateModifierResultLines, addModifier, addProtection } = require('../util/combatantUtil');
+const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Buckler",
 	[
-		["use", "Grant an ally @{protection} protection and gain @{mod0Stacks} @{mod0}"],
-		["Critical💥", "Protection x @{critMultiplier}"]
+		["use", "Grant an ally <@{protection}> protection and gain @{mod0Stacks} @{mod0}"],
+		["Critical💥", "Protection x @{critBonus}"]
 	],
 	"Defense",
-	"Water",
-	200,
-	(targets, user, adventure) => {
-		const { essence, protection, critMultiplier, modifiers: [swiftness] } = module.exports;
+	"Water"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { protection, critBonus }, modifiers: [swiftness] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		let pendingProtection = protection + Math.floor(user.getBonusHP() / 5);
+		let pendingProtection = protection.calculate(user);
 		if (user.crit) {
-			pendingProtection *= critMultiplier;
+			pendingProtection *= critBonus;
 		}
 		addProtection(targets, pendingProtection);
 		return [`${targets[0].name} gains protection.`].concat(generateModifierResultLines(addModifier([user], swiftness)));
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
 	.setUpgrades("Guarding Buckler", "Supportive Buckler")
 	.setCooldown(1)
-	.setProtection(75)
+	.setScalings({
+		protection: protectionScalingGenerator(75),
+		critBonus: 2
+	})
 	.setModifiers({ name: "Swiftness", stacks: 3 });

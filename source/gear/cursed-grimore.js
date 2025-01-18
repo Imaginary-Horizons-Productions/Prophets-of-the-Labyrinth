@@ -5,7 +5,6 @@ module.exports = new GearTemplate("Cursed Grimore",
 		["Passive", "Can be upgraded into a random Pact"],
 	],
 	"Pact",
-	"Unaligned",
-	-50,
-	() => []
-).setUpgrades("Tempestuous Wrath", "Bounty Fist", "Universal Solution", "Overburn Explosion", "Forbidden Knowledge", "Blood Aegis");
+	"Unaligned"
+).setCost(-50)
+	.setUpgrades("Tempestuous Wrath", "Bounty Fist", "Universal Solution", "Overburn Explosion", "Forbidden Knowledge", "Blood Aegis");
