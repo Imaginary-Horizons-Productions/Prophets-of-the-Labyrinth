@@ -7,7 +7,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 const actionName = "Tormenting Deck of Cards";
 module.exports = new GearTemplate(actionName,
 	[
-		["use", "Deal <@{damage}> @{essence} damage, increase debuff stacks by @{debuffIncrement}, and inflict <@{mod0Stacks}> @{mod0} on a single foe"],
+		["use", "Deal <@{damage}> @{essence} damage, increase debuff stacks by @{debuffIncrement}, and inflict <@{mod0Stacks}> @{mod0} on a foe"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",

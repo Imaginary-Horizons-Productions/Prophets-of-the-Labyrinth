@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 ).addAction({
 	name: "Sting",
 	essence: "Earth",
-	description: `Inflict minor ${getEmoji("Earth")} damage and @e{Poison} on a single foe`,
+	description: `Inflict minor ${getEmoji("Earth")} damage and @e{Poison} on a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
@@ -27,7 +27,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 }).addAction({
 	name: "Barrel Roll",
 	essence: "Unaligned",
-	description: "Gain @e{Evasion}, shrug off 2 Stagger on Critical Hit",
+	description: "Gain @e{Evasion}, shrug off 2 Stagger on Critical",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		const receipts = addModifier([user], { name: "Evasion", stacks: 2 });
@@ -45,7 +45,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 }).addAction({
 	name: "Neurotoxin Strike",
 	essence: "Earth",
-	description: `Inflict ${getEmoji("Earth")} damage and extra Stagger on a single foe`,
+	description: `Inflict ${getEmoji("Earth")} damage and extra Stagger on a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 40;

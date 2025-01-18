@@ -7,20 +7,20 @@ const gearName = "Warning Medic's Kit";
 module.exports = new GearTemplate(gearName,
 	[
 		["use", "Cure @{debuffsCured} random debuff and grant @{mod0Stacks} @{mod0} to each ally"],
-		["Critical💥", "Debuffs cured x @{critBonus}"]
+		["Critical💥", "Increase the party's morale by @{morale}"]
 	],
 	"Support",
 	"Water"
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
-		const { essence, modifiers: [evasion] } = module.exports;
+		const { essence, scalings: { debuffsCured, morale }, modifiers: [evasion] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		const receipts = addModifier(targets, evasion);
 		for (const target of targets) {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-			const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? 2 : 1);
+			const debuffsToRemove = Math.min(targetDebuffs.length, debuffsCured);
 			for (let i = 0; i < debuffsToRemove; i++) {
 				const debuffIndex = user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 				const rolledDebuff = targetDebuffs[debuffIndex];
@@ -31,9 +31,18 @@ module.exports = new GearTemplate(gearName,
 				}
 			}
 		}
-		return generateModifierResultLines(combineModifierReceipts(receipts));
+		const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
+		if (user.crit) {
+			adventure.room.morale += morale;
+			resultLines.push("The party's morale is increased!");
+		}
+		return resultLines;
 	}, { type: "all", team: "ally" })
-	.setSidegrades("Inspiring Medic's Kit")
+	.setSidegrades("Cleansing Medic's Kit")
 	.setCooldown(2)
+	.setScalings({
+		debuffsCured: 1,
+		morale: 1
+	})
 	.setRnConfig({ debuffs: 2 })
 	.setModifiers({ name: "Evasion", stacks: 1 });

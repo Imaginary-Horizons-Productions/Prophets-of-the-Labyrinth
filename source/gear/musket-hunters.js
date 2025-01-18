@@ -6,7 +6,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 const gearName = "Hunter's Musket";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a single foe, gain @{mod0Stacks} @{mod0} if they're downed"],
+		["use", "Deal <@{damage}> @{essence} damage to a foe, gain @{mod0Stacks} @{mod0} if they're downed"],
 		["Critical💥", "Reset this gear's cooldown"]
 	],
 	"Adventuring",

@@ -4,10 +4,10 @@ const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, dealDamage, generateModifierResultLines, removeModifier } = require('../util/combatantUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
-const actionName = "Disenchanting Spear";
+const actionName = "Disenchanting Battle Standard";
 module.exports = new GearTemplate(actionName,
 	[
-		["use", "Deal <@{damage}> @{essence} damage to and remove a random buff from a single foe"],
+		["use", "Deal <@{damage}> @{essence} damage to and remove a random buff from a foe"],
 		["Critical💥", "Damage x @{critBonus}, increase party morale by @{morale}"]
 	],
 	"Action",

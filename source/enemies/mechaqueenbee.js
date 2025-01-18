@@ -36,7 +36,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 }).addAction({
 	name: "Assault Protocol",
 	essence: "Unaligned",
-	description: "Gain protection and command all Mechabees to Sting a single foe",
+	description: "Gain protection and command all Mechabees to Sting a foe",
 	priority: 1,
 	effect: (targets, user, adventure) => {
 		// assumes mecha queen is at enemy index 0 and that all other enemies are mechabees
@@ -70,7 +70,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 }).addAction({
 	name: "Sacrifice Protocol",
 	essence: "Unaligned",
-	description: "Gain protection and command a Mechabee to Self-Destruct",
+	description: "Gain protection and command a mechabee to Self-Destruct",
 	priority: 1,
 	effect: ([target], user, adventure) => {
 		addProtection([user], user.crit ? 60 : 30);
@@ -87,7 +87,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 }).addAction({
 	name: "Deploy Drone",
 	essence: "Unaligned",
-	description: "Summon a Mechabee",
+	description: "Summon a mechabee",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		spawnEnemy(drone, adventure, true);
@@ -98,7 +98,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 }).addAction({
 	name: "V.E.N.O.Missile",
 	essence: "Unaligned",
-	description: `Inflict @e{Poison} on a single foe`,
+	description: `Inflict @e{Poison} on a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);

@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 ).addAction({
 	name: "Sonic Slash",
 	essence: "Fire",
-	description: `Inflict ${getEmoji("Fire")} damage with Priority`,
+	description: `Deal ${getEmoji("Fire")} damage to a foe with priority`,
 	priority: 1,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 60;
@@ -31,7 +31,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 }).addAction({
 	name: "Armored Avalanche",
 	essence: "Fire",
-	description: `Deals ${getEmoji("Fire")} damage, with bonus damage to targets without protection`,
+	description: `Deal ${getEmoji("Fire")} damage to a foe, deal extra if they don't have protection`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		const baseDamage = user.getPower() + 75;
@@ -49,7 +49,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 }).addAction({
 	name: "Freefall Flare-Up",
 	essence: "Unaligned",
-	description: `Grant @e{Empowerment} to all combatants (friend and foe); Protects non-delvers on crit`,
+	description: `Grant @e{Empowerment} to all combatants (friend and foe); grant protection to allies on Critical`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Empowerment", stacks: 20 })));

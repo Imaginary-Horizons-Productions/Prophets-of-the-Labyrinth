@@ -6,7 +6,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 const gearName = "Bounty Fist";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Deal <@{damage} + gold paid> @{essence} damage to a single foe"],
+		["use", "Deal <@{damage} + gold paid> @{essence} damage to a foe"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Pact",

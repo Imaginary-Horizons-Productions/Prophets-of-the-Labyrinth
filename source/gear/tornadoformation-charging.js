@@ -5,7 +5,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Charging Tornado Formation",
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a single foe and grant all allies <@{mod0Stacks}> @{mod0} and @{mod1Stacks} @{mod1}"],
+		["use", "Deal <@{damage}> @{essence} damage to a foe and grant all allies <@{mod0Stacks}> @{mod0} and @{mod1Stacks} @{mod1}"],
 		["Critical💥", "@{mod0} x @{critBonus}"]
 	],
 	"Maneuver",

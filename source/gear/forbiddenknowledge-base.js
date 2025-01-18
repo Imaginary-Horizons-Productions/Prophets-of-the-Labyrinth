@@ -4,7 +4,7 @@ const { changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Forbidden Knowledge",
 	[
-		["use", "Grant a single ally @{levelUps} extra level up after combat"],
+		["use", "Grant an ally @{levelUps} extra level up after combat"],
 		["Critical💥", "Reduce your target's cooldowns by @{cooldownReduction}"]
 	],
 	"Pact",

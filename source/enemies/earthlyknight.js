@@ -20,7 +20,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 ).addAction({
 	name: "Damping Wallop",
 	essence: "Earth",
-	description: `Inflict ${getEmoji("Earth")} damage and remove a random buff`,
+	description: `Deal ${getEmoji("Earth")} damage and remove a random buff from a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 75;
@@ -44,7 +44,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 }).addAction({
 	name: "Tremor Smash",
 	essence: "Earth",
-	description: `Deal minor ${getEmoji("Earth")} to all foes and stagger them`,
+	description: `Deal minor ${getEmoji("Earth")} damage to and Stagger all foes`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 5;

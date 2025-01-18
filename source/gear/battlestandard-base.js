@@ -1,34 +1,31 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage } = require('../util/combatantUtil');
-const { damageScalingGenerator } = require('./shared/scalings');
+const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Battle Standard",
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a single foe"],
-		["Critical💥", "Damage x @{critBonus}, increase the party's morale by @{morale}"]
+		["use", "Deal <@{damage}> @{essence} damage to a foe"],
+		["Critical💥", "Damage x @{critBonus}, increase party morale by @{morale}"]
 	],
-	"Offense",
+	"Action",
 	"Light"
-).setCost(200)
-	.setEffect((targets, user, adventure) => {
-		const { essence, scalings: { damage, critBonus, morale } } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
-		let pendingDamage = damage.calculate(user);
-		const resultLines = [];
-		if (user.crit) {
-			pendingDamage *= critBonus;
-			adventure.room.morale += morale;
-			resultLines.push("The party's morale is increased!")
-		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(resultLines);
-	}, { type: "single", team: "foe" })
-	.setUpgrades("Tormenting Battle Standard", "Thief's Battle Standard")
-	.setCooldown(1)
+).setEffect((targets, user, adventure) => {
+	const { essence, scalings: { damage, critBonus, morale } } = module.exports;
+	let pendingDamage = damage.calculate(user);
+	const resultLines = [];
+	if (user.crit) {
+		pendingDamage *= critBonus;
+		adventure.room.morale += morale;
+		resultLines.push("The party's morale is increased!")
+	}
+	resultLines.unshift(...dealDamage(targets, user, pendingDamage, false, essence, adventure));
+	const stillLivingTargets = targets.filter(target => target.hp > 0);
+	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+	return resultLines;
+}, { type: "single", team: "foe" })
 	.setScalings({
-		damage: damageScalingGenerator(40),
+		damage: archetypeActionDamageScaling,
 		critBonus: 2,
 		morale: 1
 	});

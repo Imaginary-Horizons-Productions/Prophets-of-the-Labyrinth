@@ -4,7 +4,7 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 
 module.exports = new GearTemplate("Balanced Illumination",
 	[
-		["use", "Reduce a single ally's cooldowns by @{cooldownReduction} and grant them @{mod0Stacks} @{mod0}"],
+		["use", "Reduce an ally's cooldowns by @{cooldownReduction} and grant them @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Increase the party's morale by @{morale}"]
 	],
 	"Spell",

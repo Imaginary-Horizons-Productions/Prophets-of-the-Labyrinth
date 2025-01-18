@@ -6,7 +6,7 @@ const { joinAsStatement } = require('../util/textUtil');
 const gearName = "Cleansing Water's Stillness";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Relieve Stagger and cure @{debuffsCured} random debuff for a single ally and all allies with @{mod0}"],
+		["use", "Relieve Stagger and cure @{debuffsCured} random debuff for an ally and all allies with @{mod0}"],
 		["Critical💥", "Stagger relieved x @{critBonus}"]
 	],
 	"Spell",

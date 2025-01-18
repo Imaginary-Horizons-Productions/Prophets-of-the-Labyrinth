@@ -5,7 +5,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Hunter's Stick",
 	[
-		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe, gain @{mod1Stacks} @{mod1} if they're downed"],
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe, gain @{mod1Stacks} @{mod1} if they're downed"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",

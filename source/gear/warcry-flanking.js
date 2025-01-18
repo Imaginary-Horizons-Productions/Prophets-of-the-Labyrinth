@@ -5,7 +5,7 @@ const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Flanking War Cry",
 	[
-		["use", "Stagger and inflict <@{mod1Stacks}> @{mod1} on a single foe and all foes with @{mod0}"],
+		["use", "Stagger and inflict <@{mod1Stacks}> @{mod1} on a foe and all foes with @{mod0}"],
 		["Critical💥", "Stagger x @{critBonus}"]
 	],
 	"Support",

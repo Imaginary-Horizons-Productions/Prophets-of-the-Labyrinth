@@ -5,7 +5,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Opportunist's Tempestuous Wrath",
 	[
-		["use", "Gain <@{mod0Stacks}> @{mod0} and deal <@{damage}> @{essence} damage to a single foe and all foes with @{mod1}"],
+		["use", "Gain <@{mod0Stacks}> @{mod0} and deal <@{damage}> @{essence} damage to a foe and all foes with @{mod1}"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Pact",

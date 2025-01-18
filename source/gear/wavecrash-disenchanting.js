@@ -6,7 +6,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Disenchanting Wave Crash",
 	[
-		["use", "Inflict @{mod0Stacks} @{mod0} and remove @{buffsRemoved} random buff from a single foe"],
+		["use", "Inflict @{mod0Stacks} @{mod0} and remove @{buffsRemoved} random buff from a foe"],
 		["Critical💥", "Deal <@{damage}> @{essence} damage"]
 	],
 	"Adventuring",

@@ -5,7 +5,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Centering Daggers",
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a single foe, gain @{mod0Stacks} @{mod0}, and shrug off @{selfStagger*-1} Stagger"],
+		["use", "Deal <@{damage}> @{essence} damage to a foe, gain @{mod0Stacks} @{mod0}, and shrug off @{selfStagger*-1} Stagger"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",

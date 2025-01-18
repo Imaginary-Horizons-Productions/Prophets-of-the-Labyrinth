@@ -1,16 +1,17 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, dealDamage, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
-module.exports = new GearTemplate("Net Launcher",
+module.exports = new GearTemplate("Tormenting Net Launcher",
 	[
-		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a foe"],
+		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a foe and add @{debuffIncrement} stack to each of their debuffs"],
 		["Critical💥", "Damage x @{critBonus}; inflict @{mod0} on all foes instead"]
 	],
 	"Offense",
 	"Light"
-).setCost(200)
+).setCost(350)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, critBonus }, modifiers: [torpidity] } = module.exports;
 		if (user.essence === essence) {
@@ -26,11 +27,22 @@ module.exports = new GearTemplate("Net Launcher",
 				torpidityTargets = adventure.delvers;
 			}
 		}
+
 		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 		torpidityTargets = torpidityTargets.filter(target => target.hp > 0);
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) }))));
+		const reciepts = addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) });
+		for (const target of targets) {
+			if (target.hp > 0) {
+				for (const modifier in target.modifiers) {
+					if (getModifierCategory(modifier) === "Debuff") {
+						reciepts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+					}
+				}
+			}
+		}
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
 	}, { type: "single", team: "foe" })
-	.setUpgrades("Tormenting Net Launcher", "Thief's Net Launcher")
+	.setSidegrades("Thief's Net Launcher")
 	.setCooldown(1)
-	.setScalings({ damage: damageScalingGenerator(40), critBonus: 2 })
+	.setScalings({ damage: damageScalingGenerator(40), critBonus: 2, debuffIncrement: 1 })
 	.setModifiers({ name: "Torpidity", stacks: { description: "3 + 10% Bonus Speed", calculate: (user) => 3 + Math.floor(user.getBonusSpeed() / 10) } });

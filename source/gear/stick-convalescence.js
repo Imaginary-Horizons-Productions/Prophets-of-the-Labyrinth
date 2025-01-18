@@ -7,7 +7,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 const actionName = "Convalescence Stick";
 module.exports = new GearTemplate(actionName,
 	[
-		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe, then shrug off @{debuffsCured} random debuff"],
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe, then shrug off @{debuffsCured} random debuff"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",

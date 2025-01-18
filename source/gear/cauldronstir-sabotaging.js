@@ -8,7 +8,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 const gearName = "Sabotaging Cauldron Stir";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Inflict <@{damage}> @{element} damage and @{mod0Stacks} stacks of a random Vulnerability on a single foe"],
+		["use", "Inflict <@{damage}> @{element} damage and @{mod0Stacks} stacks of a random Vulnerability on a foe"],
 		["Critical💥", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
 	],
 	"Action",

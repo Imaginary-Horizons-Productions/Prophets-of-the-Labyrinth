@@ -5,7 +5,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Fatiguing Life Drain",
 	[
-		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe and regain <@{healing}> HP"],
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe and regain <@{healing}> HP"],
 		["Critical💥", "Healing x @{critBonus}"]
 	],
 	"Action",

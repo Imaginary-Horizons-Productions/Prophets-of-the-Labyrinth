@@ -4,7 +4,7 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 
 module.exports = new GearTemplate("Soothing Forbidden Knowledge",
 	[
-		["use", "Grant a single ally <@{mod0Stacks}> @{mod0} and @{levelUps} extra level up after combat"],
+		["use", "Grant an ally <@{mod0Stacks}> @{mod0} and @{levelUps} extra level up after combat"],
 		["Critical💥", "Reduce your target's cooldowns by @{cooldownReduction}"]
 	],
 	"Pact",

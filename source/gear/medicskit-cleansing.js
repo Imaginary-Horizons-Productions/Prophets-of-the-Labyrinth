@@ -3,11 +3,11 @@ const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
 const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil.js');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js');
 
-const gearName = "Inspiring Medic's Kit";
+const gearName = "Cleansing Medic's Kit";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Cure @{debuffsCured} random debuff from each ally and increase the party's morale by @{morale}"],
-		["Critical💥", "Debuffs cured x @{critBonus}"]
+		["use", "Cure @{debuffsCured} random debuffs from each ally"],
+		["Critical💥", "Increase the party's morale by @{morale}"]
 	],
 	"Support",
 	"Water"
@@ -31,14 +31,17 @@ module.exports = new GearTemplate(gearName,
 				}
 			}
 		}
-		adventure.room.morale += morale;
-		return generateModifierResultLines(combineModifierReceipts(receipts)).concat("The party's morale is increased!");
+		const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
+		if (user.crit) {
+			adventure.room.morale += morale;
+			resultLines.push("The party's morale is increased!");
+		}
+		return resultLines;
 	}, { type: "all", team: "ally" })
 	.setSidegrades("Warning Medic's Kit")
 	.setCooldown(2)
 	.setRnConfig({ debuffs: 2 })
 	.setScalings({
-		debuffsCured: 1,
-		critBonus: 2,
+		debuffsCured: 2,
 		morale: 1
 	});

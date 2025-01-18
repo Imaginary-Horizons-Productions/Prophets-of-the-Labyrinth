@@ -4,7 +4,7 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 
 module.exports = new GearTemplate("Wind Burst",
 	[
-		["use", "Inflict <@{mod0Stacks}> @{mod0} on a single foe"],
+		["use", "Inflict <@{mod0Stacks}> @{mod0} on a foe"],
 		["Critical💥", "@{mod0} x @{critBonus}"]
 	],
 	"Spell",

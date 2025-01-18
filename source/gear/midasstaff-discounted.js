@@ -6,7 +6,7 @@ const { discountedPassive } = require('./shared/passiveDescriptions');
 module.exports = new GearTemplate("Discounted Midas Staff",
 	[
 		discountedPassive,
-		["use", "Inflict @{mod0Stacks} @{mod0} on a single combatant"],
+		["use", "Inflict @{mod0Stacks} @{mod0} on a combatant"],
 		["Critical💥", "@{mod0} + @{critBonus}"]
 	],
 	"Support",

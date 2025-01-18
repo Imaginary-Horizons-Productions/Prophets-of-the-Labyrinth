@@ -14,7 +14,7 @@ module.exports = new EnemyTemplate("Slime",
 ).addAction({
 	name: "Tackle",
 	essence: "@{adventure}",
-	description: "Deal the Slime's essence damage to a single foe",
+	description: "Deal damage of the Slime's essence to a foe",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 25;
@@ -29,7 +29,7 @@ module.exports = new EnemyTemplate("Slime",
 }).addAction({
 	name: "Goop Spray",
 	essence: "Unaligned",
-	description: "Inflict @e{Torpidity} on a single foe",
+	description: "Inflict @e{Torpidity} on a foe",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		if (user.crit) {

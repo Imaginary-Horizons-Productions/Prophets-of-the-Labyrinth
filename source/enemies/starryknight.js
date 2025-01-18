@@ -17,7 +17,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 ).addAction({
 	name: "Mock the Accursed",
 	essence: "Light",
-	description: `Deal ${getEmoji("Light")} damage to a single foe; increases with foe's debuffs, cursed gear, and unfinished challenges`,
+	description: `Deal ${getEmoji("Light")} damage to a foe; increases with foe's debuffs, cursed gear, and unfinished challenges`,
 	priority: 0,
 	effect: ([target], user, adventure) => {
 		const unfinishedChallenges = [];
@@ -66,7 +66,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "\"Share\" the Spotlight",
 	essence: "Unaligned",
-	description: `Inflict @e{Exposure} and random insults on all foes, gain protection on a crit`,
+	description: `Inflict @e{Exposure} and random insults on all foes, gain protection on Critical`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -81,7 +81,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 }).addAction({
 	name: "Boast",
 	essence: "Light",
-	description: `Inflict @e{Distraction} and ${getEmoji("Light")} damage on a single foe`,
+	description: `Inflict @e{Distraction} and ${getEmoji("Light")} damage on a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);

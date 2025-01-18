@@ -6,7 +6,7 @@ const { changeStagger, generateModifierResultLines, combineModifierReceipts, rem
 const gearName = "Medicine";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Cure @{debuffsCured} random debuff on a single ally"],
+		["use", "Cure @{debuffsCured} random debuff on an ally"],
 		["Critical💥", "Debuffs cured x @{critBonus}"]
 	],
 	"Spell",

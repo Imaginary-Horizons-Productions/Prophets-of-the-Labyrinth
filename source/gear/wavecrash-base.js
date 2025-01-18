@@ -5,7 +5,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Wave Crash",
 	[
-		["use", "Inflict @{mod0Stacks} @{mod0} on a single foe"],
+		["use", "Inflict @{mod0Stacks} @{mod0} on a foe"],
 		["Critical💥", "Deal <@{damage}> @{essence} damage"]
 	],
 	"Adventuring",

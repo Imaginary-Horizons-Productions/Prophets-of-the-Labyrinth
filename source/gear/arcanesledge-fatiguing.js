@@ -7,7 +7,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 const gearName = "Fatiguing Arcane Sledge";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Deal <@{damage}> @{essence} damage, inflict @{mod0Stacks} @{mod0}, and remove @{buffsRemoved} random buff from a single foe"],
+		["use", "Deal <@{damage}> @{essence} damage, inflict @{mod0Stacks} @{mod0}, and remove @{buffsRemoved} random buff from a foe"],
 		["Critical💥", "Buffs removed x @{critBonus}"]
 	],
 	"Support",

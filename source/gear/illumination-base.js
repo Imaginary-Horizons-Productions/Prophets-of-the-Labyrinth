@@ -4,7 +4,7 @@ const { changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Illumination",
 	[
-		["use", "Reduce a single ally's cooldowns by @{cooldownReduction}"],
+		["use", "Reduce an ally's cooldowns by @{cooldownReduction}"],
 		["Critical💥", "Increase the party's morale by @{morale}"]
 	],
 	"Spell",

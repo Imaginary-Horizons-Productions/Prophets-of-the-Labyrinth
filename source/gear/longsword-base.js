@@ -5,7 +5,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Longsword",
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a single foe, gain @{levelUps} extra level after combat if they're downed"],
+		["use", "Deal <@{damage}> @{essence} damage to a foe, gain @{levelUps} extra level after combat if they're downed"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Offense",

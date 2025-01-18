@@ -6,7 +6,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Tormenting Enchantment Siphon",
 	[
-		["use", "Remove a single foe's protection and add @{debuffIncrement} stack to each of their debuffs, gain <@{protection} + removed protection> protection"],
+		["use", "Remove a foe's protection and add @{debuffIncrement} stack to each of their debuffs, gain <@{protection} + removed protection> protection"],
 		["Critical💥", "Protection x @{critBonus}"]
 	],
 	"Defense",

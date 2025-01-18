@@ -8,7 +8,7 @@ const debuffsTransferred = 2;
 const poisonStacks = 3;
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Transfer a random @{debuffsTransferred} of your debuffs to a single foe"],
+		["use", "Transfer a random @{debuffsTransferred} of your debuffs to a foe"],
 		["Critical💥", "Transfer all of your debuffs"]
 	],
 	"Pact",

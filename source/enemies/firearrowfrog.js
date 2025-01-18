@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 ).addAction({
 	name: "Venom Cannon",
 	essence: "Fire",
-	description: `Inflict minor ${getEmoji("Fire")} damage and @e{Poison} on a single foe`,
+	description: `Inflict minor ${getEmoji("Fire")} damage and @e{Poison} on a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 20;
@@ -42,7 +42,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 }).addAction({
 	name: "Goop Spray",
 	essence: "Unaligned",
-	description: "Inflict @e{Torpidity} on a single foe",
+	description: "Inflict @e{Torpidity} on a foe",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		if (user.crit) {

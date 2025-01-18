@@ -5,7 +5,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Flanking Enchantment Siphon",
 	[
-		["use", "Remove a single foe's protection and inflict <@{mod0Stacks}> @{mod0} on them, gain <@{protection} + removed protection> protection"],
+		["use", "Remove a foe's protection and inflict <@{mod0Stacks}> @{mod0} on them, gain <@{protection} + removed protection> protection"],
 		["Critical💥", "Protection x @{critBonus}"]
 	],
 	"Defense",

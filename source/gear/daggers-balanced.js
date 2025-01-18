@@ -5,7 +5,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Balanced Daggers",
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a single foe and gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1Stacks}"],
+		["use", "Deal <@{damage}> @{essence} damage to a foe and gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1Stacks}"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",

@@ -18,7 +18,7 @@ module.exports = new EnemyTemplate("Elkemist",
 ).addAction({
 	name: "Toil",
 	essence: "Unaligned",
-	description: "Gains protection, cures a random debuff, and grants a large amount of @e{Progress}",
+	description: "Gain protection, cure a random debuff, and gain a large amount of @e{Progress}",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -40,7 +40,7 @@ module.exports = new EnemyTemplate("Elkemist",
 }).addAction({
 	name: "Trouble",
 	essence: "Water",
-	description: `Deals ${getEmoji("Water")} damage to a single foe (extra boost from @e{Empowerment}) and gain a small amount of @e{Progress}`,
+	description: `Deal ${getEmoji("Water")} damage to a foe (extra boost from @e{Empowerment}) and gain a small amount of @e{Progress}`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 75 + user.getModifierStacks("Empowerment");
@@ -60,7 +60,7 @@ module.exports = new EnemyTemplate("Elkemist",
 }).addAction({
 	name: "Boil",
 	essence: "Fire",
-	description: `Deals ${getEmoji("Fire")} damage to all foes`,
+	description: `Deal ${getEmoji("Fire")} damage to all foes`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 75;
@@ -74,7 +74,7 @@ module.exports = new EnemyTemplate("Elkemist",
 }).addAction({
 	name: "Bubble",
 	essence: "Unaligned",
-	description: `Converts all foe buffs to @e{Fire Vulnerability} and gain @e{Progress} per buff removed`,
+	description: `Convert all foe buffs to @e{Fire Vulnerability} and gain @e{Progress} per buff removed`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		const resultLines = [];

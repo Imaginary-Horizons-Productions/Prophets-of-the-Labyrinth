@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 ).addAction({
 	name: "Essence Shift",
 	essence: "Unaligned",
-	description: "Change the Royal Slime's essence to one that doesn't counter it and gain Absorption for that essence",
+	description: "Randomize the Royal Slime's essence and gain Absorption for its new essence",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		const essencePool = essenceList(["Unaligned", user.essence]);

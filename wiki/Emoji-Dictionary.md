@@ -15,7 +15,7 @@ Here is a list of reserved emoji and their meanings:
 * 🔮 Battle Predicts
 * 💎 Premium
 * 💫 Stun
-* 💥 Critical Hit
+* 💥 Critical
 * 📚 Party Stats
 * 🔎 Inspect Self
 * ⚔ Ready a Move

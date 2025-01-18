@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 ).addAction({
 	name: "Bite",
 	essence: "Earth",
-	description: `Deals ${getEmoji("Earth")} damage to a single foe`,
+	description: `Deal ${getEmoji("Earth")} damage to a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 50;

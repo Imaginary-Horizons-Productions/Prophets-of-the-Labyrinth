@@ -5,7 +5,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Urgent Flourish",
 	[
-		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe with priority"],
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe with priority"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",

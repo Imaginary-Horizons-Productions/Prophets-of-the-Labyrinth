@@ -12,7 +12,7 @@ module.exports = new ArchetypeTemplate("Rogue",
 		/** @param {Combatant} combatant */
 		function createEssenceAndCritField(combatant) {
 			const counters = getCombatantCounters(combatant);
-			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.essence)}`, value: `Critical Hit: ${combatant.crit ? "💥" : "🚫"}\nCounters: ${counters.map(counter => getEmoji(counter)).join(" ")}`, inline: true });
+			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.essence)}`, value: `Critical: ${combatant.crit ? "💥" : "🚫"}\nCounters: ${counters.map(counter => getEmoji(counter)).join(" ")}`, inline: true });
 		}
 		// Separate Enemies and Delvers into different rows
 		adventure.room.enemies.filter(combatant => combatant.hp > 0).forEach(createEssenceAndCritField);

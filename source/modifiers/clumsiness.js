@@ -1,7 +1,7 @@
 const { ModifierTemplate } = require("../classes");
 
 module.exports = new ModifierTemplate("Clumsiness",
-	"Halve Critical Hit chance",
+	"Halve Critical chance",
 	"Debuff",
 	1,
 	0

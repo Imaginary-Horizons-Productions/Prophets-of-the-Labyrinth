@@ -614,7 +614,7 @@ function newRound(adventure, thread, lastRoundText) {
 				const percentBonus = (adventure.generateRandomNumber(21, "battle") - 10) / 100;
 				combatant.roundSpeed = Math.floor(combatant.speed * percentBonus);
 
-				// Roll Critical Hit
+				// Roll Critical
 				let modifierCritBonus = 1;
 				if ("Finesse" in combatant.modifiers) {
 					modifierCritBonus = 2;
@@ -628,7 +628,7 @@ function newRound(adventure, thread, lastRoundText) {
 					const featherCount = adventure.getArtifactCount("Hawk Tailfeather");
 					if (featherCount > 0) {
 						threshold = max * anyDieSucceeds(baseCritChance, featherCount);
-						adventure.updateArtifactStat("Hawk Tailfeather", "Expected Extra Critical Hits", (threshold / max) - baseCritChance);
+						adventure.updateArtifactStat("Hawk Tailfeather", "Expected Extra Criticals", (threshold / max) - baseCritChance);
 					}
 				}
 				if (threshold === undefined) {

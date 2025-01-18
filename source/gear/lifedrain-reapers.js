@@ -5,7 +5,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Reaper's Life Drain",
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a single foe and regain <@{healing}> HP, execute them if they end below half your damage cap"],
+		["use", "Deal <@{damage}> @{essence} damage to a foe and regain <@{healing}> HP, execute them if they end below half your damage cap"],
 		["Critical💥", "Healing x @{critBonus}"]
 	],
 	"Action",

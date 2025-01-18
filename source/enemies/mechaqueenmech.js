@@ -2,6 +2,7 @@ const { EnemyTemplate } = require("../classes/index.js");
 const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
 const { addModifier, dealDamage, changeStagger, addProtection, combineModifierReceipts, generateModifierResultLines } = require("../util/combatantUtil.js");
+const { getEmoji } = require("../util/essenceUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 
 const drone = require("./mechabeedrone.js")
@@ -50,7 +51,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 }).addAction({
 	name: "Assault Protocol",
 	essence: "Unaligned",
-	description: "Gain protection and command all Mechabees to Sting a single foe",
+	description: "Gain protection and command all mechabees to Sting a foe",
 	priority: 1,
 	effect: (targets, user, adventure) => {
 		// assumes mecha queen is at enemy index 0 and that all other enemies are mechabees
@@ -87,7 +88,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 }).addAction({
 	name: "Deploy Drone",
 	essence: "Unaligned",
-	description: "Summon a Mechabee",
+	description: "Summon a mechabee",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		spawnEnemy(drone, adventure, true);
@@ -98,7 +99,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 }).addAction({
 	name: "Laser Array",
 	essence: "Darkness",
-	description: "Inflict Darkness damage on a single foe",
+	description: `Inflict ${getEmoji("Darkness")} damage on a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let pendingDamage = 125;

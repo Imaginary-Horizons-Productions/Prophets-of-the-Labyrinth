@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Brute",
 ).addAction({
 	name: "Mug or Mark",
 	essence: "Unaligned",
-	description: `Deal ${getEmoji("Unaligned")} damage and moderate Stagger to The Target, or mark a random delver as The Target for a random number of attacks if there isn't one`,
+	description: `Deal ${getEmoji("Unaligned")} damage and moderate Stagger to The Target or, if there isn't one, mark a foe as The Target for a random number of attacks`,
 	priority: 0,
 	effect: ([target], user, adventure) => {
 		const markedTarget = adventure.delvers.find(delver => "The Target" in delver.modifiers);

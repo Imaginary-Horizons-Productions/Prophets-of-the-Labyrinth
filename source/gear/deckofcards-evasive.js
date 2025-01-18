@@ -6,7 +6,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 const actionName = "Evasive Deck of Cards";
 module.exports = new GearTemplate(actionName,
 	[
-		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a single foe and gain @{mod1Stacks} @{mod1}"],
+		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a foe and gain @{mod1Stacks} @{mod1}"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",

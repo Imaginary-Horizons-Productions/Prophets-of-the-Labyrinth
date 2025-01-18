@@ -5,7 +5,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Furious Spiked Shield",
 	[
-		["use", "Gain <@{protection}> protection, deal <your protection x 1 to 1.5 based on your missing HP> @{essence} damage to a single foe"],
+		["use", "Gain <@{protection}> protection, deal <your protection x 1 to 1.5 based on your missing HP> @{essence} damage to a foe"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Defense",

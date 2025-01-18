@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 ).addAction({
 	name: "Sting",
 	essence: "Darkness",
-	description: `Inflict minor ${getEmoji("Darkness")} damage and @e{Poison} on a single foe`,
+	description: `Inflict minor ${getEmoji("Darkness")} damage and @e{Poison} on a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
@@ -28,7 +28,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 }).addAction({
 	name: "Barrel Roll",
 	essence: "Unaligned",
-	description: "Gain @e{Evasion}, shrug off 2 Stagger on Critical Hit",
+	description: "Gain @e{Evasion}, shrug off 2 Stagger on Critical",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		const receipts = addModifier([user], { name: "Evasion", stacks: 2 });
@@ -46,7 +46,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 }).addAction({
 	name: "Call for Help",
 	essence: "Unaligned",
-	description: "Summon another Mechabee",
+	description: "Summon another mechabee",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		spawnEnemy(module.exports, adventure, true);

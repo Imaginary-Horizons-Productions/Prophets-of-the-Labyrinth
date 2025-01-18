@@ -5,7 +5,7 @@ const { joinAsStatement } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Accelerating Water's Stillness",
 	[
-		["use", "Relieve Stagger and grant <@{mod1Stacks}> @{mod1} to a single ally and all allies with @{mod0}"],
+		["use", "Relieve Stagger and grant <@{mod1Stacks}> @{mod1} to an ally and all allies with @{mod0}"],
 		["Critical💥", "Stagger relieved x @{critBonus}"]
 	],
 	"Spell",

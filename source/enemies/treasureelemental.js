@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	.addAction({
 		name: "Reinforcing Slam",
 		essence: "Earth",
-		description: `Gain protection and deal ${getEmoji("Earth")} damage to a single foe`,
+		description: `Gain protection and deal ${getEmoji("Earth")} damage to a foe`,
 		priority: 0,
 		effect: (targets, user, adventure) => {
 			let damage = user.getPower() + 100;
@@ -29,7 +29,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 	}).addAction({
 		name: "Hail of Gemstones",
 		essence: "Earth",
-		description: `Deal ${getEmoji("Earth")} damage to a single foe three times`,
+		description: `Deal ${getEmoji("Earth")} damage to a foe three times`,
 		priority: 0,
 		effect: (targets, user, adventure) => {
 			let damage = user.getPower() + 25;

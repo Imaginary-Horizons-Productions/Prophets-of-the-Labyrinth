@@ -6,7 +6,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 const actionName = "Deck of Cards";
 module.exports = new GearTemplate(actionName,
 	[
-		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a single foe"],
+		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a foe"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",

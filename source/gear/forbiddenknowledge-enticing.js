@@ -5,7 +5,7 @@ const { changeStagger } = require('../util/combatantUtil');
 
 module.exports = new GearTemplate("Enticing Forbidden Knowledge",
 	[
-		["use", "Grant a single ally @{levelUps} extra level up after combat and entice their pet to use its first move"],
+		["use", "Grant an ally @{levelUps} extra level up after combat and entice their pet to use its first move"],
 		["Critical💥", "Reduce your target's cooldowns by @{cooldownReduction}"]
 	],
 	"Pact",

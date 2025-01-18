@@ -5,7 +5,7 @@ const { protectionScalingGenerator, archetypeActionDamageScaling } = require('./
 
 module.exports = new GearTemplate("Accelerating Lance",
 	[
-		["use", "Gain <@{protection}> protection and @{mod0Stacks} @{mod0}, then deal <@{damage}> @{essence} damage to a single foe"],
+		["use", "Gain <@{protection}> protection and @{mod0Stacks} @{mod0}, then deal <@{damage}> @{essence} damage to a foe"],
 		["Critical💥", "Protection x @{critBonus}"]
 	],
 	"Action",

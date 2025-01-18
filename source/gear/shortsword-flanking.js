@@ -5,7 +5,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Flanking Shortsword",
 	[
-		["use", "Inflict <@{damage}> @{essence} damage and @{mod1Stacks} @{mod1} on a single foe and gain @{mod0Stacks} @{mod0}"],
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod1Stacks} @{mod1} on a foe and gain @{mod0Stacks} @{mod0}"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",

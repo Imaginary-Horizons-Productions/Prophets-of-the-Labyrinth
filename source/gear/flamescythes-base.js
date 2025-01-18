@@ -5,7 +5,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Flame Scythes",
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a single foe, execute them if they end below half your damage cap"],
+		["use", "Deal <@{damage}> @{essence} damage to a foe, execute them if they end below half your damage cap"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Spell",

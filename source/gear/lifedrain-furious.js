@@ -4,7 +4,7 @@ const { gainHealth, dealDamage, changeStagger } = require('../util/combatantUtil
 
 module.exports = new GearTemplate("Furious Life Drain",
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a single foe and regain <@{healing}> HP"],
+		["use", "Deal <@{damage}> @{essence} damage to a foe and regain <@{healing}> HP"],
 		["Critical💥", "Healing x @{critBonus}"]
 	],
 	"Action",

@@ -16,7 +16,7 @@ module.exports = new EnemyTemplate("Asteroid",
 	.addAction({
 		name: "Fragment",
 		essence: "Earth",
-		description: `Inflict ${getEmoji("Earth")} damage to delver, and loses some health`,
+		description: `Inflict minor ${getEmoji("Earth")} damage on a foe and lose some HP`,
 		priority: 0,
 		effect: (targets, user, adventure) => {
 			let damage = user.getPower() + 30;
@@ -32,7 +32,7 @@ module.exports = new EnemyTemplate("Asteroid",
 	}).addAction({
 		name: "Bolide Burst",
 		essence: "Earth",
-		description: `Sacrifice self to attack all combatants with ${getEmoji("Earth")} damage equal to its remaining HP`,
+		description: `Sacrifice remaining HP to deal that much ${getEmoji("Earth")} damage to all foes`,
 		priority: 0,
 		effect: (targets, user, adventure) => {
 			let damage = user.getPower() + user.hp;

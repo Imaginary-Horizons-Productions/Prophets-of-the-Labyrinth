@@ -7,7 +7,7 @@ const { kineticDamageScalingGenerator } = require('./shared/scalings');
 const gearName = "Kinetic Arcane Sledge";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Deal <@{damage}> @{essence} damage and remove @{buffsRemoved} random buff from a single foe"],
+		["use", "Deal <@{damage}> @{essence} damage and remove @{buffsRemoved} random buff from a foe"],
 		["Critical💥", "Buffs removed x @{critBonus}"]
 	],
 	"Support",

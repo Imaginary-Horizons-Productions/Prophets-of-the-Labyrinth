@@ -15,7 +15,7 @@ module.exports = new EnemyTemplate("Bloodtail Hawk",
 ).addAction({
 	name: "Rake",
 	essence: "Wind",
-	description: `Deals ${getEmoji("Wind")} damage to a single target`,
+	description: `Deal ${getEmoji("Wind")} damage to a foe`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 45;

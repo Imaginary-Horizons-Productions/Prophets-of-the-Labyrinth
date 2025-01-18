@@ -14,7 +14,7 @@ module.exports = new EnemyTemplate("Ooze",
 ).addAction({
 	name: "Goop Spray",
 	essence: "Unaligned",
-	description: "Inflict @e{Torpidity} on a single foe",
+	description: "Inflict @e{Torpidity} on a foe",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		if (user.crit) {
@@ -27,7 +27,7 @@ module.exports = new EnemyTemplate("Ooze",
 }).addAction({
 	name: "Tackle",
 	essence: "@{adventureOpposite}",
-	description: "Deal the Ooze's essence damage to a single foe",
+	description: "Deal damage of the Ooze's essence to a foe",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 25;

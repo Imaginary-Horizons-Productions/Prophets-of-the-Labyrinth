@@ -5,7 +5,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Vengeful Void",
 	[
-		["use", "Deal <@{damage} (+ @{reactiveBonus} if after the foe)> @{essence} damage to a single foe"],
+		["use", "Deal <@{damage} (+ @{reactiveBonus} if after the foe)> @{essence} damage to a foe"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Spell",

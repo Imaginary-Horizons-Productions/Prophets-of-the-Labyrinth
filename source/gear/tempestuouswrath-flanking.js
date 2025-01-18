@@ -5,7 +5,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Flanking Tempestuous Wrath",
 	[
-		["use", "Gain <@{mod0Stacks}> @{mod0} and inflict <@{damage}> @{essence} damage and @{mod1Stacks} @{mod1} on a single foe"],
+		["use", "Gain <@{mod0Stacks}> @{mod0} and inflict <@{damage}> @{essence} damage and @{mod1Stacks} @{mod1} on a foe"],
 		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Pact",
