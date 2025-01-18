@@ -6,6 +6,5 @@ module.exports = new GearTemplate("Ring of Conquest",
 	],
 	"Adventuring",
 	"Darkness",
-	200,
-	() => []
-).setUpgrades("Hearty Ring of Conquest", "Powerful Ring of Conquest");
+).setCost(200)
+	.setUpgrades("Hearty Ring of Conquest", "Powerful Ring of Conquest");

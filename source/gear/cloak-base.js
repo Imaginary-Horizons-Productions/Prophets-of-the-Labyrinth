@@ -4,24 +4,24 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 
 module.exports = new GearTemplate("Cloak",
 	[
-		["use", "Gain @{mod0Stacks} @{mod0}"],
-		["Critical💥", "@{mod0} x @{critMultiplier}"]
+		["use", "Gain <@{mod0Stacks}> @{mod0}"],
+		["Critical💥", "@{mod0} x @{critBonus}"]
 	],
 	"Defense",
-	"Fire",
-	200,
-	(targets, user, adventure) => {
-		const { essence, modifiers: [evasion], critMultiplier } = module.exports;
+	"Fire"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, modifiers: [evasion], scalings: { critBonus } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		const pendingEvasion = { name: evasion.name, stacks: evasion.stacks.generator(user) };
+		const pendingEvasion = { name: evasion.name, stacks: evasion.stacks.calculate(user) };
 		if (user.crit) {
-			pendingEvasion.stacks *= critMultiplier;
+			pendingEvasion.stacks *= critBonus;
 		}
 		return generateModifierResultLines(addModifier([user], pendingEvasion));
-	}
-).setTargetingTags({ type: "self", team: "ally" })
+	}, { type: "self", team: "ally" })
 	.setUpgrades("Accurate Cloak", "Powerful Cloak")
 	.setCooldown(1)
-	.setModifiers({ name: "Evasion", stacks: { description: "2 + Bonus HP ÷ 50", generator: (user) => 2 + Math.floor(user.getBonusHP() / 50) } });
+	.setModifiers({ name: "Evasion", stacks: { description: "2 + 2% Bonus HP", calculate: (user) => 2 + Math.floor(user.getBonusHP() / 50) } })
+	.setScalings({ critBonus: 2 });

@@ -5,14 +5,14 @@ const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Balanced Sandstorm Formation",
 	[
-		["use", "Reduce all cooldowns by @{bonus} for and grant @{mod1Stacks} @{mod1} to all allies"],
+		["use", "Reduce all cooldowns by @{cooldownReduction} for and grant @{mod1Stacks} @{mod1} to all allies"],
 		["Critical💥", "Also grant @{mod0Stacks} @{mod0}"]
 	],
 	"Maneuver",
-	"Earth",
-	350,
-	(targets, user, adventure) => {
-		const { essence, moraleRequirement, bonus, modifiers: [impact, finesse] } = module.exports;
+	"Earth"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, moraleRequirement, scalings: { cooldownReduction }, modifiers: [impact, finesse] } = module.exports;
 		if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
 			return ["...but the party didn't have enough morale to pull it off."];
 		}
@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Balanced Sandstorm Formation",
 			target.gear?.forEach(gear => {
 				if (gear.cooldown > 1) {
 					didCooldown = true;
-					gear.cooldown -= bonus;
+					gear.cooldown -= cooldownReduction;
 				}
 			})
 			if (didCooldown) {
@@ -43,9 +43,8 @@ module.exports = new GearTemplate("Balanced Sandstorm Formation",
 		}
 		reciepts.push(...addModifier(targets, finesse));
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
-	}
-).setTargetingTags({ type: "all", team: "ally" })
+	}, { type: "all", team: "ally" })
 	.setSidegrades("Soothing Sandstorm Formation")
 	.setMoraleRequirement(2)
-	.setBonus(1) // Cooldown Reduction
+	.setScalings({ cooldownReduction: 1 })
 	.setModifiers({ name: "Impact", stacks: 2 }, { name: "Finesse", stacks: 1 });

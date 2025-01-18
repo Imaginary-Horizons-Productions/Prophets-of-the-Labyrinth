@@ -1,27 +1,29 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Urgent Flourish",
 	[
-		["use", "Inflict @{damage} @{essence} damage and @{mod0Stacks} @{mod0} on a single foe with priority"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe with priority"],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",
-	"Darkness",
-	0,
-	(targets, user, adventure) => {
-		const { essence, critMultiplier, modifiers: [distraction] } = module.exports;
-		let pendingDamage = user.getPower();
-		if (user.crit) {
-			pendingDamage *= critMultiplier;
-		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-		const stillLivingTargets = targets.filter(target => target.hp > 0);
-		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines.concat(generateModifierResultLines(addModifier(stillLivingTargets, distraction)));
+	"Darkness"
+).setEffect((targets, user, adventure) => {
+	const { essence, scalings: { damage, critBonus }, modifiers: [distraction] } = module.exports;
+	let pendingDamage = damage.calculate(user);
+	if (user.crit) {
+		pendingDamage *= critBonus;
 	}
-).setTargetingTags({ type: "single", team: "foe" })
-	.setDamage(0)
-	.setModifiers({ name: "Distraction", stacks: 3 })
-	.setPriority(1);
+	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const stillLivingTargets = targets.filter(target => target.hp > 0);
+	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+	return resultLines.concat(generateModifierResultLines(addModifier(stillLivingTargets, distraction)));
+}, { type: "single", team: "foe" })
+	.setScalings({
+		damage: archetypeActionDamageScaling,
+		critBonus: 2,
+		priority: 1
+	})
+	.setModifiers({ name: "Distraction", stacks: 3 });

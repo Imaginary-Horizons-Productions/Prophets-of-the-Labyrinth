@@ -5,24 +5,27 @@ const { changeStagger, dealDamage } = require('../util/combatantUtil');
 const bounceCount = 3;
 module.exports = new GearTemplate("Lightning Staff",
 	[
-		["use", `Strike ${bounceCount} random foes for @{damage} @{essence} damage`],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", `Strike ${bounceCount} random foes for <@{damage}> @{essence} damage`],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Adventuring",
-	"Wind",
-	200,
-	(targets, user, adventure) => {
-		const { essence, damage, critMultiplier } = module.exports;
+	"Wind"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { damage, critBonus } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		let pendingDamage = damage + user.getPower();
+		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= critBonus;
 		}
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	}
-).setTargetingTags({ type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
+	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
 	.setUpgrades("Disenchanting Lightning Staff", "Hexing Lightning Staff")
 	.setCooldown(2)
+	.setScalings({
+		damage: { description: "50% Power", calculate: (user) => Math.floor(user.getPower() / 2) },
+		critBonus: 2
+	})
 	.setRnConfig({ foes: 3 });

@@ -6,20 +6,20 @@ const { changeStagger, generateModifierResultLines, combineModifierReceipts, rem
 const gearName = "Medicine";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Cure @{bonus} random debuff on a single ally"],
-		["Critical💥", "Debuffs cured x @{critMultiplier}"]
+		["use", "Cure @{debuffsCured} random debuff on a single ally"],
+		["Critical💥", "Debuffs cured x @{critBonus}"]
 	],
 	"Spell",
-	"Earth",
-	200,
-	([target], user, adventure) => {
-		const { essence, bonus, critMultiplier } = module.exports;
+	"Earth"
+).setCost(200)
+	.setEffect(([target], user, adventure) => {
+		const { essence, scalings: { debuffsCured, critBonus } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		let pendingCures = bonus;
+		let pendingCures = debuffsCured;
 		if (user.crit) {
-			pendingCures *= critMultiplier;
+			pendingCures *= critBonus;
 		}
 		const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const reciepts = [];
@@ -28,9 +28,11 @@ module.exports = new GearTemplate(gearName,
 			reciepts.push(...removeModifier([target], { name: selectedDebuff, stacks: "all" }));
 		}
 		return generateModifierResultLines(combineModifierReceipts(reciepts));
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
 	.setUpgrades("Hastening Medicine", "Urgent Medicine")
 	.setCharges(15)
-	.setBonus(1) // Debuffs cured
+	.setScalings({
+		debuffsCured: 1,
+		critBonus: 2
+	})
 	.setRnConfig({ debuffs: 2 });

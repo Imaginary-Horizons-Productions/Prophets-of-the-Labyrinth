@@ -6,13 +6,13 @@ const { joinAsStatement } = require('../util/textUtil');
 module.exports = new GearTemplate("Weakening War Cry",
 	[
 		["use", "Stagger and inflict @{mod1Stacks} @{mod1} on a single foe and all foes with @{mod0}"],
-		["Critical💥", "Stagger x @{critMultiplier}"]
+		["Critical💥", "Stagger x @{critBonus}"]
 	],
 	"Support",
-	"Darkness",
-	350,
-	(targets, user, adventure) => {
-		const { essence, stagger, critMultiplier, modifiers: [targetModifier, weakness] } = module.exports;
+	"Darkness"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, stagger, scalings: { critBonus }, modifiers: [targetModifier, weakness] } = module.exports;
 		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
 
 		let pendingStagger = stagger;
@@ -20,13 +20,13 @@ module.exports = new GearTemplate("Weakening War Cry",
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
-			pendingStagger *= critMultiplier;
+			pendingStagger *= critBonus;
 		}
 		changeStagger(allTargets, user, pendingStagger);
 		return [joinAsStatement(false, allTargets.map(allTargets.name), "was", "were", "Staggered.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, weakness))));
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Flanking War Cry")
 	.setCooldown(1)
 	.setModifiers({ name: "Distraction", stacks: 0 }, { name: "Weakness", stacks: 10 })
-	.setStagger(2);
+	.setStagger(2)
+	.setScalings({ critBonus: 2 });

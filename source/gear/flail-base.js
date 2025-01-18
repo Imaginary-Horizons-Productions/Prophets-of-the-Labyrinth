@@ -2,31 +2,34 @@ const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
+const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Flail",
 	[
-		["use", "Inflict @{damage} @{essence} damage on a foe"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", "Inflict <@{damage}> @{essence} damage on a foe"],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Offense",
-	"Earth",
-	200,
-	(targets, user, adventure) => {
-		const { essence, damage, critMultiplier, stagger } = module.exports;
+	"Earth"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { damage, critBonus }, stagger } = module.exports;
 		let pendingStagger = stagger;
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		changeStagger(targets, user, pendingStagger);
-		let pendingDamage = damage + user.getPower();
+		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= critBonus;
 		}
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure)
 			.concat(joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered."));
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setUpgrades("Bouncing Flail", "Incompatible Flail")
 	.setCooldown(1)
-	.setDamage(40)
+	.setScalings({
+		damage: damageScalingGenerator(40),
+		critBonus: 2
+	})
 	.setStagger(2);

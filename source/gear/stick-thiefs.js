@@ -1,30 +1,32 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, generateModifierResultLines, addModifier, combineModifierReceipts, changeStagger } = require('../util/combatantUtil');
+const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Thief's Stick",
 	[
-		["use", "Inflict @{damage} @{essence} damage and @{mod0Stacks} @{mod0} on a single foe, gain @{bonus}g if they're downed"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe, gain @{bounty}g if they're downed"],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",
-	"Earth",
-	0,
-	(targets, user, adventure) => {
-		const { essence, critMultiplier, modifiers: [impotence], bonus } = module.exports;
-		let pendingDamage = user.getPower();
-		if (user.crit) {
-			pendingDamage *= critMultiplier;
-		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-		const stillLivingTargets = targets.filter(target => target.hp > 0);
-		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-		if (stillLivingTargets.length < targets.length) {
-			adventure.room.addResource("Gold", "Currency", "loot", bonus);
-		}
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, impotence))));
+	"Earth"
+).setEffect((targets, user, adventure) => {
+	const { essence, scalings: { damage, critBonus, bounty }, modifiers: [impotence] } = module.exports;
+	let pendingDamage = damage.calculate(user);
+	if (user.crit) {
+		pendingDamage *= critBonus;
 	}
-).setTargetingTags({ type: "single", team: "foe" })
-	.setDamage(0)
-	.setModifiers({ name: "Impotence", stacks: 3 })
-	.setBonus(30);
+	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const stillLivingTargets = targets.filter(target => target.hp > 0);
+	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (stillLivingTargets.length < targets.length) {
+		adventure.room.addResource("Gold", "Currency", "loot", bounty);
+	}
+	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(stillLivingTargets, impotence))));
+}, { type: "single", team: "foe" })
+	.setScalings({
+		damage: archetypeActionDamageScaling,
+		critBonus: 2,
+		bounty: 30
+	})
+	.setModifiers({ name: "Impotence", stacks: 3 });

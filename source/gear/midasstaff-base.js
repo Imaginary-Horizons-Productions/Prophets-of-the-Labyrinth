@@ -5,24 +5,23 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 module.exports = new GearTemplate("Midas Staff",
 	[
 		["use", "Inflict @{mod0Stacks} @{mod0} on a single combatant"],
-		["Critical💥", "@{mod0} + @{critMultiplier}"]
+		["Critical💥", "@{mod0} + @{critBonus}"]
 	],
 	"Support",
-	"Light",
-	200,
-	(targets, user, adventure) => {
-		const { essence, modifiers: [curseOfMidas], critMultiplier } = module.exports;
+	"Light"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, modifiers: [curseOfMidas], scalings: { critBonus } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, targets[0].team === user.team ? ESSENCE_MATCH_STAGGER_ALLY : ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const pendingCurse = { ...curseOfMidas };
 		if (user.crit) {
-			pendingCurse.stacks += critMultiplier;
+			pendingCurse.stacks += critBonus;
 		}
 		return generateModifierResultLines(addModifier(targets, pendingCurse));
-	}
-).setTargetingTags({ type: "single", team: "any" })
+	}, { type: "single", team: "any" })
 	.setUpgrades("Accelerating Midas Staff", "Discounted Midas Staff")
 	.setCooldown(1)
 	.setModifiers({ name: "Curse of Midas", stacks: 2 })
-	.setCritMultiplier(1);
+	.setScalings({ critBonus: 1 });

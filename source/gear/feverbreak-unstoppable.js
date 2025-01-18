@@ -1,7 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
-const { unstoppablePassive } = require('./descriptions/passives');
+const { unstoppablePassive } = require('./shared/passiveDescriptions');
 
 module.exports = new GearTemplate("Unstoppable Fever Break",
 	[
@@ -10,9 +10,9 @@ module.exports = new GearTemplate("Unstoppable Fever Break",
 		["Critical💥", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Maneuver",
-	"Darkness",
-	350,
-	(targets, user, adventure) => {
+	"Darkness"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
 		const { essence, moraleRequirement } = module.exports;
 		if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
 			return ["...but the party didn't have enough morale to pull it off."];
@@ -41,8 +41,7 @@ module.exports = new GearTemplate("Unstoppable Fever Break",
 			}
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
-	}
-).setTargetingTags({ type: "all", team: "foe" })
+	}, { type: "all", team: "foe" })
 	.setSidegrades("Fatiguing Fever Break")
 	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frailty", stacks: 0 })
 	.setMoraleRequirement(2);

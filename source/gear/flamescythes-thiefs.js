@@ -1,37 +1,40 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, downedCheck } = require('../util/combatantUtil');
+const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Thief's Flame Scythes",
 	[
-		["use", "Deal @{damage} @{essence} damage to a single foe, execute them and add @{bonus}g to loot if they end below half your damage cap"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", "Deal <@{damage}> @{essence} damage to a single foe, execute them and add @{bounty}g to loot if they end below half your damage cap"],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Spell",
-	"Fire",
-	350,
-	([target], user, adventure) => {
-		const { essence, damage, critMultiplier, bonus } = module.exports;
+	"Fire"
+).setCost(350)
+	.setEffect(([target], user, adventure) => {
+		const { essence, scalings: { damage, critBonus, bounty } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		let pendingDamage = damage + user.getPower();
+		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= critBonus;
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
 		if (target.hp > (user.getDamageCap() / 2)) {
 			target.hp = 0;
 			const { extraLines } = downedCheck(target, adventure);
-			adventure.room.addResource("Gold", "Currency", "loot", bonus);
-			extraLines.push(`${user.name} pillages ${bonus}g.`);
+			adventure.room.addResource("Gold", "Currency", "loot", bounty);
+			extraLines.push(`${user.name} pillages ${bounty}g.`);
 			return [`${target.name} meets the reaper!`].concat(extraLines);
 		} else {
 			return resultLines;
 		}
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Toxic Flame Scythes")
 	.setCharges(15)
-	.setDamage(40)
-	.setBonus(30); // Bounty
+	.setScalings({
+		damage: damageScalingGenerator(40),
+		critBonus: 2,
+		bounty: 30
+	});

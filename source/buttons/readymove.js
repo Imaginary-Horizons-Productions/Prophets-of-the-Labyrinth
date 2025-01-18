@@ -119,9 +119,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					// Add move to round list (overwrite exisiting readied move)
 					const userIndex = adventure.getCombatantIndex(delver);
 					const newMove = new Move(`${moveName}${SAFE_DELIMITER}${gearIndex}`, "gear", new CombatantReference(delver.team, userIndex))
-						.setSpeedByCombatant(delver)
-						.setPriority(getGearProperty(moveName, "priority") ?? 0);
-
+						.setSpeedByCombatant(delver);
+					const scalings = getGearProperty(moveName, "scalings");
+					if ("priority" in scalings) {
+						if (typeof scalings.priority === "number") {
+							newMove.setPriority(scalings.priority);
+						} else {
+							newMove.setPriority(scalings.priority.calculate(delver));
+						}
+					}
 					let targetText = "";
 					const { type, team } = getGearProperty(moveName, "targetingTags");
 					if (type === "all") {
@@ -179,9 +185,15 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					const targetIndex = parseInt(unparsedIndex);
 					const targetIndices = [];
 					const newMove = new Move(`${moveName}${SAFE_DELIMITER}${gearIndex}`, "gear", new CombatantReference(delver.team, userIndex))
-						.setSpeedByCombatant(delver)
-						.setPriority(getGearProperty(moveName, "priority") ?? 0);
-
+						.setSpeedByCombatant(delver);
+					const scalings = getGearProperty(moveName, "priority");
+					if ("priority" in scalings) {
+						if (typeof scalings.priority === "number") {
+							newMove.setPriority(scalings.priority);
+						} else {
+							newMove.setPriority(scalings.priority.calculate(delver));
+						}
+					}
 					const targetType = getGearProperty(moveName, "targetingTags").type;
 					if (targetType.startsWith("blast")) {
 						const range = parseInt(targetType.split(SAFE_DELIMITER)[1] ?? 0);

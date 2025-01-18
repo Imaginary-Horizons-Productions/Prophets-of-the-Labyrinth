@@ -8,9 +8,9 @@ module.exports = new GearTemplate("Fatiguing Fever Break",
 		["Critical💥", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Maneuver",
-	"Darkness",
-	350,
-	(targets, user, adventure) => {
+	"Darkness"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
 		const { essence, moraleRequirement, modifiers } = module.exports;
 		if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
 			return ["...but the party didn't have enough morale to pull it off."];
@@ -40,8 +40,7 @@ module.exports = new GearTemplate("Fatiguing Fever Break",
 		}
 		receipts.push(...addModifier(targets, modifiers[2]));
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
-	}
-).setTargetingTags({ type: "all", team: "foe" })
+	}, { type: "all", team: "foe" })
 	.setSidegrades("Unstoppable Fever Break")
 	.setModifiers({ name: "Poison", stacks: 0 }, { name: "Frailty", stacks: 0 }, { name: "Impotence", stacks: 2 })
 	.setMoraleRequirement(2);

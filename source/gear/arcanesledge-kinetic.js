@@ -2,24 +2,25 @@ const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, removeModifier, dealDamage, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
+const { kineticDamageScalingGenerator } = require('./shared/scalings');
 
 const gearName = "Kinetic Arcane Sledge";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Deal <@{damage} + @{bonusSpeed}> @{essence} damage and remove @{bonus} random buff from a single foe"],
-		["Critical💥", "Buffs removed x @{critMultiplier}"]
+		["use", "Deal <@{damage}> @{essence} damage and remove @{buffsRemoved} random buff from a single foe"],
+		["Critical💥", "Buffs removed x @{critBonus}"]
 	],
 	"Support",
-	"Wind",
-	350,
-	(targets, user, adventure) => {
-		const { essence, bonus, critMultiplier, damage } = module.exports;
+	"Wind"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { damage, buffsRemoved, critBonus } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		let pendingBuffRemovals = bonus;
+		let pendingBuffRemovals = buffsRemoved;
 		if (user.crit) {
-			pendingBuffRemovals *= critMultiplier;
+			pendingBuffRemovals *= critBonus;
 		}
 		const targetBuffs = Object.keys(targets[0].modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 		const reciepts = [];
@@ -29,12 +30,14 @@ module.exports = new GearTemplate(gearName,
 				reciepts.push(...removeModifier(targets, { name: selectedBuff, stacks: "all" }));
 			}
 		}
-		const pendingDamage = damage + user.getPower() + user.getBonusSpeed();
+		const pendingDamage = damage.calculate(user);
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Fatiguing Arcane Sledge")
 	.setCooldown(1)
-	.setDamage(40)
-	.setBonus(1) // Buffs removed
+	.setScalings({
+		damage: kineticDamageScalingGenerator(40),
+		buffsRemoved: 1,
+		critBonus: 2
+	})
 	.setRnConfig({ buffs: 2 });

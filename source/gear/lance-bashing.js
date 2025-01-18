@@ -1,25 +1,27 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, addProtection } = require('../util/combatantUtil');
+const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Bashing Lance",
 	[
-		["use", "Gain @{protection} protection, then deal <@{damage} + protection> @{essence} damage to a single foe"],
-		["Critical💥", "Protection x @{critMultiplier}"]
+		["use", "Gain <@{protection}> protection, then deal <@{damage}> @{essence} damage to a single foe"],
+		["Critical💥", "Protection x @{critBonus}"]
 	],
 	"Action",
-	"Water",
-	0,
-	(targets, user, adventure) => {
-		const { essence, protection, critMultiplier } = module.exports;
-		let pendingProtection = protection + Math.floor(user.getBonusHP() / 5);
-		if (user.crit) {
-			pendingProtection *= critMultiplier;
-		}
-		addProtection([user], pendingProtection);
-		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, user.getPower() + user.protection, false, essence, adventure).concat(`${user.name} gains protection.`);
+	"Water"
+).setEffect((targets, user, adventure) => {
+	const { essence, scalings: { damage, protection, critBonus } } = module.exports;
+	let pendingProtection = protection.calculate(user);
+	if (user.crit) {
+		pendingProtection *= critBonus;
 	}
-).setTargetingTags({ type: "single", team: "foe" })
-	.setDamage(0)
-	.setProtection(25);
+	addProtection([user], pendingProtection);
+	changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
+	return dealDamage(targets, user, damage.calculate(user), false, essence, adventure).concat(`${user.name} gains protection.`);
+}, { type: "single", team: "foe" })
+	.setScalings({
+		damage: { description: "Power + protection", calculate: (user) => user.getPower() + user.protection },
+		critBonus: 2,
+		protection: protectionScalingGenerator(25)
+	});

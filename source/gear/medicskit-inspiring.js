@@ -6,21 +6,21 @@ const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js'
 const gearName = "Inspiring Medic's Kit";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Cure a random debuff from each ally and increase the party's morale by @{bonus}"],
-		["Critical💥", "Debuffs cured x @{critMultiplier}"]
+		["use", "Cure @{debuffsCured} random debuff from each ally and increase the party's morale by @{morale}"],
+		["Critical💥", "Debuffs cured x @{critBonus}"]
 	],
 	"Support",
-	"Water",
-	350,
-	(targets, user, adventure) => {
-		const { essence, bonus } = module.exports;
+	"Water"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { debuffsCured, critBonus, morale } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		const receipts = [];
 		for (const target of targets) {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-			const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? 2 : 1);
+			const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? debuffsCured * critBonus : debuffsCured);
 			for (let i = 0; i < debuffsToRemove; i++) {
 				const debuffIndex = user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 				const rolledDebuff = targetDebuffs[debuffIndex];
@@ -31,11 +31,14 @@ module.exports = new GearTemplate(gearName,
 				}
 			}
 		}
-		adventure.room.morale += bonus;
+		adventure.room.morale += morale;
 		return generateModifierResultLines(combineModifierReceipts(receipts)).concat("The party's morale is increased!");
-	}
-).setTargetingTags({ type: "all", team: "ally" })
+	}, { type: "all", team: "ally" })
 	.setSidegrades("Warning Medic's Kit")
 	.setCooldown(2)
 	.setRnConfig({ debuffs: 2 })
-	.setBonus(1); // Morale
+	.setScalings({
+		debuffsCured: 1,
+		critBonus: 2,
+		morale: 1
+	});

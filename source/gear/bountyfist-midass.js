@@ -1,18 +1,19 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { damageScalingGenerator } = require('./shared/scalings');
 
 const gearName = "Midas's Bounty Fist";
 module.exports = new GearTemplate(gearName,
 	[
 		["use", "Inflict <@{damage} + gold paid> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Pact",
-	"Earth",
-	350,
-	(targets, user, adventure) => {
-		const { essence, damage, critMultiplier, modifiers: [curseOfMidas] } = module.exports;
+	"Earth"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { damage, critBonus }, modifiers: [curseOfMidas] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -20,12 +21,14 @@ module.exports = new GearTemplate(gearName,
 		adventure.gold -= goldUsed;
 		let pendingDamage = damage + user.getPower() + goldUsed;
 		if (user.crit) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= critBonus;
 		}
 		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier(targets, curseOfMidas)), `${user.name}'s ${gearName} consumed ${goldUsed}g.`);
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setSidegrades("Thirsting Bounty Fist")
 	.setPactCost([10, "@{pactCost}% of party gold"])
-	.setDamage(40)
+	.setScalings({
+		damage: damageScalingGenerator(40),
+		critBonus: 2
+	})
 	.setModifiers({ name: "Curse of Midas", stacks: 2 });

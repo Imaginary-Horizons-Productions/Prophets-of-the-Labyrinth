@@ -4,13 +4,11 @@ const { removeModifier, combineModifierReceipts, generateModifierResultLines } =
 module.exports = new GearTemplate("Appease",
 	[["use", "Shrug off all insults"]],
 	"Action",
-	"Unaligned",
-	0,
-	(targets, user, adventure) => {
-		const receipts = [];
-		for (const insult of ["Boring", "Lacking Rhythm", "Smelly", "Stupid", "Ugly"]) {
-			receipts.push(...removeModifier([user], { name: insult, stacks: "all" }));
-		}
-		return generateModifierResultLines(combineModifierReceipts(receipts));
+	"Unaligned"
+).setEffect((targets, user, adventure) => {
+	const receipts = [];
+	for (const insult of ["Boring", "Lacking Rhythm", "Smelly", "Stupid", "Ugly"]) {
+		receipts.push(...removeModifier([user], { name: insult, stacks: "all" }));
 	}
-).setTargetingTags({ type: "self", team: "ally" });
+	return generateModifierResultLines(combineModifierReceipts(receipts));
+}, { type: "self", team: "ally" });

@@ -2,11 +2,10 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Swift Ring of Knowledge",
 	[
-		["Passive", "Increase your Speed by 10% and gain 10% more stats from leveling-up"]
+		["Passive", "Increase your Speed by @{percentSpeed}% and gain 10% more stats from leveling-up"]
 	],
 	"Adventuring",
-	"Light",
-	350,
-	() => []
-).setSidegrades("Accurate Ring of Knowledge")
-	.setSpeed(10);
+	"Light"
+).setCost(350)
+	.setSidegrades("Accurate Ring of Knowledge")
+	.setScalings({ percentSpeed: 10 });

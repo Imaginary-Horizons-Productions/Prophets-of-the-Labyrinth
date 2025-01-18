@@ -1,26 +1,28 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Vigilant Shortsword",
 	[
-		["use", "Deal @{damage} @{essence} damage to a single foe and gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["use", "Deal <@{damage}> @{essence} damage to a single foe and gain @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}"],
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Action",
-	"Fire",
-	0,
-	(targets, user, adventure) => {
-		const { essence, critMultiplier, modifiers: [finesse, vigilance] } = module.exports;
-		let pendingDamage = user.getPower();
-		if (user.crit) {
-			pendingDamage *= critMultiplier;
-		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-		const stillLivingTargets = targets.filter(target => target.hp > 0);
-		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines.concat(generateModifierResultLines(addModifier([user], finesse).concat(addModifier([user], vigilance))));
+	"Fire"
+).setEffect((targets, user, adventure) => {
+	const { essence, scalings: { damage, critBonus }, modifiers: [finesse, vigilance] } = module.exports;
+	let pendingDamage = damage.calculate(user);
+	if (user.crit) {
+		pendingDamage *= critBonus;
 	}
-).setTargetingTags({ type: "single", team: "foe" })
-	.setDamage(0)
+	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const stillLivingTargets = targets.filter(target => target.hp > 0);
+	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+	return resultLines.concat(generateModifierResultLines(addModifier([user], finesse).concat(addModifier([user], vigilance))));
+}, { type: "single", team: "foe" })
+	.setScalings({
+		damage: archetypeActionDamageScaling,
+		critBonus: 2
+	})
 	.setModifiers({ name: "Finesse", stacks: 1 }, { name: "Vigilance", stacks: 2 });

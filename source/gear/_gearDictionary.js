@@ -2,7 +2,6 @@ const { BuildError, GearTemplate, Gear, Delver, Adventure } = require("../classe
 const { getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { getEmoji } = require("../util/essenceUtil");
 const { italic } = require("discord.js");
-const { calculateTagContent } = require("../util/textUtil");
 
 /** @type {Record<string, GearTemplate>} */
 const GEAR = {};
@@ -251,7 +250,7 @@ function getGearProperty(gearName, propertyName) {
 		if (propertyName in template) {
 			return template[propertyName];
 		} else {
-			console.error(`Property ${propertyName} not found on ${gearName}`);
+			return null;
 		}
 	} else {
 		console.error(`Gear name ${gearName} not recognized`);
@@ -299,11 +298,20 @@ function buildGearDescription(gearName) {
 			descriptionTexts.push(`${italic(type)}: ${injectApplicationEmojiMarkdown(description)}`);
 		}
 	});
-	let text = descriptionTexts.join("\n");
+	let text = descriptionTexts.join("\n")
+		.replace(/@{essence}/g, getEmoji(getGearProperty(gearName, "essence")));
 
-	text = text.replace(/@{damage}/g, `(${getGearProperty(gearName, "damage")} + Power)`)
-		.replace(/@{protection}/g, `(${getGearProperty(gearName, "protection")} + Bonus HP ÷ 5)`)
-		.replace(/@{bonusSpeed}/g, "(Bonus Speed)");
+	const scalings = getGearProperty(gearName, "scalings");
+	for (const key in scalings) {
+		const scaling = scalings[key];
+		let replacement;
+		if (typeof scalings[key] === "number") {
+			replacement = scaling.toString();
+		} else {
+			replacement = scaling.description;
+		}
+		text = text.replace(new RegExp(`@{${key}}`, "g"), replacement);
+	}
 
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 		if (!modifier.name.startsWith("unparsed")) {
@@ -312,11 +320,11 @@ function buildGearDescription(gearName) {
 		if (typeof modifier.stacks === "number") {
 			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		} else {
-			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), `(${modifier.stacks.description})`);
+			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks.description);
 		}
 	})
 
-	return injectGearStats(text, gearName);
+	return text;
 }
 
 /**
@@ -363,20 +371,24 @@ function buildGearDescriptionWithHolderStats(gearName, holder, gearIndex) {
 				}
 			}
 			descriptionTexts.push(`${italic(`${totalStagger} Stagger`)}: ${description}`);
-		} else if (!["upgradeDiff"].includes(type)) {
+		} else {
 			descriptionTexts.push(`${italic(type)}: ${description}`);
 		}
 	});
-	let text = descriptionTexts.join("\n");
+	let text = descriptionTexts.join("\n")
+		.replace(/@{essence}/g, getEmoji(getGearProperty(gearName, "essence")));
 
-	const damage = getGearProperty(gearName, "damage") + holder.getPower();
-	text = text.replace(/@{damage}/g, `[${Math.floor(Math.min(damage, holder.getDamageCap()))}]`);
-
-	const protection = getGearProperty(gearName, "protection") + Math.floor(holder.getBonusHP() / 5);
-	text = text.replace(/@{protection}/g, `[${protection}]`);
-
-	const bonusSpeed = holder.getBonusSpeed();
-	text = text.replace(/@{bonusSpeed}/g, `[${Math.max(0, bonusSpeed)}]`);
+	const scalings = getGearProperty(gearName, "scalings");
+	for (const key in scalings) {
+		const scaling = scalings[key];
+		let value;
+		if (typeof scaling === "number") {
+			value = scaling.toString();
+		} else {
+			value = `[${scaling.calculate(holder).toString()}]`;
+		}
+		text = text.replace(new RegExp(`@{${key}}`, "g"), value);
+	}
 
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
 		if (!modifier.name.startsWith("unparsed")) {
@@ -385,32 +397,11 @@ function buildGearDescriptionWithHolderStats(gearName, holder, gearIndex) {
 		if (typeof modifier.stacks === "number") {
 			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		} else {
-			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), `[${modifier.stacks.generator(holder)}]`);
+			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), `[${modifier.stacks.calculate(holder)}]`);
 		}
 	})
 
-	return injectGearStats(text, gearName);
-}
-
-/**
- * @param {string} text
- * @param {string} gearName
- */
-function injectGearStats(text, gearName) {
-	text = text.replace(/@{essence}/g, getEmoji(getGearProperty(gearName, "essence")))
-	return calculateTagContent(text, [
-		"critMultiplier",
-		"bonus",
-		"secondBonus",
-		"healing",
-		"maxHP",
-		"power",
-		"speed",
-		"critRate"
-	].reduce((map, property) => {
-		map[property] = getGearProperty(gearName, property);
-		return map;
-	}, {}));
+	return text;
 }
 
 module.exports = {
@@ -419,6 +410,5 @@ module.exports = {
 	getGearProperty,
 	buildGearRecord,
 	buildGearDescription,
-	buildGearDescriptionWithHolderStats,
-	injectGearStats
+	buildGearDescriptionWithHolderStats
 };

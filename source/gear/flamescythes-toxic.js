@@ -1,23 +1,24 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, downedCheck, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Toxic Flame Scythes",
 	[
-		["use", "Inflict @{damage} @{essence} damage and @{mod0Stacks} @{mod0} on a single foe, execute them if they end below half your damage cap"],
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a single foe, execute them if they end below half your damage cap"],
 		["Critical💥", "Damage x @{critMultiplier}"]
 	],
 	"Spell",
-	"Fire",
-	350,
-	([target], user, adventure) => {
-		const { essence, damage, critMultiplier, modifiers: [poison] } = module.exports;
+	"Fire"
+).setCost(350)
+	.setEffect(([target], user, adventure) => {
+		const { essence, scalings: { damage, critBonus }, modifiers: [poison] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		let pendingDamage = damage + user.getPower();
 		if (user.crit) {
-			pendingDamage *= critMultiplier;
+			pendingDamage *= critBonus;
 		}
 		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
 		if (target.hp > (user.getDamageCap() / 2)) {
@@ -27,9 +28,11 @@ module.exports = new GearTemplate("Toxic Flame Scythes",
 		} else {
 			return resultLines.concat(generateModifierResultLines(addModifier([target], poison)));
 		}
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setUpgrades("Thief's Flame Scythes", "Toxic Flame Scythes")
 	.setCharges(15)
-	.setDamage(40)
+	.setScalings({
+		damage: damageScalingGenerator(40),
+		critBonus: 2
+	})
 	.setModifiers({ name: "Poison", stacks: 3 });

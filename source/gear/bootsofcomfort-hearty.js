@@ -2,13 +2,13 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Hearty Boots of Comfort",
 	[
-		["Passive", "Increase your Speed by 20% and Max HP by 10%"]
+		["Passive", "Increase your Speed by @{percentSpeed}% and Max HP by @{percentMaxHP}%"]
 	],
 	"Trinket",
-	"Unaligned",
-	350,
-	(targets, user, adventure) => []
-).setSidegrades("Accurate Boots of Comfort", "Powerful Boots of Comfort")
-	.setMaxHP(10)
-	.setSpeed(20)
-	.setCharges(0);
+	"Unaligned"
+).setCost(350)
+	.setSidegrades("Accurate Boots of Comfort", "Powerful Boots of Comfort")
+	.setScalings({
+		percentMaxHP: 10,
+		percentSpeed: 20
+	});

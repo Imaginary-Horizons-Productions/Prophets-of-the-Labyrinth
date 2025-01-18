@@ -1,6 +1,7 @@
 const { Adventure } = require("./Adventure");
 const { BuildError } = require("./BuildError");
 const { Combatant } = require("./Combatant");
+const { Scaling } = require("./Scaling");
 
 class GearTemplate {
 	/** This read-only data class defines stats for a piece of gear
@@ -8,22 +9,16 @@ class GearTemplate {
 	 * @param {[type: "Requirement" | "Passive" | "use" | "Critical💥", description: string][]} descriptionTuples
 	 * @param {"Offense" | "Defense" | "Support" | "Adventuring" | "Spell" | "Pact" | "Maneuver" | "Trinket" | "Action"} categoryInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essenceEnum
-	 * @param {number} costInput
-	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} effectInput
 	 */
-	constructor(nameInput, descriptionTuples, categoryInput, essenceEnum, costInput, effectInput) {
+	constructor(nameInput, descriptionTuples, categoryInput, essenceEnum) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!categoryInput) throw new BuildError("Falsy categoryInput");
 		if (!essenceEnum) throw new BuildError("Falsy essenceEnum");
-		if (!costInput && costInput !== 0) throw new BuildError("Nonzero falsy costInput");
-		if (!effectInput) throw new BuildError("Falsy effectInput");
 
 		this.name = nameInput;
 		this.descriptions = descriptionTuples;
 		this.category = categoryInput;
 		this.essence = essenceEnum;
-		this.cost = costInput;
-		this.effect = effectInput;
 	}
 	// Internal Configuration
 	/** @type {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} */
@@ -34,42 +29,39 @@ class GearTemplate {
 	sidegrades = [];
 	/** @type  {Record<string, number>} */
 	rnConfig;
-
-	// Requirements
+	/** @type {Record<string, number | Scaling>} */
+	scalings;
 	cooldown;
 	maxCharges = Infinity;
 	/** @type {[integer: number, descriptionTemplate: string]} */
 	pactCost;
 	moraleRequirement = 0;
-
-	// Attributes
-	critMultiplier = 2;
-	/** @type {number} */
-	damage;
-	/** @type {number} */
-	protection;
-	/** @type {number} */
-	healing;
-	/** @type {number} */
-	priority;
 	/** @type {number} */
 	stagger;
-	/** @type {number} */
-	bonus;
-	/** @type {number} */
-	secondBonus;
-	/** @type {{ name: string, stacks: number | { description: string, generator: (user: Combatant) => number } }[]} */
+	/** @type {{ name: string, stacks: number | Scaling }[]} */
 	modifiers;
-	maxHP = 0;
-	power = 0;
-	speed = 0;
-	critRate = 0;
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
 
-	/** @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} tagObject */
-	setTargetingTags(tagObject) {
+	/** @param {number} integer */
+	setCost(integer) {
+		this.cost = integer;
+		return this;
+	}
+
+	/**
+	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} effectFunction
+	 * @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} tagObject
+	 */
+	setEffect(effectFunction, tagObject) {
+		this.effect = effectFunction;
 		this.targetingTags = tagObject;
+		return this;
+	}
+
+	/** @param {Record<string, number | Scaling>} scalingsMap */
+	setScalings(scalingsMap) {
+		this.scalings = scalingsMap;
 		return this;
 	}
 
@@ -113,37 +105,7 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {number} integer */
-	setDamage(integer) {
-		this.damage = integer;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setProtection(integer) {
-		this.protection = integer;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setHealing(integer) {
-		this.healing = integer;
-		return this;
-	}
-
-	/** @param {number} numberInput */
-	setCritMultiplier(numberInput) {
-		this.critMultiplier = numberInput;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setPriority(integer) {
-		this.priority = integer;
-		return this;
-	}
-
-	/** For description creation purposes, this stagger is separate from Essence Match Stagger and is assumed to always be applied. For conditional Stagger (eg on crit) use `setBonus()` instead.
+	/** For description creation purposes, this stagger is separate from Essence Match Stagger and is assumed to always be applied. For conditional Stagger (eg on crit) use `setScalings()` instead.
 	 * @param {number} integer
 	 */
 	setStagger(integer) {
@@ -151,45 +113,9 @@ class GearTemplate {
 		return this;
 	}
 
-	/** @param {number} integer */
-	setBonus(integer) {
-		this.bonus = integer;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setSecondBonus(integer) {
-		this.secondBonus = integer;
-		return this;
-	}
-
-	/** @param {...{ name: string, stacks: number | { description: string, generator: (user: Combatant) => number } }} modifiersArray */
+	/** @param {...{ name: string, stacks: number | Scaling }} modifiersArray */
 	setModifiers(...modifiersArray) {
 		this.modifiers = modifiersArray;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setMaxHP(integer) {
-		this.maxHP = integer;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setPower(integer) {
-		this.power = integer;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setSpeed(integer) {
-		this.speed = integer;
-		return this;
-	}
-
-	/** @param {number} integer */
-	setCritRate(integer) {
-		this.critRate = integer;
 		return this;
 	}
 

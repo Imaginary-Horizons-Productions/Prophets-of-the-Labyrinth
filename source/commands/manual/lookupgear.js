@@ -1,5 +1,5 @@
-const { CommandInteraction, MessageFlags } = require("discord.js");
-const { gearExists, getGearProperty, buildGearDescription, GEAR_NAMES, injectGearStats } = require("../../gear/_gearDictionary");
+const { CommandInteraction, MessageFlags, italic } = require("discord.js");
+const { gearExists, getGearProperty, buildGearDescription, GEAR_NAMES } = require("../../gear/_gearDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getEmoji, getColor } = require("../../util/essenceUtil");
 const { listifyEN } = require("../../util/textUtil");
@@ -17,22 +17,25 @@ async function executeSubcommand(interaction, ...args) {
 
 	const fields = [
 		{ name: "Category", value: getGearProperty(gearName, "category"), inline: true },
-		{ name: "Base Value", value: `${getGearProperty(gearName, "cost").toString()}g`, inline: true }
 	];
+
+	const cost = getGearProperty(gearName, "cost");
+	if (cost) {
+		fields.push({ name: "Base Value", value: `${cost.toString()}g`, inline: true });
+	}
 
 	const upgrades = getGearProperty(gearName, "upgrades");
 	if (upgrades.length > 0) {
-		fields.push({ name: "Upgrades Into", value: listifyEN(upgrades, true) });
+		fields.push({ name: "Upgrades Into", value: listifyEN(upgrades.map(upgrade => italic(upgrade)), true) });
 	}
 
 	const sidegrades = getGearProperty(gearName, "sidegrades");
 	if (sidegrades.length > 0) {
-		fields.push({ name: "Modifies Into", value: listifyEN(sidegrades, true) });
+		fields.push({ name: "Modifies Into", value: listifyEN(sidegrades.map(sidegrade => italic(sidegrade)), true) });
 	}
 
 	const extraField = getGearProperty(gearName, "flavorText");
 	if (extraField) {
-		extraField.value = injectGearStats(extraField.value, gearName, true);
 		fields.push(extraField);
 	}
 

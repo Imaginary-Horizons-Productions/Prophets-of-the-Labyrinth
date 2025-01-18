@@ -2,13 +2,13 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Accurate Wolf Ring",
 	[
-		["Passive", "Increase your Max HP by 20% and your Crit Rate by 10%"]
+		["Passive", "Increase your Max HP by @{percentMaxHP}% and your Crit Rate by @{percentCritRate}%"]
 	],
 	"Trinket",
-	"Unaligned",
-	350,
-	(targets, user, adventure) => []
-).setSidegrades("Powerful Wolf Ring", "Swift Wolf Ring")
-	.setMaxHP(20)
-	.setCritRate(10)
-	.setCharges(0);
+	"Unaligned"
+).setCost(350)
+	.setSidegrades("Powerful Wolf Ring", "Swift Wolf Ring")
+	.setScalings({
+		percentMaxHP: 20,
+		percentCritRate: 10
+	});

@@ -6,13 +6,13 @@ const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js'
 const gearName = "Warning Medic's Kit";
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Cure a random debuff and grant @{mod0Stacks} @{mod0} to each ally"],
-		["Critical💥", "Debuffs cured x @{critMultiplier}"]
+		["use", "Cure @{debuffsCured} random debuff and grant @{mod0Stacks} @{mod0} to each ally"],
+		["Critical💥", "Debuffs cured x @{critBonus}"]
 	],
 	"Support",
-	"Water",
-	350,
-	(targets, user, adventure) => {
+	"Water"
+).setCost(350)
+	.setEffect((targets, user, adventure) => {
 		const { essence, modifiers: [evasion] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -32,8 +32,7 @@ module.exports = new GearTemplate(gearName,
 			}
 		}
 		return generateModifierResultLines(combineModifierReceipts(receipts));
-	}
-).setTargetingTags({ type: "all", team: "ally" })
+	}, { type: "all", team: "ally" })
 	.setSidegrades("Inspiring Medic's Kit")
 	.setCooldown(2)
 	.setRnConfig({ debuffs: 2 })

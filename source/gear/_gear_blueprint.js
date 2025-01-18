@@ -8,8 +8,8 @@ module.exports = new GearTemplate("name",
 	],
 	"category",
 	"essence",
-	200,
-	(targets, user, adventure) => {
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
 		const { essence } = module.exports;
 		if (user.essence === essence) {
 
@@ -18,6 +18,5 @@ module.exports = new GearTemplate("name",
 
 		}
 		return []; // see style guide for conventions on result texts
-	}
-).setTargetingTags({ type: "", team: "" })
+	}, { type: "", team: "" })
 	.setCooldown();

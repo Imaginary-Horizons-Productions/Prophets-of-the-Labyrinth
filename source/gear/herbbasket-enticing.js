@@ -7,24 +7,24 @@ const { listifyEN } = require('../util/textUtil');
 
 module.exports = new GearTemplate("Enticing Herb Basket",
 	[
-		["use", "Entice an ally's pet to use their first move and add @{bonus} random herb to loot"],
-		["Critical💥", "Herbs gathered x @{critMultiplier}"]
+		["use", "Entice an ally's pet to use their first move and add @{herbCount} random herb to loot"],
+		["Critical💥", "Herbs gathered x @{critBonus}"]
 	],
 	"Adventuring",
-	"Earth",
-	350,
-	([target], user, adventure) => {
-		const { critMultiplier, essence } = module.exports;
+	"Earth"
+).setCost(350)
+	.setEffect(([target], user, adventure) => {
+		const { scalings: { herbCount, critBonus }, essence } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
 		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		const resultLines = [];
 		if (user.crit) {
-			adventure.room.addResource(randomHerb, "Item", "loot", critMultiplier);
+			adventure.room.addResource(randomHerb, "Item", "loot", herbCount * critBonus);
 			resultLines.push(`${user.name} gathers a double-batch of ${randomHerb}.`);
 		} else {
-			adventure.room.addResource(randomHerb, "Item", "loot", 1);
+			adventure.room.addResource(randomHerb, "Item", "loot", herbCount);
 			resultLines.push(`${user.name} gathers a batch of ${randomHerb}.`);
 		}
 		const ownerIndex = adventure.getCombatantIndex(target);
@@ -50,10 +50,12 @@ module.exports = new GearTemplate("Enticing Herb Basket",
 			resultLines.push(`${target.name}'s ${owner.pet} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
 		}
 		return resultLines;
-	}
-).setTargetingTags({ type: "single", team: "ally" })
+	}, { type: "single", team: "ally" })
 	.setSidegrades("Guarding Herb Basket")
 	.setCooldown(1)
-	.setBonus(1) // Herbs gathered
+	.setScalings({
+		herbCount: 1,
+		critBonus: 2
+	})
 	.setFlavorText({ name: "Possible Herbs", value: listifyEN(rollableHerbs, true) })
 	.setRnConfig({ herbs: 1 });

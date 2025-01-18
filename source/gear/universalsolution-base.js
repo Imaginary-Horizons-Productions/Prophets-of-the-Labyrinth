@@ -4,18 +4,18 @@ const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier, removeModifier } = require('../util/combatantUtil');
 
 const gearName = "Universal Solution";
-const debuffsTransfered = 2;
+const debuffsTransferred = 2;
 const poisonStacks = 3;
 module.exports = new GearTemplate(gearName,
 	[
-		["use", "Transfer a random @{bonus} of your debuffs to a single foe"],
+		["use", "Transfer a random @{debuffsTransferred} of your debuffs to a single foe"],
 		["Critical💥", "Transfer all of your debuffs"]
 	],
 	"Pact",
-	"Water",
-	200,
-	(targets, user, adventure) => {
-		const { essence, bonus, modifiers: [poison] } = module.exports;
+	"Water"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { debuffsTransferred }, modifiers: [poison] } = module.exports;
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -27,7 +27,7 @@ module.exports = new GearTemplate(gearName,
 				reciepts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 			}
 		} else {
-			for (let i = 0; i < bonus; i++) {
+			for (let i = 0; i < debuffsTransferred; i++) {
 				const debuff = userDebuffs.splice(user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length, 1);
 				reciepts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
 				reciepts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
@@ -35,10 +35,11 @@ module.exports = new GearTemplate(gearName,
 		}
 		reciepts.push(...addModifier([user], poison))
 		return generateModifierResultLines(combineModifierReceipts(reciepts));
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setUpgrades("Centering Universal Solution", "Tormenting Universal Solution")
 	.setPactCost([poisonStacks, "Gain @{pactCost} @e{Poison} afterwards"])
-	.setBonus(debuffsTransfered)
+	.setScalings({
+		debuffsTransferred
+	})
 	.setModifiers({ name: "Poison", stacks: poisonStacks })
-	.setRnConfig({ debuffs: debuffsTransfered });
+	.setRnConfig({ debuffs: debuffsTransferred });

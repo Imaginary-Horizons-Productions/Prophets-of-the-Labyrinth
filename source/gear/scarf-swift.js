@@ -2,13 +2,13 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Swift Scarf",
 	[
-		["Passive", "Increase your Crit Rate by 20% and your Speed by 10%"]
+		["Passive", "Increase your Crit Rate by @{percentCritRate}% and your Speed by @{percentSpeed}%"]
 	],
 	"Trinket",
-	"Unaligned",
-	350,
-	(targets, user, adventure) => []
-).setSidegrades("Hearty Scarf", "Powerful Scarf")
-	.setSpeed(10)
-	.setCritRate(20)
-	.setCharges(0);
+	"Unaligned"
+).setCost(350)
+	.setSidegrades("Hearty Scarf", "Powerful Scarf")
+	.setScalings({
+		percentCritRate: 20,
+		percentSpeed: 10
+	});

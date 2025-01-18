@@ -6,13 +6,13 @@ const { joinAsStatement } = require('../util/textUtil');
 module.exports = new GearTemplate("War Cry",
 	[
 		["use", "Stagger a single foe and all foes with @{mod0}"],
-		["Critical💥", "Stagger x @{critMultiplier}"]
+		["Critical💥", "Stagger x @{critBonus}"]
 	],
 	"Support",
-	"Darkness",
-	200,
-	(targets, user, adventure) => {
-		const { essence, stagger, critMultiplier, modifiers: [targetModifier] } = module.exports;
+	"Darkness"
+).setCost(200)
+	.setEffect((targets, user, adventure) => {
+		const { essence, stagger, scalings: { critBonus }, modifiers: [targetModifier] } = module.exports;
 		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
 
 		let pendingStagger = stagger;
@@ -20,13 +20,13 @@ module.exports = new GearTemplate("War Cry",
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
 		if (user.crit) {
-			pendingStagger *= critMultiplier;
+			pendingStagger *= critBonus;
 		}
 		changeStagger(allTargets, user, pendingStagger);
 		return [joinAsStatement(false, allTargets.map(allTargets.name), "was", "were", "Staggered.")];
-	}
-).setTargetingTags({ type: "single", team: "foe" })
+	}, { type: "single", team: "foe" })
 	.setUpgrades("Flanking War Cry", "Weakening Warcry")
 	.setCooldown(1)
 	.setModifiers({ name: "Distraction", stacks: 0 })
-	.setStagger(2);
+	.setStagger(2)
+	.setScalings({ critBonus: 2 });

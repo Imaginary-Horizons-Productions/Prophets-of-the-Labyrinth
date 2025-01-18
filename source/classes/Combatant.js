@@ -102,8 +102,8 @@ class Delver extends Combatant {
 
 	getMaxHP() {
 		return Math.floor(this.maxHP) * (1 + this.gear.reduce((totalGearMaxHP, gear) => {
-			if (parseInt(gear.maxHP)) {
-				return totalGearMaxHP + gear.maxHP;
+			if (parseInt(gear.percentMaxHP)) {
+				return totalGearMaxHP + gear.percentMaxHP;
 			} else {
 				return totalGearMaxHP;
 			}
@@ -112,8 +112,8 @@ class Delver extends Combatant {
 
 	getPower() {
 		return Math.floor((this.power + this.getModifierStacks("Empowerment") - this.getModifierStacks("Weakness")) * (1 + this.gear.reduce((totalPower, gear) => {
-			if (parseInt(gear.power)) {
-				return totalPower + gear.power;
+			if (parseInt(gear.percentPower)) {
+				return totalPower + gear.percentPower;
 			} else {
 				return totalPower;
 			}
@@ -123,8 +123,8 @@ class Delver extends Combatant {
 	/** @param {boolean} includeRoundSpeed */
 	getSpeed(includeRoundSpeed) {
 		const gearSpeed = this.gear.reduce((totalGearSpeed, gear) => {
-			if (parseInt(gear.speed)) {
-				return totalGearSpeed + gear.speed;
+			if (parseInt(gear.percentSpeed)) {
+				return totalGearSpeed + gear.percentSpeed;
 			} else {
 				return totalGearSpeed;
 			}
@@ -146,8 +146,8 @@ class Delver extends Combatant {
 
 	getCritRate() {
 		return Math.floor(this.critRate * (1 + this.gear.reduce((totalCritRate, gear) => {
-			if (parseInt(gear.critRate)) {
-				return totalCritRate + gear.critRate;
+			if (parseInt(gear.percentCritRate)) {
+				return totalCritRate + gear.percentCritRate;
 			} else {
 				return totalCritRate;
 			}
