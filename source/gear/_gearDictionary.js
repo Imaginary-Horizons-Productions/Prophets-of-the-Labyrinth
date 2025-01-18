@@ -124,7 +124,7 @@ for (const file of [
 	"medicine-hastening.js",
 	"medicine-urgent.js",
 	"medicskit-base.js",
-	"medicskit-inspiring.js",
+	"medicskit-cleansing.js",
 	"medicskit-warning.js",
 	"midasstaff-accelerating.js",
 	"midasstaff-base.js",
