@@ -4,8 +4,8 @@ const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, dealDamage, generateModifierResultLines, removeModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
-const gearName = "Staggering Trident";
-module.exports = new GearTemplate(gearName,
+const variantName = "Staggering Trident";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage}> @{essence} damage on a foe, then shrug off @{debuffsCured} random debuff"],
 		["Critical💥", "Damage x @{critBonus}"]
@@ -29,7 +29,7 @@ module.exports = new GearTemplate(gearName,
 			changeStagger(stillLivingTargets, user, pendingStagger);
 		}
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-		return resultLines.concat(generateModifierResultLines(removeModifier([user], { name: userDebuffs[user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" })));
+		return resultLines.concat(generateModifierResultLines(removeModifier([user], { name: userDebuffs[user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" })));
 	}, { type: "single", team: "foe" })
 	.setUpgrades("Kinetic Trident", "Staggering Trident")
 	.setCooldown(1)

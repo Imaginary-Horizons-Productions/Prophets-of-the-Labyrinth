@@ -1,10 +1,10 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
 const { dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { deckOfCardsMisfortune } = require('./shared/modifiers');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
-const actionName = "Numbing Deck of Cards";
-module.exports = new GearTemplate(actionName,
+const variantName = "Numbing Deck of Cards";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage}> @{essence} damage, @{mod1Stacks} @{mod1}, and <@{mod0Stacks}> @{mod0} on a foe"],
 		["Critical💥", "Damage x @{critBonus}"]
@@ -21,10 +21,7 @@ module.exports = new GearTemplate(actionName,
 	const stillLivingTargets = targets.filter(target => target.hp > 0);
 	return resultLines.concat(generateModifierResultLines(addModifier(stillLivingTargets, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }).concat(addModifier(stillLivingTargets, clumsiness))));
 }, { type: "single", team: "foe" })
-	.setModifiers(
-		{ name: "Misfortune", stacks: { description: "a random amount between 2 and 9", calculate: (user) => 2 + user.roundRns[`${actionName}${SAFE_DELIMITER}Deck of Cards`][0] } },
-		{ name: "Clumsiness", stacks: 1 }
-	)
+	.setModifiers(deckOfCardsMisfortune(variantName), { name: "Clumsiness", stacks: 1 })
 	.setScalings({
 		damage: archetypeActionDamageScaling,
 		critBonus: 2

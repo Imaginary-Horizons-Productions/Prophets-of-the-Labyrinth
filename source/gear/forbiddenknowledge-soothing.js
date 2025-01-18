@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { scalingRegeneration } = require('./shared/modifiers');
 
 module.exports = new GearTemplate("Soothing Forbidden Knowledge",
 	[
@@ -44,4 +45,4 @@ module.exports = new GearTemplate("Soothing Forbidden Knowledge",
 		levelUps: 1,
 		cooldownReduction: 1
 	})
-	.setModifiers({ name: "Regeneration", stacks: { description: "2 + 5% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
+	.setModifiers(scalingRegeneration(2))

@@ -3,8 +3,8 @@ const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
 const { changeStagger, dealDamage } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
-const gearName = "Musket";
-module.exports = new GearTemplate(gearName,
+const variantName = "Musket";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Deal <@{damage}> @{essence} damage to a foe"],
 		["Critical💥", "Reset this gear's cooldown"]
@@ -22,7 +22,7 @@ module.exports = new GearTemplate(gearName,
 			const move = adventure.room.findCombatantMove({ team: user.team, index: adventure.getCombatantIndex(user) });
 			const [_, gearIndex] = move.name.split(SAFE_DELIMITER);
 			user.gear[gearIndex].cooldown = -1 * cooldown;
-			resultLines.push(`${user.name} reloads their ${gearName} immediately!`);
+			resultLines.push(`${user.name} reloads their ${variantName} immediately!`);
 		}
 		return resultLines;
 	}, { type: "single", team: "foe" })

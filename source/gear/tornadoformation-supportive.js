@@ -2,6 +2,7 @@ const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, addModifier, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
+const { scalingSwiftness } = require('./shared/modifiers');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Supportive Tornado Formation",
@@ -38,4 +39,4 @@ module.exports = new GearTemplate("Supportive Tornado Formation",
 		critBonus: 2,
 		staggerRelief: 2
 	})
-	.setModifiers({ name: "Swiftness", stacks: { description: "2 + 10% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } });
+	.setModifiers(scalingSwiftness(2));

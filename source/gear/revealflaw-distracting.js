@@ -4,8 +4,8 @@ const { changeStagger, generateModifierResultLines, combineModifierReceipts, add
 const { essenceList } = require('../util/essenceUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
-const gearName = "Distracting Reveal Flaw";
-module.exports = new GearTemplate(gearName,
+const variantName = "Distracting Reveal Flaw";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict @{mod0Stacks} Vulnerability to a random essence on all foes"],
 		["Critical💥", "Inflict @{critBonus} extra Stagger"]
@@ -20,7 +20,7 @@ module.exports = new GearTemplate(gearName,
 		}
 
 		const essencePool = essenceList(["Unaligned"]);
-		const selectedEsesnce = essencePool[user.roundRns[`${gearName}${SAFE_DELIMITER}vulnerabilities`][0] % 6];
+		const selectedEsesnce = essencePool[user.roundRns[`${variantName}${SAFE_DELIMITER}vulnerabilities`][0] % 6];
 		const reciepts = addModifier(targets, { name: `${selectedEsesnce} Vulnerability`, stacks: vulnerability.stacks });
 		reciepts.push(...addModifier(targets, distraction));
 		const resultLines = generateModifierResultLines(combineModifierReceipts(reciepts));

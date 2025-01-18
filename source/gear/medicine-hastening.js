@@ -3,8 +3,8 @@ const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, generateModifierResultLines, combineModifierReceipts, removeModifier } = require('../util/combatantUtil');
 
-const gearName = "Hastening Medicine";
-module.exports = new GearTemplate(gearName,
+const variantName = "Hastening Medicine";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Cure @{debuffsCured} random debuff on an ally"],
 		["Critical💥", "Debuffs cured x @{critBonus}, reduce the target's cooldowns by @{cooldownReduction}"]
@@ -35,7 +35,7 @@ module.exports = new GearTemplate(gearName,
 		const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const reciepts = [];
 		for (let i = 0; i < pendingCures; i++) {
-			const selectedDebuff = targetDebuffs.splice(user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][i] % targetDebuffs.length, 1);
+			const selectedDebuff = targetDebuffs.splice(user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][i] % targetDebuffs.length, 1);
 			reciepts.push(...removeModifier([target], { name: selectedDebuff, stacks: "all" }));
 		}
 		return generateModifierResultLines(combineModifierReceipts(reciepts)).concat(resultLines);

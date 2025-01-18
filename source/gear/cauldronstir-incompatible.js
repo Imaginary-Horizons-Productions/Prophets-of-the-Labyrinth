@@ -4,8 +4,8 @@ const { rollablePotions } = require('../shared/potions');
 const { dealDamage, changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
-const gearName = "Incompatible Cauldron Stir";
-module.exports = new GearTemplate(gearName,
+const variantName = "Incompatible Cauldron Stir";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage}> @{element} damage and @{mod0Stacks} @{mod0} on a foe"],
 		["Critical💥", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
@@ -18,7 +18,7 @@ module.exports = new GearTemplate(gearName,
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
-		const rolledPotion = rollablePotions[user.roundRns[`${gearName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		const rolledPotion = rollablePotions[user.roundRns[`${variantName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}

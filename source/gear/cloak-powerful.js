@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { scalingEvasion } = require('./shared/modifiers');
 const { powerfulPassive } = require('./shared/passiveDescriptions');
 
 module.exports = new GearTemplate("Powerful Cloak",
@@ -25,7 +26,7 @@ module.exports = new GearTemplate("Powerful Cloak",
 	}, { type: "self", team: "ally" })
 	.setUpgrades("Accurate Cloak", "Powerful Cloak")
 	.setCooldown(1)
-	.setModifiers({ name: "Evasion", stacks: { description: "2 + 2% Bonus HP", calculate: (user) => 2 + Math.floor(user.getBonusHP() / 50) } })
+	.setModifiers(scalingEvasion(2))
 	.setScalings({
 		critBonus: 2,
 		percentPower: 10

@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, addModifier, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
+const { scalingSwiftness } = require('./shared/modifiers');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Charging Tornado Formation",
@@ -36,4 +37,4 @@ module.exports = new GearTemplate("Charging Tornado Formation",
 		damage: damageScalingGenerator(40),
 		critBonus: 2
 	})
-	.setModifiers({ name: "Swiftness", stacks: { description: "2 + 10% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } }, { name: "Empowerment", stacks: 25 });
+	.setModifiers(scalingSwiftness(2), { name: "Empowerment", stacks: 25 });

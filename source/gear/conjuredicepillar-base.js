@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { scalingEvasion } = require('./shared/modifiers');
 
 module.exports = new GearTemplate("Conjured Ice Pillar",
 	[
@@ -23,5 +24,5 @@ module.exports = new GearTemplate("Conjured Ice Pillar",
 	}, { type: "self", team: "ally" })
 	.setUpgrades("Devoted Conjured Ice Pillar", "Taunting Conjured Ice Pillar")
 	.setCharges(15)
-	.setModifiers({ name: "Evasion", stacks: { description: "2 + 2% Bonus HP", calculate: (user) => 2 + Math.floor(user.getBonusHP() / 50) } }, { name: "Vigilance", stacks: 1 })
+	.setModifiers(scalingEvasion(2), { name: "Vigilance", stacks: 1 })
 	.setScalings({ critBonus: 2 });

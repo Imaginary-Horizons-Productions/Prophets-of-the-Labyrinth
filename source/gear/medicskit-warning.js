@@ -3,8 +3,8 @@ const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
 const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines, addModifier } = require('../util/combatantUtil.js');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js');
 
-const gearName = "Warning Medic's Kit";
-module.exports = new GearTemplate(gearName,
+const variantName = "Warning Medic's Kit";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Cure @{debuffsCured} random debuff and grant @{mod0Stacks} @{mod0} to each ally"],
 		["Critical💥", "Increase the party's morale by @{morale}"]
@@ -22,7 +22,7 @@ module.exports = new GearTemplate(gearName,
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			const debuffsToRemove = Math.min(targetDebuffs.length, debuffsCured);
 			for (let i = 0; i < debuffsToRemove; i++) {
-				const debuffIndex = user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
+				const debuffIndex = user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 				const rolledDebuff = targetDebuffs[debuffIndex];
 				const [removalReceipt] = removeModifier([target], { name: rolledDebuff, stacks: "all" });
 				receipts.push(removalReceipt);

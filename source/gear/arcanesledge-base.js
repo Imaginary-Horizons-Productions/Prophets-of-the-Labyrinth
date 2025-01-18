@@ -4,8 +4,8 @@ const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, removeModifier, dealDamage, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
-const gearName = "Arcane Sledge";
-module.exports = new GearTemplate(gearName,
+const variantName = "Arcane Sledge";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Deal <@{damage}> @{essence} damage and remove @{buffsRemoved} random buff from a foe"],
 		["Critical💥", "Buffs removed x @{critBonus}"]
@@ -26,7 +26,7 @@ module.exports = new GearTemplate(gearName,
 		const reciepts = [];
 		if (targetBuffs.length > 0) {
 			for (let i = 0; i < pendingBuffRemovals; i++) {
-				const selectedBuff = targetBuffs.splice(user.roundRns(`${gearName}${SAFE_DELIMITER}buffs`), 1);
+				const selectedBuff = targetBuffs.splice(user.roundRns(`${variantName}${SAFE_DELIMITER}buffs`), 1);
 				reciepts.push(...removeModifier(targets, { name: selectedBuff, stacks: "all" }));
 			}
 		}

@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { scalingDistraction } = require('./shared/modifiers');
 
 module.exports = new GearTemplate("Inspiring Wind Burst",
 	[
@@ -24,7 +25,7 @@ module.exports = new GearTemplate("Inspiring Wind Burst",
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Toxic Wind Burst")
 	.setCharges(15)
-	.setModifiers({ name: "Distraction", stacks: { description: "2 + 10% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } })
+	.setModifiers(scalingDistraction(2))
 	.setScalings({
 		critBonus: 2,
 		morale: 1

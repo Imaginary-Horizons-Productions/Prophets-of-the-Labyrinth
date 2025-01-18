@@ -3,8 +3,8 @@ const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
-const gearName = "Bounty Fist";
-module.exports = new GearTemplate(gearName,
+const variantName = "Bounty Fist";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Deal <@{damage} + gold paid> @{essence} damage to a foe"],
 		["Critical💥", "Damage x @{critBonus}"]
@@ -23,7 +23,7 @@ module.exports = new GearTemplate(gearName,
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(`${user.name}'s ${gearName} consumed ${goldUsed}g.`);
+		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(`${user.name}'s ${variantName} consumed ${goldUsed}g.`);
 	}, { type: "single", team: "foe" })
 	.setUpgrades("Midas's Bounty Fist", "Thirsting Bounty Fist")
 	.setPactCost([10, "@{pactCost}% of party gold"])

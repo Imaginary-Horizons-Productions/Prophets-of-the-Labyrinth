@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, payHP, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
+const { tempestuousWrathEmpowerment } = require('./shared/modifiers');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Flanking Tempestuous Wrath",
@@ -29,12 +30,4 @@ module.exports = new GearTemplate("Flanking Tempestuous Wrath",
 		damage: damageScalingGenerator(40),
 		critBonus: 2
 	})
-	.setModifiers({
-		name: "Empowerment", stacks: {
-			description: "25 x (1 to 1.5 based on missing HP)",
-			calculate: (user) => {
-				const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
-				return 25 * furiousness;
-			}
-		}
-	}, { name: "Exposure", stacks: 2 });
+	.setModifiers(tempestuousWrathEmpowerment(), { name: "Exposure", stacks: 2 });

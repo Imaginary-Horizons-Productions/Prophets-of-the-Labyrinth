@@ -2,6 +2,7 @@ const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { concatTeamMembersWithModifier, changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
+const { scalingSwiftness } = require('./shared/modifiers');
 
 module.exports = new GearTemplate("Accelerating Water's Stillness",
 	[
@@ -27,5 +28,5 @@ module.exports = new GearTemplate("Accelerating Water's Stillness",
 	.setSidegrades("Cleansing Water's Stillness")
 	.setCharges(15)
 	.setStagger(-2)
-	.setModifiers({ name: "Vigilance", stacks: 0 }, { name: "Swiftness", stacks: { description: "2 + 10% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } })
+	.setModifiers({ name: "Vigilance", stacks: 0 }, scalingSwiftness(2))
 	.setScalings({ critBonus: 2 });

@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { scalingExcellence, scalingEmpowerment } = require('./shared/modifiers');
 
 module.exports = new GearTemplate("Encouragement",
 	[
@@ -25,15 +26,5 @@ module.exports = new GearTemplate("Encouragement",
 	}, { type: "single", team: "ally" })
 	.setUpgrades("Rallying Encouragement", "Vigorous Encouragement")
 	.setCharges(15)
-	.setModifiers({
-		name: "Excellence", stacks: {
-			description: "2 + 10% Bonus Speed",
-			calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 10)
-		}
-	}, {
-		name: "Empowerment", stacks: {
-			description: "25 + Bonus Speed",
-			calculate: (user) => 25 + user.getBonusSpeed()
-		}
-	})
+	.setModifiers(scalingExcellence(2), scalingEmpowerment(25))
 	.setScalings({ critBonus: 2 });

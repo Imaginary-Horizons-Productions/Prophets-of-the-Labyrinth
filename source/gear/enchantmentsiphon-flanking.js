@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, addProtection, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { scalingExposure } = require('./shared/modifiers');
 const { protectionScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Flanking Enchantment Siphon",
@@ -36,4 +37,4 @@ module.exports = new GearTemplate("Flanking Enchantment Siphon",
 		protection: protectionScalingGenerator(0),
 		critBonus: 2
 	})
-	.setModifiers({ name: "Exposure", stacks: { description: "1 + 10% Bonus Speed", calculate: (user) => 1 + Math.floor(user.getBonusSpeed() / 10) } });
+	.setModifiers(scalingExposure(1));

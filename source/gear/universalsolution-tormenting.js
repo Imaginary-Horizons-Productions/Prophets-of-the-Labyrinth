@@ -3,10 +3,10 @@ const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier, removeModifier } = require('../util/combatantUtil');
 
-const gearName = "Tormenting Universal Solution";
+const variantName = "Tormenting Universal Solution";
 const debuffsTransferred = 2;
 const poisonStacks = 3;
-module.exports = new GearTemplate(gearName,
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Transfer a random @{debuffsTransferred} of your debuffs to a foe then add @{debuffIncrement} stack to each of their debuffs"],
 		["Critical💥", "Transfer all of your debuffs"]
@@ -28,7 +28,7 @@ module.exports = new GearTemplate(gearName,
 			}
 		} else {
 			for (let i = 0; i < debuffsTransferred; i++) {
-				const debuff = userDebuffs.splice(user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length, 1);
+				const debuff = userDebuffs.splice(user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length, 1);
 				reciepts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
 				reciepts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 			}

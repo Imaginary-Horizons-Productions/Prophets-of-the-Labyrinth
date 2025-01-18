@@ -1,10 +1,10 @@
 const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER } = require('../constants');
 const { dealDamage, generateModifierResultLines, addModifier, getCombatantCounters } = require('../util/combatantUtil');
+const { deckOfCardsMisfortune } = require('./shared/modifiers');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
-const actionName = "Omenous Deck of Cards";
-module.exports = new GearTemplate(actionName,
+const variantName = "Omenous Deck of Cards";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} (doubled if Essence Countering) on a foe"],
 		["Critical💥", "Damage x @{critBonus}"]
@@ -28,7 +28,7 @@ module.exports = new GearTemplate(actionName,
 	}
 	return resultLines;
 }, { type: "single", team: "foe" })
-	.setModifiers({ name: "Misfortune", stacks: { description: "a random amount between 2 and 9", calculate: (user) => 2 + user.roundRns[`${actionName}${SAFE_DELIMITER}Deck of Cards`][0] } })
+	.setModifiers(deckOfCardsMisfortune(variantName))
 	.setScalings({
 		damage: archetypeActionDamageScaling,
 		critBonus: 2

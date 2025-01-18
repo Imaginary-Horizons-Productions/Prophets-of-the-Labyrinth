@@ -3,8 +3,8 @@ const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { concatTeamMembersWithModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 
-const gearName = "Cleansing Water's Stillness";
-module.exports = new GearTemplate(gearName,
+const variantName = "Cleansing Water's Stillness";
+module.exports = new GearTemplate(variantName,
 	[
 		["use", "Relieve Stagger and cure @{debuffsCured} random debuff for an ally and all allies with @{mod0}"],
 		["Critical💥", "Stagger relieved x @{critBonus}"]
@@ -28,7 +28,7 @@ module.exports = new GearTemplate(gearName,
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? 2 : 1);
 			for (let i = 0; i < debuffsToRemove; i++) {
-				const debuffIndex = user.roundRns[`${gearName}${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
+				const debuffIndex = user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
 				const rolledDebuff = targetDebuffs[debuffIndex];
 				const [removalReceipt] = removeModifier([target], { name: rolledDebuff, stacks: "all" });
 				receipts.push(removalReceipt);

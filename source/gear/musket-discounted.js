@@ -4,8 +4,8 @@ const { changeStagger, dealDamage } = require('../util/combatantUtil');
 const { discountedPassive } = require('./shared/passiveDescriptions');
 const { damageScalingGenerator } = require('./shared/scalings');
 
-const gearName = "Discounted Musket";
-module.exports = new GearTemplate(gearName,
+const variantName = "Discounted Musket";
+module.exports = new GearTemplate(variantName,
 	[
 		discountedPassive,
 		["use", "Deal <@{damage}> @{essence} damage to a foe"],
@@ -24,7 +24,7 @@ module.exports = new GearTemplate(gearName,
 			const move = adventure.room.findCombatantMove({ team: user.team, index: adventure.getCombatantIndex(user) });
 			const [_, gearIndex] = move.name.split(SAFE_DELIMITER);
 			user.gear[gearIndex].cooldown = -1 * cooldown;
-			resultLines.push(`${user.name} reloads their ${gearName} immediately!`);
+			resultLines.push(`${user.name} reloads their ${variantName} immediately!`);
 		}
 		return resultLines;
 	}, { type: "single", team: "foe" })

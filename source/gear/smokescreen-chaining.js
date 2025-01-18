@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { scalingEvasion } = require('./shared/modifiers');
 
 const bounceCount = 3;
 module.exports = new GearTemplate("Chaining Smokescreen",
@@ -24,5 +25,5 @@ module.exports = new GearTemplate("Chaining Smokescreen",
 	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "ally" })
 	.setSidegrades("Double Smokescreen")
 	.setCooldown(0)
-	.setModifiers({ name: "Evasion", stacks: { description: "2 + 2% Bonus HP", calculate: (user) => 2 + Math.floor(user.getBonusHP() / 50) } })
+	.setModifiers(scalingEvasion(2))
 	.setScalings({ critBonus: 2 });

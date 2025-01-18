@@ -1,6 +1,7 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { scalingTorpidity } = require('./shared/modifiers');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Thief's Net Launcher",
@@ -44,4 +45,4 @@ module.exports = new GearTemplate("Thief's Net Launcher",
 	.setSidegrades("Tormenting Net Launcher")
 	.setCooldown(1)
 	.setScalings({ damage: damageScalingGenerator(40), critBonus: 2, bounty: 30 })
-	.setModifiers({ name: "Torpidity", stacks: { description: "3 + 10% Bonus Speed", calculate: (user) => 3 + Math.floor(user.getBonusSpeed() / 10) } });
+	.setModifiers(scalingTorpidity(3));

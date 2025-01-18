@@ -2,6 +2,7 @@ const { GearTemplate, CombatantReference } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
 const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
+const { scalingRegeneration } = require('./shared/modifiers');
 
 module.exports = new GearTemplate("Carrot",
 	[
@@ -47,5 +48,5 @@ module.exports = new GearTemplate("Carrot",
 	}, { type: "single", team: "ally" })
 	.setUpgrades("Guarding Carrot", "Balanced Carrot")
 	.setCooldown(1)
-	.setModifiers({ name: "Regeneration", stacks: { description: "2 + 5% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 20) } })
+	.setModifiers(scalingRegeneration(2))
 	.setScalings({ critBonus: 1 });

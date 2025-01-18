@@ -2,6 +2,7 @@ const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, concatTeamMembersWithModifier, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
+const { scalingExposure } = require('./shared/modifiers');
 
 module.exports = new GearTemplate("Flanking War Cry",
 	[
@@ -27,6 +28,6 @@ module.exports = new GearTemplate("Flanking War Cry",
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Weakening Warcry")
 	.setCooldown(1)
-	.setModifiers({ name: "Distraction", stacks: 0 }, { name: "Exposure", stacks: { description: "2 + 10% Bonus Speed", calculate: (user) => 2 + Math.floor(user.getBonusSpeed() / 10) } })
+	.setModifiers({ name: "Distraction", stacks: 0 }, scalingExposure(2))
 	.setStagger(2)
 	.setScalings({ critBonus: 2 });
