@@ -29,7 +29,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				.setPlaceholder("Select a challenge...")
 				.addOptions(options)
 		)];
-		interaction.reply({ content: "Shoot for glory (and higher scores)! Add a challenge to the run:", components, flags: [MessageFlags.Ephemeral], withResponse: true }).then(({ response: { message: reply } }) => {
+		interaction.reply({ content: "Shoot for glory (and higher scores)! Add a challenge to the run:", components, flags: [MessageFlags.Ephemeral], withResponse: true }).then(({ resource: { message: reply } }) => {
 			const collector = reply.createMessageComponentCollector({ max: 1 });
 			collector.on("collect", collectedInteraction => {
 				const adventure = getAdventure(collectedInteraction.channelId);
