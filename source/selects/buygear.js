@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, bold, EmbedBuilder, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, bold, EmbedBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -64,44 +64,42 @@ module.exports = new SelectWrapper(mainId, 3000,
 			components,
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true
-		}).then(({ resource: { message: reply } }) => {
-			const collector = reply.createMessageComponentCollector({ max: 1 });
-			collector.on("collect", collectedInteraction => {
-				const [mainId, startedDepth, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				const adventure = getAdventure(collectedInteraction.channelId);
-				if (name in adventure.room.resources) {
-					const { count, cost } = adventure.room.resources[name];
-					if (count < 1 || startedDepth !== adventure.depth.toString()) {
-						return;
-					}
-
-					const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
-					const gearRecord = buildGearRecord(name, adventure);
-					let discardedName;
-					if (mainId.endsWith("replace")) {
-						discardedName = delver.gear[gearIndex].name;
-						delver.gear.splice(gearIndex, 1, gearRecord);
-					} else {
-						delver.gear.push(gearRecord);
-					}
-					if (delver.hp > delver.getMaxHP()) {
-						delver.hp = delver.getMaxHP();
-					}
-					collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-						adventure.room.decrementResource(name, 1);
-						adventure.gold -= cost;
-						return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
-					}).then(() => {
-						collectedInteraction.channel.send(`${bold(collectedInteraction.member.displayName)} buys a ${name} for ${cost}g${discardedName ? ` (${discardedName} discarded)` : ""}.`);
-						setAdventure(adventure);
-					})
+		}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+			const [mainId, startedDepth, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
+			const adventure = getAdventure(collectedInteraction.channelId);
+			if (name in adventure.room.resources) {
+				const { count, cost } = adventure.room.resources[name];
+				if (count < 1 || startedDepth !== adventure.depth.toString()) {
+					return collectedInteraction;
 				}
-			})
 
-			collector.on("end", async (interactionCollection) => {
-				await interactionCollection.first().update({ components: [] });
-				interaction.deleteReply();
-			})
+				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
+				const gearRecord = buildGearRecord(name, adventure);
+				let discardedName;
+				if (mainId.endsWith("replace")) {
+					discardedName = delver.gear[gearIndex].name;
+					delver.gear.splice(gearIndex, 1, gearRecord);
+				} else {
+					delver.gear.push(gearRecord);
+				}
+				if (delver.hp > delver.getMaxHP()) {
+					delver.hp = delver.getMaxHP();
+				}
+				adventure.room.decrementResource(name, 1);
+				adventure.gold -= cost;
+				interaction.message.edit(renderRoom(adventure, collectedInteraction.channel));
+				collectedInteraction.channel.send(`${bold(collectedInteraction.member.displayName)} buys a ${name} for ${cost}g${discardedName ? ` (${discardedName} discarded)` : ""}.`);
+				setAdventure(adventure);
+				return collectedInteraction;
+			}
+		}).then(interactionToAcknowledge => {
+			return interactionToAcknowledge.update({ components: [] });
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
+			}
+		}).finally(() => {
+			interaction.deleteReply();
 		});
 	}
 );

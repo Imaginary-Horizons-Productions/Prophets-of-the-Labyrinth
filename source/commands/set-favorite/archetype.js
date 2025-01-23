@@ -1,4 +1,4 @@
-const { CommandInteraction, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require("discord.js");
+const { CommandInteraction, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, DiscordjsErrorCodes } = require("discord.js");
 const { Player } = require("../../classes");
 const { getPlayer, setPlayer } = require("../../orcustrators/playerOrcustrator");
 const { SKIP_INTERACTION_HANDLING } = require("../../constants");
@@ -24,19 +24,18 @@ async function executeSubcommand(interaction, ...[player]) {
 		],
 		flags: [MessageFlags.Ephemeral],
 		withResponse: true
-	}).then(({ resource: { message: reply } }) => {
-		const collector = reply.createMessageComponentCollector({ max: 1 });
-		collector.on("collect", collectedInteraction => {
-			const recentPlayer = getPlayer(interaction.user.id, reply.guildId);
-			const selectedArchetype = collectedInteraction.values[0];
-			recentPlayer.favoriteArchetype = selectedArchetype;
-			collectedInteraction.reply({ content: `Your favorite archetype has been set to ${selectedArchetype}.`, flags: [MessageFlags.Ephemeral] });
-			setPlayer(recentPlayer);
-		})
-
-		collector.on("end", () => {
-			interaction.deleteReply();
-		})
+	}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+		const recentPlayer = getPlayer(interaction.user.id, reply.guildId);
+		const selectedArchetype = collectedInteraction.values[0];
+		recentPlayer.favoriteArchetype = selectedArchetype;
+		setPlayer(recentPlayer);
+		return collectedInteraction.reply({ content: `Your favorite archetype has been set to ${selectedArchetype}.`, flags: [MessageFlags.Ephemeral] });
+	}).catch(error => {
+		if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+			console.error(error);
+		}
+	}).finally(() => {
+		interaction.deleteReply();
 	});
 };
 

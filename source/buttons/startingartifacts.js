@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -71,31 +71,32 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			],
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true
-		}).then(({ resource: { message: reply } }) => {
-			const collector = reply.createMessageComponentCollector({ max: 1 });
-			collector.on("collect", collectedInteraction => {
-				const adventure = getAdventure(collectedInteraction.channelId);
-				const delver = adventure?.delvers.find(delver => delver.id === collectedInteraction.user.id);
-				const [_, mainId] = collectedInteraction.customId.split(SAFE_DELIMITER);
+		}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+			const adventure = getAdventure(collectedInteraction.channelId);
+			const delver = adventure?.delvers.find(delver => delver.id === collectedInteraction.user.id);
+			const [_, mainId] = collectedInteraction.customId.split(SAFE_DELIMITER);
 
-				if (!delver || adventure.state !== "config") {
-					return;
-				} else if (mainId === "add") {
-					const isSwitching = delver.startingArtifact !== "";
-					const [artifactName] = collectedInteraction.values;
-					delver.startingArtifact = artifactName;
-					collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}** ${isSwitching ? "has switched to" : "is taking"} *${artifactName}* for their starting artifact.`);
-				} else {
-					delver.startingArtifact = "";
-					collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}** has decided not to bring a starting artifact.`);
-				}
-				setAdventure(adventure);
-			})
-
-			collector.on("end", async (interactionCollection) => {
-				await interactionCollection.first().update({ components: [] });
-				interaction.deleteReply();
-			})
+			if (!delver || adventure.state !== "config") {
+				return collectedInteraction;
+			} else if (mainId === "add") {
+				const isSwitching = delver.startingArtifact !== "";
+				const [artifactName] = collectedInteraction.values;
+				delver.startingArtifact = artifactName;
+				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}** ${isSwitching ? "has switched to" : "is taking"} *${artifactName}* for their starting artifact.`);
+			} else {
+				delver.startingArtifact = "";
+				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}** has decided not to bring a starting artifact.`);
+			}
+			setAdventure(adventure);
+			return collectedInteraction;
+		}).then(interactionToAcknowledge => {
+			return interactionToAcknowledge.update({ components: [] });
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
+			}
+		}).finally(() => {
+			interaction.deleteReply();
 		})
 	}
 );

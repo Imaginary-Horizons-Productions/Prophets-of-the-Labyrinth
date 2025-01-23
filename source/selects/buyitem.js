@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -44,23 +44,22 @@ module.exports = new SelectWrapper(mainId, 3000,
 			],
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true
-		}).then(({ resource: { message: reply } }) => {
-			const collector = reply.createMessageComponentCollector({ max: 1 });
-			collector.on("collect", collectedInteraction => {
-				if (name in adventure.room.resources) {
-					adventure.gold -= cost;
-					adventure.room.decrementResource(name, 1);
-					adventure.gainItem(name, 1);
-					interaction.message.edit(renderRoom(adventure, interaction.channel));
-					collectedInteraction.channel.send({ content: `${interaction.member.displayName} buys a ${name} for ${cost}g.` });
-					setAdventure(adventure);
-				}
-			})
-
-			collector.on("end", async (interactionCollection) => {
-				await interactionCollection.first().update({ components: [] });
-				interaction.deleteReply();
-			})
+		}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+			if (name in adventure.room.resources) {
+				adventure.gold -= cost;
+				adventure.room.decrementResource(name, 1);
+				adventure.gainItem(name, 1);
+				interaction.message.edit(renderRoom(adventure, interaction.channel));
+				collectedInteraction.channel.send({ content: `${interaction.member.displayName} buys a ${name} for ${cost}g.` });
+				setAdventure(adventure);
+				return collectedInteraction.update({ components: [] });
+			}
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
+			}
+		}).finally(() => {
+			interaction.deleteReply();
 		})
 	}
 );

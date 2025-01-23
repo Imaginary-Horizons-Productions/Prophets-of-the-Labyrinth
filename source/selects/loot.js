@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
@@ -77,41 +77,42 @@ module.exports = new SelectWrapper(mainId, 2000,
 					components,
 					flags: [MessageFlags.Ephemeral],
 					withResponse: true
-				}).then(({ resource: { message: reply } }) => {
-					const collector = reply.createMessageComponentCollector({ max: 1 });
-					collector.on("collect", collectedInteraction => {
-						const [mainId, startedDepth, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
-						const adventure = getAdventure(collectedInteraction.channelId);
-						if (name in adventure.room.resources) {
-							const { count } = adventure.room.resources[name];
-							if (count < 1 || startedDepth !== adventure.depth.toString()) {
-								return;
-							}
-
-							const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
-							const gearRecord = buildGearRecord(name, adventure);
-							let discardedName;
-							if (mainId.endsWith("replace")) {
-								discardedName = delver.gear[gearIndex].name;
-								delver.gear.splice(gearIndex, 1, gearRecord);
-							} else {
-								delver.gear.push(gearRecord);
-							}
-							if (delver.hp > delver.getMaxHP()) {
-								delver.hp = delver.getMaxHP();
-							}
-							adventure.room.decrementResource(name, 1);
-							interaction.message.edit(renderRoom(adventure, collectedInteraction.channel)).then(() => {
-								collectedInteraction.channel.send({ content: `${interaction.member.displayName} takes a ${name}${discardedName ? ` (${discardedName} discarded)` : ""}. There are ${count - 1} remaining.` });
-								setAdventure(adventure);
-							})
+				}).then(respones => respones.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+					const [mainId, startedDepth, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
+					const adventure = getAdventure(collectedInteraction.channelId);
+					if (name in adventure.room.resources) {
+						const { count } = adventure.room.resources[name];
+						if (count < 1 || startedDepth !== adventure.depth.toString()) {
+							return collectedInteraction;
 						}
-					})
 
-					collector.on("end", async (interactionCollection) => {
-						await interactionCollection.first().update({ components: [] });
-						interaction.deleteReply();
-					})
+						const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
+						const gearRecord = buildGearRecord(name, adventure);
+						let discardedName;
+						if (mainId.endsWith("replace")) {
+							discardedName = delver.gear[gearIndex].name;
+							delver.gear.splice(gearIndex, 1, gearRecord);
+						} else {
+							delver.gear.push(gearRecord);
+						}
+						if (delver.hp > delver.getMaxHP()) {
+							delver.hp = delver.getMaxHP();
+						}
+						adventure.room.decrementResource(name, 1);
+						interaction.message.edit(renderRoom(adventure, collectedInteraction.channel)).then(() => {
+							collectedInteraction.channel.send({ content: `${interaction.member.displayName} takes a ${name}${discardedName ? ` (${discardedName} discarded)` : ""}. There are ${count - 1} remaining.` });
+							setAdventure(adventure);
+						})
+						return collectedInteraction;
+					}
+				}).then(interactionToAcknowledge => {
+					return interactionToAcknowledge.update({ components: [] });
+				}).catch(error => {
+					if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+						console.error(error);
+					}
+				}).finally(() => {
+					interaction.deleteReply();
 				});
 				break;
 			case "Item":

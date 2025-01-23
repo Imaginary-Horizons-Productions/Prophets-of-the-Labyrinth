@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, bold, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, bold, MessageFlags, DiscordjsErrorCodes, ComponentType } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
@@ -38,29 +38,28 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			],
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true
-		}).then(({ resource: { message: reply } }) => {
-			const collector = reply.createMessageComponentCollector({ max: 1 });
-			collector.on("collect", collectedInteraction => {
-				const adventure = getAdventure(interaction.channelId);
-				if (adventure?.state !== "config") {
-					collectedInteraction.reply({ content: "A valid adventure could not be found.", flags: [MessageFlags.Ephemeral] });
-					return;
-				}
+		}).then(response => response.resource.message.awaitMessageComponent({ time: 120000, componentType: ComponentType.StringSelect })).then(collectedInteraction => {
+			const adventure = getAdventure(interaction.channelId);
+			if (adventure?.state !== "config") {
+				return collectedInteraction.reply({ content: "A valid adventure could not be found.", flags: [MessageFlags.Ephemeral] });
+			}
 
-				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
-				const isSwitching = Boolean(delver.archetype);
-				const archetype = collectedInteraction.values[0];
-				delver.archetype = archetype;
-				setAdventure(adventure);
+			const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
+			const isSwitching = Boolean(delver.archetype);
+			const archetype = collectedInteraction.values[0];
+			delver.archetype = archetype;
+			setAdventure(adventure);
 
-				// Send confirmation text
-				const { description, archetypeActionSummary } = getArchetype(archetype);
-				interaction.channel.send(`${bold(interaction.user.displayName)} ${isSwitching ? "has switched to" : "will be playing as"} **${archetype}**. ${description} ${injectApplicationEmojiMarkdown(archetypeActionSummary)}`);
-			})
-
-			collector.on("end", () => {
-				interaction.deleteReply();
-			})
+			// Send confirmation text
+			const { description, archetypeActionSummary } = getArchetype(archetype);
+			interaction.channel.send(`${bold(interaction.user.displayName)} ${isSwitching ? "has switched to" : "will be playing as"} **${archetype}**. ${description} ${injectApplicationEmojiMarkdown(archetypeActionSummary)}`);
+			return collectedInteraction.update({ components: [] });
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
+			}
+		}).finally(() => {
+			interaction.deleteReply();
 		});
 	}
 );

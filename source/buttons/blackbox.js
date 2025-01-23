@@ -1,7 +1,7 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, bold, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, bold, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
+const { SKIP_INTERACTION_HANDLING } = require('../constants');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getNumberEmoji } = require('../util/textUtil');
 
@@ -34,7 +34,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			],
 			components: [
 				new ActionRowBuilder().addComponents(
-					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
+					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${adventure.depth}`)
 						.setPlaceholder(`${getNumberEmoji(0)} Trade a gear piece...`)
 						.setOptions(delver.gear.map((gear, index) => ({
 							label: gear.name,
@@ -44,38 +44,33 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			],
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true
-		}).then(({ resource: { message: reply } }) => {
-			const collector = reply.createMessageComponentCollector({ max: 1 });
-			collector.on("collect", (collectedInteraction) => {
-				const adventure = getAdventure(collectedInteraction.channelId);
-				const [_, startingDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				if (adventure?.depth !== parseInt(startingDepth)) {
-					return;
-				}
+		}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+			const adventure = getAdventure(collectedInteraction.channelId);
+			const [_, startingDepth] = collectedInteraction.customId.split(SKIP_INTERACTION_HANDLING);
+			if (adventure?.depth !== parseInt(startingDepth) || adventure.room.history["Traded for box"].length > 0) {
+				return collectedInteraction;
+			}
 
-				if (adventure.room.history["Traded for box"].length > 0) {
-					collectedInteraction.reply({ content: "The black box has already been opened.", flags: [MessageFlags.Ephemeral] });
-					return;
-				}
-
-				const gearIndex = collectedInteraction.values[0];
-				const artifactResource = Object.values(adventure.room.resources).find(resource => resource.type === "Artifact");
-				delete adventure.room.resources[artifactResource.name];
-				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
-				const tradedGearName = delver.gear[gearIndex].name;
-				adventure.room.history["Traded for box"].push(tradedGearName);
-				delver.gear.splice(gearIndex, 1);
-				adventure.gainArtifact(artifactResource.name, artifactResource.count);
-				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-					roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
-				})
-				setAdventure(adventure);
-				collectedInteraction.channel.send(`${bold(delver.name)} trades their ${bold(tradedGearName)} for the ${bold(artifactResource.name)} in the black box.`);
-			})
-
-			collector.on("end", () => {
-				interaction.deleteReply();
-			})
+			const gearIndex = collectedInteraction.values[0];
+			const artifactResource = Object.values(adventure.room.resources).find(resource => resource.type === "Artifact");
+			delete adventure.room.resources[artifactResource.name];
+			const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
+			const tradedGearName = delver.gear[gearIndex].name;
+			adventure.room.history["Traded for box"].push(tradedGearName);
+			delver.gear.splice(gearIndex, 1);
+			adventure.gainArtifact(artifactResource.name, artifactResource.count);
+			interaction.message.edit(renderRoom(adventure, collectedInteraction.channel));
+			setAdventure(adventure);
+			collectedInteraction.channel.send(`${bold(delver.name)} trades their ${bold(tradedGearName)} for the ${bold(artifactResource.name)} in the black box.`);
+			return collectedInteraction;
+		}).then(interactionToAcknowledge => {
+			return interactionToAcknowledge.update({ components: [] });
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
+			}
+		}).finally(() => {
+			interaction.deleteReply();
 		})
 	}
 );

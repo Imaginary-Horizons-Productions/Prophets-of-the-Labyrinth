@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, bold, ButtonStyle, ButtonBuilder, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, bold, ButtonStyle, ButtonBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -39,41 +39,40 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			],
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true
-		}).then(({ resource: { message: reply } }) => {
-			const collector = reply.createMessageComponentCollector({ max: 1 });
-			collector.on("collect", collectedInteraction => {
-				const adventure = getAdventure(interaction.channelId);
-				if (adventure?.state !== "config") {
-					collectedInteraction.reply({ content: "A valid adventure could not be found.", flags: [MessageFlags.Ephemeral] });
-					return;
-				}
+		}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+			const adventure = getAdventure(interaction.channelId);
+			if (adventure?.state !== "config") {
+				collectedInteraction.reply({ content: "A valid adventure could not be found.", flags: [MessageFlags.Ephemeral] });
+				return;
+			}
 
-				const [_, mainId] = collectedInteraction.customId.split(SKIP_INTERACTION_HANDLING);
-				const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
-				switch (mainId) {
-					case "pet":
-						const isSwitching = Boolean(delver.pet.type);
-						const selectedPet = collectedInteraction.values[0];
-						delver.pet = {
-							type: selectedPet,
-							level: getPlayer(interaction.user.id, interaction.guildId).pets[selectedPet]
-						};
+			const [_, mainId] = collectedInteraction.customId.split(SKIP_INTERACTION_HANDLING);
+			const delver = adventure.delvers.find(delver => delver.id === collectedInteraction.user.id);
+			switch (mainId) {
+				case "pet":
+					const isSwitching = Boolean(delver.pet.type);
+					const selectedPet = collectedInteraction.values[0];
+					delver.pet = {
+						type: selectedPet,
+						level: getPlayer(interaction.user.id, interaction.guildId).pets[selectedPet]
+					};
 
 
-						// Send confirmation text
-						interaction.channel.send({ content: `${bold(interaction.user.displayName)} ${isSwitching ? "has switched to" : "will be"} bringing their ${bold(selectedPet)} pet.` });
-						break;
-					case "clear":
-						delver.pet = { type: "", level: 0 };
-						interaction.channel.send({ content: `${bold(interaction.user.displayName)} has decided not to bring a pet.` });
-						break;
-				}
-				setAdventure(adventure);
-			})
-
-			collector.on("end", () => {
-				interaction.deleteReply();
-			})
+					// Send confirmation text
+					interaction.channel.send({ content: `${bold(interaction.user.displayName)} ${isSwitching ? "has switched to" : "will be"} bringing their ${bold(selectedPet)} pet.` });
+					break;
+				case "clear":
+					delver.pet = { type: "", level: 0 };
+					interaction.channel.send({ content: `${bold(interaction.user.displayName)} has decided not to bring a pet.` });
+					break;
+			}
+			setAdventure(adventure);
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
+			}
+		}).finally(() => {
+			interaction.deleteReply();
 		});
 	}
 );

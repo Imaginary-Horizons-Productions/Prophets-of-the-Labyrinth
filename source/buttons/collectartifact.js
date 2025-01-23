@@ -1,4 +1,4 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer, setPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
@@ -43,22 +43,19 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			)],
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true
-		}).then(({ resource: { message: reply } }) => {
-			if (reply) {
-				const collector = reply.createMessageComponentCollector({ max: 1 });
-				collector.on("collect", collectedInteraction => {
-					const [artifactName] = collectedInteraction.values;
-					const player = getPlayer(collectedInteraction.user.id, collectedInteraction.guildId);
-					player.artifacts[collectedInteraction.channelId] = artifactName;
-					setPlayer(player);
-					collectedInteraction.channel.send({ content: `${collectedInteraction.user.displayName} decides to hold onto a **${artifactName}**. They'll be able to bring it on future adventures.`, flags: [MessageFlags.Ephemeral] });
-				})
-
-				collector.on("end", async (interactionCollection) => {
-					await interactionCollection.first().update({ components: [] });
-					interaction.deleteReply();
-				})
+		}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+			const [artifactName] = collectedInteraction.values;
+			const player = getPlayer(collectedInteraction.user.id, collectedInteraction.guildId);
+			player.artifacts[collectedInteraction.channelId] = artifactName;
+			setPlayer(player);
+			collectedInteraction.channel.send({ content: `${collectedInteraction.user.displayName} decides to hold onto a **${artifactName}**. They'll be able to bring it on future adventures.`, flags: [MessageFlags.Ephemeral] });
+			return collectedInteraction.update({ components: [] });
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
 			}
+		}).finally(() => {
+			interaction.deleteReply();
 		})
 	}
 );

@@ -1,9 +1,9 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { ButtonWrapper, Challenge } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getChallenge } = require('../challenges/_challengeDictionary');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
-const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
+const { SKIP_INTERACTION_HANDLING } = require('../constants');
 const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "challenges";
@@ -25,40 +25,44 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		})
 		const components = [new ActionRowBuilder().addComponents(
-			new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
+			new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${adventure.depth}`)
 				.setPlaceholder("Select a challenge...")
 				.addOptions(options)
 		)];
-		interaction.reply({ content: "Shoot for glory (and higher scores)! Add a challenge to the run:", components, flags: [MessageFlags.Ephemeral], withResponse: true }).then(({ resource: { message: reply } }) => {
-			const collector = reply.createMessageComponentCollector({ max: 1 });
-			collector.on("collect", collectedInteraction => {
-				const adventure = getAdventure(collectedInteraction.channelId);
-				const [_, startingDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				if (adventure?.room.history["New challenges"].length > 0 || startingDepth !== adventure.depth.toString()) {
-					return;
-				}
+		interaction.reply({
+			content: "Shoot for glory (and higher scores)! Add a challenge to the run:",
+			components,
+			flags: [MessageFlags.Ephemeral],
+			withResponse: true
+		}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+			const adventure = getAdventure(collectedInteraction.channelId);
+			const [_, startingDepth] = collectedInteraction.customId.split(SKIP_INTERACTION_HANDLING);
+			if (adventure?.room.history["New challenges"].length > 0 || startingDepth !== adventure.depth.toString()) {
+				return collectedInteraction;
+			}
 
-				const challengeName = collectedInteraction.values[0];
-				const { intensity, duration, reward } = getChallenge(challengeName);
-				if (adventure.challenges[challengeName]) {
-					adventure.challenges[challengeName].intensity += intensity;
-					adventure.challenges[challengeName].duration += duration;
-					adventure.challenges[challengeName].reward += reward;
-				} else {
-					adventure.challenges[challengeName] = new Challenge(intensity, reward, duration);
-				}
-				adventure.room.history["New challenges"].push(challengeName);
-				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-					roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
-				})
-				collectedInteraction.channel.send({ content: `The party takes on a new challenge: ${challengeName}` });
-				setAdventure(adventure);
-			})
-
-			collector.on("end", async (interactionCollection) => {
-				await interactionCollection.first().update({ components: [] });
-				interaction.deleteReply();
-			})
+			const challengeName = collectedInteraction.values[0];
+			const { intensity, duration, reward } = getChallenge(challengeName);
+			if (adventure.challenges[challengeName]) {
+				adventure.challenges[challengeName].intensity += intensity;
+				adventure.challenges[challengeName].duration += duration;
+				adventure.challenges[challengeName].reward += reward;
+			} else {
+				adventure.challenges[challengeName] = new Challenge(intensity, reward, duration);
+			}
+			adventure.room.history["New challenges"].push(challengeName);
+			interaction.message.edit(renderRoom(adventure, collectedInteraction.channel));
+			collectedInteraction.channel.send({ content: `The party takes on a new challenge: ${challengeName}` });
+			setAdventure(adventure);
+			return collectedInteraction;
+		}).then(interactionToAcknowledge => {
+			return interactionToAcknowledge.update({ components: [] });
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
+			}
+		}).finally(() => {
+			interaction.deleteReply();
 		})
 	}
 );

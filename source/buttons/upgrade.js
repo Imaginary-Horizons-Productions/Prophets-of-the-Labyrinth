@@ -1,8 +1,8 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline, MessageFlags } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline, MessageFlags, ComponentType, DiscordjsErrorCodes } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING, MAX_EMBED_FIELD_VALUE_LENGTH } = require('../constants');
+const { SKIP_INTERACTION_HANDLING, MAX_EMBED_FIELD_VALUE_LENGTH } = require('../constants');
 const { getNumberEmoji } = require('../util/textUtil');
 const { transformGear } = require('../util/delverUtil');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
@@ -70,42 +70,41 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			],
 			components: [
 				new ActionRowBuilder().addComponents(
-					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}${SAFE_DELIMITER}${adventure.depth}`)
+					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${adventure.depth}`)
 						.setPlaceholder(`${getNumberEmoji(actionCost)} Upgrade a gear piece...`)
 						.setOptions(options)
 				)
 			],
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true
-		}).then(({ resource: { message: reply } }) => {
-			const collector = reply.createMessageComponentCollector({ max: 1 });
-			collector.on("collect", collectedInteraction => {
-				const adventure = getAdventure(collectedInteraction.channelId);
-				const [_, startingDepth] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				if (adventure.room.actions < 1 || startingDepth !== adventure.depth.toString()) {
-					return;
-				}
+		}).then(response => response.resource.message.awaitMessageComponent({ time: 120000, componentType: ComponentType.StringSelect })).then(collectedInteraction => {
+			const adventure = getAdventure(collectedInteraction.channelId);
+			const [_, startingDepth] = collectedInteraction.customId.split(SKIP_INTERACTION_HANDLING);
+			if (adventure.room.actions < 1 || startingDepth !== adventure.depth.toString()) {
+				return collectedInteraction;
+			}
 
-				const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
-				const index = parseInt(collectedInteraction.values[0]);
-				const gearName = delver.gear[index].name;
-				/** @type {string[]} */
-				const upgradePool = getGearProperty(gearName, "upgrades");
-				const upgradeName = upgradePool[adventure.generateRandomNumber(upgradePool.length, "general")];
-				transformGear(delver, index, gearName, upgradeName);
-				adventure.room.history.Upgraders.push(delver.name);
-				adventure.room.actions -= actionCost;
-				setAdventure(adventure);
-				collectedInteraction.channel.messages.fetch(adventure.messageIds.room).then(roomMessage => {
-					return roomMessage.edit(renderRoom(adventure, collectedInteraction.channel));
-				})
-				collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}**'s *${gearName}* has been upgraded to **${upgradeName}**!`);
-			})
-
-			collector.on("end", async (interactionCollection) => {
-				await interactionCollection.first().update({ components: [] });
-				interaction.deleteReply();
-			})
+			const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
+			const index = parseInt(collectedInteraction.values[0]);
+			const gearName = delver.gear[index].name;
+			/** @type {string[]} */
+			const upgradePool = getGearProperty(gearName, "upgrades");
+			const upgradeName = upgradePool[adventure.generateRandomNumber(upgradePool.length, "general")];
+			transformGear(delver, index, gearName, upgradeName);
+			adventure.room.history.Upgraders.push(delver.name);
+			adventure.room.actions -= actionCost;
+			setAdventure(adventure);
+			interaction.message.edit(renderRoom(adventure, collectedInteraction.channel));
+			collectedInteraction.channel.send(`**${collectedInteraction.member.displayName}**'s *${gearName}* has been upgraded to **${upgradeName}**!`);
+			return collectedInteraction;
+		}).then(interactionToAcknowledge => {
+			return interactionToAcknowledge.update({ components: [] });
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
+			}
+		}).finally(() => {
+			interaction.deleteReply();
 		})
 	}
 );

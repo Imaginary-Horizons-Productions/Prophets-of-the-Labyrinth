@@ -1,4 +1,4 @@
-const { CommandInteraction, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require("discord.js");
+const { CommandInteraction, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, DiscordjsErrorCodes, ComponentType } = require("discord.js");
 const { SKIP_INTERACTION_HANDLING } = require("../../constants");
 const { setPlayer, getPlayer } = require("../../orcustrators/playerOrcustrator");
 
@@ -29,19 +29,18 @@ async function executeSubcommand(interaction, ...[player]) {
 		],
 		flags: [MessageFlags.Ephemeral],
 		withResponse: true
-	}).then(({ resource: { message: reply } }) => {
-		const collector = reply.createMessageComponentCollector({ max: 1 });
-		collector.on("collect", collectedInteraction => {
-			const recentPlayer = getPlayer(interaction.user.id, reply.guildId);
-			const newBestFriend = collectedInteraction.values[0];
-			recentPlayer.favoritePet = newBestFriend;
-			collectedInteraction.reply({ content: `Your favorite pet has been set to ${newBestFriend}.`, flags: [MessageFlags.Ephemeral] });
-			setPlayer(recentPlayer);
-		})
-
-		collector.on("end", () => {
-			interaction.deleteReply();
-		})
+	}).then(response => response.resource.message.awaitMessageComponent({ time: 120000, componentType: ComponentType.StringSelect })).then(collectedInteraction => {
+		const recentPlayer = getPlayer(interaction.user.id, reply.guildId);
+		const newBestFriend = collectedInteraction.values[0];
+		recentPlayer.favoritePet = newBestFriend;
+		setPlayer(recentPlayer);
+		return collectedInteraction.reply({ content: `Your favorite pet has been set to ${newBestFriend}.`, flags: [MessageFlags.Ephemeral] });
+	}).catch(error => {
+		if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+			console.error(error);
+		}
+	}).finally(() => {
+		interaction.deleteReply();
 	});
 };
 
