@@ -16,10 +16,9 @@ module.exports = new GearTemplate("Shattering Flourish",
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	const stillLivingTargets = targets.filter(target => target.hp > 0);
-	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-	return resultLines.concat(generateModifierResultLines(addModifier(stillLivingTargets, distraction).concat(addModifier(stillLivingTargets, frailty))));
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	return resultLines.concat(generateModifierResultLines(addModifier(survivors, distraction).concat(addModifier(survivors, frailty))));
 }, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,

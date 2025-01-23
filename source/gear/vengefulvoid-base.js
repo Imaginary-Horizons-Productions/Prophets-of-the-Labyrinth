@@ -13,9 +13,6 @@ module.exports = new GearTemplate("Vengeful Void",
 ).setCost(200)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, reactiveBonus, critBonus } } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
 		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(targets[0]), team: targets[0].team });
@@ -26,7 +23,11 @@ module.exports = new GearTemplate("Vengeful Void",
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		return resultLines;
 	}, { type: "single", team: "foe" })
 	.setUpgrades("Hexing Vengeful Void", "Numbing Vengeful Void")
 	.setCharges(15)

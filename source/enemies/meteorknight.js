@@ -24,7 +24,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure);
+		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
 	},
 	selector: selectRandomFoe,
 	next: "random"
@@ -36,13 +36,13 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	effect: (targets, user, adventure) => {
 		const baseDamage = user.getPower() + 75;
 		const bonusDamage = 25
-		let results = [];
+		const resultLines = [];
 		for (const target of targets) {
 			const pendingDamage = (user.crit ? 2 : 1) * ((target.protection > 0 ? 0 : bonusDamage) + baseDamage);
-			results.push(...dealDamage([target], user, pendingDamage, false, user.essence, adventure));
+			resultLines.push(...dealDamage([target], user, pendingDamage, false, user.essence, adventure).resultLines);
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return results;
+		return resultLines;
 	},
 	selector: selectRandomFoe,
 	next: "random"

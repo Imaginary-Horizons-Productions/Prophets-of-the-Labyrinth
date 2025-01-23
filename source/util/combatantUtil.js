@@ -66,7 +66,10 @@ function livesCheck(previousLives, currentLives) {
  */
 function dealDamage(targets, assailant, damage, isUnblockable, essence, adventure) {
 	const previousLifeCount = adventure.lives;
-	const results = [];
+	/** @type {string[]} */
+	const resultLines = [];
+	/** @type {Combatant[]} */
+	const survivors = [];
 	for (const target of targets) {
 		if (target.hp > 0) { // Skip if target is downed (necessary for multi-hit moves hitting same target)
 			if (!(`${essence} Absorption` in target.modifiers)) {
@@ -107,27 +110,30 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 					const downedLines = downedCheck(target, adventure);
 					if (downedLines.addendum !== "") {
 						damageLine += downedLines.addendum;
+						if (target.hp > 0) {
+							survivors.push(target);
+						}
 					}
-					results.push(damageLine, ...downedLines.extraLines);
+					resultLines.push(damageLine, ...downedLines.extraLines);
 					if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
 						const midasGold = Math.floor(pendingDamage / 10 * target.modifiers["Curse of Midas"]);
 						adventure.room.addResource("Gold", "Currency", "loot", midasGold);
-						results.push(`${getApplicationEmojiMarkdown("Curse of Midas")}: Loot +${midasGold}g`)
+						resultLines.push(`${getApplicationEmojiMarkdown("Curse of Midas")}: Loot +${midasGold}g`)
 					}
 				} else {
 					removeModifier([target], { name: "Evasion", stacks: 1 });
-					results.push(`${target.name} evades the attack!`);
+					resultLines.push(`${target.name} evades the attack!`);
 				}
 			} else {
-				results.push(gainHealth(target, damage, adventure, "Essence Absorption"));
+				resultLines.push(gainHealth(target, damage, adventure, "Essence Absorption"));
 			}
 		}
 	}
 	const lifeLine = livesCheck(previousLifeCount, adventure.lives);
 	if (lifeLine) {
-		results.push(lifeLine);
+		resultLines.push(lifeLine);
 	}
-	return results;
+	return { resultLines, survivors };
 }
 
 const MODIFIER_DAMAGE_PER_STACK = {

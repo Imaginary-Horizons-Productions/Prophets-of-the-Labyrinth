@@ -14,15 +14,16 @@ module.exports = new GearTemplate("Disenchanting Lightning Staff",
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, critBonus, buffRemovals } } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
 		const reciepts = [];
-		for (const target of targets) {
+		for (const target of survivors) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 			if (targetBuffs.length > 0) {
 				for (let i = 0; i < buffRemovals; i++) {
@@ -31,7 +32,7 @@ module.exports = new GearTemplate("Disenchanting Lightning Staff",
 				}
 			}
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
 	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
 	.setSidegrades("Hexing Lightning Staff")
 	.setCooldown(2)

@@ -107,7 +107,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
-		return dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);
+		return dealDamage(targets, user, pendingDamage, false, "Darkness", adventure).resultLines;
 	},
 	selector: selectRandomFoe,
 	next: "Deploy Drone"

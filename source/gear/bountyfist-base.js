@@ -14,16 +14,17 @@ module.exports = new GearTemplate(variantName,
 ).setCost(200)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, critBonus } } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		const goldUsed = Math.floor(adventure.gold * (pactCost[0] / 100));
 		adventure.gold -= goldUsed;
 		let pendingDamage = damage.calculate(user) + goldUsed;
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(`${user.name}'s ${variantName} consumed ${goldUsed}g.`);
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		return resultLines.concat(`${user.name}'s ${variantName} consumed ${goldUsed}g.`);
 	}, { type: "single", team: "foe" })
 	.setUpgrades("Midas's Bounty Fist", "Thirsting Bounty Fist")
 	.setPactCost([10, "@{pactCost}% of party gold"])

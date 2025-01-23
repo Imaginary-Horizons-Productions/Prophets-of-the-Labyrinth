@@ -13,16 +13,17 @@ module.exports = new GearTemplate("Furious Spiked Shield",
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { protection, critBonus } } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		addProtection([user], protection.calculate(user));
 		const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
 		let pendingDamage = user.protection * furiousness;
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		return resultLines;
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Reinforced Spiked Shield")
 	.setCooldown(2)

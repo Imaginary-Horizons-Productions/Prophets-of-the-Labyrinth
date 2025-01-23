@@ -15,15 +15,16 @@ module.exports = new GearTemplate("Opportunist's Tempestuous Wrath",
 	.setEffect((targets, user, adventure) => {
 		const { essence, modifiers: [empowerment, targetModifier], scalings: { damage, critBonus } } = module.exports;
 		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
-		if (user.essence === essence) {
-			changeStagger(allTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		const resultLines = generateModifierResultLines(addModifier([user], { name: empowerment.name, stacks: empowerment.stacks.calculate(user) }));
 		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return resultLines.concat(dealDamage(allTargets, user, pendingDamage, false, essence, adventure), payHP(user, user.modifiers.Empowerment, adventure));
+		const { resultLines: damageResults, survivors } = dealDamage(allTargets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		return resultLines.concat(damageResults, payHP(user, user.modifiers.Empowerment, adventure));
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Flanking Tempestuous Wrath")
 	.setPactCost([0, "(Empowerment stacks) HP after move"])

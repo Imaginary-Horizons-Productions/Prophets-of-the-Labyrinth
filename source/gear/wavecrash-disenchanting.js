@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Disenchanting Wave Crash",
 		}
 		const resultLines = generateModifierResultLines(combineModifierReceipts(reciepts));
 		if (user.crit) {
-			resultLines.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure));
+			resultLines.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure).resultLines);
 		}
 		return resultLines;
 	}, { type: "single", team: "foe" })

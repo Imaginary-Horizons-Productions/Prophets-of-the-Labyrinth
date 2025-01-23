@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Brute",
 			// Mark or Mug rolls on [0, 3] then adds 2 for the number of 'The Target' stacks it applies
 			return generateModifierResultLines(addModifier([target], { name: "The Target", stacks: user.roundRns[`Mug or Mark${SAFE_DELIMITER}Mug or Mark`][0] + 2 }));
 		} else {
-			const resultLines = dealDamage([markedTarget], user, 70, false, "Unaligned", adventure);
+			const resultLines = dealDamage([markedTarget], user, 70, false, "Unaligned", adventure).resultLines;
 			changeStagger([markedTarget], user, 3);
 			resultLines.push(`${markedTarget.name} is Staggered.`);
 			resultLines.push(...generateModifierResultLines(removeModifier([markedTarget], { name: "The Target", stacks: 1, force: true })));

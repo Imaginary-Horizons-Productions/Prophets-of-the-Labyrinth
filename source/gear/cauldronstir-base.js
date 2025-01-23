@@ -22,10 +22,9 @@ module.exports = new GearTemplate(variantName,
 		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}
-	resultLines.unshift(...dealDamage(targets, user, pendingDamage, false, element, adventure));
-	const stillLivingTargets = targets.filter(target => target.hp > 0);
-	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-	return resultLines;
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, element, adventure);
+	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	return resultLines.concat(resultLines);
 }, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,

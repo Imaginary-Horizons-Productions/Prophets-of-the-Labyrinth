@@ -22,7 +22,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			let damage = user.getPower() + 100;
 			addProtection([user], user.crit ? 100 : 50);
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
-			return dealDamage(targets, user, damage, false, user.essence, adventure).concat([`${user.name} gains protection.`]);
+			return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines.concat([`${user.name} gains protection.`]);
 		},
 		selector: selectRandomFoe,
 		next: "random"
@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Treasure Elemental",
 			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 			const texts = [];
 			for (let i = 0; i < 3; i++) {
-				texts.push(...dealDamage(targets, user, damage, false, user.essence, adventure));
+				texts.push(...dealDamage(targets, user, damage, false, user.essence, adventure).resultLines);
 			}
 			return texts;
 		},

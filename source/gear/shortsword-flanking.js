@@ -17,10 +17,9 @@ module.exports = new GearTemplate("Flanking Shortsword",
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-		const stillLivingTargets = targets.filter(target => target.hp > 0);
-		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines.concat(generateModifierResultLines(addModifier([user], finesse).concat(addModifier(stillLivingTargets, exposure))));
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		return resultLines.concat(generateModifierResultLines(addModifier([user], finesse).concat(addModifier(survivors, exposure))));
 	}, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,

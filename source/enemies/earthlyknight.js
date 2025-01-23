@@ -28,7 +28,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		const resultLines = dealDamage(targets, user, damage, false, user.essence, adventure);
+		const resultLines = dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
 		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 			if (targetBuffs.length > 0) {
@@ -52,7 +52,7 @@ module.exports = new EnemyTemplate("Earthly Knight",
 			damage *= 2;
 		}
 		changeStagger(targets, user, 2);
-		return [...dealDamage(targets, user, damage, false, user.essence, adventure), joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered.")];
+		return [...dealDamage(targets, user, damage, false, user.essence, adventure).resultLines, joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered.")];
 	},
 	selector: selectAllFoes,
 	next: "random"

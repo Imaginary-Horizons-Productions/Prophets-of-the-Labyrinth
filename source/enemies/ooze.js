@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Ooze",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure);
+		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
 	},
 	selector: selectRandomFoe,
 	next: "random"

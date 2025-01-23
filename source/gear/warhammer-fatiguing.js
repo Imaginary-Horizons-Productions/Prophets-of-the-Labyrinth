@@ -13,9 +13,6 @@ module.exports = new GearTemplate("Fatiguing Warhammer",
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, awesomeBonus, critBonus }, modifiers: [impotence] } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
 		if (targets[0].isStunned) {
 			pendingDamage += awesomeBonus;
@@ -23,7 +20,14 @@ module.exports = new GearTemplate("Fatiguing Warhammer",
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier(targets, impotence)));
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (survivors.length > 0) {
+			if (user.essence === essence) {
+				changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+			}
+			resultLines.push(...generateModifierResultLines(addModifier(survivors, impotence)));
+		}
+		return resultLines;
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Toxic Warhammer")
 	.setCooldown(1)
