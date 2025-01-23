@@ -17,10 +17,9 @@ module.exports = new GearTemplate("Bouncing Flourish",
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	const stillLivingTargets = targets.filter(target => target.hp > 0);
-	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-	return resultLines.concat(generateModifierResultLines(addModifier(stillLivingTargets, distraction)));
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	return resultLines.concat(generateModifierResultLines(addModifier(survivors, distraction)));
 }, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,

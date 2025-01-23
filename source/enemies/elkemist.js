@@ -48,7 +48,7 @@ module.exports = new EnemyTemplate("Elkemist",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		const resultLines = dealDamage(targets, user, damage, false, user.essence, adventure);
+		const resultLines = dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
 		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Trouble${SAFE_DELIMITER}progress`][0] });
 		progressCheck(user, wrappedProgressReceipt, resultLines);
 		return resultLines;
@@ -67,7 +67,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		if (user.crit) {
 			damage *= 2;
 		}
-		return dealDamage(targets, user, damage, false, "Fire", adventure);
+		return dealDamage(targets, user, damage, false, "Fire", adventure).resultLines;
 	},
 	selector: selectAllFoes,
 	next: "random",

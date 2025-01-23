@@ -42,9 +42,9 @@ module.exports = new EnemyTemplate("Starry Knight",
 			pendingDamage *= 2;
 		}
 		if (unfinishedChallenges.length > 0) {
-			return [`"Ha! You didn't finish ${bold(unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")])}."`, ...dealDamage([target], user, pendingDamage, false, "Light", adventure)];
+			return [`"Ha! You didn't finish ${bold(unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")])}."`, ...dealDamage([target], user, pendingDamage, false, "Light", adventure).resultLines];
 		} else {
-			return dealDamage([target], user, pendingDamage, false, "Light", adventure);
+			return dealDamage([target], user, pendingDamage, false, "Light", adventure).resultLines;
 		}
 	},
 	selector: selectRandomFoe,
@@ -57,7 +57,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 	effect: (targets, user, adventure) => {
 		let pendingDamage = user.getPower() + 50 * targets.length;
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, pendingDamage, false, "Light", adventure)
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).resultLines
 			.concat(generateModifierResultLines(combineModifierReceipts(addNewRandomInsults(targets, user.crit ? 2 : 1, adventure))));
 	},
 	selector: selectAllFoes,
@@ -89,7 +89,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
-		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Distraction", stacks: 4 })));
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Distraction", stacks: 4 })));
 	},
 	selector: selectRandomFoe,
 	next: "random"

@@ -13,21 +13,15 @@ module.exports = new GearTemplate("Lethal Longsword",
 	350,
 ).setEffect((targets, user, adventure) => {
 	const { essence, scalings: { damage, critBonus, levelUps } } = module.exports;
-	if (user.essence === essence) {
-		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-	}
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	let killCount = 0;
-	targets.forEach(target => {
-		if (target.hp < 1) {
-			killCount++
-		}
-	})
-	if (killCount > 0) {
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
+	if (survivors.length < targets.length) {
 		adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(user)}`, "levelsGained", "loot", levelUps);
 		resultLines.push(`${user.name} gains a level.`);
 	}

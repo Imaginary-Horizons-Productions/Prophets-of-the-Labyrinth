@@ -25,10 +25,9 @@ module.exports = new GearTemplate("Hastening Battle Standard",
 		})
 		resultLines.push(`${user.name}'s cooldowns are hastened.`);
 	}
-	resultLines.unshift(...dealDamage(targets, user, pendingDamage, false, essence, adventure));
-	const stillLivingTargets = targets.filter(target => target.hp > 0);
-	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-	return resultLines;
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	return damageResults.concat(resultLines);
 }, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,

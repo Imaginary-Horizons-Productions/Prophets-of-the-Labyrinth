@@ -16,9 +16,6 @@ module.exports = new GearTemplate("Fever Break",
 			return ["...but the party didn't have enough morale to pull it off."];
 		}
 
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let poisonDamage = 10;
 		let frailDamage = 20;
 		if (user.team === "delver") {
@@ -28,15 +25,22 @@ module.exports = new GearTemplate("Fever Break",
 			frailDamage += FUNNEL_BUFF * funnelCount;
 		}
 		const resultLines = [];
+		const survivors = [];
 		const receipts = [];
 		for (const target of targets) {
 			const poisonStacks = target.getModifierStacks("Poison");
 			const frailtyStacks = target.getModifierStacks("Frailty");
 			const pendingDamage = poisonDamage * (poisonStacks ** 2 + poisonStacks) / 2 + frailDamage * frailtyStacks;
-			resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure));
-			if (!user.crit && target.hp > 0) {
-				receipts.push(...removeModifier([target], { name: "Poison", stacks: "all" }).concat(removeModifier([target], { name: "Frailty", stacks: "all" })));
+			resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure).resultLines);
+			if (target.hp > 0) {
+				survivors.push(target);
+				if (!user.crit) {
+					receipts.push(...removeModifier([target], { name: "Poison", stacks: "all" }).concat(removeModifier([target], { name: "Frailty", stacks: "all" })));
+				}
 			}
+		}
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}, { type: "all", team: "foe" })

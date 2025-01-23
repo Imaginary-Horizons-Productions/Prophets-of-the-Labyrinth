@@ -17,13 +17,16 @@ module.exports = new GearTemplate("Taunting Lance",
 		pendingProtection *= critBonus;
 	}
 	addProtection([user], pendingProtection);
-	changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
-	const resultLines = dealDamage([target], user, damage.calculate(user), false, essence, adventure).concat(`${user.name} gains protection.`);
-	const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
-	const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
-	if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
-		targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-		resultLines.push(`${target.name} falls for the provocation.`);
+	const { resultLines, survivors } = dealDamage([target], user, damage.calculate(user), false, essence, adventure);
+	resultLines.push(`${user.name} gains protection.`);
+	if (survivors.length > 0) {
+		changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
+		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
+		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
+		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
+			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
+			resultLines.push(`${target.name} falls for the provocation.`);
+		}
 	}
 	return resultLines;
 }, { type: "single", team: "foe" })

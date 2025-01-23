@@ -16,14 +16,13 @@ module.exports = new GearTemplate("Hunter's Stick",
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	const reciepts = [];
-	const stillLivingTargets = targets.filter(target => target.hp > 0);
-	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-	if (stillLivingTargets.length < targets.length) {
+	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (survivors.length < targets.length) {
 		reciepts.push(...addModifier([user], empowerment));
 	}
-	reciepts.push(...addModifier(stillLivingTargets, impotence));
+	reciepts.push(...addModifier(survivors, impotence));
 	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
 }, { type: "single", team: "foe" })
 	.setScalings({

@@ -15,23 +15,26 @@ module.exports = new GearTemplate(variantName,
 ).setCost(200)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, buffsRemoved, critBonus } } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
-		let pendingBuffRemovals = buffsRemoved;
-		if (user.crit) {
-			pendingBuffRemovals *= critBonus;
-		}
-		const targetBuffs = Object.keys(targets[0].modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-		const reciepts = [];
-		if (targetBuffs.length > 0) {
-			for (let i = 0; i < pendingBuffRemovals; i++) {
-				const selectedBuff = targetBuffs.splice(user.roundRns(`${variantName}${SAFE_DELIMITER}buffs`), 1);
-				reciepts.push(...removeModifier(targets, { name: selectedBuff, stacks: "all" }));
+		const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+		if (survivors.length > 0) {
+			if (user.essence === essence) {
+				changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 			}
+			let pendingBuffRemovals = buffsRemoved;
+			if (user.crit) {
+				pendingBuffRemovals *= critBonus;
+			}
+			const targetBuffs = Object.keys(survivors[0].modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
+			const reciepts = [];
+			if (targetBuffs.length > 0) {
+				for (let i = 0; i < pendingBuffRemovals; i++) {
+					const selectedBuff = targetBuffs.splice(user.roundRns(`${variantName}${SAFE_DELIMITER}buffs`), 1);
+					reciepts.push(...removeModifier(survivors, { name: selectedBuff, stacks: "all" }));
+				}
+			}
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(reciepts)));
 		}
-		const pendingDamage = damage.calculate(user);
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
+		return resultLines;
 	}, { type: "single", team: "foe" })
 	.setUpgrades("Fatiguing Arcane Sledge", "Kinetic Arcane Sledge")
 	.setCooldown(1)

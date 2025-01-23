@@ -15,9 +15,8 @@ module.exports = new GearTemplate("Furious Life Drain",
 	if (user.crit) {
 		pendingHealing *= critBonus;
 	}
-	const resultLines = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
-	const stillLivingTargets = targets.filter(target => target.hp > 0);
-	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	return resultLines.concat(gainHealth(user, pendingHealing, adventure));
 }, { type: "single", team: "foe" })
 	.setScalings({

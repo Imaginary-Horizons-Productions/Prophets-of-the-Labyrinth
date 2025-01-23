@@ -18,17 +18,16 @@ module.exports = new GearTemplate(variantName,
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	const stillLivingTargets = targets.filter(target => target.hp > 0);
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	const reciepts = [];
-	for (const target of targets) {
+	for (const target of survivors) {
 		for (const modifier in target.modifiers) {
 			if (getModifierCategory(modifier) === "Debuff") {
 				reciepts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
 			}
 		}
 	}
-	reciepts.push(...addModifier(stillLivingTargets, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }));
+	reciepts.push(...addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }));
 	return resultLines.concat(generateModifierResultLines(reciepts));
 }, { type: "single", team: "foe" })
 	.setModifiers(deckOfCardsMisfortune(variantName))

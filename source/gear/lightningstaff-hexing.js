@@ -13,14 +13,15 @@ module.exports = new GearTemplate("Hexing Lightning Staff",
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, critBonus }, modifiers: [misfortune] } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(addModifier(targets, misfortune));
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		return resultLines.concat(addModifier(survivors, misfortune));
 	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
 	.setSidegrades("Disenchanting Lightning Staff")
 	.setCooldown(2)

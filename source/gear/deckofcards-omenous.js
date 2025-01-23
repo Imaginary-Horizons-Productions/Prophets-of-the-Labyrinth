@@ -17,14 +17,13 @@ module.exports = new GearTemplate(variantName,
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	const stillLivingTargets = targets.filter(target => target.hp > 0);
-	if (stillLivingTargets.length > 0) {
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	if (survivors.length > 0) {
 		let misfortuneStacks = misfortune.stacks.calculate(user);
-		if (getCombatantCounters(targets[0]).includes(essence)) {
+		if (getCombatantCounters(survivors[0]).includes(essence)) {
 			misfortuneStacks *= 2;
 		}
-		resultLines.push(...generateModifierResultLines(addModifier(stillLivingTargets, { name: misfortune.name, stacks: misfortuneStacks })))
+		resultLines.push(...generateModifierResultLines(addModifier(survivors, { name: misfortune.name, stacks: misfortuneStacks })))
 	}
 	return resultLines;
 }, { type: "single", team: "foe" })

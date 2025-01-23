@@ -13,25 +13,21 @@ module.exports = new GearTemplate("Double Longsword",
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, critBonus, levelUps } } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(dealDamage(targets, user, pendingDamage, false, essence, adventure));
-		let killCount = 0;
-		targets.forEach(target => {
-			if (target.hp < 1) {
-				killCount++
-			}
-		})
-		if (killCount > 0) {
-			adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(user)}`, "levelsGained", "loot", levelUps);
-			resultLines.push(`${user.name} gains a level.`);
+		const { resultLines: firstresultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		const { resultLines: secondresultLines, survivors: finalSurvivors } = dealDamage(survivors, user, pendingDamage, false, essence, adventure);
+		const allresultLines = firstresultLines.concat(secondresultLines);
+		if (user.essence === essence) {
+			changeStagger(finalSurvivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return resultLines;
+		if (finalSurvivors.length < targets.length) {
+			adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(user)}`, "levelsGained", "loot", levelUps);
+			allresultLines.push(`${user.name} gains a level.`);
+		}
+		return allresultLines;
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Lethal Longsword")
 	.setCooldown(2)

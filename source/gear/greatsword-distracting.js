@@ -13,14 +13,15 @@ module.exports = new GearTemplate("Distracting Greatsword",
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, critBonus }, modifiers: [distraction] } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, distraction))));
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(survivors, distraction))));
 	}, { type: `blast${SAFE_DELIMITER}1`, team: "foe" })
 	.setSidegrades("Chaining Greatsword")
 	.setCooldown(2)

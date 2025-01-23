@@ -13,9 +13,6 @@ module.exports = new GearTemplate("Shattering Vacuum Implosion",
 ).setCost(350)
 	.setEffect(([target], user, adventure) => {
 		const { essence, scalings: { damage, duelistsBonus, critBonus }, modifiers: [frailty] } = module.exports;
-		if (user.essence === essence) {
-			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
 		// Duelist's check
 		const userIndex = adventure.getCombatantIndex(user);
@@ -26,7 +23,11 @@ module.exports = new GearTemplate("Shattering Vacuum Implosion",
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return dealDamage([target], user, pendingDamage, false, essence, adventure).concat(generateModifierResultLines(addModifier([target], frailty)));
+		const { resultLines, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		return resultLines.concat(generateModifierResultLines(addModifier([target], frailty)));
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Urgent Vacuum Implosion")
 	.setCharges(15)

@@ -16,9 +16,8 @@ module.exports = new GearTemplate("Centering Daggers",
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	const stillLivingTargets = targets.filter(target => target.hp > 0);
-	changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	changeStagger([user], user, selfStagger);
 	return resultLines.concat(generateModifierResultLines(addModifier([user], excellence)), `${user.name} shrugs off some Stagger.`);
 }, { type: "single", team: "foe" })

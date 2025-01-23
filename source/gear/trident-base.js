@@ -19,10 +19,9 @@ module.exports = new GearTemplate(variantName,
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 		if (user.essence === essence) {
-			const stillLivingTargets = targets.filter(target => target.hp > 0);
-			changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		return resultLines.concat(generateModifierResultLines(removeModifier([user], { name: userDebuffs[user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" })));

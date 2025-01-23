@@ -13,19 +13,19 @@ module.exports = new GearTemplate("Toxic Flame Scythes",
 ).setCost(350)
 	.setEffect(([target], user, adventure) => {
 		const { essence, scalings: { damage, critBonus }, modifiers: [poison] } = module.exports;
-		if (user.essence === essence) {
-			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage + user.getPower();
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
+		const { resultLines } = dealDamage([target], user, pendingDamage, false, essence, adventure);
 		if (target.hp > (user.getDamageCap() / 2)) {
 			target.hp = 0;
 			const { extraLines } = downedCheck(target, adventure);
 			return [`${target.name} meets the reaper!`].concat(extraLines);
 		} else {
+			if (user.essence === essence) {
+				changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
+			}
 			return resultLines.concat(generateModifierResultLines(addModifier([target], poison)));
 		}
 	}, { type: "single", team: "foe" })

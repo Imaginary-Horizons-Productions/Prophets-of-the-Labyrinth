@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Fatiguing Wave Crash",
 		}
 		const resultLines = generateModifierResultLines(addModifier(targets, incompatibility).concat(addModifier(targets, impotence)));
 		if (user.crit) {
-			resultLines.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure));
+			resultLines.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure).resultLines);
 		}
 		return resultLines;
 	}, { type: "single", team: "foe" })

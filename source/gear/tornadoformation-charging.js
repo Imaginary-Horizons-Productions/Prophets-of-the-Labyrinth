@@ -18,10 +18,10 @@ module.exports = new GearTemplate("Charging Tornado Formation",
 			return ["...but the party didn't have enough morale to pull it off."];
 		}
 
+		const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		const resultLines = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 		const reciepts = [];
 		const pendingSwiftness = { name: swiftness.name, stacks: swiftness.stacks.calculate(user) };
 		const userTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);

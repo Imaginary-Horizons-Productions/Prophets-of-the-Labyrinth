@@ -18,8 +18,9 @@ module.exports = new GearTemplate("Juggernaut's Lance",
 	}
 	addProtection([user], pendingProtection);
 	addProtection([user], pendingProtection);
-	changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-	return dealDamage(targets, user, damage.calculate(user), false, essence, adventure).concat(`${user.name} gains protection.`);
+	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	return resultLines.concat(`${user.name} gains protection.`);
 }, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,

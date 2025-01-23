@@ -13,14 +13,11 @@ module.exports = new GearTemplate("Thief's Flame Scythes",
 ).setCost(350)
 	.setEffect(([target], user, adventure) => {
 		const { essence, scalings: { damage, critBonus, bounty } } = module.exports;
-		if (user.essence === essence) {
-			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		const resultLines = dealDamage([target], user, pendingDamage, false, essence, adventure);
+		const { resultLines } = dealDamage([target], user, pendingDamage, false, essence, adventure);
 		if (target.hp > (user.getDamageCap() / 2)) {
 			target.hp = 0;
 			const { extraLines } = downedCheck(target, adventure);
@@ -28,6 +25,9 @@ module.exports = new GearTemplate("Thief's Flame Scythes",
 			extraLines.push(`${user.name} pillages ${bounty}g.`);
 			return [`${target.name} meets the reaper!`].concat(extraLines);
 		} else {
+			if (user.essence === essence) {
+				changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
+			}
 			return resultLines;
 		}
 	}, { type: "single", team: "foe" })

@@ -17,14 +17,14 @@ module.exports = new GearTemplate("Accurate Overburn Explosion",
 		(targets, user, adventure) => {
 			const { essence, modifiers: [targetModifier], scalings: { damage, critBonus }, pactCost } = module.exports;
 			const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
-			if (user.essence === essence) {
-				changeStagger(allTargets, user, ESSENCE_MATCH_STAGGER_FOE);
-			}
 			let pendingDamage = damage.calculate(user);
 			if (user.crit) {
 				pendingDamage *= critBonus;
 			}
-			const resultLines = dealDamage(allTargets, user, pendingDamage, false, essence, adventure);
+			const { resultLines, survivors } = dealDamage(allTargets, user, pendingDamage, false, essence, adventure);
+			if (user.essence === essence) {
+				changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+			}
 			if (user.gear) {
 				for (const gear of user.gear) {
 					gear.cooldown += pactCost[0];

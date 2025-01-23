@@ -13,14 +13,15 @@ module.exports = new GearTemplate("Greatsword",
 ).setCost(200)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, critBonus } } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		return dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		return resultLines;
 	}, { type: `blast${SAFE_DELIMITER}1`, team: "foe" })
 	.setUpgrades("Chaining Greatsword", "Distracting Greatsword")
 	.setCooldown(2)

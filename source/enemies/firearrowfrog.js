@@ -19,7 +19,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 20;
-		const resultLines = dealDamage(targets, user, damage, false, user.essence, adventure);
+		const resultLines = dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
 		return resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 6 : 3 })));
 	},
 	selector: selectRandomFoe,

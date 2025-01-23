@@ -14,21 +14,22 @@ module.exports = new GearTemplate("Net Launcher",
 ).setCost(200)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, critBonus }, modifiers: [torpidity] } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
-		let torpidityTargets = targets;
 		if (user.crit) {
 			pendingDamage *= critBonus;
+		}
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		let torpidityTargets = survivors;
+		if (user.crit) {
 			if (user.team === "delver") {
-				torpidityTargets = adventure.room.enemies;
+				torpidityTargets = adventure.room.enemies.filter(target => target.hp > 0);
 			} else {
 				torpidityTargets = adventure.delvers;
 			}
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-		torpidityTargets = torpidityTargets.filter(target => target.hp > 0);
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) }))));
 	}, { type: "single", team: "foe" })
 	.setUpgrades("Tormenting Net Launcher", "Thief's Net Launcher")

@@ -16,13 +16,13 @@ module.exports = new GearTemplate("Reaper's Life Drain",
 	if (user.crit) {
 		pendingHealing *= critBonus;
 	}
-	const resultLines = dealDamage([target], user, damage.calculate(user), false, essence, adventure);
+	const { resultLines } = dealDamage([target], user, damage.calculate(user), false, essence, adventure);
 	if (target.hp > (user.getDamageCap() / 2)) {
 		target.hp = 0;
 		const { extraLines } = downedCheck(target, adventure);
 		return [`${target.name} meets the reaper!`].concat(extraLines, gainHealth(user, pendingHealing, adventure));
 	} else {
-		changeStagger(stillLivingTargets, user, ESSENCE_MATCH_STAGGER_FOE);
+		changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		return resultLines.concat(gainHealth(user, pendingHealing, adventure));
 	}
 }, { type: "single", team: "foe" })

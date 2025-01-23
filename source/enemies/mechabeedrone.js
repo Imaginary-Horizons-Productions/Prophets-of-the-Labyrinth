@@ -21,7 +21,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
+		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
 	},
 	selector: selectRandomFoe,
 	next: "Barrel Roll"
@@ -67,7 +67,7 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 		user.hp = 0;
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 
-		return dealDamage(targets, user, damage, false, user.essence, adventure);
+		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
 	},
 	selector: selectAllFoes,
 	next: "Sting"

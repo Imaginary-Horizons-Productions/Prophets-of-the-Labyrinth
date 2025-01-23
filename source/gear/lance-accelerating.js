@@ -17,8 +17,9 @@ module.exports = new GearTemplate("Accelerating Lance",
 		pendingProtection *= critBonus;
 	}
 	addProtection([user], pendingProtection);
-	changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-	return dealDamage(targets, user, damage.calculate(user), false, essence, adventure).concat(`${user.name} gains protection.`, generateModifierResultLines(addModifier([user], swiftness)));
+	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	return resultLines.concat(`${user.name} gains protection.`, generateModifierResultLines(addModifier([user], swiftness)));
 }, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,

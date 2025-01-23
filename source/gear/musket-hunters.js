@@ -14,17 +14,11 @@ module.exports = new GearTemplate(variantName,
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage }, cooldown, modifiers: [empowerment] } = module.exports;
+		const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		const resultLines = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
-		let killCount = 0;
-		targets.forEach(target => {
-			if (target.hp < 1) {
-				killCount++
-			}
-		})
-		if (killCount > 0) {
+		if (survivors.length < targets.length) {
 			resultLines.push(...generateModifierResultLines(addModifier([user], empowerment)));
 		}
 		if (user.crit && user.gear) {

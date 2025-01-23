@@ -14,29 +14,24 @@ module.exports = new GearTemplate("Thief's Net Launcher",
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
 		const { essence, scalings: { damage, critBonus, bounty }, modifiers: [torpidity] } = module.exports;
-		if (user.essence === essence) {
-			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		}
 		let pendingDamage = damage.calculate(user);
-		let torpidityTargets = targets;
 		if (user.crit) {
 			pendingDamage *= critBonus;
+		}
+		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		let torpidityTargets = survivors;
+		if (user.crit) {
 			if (user.team === "delver") {
-				torpidityTargets = adventure.room.enemies;
+				torpidityTargets = adventure.room.enemies.filter(target => target.hp > 0);
 			} else {
 				torpidityTargets = adventure.delvers;
 			}
 		}
-		const resultLines = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-		torpidityTargets = torpidityTargets.filter(target => target.hp > 0);
-		let killCount = 0;
-		targets.forEach(target => {
-			if (target.hp < 1) {
-				killCount++
-			}
-		})
-		if (killCount > 0) {
-			const totalBounty = killCount * bounty;
+		if (survivors.length < targets.length) {
+			const totalBounty = (targets.length - survivors.length) * bounty;
 			adventure.room.addResource("Gold", "Currency", "loot", totalBounty);
 			resultLines.push(`${user.name} pillages ${totalBounty}g.`);
 		}

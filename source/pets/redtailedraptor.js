@@ -11,7 +11,7 @@ module.exports = new PetTemplate(petName, Colors.Red,
 				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, petRNs) => {
 					const { modifiers: [swiftness] } = module.exports.moves[0][0];
-					const resultLines = dealDamage(targets, owner, 15, false, "Wind", adventure);
+					const { resultLines } = dealDamage(targets, owner, 15, false, "Wind", adventure);
 					return resultLines.concat(generateModifierResultLines(addModifier([owner], swiftness)));
 				}).setRnConfig(["enemyIndex"])
 				.setModifiers({ name: "Swiftness", stacks: 2 }),
@@ -19,7 +19,7 @@ module.exports = new PetTemplate(petName, Colors.Red,
 				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, petRNs) => {
 					const { modifiers: [swiftness] } = module.exports.moves[0][1];
-					const resultLines = dealDamage(targets, owner, 25, false, "Wind", adventure);
+					const { resultLines } = dealDamage(targets, owner, 25, false, "Wind", adventure);
 					return resultLines.concat(generateModifierResultLines(addModifier([owner], swiftness)));
 				}).setRnConfig(["enemyIndex"])
 				.setModifiers({ name: "Swiftness", stacks: 3 }),
@@ -29,7 +29,7 @@ module.exports = new PetTemplate(petName, Colors.Red,
 				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, petRNs) => {
 					const { modifiers: [swiftness] } = module.exports.moves[1][0];
-					const resultLines = dealDamage(targets, owner, 15, false, "Wind", adventure);
+					const { resultLines } = dealDamage(targets, owner, 15, false, "Wind", adventure);
 					return resultLines.concat(generateModifierResultLines(addModifier([owner], swiftness)));
 				}).setRnConfig(["enemyIndex"])
 				.setModifiers({ name: "Swiftness", stacks: 2 }),
@@ -37,7 +37,7 @@ module.exports = new PetTemplate(petName, Colors.Red,
 				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, petRNs) => {
 					const { modifiers: [swiftness] } = module.exports.moves[1][1];
-					const resultLines = dealDamage(targets, owner, 25, false, "Wind", adventure);
+					const { resultLines } = dealDamage(targets, owner, 25, false, "Wind", adventure);
 					return resultLines.concat(generateModifierResultLines(addModifier([owner], swiftness)));
 				}).setRnConfig(["enemyIndex"])
 				.setModifiers({ name: "Swiftness", stacks: 3 }),
