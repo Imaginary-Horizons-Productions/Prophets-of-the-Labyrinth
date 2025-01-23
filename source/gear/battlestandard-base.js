@@ -19,9 +19,9 @@ module.exports = new GearTemplate("Battle Standard",
 		adventure.room.morale += morale;
 		resultLines.push("The party's morale is increased!")
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-	return resultLines.concat(resultLines);
+	return damageResults.concat(resultLines);
 }, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,

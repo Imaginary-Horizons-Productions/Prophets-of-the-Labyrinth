@@ -19,9 +19,9 @@ module.exports = new GearTemplate("Flanking Battle Standard",
 		adventure.room.morale += morale;
 		resultLines.push("The party's morale is increased!")
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-	return resultLines.concat(resultLines, generateModifierResultLines(addModifier(survivors, exposure)));
+	return damageResults.concat(resultLines, generateModifierResultLines(addModifier(survivors, exposure)));
 }, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,
