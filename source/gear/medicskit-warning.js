@@ -44,5 +44,5 @@ module.exports = new GearTemplate(variantName,
 		debuffsCured: 1,
 		morale: 1
 	})
-	.setRnConfig({ debuffs: 2 })
+	.setRnConfig({ debuffs: 1 })
 	.setModifiers({ name: "Evasion", stacks: 1 });
