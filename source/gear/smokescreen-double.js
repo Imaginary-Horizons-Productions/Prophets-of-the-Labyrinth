@@ -25,5 +25,6 @@ module.exports = new GearTemplate("Double Smokescreen",
 	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "ally" })
 	.setSidegrades("Chaining Smokescreen")
 	.setCooldown(1)
+	.setRnConfig({ allies: bounceCount })
 	.setModifiers(scalingEvasion(1))
 	.setScalings({ critBonus: 2 });

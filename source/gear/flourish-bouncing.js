@@ -25,4 +25,5 @@ module.exports = new GearTemplate("Bouncing Flourish",
 		damage: archetypeActionDamageScaling,
 		critBonus: 2
 	})
+	.setRnConfig({ foes: bounceCount })
 	.setModifiers({ name: "Distraction", stacks: 3 });

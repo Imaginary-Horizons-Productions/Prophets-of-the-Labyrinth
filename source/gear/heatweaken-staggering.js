@@ -28,4 +28,5 @@ module.exports = new GearTemplate("Staggering Heat Weaken",
 	.setSidegrades("Numbing Heat Weaken")
 	.setCharges(15)
 	.setModifiers({ name: "Frailty", stacks: 2 })
-	.setStagger(2);
+	.setStagger(2)
+	.setRnConfig({ foes: bounceCount });

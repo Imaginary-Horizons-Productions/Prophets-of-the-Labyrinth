@@ -33,4 +33,5 @@ module.exports = new GearTemplate("Bouncing Flail",
 		damage: damageScalingGenerator(20),
 		critBonus: 2
 	})
+	.setRnConfig({ foes: bounceCount })
 	.setStagger(2);
