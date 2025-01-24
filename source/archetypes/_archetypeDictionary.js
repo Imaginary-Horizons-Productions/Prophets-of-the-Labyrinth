@@ -55,7 +55,7 @@ function rollArchetypes(count, allowDupes) {
 				results.push(archetype);
 			}
 		} else {
-			results.push(pool.splice(randomIndex, 1));
+			results.push(pool.splice(randomIndex, 1)[0]);
 		}
 	}
 	return results;

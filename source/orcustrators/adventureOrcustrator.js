@@ -271,7 +271,7 @@ function endRoom(roomType, thread) {
 	nextRoom(roomType, thread);
 }
 
-const rnsConcerningTargets = new Set(["vulnerabilities", "buffs", "debuffs"]);
+const rnsConcerningTargets = new Set(["vulnerabilities", "buffs", "debuffs", "Medicine"]);
 
 /**
  * Cache the random result of a move, onto the roundRns of a combatant
@@ -347,6 +347,9 @@ function cacheRoundRn(adventure, user, moveName, config) {
 				case "Deck of Cards":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(8, "battle"));
 					break;
+				case "Medicine":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(256, "battle"))
+					break;
 				default: {
 					const keyAsInt = parseInt(key);
 					if (!isNaN(keyAsInt)) {
@@ -416,7 +419,18 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 		case "Mug or Mark":
 			return `${user.name} will apply ${user.roundRns[roundRnKeyname][0] + 2} stacks of The Mark if there isn't a mark yet.`;
 		case "Deck of Cards":
-			return `${user.name}'s Deck of Cards will inflict ${user.roundRns[roundRnKeyname][0] + 2} stacks of Misfortune.`;
+			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname][0] + 2} ${getApplicationEmojiMarkdown("Misfortune")}.`;
+		case "Medicine": {
+			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
+			if (targetDebuffs.length > 1) {
+				const firstDebuff = getApplicationEmojiMarkdown(targetDebuffs.splice(user.roundRns[roundRnKeyname][0] % targetDebuffs.length, 1)[0]);
+				const secondDebuff = getApplicationEmojiMarkdown(targetDebuffs[user.roundRns[roundRnKeyname][1] % targetDebuffs.length]);
+				return `${user.name}'s ${moveName} will cure ${firstDebuff} (and ${secondDebuff} on 💥).`;
+			} else if (targetDebuffs.length === 1) {
+				return `${user.name}'s ${moveName} will cure ${getApplicationEmojiMarkdown(targetDebuffs[0])}.`;
+			}
+			break;
+		}
 		default:
 			console.error(`Invalid config key ${key} for predictRoundRnTargeted`);
 	}
@@ -470,7 +484,7 @@ function predictRoundRnOutcomes(adventure) {
 		if (counterpart) {
 			isCloneAlive = counterpart.hp > 0 && counterpart.archetype === "Mirror Clone";
 		}
-		for (const gear of delver.gear) {
+		for (const gear of delver.gear.concat({ name: getArchetypeActionName(delver.archetype, delver.specialization), cooldown: 0 })) {
 			if (gear.cooldown === 0) {
 				let rnConfig = getGearProperty(gear.name, "rnConfig")
 				let targetingTags = getGearProperty(gear.name, "targetingTags")

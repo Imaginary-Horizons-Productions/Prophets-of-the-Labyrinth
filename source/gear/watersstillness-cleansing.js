@@ -13,28 +13,23 @@ module.exports = new GearTemplate(variantName,
 	"Water"
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
-		const { essence, modifiers: [targetModifier], stagger, critMultiplier } = module.exports;
+		const { essence, modifiers: [targetModifier], stagger, scalings: { debuffsCured, critBonus } } = module.exports;
 		const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.delvers : adventure.room.enemies, targetModifier.name);
 		let pendingStaggerRelief = stagger;
 		if (user.essence === essence) {
 			pendingStaggerRelief += ESSENCE_MATCH_STAGGER_ALLY;
 		}
 		if (user.crit) {
-			pendingStaggerRelief *= critMultiplier;
+			pendingStaggerRelief *= critBonus;
 		}
 		changeStagger(allTargets, user, pendingStaggerRelief);
 		const receipts = [];
 		for (const target of targets) {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-			const debuffsToRemove = Math.min(targetDebuffs.length, user.crit ? 2 : 1);
+			const debuffsToRemove = Math.min(targetDebuffs.length, debuffsCured);
 			for (let i = 0; i < debuffsToRemove; i++) {
-				const debuffIndex = user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length;
-				const rolledDebuff = targetDebuffs[debuffIndex];
-				const [removalReceipt] = removeModifier([target], { name: rolledDebuff, stacks: "all" });
-				receipts.push(removalReceipt);
-				if (removalReceipt.succeeded.size > 0) {
-					targetDebuffs.splice(debuffIndex, 1);
-				}
+				const [rolledDebuff] = targetDebuffs.splice(user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][i] % targetDebuffs.length, 1);
+				receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 			}
 		}
 		return [joinAsStatement(false, allTargets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")].concat(generateModifierResultLines(combineModifierReceipts(receipts)));

@@ -17,15 +17,15 @@ module.exports = new GearTemplate("Disenchanting Wave Crash",
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		const reciepts = addModifier(targets, incompatibility);
+		const receipts = addModifier(targets, incompatibility);
 		const targetBuffs = Object.keys(targets[0].modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 		if (targetBuffs.length > 0) {
 			for (let i = 0; i < pendingBuffRemovals; i++) {
-				const selectedBuff = targetBuffs.splice(user.roundRns(`${gearName}${SAFE_DELIMITER}buffs`), 1);
-				reciepts.push(...removeModifier(targets, { name: selectedBuff, stacks: "all" }));
+				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${gearName}${SAFE_DELIMITER}buffs`), 1);
+				receipts.push(...removeModifier(targets, { name: selectedBuff, stacks: "all" }));
 			}
 		}
-		const resultLines = generateModifierResultLines(combineModifierReceipts(reciepts));
+		const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
 		if (user.crit) {
 			resultLines.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure).resultLines);
 		}

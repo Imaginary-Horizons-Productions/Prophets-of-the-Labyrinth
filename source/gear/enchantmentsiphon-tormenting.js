@@ -24,16 +24,16 @@ module.exports = new GearTemplate("Tormenting Enchantment Siphon",
 			pendingProtection *= critBonus;
 		}
 		addProtection([user], pendingProtection);
-		const reciepts = [];
+		const receipts = [];
 		for (const modifier in target.modifiers) {
 			if (getModifierCategory(modifier) === "Debuff") {
-				reciepts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+				receipts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
 			}
 		}
 		if (stolenProtection > 0) {
-			return [`${user.name} steals ${target.name}'s protection.`].concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
+			return [`${user.name} steals ${target.name}'s protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 		} else {
-			return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
+			return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 		}
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Flanking Enchantment Siphon")

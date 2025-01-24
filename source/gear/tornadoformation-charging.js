@@ -22,14 +22,14 @@ module.exports = new GearTemplate("Charging Tornado Formation",
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		const reciepts = [];
+		const receipts = [];
 		const pendingSwiftness = { name: swiftness.name, stacks: swiftness.stacks.calculate(user) };
 		const userTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 		if (user.crit) {
 			pendingSwiftness.stacks *= critBonus;
 		}
-		reciepts.push(...addModifier(userTeam, pendingSwiftness).concat(addModifier(userTeam, empowerment)));
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
+		receipts.push(...addModifier(userTeam, pendingSwiftness).concat(addModifier(userTeam, empowerment)));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Supportive Storm Formation")
 	.setMoraleRequirement(1)

@@ -20,28 +20,28 @@ module.exports = new GearTemplate(variantName,
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-		const reciepts = [];
+		const receipts = [];
 		if (user.crit) {
 			for (const debuff of userDebuffs) {
-				reciepts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
-				reciepts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
+				receipts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
+				receipts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 			}
 		} else {
 			for (let i = 0; i < debuffsTransferred; i++) {
-				const debuff = userDebuffs.splice(user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length, 1);
-				reciepts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
-				reciepts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
+				const [debuff] = userDebuffs.splice(user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length, 1);
+				receipts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
+				receipts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 			}
 		}
 		for (const target of targets) {
 			for (const modifier in target.modifiers) {
 				if (getModifierCategory(modifier) === "Debuff") {
-					reciepts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+					receipts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
 				}
 			}
 		}
-		reciepts.push(...addModifier([user], poison))
-		return generateModifierResultLines(combineModifierReceipts(reciepts));
+		receipts.push(...addModifier([user], poison))
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Centering Universal Solution")
 	.setPactCost([poisonStacks, "Gain @{pactCost} @e{Poison} afterwards"])
