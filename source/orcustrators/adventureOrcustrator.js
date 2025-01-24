@@ -416,7 +416,7 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 		case "Mug or Mark":
 			return `${user.name} will apply ${user.roundRns[roundRnKeyname][0] + 2} stacks of The Mark if there isn't a mark yet.`;
 		case "Deck of Cards":
-			return `${user.name}'s Deck of Cards will inflict ${user.roundRns[roundRnKeyname][0] + 2} stacks of Misfortune.`;
+			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname][0] + 2} ${getApplicationEmojiMarkdown("Misfortune")}.`;
 		default:
 			console.error(`Invalid config key ${key} for predictRoundRnTargeted`);
 	}
@@ -470,7 +470,7 @@ function predictRoundRnOutcomes(adventure) {
 		if (counterpart) {
 			isCloneAlive = counterpart.hp > 0 && counterpart.archetype === "Mirror Clone";
 		}
-		for (const gear of delver.gear) {
+		for (const gear of delver.gear.concat({ name: getArchetypeActionName(delver.archetype, delver.specialization), cooldown: 0 })) {
 			if (gear.cooldown === 0) {
 				let rnConfig = getGearProperty(gear.name, "rnConfig")
 				let targetingTags = getGearProperty(gear.name, "targetingTags")
