@@ -37,12 +37,12 @@ module.exports = new GearTemplate("Balanced Sandstorm Formation",
 		if (hadCooldowns.length > 0) {
 			resultLines.push(`${listifyEN(hadCooldowns)} had their cooldowns hastened.`);
 		}
-		const reciepts = [];
+		const receipts = [];
 		if (user.crit) {
-			reciepts.push(...addModifier(targets, impact));
+			receipts.push(...addModifier(targets, impact));
 		}
-		reciepts.push(...addModifier(targets, finesse));
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
+		receipts.push(...addModifier(targets, finesse));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}, { type: "all", team: "ally" })
 	.setSidegrades("Soothing Sandstorm Formation")
 	.setMoraleRequirement(2)

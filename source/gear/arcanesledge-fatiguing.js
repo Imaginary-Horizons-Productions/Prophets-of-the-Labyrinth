@@ -26,14 +26,14 @@ module.exports = new GearTemplate(variantName,
 				pendingBuffRemovals *= critBonus;
 			}
 			const targetBuffs = Object.keys(survivors[0].modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-			const reciepts = addModifier(survivors, { name: impotence.name, stacks: impotence.stacks.calculate(user) });
+			const receipts = addModifier(survivors, { name: impotence.name, stacks: impotence.stacks.calculate(user) });
 			if (targetBuffs.length > 0) {
 				for (let i = 0; i < pendingBuffRemovals; i++) {
-					const selectedBuff = targetBuffs.splice(user.roundRns(`${variantName}${SAFE_DELIMITER}buffs`), 1);
-					reciepts.push(...removeModifier(survivors, { name: selectedBuff, stacks: "all" }));
+					const [selectedBuff] = targetBuffs.splice(user.roundRns(`${variantName}${SAFE_DELIMITER}buffs`), 1);
+					receipts.push(...removeModifier(survivors, { name: selectedBuff, stacks: "all" }));
 				}
 			}
-			resultLines.push(...generateModifierResultLines(combineModifierReceipts(reciepts)));
+			resultLines.push(...generateModifierResultLines(combineModifierReceipts(receipts)));
 		}
 		return resultLines;
 	}, { type: "single", team: "foe" })

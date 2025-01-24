@@ -21,9 +21,9 @@ module.exports = new GearTemplate(variantName,
 
 		const essencePool = essenceList(["Unaligned"]);
 		const selectedEsesnce = essencePool[user.roundRns[`${variantName}${SAFE_DELIMITER}vulnerabilities`][0] % 6];
-		const reciepts = addModifier(targets, { name: `${selectedEsesnce} Vulnerability`, stacks: vulnerability.stacks });
-		reciepts.push(...addModifier(targets, clumsiness));
-		const resultLines = generateModifierResultLines(combineModifierReceipts(reciepts));
+		const receipts = addModifier(targets, { name: `${selectedEsesnce} Vulnerability`, stacks: vulnerability.stacks });
+		receipts.push(...addModifier(targets, clumsiness));
+		const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
 		let pendingStagger = 0;
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;

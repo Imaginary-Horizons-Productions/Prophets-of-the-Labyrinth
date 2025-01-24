@@ -22,12 +22,12 @@ module.exports = new GearTemplate(variantName,
 			pendingCures *= critBonus;
 		}
 		const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-		const reciepts = [];
+		const receipts = [];
 		for (let i = 0; i < pendingCures; i++) {
-			const selectedDebuff = targetDebuffs.splice(user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][i] % targetDebuffs.length, 1);
-			reciepts.push(...removeModifier([target], { name: selectedDebuff, stacks: "all" }));
+			const [selectedDebuff] = targetDebuffs.splice(user.roundRns[`${variantName}${SAFE_DELIMITER}Medicine`][i] % targetDebuffs.length, 1);
+			receipts.push(...removeModifier([target], { name: selectedDebuff, stacks: "all" }));
 		}
-		return generateModifierResultLines(combineModifierReceipts(reciepts));
+		return generateModifierResultLines(combineModifierReceipts(receipts));
 	}, { type: "single", team: "ally" })
 	.setSidegrades("Hastening Medicine")
 	.setCharges(15)
@@ -36,4 +36,4 @@ module.exports = new GearTemplate(variantName,
 		critBonus: 2,
 		priority: 1
 	})
-	.setRnConfig({ debuffs: 2 });
+	.setRnConfig({ Medicine: 2 });

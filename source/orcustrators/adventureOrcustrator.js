@@ -271,7 +271,7 @@ function endRoom(roomType, thread) {
 	nextRoom(roomType, thread);
 }
 
-const rnsConcerningTargets = new Set(["vulnerabilities", "buffs", "debuffs"]);
+const rnsConcerningTargets = new Set(["vulnerabilities", "buffs", "debuffs", "Medicine"]);
 
 /**
  * Cache the random result of a move, onto the roundRns of a combatant
@@ -347,6 +347,9 @@ function cacheRoundRn(adventure, user, moveName, config) {
 				case "Deck of Cards":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(8, "battle"));
 					break;
+				case "Medicine":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(256, "battle"))
+					break;
 				default: {
 					const keyAsInt = parseInt(key);
 					if (!isNaN(keyAsInt)) {
@@ -417,6 +420,17 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			return `${user.name} will apply ${user.roundRns[roundRnKeyname][0] + 2} stacks of The Mark if there isn't a mark yet.`;
 		case "Deck of Cards":
 			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname][0] + 2} ${getApplicationEmojiMarkdown("Misfortune")}.`;
+		case "Medicine": {
+			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
+			if (targetDebuffs.length > 1) {
+				const firstDebuff = getApplicationEmojiMarkdown(targetDebuffs.splice(user.roundRns[roundRnKeyname][0] % targetDebuffs.length, 1)[0]);
+				const secondDebuff = getApplicationEmojiMarkdown(targetDebuffs[user.roundRns[roundRnKeyname][1] % targetDebuffs.length]);
+				return `${user.name}'s ${moveName} will cure ${firstDebuff} (and ${secondDebuff} on 💥).`;
+			} else if (targetDebuffs.length === 1) {
+				return `${user.name}'s ${moveName} will cure ${getApplicationEmojiMarkdown(targetDebuffs[0])}.`;
+			}
+			break;
+		}
 		default:
 			console.error(`Invalid config key ${key} for predictRoundRnTargeted`);
 	}

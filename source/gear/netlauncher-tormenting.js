@@ -31,15 +31,15 @@ module.exports = new GearTemplate("Tormenting Net Launcher",
 				torpidityTargets = adventure.delvers;
 			}
 		}
-		const reciepts = addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) });
+		const receipts = addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) });
 		for (const target of survivors) {
 			for (const modifier in target.modifiers) {
 				if (getModifierCategory(modifier) === "Debuff") {
-					reciepts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+					receipts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
 				}
 			}
 		}
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(reciepts)));
+		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Thief's Net Launcher")
 	.setCooldown(1)

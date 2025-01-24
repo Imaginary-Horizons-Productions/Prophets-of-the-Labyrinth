@@ -19,16 +19,16 @@ module.exports = new GearTemplate(variantName,
 		pendingDamage *= critBonus;
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	const reciepts = [];
+	const receipts = [];
 	for (const target of survivors) {
 		for (const modifier in target.modifiers) {
 			if (getModifierCategory(modifier) === "Debuff") {
-				reciepts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+				receipts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
 			}
 		}
 	}
-	reciepts.push(...addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }));
-	return resultLines.concat(generateModifierResultLines(reciepts));
+	receipts.push(...addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }));
+	return resultLines.concat(generateModifierResultLines(receipts));
 }, { type: "single", team: "foe" })
 	.setModifiers(deckOfCardsMisfortune(variantName))
 	.setScalings({
