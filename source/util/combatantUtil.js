@@ -108,11 +108,10 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 						damageLine += ".";
 					}
 					const downedLines = downedCheck(target, adventure);
-					if (downedLines.addendum !== "") {
+					if (downedLines.addendum === "") {
+						survivors.push(target);
+					} else {
 						damageLine += downedLines.addendum;
-						if (target.hp > 0) {
-							survivors.push(target);
-						}
 					}
 					resultLines.push(damageLine, ...downedLines.extraLines);
 					if (pendingDamage > 0 && "Curse of Midas" in target.modifiers) {
