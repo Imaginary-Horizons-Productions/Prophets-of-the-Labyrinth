@@ -35,8 +35,7 @@ const extraCombatButtonsMap = {
 function generateCombatRoomBuilder(extraButtons) {
 	return (roomEmbed, adventure) => {
 		roomEmbed.setFooter({ text: `Room #${adventure.depth} - Round ${adventure.room.round}` });
-		const isCombatVictory = adventure.room.enemies?.every(enemy => enemy.hp === 0 || "Cowardice" in enemy.modifiers);
-		if (!isCombatVictory) {
+		if (adventure.getCombatState() === "continue") {
 			const buttons = [
 				module.exports.partyStatsButton,
 				module.exports.inspectSelfButton,
