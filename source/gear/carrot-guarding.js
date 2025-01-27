@@ -8,7 +8,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Guarding Carrot",
 	[
 		["use", "Grant <@{mod0Stacks}> @{mod0} and <@{protection}> protection to an ally and entice their pet to use its first move"],
-		["Critical💥", "@{mod0} + @{critMultiplier}"]
+		["Critical💥", "@{mod0} + @{critBonus}"]
 	],
 	"Support",
 	"Earth"
