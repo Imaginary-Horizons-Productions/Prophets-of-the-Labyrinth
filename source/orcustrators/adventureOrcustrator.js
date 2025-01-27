@@ -1064,6 +1064,7 @@ function handleEndCombat(combatState, adventure, thread, lastRoundText) {
 		case "defeat":
 			adventure.room.round++;
 			thread.send(completeAdventure(adventure, thread, "defeat", lastRoundText));
+			return;
 		case "victory":
 			if (adventure.depth >= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
 				thread.send(completeAdventure(adventure, thread, "success", lastRoundText));
