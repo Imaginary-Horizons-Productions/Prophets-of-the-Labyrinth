@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ThreadChannel, Message, EmbedBuilder, bold } = require("discord.js");
+const { ThreadChannel, Message, EmbedBuilder, bold, italic } = require("discord.js");
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
@@ -759,7 +759,7 @@ function resolveMove(move, adventure) {
 					effect = action.effect;
 					headline += `used ${moveName}`;
 					if (action.combatFlavor) {
-						headline += action.combatFlavor;
+						headline += ` ${italic(action.combatFlavor)}`;
 					}
 				}
 				break;
@@ -918,6 +918,10 @@ const RETAINING_MODIFIER_PAIRS = [["Exposure", "Distraction"], ["Evasion", "Vigi
  * @param {ThreadChannel} thread
  */
 function endRound(adventure, thread) {
+	if ("endedCombat" in adventure.room.history) {
+		return;
+	}
+
 	clearComponents(adventure.messageIds.battleRound, thread.messages);
 
 	const randomOrderBag = Array(adventure.room.moves.length).fill().map((_, idx) => idx) // ensure that unique values are available for each move
@@ -990,13 +994,9 @@ function endRound(adventure, thread) {
 		}
 		lastRoundText += resolveMove(move, adventure);
 
-		const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);
-		if (payload) {
-			thread.send(payload).then(message => {
-				if (type === "endCombat") {
-					adventure.messageIds.battleRound = message.id;
-				}
-			})
+		const combatState = adventure.getCombatState();
+		if (combatState !== "continue") {
+			handleEndCombat(combatState, adventure, thread, lastRoundText);
 			return;
 		}
 	}
@@ -1028,13 +1028,9 @@ function endRound(adventure, thread) {
 			lastRoundText += `Other Happenings\n-# ${otherHappenings.join("\n-# ")}`
 		}
 
-		const { payload, type } = checkEndCombat(adventure, thread, lastRoundText);
-		if (payload) {
-			thread.send(payload).then(message => {
-				if (type === "endCombat") {
-					adventure.messageIds.battleRound = message.id;
-				}
-			})
+		const combatState = adventure.getCombatState();
+		if (combatState !== "continue") {
+			handleEndCombat(combatState, adventure, thread, lastRoundText);
 			return;
 		}
 
@@ -1057,61 +1053,59 @@ function endRound(adventure, thread) {
 }
 
 /**
+ * @param {"defeat" | "victory"} combatState
  * @param {Adventure} adventure
  * @param {ThreadChannel} thread
  * @param {string} lastRoundText
  */
-function checkEndCombat(adventure, thread, lastRoundText) {
-	if (adventure.lives <= 0) {
-		adventure.room.round++;
-		return { payload: completeAdventure(adventure, thread, "defeat", lastRoundText), type: "adventureDefeat" };
-	}
+function handleEndCombat(combatState, adventure, thread, lastRoundText) {
+	adventure.room.history.endedCombat = [];
+	adventure.room.round++;
+	switch (combatState) {
+		case "defeat":
+			thread.send(completeAdventure(adventure, thread, "defeat", lastRoundText));
+			return;
+		case "victory":
+			if (adventure.depth >= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
+				thread.send(completeAdventure(adventure, thread, "success", lastRoundText));
+				return;
+			}
 
-	if (adventure.room.enemies.every(enemy => enemy.hp === 0 || "Cowardice" in enemy.modifiers)) {
-		if ("endedCombat" in adventure.room.history) {
-			return { type: "endCombat" };
-		}
-		adventure.room.history.endedCombat = [];
-
-		if (adventure.depth >= getLabyrinthProperty(adventure.labyrinth, "maxDepth")) {
-			return { payload: completeAdventure(adventure, thread, "success", lastRoundText), type: "adventureSuccess" };
-		}
-
-		for (const resourceName in adventure.room.resources) {
-			const resource = adventure.room.resources[resourceName];
-			if (resource.type === "levelsGained") {
-				const [_, index] = resourceName.split(SAFE_DELIMITER);
-				if (!index) {
-					for (const delver of adventure.delvers) {
-						levelUp(delver, resource.count, adventure);
+			for (const resourceName in adventure.room.resources) {
+				const resource = adventure.room.resources[resourceName];
+				if (resource.type === "levelsGained") {
+					const [_, index] = resourceName.split(SAFE_DELIMITER);
+					if (!index) {
+						for (const delver of adventure.delvers) {
+							levelUp(delver, resource.count, adventure);
+						}
+					} else {
+						levelUp(adventure.delvers[index], resource.count, adventure);
 					}
-				} else {
-					levelUp(adventure.delvers[index], resource.count, adventure);
 				}
 			}
-		}
 
-		// Gear drops
-		const gearThreshold = 1;
-		const gearMax = 4;
-		if (adventure.generateRandomNumber(gearMax, "general") < gearThreshold) {
-			const tier = rollGearTier(adventure);
-			const droppedGear = rollGear(tier, adventure);
-			if (droppedGear) {
-				adventure.room.addResource(droppedGear, "Gear", "loot", 1);
+			// Gear drops
+			const gearThreshold = 1;
+			const gearMax = 4;
+			if (adventure.generateRandomNumber(gearMax, "general") < gearThreshold) {
+				const tier = rollGearTier(adventure);
+				const droppedGear = rollGear(tier, adventure);
+				if (droppedGear) {
+					adventure.room.addResource(droppedGear, "Gear", "loot", 1);
+				}
 			}
-		}
 
-		// Item drops
-		const itemThreshold = 1;
-		const itemMax = 4;
-		if (adventure.generateRandomNumber(itemMax, "general") < itemThreshold) {
-			adventure.room.addResource(rollItem(adventure), "Item", "loot", 1);
-		}
-
-		return { payload: renderRoom(adventure, thread, lastRoundText), type: "endCombat" };
+			// Item drops
+			const itemThreshold = 1;
+			const itemMax = 4;
+			if (adventure.generateRandomNumber(itemMax, "general") < itemThreshold) {
+				adventure.room.addResource(rollItem(adventure), "Item", "loot", 1);
+			}
+			thread.send(renderRoom(adventure, thread, lastRoundText)).then(message => {
+				adventure.messageIds.battleRound = message.id;
+			});
 	}
-	return { type: "continueCombat" };
 }
 
 /** The round ends when all combatants have readied all their moves

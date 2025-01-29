@@ -13,7 +13,7 @@ module.exports = new GearTemplate(variantName,
 	"Earth"
 ).setCost(200)
 	.setEffect((targets, user, adventure) => {
-		const { essence, scalings: { damage, critBonus } } = module.exports;
+		const { essence, pactCost, scalings: { damage, critBonus } } = module.exports;
 		const goldUsed = Math.floor(adventure.gold * (pactCost[0] / 100));
 		adventure.gold -= goldUsed;
 		let pendingDamage = damage.calculate(user) + goldUsed;

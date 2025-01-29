@@ -8,7 +8,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Guarding Carrot",
 	[
 		["use", "Grant <@{mod0Stacks}> @{mod0} and <@{protection}> protection to an ally and entice their pet to use its first move"],
-		["Critical💥", "@{mod0} + @{critMultiplier}"]
+		["Critical💥", "@{mod0} + @{critBonus}"]
 	],
 	"Support",
 	"Earth"
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Guarding Carrot",
 		}
 		const pendingRegeneration = { name: regeneration.name, stacks: regeneration.stacks.calculate(user) };
 		if (user.crit) {
-			pendingRegeneration += critBonus;
+			pendingRegeneration.stacks += critBonus;
 		}
 		addProtection([target], protection.calculate(user));
 		const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration)).concat(`${target.name} gains protection.`);

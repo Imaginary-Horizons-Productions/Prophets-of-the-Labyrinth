@@ -19,7 +19,7 @@ module.exports = new GearTemplate("Balanced Carrot",
 		}
 		const pendingRegeneration = { name: regeneration.name, stacks: regeneration.stacks.calculate(user) };
 		if (user.crit) {
-			pendingRegeneration += critBonus;
+			pendingRegeneration.stacks += critBonus;
 		}
 		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier([target], pendingRegeneration).concat(addModifier([target], finesse))));
 		const ownerIndex = adventure.getCombatantIndex(target);

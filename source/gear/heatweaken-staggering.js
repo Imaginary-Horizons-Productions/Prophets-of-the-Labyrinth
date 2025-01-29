@@ -13,7 +13,7 @@ module.exports = new GearTemplate("Staggering Heat Weaken",
 	"Fire"
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
-		const { essence, modifiers: [frailty], critMultiplier, stagger } = module.exports;
+		const { essence, modifiers: [frailty], scalings: { critBonus }, stagger } = module.exports;
 		let pendingStagger = stagger;
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Staggering Heat Weaken",
 		changeStagger(targets, user, pendingStagger);
 		const pendingFrailty = { ...frailty };
 		if (user.crit) {
-			pendingFrailty.stacks *= critMultiplier;
+			pendingFrailty.stacks *= critBonus;
 		}
 		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingFrailty))).concat(joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered."));
 	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
@@ -29,4 +29,5 @@ module.exports = new GearTemplate("Staggering Heat Weaken",
 	.setCharges(15)
 	.setModifiers({ name: "Frailty", stacks: 2 })
 	.setStagger(2)
+	.setScalings({ critBonus: 2 })
 	.setRnConfig({ foes: bounceCount });

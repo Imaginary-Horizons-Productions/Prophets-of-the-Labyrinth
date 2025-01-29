@@ -11,10 +11,10 @@ const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil'
 const mainId = "readymove";
 module.exports = new ButtonWrapper(mainId, 3000,
 	/** Show the delver stats of the user and provide components to ready a move */
-	(interaction, args) => {
+	(interaction, [roundNumber]) => {
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
-		if (!delver) {
+		if (!delver || parseInt(roundNumber) !== adventure.room.round) {
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
@@ -189,7 +189,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				const targetIndices = [];
 				const newMove = new Move(`${moveName}${SAFE_DELIMITER}${gearIndex}`, "gear", new CombatantReference(delver.team, userIndex))
 					.setSpeedByCombatant(delver);
-				const scalings = getGearProperty(moveName, "priority");
+				const scalings = getGearProperty(moveName, "scalings");
 				if (scalings && "priority" in scalings) {
 					if (typeof scalings.priority === "number") {
 						newMove.setPriority(scalings.priority);
@@ -241,7 +241,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 			collectedInteraction.channel.send(confirmationText).then(() => {
 				setAdventure(adventure);
-			}).catch(console.error);
+			});
 			if (checkNextRound(adventure)) {
 				endRound(adventure, collectedInteraction.channel);
 			}

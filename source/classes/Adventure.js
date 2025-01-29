@@ -112,6 +112,18 @@ class Adventure {
 		}
 	}
 
+	getCombatState() {
+		if (this.lives <= 0) {
+			return "defeat";
+		}
+
+		if (this.room.enemies.every(enemy => enemy.hp === 0 || "Cowardice" in enemy.modifiers)) {
+			return "victory";
+		}
+
+		return "continue";
+	}
+
 	/** Calculates the adventure's score without end of run multipliers */
 	getBaseScore() {
 		const livesScore = this.lives ?? 0 * 10;

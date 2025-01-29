@@ -6,14 +6,14 @@ const { damageScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Toxic Flame Scythes",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe, execute them if they end below half your damage cap"],
-		["Critical💥", "Damage x @{critMultiplier}"]
+		["Critical💥", "Damage x @{critBonus}"]
 	],
 	"Spell",
 	"Fire"
 ).setCost(350)
 	.setEffect(([target], user, adventure) => {
 		const { essence, scalings: { damage, critBonus }, modifiers: [poison] } = module.exports;
-		let pendingDamage = damage + user.getPower();
+		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
