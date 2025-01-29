@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ThreadChannel, Message, EmbedBuilder, bold } = require("discord.js");
+const { ThreadChannel, Message, EmbedBuilder, bold, italic } = require("discord.js");
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
@@ -759,7 +759,7 @@ function resolveMove(move, adventure) {
 					effect = action.effect;
 					headline += `used ${moveName}`;
 					if (action.combatFlavor) {
-						headline += action.combatFlavor;
+						headline += ` ${italic(action.combatFlavor)}`;
 					}
 				}
 				break;
@@ -1060,9 +1060,9 @@ function endRound(adventure, thread) {
  */
 function handleEndCombat(combatState, adventure, thread, lastRoundText) {
 	adventure.room.history.endedCombat = [];
+	adventure.room.round++;
 	switch (combatState) {
 		case "defeat":
-			adventure.room.round++;
 			thread.send(completeAdventure(adventure, thread, "defeat", lastRoundText));
 			return;
 		case "victory":

@@ -13,7 +13,7 @@ module.exports = new GearTemplate("Toxic Flame Scythes",
 ).setCost(350)
 	.setEffect(([target], user, adventure) => {
 		const { essence, scalings: { damage, critBonus }, modifiers: [poison] } = module.exports;
-		let pendingDamage = damage + user.getPower();
+		let pendingDamage = damage.calculate(user);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}

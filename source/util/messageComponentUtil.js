@@ -39,7 +39,7 @@ function generateCombatRoomBuilder(extraButtons) {
 			const buttons = [
 				module.exports.partyStatsButton,
 				module.exports.inspectSelfButton,
-				new ButtonBuilder().setCustomId("readymove")
+				new ButtonBuilder().setCustomId(`readymove${SAFE_DELIMITER}${adventure.room.round}`)
 					.setEmoji("⚔")
 					.setLabel("Ready a Move")
 					.setStyle(ButtonStyle.Success),

@@ -13,10 +13,10 @@ module.exports = new GearTemplate(variantName,
 	"Earth"
 ).setCost(350)
 	.setEffect((targets, user, adventure) => {
-		const { essence, scalings: { damage, critBonus }, modifiers: [curseOfMidas] } = module.exports;
+		const { essence, pactCost, scalings: { damage, critBonus }, modifiers: [curseOfMidas] } = module.exports;
 		const goldUsed = Math.floor(adventure.gold * (pactCost[0] / 100));
 		adventure.gold -= goldUsed;
-		let pendingDamage = damage + user.getPower() + goldUsed;
+		let pendingDamage = damage.calculate(user) + goldUsed;
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}

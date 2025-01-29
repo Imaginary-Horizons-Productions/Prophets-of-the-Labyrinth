@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Guarding Carrot",
 		}
 		const pendingRegeneration = { name: regeneration.name, stacks: regeneration.stacks.calculate(user) };
 		if (user.crit) {
-			pendingRegeneration += critBonus;
+			pendingRegeneration.stacks += critBonus;
 		}
 		addProtection([target], protection.calculate(user));
 		const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration)).concat(`${target.name} gains protection.`);
