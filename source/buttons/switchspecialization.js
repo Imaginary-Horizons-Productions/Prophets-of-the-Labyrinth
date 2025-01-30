@@ -5,6 +5,7 @@ const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { setAdventure, getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getArchetype, getArchetypeActionName } = require('../archetypes/_archetypeDictionary');
 const { renderRoom } = require('../util/embedUtil');
+const { buildGearDescription } = require('../gear/_gearDictionary');
 
 const mainId = "switchspecialization";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -16,12 +17,14 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 		const player = getPlayer(interaction.user.id, interaction.guild.id);
+		const specializationsDescriptions = [];
 		const specializationOptions = [];
 		for (const specialization of getArchetype(delver.archetype).specializations.slice(0, player.archetypes[delver.archetype].specializationsUnlocked)) {
 			if (specialization !== delver.specialization) {
+				const archetypeActionName = getArchetypeActionName(delver.archetype, specialization);
+				specializationsDescriptions.push(`${bold(specialization)} - ${archetypeActionName}\n${buildGearDescription(archetypeActionName)}`)
 				specializationOptions.push({
 					label: specialization,
-					description: `Archetype Action: ${getArchetypeActionName(delver.archetype, specialization)}`,
 					value: specialization
 				})
 			}
@@ -32,7 +35,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		interaction.reply({
-			content: `${delver.specialization === "base" ? "You do not currently have a specialization." : `Your current specialization is ${delver.archetype} - ${delver.specialization}.`} You can select a new specialzation to switch to!`,
+			content: `${delver.specialization === "base" ? "You do not currently have a specialization." : `Your current specialization is ${delver.archetype} - ${delver.specialization}.`} You can select a new Specialzation to switch to! Here are your options:\n${specializationsDescriptions.join("\n\n")}`,
 			components: [
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder()
