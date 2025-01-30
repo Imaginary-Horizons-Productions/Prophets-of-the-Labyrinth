@@ -345,7 +345,7 @@ function cacheRoundRn(adventure, user, moveName, config) {
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(4, "battle"));
 					break;
 				case "Deck of Cards":
-					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(8, "battle"));
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(5, "battle"));
 					break;
 				case "Medicine":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(256, "battle"))
