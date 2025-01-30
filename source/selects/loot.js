@@ -4,7 +4,7 @@ const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustr
 const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING, ZERO_WIDTH_WHITESPACE } = require('../constants');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
-const { getColor } = require('../util/essenceUtil');
+const { getColor, getEmoji } = require('../util/essenceUtil');
 
 const mainId = "loot";
 module.exports = new SelectWrapper(mainId, 2000,
@@ -52,7 +52,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				const embed = new EmbedBuilder().setColor(getColor(adventure.room.essence))
 					.setAuthor(randomAuthorTip())
 					.setTitle("Take this gear?")
-					.addFields({ name, value: buildGearDescription(name) });
+					.addFields({ name: `${name} ${getEmoji(getGearProperty(name, "essence"))}`, value: buildGearDescription(name) });
 				const components = [];
 				if (hasFreeGearSlots) {
 					components.push(
