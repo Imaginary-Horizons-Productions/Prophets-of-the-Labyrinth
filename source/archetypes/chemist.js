@@ -17,7 +17,8 @@ module.exports = new ArchetypeTemplate("Chemist",
 		return embed.setDescription(`Chemist predictions for Round ${adventure.room.round}:`);
 	},
 	(combatant) => {
-		return `HP: ${combatant.hp}/${combatant.getMaxHP()}`;
+		const counters = getCombatantCounters(combatant);
+		return `Counters: ${counters.map(counter => getEmoji(counter)).join(" ")}`;
 	},
 	{
 		base: "Cauldron Stir",

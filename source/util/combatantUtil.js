@@ -122,6 +122,7 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 				} else {
 					removeModifier([target], { name: "Evasion", stacks: 1 });
 					resultLines.push(`${target.name} evades the attack!`);
+					survivors.push(target);
 				}
 			} else {
 				resultLines.push(gainHealth(target, damage, adventure, "Essence Absorption"));

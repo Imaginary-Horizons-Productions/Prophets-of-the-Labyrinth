@@ -54,7 +54,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 			pendingStagger += 2;
 		}
 		changeStagger(targets, user, pendingStagger);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
+		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines.concat(`${targets[0].name} was Staggered.`);
 	},
 	selector: selectRandomFoe,
 	next: "Self-Destruct"

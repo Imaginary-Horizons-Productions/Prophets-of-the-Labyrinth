@@ -895,7 +895,7 @@ function resolveMove(move, adventure) {
 		} else {
 			const regenStacks = user.getModifierStacks("Regeneration");
 			if (regenStacks) {
-				results.push(gainHealth(user, regenStacks * 10, adventure, "Regeneration"));
+				results.push(gainHealth(user, regenStacks * 10, adventure, getApplicationEmojiMarkdown("Regeneration")));
 			}
 		}
 
