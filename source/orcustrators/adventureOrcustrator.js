@@ -325,7 +325,7 @@ function cacheRoundRn(adventure, user, moveName, config) {
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(6, "battle"));
 					break;
 				case "vulnerabilities":
-					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(7, "battle"))
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(6, "battle"))
 					break;
 				// assuming 256 (2 rn table digits) is a large enough bound on de/buffs
 				case "buffs":
@@ -425,9 +425,9 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			if (targetDebuffs.length > 1) {
 				const firstDebuff = getApplicationEmojiMarkdown(targetDebuffs.splice(user.roundRns[roundRnKeyname][0] % targetDebuffs.length, 1)[0]);
 				const secondDebuff = getApplicationEmojiMarkdown(targetDebuffs[user.roundRns[roundRnKeyname][1] % targetDebuffs.length]);
-				return `${user.name}'s ${moveName} will cure ${firstDebuff} (and ${secondDebuff} on 💥).`;
+				return `${user.name}'s ${moveName} will cure ${firstDebuff} (and ${secondDebuff} on 💥) on ${target.name}.`;
 			} else if (targetDebuffs.length === 1) {
-				return `${user.name}'s ${moveName} will cure ${getApplicationEmojiMarkdown(targetDebuffs[0])}.`;
+				return `${user.name}'s ${moveName} will cure ${getApplicationEmojiMarkdown(targetDebuffs[0])} on ${target.name}.`;
 			}
 			break;
 		}
@@ -1020,7 +1020,7 @@ function endRound(adventure, thread) {
 			removeModifier([combatant], { name: "Fortune", stacks: "all" });
 			otherHappenings.push(`${combatant.name}'s Fortune becomes protection.`);
 		}
-		if ("Misfortune" in combatant.modifiers && combatant.modifiers.Misortune % 7 === 0) {
+		if ("Misfortune" in combatant.modifiers && combatant.modifiers.Misfortune % 7 === 0) {
 			otherHappenings.push(dealModifierDamage(combatant, "Misfortune", adventure));
 			removeModifier([combatant], { name: "Misfortune", stacks: "all" });
 		}

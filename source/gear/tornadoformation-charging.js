@@ -31,7 +31,7 @@ module.exports = new GearTemplate("Charging Tornado Formation",
 		receipts.push(...addModifier(userTeam, pendingSwiftness).concat(addModifier(userTeam, empowerment)));
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 	}, { type: "single", team: "foe" })
-	.setSidegrades("Supportive Storm Formation")
+	.setSidegrades("Supportive Tornado Formation")
 	.setMoraleRequirement(1)
 	.setScalings({
 		damage: damageScalingGenerator(40),

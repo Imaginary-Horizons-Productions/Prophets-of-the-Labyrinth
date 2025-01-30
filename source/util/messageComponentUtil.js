@@ -75,9 +75,9 @@ function generateCombatRoomBuilder(extraButtons) {
 				if (resource.type === "levelsGained") {
 					const [_, index] = resourceName.split(SAFE_DELIMITER);
 					if (!index) {
-						levelTexts.push(`Everyone gains ${resource.count} levels.`);
+						levelTexts.push(`Everyone gains ${resource.count} level${resource.count === 1 ? "" : "s"}.`);
 					} else {
-						levelTexts.push(`${adventure.delvers[index].name} gains ${resource.count} levels.`);
+						levelTexts.push(`${adventure.delvers[index].name} gains ${resource.count} level${resource.count === 1 ? "" : "s"}.`);
 					}
 				}
 			}

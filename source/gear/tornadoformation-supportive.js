@@ -32,7 +32,7 @@ module.exports = new GearTemplate("Supportive Tornado Formation",
 		changeStagger(userTeam, user, staggerRelief);
 		return resultLines.concat(joinAsStatement(false, userTeam.map(combatant => combatant.name), "is", "are", "relieved of Stagger."));
 	}, { type: "single", team: "foe" })
-	.setSidegrades("Charging Storm Formation")
+	.setSidegrades("Charging Tornado Formation")
 	.setMoraleRequirement(1)
 	.setScalings({
 		damage: damageScalingGenerator(40),

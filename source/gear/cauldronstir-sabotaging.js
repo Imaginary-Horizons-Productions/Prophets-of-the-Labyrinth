@@ -8,13 +8,13 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 const variantName = "Sabotaging Cauldron Stir";
 module.exports = new GearTemplate(variantName,
 	[
-		["use", "Inflict <@{damage}> @{element} damage and @{mod0Stacks} stacks of a random Vulnerability on a foe"],
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} stacks of a random Vulnerability on a foe"],
 		["Critical💥", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
 	],
 	"Action",
 	"Light"
 ).setEffect((targets, user, adventure) => {
-	const { element, scalings: { damage, critBonus, potionCount }, modifiers: [vulnerability] } = module.exports;
+	const { essence, scalings: { damage, critBonus, potionCount }, modifiers: [vulnerability] } = module.exports;
 	const resultLines = [];
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
@@ -23,7 +23,7 @@ module.exports = new GearTemplate(variantName,
 		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}
-	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, element, adventure);
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	const rolledVulnerability = essenceList(["Unaligned"])[user.roundRns[`${variantName}${SAFE_DELIMITER}vulnerabilities`][0]];
 	return damageResults.concat(resultLines, generateModifierResultLines(addModifier(survivors, { name: `${rolledVulnerability} Vulnerability`, stacks: vulnerability.stacks })));

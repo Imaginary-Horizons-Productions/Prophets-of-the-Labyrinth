@@ -7,13 +7,13 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 const variantName = "Innovative Cauldron Stir";
 module.exports = new GearTemplate(variantName,
 	[
-		["use", "Strike a foe for <@{damage}> @{element} damage, grant all allies @{mod0Stacks} @{mod0} if Essence Countering"],
+		["use", "Strike a foe for <@{damage}> @{essence} damage, grant all allies @{mod0Stacks} @{mod0} if Essence Countering"],
 		["Critical💥", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
 	],
 	"Action",
 	"Light"
 ).setEffect((targets, user, adventure) => {
-	const { element, scalings: { damage, critBonus, potionCount }, modifiers: [empowerment] } = module.exports;
+	const { essence, scalings: { damage, critBonus, potionCount }, modifiers: [empowerment] } = module.exports;
 	const resultLines = [];
 	if (getCombatantCounters(targets[0]).includes(this.essence)) {
 		const userTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
@@ -26,7 +26,7 @@ module.exports = new GearTemplate(variantName,
 		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}
-	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, element, adventure);
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	return damageResults.concat(resultLines);
 }, { type: "single", team: "foe" })
