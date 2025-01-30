@@ -17,7 +17,11 @@ module.exports = new GearTemplate("Staggering Flourish",
 		pendingDamage *= critBonus;
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE + stagger);
+	let pendingStagger = stagger;
+	if (user.essence === essence) {
+		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
+	}
+	changeStagger(survivors, user, pendingStagger);
 	return resultLines.concat(generateModifierResultLines(addModifier(survivors, distraction)));
 }, { type: "single", team: "foe" })
 	.setScalings({

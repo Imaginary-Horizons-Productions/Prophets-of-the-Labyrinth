@@ -20,7 +20,9 @@ module.exports = new GearTemplate("Battle Standard",
 		resultLines.push("The party's morale is increased!")
 	}
 	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	return damageResults.concat(resultLines);
 }, { type: "single", team: "foe" })
 	.setScalings({

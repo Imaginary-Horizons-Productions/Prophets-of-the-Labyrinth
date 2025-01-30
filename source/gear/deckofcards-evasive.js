@@ -1,5 +1,6 @@
 const { GearTemplate } = require('../classes');
-const { dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { dealDamage, generateModifierResultLines, addModifier, changeStagger } = require('../util/combatantUtil');
 const { deckOfCardsMisfortune } = require('./shared/modifiers');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
@@ -18,6 +19,9 @@ module.exports = new GearTemplate(variantName,
 		pendingDamage *= critBonus;
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }).concat(addModifier([user], evasion))));
 }, { type: "single", team: "foe" })
 	.setScalings({

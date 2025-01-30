@@ -22,7 +22,9 @@ module.exports = new GearTemplate("Reaper's Life Drain",
 		const { extraLines } = downedCheck(target, adventure);
 		return [`${target.name} meets the reaper!`].concat(extraLines, gainHealth(user, pendingHealing, adventure));
 	} else {
-		changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
+		}
 		return resultLines.concat(gainHealth(user, pendingHealing, adventure));
 	}
 }, { type: "single", team: "foe" })

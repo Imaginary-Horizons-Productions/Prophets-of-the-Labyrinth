@@ -19,7 +19,9 @@ module.exports = new GearTemplate(actionName,
 		pendingDamage *= critBonus;
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	const receipts = addModifier(survivors, impotence);
 	const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 	receipts.push(...removeModifier([user], { name: userDebuffs[user.roundRns[`${actionName}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" }));

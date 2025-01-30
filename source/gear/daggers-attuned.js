@@ -17,7 +17,9 @@ module.exports = new GearTemplate("Attuned Daggers",
 		pendingDamge *= critBonus;
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, pendingDamge, false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user], excellence).concat(addModifier([user], attunement)))));
 }, { type: "single", team: "foe" })
 	.setScalings({

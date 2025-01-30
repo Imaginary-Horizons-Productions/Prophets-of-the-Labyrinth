@@ -18,7 +18,9 @@ module.exports = new GearTemplate("Hunter's Stick",
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	const receipts = [];
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	if (survivors.length < targets.length) {
 		receipts.push(...addModifier([user], empowerment));
 	}

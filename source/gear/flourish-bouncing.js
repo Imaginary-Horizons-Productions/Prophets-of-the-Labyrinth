@@ -18,7 +18,9 @@ module.exports = new GearTemplate("Bouncing Flourish",
 		pendingDamage *= critBonus;
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	return resultLines.concat(generateModifierResultLines(addModifier(survivors, distraction)));
 }, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
 	.setScalings({

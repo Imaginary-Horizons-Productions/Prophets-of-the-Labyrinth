@@ -24,7 +24,9 @@ module.exports = new GearTemplate(variantName,
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}
 	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	const rolledVulnerability = essenceList(["Unaligned"])[user.roundRns[`${variantName}${SAFE_DELIMITER}vulnerabilities`][0]];
 	return damageResults.concat(resultLines, generateModifierResultLines(addModifier(survivors, { name: `${rolledVulnerability} Vulnerability`, stacks: vulnerability.stacks })));
 }, { type: "single", team: "foe" })

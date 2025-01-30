@@ -17,7 +17,9 @@ module.exports = new GearTemplate("Daggers",
 		pendingDamage *= critBonus;
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	return resultLines.concat(generateModifierResultLines(addModifier([user], excellence)));
 }, { type: "single", team: "foe" })
 	.setScalings({

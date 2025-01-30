@@ -23,7 +23,9 @@ module.exports = new GearTemplate(actionName,
 	}
 	const { resultLines: damageResults } = dealDamage([target], user, pendingDamage, false, essence, adventure);
 	if (target.hp > 0) {
-		changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
+		}
 		const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 		resultLines.push(...generateModifierResultLines(removeModifier([target], { name: targetBuffs[user.roundRns[`${actionName}${SAFE_DELIMITER}buffs`][0] % targetBuffs.length], stacks: "all" })));
 	}

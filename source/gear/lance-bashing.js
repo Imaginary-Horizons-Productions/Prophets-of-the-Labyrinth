@@ -18,7 +18,9 @@ module.exports = new GearTemplate("Bashing Lance",
 	}
 	addProtection([user], pendingProtection);
 	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	return resultLines.concat(`${user.name} gains protection.`);
 }, { type: "single", team: "foe" })
 	.setScalings({

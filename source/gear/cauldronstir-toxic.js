@@ -23,7 +23,9 @@ module.exports = new GearTemplate(variantName,
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}
 	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	return damageResults.concat(resultLines, generateModifierResultLines(addModifier(survivors, poison)));
 }, { type: "single", team: "foe" })
 	.setScalings({

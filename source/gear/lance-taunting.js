@@ -20,7 +20,9 @@ module.exports = new GearTemplate("Taunting Lance",
 	const { resultLines, survivors } = dealDamage([target], user, damage.calculate(user), false, essence, adventure);
 	resultLines.push(`${user.name} gains protection.`);
 	if (survivors.length > 0) {
-		changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
+		if (user.essence === essence) {
+			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
+		}
 		const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {

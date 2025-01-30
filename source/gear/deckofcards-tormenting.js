@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
-const { dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { dealDamage, generateModifierResultLines, addModifier, changeStagger } = require('../util/combatantUtil');
 const { deckOfCardsMisfortune } = require('./shared/modifiers');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
@@ -20,10 +20,15 @@ module.exports = new GearTemplate(variantName,
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	const receipts = [];
-	for (const target of survivors) {
-		for (const modifier in target.modifiers) {
-			if (getModifierCategory(modifier) === "Debuff") {
-				receipts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+	if (survivors.length > 0) {
+		if (user.essence === essence) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		}
+		for (const target of survivors) {
+			for (const modifier in target.modifiers) {
+				if (getModifierCategory(modifier) === "Debuff") {
+					receipts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+				}
 			}
 		}
 	}

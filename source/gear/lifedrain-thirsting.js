@@ -17,7 +17,9 @@ module.exports = new GearTemplate("Thirsting Life Drain",
 		pendingHealing *= critBonus;
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	if (survivors.length < targets.length) {
 		pendingHealing += thirstingHealing.calculate(user);
 	}

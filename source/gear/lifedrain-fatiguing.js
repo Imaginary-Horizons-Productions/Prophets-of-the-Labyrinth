@@ -17,7 +17,9 @@ module.exports = new GearTemplate("Fatiguing Life Drain",
 		pendingHealing *= critBonus;
 	}
 	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
-	changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
 	return resultLines.concat(generateModifierResultLines(addModifier(survivors, impotence)), gainHealth(user, pendingHealing, adventure));
 }, { type: "single", team: "foe" })
 	.setScalings({
