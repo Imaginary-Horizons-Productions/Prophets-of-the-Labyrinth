@@ -99,7 +99,9 @@ module.exports = new SelectWrapper(mainId, 3000,
 				console.error(error);
 			}
 		}).finally(() => {
-			interaction.deleteReply();
+			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
+				interaction.deleteReply();
+			}
 		});
 	}
 );
