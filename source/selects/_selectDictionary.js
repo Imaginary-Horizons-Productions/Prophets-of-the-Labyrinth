@@ -7,6 +7,7 @@ for (const file of [
 	"applepiewishingwell.js",
 	"artifact.js",
 	"artifactdupe.js",
+	"buyartifact.js",
 	"buygear.js",
 	"buyitem.js",
 	"loot.js",
