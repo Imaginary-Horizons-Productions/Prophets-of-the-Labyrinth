@@ -10,9 +10,9 @@ module.exports = new ArchetypeTemplate("Chemist",
 	(embed, adventure) => {
 		const eligibleCombatants = adventure.room.enemies.concat(adventure.delvers).filter(combatant => combatant.hp > 0);
 		eligibleCombatants.forEach(combatant => {
+			const counters = getCombatantCounters(combatant);
 			const counterText = `Counters: ${counters.map(counter => getEmoji(counter)).join(" ")}\n`;
 			const modifiersText = modifiersToString(combatant, adventure, counterText.length);
-			const counters = getCombatantCounters(combatant);
 			embed.addFields({ name: `${combatant.name} ${getEmoji(combatant.essence)}`, value: `${counterText}${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}` });
 		})
 		return embed.setDescription(`Chemist predictions for Round ${adventure.room.round}:`);
