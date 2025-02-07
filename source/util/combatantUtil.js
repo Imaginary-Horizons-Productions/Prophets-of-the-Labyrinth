@@ -5,7 +5,7 @@ const { getEmoji, getCounteredEssences, essenceList } = require("./essenceUtil.j
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 const { listifyEN } = require("./textUtil.js");
 const { areSetContentsCongruent } = require("./mathUtil.js");
-const { ZERO_WIDTH_WHITESPACE } = require("../constants");
+const { ZERO_WIDTH_WHITESPACE, MAX_EMBED_FIELD_VALUE_LENGTH } = require("../constants");
 
 /**
  * @param {Combatant} target
@@ -388,14 +388,22 @@ function addProtection(combatants, value) {
 
 /** Create a string containing the combatant's current modifiers
  * @param {Combatant} combatant
-* @param {Adventure} adventure
-*/
-function modifiersToString(combatant, adventure) {
-	let modifiersText = "";
-	for (const modifier in combatant.modifiers) {
-		modifiersText += `${getApplicationEmojiMarkdown(modifier)} ${bold(`x ${combatant.modifiers[modifier]}`)}: ${getModifierDescription(modifier, combatant.modifiers[modifier], combatant.getPoise(), adventure.getArtifactCount("Spiral Funnel"))}\n`;
+ * @param {Adventure} adventure
+ * @param {number} padding
+ */
+function modifiersToString(combatant, adventure, padding) {
+	// Sort lines ascending by length to add as many lines as possible by culling largest lines first
+	const modifierLines = Object.entries(combatant.modifiers).map(([modifier, count]) => ({ name: modifier, count, description: `${getApplicationEmojiMarkdown(modifier)} ${bold(`x ${count}`)}: ${getModifierDescription(modifier, count, combatant.getPoise(), adventure.getArtifactCount("Spiral Funnel"))}\n` })).sort((a, b) => a.description.length - b.description.length);
+	const poppedList = [];
+	for (let i = modifierLines.length - 1; i >= 0; i--) {
+		const andMoreText = poppedList.length === 0 ? "" : `...and ${listifyEN(poppedList.map((modifier) => `${modifier.count} x ${getApplicationEmojiMarkdown(modifier.name)}`), false)}\n`;
+		if (padding + modifierLines.reduce((totalLength, current) => totalLength + current.description.length, 0) + andMoreText.length <= MAX_EMBED_FIELD_VALUE_LENGTH) {
+			modifierLines.push({ description: andMoreText });
+			break;
+		}
+		poppedList.push(modifierLines.pop());
 	}
-	return modifiersText;
+	return modifierLines.map(object => object.description).join("");
 }
 
 /** Assembles an array of the combatant's innate and modifier-induced counters
