@@ -59,7 +59,7 @@ module.exports = new RoomTemplate("Mysterious Merchant",
 					case uiGroups[1]: { // artifacts
 						const artifact = getArtifact(name);
 						artifactOptions.push({
-							label: "${artifact.cost}g: ${name}",
+							label: `${artifact.cost}g: ${name} (${adventure.room.resources[name].count} left)`,
 							value: name
 						})
 						break;
@@ -77,7 +77,7 @@ module.exports = new RoomTemplate("Mysterious Merchant",
 		});
 
 		const hasGearOptions = gearOptions.length > 0;
-		const hasArtifactOptions = false && artifactOptions.length > 0;
+		const hasArtifactOptions = artifactOptions.length > 0;
 		const hasItemOptions = itemOptions.length > 0;
 		const capUpCost = 100;
 		return {
@@ -91,7 +91,7 @@ module.exports = new RoomTemplate("Mysterious Merchant",
 				),
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`buy${uiGroups[1]}`)
-						.setPlaceholder(hasArtifactOptions ? "Check an artifact (Coming Soon)..." : "Check an artifact (Coming Soon)...")
+						.setPlaceholder(hasArtifactOptions ? "Check an artifact..." : "SOLD OUT")
 						.setOptions(hasArtifactOptions ? artifactOptions : EMPTY_SELECT_OPTION_SET)
 						.setDisabled(!hasArtifactOptions)
 				),

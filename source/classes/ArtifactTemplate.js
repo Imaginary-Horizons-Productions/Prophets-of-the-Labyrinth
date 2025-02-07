@@ -7,8 +7,9 @@ class ArtifactTemplate {
 	 * @param {string} descriptionInput
 	 * @param {string} scalingDescriptionInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essenceEnum
+	 * @param {number} costInteger
 	 */
-	constructor(nameInput, descriptionInput, scalingDescriptionInput, essenceEnum) {
+	constructor(nameInput, descriptionInput, scalingDescriptionInput, essenceEnum, costInteger) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!descriptionInput) throw new BuildError("Falsy descriptionInput");
 		if (!scalingDescriptionInput) throw new BuildError("Falsy scalingDescriptionInput");
@@ -18,6 +19,7 @@ class ArtifactTemplate {
 		this.description = descriptionInput;
 		this.scalingDescription = scalingDescriptionInput;
 		this.essence = essenceEnum;
+		this.cost = costInteger;
 	}
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
