@@ -41,6 +41,7 @@ Other Changes:
 - New Modifiers: Fortune, Misfortune, Excellence, Degredation
 - New Artifact: Add Blocker
 - Gear and Item drop chance from battle increased to 1/4 (from 1/16 and 1/8 respectively)
+- Merchants now have artifacts in stock for sale
 - Fix merchant only stocking duplicates of the same item
 - Cursed Run (challenge) now causes found gear to be Cursed for the next 5 rooms, then rewards the party with 250g
 - Fixed Can't Hold All this Value (challenge) not forcing a discard for delvers who are already above the new gear capacity
