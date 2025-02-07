@@ -11,7 +11,7 @@ module.exports = new ArchetypeTemplate("Trickster",
 	(embed, adventure) => {
 		/** @param {Combatant} combatant */
 		function createModifierField(combatant) {
-			const modifiersText = modifiersToString(combatant, adventure);
+			const modifiersText = modifiersToString(combatant, adventure, 0);
 			embed.addFields({ name: combatant.name, value: modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states", inline: true });
 		}
 

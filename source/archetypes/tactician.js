@@ -7,8 +7,9 @@ const { modifiersToString } = require("../util/combatantUtil");
  */
 function generateCritAndModifierField(team, adventure) {
 	return team.map(combatant => {
-		const modifiersText = modifiersToString(combatant, adventure);
-		return { name: combatant.name, value: `Critical: ${combatant.crit ? "💥" : "🚫"}\n${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}` };
+		const critText = `Critical: ${combatant.crit ? "💥" : "🚫"}\n`;
+		const modifiersText = modifiersToString(combatant, adventure, critText.length);
+		return { name: combatant.name, value: `${critText}${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}`, inline: true };
 	})
 }
 
