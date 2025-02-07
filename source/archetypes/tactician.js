@@ -9,7 +9,7 @@ function generateCritAndModifierField(team, adventure) {
 	return team.map(combatant => {
 		const critText = `Critical: ${combatant.crit ? "💥" : "🚫"}\n`;
 		const modifiersText = modifiersToString(combatant, adventure, critText.length);
-		return { name: combatant.name, value: `${critText}${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}` };
+		return { name: combatant.name, value: `${critText}${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}`, inline: true };
 	})
 }
 
