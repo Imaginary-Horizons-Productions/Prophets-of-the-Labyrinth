@@ -6,7 +6,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Hastening Parrying Dagger",
 	[
 		["use", "Gain <@{protection}> protection and @{mod0Stacks} @{mod0}"],
-		["Critical💥", "@{mod0} x @{critBonus}, reduce your cooldowns by @{cooldownReduction}"]
+		["critical", "@{mod0} x @{critBonus}, reduce your cooldowns by @{cooldownReduction}"]
 	],
 	"Defense",
 	"Light",

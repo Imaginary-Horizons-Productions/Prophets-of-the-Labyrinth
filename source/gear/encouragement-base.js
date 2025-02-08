@@ -6,7 +6,7 @@ const { scalingExcellence, scalingEmpowerment } = require('./shared/modifiers');
 module.exports = new GearTemplate("Encouragement",
 	[
 		["use", "Grant an ally <@{mod0Stacks}> @{mod0} and <@{mod1Stacks}> @{mod1}"],
-		["Critical💥", "@{mod0} and @{mod1} x @{critBonus}"]
+		["critical", "@{mod0} and @{mod1} x @{critBonus}"]
 	],
 	"Spell",
 	"Light"

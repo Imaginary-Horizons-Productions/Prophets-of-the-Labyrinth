@@ -6,7 +6,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Spiked Shield",
 	[
 		["use", "Gain <@{protection}> protection, deal <your protection> @{essence} damage to a foe"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Defense",
 	"Darkness"

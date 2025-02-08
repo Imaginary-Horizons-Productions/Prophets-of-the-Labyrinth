@@ -8,7 +8,7 @@ const bounceCount = "3";
 module.exports = new GearTemplate("Bouncing Flail",
 	[
 		["use", `Inflict <@{damage}> @{essence} damage on ${bounceCount} random foes`],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Offense",
 	"Earth"

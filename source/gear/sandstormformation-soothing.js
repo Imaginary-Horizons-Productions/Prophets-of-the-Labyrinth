@@ -6,7 +6,7 @@ const { listifyEN } = require('../util/textUtil');
 module.exports = new GearTemplate("Soothing Sandstorm Formation",
 	[
 		["use", "Reduce all cooldowns by @{cooldownReduction} for and grant @{mod1Stacks} @{mod1} to all allies"],
-		["Critical💥", "Also grant @{mod0Stacks} @{mod0}"]
+		["critical", "Also grant @{mod0Stacks} @{mod0}"]
 	],
 	"Maneuver",
 	"Earth"

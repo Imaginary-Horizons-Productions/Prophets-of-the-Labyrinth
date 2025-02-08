@@ -8,7 +8,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Guarding Herb Basket",
 	[
 		["use", "Grant an ally <@{protection}> protection and add @{herbCount} random herb to loot"],
-		["Critical💥", "Herbs gathered x @{critBonus}"]
+		["critical", "Herbs gathered x @{critBonus}"]
 	],
 	"Adventuring",
 	"Earth"

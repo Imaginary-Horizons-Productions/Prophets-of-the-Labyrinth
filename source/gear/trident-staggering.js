@@ -8,7 +8,7 @@ const variantName = "Staggering Trident";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage}> @{essence} damage on a foe, then shrug off @{debuffsCured} random debuff"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Offense",
 	"Water"

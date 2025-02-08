@@ -8,7 +8,7 @@ const variantName = "Omenous Deck of Cards";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} (doubled if Essence Countering) on a foe"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Action",
 	"Wind"

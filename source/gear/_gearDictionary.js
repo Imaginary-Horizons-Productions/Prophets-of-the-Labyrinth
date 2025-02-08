@@ -2,6 +2,7 @@ const { BuildError, GearTemplate, Gear, Delver, Adventure } = require("../classe
 const { getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { getEmoji } = require("../util/essenceUtil");
 const { italic } = require("discord.js");
+const { ICON_CRITICAL } = require("../constants");
 
 /** @type {Record<string, GearTemplate>} */
 const GEAR = {};
@@ -294,6 +295,8 @@ function buildGearDescription(gearName) {
 	getGearProperty(gearName, "descriptions").forEach(([type, description]) => {
 		if (type === "use") {
 			descriptionTexts.push(`${italic(`${getGearProperty(gearName, "stagger") ?? 0} Stagger`)}: ${description}`);
+		} else if (type === "critical") {
+			descriptionTexts.push(`${italic("Critical")}${ICON_CRITICAL}: ${injectApplicationEmojiMarkdown(description)}`);
 		} else {
 			descriptionTexts.push(`${italic(type)}: ${injectApplicationEmojiMarkdown(description)}`);
 		}
@@ -371,6 +374,8 @@ function buildGearDescriptionWithHolderStats(gearName, holder, gearIndex) {
 				}
 			}
 			descriptionTexts.push(`${italic(`${totalStagger} Stagger`)}: ${description}`);
+		} else if (type === "critical") {
+			descriptionTexts.push(`${italic("Critical")}${ICON_CRITICAL}: ${description}`);
 		} else {
 			descriptionTexts.push(`${italic(type)}: ${description}`);
 		}

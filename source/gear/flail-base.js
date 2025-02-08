@@ -7,7 +7,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Flail",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage on a foe"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Offense",
 	"Earth"

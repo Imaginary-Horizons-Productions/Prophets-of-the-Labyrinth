@@ -45,5 +45,9 @@ module.exports = {
 	EMPTY_SELECT_OPTION_SET: [{ label: "If the menu is stuck, switch channels and come back.", description: "This usually happens when two players use the same select at the same time.", value: "empty" }],
 	SURPASSING_VALUE: 250,
 	ESSENCE_MATCH_STAGGER_FOE: 2,
-	ESSENCE_MATCH_STAGGER_ALLY: -1
+	ESSENCE_MATCH_STAGGER_ALLY: -1,
+
+	// Emoji Icons
+	ICON_CRITICAL: "💥",
+	ICON_PET: "🐾"
 };

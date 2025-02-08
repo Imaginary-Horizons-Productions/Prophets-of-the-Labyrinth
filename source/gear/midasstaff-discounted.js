@@ -7,7 +7,7 @@ module.exports = new GearTemplate("Discounted Midas Staff",
 	[
 		discountedPassive,
 		["use", "Inflict @{mod0Stacks} @{mod0} on a combatant"],
-		["Critical💥", "@{mod0} + @{critBonus}"]
+		["critical", "@{mod0} + @{critBonus}"]
 	],
 	"Support",
 	"Light"

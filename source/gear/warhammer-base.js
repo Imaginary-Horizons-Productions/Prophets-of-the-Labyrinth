@@ -6,7 +6,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Warhammer",
 	[
 		["use", "Deal <@{damage} (+ @{awesomeBonus} if target is Stunned)> @{essence} damage to a foe"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Offense",
 	"Darkness"

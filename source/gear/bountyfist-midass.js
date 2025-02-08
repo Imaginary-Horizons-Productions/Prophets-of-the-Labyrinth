@@ -7,7 +7,7 @@ const variantName = "Midas's Bounty Fist";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage} + gold paid> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Pact",
 	"Earth"

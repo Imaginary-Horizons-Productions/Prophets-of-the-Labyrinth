@@ -8,7 +8,7 @@ const actionName = "Disenchanting Battle Standard";
 module.exports = new GearTemplate(actionName,
 	[
 		["use", "Deal <@{damage}> @{essence} damage to and remove a random buff from a foe"],
-		["Critical💥", "Damage x @{critBonus}, increase party morale by @{morale}"]
+		["critical", "Damage x @{critBonus}, increase party morale by @{morale}"]
 	],
 	"Action",
 	"Light"

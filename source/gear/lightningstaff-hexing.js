@@ -6,7 +6,7 @@ const bounceCount = 3;
 module.exports = new GearTemplate("Hexing Lightning Staff",
 	[
 		["use", `Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on ${bounceCount} random foes`],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Adventuring",
 	"Wind"

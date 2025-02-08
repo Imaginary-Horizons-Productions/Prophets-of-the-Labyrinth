@@ -2,7 +2,7 @@ const { ActionRowBuilder, StringSelectMenuBuilder, bold, ButtonStyle, ButtonBuil
 const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { SKIP_INTERACTION_HANDLING } = require('../constants');
+const { SKIP_INTERACTION_HANDLING, ICON_PET } = require('../constants');
 
 const mainId = "deploypet";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -28,7 +28,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder()
 						.setCustomId(`${SKIP_INTERACTION_HANDLING}pet`)
-						.setPlaceholder("🐾 Select a pet...")
+						.setPlaceholder(`${ICON_PET} Select a pet...`)
 						.addOptions(petOptions)
 				),
 				new ActionRowBuilder().addComponents(

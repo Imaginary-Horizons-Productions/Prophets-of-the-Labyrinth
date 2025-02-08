@@ -6,7 +6,7 @@ const { Scaling } = require("./Scaling");
 class GearTemplate {
 	/** This read-only data class defines stats for a piece of gear
 	 * @param {string} nameInput
-	 * @param {[type: "Requirement" | "Passive" | "use" | "Critical💥", description: string][]} descriptionTuples
+	 * @param {[type: "Requirement" | "Passive" | "use" | "critical", description: string][]} descriptionTuples
 	 * @param {"Offense" | "Defense" | "Support" | "Adventuring" | "Spell" | "Pact" | "Maneuver" | "Trinket" | "Action"} categoryInput
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essenceEnum
 	 */

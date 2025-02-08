@@ -6,7 +6,7 @@ const { scalingDistraction } = require('./shared/modifiers');
 module.exports = new GearTemplate("Wind Burst",
 	[
 		["use", "Inflict <@{mod0Stacks}> @{mod0} on a foe"],
-		["Critical💥", "@{mod0} x @{critBonus}"]
+		["critical", "@{mod0} x @{critBonus}"]
 	],
 	"Spell",
 	"Wind"

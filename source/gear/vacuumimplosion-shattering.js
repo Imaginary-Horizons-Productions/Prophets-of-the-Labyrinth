@@ -6,7 +6,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Shattering Vacuum Implosion",
 	[
 		["use", "Inflict <@{damage} (+ @{duelistsBonus} if only attacker)> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Spell",
 	"Wind"

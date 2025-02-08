@@ -7,7 +7,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Supportive Steam Wall",
 	[
 		["use", "Grant <@{protection}> protection to and relieve @{staggerRelief} Stagger for an ally and adjacent allies"],
-		["Critical💥", "Protection x @{critBonus}"]
+		["critical", "Protection x @{critBonus}"]
 	],
 	"Maneuver",
 	"Water"

@@ -5,7 +5,7 @@ const { changeStagger, concatTeamMembersWithModifier, generateModifierResultLine
 module.exports = new GearTemplate("Balanced Elemental Scroll",
 	[
 		["use", "Grant @{mod0Stacks} @{mod0} and @{mod2Stacks} @{mod2} to an ally and allies with @{mod1}"],
-		["Critical💥", "@{mod0} x @{critBonus}"]
+		["critical", "@{mod0} x @{critBonus}"]
 	],
 	"Support",
 	"Fire"

@@ -5,7 +5,7 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 module.exports = new GearTemplate("Nature's Caprice",
 	[
 		["use", "Grant @{mod0Stacks} @{mod0} to a combatant"],
-		["Critical💥", "Instead inflict @{mod1Stacks} @{mod1}"]
+		["critical", "Instead inflict @{mod1Stacks} @{mod1}"]
 	],
 	"Spell",
 	"Earth"

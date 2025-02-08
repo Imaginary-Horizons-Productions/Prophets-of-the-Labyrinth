@@ -4,7 +4,7 @@ module.exports = new GearTemplate("name",
 	[
 		["Passive", "text"],
 		["use", "move description"],
-		["Critical💥", "crit description"]
+		["critical", "crit description"]
 	],
 	"category",
 	"essence",

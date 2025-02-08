@@ -7,7 +7,7 @@ const { scalingRegeneration } = require('./shared/modifiers');
 module.exports = new GearTemplate("Carrot",
 	[
 		["use", "Grant <@{mod0Stacks}> @{mod0} to an ally and entice their pet to use its first move"],
-		["Critical💥", "@{mod0} + @{critBonus}"]
+		["critical", "@{mod0} + @{critBonus}"]
 	],
 	"Support",
 	"Earth"

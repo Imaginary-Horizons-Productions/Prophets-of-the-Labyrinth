@@ -6,7 +6,7 @@ const { scalingRegeneration } = require('./shared/modifiers');
 module.exports = new GearTemplate("Soothing Forbidden Knowledge",
 	[
 		["use", "Grant an ally <@{mod0Stacks}> @{mod0} and @{levelUps} extra level up after combat"],
-		["Critical💥", "Reduce your target's cooldowns by @{cooldownReduction}"]
+		["critical", "Reduce your target's cooldowns by @{cooldownReduction}"]
 	],
 	"Pact",
 	"Light"

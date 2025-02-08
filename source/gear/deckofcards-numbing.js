@@ -8,7 +8,7 @@ const variantName = "Numbing Deck of Cards";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage}> @{essence} damage, @{mod1Stacks} @{mod1}, and <@{mod0Stacks}> @{mod0} on a foe"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Action",
 	"Wind"

@@ -7,7 +7,7 @@ const variantName = "Warning Medic's Kit";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Cure @{debuffsCured} random debuff and grant @{mod0Stacks} @{mod0} to each ally"],
-		["Critical💥", "Increase the party's morale by @{morale}"]
+		["critical", "Increase the party's morale by @{morale}"]
 	],
 	"Support",
 	"Water"

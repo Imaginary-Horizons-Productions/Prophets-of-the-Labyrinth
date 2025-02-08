@@ -7,7 +7,7 @@ const variantName = "Cleansing Water's Stillness";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Relieve Stagger and cure @{debuffsCured} random debuff for an ally and all allies with @{mod0}"],
-		["Critical💥", "Stagger relieved x @{critBonus}"]
+		["critical", "Stagger relieved x @{critBonus}"]
 	],
 	"Spell",
 	"Water"

@@ -6,7 +6,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Blood Aegis",
 	[
 		["use", "Gain <@{protection}> protection and intercept your target's later single target move"],
-		["Critical💥", "Protection x @{critBonus}"]
+		["critical", "Protection x @{critBonus}"]
 	],
 	"Pact",
 	"Darkness"

@@ -6,7 +6,7 @@ const { protectionScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Buckler",
 	[
 		["use", "Grant an ally <@{protection}> protection and gain @{mod0Stacks} @{mod0}"],
-		["Critical💥", "Protection x @{critBonus}"]
+		["critical", "Protection x @{critBonus}"]
 	],
 	"Defense",
 	"Water"

@@ -7,7 +7,7 @@ const { scalingSwiftness } = require('./shared/modifiers');
 module.exports = new GearTemplate("Accelerating Water's Stillness",
 	[
 		["use", "Relieve Stagger and grant <@{mod1Stacks}> @{mod1} to an ally and all allies with @{mod0}"],
-		["Critical💥", "Stagger relieved x @{critBonus}"]
+		["critical", "Stagger relieved x @{critBonus}"]
 	],
 	"Spell",
 	"Water"

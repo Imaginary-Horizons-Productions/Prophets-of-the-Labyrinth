@@ -8,7 +8,7 @@ const variantName = "Arcane Sledge";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Deal <@{damage}> @{essence} damage and remove @{buffsRemoved} random buff from a foe"],
-		["Critical💥", "Buffs removed x @{critBonus}"]
+		["critical", "Buffs removed x @{critBonus}"]
 	],
 	"Support",
 	"Wind"

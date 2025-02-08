@@ -6,7 +6,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 module.exports = new GearTemplate("Battle Standard",
 	[
 		["use", "Deal <@{damage}> @{essence} damage to a foe"],
-		["Critical💥", "Damage x @{critBonus}, increase party morale by @{morale}"]
+		["critical", "Damage x @{critBonus}, increase party morale by @{morale}"]
 	],
 	"Action",
 	"Light"

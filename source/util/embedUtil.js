@@ -2,7 +2,7 @@ const fs = require("fs");
 const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, MessagePayload, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT, ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require("../constants");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT, ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE, ICON_PET } = require("../constants");
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { buildGearDescriptionWithHolderStats } = require("../gear/_gearDictionary");
@@ -128,7 +128,7 @@ function generateAdventureConfigMessage() {
 					.setLabel("Pick Archetype")
 					.setStyle(ButtonStyle.Success),
 				new ButtonBuilder().setCustomId("deploypet")
-					.setEmoji("🐾")
+					.setEmoji(ICON_PET)
 					.setLabel("Bring a Pet")
 					.setStyle(ButtonStyle.Success),
 				new ButtonBuilder().setCustomId("startingartifacts")

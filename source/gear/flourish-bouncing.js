@@ -7,7 +7,7 @@ const bounceCount = 3;
 module.exports = new GearTemplate("Bouncing Flourish",
 	[
 		["use", `Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on ${bounceCount} random foes`],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Action",
 	"Darkness"

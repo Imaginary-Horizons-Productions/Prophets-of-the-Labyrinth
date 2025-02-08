@@ -6,7 +6,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 module.exports = new GearTemplate("Flanking Battle Standard",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
-		["Critical💥", "Damage x @{critBonus}, increase party morale by @{morale}"]
+		["critical", "Damage x @{critBonus}, increase party morale by @{morale}"]
 	],
 	"Action",
 	"Light"

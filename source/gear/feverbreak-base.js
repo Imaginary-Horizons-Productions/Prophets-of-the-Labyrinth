@@ -5,7 +5,7 @@ const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, gene
 module.exports = new GearTemplate("Fever Break",
 	[
 		["use", `Deal <pending damage from @{mod0} and @{mod1}> @{essence} damage to all foes, then cure them of those debuffs`],
-		["Critical💥", "@{mod0} and @{mod1} are not removed"]
+		["critical", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Maneuver",
 	"Darkness"

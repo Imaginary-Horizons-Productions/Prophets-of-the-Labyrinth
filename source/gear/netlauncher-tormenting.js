@@ -8,7 +8,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Tormenting Net Launcher",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a foe and add @{debuffIncrement} stack to each of their debuffs"],
-		["Critical💥", "Damage x @{critBonus}; inflict @{mod0} on all foes instead"]
+		["critical", "Damage x @{critBonus}; inflict @{mod0} on all foes instead"]
 	],
 	"Offense",
 	"Light"

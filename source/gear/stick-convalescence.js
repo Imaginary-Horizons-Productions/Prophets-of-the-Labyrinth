@@ -8,7 +8,7 @@ const actionName = "Convalescence Stick";
 module.exports = new GearTemplate(actionName,
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe, then shrug off @{debuffsCured} random debuff"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Action",
 	"Earth"

@@ -8,7 +8,7 @@ const { listifyEN } = require('../util/textUtil');
 module.exports = new GearTemplate("Enticing Herb Basket",
 	[
 		["use", "Entice an ally's pet to use their first move and add @{herbCount} random herb to loot"],
-		["Critical💥", "Herbs gathered x @{critBonus}"]
+		["critical", "Herbs gathered x @{critBonus}"]
 	],
 	"Adventuring",
 	"Earth"

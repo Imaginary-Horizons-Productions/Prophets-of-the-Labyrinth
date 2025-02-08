@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { pathVoteField, generateRoutingRow } = require("../util/messageComponentUtil");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, ICON_PET } = require("../constants");
 const { rollChallenges } = require("../challenges/_challengeDictionary");
 
 module.exports = new RoomTemplate("Guildstop: For All Your Adventuring Needs",
@@ -29,7 +29,7 @@ module.exports = new RoomTemplate("Guildstop: For All Your Adventuring Needs",
 						.setStyle(ButtonStyle.Secondary)
 						.setDisabled(adventure.gold < specializationSwitchCost),
 					new ButtonBuilder().setCustomId(`switchpet${SAFE_DELIMITER}${petSwitchCost}`)
-						.setEmoji("🐾")
+						.setEmoji(ICON_PET)
 						.setLabel(`Switch Pets [${petSwitchCost}g]`)
 						.setStyle(ButtonStyle.Secondary)
 						.setDisabled(adventure.gold < petSwitchCost),

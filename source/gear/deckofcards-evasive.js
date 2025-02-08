@@ -8,7 +8,7 @@ const variantName = "Evasive Deck of Cards";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a foe and gain @{mod1Stacks} @{mod1}"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Action",
 	"Wind"

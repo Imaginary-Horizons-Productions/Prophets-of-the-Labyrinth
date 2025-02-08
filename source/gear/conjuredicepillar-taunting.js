@@ -6,7 +6,7 @@ const { scalingEvasion } = require('./shared/modifiers');
 module.exports = new GearTemplate("Taunting Conjured Ice Pillar",
 	[
 		["use", "Gain <@{mod0Stacks}> @{mod0} and @{mod1Stacks} @{mod1} then intercept your target's later single target move"],
-		["Critical💥", "@{mod0} x @{critBonus}"]
+		["critical", "@{mod0} x @{critBonus}"]
 	],
 	"Spell",
 	"Water"

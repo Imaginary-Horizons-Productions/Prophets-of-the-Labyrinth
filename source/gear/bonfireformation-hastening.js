@@ -6,7 +6,7 @@ const { listifyEN } = require('../util/textUtil');
 module.exports = new GearTemplate("Hastening Bonfire Formation",
 	[
 		["use", "Grant all allies @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1}"],
-		["Critical💥", "@{mod0} and @{mod1} + @{critBonus}, reduce ally cooldowns by @{cooldownReduction}"]
+		["critical", "@{mod0} and @{mod1} + @{critBonus}, reduce ally cooldowns by @{cooldownReduction}"]
 	],
 	"Maneuver",
 	"Fire"

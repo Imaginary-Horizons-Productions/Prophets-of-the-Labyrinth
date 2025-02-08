@@ -8,7 +8,7 @@ const variantName = "Cauldron Stir";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Strike a foe for <@{damage}> @{essence} damage"],
-		["Critical💥", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
+		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
 	],
 	"Action",
 	"Light"

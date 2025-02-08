@@ -6,7 +6,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Overburn Explosion",
 	[
 		["use", "Deal <@{damage}> @{essence} damage to a foe and all foes with @{mod0}"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Pact",
 	"Fire"

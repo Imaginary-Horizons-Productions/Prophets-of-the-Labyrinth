@@ -7,7 +7,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Net Launcher",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a foe"],
-		["Critical💥", "Damage x @{critBonus}; inflict @{mod0} on all foes instead"]
+		["critical", "Damage x @{critBonus}; inflict @{mod0} on all foes instead"]
 	],
 	"Offense",
 	"Light"

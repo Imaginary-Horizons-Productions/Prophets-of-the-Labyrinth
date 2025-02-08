@@ -7,7 +7,7 @@ const bounceCount = 6;
 module.exports = new GearTemplate("Double Smokescreen",
 	[
 		["use", `Grant ${bounceCount} random allies <@{mod0Stacks}> @{mod0}`],
-		["Critical💥", "@{mod0} x @{critBonus}"]
+		["critical", "@{mod0} x @{critBonus}"]
 	],
 	"Defense",
 	"Earth"

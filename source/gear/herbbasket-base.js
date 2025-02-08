@@ -5,7 +5,7 @@ const { listifyEN } = require('../util/textUtil');
 module.exports = new GearTemplate("Herb Basket",
 	[
 		["use", "Add @{herbCount} random herb to loot"],
-		["Critical💥", "Herbs gathered x @{critBonus}"]
+		["critical", "Herbs gathered x @{critBonus}"]
 	],
 	"Adventuring",
 	"Earth"

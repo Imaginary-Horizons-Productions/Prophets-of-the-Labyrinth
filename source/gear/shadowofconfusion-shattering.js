@@ -6,7 +6,7 @@ const { scalingEvasion } = require('./shared/modifiers');
 module.exports = new GearTemplate("Shattering Shadow of Confusion",
 	[
 		["use", "Redirect a slower foe into targeting themself and inflict @{mod1Stacks} @{mod1}"],
-		["Critical💥", "Gain <@{mod0Stacks}> @{mod0}"]
+		["critical", "Gain <@{mod0Stacks}> @{mod0}"]
 	],
 	"Spell",
 	"Darkness"

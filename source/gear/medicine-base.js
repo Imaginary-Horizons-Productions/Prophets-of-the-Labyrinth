@@ -7,7 +7,7 @@ const variantName = "Medicine";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Cure @{debuffsCured} random debuff on an ally"],
-		["Critical💥", "Debuffs cured x @{critBonus}"]
+		["critical", "Debuffs cured x @{critBonus}"]
 	],
 	"Spell",
 	"Earth"

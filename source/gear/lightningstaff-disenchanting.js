@@ -7,7 +7,7 @@ const bounceCount = 3;
 module.exports = new GearTemplate("Disenchanting Lightning Staff",
 	[
 		["use", `Deal <@{damage}> @{essence} damage and remove @{buffRemovals} random buff from ${bounceCount} random foes`],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Adventuring",
 	"Wind"

@@ -7,7 +7,7 @@ const variantName = "Hunter's Musket";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Deal <@{damage}> @{essence} damage to a foe, gain @{mod0Stacks} @{mod0} if they're downed"],
-		["Critical💥", "Reset this gear's cooldown"]
+		["critical", "Reset this gear's cooldown"]
 	],
 	"Adventuring",
 	"Fire"

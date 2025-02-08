@@ -7,7 +7,7 @@ module.exports = new GearTemplate("Unstoppable Fever Break",
 	[
 		unstoppablePassive,
 		["use", `Deal <pending damage from @{mod0} and @{mod1}> @{essence} damage to all foes, then cure them of those debuffs`],
-		["Critical💥", "@{mod0} and @{mod1} are not removed"]
+		["critical", "@{mod0} and @{mod1} are not removed"]
 	],
 	"Maneuver",
 	"Darkness"

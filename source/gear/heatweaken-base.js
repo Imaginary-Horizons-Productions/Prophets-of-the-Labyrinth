@@ -6,7 +6,7 @@ const bounceCount = 3;
 module.exports = new GearTemplate("Heat Weaken",
 	[
 		["use", `Inflict @{mod0Stacks} @{mod0} on ${bounceCount} random foes`],
-		["Critical💥", "@{mod0} x @{critBonus}"]
+		["critical", "@{mod0} x @{critBonus}"]
 	],
 	"Spell",
 	"Fire"

@@ -8,7 +8,7 @@ const variantName = "Tormenting Deck of Cards";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Deal <@{damage}> @{essence} damage, increase debuff stacks by @{debuffIncrement}, and inflict <@{mod0Stacks}> @{mod0} on a foe"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Action",
 	"Wind"

@@ -9,7 +9,7 @@ const variantName = "Sabotaging Cauldron Stir";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} stacks of a random Vulnerability on a foe"],
-		["Critical💥", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
+		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
 	],
 	"Action",
 	"Light"

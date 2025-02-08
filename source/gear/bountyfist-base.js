@@ -7,7 +7,7 @@ const variantName = "Bounty Fist";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Deal <@{damage} + gold paid> @{essence} damage to a foe"],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Pact",
 	"Earth"

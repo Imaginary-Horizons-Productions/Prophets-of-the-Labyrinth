@@ -7,7 +7,7 @@ module.exports = new GearTemplate("Accurate Nature's Caprice",
 	[
 		accuratePassive,
 		["use", "Grant @{mod0Stacks} @{mod0} to a combatant"],
-		["Critical💥", "Instead inflict @{mod1Stacks} @{mod1}"]
+		["critical", "Instead inflict @{mod1Stacks} @{mod1}"]
 	],
 	"Spell",
 	"Earth"

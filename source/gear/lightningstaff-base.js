@@ -6,7 +6,7 @@ const bounceCount = 3;
 module.exports = new GearTemplate("Lightning Staff",
 	[
 		["use", `Strike ${bounceCount} random foes for <@{damage}> @{essence} damage`],
-		["Critical💥", "Damage x @{critBonus}"]
+		["critical", "Damage x @{critBonus}"]
 	],
 	"Adventuring",
 	"Wind"

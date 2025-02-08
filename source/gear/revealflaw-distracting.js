@@ -8,7 +8,7 @@ const variantName = "Distracting Reveal Flaw";
 module.exports = new GearTemplate(variantName,
 	[
 		["use", "Inflict @{mod0Stacks} Vulnerability to a random essence on all foes"],
-		["Critical💥", "Inflict @{critBonus} extra Stagger"]
+		["critical", "Inflict @{critBonus} extra Stagger"]
 	],
 	"Maneuver",
 	"Light"

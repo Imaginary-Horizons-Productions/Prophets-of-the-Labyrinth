@@ -8,7 +8,7 @@ module.exports = new GearTemplate("Accurate Cloak",
 	[
 		accuratePassive,
 		["use", "Gain <@{mod0Stacks}> @{mod0}"],
-		["Critical💥", "@{mod0} x @{critBonus}"]
+		["critical", "@{mod0} x @{critBonus}"]
 	],
 	"Defense",
 	"Fire"

@@ -15,7 +15,6 @@ Here is a list of reserved emoji and their meanings:
 * 🔮 Battle Predicts
 * 💎 Premium
 * 💫 Stun
-* 💥 Critical
 * 📚 Party Stats
 * 🔎 Inspect Self
 * ⚔ Ready a Move
@@ -24,7 +23,6 @@ Here is a list of reserved emoji and their meanings:
 * ❤️ HP
 * 💰 Gold
 * 🆔 Archetype
-* 🐾 Pet
 * 🔋 Recharge Spells
 * 🔭 Scouting
 * 🏆 Take on a Challenge

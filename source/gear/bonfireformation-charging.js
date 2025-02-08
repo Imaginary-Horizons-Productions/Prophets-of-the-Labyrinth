@@ -5,7 +5,7 @@ const { changeStagger, generateModifierResultLines, combineModifierReceipts, add
 module.exports = new GearTemplate("Charging Bonfire Formation",
 	[
 		["use", "Grant all allies @{mod0Stacks} @{mod0}, @{mod1Stacks} @{mod1}, and @{mod2Stacks} @{mod2}"],
-		["Critical💥", "@{mod0} and @{mod1} + @{critBonus}"]
+		["critical", "@{mod0} and @{mod1} + @{critBonus}"]
 	],
 	"Maneuver",
 	"Fire"

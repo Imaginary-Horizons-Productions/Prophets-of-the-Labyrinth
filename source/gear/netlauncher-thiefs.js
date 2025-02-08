@@ -7,7 +7,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 module.exports = new GearTemplate("Thief's Net Launcher",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a foe, gain @{bounty}g if they're downed"],
-		["Critical💥", "Damage x @{critBonus}; inflict @{mod0} on all foes instead"]
+		["critical", "Damage x @{critBonus}; inflict @{mod0} on all foes instead"]
 	],
 	"Offense",
 	"Light"

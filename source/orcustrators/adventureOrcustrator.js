@@ -3,7 +3,7 @@ const { ThreadChannel, Message, EmbedBuilder, bold, italic } = require("discord.
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
-const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE } = require("../constants.js");
+const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, ICON_PET, ICON_CRITICAL } = require("../constants.js");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getEnemy } = require("../enemies/_enemyDictionary");
@@ -425,7 +425,7 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			if (targetDebuffs.length > 1) {
 				const firstDebuff = getApplicationEmojiMarkdown(targetDebuffs.splice(user.roundRns[roundRnKeyname][0] % targetDebuffs.length, 1)[0]);
 				const secondDebuff = getApplicationEmojiMarkdown(targetDebuffs[user.roundRns[roundRnKeyname][1] % targetDebuffs.length]);
-				return `${user.name}'s ${moveName} will cure ${firstDebuff} (and ${secondDebuff} on 💥) on ${target.name}.`;
+				return `${user.name}'s ${moveName} will cure ${firstDebuff} (and ${secondDebuff} on ${ICON_CRITICAL}) on ${target.name}.`;
 			} else if (targetDebuffs.length === 1) {
 				return `${user.name}'s ${moveName} will cure ${getApplicationEmojiMarkdown(targetDebuffs[0])} on ${target.name}.`;
 			}
@@ -748,7 +748,7 @@ function resolveMove(move, adventure) {
 	const [moveName, index] = move.name.split(SAFE_DELIMITER);
 	if (!user.isStunned || moveName.startsWith("Unstoppable") || move.type === "pet") {
 		if (user.crit && move.type !== "pet") {
-			headline = `💥${headline}`;
+			headline = `${ICON_CRITICAL}${headline}`;
 		}
 
 		let effect;
@@ -791,7 +791,7 @@ function resolveMove(move, adventure) {
 			}
 			case "pet":
 				effect = getPetMove(user.pet, adventure.petRNs.moveIndex).effect;
-				headline = `🐾${user.name}'s ${bold(user.pet.type)} used ${moveName}`;
+				headline = `${ICON_PET}${user.name}'s ${bold(user.pet.type)} used ${moveName}`;
 				break;
 		}
 

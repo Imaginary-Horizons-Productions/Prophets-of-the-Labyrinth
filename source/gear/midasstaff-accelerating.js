@@ -5,7 +5,7 @@ const { changeStagger, generateModifierResultLines, addModifier } = require('../
 module.exports = new GearTemplate("Accelerating Midas Staff",
 	[
 		["use", "Grant @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to a combatant"],
-		["Critical💥", "@{mod0} + @{critBonus}"]
+		["critical", "@{mod0} + @{critBonus}"]
 	],
 	"Support",
 	"Light"
