@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, ICON_LIFE, ICON_CONFIRM, ICON_CANCEL } = require("../constants");
 
 module.exports = new RoomTemplate("The Score Beggar",
 	"Water",
@@ -18,14 +18,14 @@ module.exports = new RoomTemplate("The Score Beggar",
 			tradeButtons.addComponents(
 				new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}score`)
 					.setStyle(ButtonStyle.Success)
-					.setEmoji("⚕️")
+					.setEmoji(ICON_LIFE)
 					.setLabel("Take the flask [-50 score: +1 life]")
 			);
 			if ("Placebo" in adventure.items) {
 				tradeButtons.addComponents(
 					new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}placebo`)
 						.setStyle(ButtonStyle.Success)
-						.setEmoji("⚕️")
+						.setEmoji(ICON_LIFE)
 						.setLabel("Trade a Placebo [-1 Placebo: +1 life]")
 				)
 			}
@@ -34,7 +34,7 @@ module.exports = new RoomTemplate("The Score Beggar",
 				tradeButtons.addComponents(
 					new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}score`)
 						.setStyle(ButtonStyle.Success)
-						.setEmoji("✔️")
+						.setEmoji(ICON_CONFIRM)
 						.setLabel("Score traded")
 						.setDisabled(true),
 				);
@@ -42,7 +42,7 @@ module.exports = new RoomTemplate("The Score Beggar",
 					tradeButtons.addComponents(
 						new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}placebo`)
 							.setStyle(ButtonStyle.Success)
-							.setEmoji("✖️")
+							.setEmoji(ICON_CANCEL)
 							.setLabel("No flasks left")
 							.setDisabled(true)
 					)
@@ -51,12 +51,12 @@ module.exports = new RoomTemplate("The Score Beggar",
 				tradeButtons.addComponents(
 					new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}score`)
 						.setStyle(ButtonStyle.Success)
-						.setEmoji("✖️")
+						.setEmoji(ICON_CANCEL)
 						.setLabel("No flasks left")
 						.setDisabled(true),
 					new ButtonBuilder().setCustomId(`buylife${SAFE_DELIMITER}placebo`)
 						.setStyle(ButtonStyle.Success)
-						.setEmoji("✔️")
+						.setEmoji(ICON_CONFIRM)
 						.setLabel("Placebo traded")
 						.setDisabled(true)
 				)

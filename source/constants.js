@@ -48,6 +48,26 @@ module.exports = {
 	ESSENCE_MATCH_STAGGER_ALLY: -1,
 
 	// Emoji Icons
+	ICON_APPEASE: "🙇",
+	ICON_ARCHETYPE: "🆔",
+	ICON_CANCEL: "✖️",
+	ICON_CHALLENGE: "🏆",
+	ICON_CONFIRM: "✔️",
 	ICON_CRITICAL: "💥",
-	ICON_PET: "🐾"
+	ICON_GOLD: "💰",
+	ICON_INSPECT_SELF: "🔎",
+	ICON_LIFE: "❤️",
+	ICON_LOCKED: "🔐",
+	ICON_MODIFY: "↔️",
+	ICON_NEEDS_CONFIRMATION: "💬",
+	ICON_PARTY_STATS: "📚",
+	ICON_PET: "🐾",
+	ICON_PREMIUM: "💎",
+	ICON_READY_ITEM: "🧪",
+	ICON_READY_MOVE: "⚔",
+	ICON_RECHARGE_SPELLS: "🔋",
+	ICON_SCOUTING: "🔭",
+	ICON_SHARE_HP: "⚕️",
+	ICON_STAGGER: "💫",
+	ICON_UPGRADE: "⬆️"
 };

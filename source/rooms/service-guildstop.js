@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { pathVoteField, generateRoutingRow } = require("../util/messageComponentUtil");
-const { SAFE_DELIMITER, ICON_PET } = require("../constants");
+const { SAFE_DELIMITER, ICON_PET, ICON_ARCHETYPE, ICON_CHALLENGE } = require("../constants");
 const { rollChallenges } = require("../challenges/_challengeDictionary");
 
 module.exports = new RoomTemplate("Guildstop: For All Your Adventuring Needs",
@@ -24,7 +24,7 @@ module.exports = new RoomTemplate("Guildstop: For All Your Adventuring Needs",
 			components: [
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`switchspecialization${SAFE_DELIMITER}${specializationSwitchCost}`)
-						.setEmoji("🆔")
+						.setEmoji(ICON_ARCHETYPE)
 						.setLabel(`Switch Specializations [${specializationSwitchCost}g]`)
 						.setStyle(ButtonStyle.Secondary)
 						.setDisabled(adventure.gold < specializationSwitchCost),
@@ -35,7 +35,7 @@ module.exports = new RoomTemplate("Guildstop: For All Your Adventuring Needs",
 						.setDisabled(adventure.gold < petSwitchCost),
 					new ButtonBuilder().setCustomId("challenges")
 						.setStyle(ButtonStyle.Secondary)
-						.setEmoji("🏆")
+						.setEmoji(ICON_CHALLENGE)
 						.setLabel("Take on a Challenge")
 						.setDisabled(adventure.room.history["New challenges"].length > 0)
 				),

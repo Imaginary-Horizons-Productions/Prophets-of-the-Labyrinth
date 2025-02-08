@@ -1,6 +1,7 @@
 const { CommandInteraction, MessageFlags } = require("discord.js");
 const { embedTemplate } = require("../../util/embedUtil");
 const { CHALLENGE_NAMES, getChallenge } = require("../../challenges/_challengeDictionary");
+const { ICON_CANCEL, ICON_CONFIRM } = require("../../constants");
 
 /**
  * @param {CommandInteraction} interaction
@@ -18,7 +19,7 @@ async function executeSubcommand(interaction, ...args) {
 	const embed = embedTemplate().setTitle(challengeTemplate.name)
 		.setDescription(challengeTemplate.dynamicDescription(challengeTemplate.intensity, challengeTemplate.duration, challengeTemplate.reward, true))
 		.addFields(
-			{ name: "Sources", value: `Preparation Phase: ${challengeTemplate.startingChallenge ? "✅" : "🚫"}\nGuildstop: ${challengeTemplate.rollableChallenge ? "✅" : "🚫"}`, inline: true },
+			{ name: "Sources", value: `Preparation Phase: ${challengeTemplate.startingChallenge ? ICON_CONFIRM : ICON_CANCEL}\nGuildstop: ${challengeTemplate.rollableChallenge ? ICON_CONFIRM : ICON_CANCEL}`, inline: true },
 			{ name: "Score Multiplier", value: `x${challengeTemplate.scoreMultiplier}`, inline: true }
 		);
 	interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });

@@ -3,7 +3,7 @@ const { ThreadChannel, Message, EmbedBuilder, bold, italic } = require("discord.
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
-const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, ICON_PET, ICON_CRITICAL } = require("../constants.js");
+const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, ICON_PET, ICON_CRITICAL, ICON_STAGGER } = require("../constants.js");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getEnemy } = require("../enemies/_enemyDictionary");
@@ -876,7 +876,7 @@ function resolveMove(move, adventure) {
 			adventure.updateArtifactStat("Health Restored", insigniaHealing);
 		}
 	} else {
-		headline = `💫 ${headline} is Stunned!`;
+		headline = `${ICON_STAGGER} ${headline} is Stunned!`;
 		if ("Progress" in user.modifiers) {
 			results.push(`${user.name} loses some ${getApplicationEmojiMarkdown("Progress")}!`)
 			user.modifiers.Progress = Math.ceil(user.getModifierStacks("Progress") * 0.8);

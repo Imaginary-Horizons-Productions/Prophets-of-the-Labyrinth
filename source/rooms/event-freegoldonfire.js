@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, ICON_GOLD, ICON_CONFIRM } = require("../constants");
 
 module.exports = new RoomTemplate("Free Gold?",
 	"Fire",
@@ -16,7 +16,7 @@ module.exports = new RoomTemplate("Free Gold?",
 	function (roomEmbed, adventure) {
 		let reward = 300;
 		let burnDamage = 100;
-		let getEmoji = "💰";
+		let getEmoji = ICON_GOLD;
 		let getLabel = `Leaving it would be a waste [+${reward}g]`;
 		let isGetDisabled = false;
 		if (adventure.room.history.Burned.length > 0) {
@@ -24,7 +24,7 @@ module.exports = new RoomTemplate("Free Gold?",
 			getLabel = `+${reward}g, ${adventure.room.history.Burned[0]} -${burnDamage} HP`;
 			isGetDisabled = true;
 		} else if (!("Gold" in adventure.room.resources)) {
-			getEmoji = "✔️";
+			getEmoji = ICON_CONFIRM;
 			getLabel = `+${reward}g`;
 			isGetDisabled = true;
 		}

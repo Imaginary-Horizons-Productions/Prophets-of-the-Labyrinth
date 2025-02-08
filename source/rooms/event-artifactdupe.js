@@ -2,7 +2,7 @@ const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } 
 const { RoomTemplate } = require("../classes");
 const { getArtifact } = require("../artifacts/_artifactDictionary");
 const { trimForSelectOptionDescription } = require("../util/textUtil");
-const { EMPTY_SELECT_OPTION_SET } = require("../constants");
+const { EMPTY_SELECT_OPTION_SET, ICON_GOLD, ICON_CONFIRM, ICON_CANCEL } = require("../constants");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Twin Pedestals",
@@ -35,7 +35,7 @@ module.exports = new RoomTemplate("Twin Pedestals",
 				duperLabel = "Pick an artifact to duplicate...";
 			}
 			pillageLabel = "Pillage the Pedestals [+350g]";
-			pillageEmoji = "💰";
+			pillageEmoji = ICON_GOLD;
 			isPillageDisabled = false;
 		} else {
 			if (adventure.room.history["Duped artifact"].length > 0) {
@@ -43,14 +43,14 @@ module.exports = new RoomTemplate("Twin Pedestals",
 				duperOptions = EMPTY_SELECT_OPTION_SET;
 				isDuperDisabled = true;
 				pillageLabel = "Pedestals used";
-				pillageEmoji = "✖️";
+				pillageEmoji = ICON_CANCEL;
 				isPillageDisabled = true;
 			} else {
 				duperLabel = "Pedestals pillaged";
 				duperOptions = EMPTY_SELECT_OPTION_SET;
 				isDuperDisabled = true;
 				pillageLabel = "+350g";
-				pillageEmoji = "✔️";
+				pillageEmoji = ICON_CONFIRM;
 				isPillageDisabled = true;
 			}
 		}

@@ -1,7 +1,7 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 
 const { RoomTemplate } = require("../classes");
-const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
+const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET, ICON_NEEDS_CONFIRMATION } = require("../constants");
 
 const { parseExpression } = require("../util/mathUtil");
 const { listifyEN, getNumberEmoji } = require("../util/textUtil");
@@ -26,7 +26,7 @@ module.exports = new RoomTemplate("Treasure! Gold or Gear?",
 			for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 				if (visibility === "always" && count > 0) {
 					options.push({
-						label: type === "Currency" ? `${getNumberEmoji(1)} ${count} ${name}` : `💬 ${name}`,
+						label: type === "Currency" ? `${getNumberEmoji(1)} ${count} ${name}` : `${ICON_NEEDS_CONFIRMATION} ${name}`,
 						description: type,
 						value: `${name}${SAFE_DELIMITER}${options.length}`
 					});

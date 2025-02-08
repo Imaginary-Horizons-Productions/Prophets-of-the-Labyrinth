@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ComponentType, StringSelectMenuBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
-const { SAFE_DELIMITER, ZERO_WIDTH_WHITESPACE } = require('../constants');
+const { SAFE_DELIMITER, ZERO_WIDTH_WHITESPACE, ICON_CONFIRM, ICON_CANCEL } = require('../constants');
 const { getAdventure, endRoom } = require('../orcustrators/adventureOrcustrator');
 const { pathVoteField } = require('../util/messageComponentUtil');
 
@@ -38,9 +38,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 							case ComponentType.Button: {
 								const updatedButton = new ButtonBuilder(component).setDisabled(true);
 								if (component.custom_id === interaction.customId) {
-									updatedButton.setEmoji("✔️");
+									updatedButton.setEmoji(ICON_CONFIRM);
 								} else if (!component.emoji) {
-									updatedButton.setEmoji("✖️");
+									updatedButton.setEmoji(ICON_CANCEL);
 								}
 
 								return updatedButton;

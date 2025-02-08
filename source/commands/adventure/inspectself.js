@@ -1,6 +1,7 @@
 const { CommandInteraction } = require("discord.js");
 const { Adventure, Delver } = require("../../classes");
 const { inspectSelfPayload } = require("../../util/embedUtil");
+const { ICON_INSPECT_SELF } = require("../../constants");
 
 /**
  * @param {CommandInteraction} interaction
@@ -14,7 +15,7 @@ async function executeSubcommand(interaction, ...[adventure, delver]) {
 module.exports = {
 	data: {
 		name: "inspect-self",
-		description: "🔎 Get your adventure-specific stats"
+		description: `${ICON_INSPECT_SELF} Get your adventure-specific stats`
 	},
 	executeSubcommand
 };

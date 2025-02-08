@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, ICON_CONFIRM, ICON_CANCEL } = require("../constants");
 const { generateRoutingRow, inspectSelfButton, pathVoteField } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Rest Site & Training Dummy",
@@ -26,17 +26,17 @@ module.exports = new RoomTemplate("Rest Site & Training Dummy",
 			trainingLabel = "Train [+1 Level]";
 		} else {
 			if (adventure.room.history.Rested.length > 0) {
-				restEmoji = "✔️";
+				restEmoji = ICON_CONFIRM;
 				restLabel = "The party rested";
 			} else {
-				restEmoji = "✖️";
+				restEmoji = ICON_CANCEL;
 				restLabel = "The fire has burned out";
 			}
 			if (adventure.room.history.Trained.length > 0) {
-				trainingEmoji = "✔️";
+				trainingEmoji = ICON_CONFIRM;
 				trainingLabel = "The party trained";
 			} else {
-				trainingEmoji = "✖️";
+				trainingEmoji = ICON_CANCEL;
 				trainingLabel = "The party didn't train";
 			}
 		}

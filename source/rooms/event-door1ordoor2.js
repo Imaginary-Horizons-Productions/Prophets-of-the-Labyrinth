@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, italic } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { rollArtifactWithExclusions } = require("../artifacts/_artifactDictionary");
-const { SAFE_DELIMITER } = require("../constants");
+const { SAFE_DELIMITER, ICON_CONFIRM, ICON_CANCEL } = require("../constants");
 const { generateRoutingRow, partyStatsButton, pathVoteField } = require("../util/messageComponentUtil");
 
 module.exports = new RoomTemplate("Door 1 or Door 2?",
@@ -34,14 +34,14 @@ module.exports = new RoomTemplate("Door 1 or Door 2?",
 			door2Emoji = "❔";
 		} else if (adventure.room.history["Option Picked"][0] === "0") {
 			door1Label = `${adventure.room.history.Artifacts[0]} [${door1Cost}g]`;
-			door1Emoji = "✔️";
+			door1Emoji = ICON_CONFIRM;
 			door2Label = "Didn't Pick Door 2";
-			door2Emoji = "✖️";
+			door2Emoji = ICON_CANCEL;
 		} else {
 			door1Label = "Didn't Pick Door 1";
-			door1Emoji = "✖️";
+			door1Emoji = ICON_CANCEL;
 			door2Label = `${adventure.room.history.Artifacts[1]} [${door2Cost}g]`;
-			door2Emoji = "✔️";
+			door2Emoji = ICON_CONFIRM;
 		}
 		return {
 			embeds: [roomEmbed.addFields(pathVoteField)],

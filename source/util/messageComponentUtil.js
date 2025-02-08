@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, StringSelectMenuBuilder } = require("discord.js");
 
 const { Adventure } = require("../classes");
-const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
+const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET, ICON_PARTY_STATS, ICON_INSPECT_SELF, ICON_READY_MOVE, ICON_NEEDS_CONFIRMATION, ICON_GOLD, ICON_APPEASE, ICON_READY_ITEM } = require("../constants");
 
 const { listifyEN } = require("./textUtil");
 
@@ -19,11 +19,11 @@ function clearComponents(messageId, messageManager) {
 
 const extraCombatButtonsMap = {
 	"appease": (adventure) => new ButtonBuilder().setCustomId(`appease${SAFE_DELIMITER}${adventure.room.round}`)
-		.setEmoji("🙇")
+		.setEmoji(ICON_APPEASE)
 		.setLabel("Appease the Starry Knight")
 		.setStyle(ButtonStyle.Success),
 	"greed": (adventure) => new ButtonBuilder().setCustomId(`greed${SAFE_DELIMITER}${adventure.room.round}`)
-		.setEmoji("💰")
+		.setEmoji(ICON_GOLD)
 		.setLabel("Greed")
 		.setStyle(ButtonStyle.Success)
 };
@@ -40,11 +40,11 @@ function generateCombatRoomBuilder(extraButtons) {
 				module.exports.partyStatsButton,
 				module.exports.inspectSelfButton,
 				new ButtonBuilder().setCustomId(`readymove${SAFE_DELIMITER}${adventure.room.round}`)
-					.setEmoji("⚔")
+					.setEmoji(ICON_READY_MOVE)
 					.setLabel("Ready a Move")
 					.setStyle(ButtonStyle.Success),
 				new ButtonBuilder().setCustomId("readyitem")
-					.setEmoji("🧪")
+					.setEmoji(ICON_READY_ITEM)
 					.setLabel("Ready an Item")
 					.setStyle(ButtonStyle.Success)
 					.setDisabled(!Object.values(adventure.items).some(quantity => quantity > 0))
@@ -102,7 +102,7 @@ function generateLootRow(adventure) {
 				const option = { description: type, value: `${name}${SAFE_DELIMITER}${options.length}` };
 				switch (type) {
 					case "Gear":
-						option.label = `💬 ${name} x ${count}`;
+						option.label = `${ICON_NEEDS_CONFIRMATION} ${name} x ${count}`;
 						break;
 					case "Artifact":
 						option.label = `${name} x ${count}`;
@@ -147,11 +147,11 @@ function generateRoutingRow(adventure) {
 module.exports = {
 	clearComponents,
 	partyStatsButton: new ButtonBuilder().setCustomId("partystats")
-		.setEmoji("📚")
+		.setEmoji(ICON_PARTY_STATS)
 		.setLabel("Party Stats")
 		.setStyle(ButtonStyle.Secondary),
 	inspectSelfButton: new ButtonBuilder().setCustomId("inspectself")
-		.setEmoji("🔎")
+		.setEmoji(ICON_INSPECT_SELF)
 		.setLabel("Inspect Self")
 		.setStyle(ButtonStyle.Secondary),
 	generateCombatRoomBuilder,

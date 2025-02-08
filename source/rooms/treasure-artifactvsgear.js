@@ -1,7 +1,7 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 
-const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require("../constants");
+const { SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET, ICON_NEEDS_CONFIRMATION } = require("../constants");
 const { listifyEN, getNumberEmoji } = require("../util/textUtil");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 const { rollArtifact } = require("../artifacts/_artifactDictionary");
@@ -24,7 +24,7 @@ module.exports = new RoomTemplate("Treasure! Artifact or Gear?",
 			for (const { name, type, count, visibility } of Object.values(adventure.room.resources)) {
 				if (visibility === "always" && count > 0) {
 					options.push({
-						label: type === "Gear" ? `💬 ${name}` : `${getNumberEmoji(1)} ${name} x ${count}`,
+						label: type === "Gear" ? `${ICON_NEEDS_CONFIRMATION} ${name}` : `${getNumberEmoji(1)} ${name} x ${count}`,
 						description: type,
 						value: `${name}${SAFE_DELIMITER}${options.length}`
 					});

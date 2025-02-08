@@ -2,6 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
 const { getEmoji } = require("../util/essenceUtil");
+const { ICON_SHARE_HP, ICON_CONFIRM } = require("../constants");
 
 module.exports = new RoomTemplate("Imp Contract Faire",
 	"@{adventureCounter}",
@@ -23,11 +24,11 @@ module.exports = new RoomTemplate("Imp Contract Faire",
 		}
 
 		if (adventure.room.history["HP Donor"].length < 1) {
-			shareEmoji = "🤍";
+			shareEmoji = ICON_SHARE_HP;
 			shareLabel = "Share HP [-50g, -100 HP, +100 HP for everyone else]";
 			isShareDisabled = adventure.gold < 50;
 		} else {
-			shareEmoji = "✔️";
+			shareEmoji = ICON_CONFIRM;
 			shareLabel = `${adventure.room.history["HP Donor"][0]} shared HP`;
 			isShareDisabled = true;
 		}

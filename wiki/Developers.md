@@ -49,4 +49,4 @@ Please use `camelCase` unless one of the following exceptions apply:
    - Danger: Risky action that commits resources
 - Buttons that trigger effects that consume room actions should have the number emoji of the number of room actions consumed as their emoji
 - Select Menus that trigger effects that consume room actions should have the number emoji of the number of room actions consumed at the beginning of their placeholder
-- Add 💬 to the beginning of the placeholder of Select Menus that send a confirmation message/button before changing state
+- Add ICON_NEEDS_CONFIRMATION to the beginning of the placeholder of Select Menus that send a confirmation message/button before changing state

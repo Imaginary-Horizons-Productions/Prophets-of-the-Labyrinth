@@ -5,6 +5,7 @@ const { listifyEN } = require("../../util/textUtil");
 const { getAllArchetypeNames, getArchetype, getArchetypeActionName } = require("../../archetypes/_archetypeDictionary");
 const { buildGearDescription } = require("../../gear/_gearDictionary");
 const { getPlayer } = require("../../orcustrators/playerOrcustrator");
+const { ICON_LOCKED } = require("../../constants");
 
 const ARCHETYPE_NAMES = getAllArchetypeNames();
 
@@ -24,15 +25,15 @@ async function executeSubcommand(interaction, ...args) {
 	const fields = [{ name: "Base Stats", value: `Max HP: ${archetype.maxHP}\nPower: 35\nSpeed: ${archetype.speed}\nCrit Rate: 20%`, inline: true }, { name: "Stat Growths", value: `Max HP: ${archetype.maxHPGrowth}\nPower: ${archetype.powerGrowth}\nSpeed: ${archetype.speedGrowth}\nCrit Rate: ${archetype.critRateGrowth}%`, inline: true }];
 	fields.push(
 		{ name: "Starting Gear", value: listifyEN(archetype.startingGear) },
-		{ name: "Specializations and Archetype Actions", value: `Here are the ${nameInTitleCase} Archetype Actions and Specializations. Drafting ${nameInTitleCase} duplicates unlocks more Specializations (removes the 🔐 icon).` }
+		{ name: "Specializations and Archetype Actions", value: `Here are the ${nameInTitleCase} Archetype Actions and Specializations. Drafting ${nameInTitleCase} duplicates unlocks more Specializations (removes the ${ICON_LOCKED} icon).` }
 	);
 	const baseArchetypeActionName = getArchetypeActionName(nameInTitleCase, "base");
 	const player = getPlayer(interaction.user.id, interaction.guildId);
-	fields.push({ name: `${player.archetypes[nameInTitleCase]?.specializationsUnlocked > 0 ? "" : "🔐"}Base - ${baseArchetypeActionName}`, value: buildGearDescription(baseArchetypeActionName) });
+	fields.push({ name: `${player.archetypes[nameInTitleCase]?.specializationsUnlocked > 0 ? "" : ICON_LOCKED}Base - ${baseArchetypeActionName}`, value: buildGearDescription(baseArchetypeActionName) });
 	for (let i = 0; i < 4; i++) {
 		const specialization = archetype.specializations[i];
 		const archetypeActionName = getArchetypeActionName(nameInTitleCase, specialization);
-		fields.push({ name: `${player.archetypes[nameInTitleCase]?.specializationsUnlocked > i ? "" : "🔐"}${specialization} - ${archetypeActionName}`, value: buildGearDescription(archetypeActionName) });
+		fields.push({ name: `${player.archetypes[nameInTitleCase]?.specializationsUnlocked > i ? "" : ICON_LOCKED}${specialization} - ${archetypeActionName}`, value: buildGearDescription(archetypeActionName) });
 	}
 	console.log(fields);
 	interaction.reply({

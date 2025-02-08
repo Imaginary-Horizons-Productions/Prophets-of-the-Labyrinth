@@ -4,6 +4,7 @@ const { contextMenuFiles } = require('../context_menus/_contextMenuDictionary.js
 const { CommandWrapper, ContextMenuWrapper } = require('../classes');
 const { SlashCommandSubcommandBuilder, PermissionsBitField, InteractionContextType, ApplicationCommandType } = require('discord.js');
 const { listifyEN } = require('../util/textUtil.js');
+const { ICON_PREMIUM } = require('../constants.js');
 
 const contextDictionary = {
 	[InteractionContextType.BotDM]: "DMs",
@@ -20,7 +21,7 @@ if (commandFiles.length > 0) {
 		const command = require(`./../commands/${filename}`);
 		text += `### /${command.mainId}\n`;
 		if (command.premiumCommand) {
-			text += `> 💎 Premium Command 💎\n\n`
+			text += `> ${ICON_PREMIUM} Premium Command ${ICON_PREMIUM}\n\n`
 		}
 		text += `> Usable in: ${listifyEN(command.builder.contexts.map(context => contextDictionary[context]))}\n\n`;
 		if (command.cooldown === 1000) {
@@ -61,7 +62,7 @@ if (contextMenuFiles.length > 0) {
 		const contextMenu = require(`./../context_menus/${file}`);
 		text += `### ${contextMenu.builder.type === ApplicationCommandType.User ? "User -> Apps" : "Message -> Apps"} -> ${contextMenu.mainId}\n`;
 		if (contextMenu.premiumCommand) {
-			text += `> 💎 Premium Feature 💎\n\n`
+			text += `> ${ICON_PREMIUM} Premium Feature ${ICON_PREMIUM}\n\n`
 		}
 		text += `> Usable in: ${listifyEN(contextMenu.builder.contexts.map(context => contextDictionary[context]))}\n\n`;
 		if (contextMenu.cooldown === 1000) {

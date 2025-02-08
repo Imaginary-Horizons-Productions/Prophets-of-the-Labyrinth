@@ -1,6 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
+const { ICON_CONFIRM, ICON_CANCEL, ICON_MODIFY, ICON_UPGRADE } = require("../constants");
 
 module.exports = new RoomTemplate("Abandoned Forge",
 	"@{adventure}",
@@ -23,14 +24,14 @@ module.exports = new RoomTemplate("Abandoned Forge",
 	function (roomEmbed, adventure) {
 		let upgradeEmoji, isUpgradeDisabled, modifyEmoji, isModifyDisabled;
 		if (adventure.room.actions > 0) {
-			upgradeEmoji = "⬆️";
+			upgradeEmoji = ICON_UPGRADE;
 			isUpgradeDisabled = false;
-			modifyEmoji = "↔️";
+			modifyEmoji = ICON_MODIFY;
 			isModifyDisabled = false;
 		} else {
-			upgradeEmoji = adventure.room.history.Upgraders.length > 0 ? "✔️" : "✖️";
+			upgradeEmoji = adventure.room.history.Upgraders.length > 0 ? ICON_CONFIRM : ICON_CANCEL;
 			isUpgradeDisabled = true;
-			modifyEmoji = adventure.room.history.Modders.length > 0 ? "✔️" : "✖️";
+			modifyEmoji = adventure.room.history.Modders.length > 0 ? ICON_CONFIRM : ICON_CANCEL;
 			isModifyDisabled = true;
 		}
 		return {

@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
-const { EMPTY_SELECT_OPTION_SET } = require("../constants");
+const { EMPTY_SELECT_OPTION_SET, ICON_GOLD, ICON_CONFIRM, ICON_CANCEL } = require("../constants");
 
 module.exports = new RoomTemplate("Apple Pie Wishing Well",
 	"Light",
@@ -26,11 +26,11 @@ module.exports = new RoomTemplate("Apple Pie Wishing Well",
 			}
 
 			if (adventure.room.history["Items tossed"].length > 0) {
-				stealEmoji = "✖️";
+				stealEmoji = ICON_CANCEL;
 				stealLabel = "Well used";
 				isStealDisabled = true;
 			} else {
-				stealEmoji = "💰";
+				stealEmoji = ICON_GOLD;
 				stealLabel = "Steal the core [+150g]";
 				isStealDisabled = false;
 			}
@@ -38,7 +38,7 @@ module.exports = new RoomTemplate("Apple Pie Wishing Well",
 			wellLabel = "Wishing Well Core stolen";
 			wellOptions = EMPTY_SELECT_OPTION_SET;
 			isWellDisabled = true;
-			stealEmoji = "✔️";
+			stealEmoji = ICON_CONFIRM;
 			stealLabel = "+150g";
 			isStealDisabled = true;
 		}

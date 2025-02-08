@@ -1,5 +1,5 @@
 const { ArchetypeTemplate, Adventure, Combatant } = require("../classes");
-const { ICON_CRITICAL } = require("../constants");
+const { ICON_CRITICAL, ICON_CANCEL } = require("../constants");
 const { modifiersToString } = require("../util/combatantUtil");
 
 /**
@@ -8,7 +8,7 @@ const { modifiersToString } = require("../util/combatantUtil");
  */
 function generateCritAndModifierField(team, adventure) {
 	return team.map(combatant => {
-		const critText = `Critical: ${combatant.crit ? ICON_CRITICAL : "🚫"}\n`;
+		const critText = `Critical: ${combatant.crit ? ICON_CRITICAL : ICON_CANCEL}\n`;
 		const modifiersText = modifiersToString(combatant, adventure, critText.length);
 		return { name: combatant.name, value: `${critText}${modifiersText ? `${modifiersText}` : "No buffs, debuffs, or states"}`, inline: true };
 	})
@@ -26,7 +26,7 @@ module.exports = new ArchetypeTemplate("Tactician",
 		return embed.setDescription(`Tactician predictions for Round ${adventure.room.round + 1}:`);
 	},
 	(combatant) => {
-		return `Critical: ${combatant.crit ? ICON_CRITICAL : "🚫"}`
+		return `Critical: ${combatant.crit ? ICON_CRITICAL : ICON_CANCEL}`
 	},
 	{
 		base: "Battle Standard",
