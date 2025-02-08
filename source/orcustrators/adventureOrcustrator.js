@@ -747,7 +747,7 @@ function resolveMove(move, adventure) {
 	const results = [];
 	const [moveName, index] = move.name.split(SAFE_DELIMITER);
 	if (!user.isStunned || moveName.startsWith("Unstoppable") || move.type === "pet") {
-		if (user.crit) {
+		if (user.crit && move.type !== "pet") {
 			headline = `💥${headline}`;
 		}
 
@@ -791,7 +791,7 @@ function resolveMove(move, adventure) {
 			}
 			case "pet":
 				effect = getPetMove(user.pet, adventure.petRNs.moveIndex).effect;
-				headline = `${user.name}'s ${bold(user.pet.type)} used ${moveName}`;
+				headline = `🐾${user.name}'s ${bold(user.pet.type)} used ${moveName}`;
 				break;
 		}
 
