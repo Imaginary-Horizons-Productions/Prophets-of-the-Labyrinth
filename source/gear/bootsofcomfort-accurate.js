@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Accurate Boots of Comfort",
 	[
-		["Passive", "Increase your Speed by @{percentSpeed}% and your Crit Rate by @{percentCritRate}%"]
+		["Passive", "Increase your Speed by @{percentSpeed}% and your Crit Rate by @{percentCritRate}% multiplicatively"]
 	],
 	"Trinket",
 	"Unaligned"

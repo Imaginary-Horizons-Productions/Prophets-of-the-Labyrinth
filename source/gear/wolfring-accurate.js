@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Accurate Wolf Ring",
 	[
-		["Passive", "Increase your Max HP by @{percentMaxHP}% and your Crit Rate by @{percentCritRate}%"]
+		["Passive", "Increase your Max HP by @{percentMaxHP}% and your Crit Rate by @{percentCritRate}% multiplicatively"]
 	],
 	"Trinket",
 	"Unaligned"

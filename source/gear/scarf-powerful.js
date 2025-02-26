@@ -2,7 +2,7 @@ const { GearTemplate } = require('../classes');
 
 module.exports = new GearTemplate("Powerful Scarf",
 	[
-		["Passive", "Increase your Crit Rate by @{percentCritRate}% and your Power by @{percentPower}%"]
+		["Passive", "Increase your Crit Rate by @{percentCritRate}% multiplicatively and your Power by @{percentPower}%"]
 	],
 	"Trinket",
 	"Unaligned"
