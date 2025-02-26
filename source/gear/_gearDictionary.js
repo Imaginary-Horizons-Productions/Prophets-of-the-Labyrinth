@@ -3,6 +3,7 @@ const { getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require(
 const { getEmoji } = require("../util/essenceUtil");
 const { italic } = require("discord.js");
 const { ICON_CRITICAL } = require("../constants");
+const { calculateTagContent } = require("../util/textUtil");
 
 /** @type {Record<string, GearTemplate>} */
 const GEAR = {};
@@ -313,7 +314,7 @@ function buildGearDescription(gearName) {
 		} else {
 			replacement = scaling.description;
 		}
-		text = text.replace(new RegExp(`@{${key}}`, "g"), replacement);
+		text = calculateTagContent(text, { [key]: replacement });
 	}
 
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {
@@ -392,7 +393,7 @@ function buildGearDescriptionWithHolderStats(gearName, holder, gearIndex) {
 		} else {
 			value = `[${scaling.calculate(holder).toString()}]`;
 		}
-		text = text.replace(new RegExp(`@{${key}}`, "g"), value);
+		text = calculateTagContent(text, { [key]: value });
 	}
 
 	getGearProperty(gearName, "modifiers")?.forEach((modifier, index) => {

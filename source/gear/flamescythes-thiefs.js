@@ -5,7 +5,7 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Thief's Flame Scythes",
 	[
-		["use", "Deal <@{damage}> @{essence} damage to a foe, execute them and add @{bounty}g to loot if they end below half your damage cap"],
+		["use", "Deal <@{damage}> @{essence} damage to a foe, then execute them and add @{bounty}g to loot if they end below half your damage cap"],
 		["critical", "Damage x @{critBonus}"]
 	],
 	"Spell",
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Thief's Flame Scythes",
 			pendingDamage *= critBonus;
 		}
 		const { resultLines } = dealDamage([target], user, pendingDamage, false, essence, adventure);
-		if (target.hp > (user.getDamageCap() / 2)) {
+		if (target.hp < (user.getDamageCap() / 2)) {
 			target.hp = 0;
 			const { extraLines } = downedCheck(target, adventure);
 			adventure.room.addResource("Gold", "Currency", "loot", bounty);
