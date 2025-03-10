@@ -675,7 +675,11 @@ function newRound(adventure, thread, lastRoundText) {
 							// (pre-/) roll for enemy move rn's for this round
 							cacheRoundRn(adventure, combatant, actionName, enemyTemplate.actions[actionName].rnConfig);
 						}
-						combatant.nextAction = enemyTemplate.actions[actionName].next;
+						if (typeof enemyTemplate.actions[actionName].next === "string") {
+							combatant.nextAction = enemyTemplate.actions[actionName].next;
+						} else {
+							combatant.nextAction = enemyTemplate.actions[actionName].next(actionName, adventure);
+						}
 					} else {
 						adventure.room.moves.push(
 							new Move("Mirror Clone", "action", new CombatantReference(combatant.team, i))
@@ -1016,7 +1020,7 @@ function endRound(adventure, thread) {
 
 		const otherHappenings = [];
 		if ("Fortune" in combatant.modifiers && combatant.modifiers.Fortune % 7 === 0) {
-			addProtection([combatant], combatant.getModifierStacks("Fortune") * 30);
+			addProtection([combatant], combatant.getModifierStacks("Fortune") * 15);
 			removeModifier([combatant], { name: "Fortune", stacks: "all" });
 			otherHappenings.push(`${combatant.name}'s Fortune becomes protection.`);
 		}

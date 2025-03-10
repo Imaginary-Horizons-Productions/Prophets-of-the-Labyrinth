@@ -267,7 +267,7 @@ module.exports = new LabyrinthTemplate("Zoo of Chimeras",
 	{
 		// Rooms
 		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Free Gold?", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
-		"Battle": ["Hawk Fight", "Wild Fire-Arrow Frogs", "Tortoise Fight"],
+		"Battle": ["Hawk Fight", "Tortoise Fight", "Stars and Stripes", "Wild Fire-Arrow Frogs"],
 		"Artifact Guardian": ["A Slimy Throneroom", "Brute Convention"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors"],
 		...standardLabyrinthInfrastructure

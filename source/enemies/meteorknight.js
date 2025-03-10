@@ -1,9 +1,9 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
-const { selectRandomFoe, selectAllCombatants } = require("../shared/actionComponents.js");
+const { dealDamage, changeStagger, addProtection } = require("../util/combatantUtil.js");
+const { selectRandomFoe, selectNone } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/essenceUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
+const { spawnEnemy } = require("../util/roomUtil.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
@@ -47,19 +47,17 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	selector: selectRandomFoe,
 	next: "random"
 }).addAction({
-	name: "Freefall Flare-Up",
+	name: "Call Asteroid",
 	essence: "Unaligned",
-	description: `Grant @e{Empowerment} to all combatants (friend and foe); grant protection to allies on Critical`,
+	description: "Summon an Asteroid, gain protection on Critical",
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Empowerment", stacks: 20 })));
 		if (user.crit) {
-			const livingEnemies = adventure.room.enemies.filter(c => c.hp > 0);
-			addProtection(livingEnemies, 50);
-			resultLines.push(joinAsStatement(false, livingEnemies.map(enemy => enemy.name), "gains", "gain", "protection."));
+			addProtection([user], 25);
 		}
-		return resultLines;
+		spawnEnemy(asteroid, adventure);
+		return ["An Asteroid arrives on the battlefield."];
 	},
-	selector: selectAllCombatants,
+	selector: selectNone,
 	next: "Sonic Slash"
 });

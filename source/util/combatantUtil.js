@@ -138,8 +138,8 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 
 const MODIFIER_DAMAGE_PER_STACK = {
 	Poison: 10,
-	Frailty: 20,
-	Misfortune: 30
+	Misfortune: 15,
+	Frailty: 20
 };
 
 /** modifier damage doesn't have an essence and doesn't interact with other modifiers (eg Exposure & Curse of Midas)

@@ -267,7 +267,7 @@ module.exports = new LabyrinthTemplate("Mechahive",
 	{
 		// Rooms
 		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Free Gold?", "The Score Beggar", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
-		"Battle": ["Frog Ranch", "Mechabee Fight"],
+		"Battle": ["Frog Ranch", "Mechabee Fight", "Slime Fight"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!"],
 		"Final Battle": ["The Hexagon: Bee Mode", "The Hexagon: Mech Mode"],
 		...standardLabyrinthInfrastructure

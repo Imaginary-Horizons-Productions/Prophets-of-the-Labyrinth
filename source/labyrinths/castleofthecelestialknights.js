@@ -267,8 +267,8 @@ module.exports = new LabyrinthTemplate("Castle of the Celestial Knights",
 	{
 		// Rooms
 		"Event": ["Door 1 or Door 2?", "Twin Pedestals", "Imp Contract Faire", "Gear Collector", "The Score Beggar", "Apple Pie Wishing Well", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
-		"Battle": ["Slime Fight", "Tortoise Fight", "Meteor Knight Fight"],
-		"Artifact Guardian": ["Brute Convention", "A windfall of treasure!"],
+		"Battle": ["Gaia Knightess and Elegant Stella Fight?", "Luna Militissa Fight", "Meteor Knight Fight", "Spacedust Cadet Fight"],
+		"Artifact Guardian": ["Celestial Knights United", "Brute Convention", "A windfall of treasure!"],
 		"Final Battle": ["Hall of Mirrors", "Confronting the Top Celestial Knight"],
 		...standardLabyrinthInfrastructure
 	}

@@ -37,6 +37,22 @@ function selectAllOtherAllies(self, adventure) {
 	}
 }
 
+/** Selects a random ally to the user (including self)
+ * @param {Combatant} self
+ * @param {Adventure} adventure
+ */
+function selectRandomAlly(self, adventure) {
+	const allyIndicies = [];
+	const combatantPool = self.team === "delver" ? adventure.delvers : adventure.room.enemies;
+	combatantPool.forEach((combatant, index) => {
+		if (combatant.hp > 0) {
+			allyIndicies.push(index);
+		}
+	})
+	const index = allyIndicies[adventure.generateRandomNumber(allyIndicies.length, "battle")];
+	return [new CombatantReference(self.team, index)];
+}
+
 /** Selects a random ally to the user (exlcluding self)
  * @param {Combatant} self
  * @param {Adventure} adventure
@@ -55,6 +71,27 @@ function selectRandomOtherAlly(self, adventure) {
 	}
 	const index = otherLivingAllyIndicies[adventure.generateRandomNumber(otherLivingAllyIndicies.length, "battle")];
 	return [new CombatantReference(self.team, index)];
+}
+
+/** Selects the user and a random ally to the user (exlcluding self)
+ * @param {Combatant} self
+ * @param {Adventure} adventure
+ */
+function selectSelfAndRandomOtherAlly(self, adventure) {
+	const selfIndex = adventure.getCombatantIndex(self);
+	const targetReferences = [new CombatantReference(self.team, selfIndex)];
+	const otherLivingAllyIndicies = [];
+	const combatantPool = self.team === "delver" ? adventure.delvers : adventure.room.enemies;
+	combatantPool.forEach((combatant, index) => {
+		if (combatant.hp > 0 && index !== selfIndex) {
+			otherLivingAllyIndicies.push(index);
+		}
+	})
+	if (otherLivingAllyIndicies.length > 0) {
+		const index = otherLivingAllyIndicies[adventure.generateRandomNumber(otherLivingAllyIndicies.length, "battle")];
+		targetReferences.push(new CombatantReference(self.team, index));
+	}
+	return targetReferences;
 }
 
 /** Selects all foes of the user
@@ -94,6 +131,36 @@ function selectRandomFoe(self, adventure) {
 	}
 }
 
+/** Selects multiple random foes
+ * @param {number} count
+ */
+function selectMultipleRandomFoes(count) {
+	/**
+	 * @param {Combatant} self
+	 * @param {Adventure} adventure
+	 */
+	return (self, adventure) => {
+		const targetReferences = [];
+		if (self.team === "delver") {
+			const livingEnemyIndicies = [];
+			for (let i = 0; i < adventure.room.enemies.length; i++) {
+				if (adventure.room.enemies[i].hp > 0) {
+					livingEnemyIndicies.push(i);
+				}
+			}
+			for (let i = 0; i < count; i++) {
+				// If there are no living enemies, combat should already be over
+				targetReferences.push(new CombatantReference("enemy", livingEnemyIndicies[adventure.generateRandomNumber(livingEnemyIndicies.length, "battle")]));
+			}
+		} else {
+			for (let i = 0; i < count; i++) {
+				targetReferences.push(new CombatantReference("delver", adventure.generateRandomNumber(adventure.delvers.length, "battle")));
+			}
+		}
+		return targetReferences;
+	}
+}
+
 /** Selects all combatants (delvers + enemies)
  * @param {Combatant} self
  * @param {Adventure} adventure
@@ -130,9 +197,12 @@ function selectNone(self, adventure) {
 module.exports = {
 	selectAllAllies,
 	selectAllOtherAllies,
+	selectRandomAlly,
 	selectRandomOtherAlly,
+	selectSelfAndRandomOtherAlly,
 	selectAllFoes,
 	selectRandomFoe,
+	selectMultipleRandomFoes,
 	selectAllCombatants,
 	selectAllOtherCombatants,
 	selectSelf,
