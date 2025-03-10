@@ -5,6 +5,7 @@ const ROOMS = {};
 
 for (const file of [
 	"artifactguardian-bruteconvention.js",
+	"artifactguardian-celestialknightsunited.js",
 	"artifactguardian-royalslime.js",
 	"artifactguardian-treasureelemental.js",
 	"battle-bloodtailhawks.js",
