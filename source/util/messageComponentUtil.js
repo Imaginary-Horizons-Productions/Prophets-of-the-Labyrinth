@@ -93,6 +93,17 @@ function generateCombatRoomBuilder(extraButtons) {
 	}
 }
 
+generateEventCombatRoomBuilder(extraButtons){
+	return (roomEmbed, adventure) => {
+		if (false) {
+
+		}
+		else {
+			return generateCombatRoomBuilder(extraButtons)(roomEmbed, adventure)
+		}
+	}
+}
+
 /** @param {Adventure} adventure */
 function generateLootRow(adventure) {
 	let options = [];
