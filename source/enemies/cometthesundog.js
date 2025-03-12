@@ -1,8 +1,9 @@
 const { EnemyTemplate } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { selectAllCombatants, selectRandomFoe, selectRandomOtherAlly } = require("../shared/actionComponents");
-const { changeStagger, generateModifierResultLines, addModifier } = require("../util/combatantUtil");
+const { changeStagger, generateModifierResultLines, addModifier, combineModifierReceipts, addProtection, dealDamage } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
+const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new EnemyTemplate("Comet the Sun Dog",
 	"Water",

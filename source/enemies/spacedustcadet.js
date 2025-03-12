@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { selectRandomFoe, selectMultipleRandomFoes, selectAllAllies } = require("../shared/actionComponents");
-const { generateModifierResultLines, addModifier, changeStagger } = require("../util/combatantUtil");
+const { generateModifierResultLines, addModifier, changeStagger, addProtection, dealDamage } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new EnemyTemplate("Spacedust Cadet",
