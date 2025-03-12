@@ -15,7 +15,7 @@ function randomNonOpener(currentMove, adventure) {
 
 module.exports = new EnemyTemplate("Elegant Stella",
 	"Light",
-	150,
+	180,
 	75,
 	"2",
 	0,

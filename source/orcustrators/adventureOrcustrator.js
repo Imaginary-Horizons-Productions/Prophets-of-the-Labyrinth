@@ -887,7 +887,7 @@ function resolveMove(move, adventure) {
 		}
 
 		if ("Frailty" in user.modifiers) {
-			results.push(...dealModifierDamage(userReference, "Frailty", adventure));
+			results.push(...dealModifierDamage(user, "Frailty", adventure));
 			removeModifier([user], { name: "Frailty", stacks: "all" });
 		}
 	}

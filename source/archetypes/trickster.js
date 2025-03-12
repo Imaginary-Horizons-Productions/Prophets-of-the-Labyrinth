@@ -1,7 +1,6 @@
 const { ArchetypeTemplate } = require("../classes");
 const { POTL_ICON_URL, ZERO_WIDTH_WHITESPACE } = require("../constants");
-const { getCombatantCounters, modifiersToString } = require("../util/combatantUtil");
-const { getEmoji } = require("../util/essenceUtil");
+const { modifiersToString } = require("../util/combatantUtil");
 
 module.exports = new ArchetypeTemplate("Trickster",
 	["Bard", "Gambler", "Doomsayer", "Dancer"],
@@ -25,8 +24,7 @@ module.exports = new ArchetypeTemplate("Trickster",
 		return embed.setDescription(`Trickster predictions for Round ${adventure.room.round}:`).setAuthor({ name: "Random outcomes from moves are predicted as if they are the first move to happen.", iconURL: POTL_ICON_URL });
 	},
 	(combatant) => {
-		const weaknesses = getCombatantCounters(combatant);
-		return `Weaknesses: ${weaknesses.map(weakness => getEmoji(weakness)).join(" ")}`;
+		return `Misfortune Stacks: ${combatant.modifiers.Misfortune ?? 0}`;
 	},
 	{
 		base: "Deck of Cards",

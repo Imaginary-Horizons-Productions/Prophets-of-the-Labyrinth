@@ -1,6 +1,5 @@
 const { ArchetypeTemplate } = require("../classes");
-const { ICON_STAGGER, ICON_CANCEL, ICON_CONFIRM } = require("../constants");
-const { getModifierCategory } = require("../modifiers/_modifierDictionary");
+const { ICON_STAGGER } = require("../constants");
 const { generateTextBar } = require("../util/textUtil");
 
 module.exports = new ArchetypeTemplate("Martial Artist",
@@ -12,7 +11,7 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 		embed.addFields({
 			name: "Enemies",
 			value: adventure.room.enemies.filter(combatant => combatant.hp > 0).map(enemy => {
-				const move = adventure.room.findCombatantMove(enemy);
+				const move = adventure.room.findCombatantMove({ team: enemy.team, index: adventure.getCombatantIndex(enemy) });
 				return `${enemy.name}\n${enemy.isStunned ? `${ICON_STAGGER} Stunned` : `Stagger: ${generateTextBar(enemy.stagger, enemy.getPoise(), enemy.getPoise())}`}\nRound ${adventure.room.round + 1} Move: ${move.name}\nRound ${adventure.room.round + 2} Move: ${enemy.nextAction}`;
 			}).join("\n\n")
 		})
@@ -25,7 +24,7 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 		return embed.setDescription("Martial Artist predictions:");
 	},
 	(combatant) => {
-		return `Has Debuffs: ${Object.keys(combatant.modifiers).some(modifier => getModifierCategory(modifier) === "Debuff") ? ICON_CONFIRM : ICON_CANCEL}`;
+		return `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`;
 	},
 	{
 		base: "Flourish",

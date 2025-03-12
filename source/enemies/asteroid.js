@@ -24,7 +24,7 @@ module.exports = new EnemyTemplate("Asteroid",
 			if (user.crit) {
 				damage *= 2;
 			}
-			changeStagger(targets, ESSENCE_MATCH_STAGGER_FOE);
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 			return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines.concat(dealDamage([user], user, recoilDmg, true, "Unaligned", adventure).resultLines);
 		},
 		selector: selectRandomFoe,
@@ -40,7 +40,7 @@ module.exports = new EnemyTemplate("Asteroid",
 				damage *= 2;
 			}
 			user.hp = 0;
-			changeStagger(targets, ESSENCE_MATCH_STAGGER_FOE);
+			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 			return [...dealDamage(targets, user, damage, false, user.essence, adventure).resultLines, `${user.name} is downed.`];
 		},
 		selector: selectAllOtherCombatants,

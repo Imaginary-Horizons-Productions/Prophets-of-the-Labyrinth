@@ -54,10 +54,10 @@ module.exports = new EnemyTemplate("Gaia Knightess",
 			addProtection([user], 25);
 			resultLines.push(`${user.name} gains protection.`);
 		}
-		const damage = user.getPower() + 5;
+		const damage = user.getPower() + 25;
 		const { resultLines: damageResults, survivors } = dealDamage(targets, user, damage, false, user.essence, adventure);
 		if (survivors.length > 0) {
-			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE + 1);
 			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
 		}
 		return damageResults.concat(resultLines);

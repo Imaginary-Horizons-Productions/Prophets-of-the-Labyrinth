@@ -33,7 +33,7 @@ module.exports = new GearTemplate(variantName,
 				receipts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 			}
 		}
-		changeStagger([user], staggerRelief);
+		changeStagger([user], user, staggerRelief);
 		receipts.push(...addModifier([user], poison));
 		return generateModifierResultLines(combineModifierReceipts(receipts)).concat(`${user.name} shrugs off some Stagger.`);
 	}, { type: "single", team: "foe" })

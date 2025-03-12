@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Weakening War Cry",
 			pendingStagger *= critBonus;
 		}
 		changeStagger(allTargets, user, pendingStagger);
-		return [joinAsStatement(false, allTargets.map(allTargets.name), "was", "were", "Staggered.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, weakness))));
+		return [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, weakness))));
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Flanking War Cry")
 	.setCooldown(1)

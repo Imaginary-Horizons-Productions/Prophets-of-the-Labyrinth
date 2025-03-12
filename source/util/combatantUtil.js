@@ -361,6 +361,9 @@ function generateModifierResultLines(receipts) {
  * @param {number} value
  */
 function changeStagger(combatants, applier, value) {
+	if (!Number.isFinite(value)) {
+		console.error(new Error(`Non-finite value (${value}) provided to changeStagger()`));
+	}
 	for (const combatant of combatants) {
 		if (!combatant.isStunned) {
 			let pendingStagger = value;

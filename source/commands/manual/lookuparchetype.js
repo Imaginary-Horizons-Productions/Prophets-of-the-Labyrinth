@@ -35,7 +35,6 @@ async function executeSubcommand(interaction, ...args) {
 		const archetypeActionName = getArchetypeActionName(nameInTitleCase, specialization);
 		fields.push({ name: `${player.archetypes[nameInTitleCase]?.specializationsUnlocked > i ? "" : ICON_LOCKED}${specialization} - ${archetypeActionName}`, value: buildGearDescription(archetypeActionName) });
 	}
-	console.log(fields);
 	interaction.reply({
 		embeds: [
 			embedTemplate().setColor(getColor(archetype.essence))

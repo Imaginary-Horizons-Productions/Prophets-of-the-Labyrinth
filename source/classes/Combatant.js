@@ -65,12 +65,13 @@ class Combatant {
 	}
 
 	getEssenceCounterDamage() {
+		const baseBonus = 30 + (5 * this.level);
 		if (this.getModifierStacks("Attunement") > 0) {
-			return 2 * (40 + (10 * this.level));
+			return 2 * baseBonus;
 		} else if (this.getModifierStacks("Incompatibility") > 0) {
-			return Math.floor((40 + (10 * this.level)) / 2);
+			return Math.floor(baseBonus / 2);
 		} else {
-			return 40 + (10 * this.level);
+			return baseBonus;
 		}
 	}
 

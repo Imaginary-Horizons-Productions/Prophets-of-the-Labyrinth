@@ -1,6 +1,6 @@
 const { GearTemplate } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { dealDamage, changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, generateModifierResultLines, addModifier, combineModifierReceipts } = require('../util/combatantUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Shattering Flourish",
@@ -20,7 +20,7 @@ module.exports = new GearTemplate("Shattering Flourish",
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, distraction).concat(addModifier(survivors, frailty))));
+	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(survivors, distraction).concat(addModifier(survivors, frailty)))));
 }, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,

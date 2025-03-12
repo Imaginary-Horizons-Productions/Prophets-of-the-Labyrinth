@@ -24,7 +24,7 @@ module.exports = new EnemyTemplate("Luna Militissa",
 			pendingProtection *= 2;
 		}
 		addProtection(targets, pendingProtection);
-		changeStagger(targets, ESSENCE_MATCH_STAGGER_ALLY);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")];
 	},
 	selector: selectSelfAndRandomOtherAlly,
@@ -40,7 +40,7 @@ module.exports = new EnemyTemplate("Luna Militissa",
 			addProtection([user], 25);
 			resultLines.push(`${user.name} gains protection.`);
 		}
-		changeStagger(targets, ESSENCE_MATCH_STAGGER_FOE);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		return generateModifierResultLines(addModifier(targets, { name: "Frailty", stacks: 5 })).concat(resultLines);
 	},
 	selector: selectRandomFoe,

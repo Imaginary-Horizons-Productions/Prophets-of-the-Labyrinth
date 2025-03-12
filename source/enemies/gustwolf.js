@@ -1,8 +1,16 @@
-const { EnemyTemplate } = require("../classes");
+const { EnemyTemplate, Adventure } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { selectMultipleRandomFoes, selectNone, selectRandomFoe } = require("../shared/actionComponents");
 const { generateModifierResultLines, addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
+
+/**
+ * @param {string} currentMove
+ * @param {Adventure} adventure
+ */
+function randomWithoutBoundingFrenzy(currentMove, adventure) {
+	return ["Gnaw", "Coiled Stance"][adventure.generateRandomNumber(2, "battle")];
+}
 
 module.exports = new EnemyTemplate("Gust Wolf",
 	"Wind",
@@ -22,7 +30,7 @@ module.exports = new EnemyTemplate("Gust Wolf",
 		if (user.crit) {
 			pendingEmpowerment.stacks *= 2;
 		}
-		changeStagger([user], ESSENCE_MATCH_STAGGER_ALLY);
+		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		return generateModifierResultLines(addModifier([user], pendingEmpowerment));
 	},
 	selector: selectNone,
@@ -42,7 +50,7 @@ module.exports = new EnemyTemplate("Gust Wolf",
 		return resultLines;
 	},
 	selector: selectMultipleRandomFoes(3),
-	next: "random"
+	next: randomWithoutBoundingFrenzy
 }).addAction({
 	name: "Gnaw",
 	essence: "Wind",
@@ -58,5 +66,5 @@ module.exports = new EnemyTemplate("Gust Wolf",
 		return resultLines;
 	},
 	selector: selectRandomFoe,
-	next: "random"
+	next: randomWithoutBoundingFrenzy
 });

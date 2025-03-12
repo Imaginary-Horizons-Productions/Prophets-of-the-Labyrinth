@@ -3,7 +3,7 @@ const { selectSelf } = require("../shared/actionComponents");
 const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Finesse Fiber",
-	"Grants the user 2 @e{Finesse Fiber}",
+	"Grants the user 2 @e{Finesse}",
 	"Unaligned",
 	30,
 	selectSelf,
