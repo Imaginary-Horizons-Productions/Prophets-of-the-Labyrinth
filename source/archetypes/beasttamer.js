@@ -10,8 +10,10 @@ module.exports = new ArchetypeTemplate("Beast Tamer",
 	"Earth",
 	(embed, adventure) => {
 		const nextPetOwner = adventure.delvers[adventure.petRNs.delverIndex];
-		const [moveName, moveDescription] = getPetMoveDescription(nextPetOwner.pet, adventure.petRNs.moveIndex);
-		embed.addFields({ name: `Next Pet Move (Round ${2 + adventure.room.round - (adventure.room.round % 2)})`, value: `${nextPetOwner.name}'s ${nextPetOwner.pet.type} will use ${bold(moveName)}${adventure.petRNs.targetReferences.length > 0 ? ` on ${listifyEN(adventure.petRNs.targetReferences.map(reference => italic(adventure.getCombatant(reference).name)))}` : ""}\n${italic(moveDescription)}` });
+		if (nextPetOwner.pet.type) {
+			const [moveName, moveDescription] = getPetMoveDescription(nextPetOwner.pet, adventure.petRNs.moveIndex);
+			embed.addFields({ name: `Next Pet Move (Round ${2 + adventure.room.round - (adventure.room.round % 2)})`, value: `${nextPetOwner.name}'s ${nextPetOwner.pet.type} will use ${bold(moveName)}${adventure.petRNs.targetReferences.length > 0 ? ` on ${listifyEN(adventure.petRNs.targetReferences.map(reference => italic(adventure.getCombatant(reference).name)))}` : ""}\n${italic(moveDescription)}` });
+		}
 		adventure.room.enemies.filter(enemy => enemy.hp > 0).forEach(combatant => {
 			embed.addFields({ name: `${combatant.name} (Level: ${combatant.level})`, value: `${generateTextBar(combatant.hp, combatant.getMaxHP(), 16)} ${combatant.hp}/${combatant.getMaxHP()} HP${combatant.protection ? `, ${combatant.protection} Protection` : ""}` });
 		})
