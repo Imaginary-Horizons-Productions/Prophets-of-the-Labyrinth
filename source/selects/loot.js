@@ -77,7 +77,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 					components,
 					flags: [MessageFlags.Ephemeral],
 					withResponse: true
-				}).then(respones => respones.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
+				}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
 					const [mainId, startedDepth, gearIndex] = collectedInteraction.customId.split(SAFE_DELIMITER);
 					const adventure = getAdventure(collectedInteraction.channelId);
 					if (name in adventure.room.resources) {
