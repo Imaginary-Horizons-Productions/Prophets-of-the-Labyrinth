@@ -403,7 +403,7 @@ function buildGearDescriptionWithHolderStats(gearName, holder, gearIndex) {
 		if (typeof modifier.stacks === "number") {
 			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), modifier.stacks);
 		} else {
-			text = text.replace(new RegExp(`@{mod${index}Stacks}`, "g"), `[${modifier.stacks.calculate(holder)}]`);
+			text = text.replace(new RegExp(`<@{mod${index}Stacks}>`, "g"), `[${modifier.stacks.calculate(holder)}]`);
 		}
 	})
 

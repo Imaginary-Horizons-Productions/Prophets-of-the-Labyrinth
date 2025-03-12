@@ -1,12 +1,12 @@
 const { EnemyTemplate } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { selectRandomFoe, selectMultipleRandomFoes, selectAllAllies } = require("../shared/actionComponents");
-const { generateModifierResultLines, addModifier, changeStagger, addProtection, dealDamage } = require("../util/combatantUtil");
+const { generateModifierResultLines, addModifier, changeStagger, addProtection, dealDamage, combineModifierReceipts } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new EnemyTemplate("Spacedust Cadet",
 	"Wind",
-	250,
+	280,
 	110,
 	"5",
 	0,
@@ -42,7 +42,7 @@ module.exports = new EnemyTemplate("Spacedust Cadet",
 			resultLines.push(`${user.name} gains protection.`);
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return generateModifierResultLines(addModifier(targets, { name: "Exposure", stacks: 2 })).concat(resultLines);
+		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Exposure", stacks: 2 }))).concat(resultLines);
 	},
 	selector: selectMultipleRandomFoes(3),
 	next: "random"

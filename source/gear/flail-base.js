@@ -23,8 +23,11 @@ module.exports = new GearTemplate("Flail",
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
-		changeStagger(survivors, user, pendingStagger);
-		return resultLines.concat(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		if (survivors.length > 0) {
+			changeStagger(survivors, user, pendingStagger);
+			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		}
+		return resultLines;
 	}, { type: "single", team: "foe" })
 	.setUpgrades("Bouncing Flail", "Incompatible Flail")
 	.setCooldown(1)

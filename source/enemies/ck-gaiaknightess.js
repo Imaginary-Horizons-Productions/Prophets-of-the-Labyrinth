@@ -11,7 +11,7 @@ const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js")
 
 module.exports = new EnemyTemplate("Gaia Knightess",
 	"Earth",
-	275,
+	300,
 	100,
 	"6",
 	0,
@@ -56,8 +56,11 @@ module.exports = new EnemyTemplate("Gaia Knightess",
 		}
 		const damage = user.getPower() + 5;
 		const { resultLines: damageResults, survivors } = dealDamage(targets, user, damage, false, user.essence, adventure);
-		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-		return damageResults.concat(resultLines, joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		if (survivors.length > 0) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		}
+		return damageResults.concat(resultLines);
 	},
 	selector: selectAllFoes,
 	next: "random"

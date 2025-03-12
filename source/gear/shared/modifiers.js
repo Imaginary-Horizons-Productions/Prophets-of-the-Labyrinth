@@ -21,7 +21,17 @@ module.exports = {
 	/** @type {(baseStacks: number) => ({ name: "Torpidity", stacks: Scaling })} */
 	scalingTorpidity: (baseStacks) => ({ name: "Torpidity", stacks: { description: `${baseStacks} + 10% Bonus Speed`, calculate: (user) => baseStacks + Math.floor(user.getBonusSpeed() / 10) } }),
 	/** @type {(variantName: string) => ({ name: "Misfortune", stacks: Scaling })} */
-	deckOfCardsMisfortune: (variantName) => ({ name: "Misfortune", stacks: { description: "a random amount between 2 and 6", calculate: (user) => 2 + user.roundRns[`${variantName}${SAFE_DELIMITER}Deck of Cards`][0] } }),
+	deckOfCardsMisfortune: (variantName) => ({
+		name: "Misfortune", stacks: {
+			description: "a random amount between 2 and 6", calculate: (user) => {
+				if (`${variantName}${SAFE_DELIMITER}Deck of Cards` in user.roundRns) {
+					return 2 + user.roundRns[`${variantName}${SAFE_DELIMITER}Deck of Cards`][0];
+				} else {
+					return "a random amount between 2 and 6";
+				}
+			}
+		}
+	}),
 	/** @type {(variantName: string) => ({ name: "Empowerment", stacks: Scaling })} */
 	tempestuousWrathEmpowerment: () => ({
 		name: "Empowerment",

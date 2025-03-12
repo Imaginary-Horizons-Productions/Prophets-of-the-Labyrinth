@@ -7,7 +7,7 @@ const { joinAsStatement } = require("../util/textUtil");
 
 module.exports = new EnemyTemplate("Luna Militissa",
 	"Darkness",
-	300,
+	350,
 	100,
 	"6",
 	0,
@@ -25,7 +25,7 @@ module.exports = new EnemyTemplate("Luna Militissa",
 		}
 		addProtection(targets, pendingProtection);
 		changeStagger(targets, ESSENCE_MATCH_STAGGER_ALLY);
-		return joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.");
+		return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")];
 	},
 	selector: selectSelfAndRandomOtherAlly,
 	next: "random"
@@ -56,10 +56,13 @@ module.exports = new EnemyTemplate("Luna Militissa",
 			addProtection([user], 25);
 			resultLines.push(`${user.name} gains protection.`);
 		}
-		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE + 2);
 		const pendingDamage = 50 + user.getPower() + user.protection;
 		const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);
-		return damageResults.concat(resultLines, joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		if (survivors.length > 0) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE + 2);
+			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		}
+		return damageResults.concat(resultLines);
 	},
 	selector: selectRandomFoe,
 	next: "random"

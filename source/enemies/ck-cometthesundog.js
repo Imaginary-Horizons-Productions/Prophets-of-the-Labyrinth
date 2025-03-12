@@ -40,10 +40,13 @@ module.exports = new EnemyTemplate("Comet the Sun Dog",
 			addProtection([user], 25);
 			resultLines.push(`${user.name} gains protection.`);
 		}
-		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE + 2);
 		const pendingDamage = 25 + user.getPower();
 		const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, "Water", adventure);
-		return damageResults.concat(resultLines, joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		if (survivors.length > 0) {
+			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE + 2);
+			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."))
+		}
+		return damageResults.concat(resultLines);
 	},
 	selector: selectRandomFoe,
 	next: "random"

@@ -7,7 +7,7 @@ const { spawnEnemy } = require("../util/roomUtil.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
-	225,
+	280,
 	70,
 	"3",
 	0,

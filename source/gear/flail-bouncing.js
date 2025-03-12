@@ -4,7 +4,7 @@ const { changeStagger, dealDamage } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
-const bounceCount = "3";
+const bounceCount = 3;
 module.exports = new GearTemplate("Bouncing Flail",
 	[
 		["use", `Inflict <@{damage}> @{essence} damage on ${bounceCount} random foes`],
@@ -24,8 +24,11 @@ module.exports = new GearTemplate("Bouncing Flail",
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
-		changeStagger(survivors, user, pendingStagger);
-		return resultLines.concat(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		if (survivors.length > 0) {
+			changeStagger(survivors, user, pendingStagger);
+			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		}
+		return resultLines;
 	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
 	.setSidegrades("Incompatible Flail")
 	.setCooldown(1)

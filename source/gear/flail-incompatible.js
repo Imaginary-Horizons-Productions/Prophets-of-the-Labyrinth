@@ -23,11 +23,11 @@ module.exports = new GearTemplate("Incompatible Flail",
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
-		changeStagger(survivors, user, pendingStagger);
-		return resultLines.concat(
-			joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."),
-			generateModifierResultLines(addModifier(survivors, torpidity))
-		);
+		if (survivors.length > 0) {
+			changeStagger(survivors, user, pendingStagger);
+			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		}
+		return resultLines.concat(generateModifierResultLines(addModifier(survivors, torpidity)));
 	}, { type: "single", team: "foe" })
 	.setSidegrades("Slowing Flail")
 	.setCooldown(1)

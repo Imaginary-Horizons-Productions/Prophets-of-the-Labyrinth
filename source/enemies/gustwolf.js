@@ -33,7 +33,7 @@ module.exports = new EnemyTemplate("Gust Wolf",
 	description: `Deal ${getEmoji("Wind")} damage to multiple foes`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		let pendingDamage = 25;
+		let pendingDamage = 25 + user.getPower();
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
