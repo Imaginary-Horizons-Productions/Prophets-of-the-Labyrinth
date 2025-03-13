@@ -266,8 +266,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 	{
 		// Rooms
 		"Event": ["Apple Pie Wishing Well", "Door 1 or Door 2?", "Free Gold?", "Gear Collector", "Imp Contract Faire", "The Score Beggar", "Twin Pedestals", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
-		"Battle": ["Hawk Fight", "Frog Ranch", "Wild Fire-Arrow Frogs", "Mechabee Fight", "Slime Fight", "Tortoise Fight", "Meteor Knight Fight"],
-		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!", "Brute Convention"],
+		"Battle": ["Hawk Fight", "Frog Ranch", "Wild Fire-Arrow Frogs", "Mechabee Fight", "Slime Fight", "Tortoise Fight", "Meteor Knight Fight", "Gaia Knightess and Elegant Stella Fight?", "Luna Militissa Fight", "Spacedust Cadet Fight", "Stars and Stripes"],
+		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!", "Brute Convention", "Celestial Knights United"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors", "The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
 		...standardLabyrinthInfrastructure
 	}
