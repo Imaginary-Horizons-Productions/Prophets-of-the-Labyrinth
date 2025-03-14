@@ -347,6 +347,9 @@ function cacheRoundRn(adventure, user, moveName, config) {
 				case "Deck of Cards":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(5, "battle"));
 					break;
+				case "Meteor Mayhem":
+					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(7, "battle") + 2);
+					break;
 				case "Medicine":
 					user.roundRns[roundRnKeyname] = Array(rnCount).fill(null).map(() => adventure.generateRandomNumber(256, "battle"))
 					break;
@@ -420,6 +423,8 @@ function predictRoundRnTargeted(adventure, user, target, moveName, key) {
 			return `${user.name} will apply ${user.roundRns[roundRnKeyname][0] + 2} stacks of The Mark if there isn't a mark yet.`;
 		case "Deck of Cards":
 			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname][0] + 2} ${getApplicationEmojiMarkdown("Misfortune")}.`;
+		case "Meteor Mayhem":
+			return `${user.name}'s ${moveName} will inflict ${user.roundRns[roundRnKeyname][0]} ${getApplicationEmojiMarkdown("Misfortune")}.`;
 		case "Medicine": {
 			const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 			if (targetDebuffs.length > 1) {

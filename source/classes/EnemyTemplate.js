@@ -45,6 +45,12 @@ class EnemyTemplate {
 	flavorText;
 
 	/** @param {number} integer */
+	setMaxHP(integer) {
+		this.maxHP = integer;
+		return this;
+	}
+
+	/** @param {number} integer */
 	setPower(integer) {
 		this.power = integer;
 		return this;

@@ -2,7 +2,7 @@ const { RoomTemplate } = require("../classes");
 const { parseExpression } = require("../util/mathUtil");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
-const enemies = [["Luna Militissa", "1"], ["Gust Wolf", "0.5*n+1"]];
+const enemies = [["Luna Militissa", "1"], ["Gust Wolf", "1+n*0.5"]];
 
 module.exports = new RoomTemplate("Luna Militissa Fight",
 	"Darkness",

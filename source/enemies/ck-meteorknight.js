@@ -1,8 +1,8 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, changeStagger, addProtection } = require("../util/combatantUtil.js");
-const { selectRandomFoe, selectNone } = require("../shared/actionComponents.js");
+const { dealDamage, changeStagger, addProtection, generateModifierResultLines, addModifier } = require("../util/combatantUtil.js");
+const { selectRandomFoe, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/essenceUtil.js");
-const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
+const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require("../constants.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
@@ -47,17 +47,21 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	selector: selectRandomFoe,
 	next: "random"
 }).addAction({
-	name: "Call Asteroid",
-	essence: "Unaligned",
-	description: "Summon an Asteroid, gain protection on Critical",
+	name: "Meteor Mayhem",
+	essence: "Fire",
+	description: `Inflict random @e{Misfortune} to all foes`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
+		pendingMisfortune = user.roundRns[`Meteor Mayhem${SAFE_DELIMITER}Meteor Mayhem`][0];
 		if (user.crit) {
 			addProtection([user], 25);
+			resultLines.push(`${user.name} gains protection.`);
 		}
-		spawnEnemy(asteroid, adventure);
-		return ["An Asteroid arrives on the battlefield."];
+		const { resultLines, survivors } = dealDamage(targets, user, user.getPower() + 5, false, "Fire", adventure);
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+		return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: "Misfortune", stacks: pendingMisfortune })));
 	},
-	selector: selectNone,
-	next: "Sonic Slash"
+	selector: selectAllFoes,
+	next: "random",
+	rnConfig: { "Meteor Mayhem": 1 }
 });

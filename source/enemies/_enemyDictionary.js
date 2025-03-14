@@ -26,6 +26,7 @@ for (const file of [
 	"mirrorclone.js",
 	"ooze.js",
 	"pulsarzebra.js",
+	"unkindraven.js",
 	"royalslime.js",
 	"slime.js",
 	"treasureelemental.js"
