@@ -6,7 +6,7 @@ const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new EnemyTemplate("Pulsar Zebra",
 	"Darkness",
-	150,
+	180,
 	101,
 	"4",
 	0,

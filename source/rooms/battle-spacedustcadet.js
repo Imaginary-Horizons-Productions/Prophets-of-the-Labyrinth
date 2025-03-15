@@ -2,7 +2,7 @@ const { RoomTemplate } = require("../classes");
 const { parseExpression } = require("../util/mathUtil");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
-const enemies = [["Spacedust Cadet", "1"], ["Pulsar Zebra", "0.5*n"]];
+const enemies = [["Spacedust Cadet", "1"], ["Pulsar Zebra", "n+1*0.5"]];
 
 module.exports = new RoomTemplate("Spacedust Cadet Fight",
 	"Wind",

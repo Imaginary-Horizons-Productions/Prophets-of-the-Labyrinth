@@ -26,6 +26,7 @@ for (const file of [
 	"event-freegoldonfire.js",
 	"event-gearcollector.js",
 	"event-impcontractfaire.js",
+	"event-letsleepingdogslie.js",
 	"event-scorebeggar.js",
 	"finalbattle-elkemist.js",
 	"finalbattle-mechaqueenbee.js",
