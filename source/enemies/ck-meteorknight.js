@@ -49,10 +49,10 @@ module.exports = new EnemyTemplate("Meteor Knight",
 }).addAction({
 	name: "Meteor Mayhem",
 	essence: "Fire",
-	description: `Inflict random @e{Misfortune} to all foes`,
+	description: `Inflict minor ${getEmoji("Fire")} damage and random @e{Misfortune} on all foes`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		pendingMisfortune = user.roundRns[`Meteor Mayhem${SAFE_DELIMITER}Meteor Mayhem`][0];
+		let pendingMisfortune = user.roundRns[`Meteor Mayhem${SAFE_DELIMITER}Meteor Mayhem`][0];
 		if (user.crit) {
 			addProtection([user], 25);
 			resultLines.push(`${user.name} gains protection.`);

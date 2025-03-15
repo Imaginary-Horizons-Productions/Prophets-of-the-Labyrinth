@@ -13,10 +13,10 @@ module.exports = new GearTemplate("Sword of the Sun",
 	"Fire"
 ).setCost(300)
 	.setEffect((targets, user, adventure) => {
-		totalResultLines = [];
+		const totalResultLines = [];
 		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-			removedBuffReceipts = []
+			const removedBuffReceipts = []
 			targetBuffs.forEach(buffName => {
 				removedBuffReceipts.push(...removeModifier([target], { name: buffName, stacks: "all" }))
 			})

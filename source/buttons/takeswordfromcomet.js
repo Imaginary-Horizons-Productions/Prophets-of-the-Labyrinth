@@ -27,11 +27,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const hasFreeGearSlots = delver.gear.length < adventure.getGearCapacity();
 		let charges = getGearProperty(name, "maxCharges");
-		const shoddyPenalty = adventure.getChallengeIntensity("Shoddy Spellcraft");
-		const shoddyDuration = adventure.getChallengeDuration("Shoddy Spellcraft");
-		if (shoddyPenalty > 0 && shoddyDuration > 0) {
-			charges = Math.ceil(charges * (100 - shoddyPenalty) / 100);
-		}
 		const embed = new EmbedBuilder().setColor(getColor(adventure.room.essence))
 			.setAuthor(randomAuthorTip())
 			.setTitle("Take this gear?")

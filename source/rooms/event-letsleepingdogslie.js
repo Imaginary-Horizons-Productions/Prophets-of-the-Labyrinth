@@ -9,7 +9,7 @@ const enemies = [["Comet the Sun Dog", "1"], ["Gust Wolf", "1*n"], ["Unkind Rave
 
 
 module.exports = new RoomTemplate("Let Sleeping Dogs Lie",
-	"@{adventure}",
+	"Water",
 	"You come across a snow-covered courtyard where there lies a great Frosty Siberian Husky, currently napping with its fangs clenched around a Sword of the Sun. Do you try to pry the sword from its jaws?",
 	function (adventure) {
 		adventure.room.history = {
@@ -32,7 +32,7 @@ module.exports = new RoomTemplate("Let Sleeping Dogs Lie",
 				components: [
 					new ActionRowBuilder().addComponents(
 						new ButtonBuilder().setCustomId("takeswordfromcomet")
-							.setStyle(ButtonStyle.Success)
+							.setStyle(ButtonStyle.Danger)
 							.setLabel("Take sword")
 							.setDisabled(adventure.room.history["Took sword"].length > 0)
 					),
