@@ -1,6 +1,6 @@
 # Prophets of the Labyrinth Change Log
 ## Prophets of the Labyrinth v0.18.0:
-This update introduces the concept of roles to the game. Having roles as reference points allows parties to ask questions like "do we need more Defense?" or "who do we fit this Support effect on?" instead of only "is this new thing good?". The four roles are: Offense, Defense, Support, and Adventuring. We decided on them by categorizing every effect in the game, then fleshing out the roles that were lower on count (most effects were Offense). Four is a pretty convenient number of roles to have for a few mathematical reasons, but which effects actually make up each of the roles is still subject to some tuning.
+This update adds delver roles to the game. Roles allows parties to ask questions like "do we need more Defense?" or "who do we fit this Support effect on?" instead of only "is this new thing good?". The four roles are: Offense, Defense, Support, and Adventuring. We decided on them by categorizing every effect in the game, then fleshing out the roles that were lower on count (most effects were Offense). Four is a pretty convenient number of roles to have for a few mathematical reasons, but which effects actually make up each of the roles is still subject to some tuning.
 ### Essence Overhaul
 The system formerly known as Elemental Weakness/Resistance was too extreme for the amount of strategy it involved. Weakness and Resistance too often made combat feel either free or oppressive for a mechanic that players had to roll well to succeed at. Elemental Relationships were also hard to remember.
 
@@ -10,7 +10,7 @@ Other Changes:
 - Added modifiers Attunement and Incompatibility for doubling/halving Essence Counter damage
 - Reorganized Essence Relationships so having both Essences of an opposite pair grants full coverage
 - "Untyped" has been renamed to "Unaligned"
-- Each Essence favors 2 of the 4 roles
+- Each Essence favors two roles
    - Darkness: Offense & Defense
    - Earth: Defense & Adventuring
    - Fire: Offense & Adventuring
@@ -21,15 +21,15 @@ Other Changes:
 All gear has been redesigned from the ground up:
 - Gear categories are now: Offense, Defense, Support, Adventuring, Spell, Pact, and Maneuver
    - Maneuvers are a new category that require the party's Morale to be at a certain level to use powerful effects (Morale is gained from various effects and lasts until end of combat)
-   - There is now a Cursed gear for each gear category
-- Each Essence now has gear: for each of the 4 roles, a Spell for each of its 2 favored roles, 1 Pact, and 1 Maneuver
+   - There is now a Cursed gear for each category
+- Each Essence now has gear: one for each of the 4 roles, a Spell for each of its 2 favored roles, 1 Pact, and 1 Maneuver
 - Gear now only has 2 upgrades, one for each of the favored roles of the gear's Essence
    - For example: Fever Break, as a Darkness gear, has an Offense upgrade and a Defense upgrade
 - Passive gear now provides % stat bonuses and now covers each stat combination
 - Many more effects scale with their user's stats including protection and modifier stacks
 - Gear that didn't fit the new structure may return as Event specific rewards
 ### Archetype Overhaul
-Archetypes have been overhauled to fit with the concept of roles. Punch, delvers now have an Archetype Action that deals damage plus a unique effect. Archetype Actions can be upgraded by taking on an Archetype Specialization at the Guildstop room (which always shows up halfway through a floor). Each Archetype has 4 Specializations, 1 for each role.
+Archetypes have been overhauled to fit with the concept of roles. Instead of Punch, delvers now have an Archetype Action that deals damage plus a unique effect. Archetype Actions can be upgraded by taking on an Archetype Specialization at the Guildstop room (which always shows up halfway through a floor). Each Archetype has 4 Specializations, 1 for each role.
 
 Other Changes:
 - Archetype Essences have been reorganized to align with their favored roles
@@ -40,6 +40,7 @@ Other Changes:
 - Modifiers have been renamed for consistency: they're all nouns now
 - New Modifiers: Fortune, Misfortune, Excellence, Degredation
 - New Artifact: Add Blocker
+- Added 4 new Battles and 1 new Artifact to the Castle of the Celestial Knights
 - Gear and Item drop chance from battle increased to 1/4
 - Merchants now have artifacts for sale and no longer only stock one type of item at a time
 - Cursed Run (challenge) now causes gear to be Cursed for the next 5 rooms for a gold reward
