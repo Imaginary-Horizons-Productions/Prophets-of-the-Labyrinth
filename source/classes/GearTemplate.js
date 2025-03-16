@@ -50,7 +50,8 @@ class GearTemplate {
 	}
 
 	/**
-	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} effectFunction
+	 * overrides is a dict *parameter* whose values can be defaulted, but can also be clobbered for polymorphism.  
+	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: any) => string[]} effectFunction
 	 * @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} tagObject
 	 */
 	setEffect(effectFunction, tagObject) {
