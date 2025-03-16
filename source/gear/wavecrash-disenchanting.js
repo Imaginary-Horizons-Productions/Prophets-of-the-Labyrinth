@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { addModifier, generateModifierResultLines, dealDamage, changeStagger, removeModifier, combineModifierReceipts } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Disenchanting Wave Crash",
 		const targetBuffs = Object.keys(targets[0].modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 		if (targetBuffs.length > 0) {
 			for (let i = 0; i < pendingBuffRemovals; i++) {
-				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${gearName}${SAFE_DELIMITER}buffs`), 1);
+				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${module.exports.name}${SAFE_DELIMITER}buffs`), 1);
 				receipts.push(...removeModifier(targets, { name: selectedBuff, stacks: "all" }));
 			}
 		}

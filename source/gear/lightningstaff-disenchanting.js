@@ -27,7 +27,7 @@ module.exports = new GearTemplate("Disenchanting Lightning Staff",
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 			if (targetBuffs.length > 0) {
 				for (let i = 0; i < buffRemovals; i++) {
-					const [selectedBuff] = targetBuffs.splice(user.roundRns(`${gearName}${SAFE_DELIMITER}buffs`), 1);
+					const [selectedBuff] = targetBuffs.splice(user.roundRns(`${module.exports.name}${SAFE_DELIMITER}buffs`), 1);
 					receipts.push(...removeModifier([target], { name: selectedBuff, stacks: "all" }));
 				}
 			}
