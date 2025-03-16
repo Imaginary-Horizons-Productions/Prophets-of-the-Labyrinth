@@ -25,7 +25,7 @@ async function executeSubcommand(interaction, ...[player]) {
 		flags: [MessageFlags.Ephemeral],
 		withResponse: true
 	}).then(response => response.resource.message.awaitMessageComponent({ time: 120000 })).then(collectedInteraction => {
-		const recentPlayer = getPlayer(interaction.user.id, reply.guildId);
+		const recentPlayer = getPlayer(interaction.user.id, interaction.guildId);
 		const selectedArchetype = collectedInteraction.values[0];
 		recentPlayer.favoriteArchetype = selectedArchetype;
 		setPlayer(recentPlayer);

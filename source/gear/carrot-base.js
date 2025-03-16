@@ -1,7 +1,7 @@
 const { GearTemplate, CombatantReference } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 const { scalingRegeneration } = require('./shared/modifiers');
 
 module.exports = new GearTemplate("Carrot",
@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Carrot",
 	"Support",
 	"Earth"
 ).setCost(200)
-	.setEffect(([target], user, adventure) => {
+	.setEffect(([target], user, adventure, { extraReceipts = [], extraResultLines = [] }) => {
 		const { essence, modifiers: [regeneration], scalings: { critBonus } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -21,7 +21,8 @@ module.exports = new GearTemplate("Carrot",
 		if (user.crit) {
 			pendingRegeneration.stacks += critBonus;
 		}
-		const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration));
+		console.log(regeneration, regeneration.stacks.calculate(user), pendingRegeneration, extraReceipts)
+		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier([target], pendingRegeneration).concat(extraReceipts))).concat(extraResultLines);
 		const ownerIndex = adventure.getCombatantIndex(target);
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 		if (owner.pet?.type) {
@@ -42,7 +43,7 @@ module.exports = new GearTemplate("Carrot",
 						petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 				}
 			})
-			resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
+			resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
 		}
 		return resultLines;
 	}, { type: "single", team: "ally" })
