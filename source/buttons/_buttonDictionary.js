@@ -15,6 +15,7 @@ for (const file of [
 	"deploypet.js",
 	"essenceresearch.js",
 	"eventartifact.js",
+	"floofcometfur.js",
 	"gearcapup.js",
 	"getgoldonfire.js",
 	"greed.js",

@@ -50,7 +50,7 @@ class GearTemplate {
 	}
 
 	/**
-	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} effectFunction
+	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: any) => string[]} effectFunction
 	 * @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} tagObject
 	 */
 	setEffect(effectFunction, tagObject) {

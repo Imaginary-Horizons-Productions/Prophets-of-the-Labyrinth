@@ -6,13 +6,15 @@ const { damageScalingGenerator } = require('./shared/scalings');
 
 module.exports = new GearTemplate("Sword of the Sun",
 	[
-		["use", "Removes all buffs from a foe, then deal <@{damage}> @{essence} damage to a them, plus 30 damage per unique buff removed"],
+		["use", "Removes all buffs from a foe, then deal <@{damage} + 30 per unique buff removed> @{essence} damage to a them"],
 		["critical", "Damage x @{critBonus}"]
 	],
 	"Offense",
 	"Fire"
 ).setCost(300)
-	.setEffect((targets, user, adventure) => {
+	.setEffect((targets, user, adventure, scalings = module.exports.scalings) => {
+		const { damage, critBonus } = scalings
+		console.log(scalings)
 		const totalResultLines = [];
 		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
@@ -22,7 +24,7 @@ module.exports = new GearTemplate("Sword of the Sun",
 			})
 			totalResultLines.push(...generateModifierResultLines(combineModifierReceipts(removedBuffReceipts)));
 
-			const { essence, scalings: { damage, critBonus } } = module.exports;
+			const { essence } = module.exports;
 			let pendingDamage = damage.calculate(user) + 30 * targetBuffs.length;
 			if (user.crit) {
 				pendingDamage *= critBonus;

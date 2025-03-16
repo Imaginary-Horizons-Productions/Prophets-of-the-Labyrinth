@@ -4,7 +4,7 @@ const { selectRandomAlly, selectNone } = require("../shared/actionComponents");
 const { changeStagger, generateModifierResultLines, addModifier } = require("../util/combatantUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 
-module.exports = new EnemyTemplate("Unkind Raven",
+module.exports = new EnemyTemplate("Unkind Corvus",
 	"Darkness",
 	150,
 	101,
@@ -45,11 +45,11 @@ module.exports = new EnemyTemplate("Unkind Raven",
 }).addAction({
 	name: "More Unkindness",
 	essence: "Unaligned",
-	description: "Summon another Raven",
+	description: "Summon another Corvus",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		spawnEnemy(module.exports.setMaxHP(90), adventure, true);
-		return ["Another Unkind Raven arrives."];
+		return ["Another Corvus arrives. The Unkindness grows"];
 	},
 	selector: selectNone,
 	next: "More Oversight"

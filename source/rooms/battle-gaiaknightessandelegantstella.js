@@ -2,7 +2,7 @@ const { RoomTemplate } = require("../classes");
 const { parseExpression } = require("../util/mathUtil");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 
-const enemies = [["Gaia Knightess", "1"], ["Elegant Stella", "1"], ["Asteroid", "0.34*n-1"]];
+const enemies = [["Gaia Knightess", "1"], ["Elegant Stella", "1"], ["Asteroid", "0.5*n-1"]];
 
 module.exports = new RoomTemplate("Gaia Knightess Fight",
 	"Earth",

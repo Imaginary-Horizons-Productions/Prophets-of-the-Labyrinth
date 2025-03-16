@@ -115,7 +115,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Heat Weaken",
 				"Longsword",
 				"Musket",
-				"Overburn Explosion"
+				"Overburn Explosion",
+				"Sword of the Sun"
 			],
 			Rare: [
 				"Charging Bonfire Formation",
@@ -133,7 +134,9 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 				"Discounted Musket",
 				"Hunter's Musket",
 				"Accurate Overburn Explosion",
-				"Unstoppable Overburn Explosion"
+				"Unstoppable Overburn Explosion",
+				"Thief's Sword of the Sun",
+				"Lethal Sword of the Sun"
 			]
 		},
 		Light: {
@@ -265,8 +268,8 @@ module.exports = new LabyrinthTemplate("Everything Bagel",
 	},
 	{
 		// Rooms
-		"Event": ["Apple Pie Wishing Well", "Door 1 or Door 2?", "Free Gold?", "Gear Collector", "Imp Contract Faire", "The Score Beggar", "Twin Pedestals", "Workshop", "Merchant", "Rest Site", "Library", "Treasure"],
-		"Battle": ["Hawk Fight", "Frog Ranch", "Wild Fire-Arrow Frogs", "Mechabee Fight", "Slime Fight", "Tortoise Fight", "Meteor Knight Fight", "Gaia Knightess and Elegant Stella Fight?", "Luna Militissa Fight", "Spacedust Cadet Fight", "Stars and Stripes"],
+		"Event": ["Apple Pie Wishing Well", "Door 1 or Door 2?", "Free Gold?", "Gear Collector", "Imp Contract Faire", "The Score Beggar", "Twin Pedestals", "Workshop", "Merchant", "Rest Site", "Library", "Treasure", "Let Sleeping Dogs Lie"],
+		"Battle": ["Hawk Fight", "Frog Ranch", "Wild Fire-Arrow Frogs", "Mechabee Fight", "Slime Fight", "Tortoise Fight", "Meteor Knight Fight", "Gaia Knightess Fight", "Luna Militissa Fight", "Spacedust Cadet Fight", "Stars and Stripes"],
 		"Artifact Guardian": ["A Slimy Throneroom", "A windfall of treasure!", "Brute Convention", "Celestial Knights United"],
 		"Final Battle": ["A Northern Laboratory", "Hall of Mirrors", "The Hexagon: Bee Mode", "The Hexagon: Mech Mode", "Confronting the Top Celestial Knight"],
 		...standardLabyrinthInfrastructure

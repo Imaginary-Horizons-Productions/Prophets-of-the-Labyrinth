@@ -173,6 +173,10 @@ client.on(Events.InteractionCreate, interaction => {
 			getter = getSelect;
 		}
 		const interactionWrapper = getter(mainId);
+		if (interactionWrapper === undefined) {
+			console.error(`Got undefined for ${mainId} (check dictionary/name?)`)
+			return
+		}
 		const cooldownTimestamp = interactionWrapper.getCooldownTimestamp(interaction.user.id, interactionCooldowns);
 
 		if (cooldownTimestamp) {

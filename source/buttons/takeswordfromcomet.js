@@ -77,17 +77,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 					delver.hp = delver.getMaxHP();
 				}
 				adventure.room.decrementResource(name, 1);
-				// fight 75% chance
-				if (adventure.generateRandomNumber(RN_TABLE_BASE, "general") > (RN_TABLE_BASE / 4)) {
-					adventure.room.history["Awoke Comet"].push(interaction.member.displayName);
-					interaction.message.edit(renderRoom(adventure, interaction.channel, `Comet has awoken! :anger::wolf:`));
-					setAdventure(adventure);
-				} else {
-					interaction.message.edit(renderRoom(adventure, collectedInteraction.channel)).then(() => {
-						collectedInteraction.channel.send({ content: `${interaction.member.displayName} takes the ${name}${discardedName ? ` (${discardedName} discarded)` : ""}. Comet remains asleep.` });
-						setAdventure(adventure);
-					})
-				}
+				adventure.room.history["Awoke Comet"].push(interaction.member.displayName);
+				interaction.message.edit(renderRoom(adventure, interaction.channel, `Comet has awoken! :anger::wolf:`));
+				interaction.channel.send(`${interaction.member.displayName} takes the Sword of the Sun, and Comet wakes!`)
+				setAdventure(adventure);
+
 				return collectedInteraction;
 			}
 		}).then(interactionToAcknowledge => {
