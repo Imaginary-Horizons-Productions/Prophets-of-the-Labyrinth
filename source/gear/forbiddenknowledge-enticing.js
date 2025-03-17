@@ -1,5 +1,5 @@
 const { GearTemplate, CombatantReference } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
 const { changeStagger } = require('../util/combatantUtil');
 
@@ -56,7 +56,7 @@ module.exports = new GearTemplate("Enticing Forbidden Knowledge",
 						petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 				}
 			})
-			resultLines.push(`${target.name}'s ${owner.pet} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, petRNs));
+			resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
 		}
 		return resultLines;
 	}, { type: "single", team: "ally" })

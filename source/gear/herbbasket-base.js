@@ -1,4 +1,5 @@
 const { GearTemplate } = require('../classes');
+const { SAFE_DELIMITER } = require('../constants');
 const { rollableHerbs } = require('../shared/herbs');
 const { listifyEN } = require('../util/textUtil');
 
@@ -16,7 +17,7 @@ module.exports = new GearTemplate("Herb Basket",
 		if (user.crit) {
 			pendingHerbCount *= critBonus;
 		}
-		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
+		const randomHerb = rollableHerbs[user.roundRns[`${module.exports.name}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		adventure.room.addResource(randomHerb, "Item", "loot", pendingHerbCount);
 		if (user.crit) {
 			return [`${user.name} gathers a double-batch of ${randomHerb}.`];
