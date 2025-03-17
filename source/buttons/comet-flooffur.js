@@ -3,7 +3,7 @@ const { ButtonWrapper } = require('../classes');
 const { setAdventure, getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { gainHealth } = require('../util/combatantUtil');
 const { renderRoom } = require('../util/embedUtil');
-const { RN_TABLE_BASE } = require('../constants');
+const { RN_TABLE_BASE, ZERO_WIDTH_WHITESPACE } = require('../constants');
 
 const mainId = "floofcometfur";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -15,6 +15,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.reply({ content: "This adventure isn't active or you aren't participating in it.", flags: [MessageFlags.Ephemeral] });
 			return;
 		}
+		if (adventure.room.history["Awoke Comet"].length > 0) {
+			interaction.update({ content: ZERO_WIDTH_WHITESPACE });
+			return;
+		}
+
 		adventure.room.history["Floofed fur"].push(delver.name);
 		interaction.update(renderRoom(adventure, interaction.channel)).then(() => {
 			let msg = "How therapeutic, " + gainHealth(delver, 120, adventure)
