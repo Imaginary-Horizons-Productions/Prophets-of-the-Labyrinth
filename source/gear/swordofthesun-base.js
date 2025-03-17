@@ -12,9 +12,8 @@ module.exports = new GearTemplate("Sword of the Sun",
 	"Offense",
 	"Fire"
 ).setCost(300)
-	.setEffect((targets, user, adventure, scalings = module.exports.scalings) => {
-		const { damage, critBonus } = scalings
-		console.log(scalings)
+	.setEffect((targets, user, adventure) => {
+		const { essence, scalings: { damage, critBonus } } = module.exports;
 		const totalResultLines = [];
 		for (const target of targets) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
@@ -24,7 +23,6 @@ module.exports = new GearTemplate("Sword of the Sun",
 			})
 			totalResultLines.push(...generateModifierResultLines(combineModifierReceipts(removedBuffReceipts)));
 
-			const { essence } = module.exports;
 			let pendingDamage = damage.calculate(user) + 30 * targetBuffs.length;
 			if (user.crit) {
 				pendingDamage *= critBonus;

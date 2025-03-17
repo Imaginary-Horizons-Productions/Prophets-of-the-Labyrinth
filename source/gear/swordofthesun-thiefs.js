@@ -11,7 +11,27 @@ module.exports = new GearTemplate("Thief's Sword of the Sun",
 	"Fire"
 ).setCost(450)
 	.setEffect((targets, user, adventure) => {
-		const totalResultLines = base.effect(targets, user, adventure, module.exports.scalings);
+		const totalResultLines = [];
+		for (const target of targets) {
+			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
+			const removedBuffReceipts = []
+			targetBuffs.forEach(buffName => {
+				removedBuffReceipts.push(...removeModifier([target], { name: buffName, stacks: "all" }))
+			})
+			totalResultLines.push(...generateModifierResultLines(combineModifierReceipts(removedBuffReceipts)));
+
+			const { essence, scalinge: { damage, critBonus } } = module.exports;
+			let pendingDamage = damage.calculate(user) + 30 * targetBuffs.length;
+			if (user.crit) {
+				pendingDamage *= critBonus;
+			}
+			const { resultLines, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+			totalResultLines.push(...resultLines)
+			if (user.essence === essence) {
+				changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+			}
+		}
+
 		const { bounty } = module.exports.scalings
 		if (targets.find(t => t.hp <= 0) !== undefined) {
 			adventure.room.addResource("Gold", "Currency", "loot", bounty);
