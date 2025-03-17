@@ -99,7 +99,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 							delver.hp = delver.getMaxHP();
 						}
 						adventure.room.decrementResource(name, 1);
-						interaction.message.edit(renderRoom(adventure, collectedInteraction.channel)).then(() => {
+						interaction.message.edit(renderRoom(adventure, collectedInteraction.channel, interaction.message.embeds[0].description)).then(() => {
 							collectedInteraction.channel.send({ content: `${interaction.member.displayName} takes a ${name}${discardedName ? ` (${discardedName} discarded)` : ""}. There are ${count - 1} remaining.` });
 							setAdventure(adventure);
 						})
