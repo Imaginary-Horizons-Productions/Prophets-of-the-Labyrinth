@@ -1,5 +1,5 @@
 const { GearTemplate } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
+const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
 const { rollableHerbs } = require('../shared/herbs');
 const { changeStagger, addProtection } = require('../util/combatantUtil');
 const { listifyEN, joinAsStatement } = require('../util/textUtil');
@@ -18,7 +18,7 @@ module.exports = new GearTemplate("Guarding Herb Basket",
 		if (user.essence === essence) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 		}
-		const randomHerb = rollableHerbs[user.roundRns[`${gearName}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
+		const randomHerb = rollableHerbs[user.roundRns[`${module.exports.name}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
 		const resultLines = [];
 		if (user.crit) {
 			adventure.room.addResource(randomHerb, "Item", "loot", herbCount * critBonus);

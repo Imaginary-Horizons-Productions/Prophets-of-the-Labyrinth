@@ -823,7 +823,7 @@ function resolveMove(move, adventure) {
 					results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 				}
 
-				results.push(...effect(livingTargets, user, adventure, adventure.petRNs));
+				results.push(...effect(livingTargets, user, adventure, { petRNs: adventure.petRNs }));
 			} else {
 				shouldDoGearUpkeep = false;
 				if (move.targets.length === 1) {

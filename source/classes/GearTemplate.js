@@ -21,6 +21,8 @@ class GearTemplate {
 		this.essence = essenceEnum;
 	}
 	// Internal Configuration
+	/** @type {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: Partial<MoveEffectOverrides>) => string[]} */
+	effect;
 	/** @type {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} */
 	targetingTags;
 	/** @type {string[]} */
@@ -50,7 +52,8 @@ class GearTemplate {
 	}
 
 	/**
-	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: any) => string[]} effectFunction
+	 * overrides is a dict *parameter* whose values can be defaulted, but can also be clobbered for polymorphism.  
+	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: Partial<MoveEffectOverrides>) => string[]} effectFunction
 	 * @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} tagObject
 	 */
 	setEffect(effectFunction, tagObject) {
@@ -131,6 +134,18 @@ class GearTemplate {
 		return this;
 	}
 };
+
+class MoveEffectOverrides {
+	/** read-only class defines a type for overrides */
+	/** @type {delverIndex: number, moveIndex: number, targetReferences: CombatantReference[], extras: number[]}) */
+	petRNs; // either the adventure.petRNs or one submitted during move resolution
+	/** @type {Record<string, number | Scaling>}  */
+	// the respective gear-metadata is used for buildGearDescription token substitution
+	// the respective gear-metadata scalings.priority is read for ready.js priority assignment (but is unlikely to be used in calculations of effect resolution)
+	scalings = {};
+	/** @type {[{ name: string, stacks: number | Scaling }]}  */
+	modifiers = []; // the respective gear-metadata is used for buildGearDescription token substitution
+}
 
 module.exports = {
 	GearTemplate

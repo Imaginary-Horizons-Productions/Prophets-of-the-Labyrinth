@@ -57,9 +57,9 @@ module.exports = new EnemyTemplate("Elegant Stella",
 	description: `Inflict minor ${getEmoji("Light")} damage and slowing @e{Misfortune} to all foes`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		const pendingMisfortune = 1;
+		const pendingMisfortune = { name: "Misfortune", stacks: 1 };
 		if (user.crit) {
-			pendingMisfortune += 7;
+			pendingMisfortune.stacks += 7;
 		}
 		const { resultLines, survivors } = dealDamage(targets, user, user.getPower() + 25, false, "Light", adventure);
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
