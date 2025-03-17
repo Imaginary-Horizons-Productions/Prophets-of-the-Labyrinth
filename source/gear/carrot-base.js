@@ -21,7 +21,6 @@ module.exports = new GearTemplate("Carrot",
 		if (user.crit) {
 			pendingRegeneration.stacks += critBonus;
 		}
-		console.log(regeneration, regeneration.stacks.calculate(user), pendingRegeneration, extraReceipts)
 		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier([target], pendingRegeneration).concat(extraReceipts))).concat(extraResultLines);
 		const ownerIndex = adventure.getCombatantIndex(target);
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
