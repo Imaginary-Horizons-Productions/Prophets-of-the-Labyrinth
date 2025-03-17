@@ -23,7 +23,7 @@ module.exports = new RoomTemplate("Let Sleeping Dogs Lie",
 		adventure.room.addResource("levelsGained", "levelsGained", "internal", 1);
 		const goldCount = Math.ceil(parseExpression(`${enemies[0][1]}*35`, adventure.delvers.length) * (90 + adventure.generateRandomNumber(21, "general")) / 100);
 		adventure.room.addResource("Gold", "Currency", "loot", goldCount);
-		adventure.room.addResource("Sword of the Sun", "Gear", "internal", 1);
+		adventure.room.addResource("Sword of the Sun", "Gear", "loot", 1);
 		return [];
 	},
 	function (roomEmbed, adventure) {
