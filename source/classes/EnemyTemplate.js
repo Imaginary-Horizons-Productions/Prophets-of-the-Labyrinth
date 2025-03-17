@@ -44,6 +44,15 @@ class EnemyTemplate {
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
 
+	/** 
+	 * @param {number} integer 
+	 * Can be used to adjust maxHP during spawnEnemy (e.g. ads are more fragile than the original)
+	 * */
+	setMaxHP(integer) {
+		this.maxHP = integer;
+		return this;
+	}
+
 	/** @param {number} integer */
 	setPower(integer) {
 		this.power = integer;

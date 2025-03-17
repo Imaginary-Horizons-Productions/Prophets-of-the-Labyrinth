@@ -54,7 +54,7 @@ module.exports = new EnemyTemplate("Elegant Stella",
 }).addAction({
 	name: "Big Bang",
 	essence: "Light",
-	description: `Deal minor ${getEmoji("Light")} damage and slowing @e{Misfortune} to all foes`,
+	description: `Inflict minor ${getEmoji("Light")} damage and slowing @e{Misfortune} to all foes`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		const pendingMisfortune = { name: "Misfortune", stacks: 1 };

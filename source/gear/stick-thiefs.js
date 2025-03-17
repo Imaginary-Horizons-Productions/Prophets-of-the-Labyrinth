@@ -22,6 +22,7 @@ module.exports = new GearTemplate("Thief's Stick",
 	}
 	if (survivors.length < targets.length) {
 		adventure.room.addResource("Gold", "Currency", "loot", bounty);
+		resultLines.push(`${user.name} pillages ${bounty}g.`);
 	}
 	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(survivors, impotence))));
 }, { type: "single", team: "foe" })
