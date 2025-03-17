@@ -1,7 +1,7 @@
 const { GearTemplate, CombatantReference } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
+const { changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 const { scalingRegeneration } = require('./shared/modifiers');
 
 module.exports = new GearTemplate("Carrot",
@@ -12,7 +12,7 @@ module.exports = new GearTemplate("Carrot",
 	"Support",
 	"Earth"
 ).setCost(200)
-	.setEffect(([target], user, adventure, { extraReceipts = [], extraResultLines = [] }) => {
+	.setEffect(([target], user, adventure) => {
 		const { essence, modifiers: [regeneration], scalings: { critBonus } } = module.exports;
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
@@ -21,7 +21,7 @@ module.exports = new GearTemplate("Carrot",
 		if (user.crit) {
 			pendingRegeneration.stacks += critBonus;
 		}
-		const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier([target], pendingRegeneration).concat(extraReceipts))).concat(extraResultLines);
+		const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration));
 		const ownerIndex = adventure.getCombatantIndex(target);
 		const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 		if (owner.pet?.type) {
