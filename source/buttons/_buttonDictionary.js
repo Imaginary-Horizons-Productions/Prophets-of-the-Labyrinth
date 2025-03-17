@@ -11,11 +11,12 @@ for (const file of [
 	"challenges.js",
 	"clearstartingchallenges.js",
 	"collectartifact.js",
+	"comet-flooffur.js",
+	"comet-stealsword.js",
 	"deploy.js",
 	"deploypet.js",
 	"essenceresearch.js",
 	"eventartifact.js",
-	"floofcometfur.js",
 	"gearcapup.js",
 	"getgoldonfire.js",
 	"greed.js",
@@ -38,7 +39,6 @@ for (const file of [
 	"stealwishingwellcore.js",
 	"switchpet.js",
 	"switchspecialization.js",
-	"takeswordfromcomet.js",
 	"trainingdummy.js",
 	"upgrade.js"
 ]) {
