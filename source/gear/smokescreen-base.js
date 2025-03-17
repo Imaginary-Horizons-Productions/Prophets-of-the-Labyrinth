@@ -3,10 +3,10 @@ const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
 const { scalingEvasion } = require('./shared/modifiers');
 
-const bounceCount = 3;
+const bounces = 3;
 module.exports = new GearTemplate("Smokescreen",
 	[
-		["use", `Grant ${bounceCount} random allies <@{mod0Stacks}> @{mod0}`],
+		["use", "Grant @{bounces} random allies <@{mod0Stacks}> @{mod0}"],
 		["critical", "@{mod0} x @{critBonus}"]
 	],
 	"Defense",
@@ -23,9 +23,9 @@ module.exports = new GearTemplate("Smokescreen",
 				pendingEvasion.stacks *= critBonus;
 			}
 			return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingEvasion)));
-		}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "ally" })
+		}, { type: `random${SAFE_DELIMITER}${bounces}`, team: "ally" })
 	.setUpgrades("Chaining Smokescreen", "Double Smokescreen")
 	.setCooldown(1)
-	.setRnConfig({ allies: bounceCount })
+	.setRnConfig({ allies: bounces })
 	.setModifiers(scalingEvasion(2))
-	.setScalings({ critBonus: 2 });
+	.setScalings({ critBonus: 2, bounces });

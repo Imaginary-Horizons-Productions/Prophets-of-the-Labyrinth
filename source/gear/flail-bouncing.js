@@ -4,10 +4,10 @@ const { changeStagger, dealDamage } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
-const bounceCount = 3;
+const bounces = 3;
 module.exports = new GearTemplate("Bouncing Flail",
 	[
-		["use", `Inflict <@{damage}> @{essence} damage on ${bounceCount} random foes`],
+		["use", "Inflict <@{damage}> @{essence} damage on @{bounces} random foes"],
 		["critical", "Damage x @{critBonus}"]
 	],
 	"Offense",
@@ -29,12 +29,13 @@ module.exports = new GearTemplate("Bouncing Flail",
 			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
 		}
 		return resultLines;
-	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
+	}, { type: `random${SAFE_DELIMITER}${bounces}`, team: "foe" })
 	.setSidegrades("Incompatible Flail")
 	.setCooldown(1)
 	.setScalings({
 		damage: damageScalingGenerator(20),
-		critBonus: 2
+		critBonus: 2,
+		bounces
 	})
-	.setRnConfig({ foes: bounceCount })
+	.setRnConfig({ foes: bounces })
 	.setStagger(2);
