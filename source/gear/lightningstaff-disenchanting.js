@@ -3,10 +3,10 @@ const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { changeStagger, dealDamage, generateModifierResultLines, combineModifierReceipts, removeModifier } = require('../util/combatantUtil');
 
-const bounceCount = 3;
+const bounces = 3;
 module.exports = new GearTemplate("Disenchanting Lightning Staff",
 	[
-		["use", `Deal <@{damage}> @{essence} damage and remove @{buffRemovals} random buff from ${bounceCount} random foes`],
+		["use", "Deal <@{damage}> @{essence} damage and remove @{buffRemovals} random buff from @{bounces} random foes"],
 		["critical", "Damage x @{critBonus}"]
 	],
 	"Adventuring",
@@ -33,12 +33,13 @@ module.exports = new GearTemplate("Disenchanting Lightning Staff",
 			}
 		}
 		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
-	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
+	}, { type: `random${SAFE_DELIMITER}${bounces}`, team: "foe" })
 	.setSidegrades("Hexing Lightning Staff")
 	.setCooldown(2)
 	.setRnConfig({ foes: 3, buffs: 1 })
 	.setScalings({
 		damage: { description: "50% Power", calculate: (user) => Math.floor(user.getPower() / 2) },
 		critBonus: 2,
-		buffRemovals: 1
+		buffRemovals: 1,
+		bounces
 	});

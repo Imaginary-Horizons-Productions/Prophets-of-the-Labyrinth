@@ -8,7 +8,7 @@ const { ICON_INSPECT_SELF } = require("../../constants");
  * @param {[Adventure, Delver]} args
  */
 async function executeSubcommand(interaction, ...[adventure, delver]) {
-	interaction.reply(inspectSelfPayload(delver, adventure.getGearCapacity(), adventure.room.enemies !== null))
+	interaction.reply(inspectSelfPayload(delver, adventure))
 		.catch(console.error);
 };
 

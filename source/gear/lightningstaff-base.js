@@ -2,10 +2,10 @@ const { GearTemplate } = require('../classes');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { changeStagger, dealDamage } = require('../util/combatantUtil');
 
-const bounceCount = 3;
+const bounces = 3;
 module.exports = new GearTemplate("Lightning Staff",
 	[
-		["use", `Strike ${bounceCount} random foes for <@{damage}> @{essence} damage`],
+		["use", "Strike @{bounces} random foes for <@{damage}> @{essence} damage"],
 		["critical", "Damage x @{critBonus}"]
 	],
 	"Adventuring",
@@ -22,11 +22,12 @@ module.exports = new GearTemplate("Lightning Staff",
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		return resultLines;
-	}, { type: `random${SAFE_DELIMITER}${bounceCount}`, team: "foe" })
+	}, { type: `random${SAFE_DELIMITER}${bounces}`, team: "foe" })
 	.setUpgrades("Disenchanting Lightning Staff", "Hexing Lightning Staff")
 	.setCooldown(2)
 	.setScalings({
 		damage: { description: "50% Power", calculate: (user) => Math.floor(user.getPower() / 2) },
-		critBonus: 2
+		critBonus: 2,
+		bounces
 	})
 	.setRnConfig({ foes: 3 });

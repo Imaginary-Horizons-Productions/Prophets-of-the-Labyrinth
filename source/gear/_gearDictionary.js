@@ -338,8 +338,9 @@ function buildGearDescription(gearName) {
  * @param {string} gearName
  * @param {Delver} holder
  * @param {number | null} gearIndex for charges lookup if holder has multiple of same gear type
+ * @param {Adventure} adventure
  */
-function buildGearDescriptionWithHolderStats(gearName, holder, gearIndex) {
+function buildGearDescriptionWithHolderStats(gearName, holder, gearIndex, adventure) {
 	if (!gearExists(gearName)) {
 		return "";
 	}
@@ -392,7 +393,15 @@ function buildGearDescriptionWithHolderStats(gearName, holder, gearIndex) {
 		const scaling = scalings[key];
 		let value;
 		if (typeof scaling === "number") {
-			value = scaling.toString();
+			if (key === "bounces") {
+				const loadedDiceCount = adventure.getArtifactCount("Loaded Dice");
+				if (loadedDiceCount > 0) {
+					value = `[${scaling + loadedDiceCount}]`;
+				}
+			}
+			if (value === undefined) {
+				value = scaling.toString();
+			}
 		} else {
 			value = `[${scaling.calculate(holder).toString()}]`;
 		}
