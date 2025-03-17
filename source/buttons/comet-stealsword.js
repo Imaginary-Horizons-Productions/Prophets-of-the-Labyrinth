@@ -1,5 +1,4 @@
 const { ButtonWrapper } = require('../classes');
-const { RN_TABLE_BASE } = require('../constants');
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
@@ -9,7 +8,7 @@ const { getColor, getEmoji } = require('../util/essenceUtil');
 
 const mainId = "takeswordfromcomet";
 module.exports = new ButtonWrapper(mainId, 3000,
-	/** Taking sword results in fight 75% of the time */
+	/** Take a Sword of the Sun, but start a fight with Comet */
 	(interaction, args) => {
 		const adventure = getAdventure(interaction.channelId);
 		const delver = adventure?.delvers.find(delver => delver.id === interaction.user.id);
@@ -26,10 +25,9 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		}
 
 		const hasFreeGearSlots = delver.gear.length < adventure.getGearCapacity();
-		let charges = getGearProperty(name, "maxCharges");
 		const embed = new EmbedBuilder().setColor(getColor(adventure.room.essence))
 			.setAuthor(randomAuthorTip())
-			.setTitle("Take this gear?")
+			.setTitle("Steal this sword and wake Comet?")
 			.addFields({ name: `${name} ${getEmoji(getGearProperty(name, "essence"))}`, value: buildGearDescription(name) });
 		const components = [];
 		if (hasFreeGearSlots) {
@@ -79,9 +77,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				adventure.room.decrementResource(name, 1);
 				adventure.room.history["Awoke Comet"].push(interaction.member.displayName);
 				interaction.message.edit(renderRoom(adventure, interaction.channel, `Comet has awoken! :anger::wolf:`));
-				interaction.channel.send(`${interaction.member.displayName} takes the Sword of the Sun, and Comet wakes!`)
+				interaction.channel.send(`${interaction.member.displayName} takes the Sword of the Sun${discardedName ? ` (${discardedName} discarded)` : ""}, and Comet wakes!`)
 				setAdventure(adventure);
-
 				return collectedInteraction;
 			}
 		}).then(interactionToAcknowledge => {

@@ -1,9 +1,9 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { RoomTemplate } = require("../classes");
 const { generateRoutingRow, pathVoteField } = require("../util/messageComponentUtil");
-const { rollArtifact } = require("../artifacts/_artifactDictionary");
 const { generateCombatRoomBuilder } = require("../util/messageComponentUtil");
 const { parseExpression } = require("../util/mathUtil");
+const { SAFE_DELIMITER } = require("../constants");
 
 const enemies = [["Comet the Sun Dog", "1"], ["Gust Wolf", "1*n"], ["Unkind Corvus", "1"]];
 
@@ -31,6 +31,7 @@ module.exports = new RoomTemplate("Let Sleeping Dogs Lie",
 			return generateCombatRoomBuilder([])(roomEmbed, adventure)
 		}
 		else {
+			const floofFailChance = 40;
 			return {
 				embeds: [roomEmbed.addFields(pathVoteField)],
 				components: [
@@ -38,13 +39,11 @@ module.exports = new RoomTemplate("Let Sleeping Dogs Lie",
 						new ButtonBuilder().setCustomId("takeswordfromcomet")
 							.setStyle(ButtonStyle.Danger)
 							.setLabel("Take sword [wake 100%]")
-							.setDisabled(adventure.room.history["Took sword"].length > 0)
-					),
-					// Does not take sword if fight starts, but sword should be available as loot
-					new ActionRowBuilder().addComponents(
-						new ButtonBuilder().setCustomId(`floofcometfur`)
+							.setDisabled(adventure.room.history["Took sword"].length > 0),
+						// Does not take sword if fight starts, but sword should be available as loot
+						new ButtonBuilder().setCustomId(`floofcometfur${SAFE_DELIMITER}${floofFailChance}`)
 							.setStyle(ButtonStyle.Danger)
-							.setLabel("Floof fur [wake 40%]")
+							.setLabel(`Floof fur [wake ${floofFailChance}%]`)
 					),
 					generateRoutingRow(adventure)
 				]
