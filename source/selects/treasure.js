@@ -37,7 +37,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				adventure.room.actions--;
 				adventure.room.history["Treasure picked"].push(name);
 				setAdventure(adventure);
-				interaction.update(renderRoom(adventure, interaction.channel, interaction.message.embeds[0].description));
+				interaction.update(renderRoom(adventure, interaction.channel));
 				break;
 			case "Artifact":
 				adventure.gainArtifact(name, count);
@@ -45,7 +45,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				adventure.room.actions--;
 				adventure.room.history["Treasure picked"].push(name);
 				setAdventure(adventure);
-				interaction.update(renderRoom(adventure, interaction.channel, interaction.message.embeds[0].description));
+				interaction.update(renderRoom(adventure, interaction.channel));
 				break;
 			case "Item":
 				adventure.gainItem(name, count);
@@ -53,7 +53,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 				adventure.room.actions--;
 				adventure.room.history["Treasure picked"].push(name);
 				setAdventure(adventure);
-				interaction.update(renderRoom(adventure, interaction.channel, interaction.message.embeds[0].description));
+				interaction.update(renderRoom(adventure, interaction.channel));
 				break;
 			case "Gear":
 				const hasFreeGearSlots = delver.gear.length < adventure.getGearCapacity();
