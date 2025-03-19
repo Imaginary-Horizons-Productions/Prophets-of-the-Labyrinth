@@ -14,7 +14,7 @@ class ArchetypeTemplate {
 	 * @param {(combatant: Combatant) => string} miniPredictFunction
 	 * @param {Record<"base" | string, string>} archetypeActionsMap
 	 * @param {string[]} startingGearNames
-	 * @param {{maxHPGrowth: number, powerGrowth: number, speedGrowth: number, critRateGrowth: number, staggerCapGrowth: number}} growthRates
+	 * @param {{maxHPGrowth: number, powerGrowth: number, speedGrowth: number, critRateGrowth: number, poiseGrowth: number}} growthRates
 	 */
 	constructor(nameInput, specializationNames, descriptionInput, archetypeActionSummary, essenceEnum, predictFunction, miniPredictFunction, archetypeActionsMap, startingGearNames, { maxHPGrowth, powerGrowth, speedGrowth, critRateGrowth }) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");

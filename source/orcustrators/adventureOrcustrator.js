@@ -613,7 +613,7 @@ function newRound(adventure, thread, lastRoundText) {
 
 					const peacockCharmCount = adventure.getArtifactCount("Peacock Charm");
 					if (peacockCharmCount > 0) {
-						const peacockProtection = peacockCharmCount + combatant.staggerCap - combatant.stagger;
+						const peacockProtection = peacockCharmCount + combatant.poise - combatant.stagger;
 						addProtection([combatant], peacockProtection);
 						adventure.updateArtifactStat("Peacock Charm", "Protection Generated", peacockProtection);
 					}
@@ -1017,7 +1017,7 @@ function endRound(adventure, thread) {
 		if (combatant.isStunned) {
 			combatant.isStunned = false;
 			combatant.stagger = 0;
-		} else if (combatant.stagger >= combatant.getStaggerCap()) {
+		} else if (combatant.stagger >= combatant.getPoise()) {
 			combatant.isStunned = true;
 		} else {
 			changeStagger([combatant], null, -1);

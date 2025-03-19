@@ -25,6 +25,6 @@ module.exports = new ArchetypeTemplate("name",
 		powerGrowth: 2.5,
 		speedGrowth: 0.5,
 		critRateGrowth: 1,
-		staggerCapGrowth: 0
+		poiseGrowth: 0
 	}
 );

@@ -73,14 +73,14 @@ function getModifierEmojiFileTuples() {
 /**
  * @param {string} modifierName
  * @param {number} stacks
- * @param {number} bearerStaggerCap
+ * @param {number} bearerPoise
  * @param {number} funnelCount
  */
-function getModifierDescription(modifierName, stacks, bearerStaggerCap, funnelCount) {
+function getModifierDescription(modifierName, stacks, bearerPoise, funnelCount) {
 	return calculateTagContent(injectApplicationEmojiMarkdown(MODIFIERS[modifierName].description),
 		{
 			stacks,
-			staggerCap: bearerStaggerCap,
+			poise: bearerPoise,
 			funnelCount
 		}
 	);

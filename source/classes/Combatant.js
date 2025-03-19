@@ -18,7 +18,7 @@ class Combatant {
 	power = 0;
 	speed = 100;
 	critRate = 20;
-	staggerCap = 6;
+	poise = 6;
 
 	hp = 300;
 	protection = 0;
@@ -55,7 +55,7 @@ class Combatant {
 	getCritRate() { throw new Error(`getCritRate not implemented in child class ${this.constructor.name}`) }
 
 	/** @returns {number} */
-	getStaggerCap() { throw new Error(`getStaggerCap not implemented in child class ${this.constructor.name}`) }
+	getPoise() { throw new Error(`getPoise not implemented in child class ${this.constructor.name}`) }
 
 	/** Get the number of stacks of the given modifier the combatant has
 	 * @param {string} modifierName
@@ -155,7 +155,7 @@ class Delver extends Combatant {
 		}, 0)));
 	}
 
-	getStaggerCap() {
+	getPoise() {
 		return Math.floor(this.getMaxHP() / 50);
 	}
 

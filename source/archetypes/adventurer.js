@@ -34,6 +34,6 @@ module.exports = new ArchetypeTemplate("Adventurer",
 		powerGrowth: 5,
 		speedGrowth: 1,
 		critRateGrowth: 0.5,
-		staggerCapGrowth: 0
+		poiseGrowth: 0
 	}
 );
