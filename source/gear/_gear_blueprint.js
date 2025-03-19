@@ -1,6 +1,7 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate, GearFamily } = require('../classes');
 
-module.exports = new GearTemplate("name",
+//#region Base
+const base = new GearTemplate("name",
 	[
 		["Passive", "text"],
 		["use", "move description"],
@@ -9,14 +10,19 @@ module.exports = new GearTemplate("name",
 	"category",
 	"essence",
 ).setCost(200)
-	.setEffect((targets, user, adventure) => {
-		const { essence } = module.exports;
-		if (user.essence === essence) {
-
-		}
-		if (user.crit) {
-
-		}
-		return []; // see style guide for conventions on result texts
-	}, { type: "", team: "" })
+	.setEffect(execute, { type: "", team: "" })
 	.setCooldown();
+
+/** @type {typeof base.effect} */
+function execute(targets, user, adventure) {
+	if (user.essence === base.essence) {
+
+	}
+	if (user.crit) {
+
+	}
+	return []; // see style guide for conventions on result texts
+}
+//#endRegion Base
+
+module.exports = new GearFamily(base, [], false);

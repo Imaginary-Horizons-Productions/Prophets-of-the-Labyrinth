@@ -1,4 +1,4 @@
-const { BuildError, GearTemplate, Gear, Delver, Adventure } = require("../classes");
+const { BuildError, GearTemplate, Gear, GearFamily, Delver, Adventure } = require("../classes");
 const { getApplicationEmojiMarkdown, injectApplicationEmojiMarkdown } = require("../util/graphicsUtil");
 const { getEmoji } = require("../util/essenceUtil");
 const { italic } = require("discord.js");
@@ -13,14 +13,8 @@ const GEAR_NAMES = [];
 for (const file of [
 	"_appease.js",
 	"_greed.js",
-	"arcanesledge-base.js",
-	"arcanesledge-fatiguing.js",
-	"arcanesledge-kinetic.js",
-	"battlestandard-base.js",
-	"battlestandard-disenchanting.js",
-	"battlestandard-flanking.js",
-	"battlestandard-hastening.js",
-	"battlestandard-weakening.js",
+	"arcane-sledge.js",
+	"battle-standard.js",
 	"bloodaegis-base.js",
 	"bloodaegis-toxic.js",
 	"bloodaegis-urgent.js",
@@ -229,12 +223,21 @@ for (const file of [
 	"wolfring-powerful.js",
 	"wolfring-swift.js"
 ]) {
-	const gear = require(`./${file}`);
-	if (gear.name.toLowerCase() in GEAR) {
-		throw new BuildError(`Duplicate gear name (${gear.name})`);
+	/** @type {GearFamily} */
+	const gearFamily = require(`./${file}`);
+	if (gearFamily.skipUpgradeLinking) {
+		gearFamily.base.upgrades = gearFamily.upgrades.map(gear => gear.name);
+		for (const upgrade of gearFamily.upgrades) {
+			upgrade.sidegrades = gearFamily.upgrades.map(gear => gear.name).filter(name => name !== upgrade.name);
+		}
 	}
-	GEAR[gear.name.toLowerCase()] = gear;
-	GEAR_NAMES.push(gear.name);
+	for (const gear of [gearFamily.base, ...gearFamily.upgrades]) {
+		if (gear.name.toLowerCase() in GEAR) {
+			throw new BuildError(`Duplicate gear name (${gear.name})`);
+		}
+		GEAR[gear.name.toLowerCase()] = gear;
+		GEAR_NAMES.push(gear.name);
+	}
 };
 
 /** Checks if a type of gear with the given name exists
