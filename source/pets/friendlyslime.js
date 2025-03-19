@@ -1,5 +1,5 @@
 const { Colors } = require("discord.js");
-const { PetTemplate, PetMoveTemplate, CombatantReference } = require("../classes");
+const { PetTemplate, PetMoveTemplate } = require("../classes");
 const { rollablePotions } = require("../shared/potions");
 const { addModifier, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
 
