@@ -386,13 +386,13 @@ class Enemy extends Combatant {
 	 * @param {number} hpInput
 	 * @param {number} powerInput
 	 * @param {number} speedInput
-	 * @param {number} poiseExpression
+	 * @param {number} staggerCapExpression
 	 * @param {number} critRateInput
 	 * @param {string} firstActionName
 	 * @param {{[modifierName: string]: number}} startingModifiersShallowCopy
 	 * @param {Adventure} adventure
 	 */
-	constructor(nameInput, essenceEnum, shouldRandomizeHP, hpInput, powerInput, speedInput, poiseExpression, critRateInput, firstActionName, startingModifiersShallowCopy, adventure) {
+	constructor(nameInput, essenceEnum, shouldRandomizeHP, hpInput, powerInput, speedInput, staggerCapExpression, critRateInput, firstActionName, startingModifiersShallowCopy, adventure) {
 		// allows parameterless class casting on load without crashing
 		if (essenceEnum === undefined) {
 			super(nameInput, "enemy");
@@ -446,7 +446,7 @@ class Enemy extends Combatant {
 			this.modifiers = startingModifiersShallowCopy;
 			this.power = powerInput;
 			this.speed = speedInput;
-			this.poise = parseExpression(poiseExpression, adventure.delvers.length);
+			this.staggerCap = parseExpression(staggerCapExpression, adventure.delvers.length);
 			this.critRate = critRateInput;
 		} else { // Mirror Clones
 			const counterpart = adventure.delvers[adventure.room.enemies.length];
@@ -457,7 +457,7 @@ class Enemy extends Combatant {
 			this.essence = counterpart.essence;
 			this.power = powerInput + counterpart.gear.reduce((totalPower, currentGear) => totalPower + currentGear.power, 0);
 			this.speed = speedInput + counterpart.gear.reduce((totalSpeed, currentGear) => totalSpeed + currentGear.speed, 0);
-			this.poise = parseExpression(poiseExpression, adventure.delvers.length) + counterpart.gear.reduce((totalPoise, currentGear) => totalPoise + currentGear.poise, 0);
+			this.staggerCap = parseExpression(staggerCapExpression, adventure.delvers.length) + counterpart.gear.reduce((staggerCap, currentGear) => staggerCap + currentGear.staggerCap, 0);
 			this.critRate = critRateInput + counterpart.gear.reduce((totalCritRate, currentGear) => totalCritRate + currentGear.critRate, 0);
 		}
 		this.archetype = nameInput;
@@ -493,8 +493,8 @@ class Enemy extends Combatant {
 		return Math.floor(this.critRate);
 	}
 
-	getPoise() {
-		return Math.floor(this.poise);
+	getStaggerCap() {
+		return Math.floor(this.staggerCap);
 	}
 
 	/** Game Design: no damage cap for enemies to avoid accidental capping */

@@ -27,7 +27,7 @@ const discordTips = [
 	"Server subscriptions cost more on mobile because the mobile app stores take a cut.",
 ];
 const potlTips = [
-	"Combatants lose their next turn (Stun) when their Stagger reaches their Poise.",
+	"Combatants lose their next turn (Stun) when their Stagger reaches their Stagger Capacity.",
 	"Using items has priority.",
 	"Gear that matches your essence relieves 1 Stagger for allies.",
 	"Gear that matches your essence inflicts 2 Stagger on foes.",
@@ -398,7 +398,7 @@ function inspectSelfPayload(delver, adventure) {
 	const hasClumsiness = delver.getModifierStacks("Clumsiness") > 0;
 	const fields = [
 		{ name: "Primary Stats", value: `${generateTextBar(delver.hp, delver.getMaxHP(), 10)} ${delver.hp}/${delver.getMaxHP()} HP${delver.protection > 0 ? `+ ${delver.protection} Protection` : ""}\nPower: ${delver.getPower()}\nSpeed: ${delver.getSpeed(false)}${roomHasEnemies ? ` ${delver.roundSpeed < 0 ? "-" : "+"} ${Math.abs(delver.roundSpeed)} (this round)` : ""}\nCrit Rate: ${Math.floor(delver.getCritRate())}%${hasFinesse ? " x 2 (Finesse)" : hasClumsiness ? " ÷ 2 (Clumsiness)" : ""}`, inline: true },
-		{ name: "Secondary Stats", value: `Poise: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())} Stagger\nDamage Cap: ${delver.getDamageCap()}\nEssence Counter Damage: ${delver.getEssenceCounterDamage()}`, inline: true },
+		{ name: "Secondary Stats", value: `Stagger Capacity: ${generateTextBar(delver.stagger, delver.getStaggerCap(), delver.getStaggerCap())} Stagger\nDamage Cap: ${delver.getDamageCap()}\nEssence Counter Damage: ${delver.getEssenceCounterDamage()}`, inline: true },
 		{ name: "Archetype Action and Gear", value: `Your ${getEmoji(delver.essence)} moves add ${ESSENCE_MATCH_STAGGER_FOE} Stagger to foes and relieve ${ESSENCE_MATCH_STAGGER_ALLY * -1} Stagger on allies.` },
 		{ name: `${getArchetypeActionName(delver.archetype, delver.specialization)} (Archetype Action)`, value: buildGearDescriptionWithHolderStats(getArchetypeActionName(delver.archetype, delver.specialization), delver, null, adventure) }
 	];
@@ -539,7 +539,7 @@ const COLORS_BY_MODIFIER_CATEGORY = {
 	"State": Colors.LightGrey
 };
 
-function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
+function generateModifierEmbed(modifierName, count, bearerStaggerCap, funnelCount) {
 	const modifierCategory = getModifierCategory(modifierName);
 	const fields = [{ name: "Category", value: modifierCategory, inline: true }];
 	const durationField = { name: "Duration", value: "Until end of battle" };
@@ -579,7 +579,7 @@ function generateModifierEmbed(modifierName, count, bearerPoise, funnelCount) {
 	return new EmbedBuilder().setColor(COLORS_BY_MODIFIER_CATEGORY[modifierCategory])
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${modifierName} ${getApplicationEmojiMarkdown(modifierName)} x ${count}`)
-		.setDescription(getModifierDescription(modifierName, count, bearerPoise, funnelCount))
+		.setDescription(getModifierDescription(modifierName, count, bearerStaggerCap, funnelCount))
 		.addFields(fields)
 }
 

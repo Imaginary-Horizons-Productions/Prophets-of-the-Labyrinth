@@ -375,7 +375,7 @@ function changeStagger(combatants, applier, value) {
 					pendingStagger--;
 				}
 			}
-			combatant.stagger = Math.min(Math.max(combatant.stagger + pendingStagger, 0), combatant.getPoise());
+			combatant.stagger = Math.max(combatant.stagger + pendingStagger, 0);
 		}
 	}
 }
@@ -397,7 +397,7 @@ function addProtection(combatants, value) {
  */
 function modifiersToString(combatant, adventure, padding) {
 	// Sort lines ascending by length to add as many lines as possible by culling largest lines first
-	const modifierLines = Object.entries(combatant.modifiers).map(([modifier, count]) => ({ name: modifier, count, description: `${getApplicationEmojiMarkdown(modifier)} ${bold(`x ${count}`)}: ${getModifierDescription(modifier, count, combatant.getPoise(), adventure.getArtifactCount("Spiral Funnel"))}\n` })).sort((a, b) => a.description.length - b.description.length);
+	const modifierLines = Object.entries(combatant.modifiers).map(([modifier, count]) => ({ name: modifier, count, description: `${getApplicationEmojiMarkdown(modifier)} ${bold(`x ${count}`)}: ${getModifierDescription(modifier, count, combatant.getStaggerCap(), adventure.getArtifactCount("Spiral Funnel"))}\n` })).sort((a, b) => a.description.length - b.description.length);
 	const poppedList = [];
 	for (let i = modifierLines.length - 1; i >= 0; i--) {
 		const andMoreText = poppedList.length === 0 ? "" : `...and ${listifyEN(poppedList.map((modifier) => `${modifier.count} x ${getApplicationEmojiMarkdown(modifier.name)}`), false)}\n`;
