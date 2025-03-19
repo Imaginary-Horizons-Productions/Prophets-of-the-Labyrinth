@@ -11,17 +11,17 @@ class EnemyTemplate {
 	 * @param {Essence | "@{adventure}" | "@{adventureOpposite}" | "@{custom}"} essenceEnum
 	 * @param {number} maxHPInput
 	 * @param {number} speedInput
-	 * @param {string} poiseExpressionInput expression, where n = delver count, that parses to number of Stagger to Stun
+	 * @param {string} staggerCapExpressionInput expression, where n = delver count, that parses to number of Stagger to Stun
 	 * @param {number} critRateBonus multiplicative increase to base 1/5 crit chance
 	 * @param {string} firstActionName use "random" for random move in enemy's move pool
 	 * @param {boolean} isBoss sets enemy to not randomize HP and adds 15 critRate
 	 */
-	constructor(nameInput, essenceEnum, maxHPInput, speedInput, poiseExpressionInput, critRateBonus, firstActionName, isBoss) {
+	constructor(nameInput, essenceEnum, maxHPInput, speedInput, staggerCapExpressionInput, critRateBonus, firstActionName, isBoss) {
 		if (!nameInput) throw new BuildError("Falsy nameInput");
 		if (!essenceEnum) throw new BuildError("Falsy essenceEnum");
 		if (!maxHPInput) throw new BuildError("Falsy maxHPInput");
 		if (!speedInput) throw new BuildError("Falsy speedInput");
-		if (!poiseExpressionInput) throw new BuildError("Falsy poiseExpression");
+		if (!staggerCapExpressionInput) throw new BuildError("Falsy staggerCapExpressionInput");
 		if (!isBoss && isBoss !== false) throw new BuildError("Nonfalse falsy isBoss");
 		const pendingCritRate = critRateBonus + (isBoss ? 15 : 0);
 		if (!pendingCritRate && pendingCritRate !== 0) throw new BuildError("Nonzero falsy critRate");
@@ -32,7 +32,7 @@ class EnemyTemplate {
 		this.maxHP = maxHPInput;
 		this.speed = speedInput;
 		/** @type {string} expression, where n = delver count */
-		this.poiseExpression = poiseExpressionInput;
+		this.staggerCapExpression = staggerCapExpressionInput;
 		this.critRate = 20 + pendingCritRate;
 		this.firstAction = firstActionName;
 		this.shouldRandomizeHP = !isBoss;
@@ -44,8 +44,8 @@ class EnemyTemplate {
 	/** @type {import("discord.js").EmbedField} */
 	flavorText;
 
-	/** 
-	 * @param {number} integer 
+	/**
+	 * @param {number} integer
 	 * Can be used to adjust maxHP during spawnEnemy (e.g. ads are more fragile than the original)
 	 * */
 	setMaxHP(integer) {

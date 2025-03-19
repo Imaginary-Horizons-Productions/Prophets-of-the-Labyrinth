@@ -16,7 +16,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		const delver = adventure.delvers.find(delver => delver.id === interaction.user.id);
 		if (modifierName !== "MORE") {
-			interaction.reply({ embeds: [generateModifierEmbed(modifierName, delver.modifiers[modifierName], delver.getPoise(), adventure.getArtifactCount("Spiral Funnel"))], flags: [MessageFlags.Ephemeral] });
+			interaction.reply({ embeds: [generateModifierEmbed(modifierName, delver.modifiers[modifierName], delver.getStaggerCap(), adventure.getArtifactCount("Spiral Funnel"))], flags: [MessageFlags.Ephemeral] });
 		} else {
 			interaction.reply({
 				embeds: [

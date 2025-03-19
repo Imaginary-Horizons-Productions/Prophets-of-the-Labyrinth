@@ -12,19 +12,19 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 			name: "Enemies",
 			value: adventure.room.enemies.filter(combatant => combatant.hp > 0).map(enemy => {
 				const move = adventure.room.findCombatantMove({ team: enemy.team, index: adventure.getCombatantIndex(enemy) });
-				return `${enemy.name}\n${enemy.isStunned ? `${ICON_STAGGER} Stunned` : `Stagger: ${generateTextBar(enemy.stagger, enemy.getPoise(), enemy.getPoise())}`}\nRound ${adventure.room.round + 1} Move: ${move.name}\nRound ${adventure.room.round + 2} Move: ${enemy.nextAction}`;
+				return `${enemy.name}\n${enemy.isStunned ? `${ICON_STAGGER} Stunned` : `Stagger: ${generateTextBar(enemy.stagger, enemy.getStaggerCap(), enemy.getStaggerCap())}`}\nRound ${adventure.room.round + 1} Move: ${move.name}\nRound ${adventure.room.round + 2} Move: ${enemy.nextAction}`;
 			}).join("\n\n")
 		})
 		embed.addFields({
 			name: "Delvers",
 			value: adventure.delvers.map(delver => {
-				return `${delver.name}\n${delver.isStunned ? `${ICON_STAGGER} Stunned` : `Stagger: ${generateTextBar(delver.stagger, delver.getPoise(), delver.getPoise())}`}`;
+				return `${delver.name}\n${delver.isStunned ? `${ICON_STAGGER} Stunned` : `Stagger: ${generateTextBar(delver.stagger, delver.getStaggerCap(), delver.getStaggerCap())}`}`;
 			}).join("\n\n")
 		})
 		return embed.setDescription("Martial Artist predictions:");
 	},
 	(combatant) => {
-		return `Stagger: ${generateTextBar(combatant.stagger, combatant.getPoise(), combatant.getPoise())}`;
+		return `Stagger: ${generateTextBar(combatant.stagger, combatant.getStaggerCap(), combatant.getStaggerCap())}`;
 	},
 	{
 		base: "Flourish",
