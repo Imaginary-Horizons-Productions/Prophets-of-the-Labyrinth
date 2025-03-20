@@ -29,7 +29,7 @@ module.exports = new GearTemplate("Toxic Flame Scythes",
 			return resultLines.concat(generateModifierResultLines(addModifier([target], poison)));
 		}
 	}, { type: "single", team: "foe" })
-	.setUpgrades("Thief's Flame Scythes", "Toxic Flame Scythes")
+	.setSidegrades("Thief's Flame Scythes")
 	.setCharges(15)
 	.setScalings({
 		damage: damageScalingGenerator(40),
