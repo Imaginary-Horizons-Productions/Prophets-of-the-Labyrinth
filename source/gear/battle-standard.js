@@ -21,7 +21,7 @@ const battleStandard = new GearTemplate("Battle Standard",
 
 /** @type {typeof battleStandard.effect} */
 function battleStandardEffect(targets, user, adventure) {
-	const { essence, scalings: { damage, critBonus, morale } } = module.exports;
+	const { essence, scalings: { damage, critBonus, morale } } = battleStandard;
 	let pendingDamage = damage.calculate(user);
 	const resultLines = [];
 	if (user.crit) {
@@ -58,7 +58,7 @@ const disenchantingBattleStandard = new GearTemplate(disenchantingName,
 
 /** @type {typeof disenchantingBattleStandard.effect} */
 function disenchantingBattleStandardEffect([target], user, adventure) {
-	const { essence, scalings: { damage, critBonus, morale } } = module.exports;
+	const { essence, scalings: { damage, critBonus, morale } } = disenchantingBattleStandard;
 	let pendingDamage = damage.calculate(user);
 	const resultLines = [];
 	if (user.crit) {
@@ -95,7 +95,7 @@ const flankingBattleStandard = new GearTemplate("Flanking Battle Standard",
 	.setModifiers({ name: "Exposure", stacks: 2 });
 
 function flankingBattleStandardEffect(targets, user, adventure) {
-	const { essence, scalings: { damage, critBonus, morale }, modifiers: [exposure] } = module.exports;
+	const { essence, scalings: { damage, critBonus, morale }, modifiers: [exposure] } = flankingBattleStandard;
 	let pendingDamage = damage.calculate(user);
 	const resultLines = [];
 	if (user.crit) {
@@ -128,7 +128,7 @@ const hasteningBattleStandard = new GearTemplate("Hastening Battle Standard",
 	});
 
 function hasteningBattleStandardEffect(targets, user, adventure) {
-	const { essence, scalings: { damage, critBonus, morale, cooldownReduction } } = module.exports;
+	const { essence, scalings: { damage, critBonus, morale, cooldownReduction } } = hasteningBattleStandard;
 	let pendingDamage = damage.calculate(user);
 	const resultLines = [];
 	if (user.crit) {
@@ -167,7 +167,7 @@ const weakeningBattleStandard = new GearTemplate("Weakening Battle Standard",
 	.setModifiers({ name: "Weakness", stacks: 10 });
 
 function weakeningBattleStandardEffect(targets, user, adventure) {
-	const { essence, scalings: { damage, critBonus, morale }, modifiers: [weakness] } = module.exports;
+	const { essence, scalings: { damage, critBonus, morale }, modifiers: [weakness] } = weakeningBattleStandard;
 	let pendingDamage = damage.calculate(user);
 	const resultLines = [];
 	if (user.crit) {

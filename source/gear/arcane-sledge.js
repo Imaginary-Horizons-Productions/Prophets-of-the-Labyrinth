@@ -26,7 +26,7 @@ const arcaneSledge = new GearTemplate(baseName,
 
 /** @type {typeof arcaneSledge.effect} */
 function arcaneSledgeEffect(targets, user, adventure) {
-	const { essence, scalings: { damage, buffsRemoved, critBonus } } = module.exports;
+	const { essence, scalings: { damage, buffsRemoved, critBonus } } = arcaneSledge;
 	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
@@ -72,7 +72,7 @@ const fatiguingArcaneSledge = new GearTemplate(fatiguingName,
 
 /** @type {typeof fatiguingArcaneSledge.effect} */
 function fatiguingArcaneSledgeEffect(targets, user, adventure) {
-	const { essence, modifiers: [impotence], scalings: { damage, buffsRemoved, critBonus } } = module.exports;
+	const { essence, modifiers: [impotence], scalings: { damage, buffsRemoved, critBonus } } = fatiguingArcaneSledge;
 	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
@@ -117,7 +117,7 @@ const kineticArcaneSledge = new GearTemplate(kineticName,
 
 /** @type {typeof kineticArcaneSledge.effect} */
 function kineticArcaneSledgeEffect(targets, user, adventure) {
-	const { essence, scalings: { damage, buffsRemoved, critBonus } } = module.exports;
+	const { essence, scalings: { damage, buffsRemoved, critBonus } } = kineticArcaneSledge;
 	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
