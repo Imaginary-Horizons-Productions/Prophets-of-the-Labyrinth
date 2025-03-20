@@ -128,6 +128,28 @@ class CommandWrapper extends InteractionWrapper {
 	}
 };
 
+class SubcommandWrapper {
+	/**
+	 *
+	 * @param {string} nameInput
+	 * @param {string} descriptionInput
+	 * @param {(interaction: CommandInteraction, ...args: unknown[]) => Promise<void>} executeFunction
+	 */
+	constructor(nameInput, descriptionInput, executeFunction) {
+		this.data = {
+			name: nameInput,
+			description: descriptionInput
+		};
+		this.executeSubcommand = executeFunction;
+	}
+
+	/** @param  {...{ type: "", name: string, description: string, required: boolean, autocomplete?: { name: string, value: string }[], choices?: { name: string, value: string }[] } } options */
+	setOptions(...options) {
+		this.data.optionsInput = options;
+		return this;
+	}
+}
+
 class SelectWrapper extends InteractionWrapper {
 	/** IHP wrapper for any select responses
 	 * @param {string} mainIdInput
@@ -193,4 +215,4 @@ class MessageContextMenuWrapper extends ContextMenuWrapper {
 	}
 };
 
-module.exports = { ButtonWrapper, CommandWrapper, SelectWrapper, ContextMenuWrapper, UserContextMenuWrapper, MessageContextMenuWrapper };
+module.exports = { ButtonWrapper, CommandWrapper, SubcommandWrapper, SelectWrapper, ContextMenuWrapper, UserContextMenuWrapper, MessageContextMenuWrapper };

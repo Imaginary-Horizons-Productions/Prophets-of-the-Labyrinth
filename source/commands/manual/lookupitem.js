@@ -1,49 +1,39 @@
-const { CommandInteraction, MessageFlags } = require("discord.js");
+const { MessageFlags } = require("discord.js");
 const { itemExists, itemNames, getItem } = require("../../items/_itemDictionary");
 const { embedTemplate } = require("../../util/embedUtil");
 const { getAdventure } = require("../../orcustrators/adventureOrcustrator");
 const { getColor } = require("../../util/essenceUtil");
 const { injectApplicationEmojiMarkdown } = require("../../util/graphicsUtil");
+const { SubcommandWrapper } = require("../../classes");
 
-/**
- * @param {CommandInteraction} interaction
- * @param {...unknown} args
- */
-async function executeSubcommand(interaction, ...args) {
-	const itemName = interaction.options.getString("item-name");
-	if (!itemExists(itemName)) {
-		interaction.reply({ content: `Stats on **${itemName}** could not be found. Check for typos!`, flags: [MessageFlags.Ephemeral] });
-		return;
-	}
+module.exports = new SubcommandWrapper("item", "Look up details on an item",
+	async function executeSubcommand(interaction, ...args) {
+		const itemName = interaction.options.getString("item-name");
+		if (!itemExists(itemName)) {
+			interaction.reply({ content: `Stats on **${itemName}** could not be found. Check for typos!`, flags: [MessageFlags.Ephemeral] });
+			return;
+		}
 
-	const { name: nameInTitleCaps, essence, description, flavorText } = getItem(itemName);
-	const embed = embedTemplate().setColor(getColor(essence))
-		.setTitle(nameInTitleCaps)
-		.setDescription(injectApplicationEmojiMarkdown(description));
-	const adventure = getAdventure(interaction.channelId);
-	if (adventure) {
-		const numberHeld = adventure?.items[itemName] || 0;
-		embed.addFields({ name: "Number Held", value: numberHeld.toString() });
+		const { name: nameInTitleCaps, essence, description, flavorText } = getItem(itemName);
+		const embed = embedTemplate().setColor(getColor(essence))
+			.setTitle(nameInTitleCaps)
+			.setDescription(injectApplicationEmojiMarkdown(description));
+		const adventure = getAdventure(interaction.channelId);
+		if (adventure) {
+			const numberHeld = adventure?.items[itemName] || 0;
+			embed.addFields({ name: "Number Held", value: numberHeld.toString() });
+		}
+		if (flavorText) {
+			embed.addFields(flavorText);
+		}
+		interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
 	}
-	if (flavorText) {
-		embed.addFields(flavorText);
+).setOptions(
+	{
+		type: "String",
+		name: "item-name",
+		description: "Input is case-insensitive",
+		required: true,
+		autocomplete: itemNames.map(name => ({ name, value: name }))
 	}
-	interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
-};
-
-module.exports = {
-	data: {
-		name: "item",
-		description: "Look up details on an item",
-		optionsInput: [
-			{
-				type: "String",
-				name: "item-name",
-				description: "Input is case-insensitive",
-				required: true,
-				autocomplete: itemNames.map(name => ({ name, value: name }))
-			}
-		]
-	},
-	executeSubcommand
-};
+);
