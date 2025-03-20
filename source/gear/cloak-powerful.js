@@ -24,7 +24,7 @@ module.exports = new GearTemplate("Powerful Cloak",
 		}
 		return generateModifierResultLines(addModifier([user], pendingEvasion));
 	}, { type: "self", team: "ally" })
-	.setUpgrades("Accurate Cloak", "Powerful Cloak")
+	.setSidegrades("Accurate Cloak")
 	.setCooldown(1)
 	.setModifiers(scalingEvasion(2))
 	.setScalings({
