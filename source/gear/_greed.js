@@ -15,6 +15,6 @@ function execute(targets, user, adventure) {
 	const affectedTargets = targets.filter(target => target.archetype === "Treasure Elemental");
 	return generateModifierResultLines(combineModifierReceipts(addModifier(affectedTargets, empowerment).concat(addModifier(affectedTargets, midas))));
 }
-//#endRegion Base
+//#endregion Base
 
 module.exports = new GearFamily(base, [], true);

@@ -37,7 +37,7 @@ function bonfireFormationEffect(targets, user, adventure) {
 	}
 	return generateModifierResultLines(combineModifierReceipts([...addModifier(targets, pendingExcellence), ...addModifier(targets, pendingAttunement)]));
 }
-//#endRegion Base
+//#endregion Base
 
 //#region Charging
 const chargingBonfireFormation = new GearTemplate("Charging Bonfire Formation",
@@ -73,7 +73,7 @@ function chargingBonfireFormationEffect(targets, user, adventure) {
 	}
 	return generateModifierResultLines(combineModifierReceipts([...addModifier(targets, pendingExcellence), ...addModifier(targets, pendingAttunement), ...addModifier(targets, empowerment)]));
 }
-//#endRegion Charging
+//#endregion Charging
 
 //#region Hastening
 const hasteningBonfireFormation = new GearTemplate("Hastening Bonfire Formation",
@@ -125,6 +125,6 @@ function hasteningBonfireFormationEffect(targets, user, adventure) {
 	}
 	return generateModifierResultLines(combineModifierReceipts([...addModifier(targets, pendingExcellence), ...addModifier(targets, pendingAttunement)])).concat(resultLines);
 }
-//#endRegion Hastening
+//#endregion Hastening
 
 module.exports = new GearFamily(bonfireFormation, [chargingBonfireFormation, hasteningBonfireFormation], false);

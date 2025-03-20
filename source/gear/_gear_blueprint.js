@@ -23,6 +23,6 @@ function execute(targets, user, adventure) {
 	}
 	return []; // see style guide for conventions on result texts
 }
-//#endRegion Base
+//#endregion Base
 
 module.exports = new GearFamily(base, [], false);

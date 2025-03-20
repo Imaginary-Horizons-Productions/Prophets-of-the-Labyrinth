@@ -15,6 +15,6 @@ function execute(targets, user, adventure) {
 	}
 	return generateModifierResultLines(combineModifierReceipts(receipts));
 }
-//#endRegion Base
+//#endregion Base
 
 module.exports = new GearFamily(base, [], true);

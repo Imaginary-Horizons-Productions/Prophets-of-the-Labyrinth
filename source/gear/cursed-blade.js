@@ -1,6 +1,6 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate, GearFamily } = require('../classes');
 
-module.exports = new GearTemplate("Cursed Blade",
+const cursedBlade = new GearTemplate("Cursed Blade",
 	[
 		["Passive", "Reduces your Max HP by @{percentMaxHP*-1}%, can be upgraded into random Offense gear"],
 	],
@@ -9,3 +9,5 @@ module.exports = new GearTemplate("Cursed Blade",
 ).setCost(-50)
 	.setUpgrades("Greatsword", "Flail", "Net Launcher", "Longsword", "Battle Standard", "Warhammer")
 	.setScalings({ percentMaxHP: -5 });
+
+module.exports = new GearFamily(cursedBlade, [], true);

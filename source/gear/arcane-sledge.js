@@ -94,7 +94,7 @@ function fatiguingArcaneSledgeEffect(targets, user, adventure) {
 	}
 	return resultLines;
 }
-//#endRegion Fatiguing
+//#endregion Fatiguing
 
 //#region Kinetic
 const kineticName = "Kinetic Arcane Sledge";
@@ -139,6 +139,6 @@ function kineticArcaneSledgeEffect(targets, user, adventure) {
 	}
 	return resultLines;
 }
-//#endRegion Kinetic
+//#endregion Kinetic
 
 module.exports = new GearFamily(arcaneSledge, [fatiguingArcaneSledge, kineticArcaneSledge], false);

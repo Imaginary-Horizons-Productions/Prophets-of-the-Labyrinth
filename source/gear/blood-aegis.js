@@ -43,7 +43,7 @@ function bloodAegisEffect([target], user, adventure) {
 	}
 	return resultLines;
 }
-//#endRegion Base
+//#endregion Base
 
 //#region Toxic
 const toxicBloodAegis = GearTemplate("Toxic Blood Aegis",
@@ -86,7 +86,7 @@ function toxicBloodAegisEffect([target], user, adventure) {
 	}
 	return resultLines.concat(generateModifierResultLines(addModifier([target], poison)));
 }
-//#endRegion Toxic
+//#endregion Toxic
 
 //#region Urgent
 const urgentBloodAegis = new GearTemplate("Urgent Blood Aegis",
@@ -129,6 +129,6 @@ function urgentBloodAegisEffect([target], user, adventure) {
 	}
 	return resultLines;
 }
-//#endRegion Urgent
+//#endregion Urgent
 
 module.exports = new GearFamily(bloodAegis, [toxicBloodAegis, urgentBloodAegis], false);

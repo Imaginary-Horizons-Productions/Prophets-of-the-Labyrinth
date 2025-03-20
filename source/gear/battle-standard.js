@@ -35,7 +35,7 @@ function battleStandardEffect(targets, user, adventure) {
 	}
 	return damageResults.concat(resultLines);
 }
-//#endRegion Base
+//#endregion Base
 
 //#region Disenchanting
 const disenchantingName = "Disenchanting Battle Standard";
@@ -76,7 +76,7 @@ function disenchantingBattleStandardEffect([target], user, adventure) {
 	}
 	return damageResults.concat(resultLines);
 }
-//#endRegion Disenchanting
+//#endregion Disenchanting
 
 //#region Flanking
 const flankingBattleStandard = new GearTemplate("Flanking Battle Standard",
@@ -109,7 +109,7 @@ function flankingBattleStandardEffect(targets, user, adventure) {
 	}
 	return damageResults.concat(resultLines, generateModifierResultLines(addModifier(survivors, exposure)));
 }
-//#endRegion Flanking
+//#endregion Flanking
 
 //#region Hastening
 const hasteningBattleStandard = new GearTemplate("Hastening Battle Standard",
@@ -148,7 +148,7 @@ function hasteningBattleStandardEffect(targets, user, adventure) {
 	}
 	return damageResults.concat(resultLines);
 }
-//#endRegion Hastening
+//#endregion Hastening
 
 //#region Weakening
 const weakeningBattleStandard = new GearTemplate("Weakening Battle Standard",
@@ -181,6 +181,6 @@ function weakeningBattleStandardEffect(targets, user, adventure) {
 	}
 	return damageResults.concat(resultLines, generateModifierResultLines(addModifier(survivors, weakness)));
 }
-//#endRegion Weakening
+//#endregion Weakening
 
 module.exports = new GearFamily(battleStandard, [disenchantingBattleStandard, flankingBattleStandard, hasteningBattleStandard, weakeningBattleStandard], true);

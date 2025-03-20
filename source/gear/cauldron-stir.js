@@ -1,0 +1,206 @@
+const { GearTemplate, GearFamily } = require('../classes');
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { rollablePotions } = require('../shared/potions');
+const { dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier, getCombatantCounters } = require('../util/combatantUtil');
+const { essenceList } = require('../util/essenceUtil');
+const { archetypeActionDamageScaling } = require('./shared/scalings');
+const { GearTemplate } = require('../classes');
+const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { rollablePotions } = require('../shared/potions');
+const { dealDamage, changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { archetypeActionDamageScaling } = require('./shared/scalings');
+
+
+//#region Base
+const baseName = "Cauldron Stir";
+const cauldronStir = new GearTemplate(baseName,
+	[
+		["use", "Strike a foe for <@{damage}> @{essence} damage"],
+		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
+	],
+	"Action",
+	"Light"
+).setEffect(cauldronStirEffect, { type: "single", team: "foe" })
+	.setScalings({
+		damage: archetypeActionDamageScaling,
+		critBonus: 2,
+		potionCount: 1
+	})
+	.setRnConfig({ potions: 1 });
+
+/** @type {typeof cauldronStir.effect} */
+function cauldronStirEffect(targets, user, adventure) {
+	const { essence, scalings: { damage, critBonus, potionCount } } = cauldronStir;
+	const resultLines = [];
+	let pendingDamage = damage.calculate(user);
+	if (user.crit) {
+		pendingDamage *= critBonus;
+		const rolledPotion = rollablePotions[user.roundRns[`${baseName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
+		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
+	}
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
+	return damageResults.concat(resultLines);
+}
+//#endregion Base
+
+//#region Incompatible
+const incompatibleName = "Incompatible Cauldron Stir";
+const incompatibleCauldronStir = new GearTemplate(incompatibleName,
+	[
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
+		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
+	],
+	"Action",
+	"Light"
+).setEffect(incompatibleCauldronStirEffect, { type: "single", team: "foe" })
+	.setScalings({
+		damage: archetypeActionDamageScaling,
+		critBonus: 2,
+		potionCount: 1
+	})
+	.setRnConfig({ potions: 1 })
+	.setModifiers({ name: "Incompatibility", stacks: 3 });
+
+/** @type {typeof incompatibleCauldronStir.effect} */
+function incompatibleCauldronStirEffect(targets, user, adventure) {
+	const { essence, scalings: { damage, critBonus, potionCount }, modifiers: [incompatible] } = incompatibleCauldronStir;
+	const resultLines = generateModifierResultLines(addModifier(targets, incompatible));
+	let pendingDamage = damage.calculate(user);
+	if (user.crit) {
+		pendingDamage *= critBonus;
+		const rolledPotion = rollablePotions[user.roundRns[`${incompatibleName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
+		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
+	}
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
+	return damageResults.concat(resultLines);
+}
+//#endregion Incompatible
+
+//#region Innovative
+const innovativeName = "Innovative Cauldron Stir";
+const innovativeCauldronStir = new GearTemplate(innovativeName,
+	[
+		["use", "Strike a foe for <@{damage}> @{essence} damage, grant all allies @{mod0Stacks} @{mod0} if Essence Countering"],
+		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
+	],
+	"Action",
+	"Light"
+).setEffect(innovativeCauldronStirEffect, { type: "single", team: "foe" })
+	.setScalings({
+		damage: archetypeActionDamageScaling,
+		critBonus: 2,
+		potionCount: 1
+	})
+	.setRnConfig({ potions: 1 })
+	.setModifiers({ name: "Empowerment", stacks: 10 });
+
+/** @type {typeof innovativeCauldronStir.effect} */
+function innovativeCauldronStirEffect(targets, user, adventure) {
+	const { essence, scalings: { damage, critBonus, potionCount }, modifiers: [empowerment] } = innovativeCauldronStir;
+	const resultLines = [];
+	if (getCombatantCounters(targets[0]).includes(this.essence)) {
+		const userTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
+		resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(userTeam, empowerment))));
+	}
+	let pendingDamage = damage.calculate(user);
+	if (user.crit) {
+		pendingDamage *= critBonus;
+		const rolledPotion = rollablePotions[user.roundRns[`${innovativeName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
+		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
+	}
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
+	return damageResults.concat(resultLines);
+}
+//#endregion Innovative
+
+//#region Sabotaging
+const sabotagingName = "Sabotaging Cauldron Stir";
+const sabotagingCauldronStir = new GearTemplate(sabotagingName,
+	[
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} stacks of a random Vulnerability on a foe"],
+		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
+	],
+	"Action",
+	"Light"
+).setEffect(sabotagingCauldronStirEffect, { type: "single", team: "foe" })
+	.setScalings({
+		damage: archetypeActionDamageScaling,
+		critBonus: 2,
+		potionCount: 1
+	})
+	.setRnConfig({
+		potions: 1,
+		vulnerabilities: 1
+	})
+	.setModifiers({ name: "unparsed random vulnerability", stacks: 2 });
+
+/** @type {typeof sabotagingCauldronStir.effect} */
+function sabotagingCauldronStirEffect(targets, user, adventure) {
+	const { essence, scalings: { damage, critBonus, potionCount }, modifiers: [vulnerability] } = sabotagingCauldronStir;
+	const resultLines = [];
+	let pendingDamage = damage.calculate(user);
+	if (user.crit) {
+		pendingDamage *= critBonus;
+		const rolledPotion = rollablePotions[user.roundRns[`${sabotagingName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
+		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
+	}
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
+	const rolledVulnerability = essenceList(["Unaligned"])[user.roundRns[`${sabotagingName}${SAFE_DELIMITER}vulnerabilities`][0]];
+	return damageResults.concat(resultLines, generateModifierResultLines(addModifier(survivors, { name: `${rolledVulnerability} Vulnerability`, stacks: vulnerability.stacks })));
+}
+//#endregion Sabotaging
+
+//#region Toxic
+const toxicName = "Toxic Cauldron Stir";
+const toxicCauldronStir = new GearTemplate(toxicName,
+	[
+		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
+		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
+	],
+	"Action",
+	"Light"
+).setEffect(toxicCauldronStirEffect, { type: "single", team: "foe" })
+	.setScalings({
+		damage: archetypeActionDamageScaling,
+		critBonus: 2,
+		potionCount: 1
+	})
+	.setRnConfig({ potions: 1 })
+	.setModifiers({ name: "Poison", stacks: 3 });
+
+/** @type {typeof toxicCauldronStir.effect} */
+function toxicCauldronStirEffect(targets, user, adventure) {
+	const { essence, scalings: { damage, critBonus, potionCount }, modifiers: [poison] } = toxicCauldronStir;
+	const resultLines = [];
+	let pendingDamage = damage.calculate(user);
+	if (user.crit) {
+		pendingDamage *= critBonus;
+		const rolledPotion = rollablePotions[user.roundRns[`${toxicName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
+		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
+	}
+	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	if (user.essence === essence) {
+		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
+	}
+	return damageResults.concat(resultLines, generateModifierResultLines(addModifier(survivors, poison)));
+}
+//#endregion Toxic
+
+module.exports = new GearFamily(cauldronStir, [incompatibleCauldronStir, innovativeCauldronStir, sabotagingCauldronStir, toxicCauldronStir], true);
