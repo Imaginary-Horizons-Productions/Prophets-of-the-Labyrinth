@@ -38,8 +38,7 @@ function battleStandardEffect(targets, user, adventure) {
 //#endregion Base
 
 //#region Disenchanting
-const disenchantingName = "Disenchanting Battle Standard";
-const disenchantingBattleStandard = new GearTemplate(disenchantingName,
+const disenchantingBattleStandard = new GearTemplate("Disenchanting Battle Standard",
 	[
 		["use", "Deal <@{damage}> @{essence} damage to and remove a random buff from a foe"],
 		["critical", "Damage x @{critBonus}, increase party morale by @{morale}"]
@@ -72,7 +71,7 @@ function disenchantingBattleStandardEffect([target], user, adventure) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 		const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-		resultLines.push(...generateModifierResultLines(removeModifier([target], { name: targetBuffs[user.roundRns[`${disenchantingName}${SAFE_DELIMITER}buffs`][0] % targetBuffs.length], stacks: "all" })));
+		resultLines.push(...generateModifierResultLines(removeModifier([target], { name: targetBuffs[user.roundRns[`${disenchantingBattleStandard.name}${SAFE_DELIMITER}buffs`][0] % targetBuffs.length], stacks: "all" })));
 	}
 	return damageResults.concat(resultLines);
 }

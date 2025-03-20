@@ -4,8 +4,7 @@ const { changeStagger, dealDamage, generateModifierResultLines, addModifier, gai
 const { damageScalingGenerator } = require('./shared/scalings');
 
 //#region Base
-const baseName = "Bounty Fist";
-const bountyFist = new GearTemplate(baseName,
+const bountyFist = new GearTemplate("Bounty Fist",
 	[
 		["use", "Deal <@{damage} + gold paid> @{essence} damage to a foe"],
 		["critical", "Damage x @{critBonus}"]
@@ -33,13 +32,12 @@ function bountyFistEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(`${user.name}'s ${baseName} consumed ${goldUsed}g.`);
+	return resultLines.concat(`${user.name}'s ${bountyFist.name} consumed ${goldUsed}g.`);
 }
 //#endregion Base
 
 //#region Midas's
-const midassName = "Midas's Bounty Fist";
-const midassBountyFist = new GearTemplate(midassName,
+const midassBountyFist = new GearTemplate("Midas's Bounty Fist",
 	[
 		["use", "Inflict <@{damage} + gold paid> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
 		["critical", "Damage x @{critBonus}"]
@@ -68,13 +66,12 @@ function midassBountyFistEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(targets, curseOfMidas)), `${user.name}'s ${midassName} consumed ${goldUsed}g.`);
+	return resultLines.concat(generateModifierResultLines(addModifier(targets, curseOfMidas)), `${user.name}'s ${midassBountyFist.name} consumed ${goldUsed}g.`);
 }
 //#endregion Midas's
 
 //#region Thirsting
-const thirstingName = "Thirsting Bounty Fist";
-const thirstingBountyFist = new GearTemplate(thirstingName,
+const thirstingBountyFist = new GearTemplate("Thirsting Bounty Fist",
 	[
 		["use", "Deal <@{damage} + gold paid> @{essence} damage to a foe, regain <@{healing}> if foe is downed"],
 		["critical", "Damage x @{critBonus}"]
@@ -108,7 +105,7 @@ function thirstingBountyFistEffect(targets, user, adventure) {
 		gainHealth(user, pendingHealing, adventure);
 		resultLines.push(`${user.name} regains ${pendingHealing} HP.`);
 	}
-	return resultLines.concat(`${user.name}'s ${thirstingName} consumed ${goldUsed}g.`);
+	return resultLines.concat(`${user.name}'s ${thirstingBountyFist.name} consumed ${goldUsed}g.`);
 }
 //#endregion Thirsting
 

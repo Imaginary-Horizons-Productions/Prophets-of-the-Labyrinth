@@ -12,8 +12,7 @@ const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 
 //#region Base
-const baseName = "Cauldron Stir";
-const cauldronStir = new GearTemplate(baseName,
+const cauldronStir = new GearTemplate("Cauldron Stir",
 	[
 		["use", "Strike a foe for <@{damage}> @{essence} damage"],
 		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
@@ -35,7 +34,7 @@ function cauldronStirEffect(targets, user, adventure) {
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
-		const rolledPotion = rollablePotions[user.roundRns[`${baseName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		const rolledPotion = rollablePotions[user.roundRns[`${cauldronStir.name}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}
@@ -48,8 +47,7 @@ function cauldronStirEffect(targets, user, adventure) {
 //#endregion Base
 
 //#region Incompatible
-const incompatibleName = "Incompatible Cauldron Stir";
-const incompatibleCauldronStir = new GearTemplate(incompatibleName,
+const incompatibleCauldronStir = new GearTemplate("Incompatible Cauldron Stir",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
 		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
@@ -72,7 +70,7 @@ function incompatibleCauldronStirEffect(targets, user, adventure) {
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
-		const rolledPotion = rollablePotions[user.roundRns[`${incompatibleName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		const rolledPotion = rollablePotions[user.roundRns[`${incompatibleCauldronStir.name}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}
@@ -85,8 +83,7 @@ function incompatibleCauldronStirEffect(targets, user, adventure) {
 //#endregion Incompatible
 
 //#region Innovative
-const innovativeName = "Innovative Cauldron Stir";
-const innovativeCauldronStir = new GearTemplate(innovativeName,
+const innovativeCauldronStir = new GearTemplate("Innovative Cauldron Stir",
 	[
 		["use", "Strike a foe for <@{damage}> @{essence} damage, grant all allies @{mod0Stacks} @{mod0} if Essence Countering"],
 		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
@@ -113,7 +110,7 @@ function innovativeCauldronStirEffect(targets, user, adventure) {
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
-		const rolledPotion = rollablePotions[user.roundRns[`${innovativeName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		const rolledPotion = rollablePotions[user.roundRns[`${innovativeCauldronStir.name}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}
@@ -126,8 +123,7 @@ function innovativeCauldronStirEffect(targets, user, adventure) {
 //#endregion Innovative
 
 //#region Sabotaging
-const sabotagingName = "Sabotaging Cauldron Stir";
-const sabotagingCauldronStir = new GearTemplate(sabotagingName,
+const sabotagingCauldronStir = new GearTemplate("Sabotaging Cauldron Stir",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} stacks of a random Vulnerability on a foe"],
 		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
@@ -153,7 +149,7 @@ function sabotagingCauldronStirEffect(targets, user, adventure) {
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
-		const rolledPotion = rollablePotions[user.roundRns[`${sabotagingName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		const rolledPotion = rollablePotions[user.roundRns[`${sabotagingCauldronStir.name}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}
@@ -167,8 +163,7 @@ function sabotagingCauldronStirEffect(targets, user, adventure) {
 //#endregion Sabotaging
 
 //#region Toxic
-const toxicName = "Toxic Cauldron Stir";
-const toxicCauldronStir = new GearTemplate(toxicName,
+const toxicCauldronStir = new GearTemplate("Toxic Cauldron Stir",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and @{mod0Stacks} @{mod0} on a foe"],
 		["critical", "Damage x @{critBonus}, add @{potionCount} random potion to loot"]
@@ -191,7 +186,7 @@ function toxicCauldronStirEffect(targets, user, adventure) {
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
-		const rolledPotion = rollablePotions[user.roundRns[`${toxicName}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
+		const rolledPotion = rollablePotions[user.roundRns[`${toxicCauldronStir.name}${SAFE_DELIMITER}potions`][0] % rollablePotions.length];
 		adventure.room.addResource(rolledPotion, "Item", "loot", potionCount);
 		resultLines.push(`${user.name} sets a batch of ${rolledPotion} to simmer.`);
 	}

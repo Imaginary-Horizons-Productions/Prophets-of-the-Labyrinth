@@ -6,8 +6,7 @@ const { scalingImpotence } = require('./shared/modifiers');
 const { kineticDamageScalingGenerator, damageScalingGenerator } = require('./shared/scalings');
 
 //#region Base
-const baseName = "Arcane Sledge";
-const arcaneSledge = new GearTemplate(baseName,
+const arcaneSledge = new GearTemplate("Arcane Sledge",
 	[
 		["use", "Deal <@{damage}> @{essence} damage and remove @{buffsRemoved} random buff from a foe"],
 		["critical", "Buffs removed x @{critBonus}"]
@@ -40,7 +39,7 @@ function arcaneSledgeEffect(targets, user, adventure) {
 		const receipts = [];
 		if (targetBuffs.length > 0) {
 			for (let i = 0; i < pendingBuffRemovals; i++) {
-				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${baseName}${SAFE_DELIMITER}buffs`), 1);
+				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${arcaneSledge.name}${SAFE_DELIMITER}buffs`), 1);
 				receipts.push(...removeModifier(survivors, { name: selectedBuff, stacks: "all" }));
 			}
 		}
@@ -51,8 +50,7 @@ function arcaneSledgeEffect(targets, user, adventure) {
 //#endregion Base
 
 //#region Fatiguing
-const fatiguingName = "Fatiguing Arcane Sledge";
-const fatiguingArcaneSledge = new GearTemplate(fatiguingName,
+const fatiguingArcaneSledge = new GearTemplate("Fatiguing Arcane Sledge",
 	[
 		["use", "Deal <@{damage}> @{essence} damage, inflict @{mod0Stacks} @{mod0}, and remove @{buffsRemoved} random buff from a foe"],
 		["critical", "Buffs removed x @{critBonus}"]
@@ -86,7 +84,7 @@ function fatiguingArcaneSledgeEffect(targets, user, adventure) {
 		const receipts = addModifier(survivors, { name: impotence.name, stacks: impotence.stacks.calculate(user) });
 		if (targetBuffs.length > 0) {
 			for (let i = 0; i < pendingBuffRemovals; i++) {
-				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${fatiguingName}${SAFE_DELIMITER}buffs`), 1);
+				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${fatiguingArcaneSledge.name}${SAFE_DELIMITER}buffs`), 1);
 				receipts.push(...removeModifier(survivors, { name: selectedBuff, stacks: "all" }));
 			}
 		}
@@ -97,8 +95,7 @@ function fatiguingArcaneSledgeEffect(targets, user, adventure) {
 //#endregion Fatiguing
 
 //#region Kinetic
-const kineticName = "Kinetic Arcane Sledge";
-const kineticArcaneSledge = new GearTemplate(kineticName,
+const kineticArcaneSledge = new GearTemplate("Kinetic Arcane Sledge",
 	[
 		["use", "Deal <@{damage}> @{essence} damage and remove @{buffsRemoved} random buff from a foe"],
 		["critical", "Buffs removed x @{critBonus}"]
@@ -131,7 +128,7 @@ function kineticArcaneSledgeEffect(targets, user, adventure) {
 		const receipts = [];
 		if (targetBuffs.length > 0) {
 			for (let i = 0; i < pendingBuffRemovals; i++) {
-				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${kineticName}${SAFE_DELIMITER}buffs`), 1);
+				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${kineticArcaneSledge.name}${SAFE_DELIMITER}buffs`), 1);
 				receipts.push(...removeModifier(survivors, { name: selectedBuff, stacks: "all" }));
 			}
 		}
