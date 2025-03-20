@@ -35,6 +35,7 @@ module.exports = new GearTemplate("Inspiring Illumination",
 		resultLines.push("The party's morale is increased!");
 		return resultLines;
 	}, { type: "single", team: "ally" })
+	.setSidegrades("Balanced Illumination")
 	.setCharges(15)
 	.setScalings({
 		cooldownReduction: 1,
