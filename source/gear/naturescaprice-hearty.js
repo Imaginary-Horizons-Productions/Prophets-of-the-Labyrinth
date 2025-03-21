@@ -23,7 +23,7 @@ module.exports = new GearTemplate("Hearty Nature's Caprice",
 			return generateModifierResultLines(addModifier(targets, fortune));
 		}
 	}, { type: "single", team: "any" })
-	.setUpgrades("Accurate Nature's Caprice", "Hearty Nature's Caprice")
+	.setSidegrades("Accurate Nature's Caprice")
 	.setCharges(15)
 	.setModifiers({ name: "Fortune", stacks: 9 }, { name: "Misfortune", stacks: 9 })
 	.setScalings({ percentMaxHP: 10 });
