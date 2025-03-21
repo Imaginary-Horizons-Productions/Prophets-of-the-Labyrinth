@@ -3,6 +3,19 @@ const { BuildError } = require("./BuildError");
 const { Combatant } = require("./Combatant");
 const { Scaling } = require("./Scaling");
 
+class GearFamily {
+	/** This read-only data class defines how gear variants in an upgrade family are related
+	 * @param {GearTemplate} baseGear
+	 * @param {GearTemplate[]} upgradeArray
+	 * @param {boolean} skipUpgradeLinking
+	 */
+	constructor(baseGear, upgradeArray, skipUpgradeLinking) {
+		this.base = baseGear;
+		this.upgrades = upgradeArray;
+		this.skipUpgradeLinking = skipUpgradeLinking;
+	}
+}
+
 class GearTemplate {
 	/** This read-only data class defines stats for a piece of gear
 	 * @param {string} nameInput
@@ -52,7 +65,7 @@ class GearTemplate {
 	}
 
 	/**
-	 * overrides is a dict *parameter* whose values can be defaulted, but can also be clobbered for polymorphism.  
+	 * overrides is a dict *parameter* whose values can be defaulted, but can also be clobbered for polymorphism.
 	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: Partial<MoveEffectOverrides>) => string[]} effectFunction
 	 * @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} tagObject
 	 */
@@ -72,14 +85,6 @@ class GearTemplate {
 	setUpgrades(...gearNames) {
 		for (const upgrade of gearNames) {
 			this.upgrades.push(upgrade);
-		}
-		return this;
-	}
-
-	/** @param {...string} gearNames */
-	setSidegrades(...gearNames) {
-		for (const sidegrade of gearNames) {
-			this.sidegrades.push(sidegrade);
 		}
 		return this;
 	}
@@ -135,18 +140,13 @@ class GearTemplate {
 	}
 };
 
+/** read-only class defines a type for overrides */
 class MoveEffectOverrides {
-	/** read-only class defines a type for overrides */
-	/** @type {delverIndex: number, moveIndex: number, targetReferences: CombatantReference[], extras: number[]}) */
+	/** @type {{delverIndex: number, moveIndex: number, targetReferences: CombatantReference[], extras: number[]}} */
 	petRNs; // either the adventure.petRNs or one submitted during move resolution
-	/** @type {Record<string, number | Scaling>}  */
-	// the respective gear-metadata is used for buildGearDescription token substitution
-	// the respective gear-metadata scalings.priority is read for ready.js priority assignment (but is unlikely to be used in calculations of effect resolution)
-	scalings = {};
-	/** @type {[{ name: string, stacks: number | Scaling }]}  */
-	modifiers = []; // the respective gear-metadata is used for buildGearDescription token substitution
 }
 
 module.exports = {
+	GearFamily,
 	GearTemplate
 };

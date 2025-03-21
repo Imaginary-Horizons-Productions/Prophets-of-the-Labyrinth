@@ -1,6 +1,6 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate, GearFamily } = require('../classes');
 
-module.exports = new GearTemplate("Cursed Scroll",
+const cursedScroll = new GearTemplate("Cursed Scroll",
 	[
 		["Passive", "Can be upgraded into a random Maneuver"],
 	],
@@ -8,3 +8,5 @@ module.exports = new GearTemplate("Cursed Scroll",
 	"Unaligned"
 ).setCost(-50)
 	.setUpgrades("Tornado Formation", "Sandstorm Formation", "Steam Wall", "Bonfire Formation", "Reveal Flaw", "Fever Break");
+
+module.exports = new GearFamily(cursedScroll, [], true);

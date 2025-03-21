@@ -1,6 +1,6 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate, GearFamily } = require('../classes');
 
-module.exports = new GearTemplate("Cursed Bag",
+const cursedBag = new GearTemplate("Cursed Bag",
 	[
 		["Passive", "Reduces your Speed by @{percentSpeed*-1}%, can be upgraded into random Adventuring gear"],
 	],
@@ -9,3 +9,5 @@ module.exports = new GearTemplate("Cursed Bag",
 ).setCost(-50)
 	.setUpgrades("Lightning Staff", "Herb Basket", "Wave Crash", "Musket", "Ring of Knowledge", "Ring of Conquest")
 	.setScalings({ percentSpeed: -5 });
+
+module.exports = new GearFamily(cursedBag, [], true);

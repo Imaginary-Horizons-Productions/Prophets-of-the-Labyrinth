@@ -1,6 +1,6 @@
-const { GearTemplate } = require('../classes');
+const { GearTemplate, GearFamily } = require('../classes');
 
-module.exports = new GearTemplate("Cursed Tome",
+const cursedTome = new GearTemplate("Cursed Tome",
 	[
 		["Passive", "Can be upgraded into a random Spell"],
 	],
@@ -8,3 +8,5 @@ module.exports = new GearTemplate("Cursed Tome",
 	"Unaligned"
 ).setCost(-50)
 	.setUpgrades("Vacuum Implosion", "Wind Burst", "Medicine", "Nature's Caprice", "Conjured Ice Pillar", "Water's Stillness", "Heat Weaken", "Flame Scythes", "Encouragement", "Illumination", "Vengeful Void", "Shadow of Confusion");
+
+module.exports = new GearFamily(cursedTome, [], true);
