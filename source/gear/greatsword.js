@@ -43,26 +43,12 @@ const chainingGreatsword = new GearTemplate("Chaining Greatsword",
 	"Offense",
 	"Wind"
 ).setCost(350)
-	.setEffect(chainingGreatswordEffect, { type: `blast${SAFE_DELIMITER}1`, team: "foe" })
+	.setEffect(greatswordEffect, { type: `blast${SAFE_DELIMITER}1`, team: "foe" })
 	.setCooldown(1)
 	.setScalings({
 		damage: damageScalingGenerator(40),
 		critBonus: 2
 	});
-
-/** @type {typeof chainingGreatsword.effect} */
-function chainingGreatswordEffect(targets, user, adventure) {
-	const { essence, scalings: { damage, critBonus } } = chainingGreatsword;
-	let pendingDamage = damage.calculate(user);
-	if (user.crit) {
-		pendingDamage *= critBonus;
-	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	if (user.essence === essence) {
-		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-	}
-	return resultLines;
-}
 //#endregion Chaining
 
 //#region Distracting

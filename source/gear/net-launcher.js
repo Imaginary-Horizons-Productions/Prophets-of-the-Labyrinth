@@ -42,7 +42,7 @@ function netLauncherEffect(targets, user, adventure) {
 }
 //#endregion Base
 
-//#region Theif's
+//#region Thief's
 const thiefsNetLauncher = new GearTemplate("Thief's Net Launcher",
 	[
 		["use", "Inflict <@{damage}> @{essence} damage and <@{mod0Stacks}> @{mod0} on a foe, gain @{bounty}g if they're downed"],

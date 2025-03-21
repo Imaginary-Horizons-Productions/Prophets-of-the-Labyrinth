@@ -43,24 +43,11 @@ const chainingSmokescreen = new GearTemplate("Chaining Smokescreen",
 	"Defense",
 	"Earth"
 ).setCost(350)
-	.setEffect(chainingSmokescreenEffect, { type: `random${SAFE_DELIMITER}${bounces}`, team: "ally" })
+	.setEffect(smokescreenEffect, { type: `random${SAFE_DELIMITER}${bounces}`, team: "ally" })
 	.setCooldown(0)
 	.setRnConfig({ allies: bounces })
 	.setModifiers(scalingEvasion(2))
 	.setScalings({ critBonus: 2, bounces });
-
-/** @type {typeof chainingSmokescreen.effect} */
-function chainingSmokescreenEffect(targets, user, adventure) {
-	const { essence, modifiers: [evasion], scalings: { critBonus } } = chainingSmokescreen;
-	if (user.essence === essence) {
-		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
-	}
-	const pendingEvasion = { name: evasion.name, stacks: evasion.stacks.calculate(user) };
-	if (user.crit) {
-		pendingEvasion.stacks *= critBonus;
-	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingEvasion)));
-}
 //#endregion Chaining
 
 //#region Double

@@ -137,27 +137,13 @@ const urgentFlourish = new GearTemplate("Urgent Flourish",
 	],
 	"Action",
 	"Darkness"
-).setEffect(urgentFlourishEffect, { type: "single", team: "foe" })
+).setEffect(flourishEffect, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,
 		critBonus: 2,
 		priority: 1
 	})
 	.setModifiers({ name: "Distraction", stacks: 3 });
-
-/** @type {typeof urgentFlourish.effect} */
-function urgentFlourishEffect(targets, user, adventure) {
-	const { essence, scalings: { damage, critBonus }, modifiers: [distraction] } = urgentFlourish;
-	let pendingDamage = damage.calculate(user);
-	if (user.crit) {
-		pendingDamage *= critBonus;
-	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	if (user.essence === essence) {
-		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-	}
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, distraction)));
-}
 //#endregion Urgent
 
 module.exports = new GearFamily(flourish, [bouncingFlourish, shatteringFlourish, staggeringFlourish, urgentFlourish], true);

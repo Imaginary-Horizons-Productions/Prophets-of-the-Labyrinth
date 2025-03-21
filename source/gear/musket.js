@@ -44,24 +44,9 @@ const discountedMusket = new GearTemplate("Discounted Musket",
 	"Adventuring",
 	"Fire"
 ).setCost(100)
-	.setEffect(discountedMusketEffect, { type: "single", team: "foe" })
+	.setEffect(musketEffect, { type: "single", team: "foe" })
 	.setCooldown(3)
 	.setScalings({ damage: damageScalingGenerator(120) });
-
-function discountedMusketEffect(targets, user, adventure) {
-	const { essence, scalings: { damage }, cooldown } = discountedMusket;
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
-	if (user.essence === essence) {
-		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-	}
-	if (user.crit && user.gear) {
-		const move = adventure.room.findCombatantMove({ team: user.team, index: adventure.getCombatantIndex(user) });
-		const [_, gearIndex] = move.name.split(SAFE_DELIMITER);
-		user.gear[gearIndex].cooldown = -1 * cooldown;
-		resultLines.push(`${user.name} reloads their ${discountedMusket.name} immediately!`);
-	}
-	return resultLines;
-}
 //#endregion Discounted
 
 //#region Hunter's

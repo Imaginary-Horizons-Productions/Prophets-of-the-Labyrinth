@@ -40,23 +40,10 @@ const accurateNaturesCaprice = new GearTemplate("Accurate Nature's Caprice",
 	"Spell",
 	"Earth"
 ).setCost(350)
-	.setEffect(accurateNaturesCapriceEffect, { type: "single", team: "any" })
+	.setEffect(naturesCapriceEffect, { type: "single", team: "any" })
 	.setCharges(15)
 	.setModifiers({ name: "Fortune", stacks: 9 }, { name: "Misfortune", stacks: 9 })
 	.setScalings({ percentCritRate: 10 });
-
-/** @type {typeof accurateNaturesCaprice.effect} */
-function accurateNaturesCapriceEffect(targets, user, adventure) {
-	const { essence, modifiers: [fortune, misfortune] } = accurateNaturesCaprice;
-	if (user.essence === essence) {
-		changeStagger(targets, user, user.team === targets[0].team ? ESSENCE_MATCH_STAGGER_ALLY : ESSENCE_MATCH_STAGGER_FOE);
-	}
-	if (user.crit) {
-		return generateModifierResultLines(addModifier(targets, misfortune));
-	} else {
-		return generateModifierResultLines(addModifier(targets, fortune));
-	}
-}
 //#endregion Accurate
 
 //#region Hearty
@@ -69,23 +56,10 @@ const heartyNaturesCaprice = new GearTemplate("Hearty Nature's Caprice",
 	"Spell",
 	"Earth"
 ).setCost(350)
-	.setEffect(heartyNaturesCapriceEffect, { type: "single", team: "any" })
+	.setEffect(naturesCapriceEffect, { type: "single", team: "any" })
 	.setCharges(15)
 	.setModifiers({ name: "Fortune", stacks: 9 }, { name: "Misfortune", stacks: 9 })
 	.setScalings({ percentMaxHP: 10 });
-
-/** @type {typeof heartyNaturesCaprice.effect} */
-function heartyNaturesCapriceEffect(targets, user, adventure) {
-	const { essence, modifiers: [fortune, misfortune] } = heartyNaturesCaprice;
-	if (user.essence === essence) {
-		changeStagger(targets, user, user.team === targets[0].team ? ESSENCE_MATCH_STAGGER_ALLY : ESSENCE_MATCH_STAGGER_FOE);
-	}
-	if (user.crit) {
-		return generateModifierResultLines(addModifier(targets, misfortune));
-	} else {
-		return generateModifierResultLines(addModifier(targets, fortune));
-	}
-}
 //#endregion Hearty
 
 module.exports = new GearFamily(naturesCaprice, [accurateNaturesCaprice, heartyNaturesCaprice], false);

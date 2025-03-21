@@ -98,7 +98,7 @@ const urgentMedicine = new GearTemplate("Urgent Medicine",
 	"Spell",
 	"Earth"
 ).setCost(350)
-	.setEffect(urgentMedicineEffect, { type: "single", team: "ally" })
+	.setEffect(medicineEffect, { type: "single", team: "ally" })
 	.setCharges(15)
 	.setScalings({
 		debuffsCured: 1,
@@ -106,25 +106,6 @@ const urgentMedicine = new GearTemplate("Urgent Medicine",
 		priority: 1
 	})
 	.setRnConfig({ Medicine: 2 });
-
-/** @type {typeof urgentMedicine.effect} */
-function urgentMedicineEffect([target], user, adventure) {
-	const { essence, scalings: { debuffsCured, critBonus } } = module.exports;
-	if (user.essence === essence) {
-		changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
-	}
-	let pendingCures = debuffsCured;
-	if (user.crit) {
-		pendingCures *= critBonus;
-	}
-	const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	const receipts = [];
-	for (let i = 0; i < pendingCures; i++) {
-		const [selectedDebuff] = targetDebuffs.splice(user.roundRns[`${urgentMedicine.name}${SAFE_DELIMITER}Medicine`][i] % targetDebuffs.length, 1);
-		receipts.push(...removeModifier([target], { name: selectedDebuff, stacks: "all" }));
-	}
-	return generateModifierResultLines(combineModifierReceipts(receipts));
-}
 //#endregion Urgent
 
 module.exports = new GearFamily(medicine, [hasteningMedicine, urgentMedicine], false);

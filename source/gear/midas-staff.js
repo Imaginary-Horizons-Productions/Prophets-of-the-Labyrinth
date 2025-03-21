@@ -69,23 +69,10 @@ const discountedMidasStaff = new GearTemplate("Discounted Midas Staff",
 	"Support",
 	"Light"
 ).setCost(100)
-	.setEffect(discountedMidasStaffEffect, { type: "single", team: "any" })
+	.setEffect(midasStaffEffect, { type: "single", team: "any" })
 	.setCooldown(1)
 	.setModifiers({ name: "Curse of Midas", stacks: 2 })
 	.setScalings({ critBonus: 1 });
-
-/** @type {typeof discountedMidasStaff.effect} */
-function discountedMidasStaffEffect(targets, user, adventure) {
-	const { essence, modifiers: [curseOfMidas], scalings: { critBonus } } = discountedMidasStaff;
-	if (user.essence === essence) {
-		changeStagger(targets, user, targets[0].team === user.team ? ESSENCE_MATCH_STAGGER_ALLY : ESSENCE_MATCH_STAGGER_FOE);
-	}
-	const pendingCurse = { ...curseOfMidas };
-	if (user.crit) {
-		pendingCurse.stacks += critBonus;
-	}
-	return generateModifierResultLines(addModifier(targets, pendingCurse));
-}
 //#endregion Discounted
 
 module.exports = new GearFamily(midasStaff, [acceleratingMidasStaff, discountedMidasStaff], false);
