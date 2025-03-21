@@ -4,12 +4,6 @@ const { rollablePotions } = require('../shared/potions');
 const { dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier, getCombatantCounters } = require('../util/combatantUtil');
 const { essenceList } = require('../util/essenceUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
-const { GearTemplate } = require('../classes');
-const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { rollablePotions } = require('../shared/potions');
-const { dealDamage, changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
-const { archetypeActionDamageScaling } = require('./shared/scalings');
-
 
 //#region Base
 const cauldronStir = new GearTemplate("Cauldron Stir",

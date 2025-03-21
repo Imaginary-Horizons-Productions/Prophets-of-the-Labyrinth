@@ -16,7 +16,7 @@ for (const file of [
 	"arcane-sledge.js",
 	"battle-standard.js",
 	"blood-aegis.js",
-	"bonfire-formationjs",
+	"bonfire-formation.js",
 	"boots-of-comfort.js",
 	"bounty-fist.js",
 	"buckler.js",

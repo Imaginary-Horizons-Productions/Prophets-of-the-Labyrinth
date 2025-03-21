@@ -1,15 +1,9 @@
 const { GearTemplate, CombatantReference, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
-const { scalingRegeneration } = require('./shared/modifiers');
-const { GearTemplate, CombatantReference } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addModifier, addProtection, generateModifierResultLines } = require('../util/combatantUtil');
+const { changeStagger, addModifier, addProtection, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
 const { scalingRegeneration } = require('./shared/modifiers');
 const { protectionScalingGenerator } = require('./shared/scalings');
-
 
 //#region Base
 const carrot = new GearTemplate("Carrot",

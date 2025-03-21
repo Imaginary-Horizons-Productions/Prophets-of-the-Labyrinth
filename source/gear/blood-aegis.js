@@ -46,7 +46,7 @@ function bloodAegisEffect([target], user, adventure) {
 //#endregion Base
 
 //#region Toxic
-const toxicBloodAegis = GearTemplate("Toxic Blood Aegis",
+const toxicBloodAegis = new GearTemplate("Toxic Blood Aegis",
 	[
 		["use", "Gain <@{protection}> protection, intercept your target's later single target move and inflict @{mod0Stacks} @{mod0} on them"],
 		["critical", "Protection x @{critBonus}"]
