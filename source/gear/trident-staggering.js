@@ -30,7 +30,7 @@ module.exports = new GearTemplate(variantName,
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		return resultLines.concat(generateModifierResultLines(removeModifier([user], { name: userDebuffs[user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" })));
 	}, { type: "single", team: "foe" })
-	.setUpgrades("Kinetic Trident", "Staggering Trident")
+	.setSidegrades("Kinetic Trident")
 	.setCooldown(1)
 	.setScalings({
 		damage: damageScalingGenerator(40),
