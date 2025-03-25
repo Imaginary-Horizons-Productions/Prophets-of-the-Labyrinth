@@ -6,7 +6,7 @@ const { ChallengeTemplate } = require("./ChallengeTemplate");
 const { Combatant, Delver, Gear } = require("./Combatant");
 const { Company } = require("./Company");
 const { EnemyTemplate } = require("./EnemyTemplate");
-const { GearTemplate } = require("./GearTemplate");
+const { GearTemplate, GearFamily } = require("./GearTemplate");
 const { ButtonWrapper, CommandWrapper, SelectWrapper, ContextMenuWrapper, MessageContextMenuWrapper, UserContextMenuWrapper, SubcommandWrapper } = require("./InteractionWrapper");
 const { ItemTemplate } = require("./ItemTemplate");
 const { LabyrinthTemplate } = require("./LabyrinthTemplate");
@@ -35,6 +35,7 @@ module.exports = {
 	Enemy,
 	EnemyTemplate,
 	Gear,
+	GearFamily,
 	GearTemplate,
 	ItemTemplate,
 	LabyrinthTemplate,

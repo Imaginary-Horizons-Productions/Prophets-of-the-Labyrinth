@@ -1,5 +1,4 @@
 const { Scaling } = require("../../classes");
-const { SAFE_DELIMITER } = require("../../constants");
 
 module.exports = {
 	/** @type {(baseStacks: number) => ({ name: "Distraction", stacks: Scaling })} */
@@ -20,27 +19,4 @@ module.exports = {
 	scalingSwiftness: (baseStacks) => ({ name: "Swiftness", stacks: { description: `${baseStacks} + 10% Bonus Speed`, calculate: (user) => baseStacks + Math.floor(user.getBonusSpeed() / 10) } }),
 	/** @type {(baseStacks: number) => ({ name: "Torpidity", stacks: Scaling })} */
 	scalingTorpidity: (baseStacks) => ({ name: "Torpidity", stacks: { description: `${baseStacks} + 10% Bonus Speed`, calculate: (user) => baseStacks + Math.floor(user.getBonusSpeed() / 10) } }),
-	/** @type {(variantName: string) => ({ name: "Misfortune", stacks: Scaling })} */
-	deckOfCardsMisfortune: (variantName) => ({
-		name: "Misfortune", stacks: {
-			description: "a random amount between 2 and 6", calculate: (user) => {
-				if (`${variantName}${SAFE_DELIMITER}Deck of Cards` in user.roundRns) {
-					return 2 + user.roundRns[`${variantName}${SAFE_DELIMITER}Deck of Cards`][0];
-				} else {
-					return "a random amount between 2 and 6";
-				}
-			}
-		}
-	}),
-	/** @type {(variantName: string) => ({ name: "Empowerment", stacks: Scaling })} */
-	tempestuousWrathEmpowerment: () => ({
-		name: "Empowerment",
-		stacks: {
-			description: "25 x (1 to 1.5 based on missing HP)",
-			calculate: (user) => {
-				const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
-				return 25 * furiousness;
-			}
-		}
-	}),
 };
