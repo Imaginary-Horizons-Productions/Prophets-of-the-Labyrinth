@@ -85,6 +85,7 @@ const reinforcedSpikedShield = new GearTemplate("Reinforced Spiked Shield",
 		critBonus: 2
 	});
 
+/** @type {typeof reinforcedSpikedShield.effect} */
 function reinforcedSpikedShieldEffect(targets, user, adventure) {
 	const { essence, scalings: { protection, critBonus } } = reinforcedSpikedShield;
 	addProtection([user], protection.calculate(user));

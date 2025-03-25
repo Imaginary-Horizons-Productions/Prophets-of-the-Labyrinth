@@ -49,7 +49,7 @@ const fatiguingLifeDrain = new GearTemplate("Fatiguing Life Drain",
 	})
 	.setModifiers({ name: "Impotence", stacks: 3 });
 
-/** @type {typeof lifeDrain.effect} */
+/** @type {typeof fatiguingLifeDrain.effect} */
 function fatiguingLifeDrainEffect(targets, user, adventure) {
 	const { essence, scalings: { damage, healing, critBonus }, modifiers: [impotence] } = lifeDrain;
 	let pendingHealing = healing.calculate(user);

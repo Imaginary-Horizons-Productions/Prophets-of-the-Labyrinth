@@ -101,6 +101,7 @@ const numbingRevealFlaw = new GearTemplate("Numbing Reveal Flaw",
 	.setRnConfig({ vulnerabilities: 1 })
 	.setScalings({ critBonus: 2 });
 
+/** @type {typeof numbingRevealFlaw.effect} */
 function numbingRevealFlawEffect(targets, user, adventure) {
 	const { essence, moraleRequirement, modifiers: [vulnerability, clumsiness], scalings: { critBonus } } = module.exports;
 	if (user.team === "delver" && adventure.room.morale < moraleRequirement) {

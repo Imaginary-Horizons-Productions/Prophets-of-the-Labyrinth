@@ -57,7 +57,7 @@ const thiefsFlameScythes = new GearTemplate("Thief's Flame Scythes",
 		bounty: 30
 	});
 
-/** @type {typeof thiefsFlameScythes} */
+/** @type {typeof thiefsFlameScythes.effect} */
 function thiefsFlameScythesEffect([target], user, adventure) {
 	const { essence, scalings: { damage, critBonus, bounty } } = thiefsFlameScythes;
 	let pendingDamage = damage.calculate(user);

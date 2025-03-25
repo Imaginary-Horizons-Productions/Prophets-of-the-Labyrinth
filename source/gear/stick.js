@@ -50,7 +50,7 @@ const convalescenceStick = new GearTemplate("Convalescence Stick",
 		debuffs: 1
 	});
 
-/** @type {typeof} */
+/** @type {typeof convalescenceStick.effect} */
 function convalescenceStickEffect(targets, user, adventure) {
 	const { essence, scalings: { damage, critBonus }, modifiers: [impotence] } = convalescenceStick;
 	let pendingDamage = damage.calculate(user);

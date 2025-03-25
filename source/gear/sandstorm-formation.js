@@ -69,6 +69,7 @@ const balancedSandstormFormation = new GearTemplate("Balanced Sandstorm Formatio
 	.setScalings({ cooldownReduction: 1 })
 	.setModifiers({ name: "Impact", stacks: 2 }, { name: "Finesse", stacks: 1 });
 
+/** @type {typeof balancedSandstormFormation.effect} */
 function balancedSandstormFormationEffect(targets, user, adventure) {
 	const { essence, moraleRequirement, scalings: { cooldownReduction }, modifiers: [impact, finesse] } = balancedSandstormFormation;
 	if (user.team === "delver" && adventure.room.morale < moraleRequirement) {
