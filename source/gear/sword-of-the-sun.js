@@ -1,4 +1,4 @@
-const { GearTemplate, GearFamily } = require('../classes');
+const { GearTemplate, GearFamily, ModifierReceipt } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { dealDamage, changeStagger, combineModifierReceipts, removeModifier, generateModifierResultLines } = require('../util/combatantUtil');
@@ -28,13 +28,15 @@ function swordOfTheSunEffect(targets, user, adventure) {
 	const totalResultLines = [];
 	for (const target of targets) {
 		const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-		const removedBuffReceipts = []
+		/** @type {ModifierReceipt[]} */
+		const removedBuffReceipts = [];
 		targetBuffs.forEach(buffName => {
 			removedBuffReceipts.push(...removeModifier([target], { name: buffName, stacks: "all" }))
 		})
-		totalResultLines.push(...generateModifierResultLines(combineModifierReceipts(removedBuffReceipts)));
+		const combinedReceipts = combineModifierReceipts(removedBuffReceipts)
+		totalResultLines.push(...generateModifierResultLines(combinedReceipts));
 
-		let pendingDamage = damage.calculate(user) + 30 * targetBuffs.length;
+		let pendingDamage = damage.calculate(user) + 30 * combinedReceipts.reduce((total, receipt) => total + receipt.succeeded.size, 0);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
@@ -71,13 +73,15 @@ function lethalSwordOfTheSunEffect(targets, user, adventure) {
 	const totalResultLines = [];
 	for (const target of targets) {
 		const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-		const removedBuffReceipts = []
+		/** @type {ModifierReceipt[]} */
+		const removedBuffReceipts = [];
 		targetBuffs.forEach(buffName => {
 			removedBuffReceipts.push(...removeModifier([target], { name: buffName, stacks: "all" }))
 		})
-		totalResultLines.push(...generateModifierResultLines(combineModifierReceipts(removedBuffReceipts)));
+		const combinedReceipts = combineModifierReceipts(removedBuffReceipts)
+		totalResultLines.push(...generateModifierResultLines(combinedReceipts));
 
-		let pendingDamage = damage.calculate(user) + 30 * targetBuffs.length;
+		let pendingDamage = damage.calculate(user) + 30 * combinedReceipts.reduce((total, receipt) => total + receipt.succeeded.size, 0);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
@@ -115,14 +119,16 @@ function thiefsSwordOfTheSunEffect(targets, user, adventure) {
 	const totalResultLines = [];
 	for (const target of targets) {
 		const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-		const removedBuffReceipts = []
+		/** @type {ModifierReceipt[]} */
+		const removedBuffReceipts = [];
 		targetBuffs.forEach(buffName => {
 			removedBuffReceipts.push(...removeModifier([target], { name: buffName, stacks: "all" }))
 		})
-		totalResultLines.push(...generateModifierResultLines(combineModifierReceipts(removedBuffReceipts)));
+		const combinedReceipts = combineModifierReceipts(removedBuffReceipts)
+		totalResultLines.push(...generateModifierResultLines(combinedReceipts));
 
 		const { essence, scalinge: { damage, critBonus } } = thiefsSwordOfTheSun;
-		let pendingDamage = damage.calculate(user) + 30 * targetBuffs.length;
+		let pendingDamage = damage.calculate(user) + 30 * combinedReceipts.reduce((total, receipt) => total + receipt.succeeded.size, 0);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
