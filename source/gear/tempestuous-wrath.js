@@ -1,8 +1,21 @@
-const { GearTemplate, GearFamily } = require('../classes');
+const { GearTemplate, GearFamily, Scaling } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { dealDamage, payHP, changeStagger, addModifier, concatTeamMembersWithModifier, generateModifierResultLines } = require('../util/combatantUtil');
-const { tempestuousWrathEmpowerment } = require('./shared/modifiers');
 const { damageScalingGenerator } = require('./shared/scalings');
+
+/** @type {(variantName: string) => ({ name: "Empowerment", stacks: Scaling })} */
+function tempestuousWrathEmpowerment() {
+	return {
+		name: "Empowerment",
+		stacks: {
+			description: "25 x (1 to 1.5 based on missing HP)",
+			calculate: (user) => {
+				const furiousness = 1.5 - (user.hp / user.getMaxHP() / 2);
+				return 25 * furiousness;
+			}
+		}
+	};
+}
 
 //#region Base
 const tempestuousWrath = new GearTemplate("Tempestuous Wrath",

@@ -89,7 +89,7 @@ const urgentVacuumImplosion = new GearTemplate("Urgent Vacuum Implosion",
 	"Spell",
 	"Wind"
 ).setCost(350)
-	.setEffect(urgentVacuumImplosionEffect, { type: "single", team: "foe" })
+	.setEffect(vacuumImplosionEffect, { type: "single", team: "foe" })
 	.setCharges(15)
 	.setScalings({
 		damage: damageScalingGenerator(40),
@@ -97,26 +97,6 @@ const urgentVacuumImplosion = new GearTemplate("Urgent Vacuum Implosion",
 		critBonus: 2,
 		priority: 1
 	});
-
-/** @type {typeof urgentVacuumImplosion.effect} */
-function urgentVacuumImplosionEffect([target], user, adventure) {
-	const { essence, scalings: { damage, duelistsBonus, critBonus } } = urgentVacuumImplosion;
-	let pendingDamage = damage.calculate(user);
-	// Duelist's check
-	const userIndex = adventure.getCombatantIndex(user);
-	const targetIndex = adventure.getCombatant(target);
-	if (adventure.room.moves.every(move => (move.userReference.team === user.team && move.userReference.index === userIndex) && (move.userReference.team !== user.team) && move.targets.every(moveTarget => moveTarget.team !== target.team || moveTarget.index !== targetIndex))) {
-		pendingDamage += duelistsBonus;
-	}
-	if (user.crit) {
-		pendingDamage *= critBonus;
-	}
-	const { resultLines, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
-	if (user.essence === essence) {
-		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-	}
-	return resultLines;
-}
 //#endregion Urgent
 
 module.exports = new GearFamily(vacuumImplosion, [shatteringVacuumImplosion, urgentVacuumImplosion], false);

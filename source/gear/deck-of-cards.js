@@ -1,9 +1,24 @@
-const { GearTemplate, GearFamily } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
+const { GearTemplate, GearFamily, Scaling } = require('../classes');
+const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { dealDamage, generateModifierResultLines, addModifier, getCombatantCounters, changeStagger } = require('../util/combatantUtil');
-const { deckOfCardsMisfortune } = require('./shared/modifiers');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
+
+/** @type {(variantName: string) => ({ name: "Misfortune", stacks: Scaling })} */
+function deckOfCardsMisfortune(variantName) {
+	return {
+		name: "Misfortune", stacks: {
+			description: "a random amount between 2 and 6", calculate: (user) => {
+				if (`${variantName}${SAFE_DELIMITER}Deck of Cards` in user.roundRns) {
+					return 2 + user.roundRns[`${variantName}${SAFE_DELIMITER}Deck of Cards`][0];
+				} else {
+					return "a random amount between 2 and 6";
+				}
+			}
+		}
+	};
+}
+
 
 //#region Base
 const baseName = "Deck of Cards";

@@ -53,7 +53,7 @@ const accurateOverburnExplosion = new GearTemplate("Accurate Overburn Explosion"
 	"Pact",
 	"Fire"
 ).setCost(350)
-	.setEffect(accurateOverburnExplosionEffect, { type: "single", team: "foe" })
+	.setEffect(overburnExplosionEffect, { type: "single", team: "foe" })
 	.setPactCost([2, "Set all your gears' cooldowns to @{pactCost}"])
 	.setModifiers({ name: "Distraction", stacks: 0 })
 	.setScalings({
@@ -61,27 +61,6 @@ const accurateOverburnExplosion = new GearTemplate("Accurate Overburn Explosion"
 		critBonus: 2,
 		percentCritRate: 10
 	});
-
-/** @type {typeof accurateOverburnExplosion.effect} */
-function accurateOverburnExplosionEffect(targets, user, adventure) {
-	const { essence, modifiers: [targetModifier], scalings: { damage, critBonus }, pactCost } = accurateOverburnExplosion;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
-	let pendingDamage = damage.calculate(user);
-	if (user.crit) {
-		pendingDamage *= critBonus;
-	}
-	const { resultLines, survivors } = dealDamage(allTargets, user, pendingDamage, false, essence, adventure);
-	if (user.essence === essence) {
-		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-	}
-	if (user.gear) {
-		for (const gear of user.gear) {
-			gear.cooldown += pactCost[0];
-		}
-		resultLines.push(`${user.name} is burnt out.`);
-	}
-	return resultLines;
-}
 //#endregion Accurate
 
 //#region Unstoppable
