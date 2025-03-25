@@ -42,26 +42,13 @@ const accurateCloak = new GearTemplate("Accurate Cloak",
 	"Defense",
 	"Fire"
 ).setCost(350)
-	.setEffect(accurateCloakEffect, { type: "self", team: "ally" })
+	.setEffect(cloakEffect, { type: "self", team: "ally" })
 	.setCooldown(1)
 	.setModifiers(scalingEvasion(2))
 	.setScalings({
 		critBonus: 2,
 		percentCritRate: 10
 	});
-
-/** @type {typeof accurateCloak.effect} */
-function accurateCloakEffect(targets, user, adventure) {
-	const { essence, modifiers: [evasion], scalings: { critBonus } } = accurateCloak;
-	if (user.essence === essence) {
-		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
-	}
-	const pendingEvasion = { name: evasion.name, stacks: evasion.stacks.calculate(user) };
-	if (user.crit) {
-		pendingEvasion.stacks *= critBonus;
-	}
-	return generateModifierResultLines(addModifier([user], pendingEvasion));
-}
 //#endregion Accurate
 
 //#region Powerful
@@ -74,26 +61,13 @@ const powerfulCloak = new GearTemplate("Powerful Cloak",
 	"Defense",
 	"Fire"
 ).setCost(350)
-	.setEffect(powerfulCloakEffect, { type: "self", team: "ally" })
+	.setEffect(cloakEffect, { type: "self", team: "ally" })
 	.setCooldown(1)
 	.setModifiers(scalingEvasion(2))
 	.setScalings({
 		critBonus: 2,
 		percentPower: 10
 	});
-
-/** @type {typeof powerfulCloak.effect} */
-function powerfulCloakEffect(targets, user, adventure) {
-	const { essence, modifiers: [evasion], scalings: { critBonus } } = powerfulCloak;
-	if (user.essence === essence) {
-		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
-	}
-	const pendingEvasion = { name: evasion.name, stacks: evasion.stacks.calculate(user) };
-	if (user.crit) {
-		pendingEvasion.stacks *= critBonus;
-	}
-	return generateModifierResultLines(addModifier([user], pendingEvasion));
-}
 //#endregion Powerful
 
 module.exports = new GearFamily(cloak, [accurateCloak, powerfulCloak], false);
