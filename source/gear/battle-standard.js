@@ -93,6 +93,7 @@ const flankingBattleStandard = new GearTemplate("Flanking Battle Standard",
 	})
 	.setModifiers({ name: "Exposure", stacks: 2 });
 
+/** @type {typeof flankingBattleStandard.effect} */
 function flankingBattleStandardEffect(targets, user, adventure) {
 	const { essence, scalings: { damage, critBonus, morale }, modifiers: [exposure] } = flankingBattleStandard;
 	let pendingDamage = damage.calculate(user);
@@ -126,6 +127,7 @@ const hasteningBattleStandard = new GearTemplate("Hastening Battle Standard",
 		cooldownReduction: 1
 	});
 
+/** @type {typeof hasteningBattleStandard.effect} */
 function hasteningBattleStandardEffect(targets, user, adventure) {
 	const { essence, scalings: { damage, critBonus, morale, cooldownReduction } } = hasteningBattleStandard;
 	let pendingDamage = damage.calculate(user);
@@ -165,6 +167,7 @@ const weakeningBattleStandard = new GearTemplate("Weakening Battle Standard",
 	})
 	.setModifiers({ name: "Weakness", stacks: 10 });
 
+/** @type {typeof weakeningBattleStandard.effect} */
 function weakeningBattleStandardEffect(targets, user, adventure) {
 	const { essence, scalings: { damage, critBonus, morale }, modifiers: [weakness] } = weakeningBattleStandard;
 	let pendingDamage = damage.calculate(user);
