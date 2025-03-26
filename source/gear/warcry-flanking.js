@@ -26,7 +26,7 @@ module.exports = new GearTemplate("Flanking War Cry",
 		changeStagger(allTargets, user, pendingStagger);
 		return [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, { name: exposure.name, stacks: exposure.stacks.calculate(user) }))));
 	}, { type: "single", team: "foe" })
-	.setSidegrades("Weakening Warcry")
+	.setSidegrades("Weakening War Cry")
 	.setCooldown(1)
 	.setModifiers({ name: "Distraction", stacks: 0 }, scalingExposure(2))
 	.setStagger(2)

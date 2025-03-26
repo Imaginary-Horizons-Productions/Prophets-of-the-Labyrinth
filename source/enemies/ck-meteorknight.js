@@ -1,13 +1,12 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { dealDamage, changeStagger, addProtection, generateModifierResultLines, addModifier } = require("../util/combatantUtil.js");
-const { selectRandomFoe, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
+const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/essenceUtil.js");
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require("../constants.js");
-const { spawnEnemy } = require("../util/roomUtil.js");
 
 module.exports = new EnemyTemplate("Meteor Knight",
 	"Fire",
-	280,
+	230,
 	70,
 	"3",
 	0,
@@ -53,11 +52,11 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let pendingMisfortune = user.roundRns[`Meteor Mayhem${SAFE_DELIMITER}Meteor Mayhem`][0];
+		const { resultLines, survivors } = dealDamage(targets, user, user.getPower() + 5, false, "Fire", adventure);
 		if (user.crit) {
 			addProtection([user], 25);
 			resultLines.push(`${user.name} gains protection.`);
 		}
-		const { resultLines, survivors } = dealDamage(targets, user, user.getPower() + 5, false, "Fire", adventure);
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: "Misfortune", stacks: pendingMisfortune })));
 	},

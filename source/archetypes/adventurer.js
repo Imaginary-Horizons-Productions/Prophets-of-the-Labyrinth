@@ -18,7 +18,7 @@ module.exports = new ArchetypeTemplate("Adventurer",
 		if (adventure.delvers.length > 1) {
 			descriptions.push(`I'm so happy to have my ${adventure.delvers.length - 1} good friends with me.`);
 		}
-		return embed.setDescription(`Fighter predictions for Round ${adventure.room.round + 1}:\n${descriptions[Date.now() % descriptions.length]}`);
+		return embed.setDescription(`Adventurer predictions for Round ${adventure.room.round + 1}:\n${descriptions[Date.now() % descriptions.length]}`);
 	},
 	(combatant) => "",
 	{

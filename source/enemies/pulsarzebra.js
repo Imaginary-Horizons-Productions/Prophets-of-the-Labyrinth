@@ -10,7 +10,7 @@ module.exports = new EnemyTemplate("Pulsar Zebra",
 	101,
 	"4",
 	0,
-	"Pulse Flash",
+	"Pulse Fade",
 	false
 ).addAction({
 	name: "Pulse Flash",
@@ -24,7 +24,7 @@ module.exports = new EnemyTemplate("Pulsar Zebra",
 		}
 		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: "Weakness", stacks: 10 })));
+		return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: "Weakness", stacks: 5 })));
 	},
 	selector: selectRandomFoe,
 	next: "Pulse Fade"
@@ -34,7 +34,7 @@ module.exports = new EnemyTemplate("Pulsar Zebra",
 	description: "Grant an ally (potentially self) @e{Evasion}",
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		const pendingEvasion = { name: "Evasion", stacks: 2 };
+		const pendingEvasion = { name: "Evasion", stacks: 1 };
 		if (user.crit) {
 			pendingEvasion.stacks *= 2;
 		}

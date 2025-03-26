@@ -25,7 +25,7 @@ module.exports = new GearTemplate("War Cry",
 		changeStagger(allTargets, user, pendingStagger);
 		return [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered.")];
 	}, { type: "single", team: "foe" })
-	.setUpgrades("Flanking War Cry", "Weakening Warcry")
+	.setUpgrades("Flanking War Cry", "Weakening War Cry")
 	.setCooldown(1)
 	.setModifiers({ name: "Distraction", stacks: 0 })
 	.setStagger(2)

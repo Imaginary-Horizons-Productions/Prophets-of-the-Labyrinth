@@ -833,7 +833,7 @@ function resolveMove(move, adventure) {
 				}
 			}
 		} else {
-			results.push(...effect([], user, adventure, adventure.petRNs));
+			results.push(...effect([], user, adventure, { petRNs: adventure.petRNs }));
 		}
 
 		if (shouldDoGearUpkeep) {
