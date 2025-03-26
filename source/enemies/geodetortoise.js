@@ -1,8 +1,7 @@
 const { EnemyTemplate } = require("../classes");
-const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, addProtection, generateModifierResultLines } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/essenceUtil.js");
-const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants.js");
 
 module.exports = new EnemyTemplate("Geode Tortoise",
@@ -34,15 +33,13 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 	description: `Gain protection and @e{Empowerment}`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		let addedEmpowerment = false;
+		const pendingEmpowerment = { name: "Empowerment", stacks: 25 };
 		addProtection([user], 25);
+		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
 		if (user.crit) {
-			addedEmpowerment = addModifier([user], { name: "Empowerment", stacks: 50 }).some(receipt => receipt.succeeded.size > 0);
-			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
-		} else {
-			addedEmpowerment = addModifier([user], { name: "Empowerment", stacks: 25 }).some(receipt => receipt.succeeded.size > 0);
+			pendingEmpowerment.stacks *= 2;
 		}
-		return [`${user.name} gains protection${addedEmpowerment ? ` and ${getApplicationEmojiMarkdown("Empowerment")}` : ` but was oblivious to ${getApplicationEmojiMarkdown("Empowerment")}`}.`];
+		return [`${user.name} gains protection.`].concat(generateModifierResultLines(addModifier([user], pendingEmpowerment)));
 	},
 	selector: selectSelf,
 	next: "random"

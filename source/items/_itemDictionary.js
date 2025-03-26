@@ -5,6 +5,7 @@ const ITEMS = {};
 const ITEM_NAMES = [];
 
 for (const file of [
+	"alertnessbeans.js",
 	"clearpotion.js",
 	"creativeacorn.js",
 	"earthenpotion.js",
@@ -15,15 +16,14 @@ for (const file of [
 	"glowingpotion.js",
 	"healthpotion.js",
 	"inkypotion.js",
-	"oblivionsalt.js",
 	"panacea.js",
 	"placebo.js",
+	"poppopfruit.js",
 	"portablespellbookcharger.js",
 	"protectionpotion.js",
 	"quickpepper.js",
 	"regenroot.js",
 	"smokebomb.js",
-	"stasisquartz.js",
 	"strengthspinach.js",
 	"vitamins.js",
 	"waterypotion.js",

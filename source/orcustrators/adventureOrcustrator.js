@@ -461,7 +461,7 @@ function predictRoundRnOutcomes(adventure) {
 					if (move.targets.length > 0) {
 						const targetCombatants = move.targets.map(moveTarget => adventure.getCombatant(moveTarget));
 						if (move.name === "Bubble") {
-							let totalBuffsRemoved = targetCombatants.reduce((removedCount, combatant) => removedCount + Math.max(0, Object.keys(combatant.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff").length - combatant.getModifierStacks("Retain")), 0);
+							let totalBuffsRemoved = targetCombatants.reduce((removedCount, combatant) => removedCount + Object.keys(combatant.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff").length, 0);
 							let pendingProgress = combatant.getModifierStacks("Progress") + (combatant.crit ? 10 : 0) + combatant.roundRns[`Bubble${SAFE_DELIMITER}progress`][2] + totalBuffsRemoved * 5;
 							outcomes.push(`The Elkemist ${pendingProgress > 100 ? "will" : "won't"} reach an epiphany this round.`);
 						}

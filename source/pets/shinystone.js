@@ -25,19 +25,19 @@ module.exports = new PetTemplate(petName, Colors.LightGrey,
 		[
 			new PetMoveTemplate("Sparkle", "Grant owner @{mod0Stacks} @{mod0}", (owner, petRNs) => [],
 				(targets, owner, adventure, { petRNs }) => {
-					const [oblivious] = module.exports.moves[1][0].modifiers;
-					return generateModifierResultLines(addModifier([owner], oblivious));
-				}).setModifiers({ name: "Oblivious", stacks: 1 }),
+					const [vigilance] = module.exports.moves[1][0].modifiers;
+					return generateModifierResultLines(addModifier([owner], vigilance));
+				}).setModifiers({ name: "Vigilance", stacks: 2 }),
 			new PetMoveTemplate("Sparkle Brilliantly", "Grant owner @{mod0Stacks} @{mod0} and relieve 1 Stagger", (owner, petRNs) => [],
 				(targets, owner, adventure, { petRNs }) => {
-					const [oblivious] = module.exports.moves[1][1].modifiers;
-					const resultLines = generateModifierResultLines(addModifier([owner], oblivious));
+					const [vigilance] = module.exports.moves[1][1].modifiers;
+					const resultLines = generateModifierResultLines(addModifier([owner], vigilance));
 					if (owner.stagger > 0) {
 						changeStagger([owner], null, -1);
 						resultLines.push(`${owner.name} is relieved of Stagger.`);
 					}
 					return resultLines;
-				}).setModifiers({ name: "Oblivious", stacks: 1 })
+				}).setModifiers({ name: "Vigilance", stacks: 2 })
 		]
 	]
 );
