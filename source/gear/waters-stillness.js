@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { concatTeamMembersWithModifier, changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
+const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 const { scalingSwiftness } = require('./shared/modifiers');
 
@@ -13,7 +13,7 @@ const watersStillness = new GearTemplate("Water's Stillness",
 	"Spell",
 	"Water"
 ).setCost(200)
-	.setEffect(watersStillnessEffect, { type: "single", team: "ally" })
+	.setEffect(watersStillnessEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCharges(15)
 	.setStagger(-2)
 	.setModifiers({ name: "Vigilance", stacks: 0 })
@@ -21,8 +21,7 @@ const watersStillness = new GearTemplate("Water's Stillness",
 
 /** @type {typeof watersStillness.effect} */
 function watersStillnessEffect(targets, user, adventure) {
-	const { essence, modifiers: [targetModifier], stagger, scalings: { critBonus } } = watersStillness;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.delvers : adventure.room.enemies, targetModifier.name);
+	const { essence, stagger, scalings: { critBonus } } = watersStillness;
 	let pendingStaggerRelief = stagger;
 	if (user.essence === essence) {
 		pendingStaggerRelief += ESSENCE_MATCH_STAGGER_ALLY;
@@ -30,8 +29,8 @@ function watersStillnessEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStaggerRelief *= critBonus;
 	}
-	changeStagger(allTargets, user, pendingStaggerRelief);
-	return [joinAsStatement(false, allTargets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")];
+	changeStagger(targets, user, pendingStaggerRelief);
+	return [joinAsStatement(false, targets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")];
 }
 //#endregion Base
 
@@ -44,7 +43,7 @@ const acceleratingWatersStillness = new GearTemplate("Accelerating Water's Still
 	"Spell",
 	"Water"
 ).setCost(350)
-	.setEffect(acceleratingWatersStillnessEffect, { type: "single", team: "ally" })
+	.setEffect(acceleratingWatersStillnessEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCharges(15)
 	.setStagger(-2)
 	.setModifiers({ name: "Vigilance", stacks: 0 }, scalingSwiftness(2))
@@ -53,7 +52,6 @@ const acceleratingWatersStillness = new GearTemplate("Accelerating Water's Still
 /** @type {typeof acceleratingWatersStillness.effect} */
 function acceleratingWatersStillnessEffect(targets, user, adventure) {
 	const { essence, modifiers: [targetModifier, swiftness], stagger, scalings: { critBonus } } = acceleratingWatersStillness;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.delvers : adventure.room.enemies, targetModifier.name);
 	let pendingStaggerRelief = stagger;
 	if (user.essence === essence) {
 		pendingStaggerRelief += ESSENCE_MATCH_STAGGER_ALLY;
@@ -61,8 +59,8 @@ function acceleratingWatersStillnessEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStaggerRelief *= critBonus;
 	}
-	changeStagger(allTargets, user, pendingStaggerRelief);
-	return [joinAsStatement(false, allTargets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, { name: swiftness.name, stacks: swiftness.stacks.calculate(user) }))));
+	changeStagger(targets, user, pendingStaggerRelief);
+	return [joinAsStatement(false, targets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: swiftness.name, stacks: swiftness.stacks.calculate(user) }))));
 }
 //#endregion Accelerating
 
@@ -76,7 +74,7 @@ const cleansingWatersStillness = new GearTemplate("Cleansing Water's Stillness",
 	"Spell",
 	"Water"
 ).setCost(350)
-	.setEffect(cleansingWatersStillnessEffect, { type: "single", team: "ally" })
+	.setEffect(cleansingWatersStillnessEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCharges(15)
 	.setStagger(-2)
 	.setModifiers({ name: "Vigilance", stacks: 0 })
@@ -88,8 +86,7 @@ const cleansingWatersStillness = new GearTemplate("Cleansing Water's Stillness",
 
 /** @type {typeof cleansingWatersStillness.effect} */
 function cleansingWatersStillnessEffect(targets, user, adventure) {
-	const { essence, modifiers: [targetModifier], stagger, scalings: { debuffsCured, critBonus } } = cleansingWatersStillness;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.delvers : adventure.room.enemies, targetModifier.name);
+	const { essence, stagger, scalings: { debuffsCured, critBonus } } = cleansingWatersStillness;
 	let pendingStaggerRelief = stagger;
 	if (user.essence === essence) {
 		pendingStaggerRelief += ESSENCE_MATCH_STAGGER_ALLY;
@@ -97,7 +94,7 @@ function cleansingWatersStillnessEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStaggerRelief *= critBonus;
 	}
-	changeStagger(allTargets, user, pendingStaggerRelief);
+	changeStagger(targets, user, pendingStaggerRelief);
 	const receipts = [];
 	for (const target of targets) {
 		const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
@@ -107,7 +104,7 @@ function cleansingWatersStillnessEffect(targets, user, adventure) {
 			receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 		}
 	}
-	return [joinAsStatement(false, allTargets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return [joinAsStatement(false, targets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
 }
 //#endregion Cleansing
 

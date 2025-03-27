@@ -424,29 +424,6 @@ function getCombatantCounters(combatant) {
 	return counters;
 }
 
-/**
- * @param {Combatant[]} targets
- * @param {Combatant[]} team
- * @param {string} modifier
- */
-function concatTeamMembersWithModifier(targets, team, modifier) {
-	const targetSet = new Set();
-	const targetArray = [];
-	for (const target of targets) {
-		if (target.hp > 0) {
-			targetSet.add(target.name);
-			targetArray.push(target);
-		}
-	}
-	for (const member of team) {
-		if (member.hp > 0 && member.getModifierStacks(modifier) > 0 && !targetSet.has(member.name)) {
-			targetSet.add(member.name);
-			targetArray.push(member);
-		}
-	}
-	return targetArray;
-}
-
 module.exports = {
 	downedCheck,
 	dealDamage,
@@ -460,6 +437,5 @@ module.exports = {
 	changeStagger,
 	addProtection,
 	modifiersToString,
-	getCombatantCounters,
-	concatTeamMembersWithModifier
+	getCombatantCounters
 };

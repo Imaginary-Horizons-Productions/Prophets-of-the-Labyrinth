@@ -62,7 +62,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			if (targetingTags) {
 				const { type, team } = targetingTags;
 				const essenceEmoji = getEmoji(getGearProperty(gearName, "essence"));
-				if (type === "single" || type.startsWith("blast")) {
+				if (type.startsWith("single") || type.startsWith("blast")) {
 					// Select Menu
 					let targetOptions = [];
 					if (team === "foe" || team === "any") {
