@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, concatTeamMembersWithModifier, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
+const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 const { scalingExposure } = require('./shared/modifiers');
 
@@ -13,7 +13,7 @@ const warCry = new GearTemplate("War Cry",
 	"Support",
 	"Darkness"
 ).setCost(200)
-	.setEffect(warCryEffect, { type: "single", team: "foe" })
+	.setEffect(warCryEffect, { type: `single${SAFE_DELIMITER}Distraction`, team: "foe" })
 	.setCooldown(1)
 	.setModifiers({ name: "Distraction", stacks: 0 })
 	.setStagger(2)
@@ -21,9 +21,7 @@ const warCry = new GearTemplate("War Cry",
 
 /** @type {typeof warCry.effect} */
 function warCryEffect(targets, user, adventure) {
-	const { essence, stagger, scalings: { critBonus }, modifiers: [targetModifier] } = warCry;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
-
+	const { essence, stagger, scalings: { critBonus } } = warCry;
 	let pendingStagger = stagger;
 	if (user.essence === essence) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
@@ -31,8 +29,8 @@ function warCryEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStagger *= critBonus;
 	}
-	changeStagger(allTargets, user, pendingStagger);
-	return [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered.")];
+	changeStagger(targets, user, pendingStagger);
+	return [joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered.")];
 }
 //#endregion Base
 
@@ -45,7 +43,7 @@ const flankingWarCry = new GearTemplate("Flanking War Cry",
 	"Support",
 	"Darkness",
 ).setCost(350)
-	.setEffect(flankingWarCryEffect, { type: "single", team: "foe" })
+	.setEffect(flankingWarCryEffect, { type: `single${SAFE_DELIMITER}Distraction`, team: "foe" })
 	.setCooldown(1)
 	.setModifiers({ name: "Distraction", stacks: 0 }, scalingExposure(2))
 	.setStagger(2)
@@ -54,8 +52,6 @@ const flankingWarCry = new GearTemplate("Flanking War Cry",
 /** @type {typeof flankingWarCry.effect} */
 function flankingWarCryEffect(targets, user, adventure) {
 	const { essence, stagger, scalings: { critBonus }, modifiers: [targetModifier, exposure] } = flankingWarCry;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
-
 	let pendingStagger = stagger;
 	if (user.essence === essence) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
@@ -63,8 +59,8 @@ function flankingWarCryEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStagger *= critBonus;
 	}
-	changeStagger(allTargets, user, pendingStagger);
-	return [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, { name: exposure.name, stacks: exposure.stacks.calculate(user) }))));
+	changeStagger(targets, user, pendingStagger);
+	return [joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: exposure.name, stacks: exposure.stacks.calculate(user) }))));
 }
 //#endregion Flanking
 
@@ -77,7 +73,7 @@ const weakeningWarCry = new GearTemplate("Weakening War Cry",
 	"Support",
 	"Darkness"
 ).setCost(350)
-	.setEffect(weakeningWarCryEffect, { type: "single", team: "foe" })
+	.setEffect(weakeningWarCryEffect, { type: `single${SAFE_DELIMITER}Distraction`, team: "foe" })
 	.setCooldown(1)
 	.setModifiers({ name: "Distraction", stacks: 0 }, { name: "Weakness", stacks: 10 })
 	.setStagger(2)
@@ -86,8 +82,6 @@ const weakeningWarCry = new GearTemplate("Weakening War Cry",
 /** @type {typeof weakeningWarCry.effect} */
 function weakeningWarCryEffect(targets, user, adventure) {
 	const { essence, stagger, scalings: { critBonus }, modifiers: [targetModifier, weakness] } = weakeningWarCry;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
-
 	let pendingStagger = stagger;
 	if (user.essence === essence) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
@@ -95,8 +89,8 @@ function weakeningWarCryEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStagger *= critBonus;
 	}
-	changeStagger(allTargets, user, pendingStagger);
-	return [joinAsStatement(false, allTargets.map(target => target.name), "was", "were", "Staggered.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, weakness))));
+	changeStagger(targets, user, pendingStagger);
+	return [joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, weakness))));
 }
 //#endregion Weakening
 

@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, concatTeamMembersWithModifier, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
+const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
 
 //#region Base
 const elementalScroll = new GearTemplate("Elemental Scroll",
@@ -11,23 +11,22 @@ const elementalScroll = new GearTemplate("Elemental Scroll",
 	"Support",
 	"Fire"
 ).setCost(200)
-	.setEffect(elementalScrollEffect, { type: "single", team: "ally" })
+	.setEffect(elementalScrollEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCooldown(1)
 	.setModifiers({ name: "Attunement", stacks: 3 }, { name: "Vigilance", stacks: 0 })
 	.setScalings({ critBonus: 2 });
 
 /** @type {typeof elementalScroll.effect} */
 function elementalScrollEffect(targets, user, adventure) {
-	const { essence, modifiers: [attunement, vigilance], scalings: { critBonus } } = elementalScroll;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.delvers : adventure.room.enemies, vigilance.name);
+	const { essence, modifiers: [attunement], scalings: { critBonus } } = elementalScroll;
 	if (user.essence === essence) {
-		changeStagger(allTargets, user, ESSENCE_MATCH_STAGGER_ALLY);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
 	const pendingAttunement = { ...attunement };
 	if (user.crit) {
 		pendingAttunement.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, pendingAttunement)));
+	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingAttunement)));
 }
 //#endregion Base
 
@@ -40,23 +39,22 @@ const balancedElementalScroll = new GearTemplate("Balanced Elemental Scroll",
 	"Support",
 	"Fire"
 ).setCost(350)
-	.setEffect(balancedElementalScrollEffect, { type: "single", team: "ally" })
+	.setEffect(balancedElementalScrollEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCooldown(1)
 	.setModifiers({ name: "Attunement", stacks: 3 }, { name: "Vigilance", stacks: 0 }, { name: "Finesse", stacks: 1 })
 	.setScalings({ critBonus: 2 });
 
 /** @type {typeof balancedElementalScroll.effect} */
 function balancedElementalScrollEffect(targets, user, adventure) {
-	const { essence, modifiers: [attunement, vigilance, finesse], scalings: { critBonus } } = balancedElementalScroll;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.delvers : adventure.room.enemies, vigilance.name);
+	const { essence, modifiers: [attunement, targetModifier, finesse], scalings: { critBonus } } = balancedElementalScroll;
 	if (user.essence === essence) {
-		changeStagger(allTargets, user, ESSENCE_MATCH_STAGGER_ALLY);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
 	const pendingAttunement = { ...attunement };
 	if (user.crit) {
 		pendingAttunement.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, pendingAttunement).concat(addModifier(allTargets, finesse))));
+	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingAttunement).concat(addModifier(targets, finesse))));
 }
 //#endregion Balanced
 
@@ -69,23 +67,22 @@ const surpassingElementalScroll = new GearTemplate("Surpassing Elemental Scroll"
 	"Support",
 	"Fire"
 ).setCost(350)
-	.setEffect(surpassingElementalScrollEffect, { type: "single", team: "ally" })
+	.setEffect(surpassingElementalScrollEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCooldown(1)
 	.setModifiers({ name: "Attunement", stacks: 3 }, { name: "Vigilance", stacks: 0 }, { name: "Excellence", stacks: 2 })
 	.setScalings({ critBonus: 2 });
 
 /** @type {typeof surpassingElementalScroll.effect} */
 function surpassingElementalScrollEffect(targets, user, adventure) {
-	const { essence, modifiers: [attunement, vigilance, excellence], scalings: { critBonus } } = surpassingElementalScroll;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.delvers : adventure.room.enemies, vigilance.name);
+	const { essence, modifiers: [attunement, targetModifier, excellence], scalings: { critBonus } } = surpassingElementalScroll;
 	if (user.essence === essence) {
-		changeStagger(allTargets, user, ESSENCE_MATCH_STAGGER_ALLY);
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
 	const pendingAttunement = { ...attunement };
 	if (user.crit) {
 		pendingAttunement.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, pendingAttunement).concat(addModifier(allTargets, excellence))));
+	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingAttunement).concat(addModifier(targets, excellence))));
 }
 //#endregion Surpassing
 

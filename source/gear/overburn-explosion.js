@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { concatTeamMembersWithModifier, changeStagger, dealDamage } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
+const { changeStagger, dealDamage } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 const { accuratePassive, unstoppablePassive } = require('./shared/passiveDescriptions');
 
@@ -13,7 +13,7 @@ const overburnExplosion = new GearTemplate("Overburn Explosion",
 	"Pact",
 	"Fire"
 ).setCost(200)
-	.setEffect(overburnExplosionEffect, { type: "single", team: "foe" })
+	.setEffect(overburnExplosionEffect, { type: `single${SAFE_DELIMITER}Distraction`, team: "foe" })
 	.setPactCost([2, "Set all your gears' cooldowns to @{pactCost}"])
 	.setModifiers({ name: "Distraction", stacks: 0 })
 	.setScalings({
@@ -23,13 +23,12 @@ const overburnExplosion = new GearTemplate("Overburn Explosion",
 
 /** @type {typeof overburnExplosion.effect} */
 function overburnExplosionEffect(targets, user, adventure) {
-	const { essence, modifiers: [targetModifier], scalings: { damage, critBonus }, pactCost } = overburnExplosion;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
+	const { essence, scalings: { damage, critBonus }, pactCost } = overburnExplosion;
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(allTargets, user, pendingDamage, false, essence, adventure);
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
@@ -53,7 +52,7 @@ const accurateOverburnExplosion = new GearTemplate("Accurate Overburn Explosion"
 	"Pact",
 	"Fire"
 ).setCost(350)
-	.setEffect(overburnExplosionEffect, { type: "single", team: "foe" })
+	.setEffect(overburnExplosionEffect, { type: `single${SAFE_DELIMITER}Distraction`, team: "foe" })
 	.setPactCost([2, "Set all your gears' cooldowns to @{pactCost}"])
 	.setModifiers({ name: "Distraction", stacks: 0 })
 	.setScalings({
@@ -73,7 +72,7 @@ const unstoppableOverburnExplosion = new GearTemplate("Unstoppable Overburn Expl
 	"Pact",
 	"Fire"
 ).setCost(350)
-	.setEffect(unstoppableOverburnExplosionEffect, { type: "single", team: "foe" })
+	.setEffect(unstoppableOverburnExplosionEffect, { type: `single${SAFE_DELIMITER}Distraction`, team: "foe" })
 	.setPactCost([2, "Set all your gears' cooldowns to @{pactCost}"])
 	.setModifiers({ name: "Distraction", stacks: 0 })
 	.setScalings({
@@ -83,13 +82,12 @@ const unstoppableOverburnExplosion = new GearTemplate("Unstoppable Overburn Expl
 
 /** @type {typeof unstoppableOverburnExplosion.effect} */
 function unstoppableOverburnExplosionEffect(targets, user, adventure) {
-	const { essence, modifiers: [targetModifier], scalings: { damage, critBonus }, pactCost } = unstoppableOverburnExplosion;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
+	const { essence, scalings: { damage, critBonus }, pactCost } = unstoppableOverburnExplosion;
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(allTargets, user, pendingDamage, true, essence, adventure);
+	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, true, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}

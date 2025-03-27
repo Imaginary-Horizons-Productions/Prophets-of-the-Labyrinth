@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier, concatTeamMembersWithModifier } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
+const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
 const { scalingExcellence, scalingEmpowerment } = require('./shared/modifiers');
 
 //#region Base
@@ -42,26 +42,10 @@ const rallyingEncouragement = new GearTemplate("Rallying Encouragement",
 	"Spell",
 	"Light"
 ).setCost(350)
-	.setEffect(rallyingEncouragementEffect, { type: "single", team: "ally" })
+	.setEffect(encouragementEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCharges(15)
 	.setModifiers(scalingExcellence(2), scalingEmpowerment(25), { name: "Vigilance", stacks: 0 })
 	.setScalings({ critBonus: 2 });
-
-/** @type {typeof rallyingEncouragement.effect} */
-function rallyingEncouragementEffect(targets, user, adventure) {
-	const { essence, modifiers: [excellence, empowerment, targetModifier], scalings: { critBonus } } = rallyingEncouragement;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.delvers : adventure.room.enemies, targetModifier.name);
-	if (user.essence === essence) {
-		changeStagger(allTargets, user, ESSENCE_MATCH_STAGGER_ALLY);
-	}
-	const pendingExcellence = { name: excellence.name, stacks: excellence.stacks.calculate(user) };
-	const pendingEmpowerment = { name: empowerment.name, stacks: empowerment.stacks.calculate(user) };
-	if (user.crit) {
-		pendingExcellence.stacks *= critBonus;
-		pendingEmpowerment.stacks *= critBonus;
-	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(allTargets, pendingExcellence).concat(addModifier(allTargets, pendingEmpowerment))));
-}
 //#endregion Rallying
 
 //#region Vigorous

@@ -36,7 +36,7 @@ class GearTemplate {
 	// Internal Configuration
 	/** @type {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: Partial<MoveEffectOverrides>) => string[]} */
 	effect;
-	/** @type {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} */
+	/** @type {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x" | "single→x", team: "ally" | "foe" | "any" | "none"}} */
 	targetingTags;
 	/** @type {string[]} */
 	upgrades = [];
@@ -67,7 +67,7 @@ class GearTemplate {
 	/**
 	 * overrides is a dict *parameter* whose values can be defaulted, but can also be clobbered for polymorphism.
 	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: Partial<MoveEffectOverrides>) => string[]} effectFunction
-	 * @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x", team: "ally" | "foe" | "any" | "none"}} tagObject
+	 * @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x" | "single→x", team: "ally" | "foe" | "any" | "none"}} tagObject
 	 */
 	setEffect(effectFunction, tagObject) {
 		this.effect = effectFunction;

@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily, Scaling } = require('../classes');
-const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { dealDamage, payHP, changeStagger, addModifier, concatTeamMembersWithModifier, generateModifierResultLines } = require('../util/combatantUtil');
+const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
+const { dealDamage, payHP, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 /** @type {(variantName: string) => ({ name: "Empowerment", stacks: Scaling })} */
@@ -92,29 +92,13 @@ const opportunistsTempestuousWrath = new GearTemplate("Opportunist's Tempestuous
 	"Pact",
 	"Wind"
 ).setCost(350)
-	.setEffect(opportunistsTempestuousWrathEffect, { type: "single", team: "foe" })
+	.setEffect(tempestuousWrathEffect, { type: `single${SAFE_DELIMITER}Distraction`, team: "foe" })
 	.setPactCost([0, "(Empowerment stacks) HP after move"])
 	.setScalings({
 		damage: damageScalingGenerator(40),
 		critBonus: 2
 	})
 	.setModifiers(tempestuousWrathEmpowerment(), { name: "Distraction", stacks: 0 });
-
-/** @type {typeof opportunistsTempestuousWrath.effect} */
-function opportunistsTempestuousWrathEffect(targets, user, adventure) {
-	const { essence, modifiers: [empowerment, targetModifier], scalings: { damage, critBonus } } = opportunistsTempestuousWrath;
-	const allTargets = concatTeamMembersWithModifier(targets, user.team === "delver" ? adventure.room.enemies : adventure.delvers, targetModifier.name);
-	const resultLines = generateModifierResultLines(addModifier([user], { name: empowerment.name, stacks: empowerment.stacks.calculate(user) }));
-	let pendingDamage = damage.calculate(user);
-	if (user.crit) {
-		pendingDamage *= critBonus;
-	}
-	const { resultLines: damageResults, survivors } = dealDamage(allTargets, user, pendingDamage, false, essence, adventure);
-	if (user.essence === essence) {
-		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-	}
-	return resultLines.concat(damageResults, payHP(user, user.modifiers.Empowerment, adventure));
-}
 //#endregion Opportunist's
 
 module.exports = new GearFamily(tempestuousWrath, [flankingTempestuousWrath, opportunistsTempestuousWrath], false);
