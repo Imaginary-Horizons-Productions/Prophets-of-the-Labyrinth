@@ -6,8 +6,8 @@ const { ChallengeTemplate } = require("./ChallengeTemplate");
 const { Combatant, Delver, Gear } = require("./Combatant");
 const { Company } = require("./Company");
 const { EnemyTemplate } = require("./EnemyTemplate");
-const { GearTemplate } = require("./GearTemplate");
-const { ButtonWrapper, CommandWrapper, SelectWrapper, ContextMenuWrapper, MessageContextMenuWrapper, UserContextMenuWrapper } = require("./InteractionWrapper");
+const { GearTemplate, GearFamily } = require("./GearTemplate");
+const { ButtonWrapper, CommandWrapper, SelectWrapper, ContextMenuWrapper, MessageContextMenuWrapper, UserContextMenuWrapper, SubcommandWrapper } = require("./InteractionWrapper");
 const { ItemTemplate } = require("./ItemTemplate");
 const { LabyrinthTemplate } = require("./LabyrinthTemplate");
 const { ModifierTemplate, ModifierReceipt } = require("./ModifierTemplate");
@@ -28,12 +28,14 @@ module.exports = {
 	Combatant,
 	CombatantReference,
 	CommandWrapper,
+	SubcommandWrapper,
 	Company,
 	ContextMenuWrapper,
 	Delver,
 	Enemy,
 	EnemyTemplate,
 	Gear,
+	GearFamily,
 	GearTemplate,
 	ItemTemplate,
 	LabyrinthTemplate,

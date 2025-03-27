@@ -1,20 +1,9 @@
-const { CommandInteraction } = require("discord.js");
-const { Adventure } = require("../../classes");
+const { SubcommandWrapper } = require("../../classes");
 const { generatePartyStatsPayload } = require("../../util/embedUtil");
 
-/**
- * @param {CommandInteraction} interaction
- * @param {[Adventure]} args
- */
-async function executeSubcommand(interaction, ...[adventure]) {
-	interaction.reply(generatePartyStatsPayload(adventure))
-		.catch(console.error);
-};
-
-module.exports = {
-	data: {
-		name: "party-stats",
-		description: "Get info about the current adventure"
-	},
-	executeSubcommand
-};
+module.exports = new SubcommandWrapper("party-stats", "Get info about the current adventure",
+	async function executeSubcommand(interaction, ...[adventure]) {
+		interaction.reply(generatePartyStatsPayload(adventure))
+			.catch(console.error);
+	}
+);
