@@ -5,7 +5,7 @@ const { SubcommandWrapper } = require("../../classes");
 
 module.exports = new SubcommandWrapper("beginners-guide", "Learn or review the basics of the game!",
 	async function executeSubcommand(interaction, ...args) {
-		fs.promises.stat("./source/commands/manual/beginnersguide.js").then(stats => {
+		fs.promises.stat(__filename).then(stats => {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Prophets of the Labyrinth Tutorial")

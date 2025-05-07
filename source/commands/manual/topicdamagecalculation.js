@@ -6,7 +6,7 @@ const { SubcommandWrapper } = require("../../classes");
 
 module.exports = new SubcommandWrapper("damage-calculation", "Get details on how damage is calculated",
 	async function executeSubcommand(interaction, ...args) {
-		fs.promises.stat("./source/commands/manual/topicdamagecalculation.js").then(stats => {
+		fs.promises.stat(__filename).then(stats => {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Damage Calculation")
