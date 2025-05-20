@@ -6,7 +6,7 @@ const { embedTemplate } = require('../util/embedUtil');
 const mainId = "support";
 module.exports = new CommandWrapper(mainId, "List ways to support PotL", null, false, [InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel], 3000,
 	(interaction) => {
-		fs.promises.stat("./source/commands/support.js").then(stats => {
+		fs.promises.stat(__filename).then(stats => {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Supporting *Prophets of the Labyrinth*")

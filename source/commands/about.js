@@ -7,7 +7,7 @@ const { embedTemplate } = require('../util/embedUtil');
 const mainId = "about";
 module.exports = new CommandWrapper(mainId, "Get info and contributors to PotL", null, false, [InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel], 3000,
 	(interaction) => {
-		fs.promises.stat("./source/commands/about.js").then(stats => {
+		fs.promises.stat(__filename).then(stats => {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle(`Prophets of the Labyrinth ${GAME_VERSION}`)

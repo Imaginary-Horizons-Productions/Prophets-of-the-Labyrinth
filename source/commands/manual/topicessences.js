@@ -9,7 +9,7 @@ const allEssences = essenceList();
 
 module.exports = new SubcommandWrapper("essences", "Get details about the Essence Counter and Essence Match Stagger mechanics",
 	async function executeSubcommand(interaction, ...args) {
-		fs.promises.stat("./source/commands/manual/topicessences.js").then(stats => {
+		fs.promises.stat(__filename).then(stats => {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Essences")

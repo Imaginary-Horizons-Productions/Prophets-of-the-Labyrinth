@@ -5,7 +5,7 @@ const { SubcommandWrapper } = require("../../classes");
 
 module.exports = new SubcommandWrapper("stagger", "Get details on building up to Stun",
 	async function executeSubcommand(interaction, ...args) {
-		fs.promises.stat("./source/commands/manual/topicstagger.js").then(stats => {
+		fs.promises.stat(__filename).then(stats => {
 			interaction.reply({
 				embeds: [
 					embedTemplate().setTitle("Stagger")
