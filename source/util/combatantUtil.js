@@ -425,26 +425,11 @@ function getCombatantCounters(combatant) {
 }
 
 /**
- * @param {Combatant[]} targets
- * @param {Combatant[]} team
- * @param {string} modifier
+ * @param {"delver" | "enemy"} referenceTeam
+ * @param {"ally" | "foe"} relativeTeam
  */
-function concatTeamMembersWithModifier(targets, team, modifier) {
-	const targetSet = new Set();
-	const targetArray = [];
-	for (const target of targets) {
-		if (target.hp > 0) {
-			targetSet.add(target.name);
-			targetArray.push(target);
-		}
-	}
-	for (const member of team) {
-		if (member.hp > 0 && member.getModifierStacks(modifier) > 0 && !targetSet.has(member.name)) {
-			targetSet.add(member.name);
-			targetArray.push(member);
-		}
-	}
-	return targetArray;
+function evaluateAbsoluteTeam(referenceTeam, relativeTeam) {
+	return relativeTeam === "ally" ^ referenceTeam === "delver" ? "enemy" : "delver";
 }
 
 module.exports = {
@@ -461,5 +446,5 @@ module.exports = {
 	addProtection,
 	modifiersToString,
 	getCombatantCounters,
-	concatTeamMembersWithModifier
+	evaluateAbsoluteTeam
 };

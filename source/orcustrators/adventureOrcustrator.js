@@ -11,7 +11,7 @@ const { getGearProperty, gearExists } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
-const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection } = require("../util/combatantUtil");
+const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, evaluateAbsoluteTeam } = require("../util/combatantUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { essenceList, getCounteredEssences, getEmoji } = require("../util/essenceUtil.js");
 const { ensuredPathSave } = require("../util/fileUtil");
@@ -528,31 +528,30 @@ function predictRoundRnOutcomes(adventure) {
  * Given a move and delver BUT NOT THE TARGET for a random-concerned-move that depends on targets, return a predicted outcome.
  * @param {Adventure} adventure
  * @param {Combatant} user
- * @param {"foes" | "allies" | "essences" | string} targetingTags
- * @param {"foes" | "allies" | "essences" | string} moveName
+ * @param {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x" | "single→x", team: "ally" | "foe" | "any" | "none"}} targetingTags
+ * @param {string} moveName
  * @param {Record<string, number>} config
  */
 function predictRoundRnPossibleTargets(adventure, user, targetingTags, moveName, key) {
 	const liveEnemies = adventure.room.enemies.filter(e => e.hp > 0);
 	let targetCombatants = [];
 	let results = [];
-	switch (targetingTags.team) {
-		case "ally":
-			if (targetingTags.type === "self") {
-				targetCombatants = [user];
-			}
-			else {
+	if (targetingTags.type === "self") {
+		targetCombatants.push(user);
+	} else {
+		switch (targetingTags.team) {
+			case "ally":
 				targetCombatants = user.team === "delver" ? adventure.delvers : liveEnemies;
-			}
-			break;
-		case "foe":
-			targetCombatants = user.team !== "delver" ? adventure.delvers : liveEnemies;
-			break;
-		case "any":
-			targetCombatants = adventure.delvers.concat(liveEnemies);
-			break;
-		case "none":
-			break;
+				break;
+			case "foe":
+				targetCombatants = user.team !== "delver" ? adventure.delvers : liveEnemies;
+				break;
+			case "any":
+				targetCombatants = adventure.delvers.concat(liveEnemies);
+				break;
+			case "none":
+				break;
+		}
 	}
 	for (const targetCombatant of targetCombatants) {
 		const rnOutcome = predictRoundRnTargeted(adventure, user, targetCombatant, moveName, key);
@@ -760,6 +759,8 @@ function resolveMove(move, adventure) {
 			headline = `${ICON_CRITICAL}${headline}`;
 		}
 
+		let bonusTargetsModifier;
+		let bonusTargetTeam;
 		let effect;
 		switch (move.type) {
 			case "action":
@@ -776,6 +777,10 @@ function resolveMove(move, adventure) {
 				effect = getGearProperty(moveName, "effect");
 				headline += `used ${moveName}`;
 				const targetingTags = getGearProperty(moveName, "targetingTags");
+				if (targetingTags.type.startsWith(`single${SAFE_DELIMITER}`)) {
+					bonusTargetsModifier = targetingTags.type.split(SAFE_DELIMITER)[1];
+					bonusTargetTeam = targetingTags.team;
+				}
 				if (user.team === "delver") {
 					const loadedDiceCount = adventure.getArtifactCount("Loaded Dice");
 					if (loadedDiceCount > 0 && targetingTags.type.startsWith("random")) {
@@ -808,7 +813,21 @@ function resolveMove(move, adventure) {
 		if (move.targets.length > 0) {
 			const livingTargets = [];
 			const deadTargets = [];
-			move.targets.forEach(targetReference => {
+			let allTargets = move.targets;
+			if (bonusTargetsModifier) {
+				const absoluteTeam = evaluateAbsoluteTeam(move.userReference.team, bonusTargetTeam);
+				const team = absoluteTeam === "delver" ? adventure.delvers : adventure.room.enemies;
+				const targetIndices = new Set(move.targets.map(reference => reference.index));
+				for (let i = 0; i < team.length; i++) {
+					const combatant = team[i];
+					if (combatant.hp < 1 || combatant.getModifierStacks(bonusTargetsModifier) < 1 || targetIndices.has(i)) {
+						continue;
+					}
+					allTargets.push({ team: absoluteTeam, index: i });
+				}
+			}
+
+			allTargets.forEach(targetReference => {
 				const target = adventure.getCombatant(targetReference);
 				if (target) {
 					if (target.hp > 0) {
@@ -949,7 +968,7 @@ function endRound(adventure, thread) {
 			const [gearName, gearIndex] = counterpartMove.name.split(SAFE_DELIMITER);
 			if (gearExists(gearName)) {
 				const targetingTags = getGearProperty(gearName, "targetingTags");
-				if (targetingTags.type === "single" || targetingTags.type.startsWith("blast")) {
+				if (targetingTags.type.startsWith("single") || targetingTags.type.startsWith("blast")) {
 					move.targets = counterpartMove.targets.map(target => {
 						return { team: target.team === "enemy" ? "delver" : "enemy", index: target.index };
 					})
