@@ -8,10 +8,12 @@ const { getAllArchetypeNames } = require('../archetypes/_archetypeDictionary');
 const customIdPrefix = `${SKIP_INTERACTION_HANDLING}${SAFE_DELIMITER}`;
 
 const mainId = "guild-draft";
+//TODONOW write description
 module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.ViewChannel, false, [InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel], 3000,
 	(interaction) => {
 		const player = getPlayer(interaction.user.id, interaction.guild.id);
 		const useFreeRoll = player.nextFreeRoll <= Date.now();
+		//TODONOW make migration initializing guildInfluence and bonusDrafts
 		if (!useFreeRoll && player.bonusDrafts < 1) {
 			interaction.reply({ content: `You don't have any bonus drafts available at the moment. Your next free draft is in <t:${player.nextFreeRoll}:R>.`, flags: MessageFlags.Ephemeral });
 			return;
@@ -115,8 +117,8 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 
 				const influencePercent = [selectedArchetype, selectedPet].filter(selection => selection === "influence").length * 10;
 				//TODONOW more secure RNG
-				const influenceRoll = Math.ceil(100 * Math.random());
-				const totalInfluence = influenceRoll + (influenceRoll * influencePercent / 100);
+				const influenceRoll = 100 * Math.random();
+				const totalInfluence = Math.ceil(influenceRoll + (influenceRoll * influencePercent / 100));
 				//TODONOW record selections onto player object
 				player.guildInfluence += totalInfluence;
 				if (useFreeRoll) {
