@@ -11,7 +11,7 @@ const { getGearProperty, gearExists } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
-const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection } = require("../util/combatantUtil");
+const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, evaluateAbsoluteTeam } = require("../util/combatantUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { essenceList, getCounteredEssences, getEmoji } = require("../util/essenceUtil.js");
 const { ensuredPathSave } = require("../util/fileUtil");
@@ -815,17 +815,15 @@ function resolveMove(move, adventure) {
 			const deadTargets = [];
 			let allTargets = move.targets;
 			if (bonusTargetsModifier) {
-				const targetSet = new Set();
-				for (const target of move.targets) {
-					if (target.hp > 0) {
-						targetSet.add(target.name);
+				const absoluteTeam = evaluateAbsoluteTeam(move.userReference.team, bonusTargetTeam);
+				const team = absoluteTeam === "delver" ? adventure.delvers : adventure.room.enemies;
+				const targetIndices = new Set(move.targets.map(reference => reference.index));
+				for (let i = 0; i < team.length; i++) {
+					const combatant = team[i];
+					if (combatant.hp < 1 || combatant.getModifierStacks(bonusTargetsModifier) < 1 || targetIndices.has(i)) {
+						continue;
 					}
-				}
-				for (const member of bonusTargetTeam === "delver" ? adventure.delvers : adventure.room.enemies) {
-					if (member.hp > 0 && member.getModifierStacks(bonusTargetsModifier) > 0 && !targetSet.has(member.name)) {
-						targetSet.add(member.name);
-						allTargets.push(member);
-					}
+					allTargets.push({ team: absoluteTeam, index: i });
 				}
 			}
 

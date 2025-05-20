@@ -424,6 +424,14 @@ function getCombatantCounters(combatant) {
 	return counters;
 }
 
+/**
+ * @param {"delver" | "enemy"} referenceTeam
+ * @param {"ally" | "foe"} relativeTeam
+ */
+function evaluateAbsoluteTeam(referenceTeam, relativeTeam) {
+	return relativeTeam === "ally" ^ referenceTeam === "delver" ? "enemy" : "delver";
+}
+
 module.exports = {
 	downedCheck,
 	dealDamage,
@@ -437,5 +445,6 @@ module.exports = {
 	changeStagger,
 	addProtection,
 	modifiersToString,
-	getCombatantCounters
+	getCombatantCounters,
+	evaluateAbsoluteTeam
 };
