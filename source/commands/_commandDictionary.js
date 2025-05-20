@@ -14,6 +14,7 @@ module.exports = {
 		"data-policy.js",
 		"delve.js",
 		"feedback.js",
+		"guild-draft.js",
 		"invite.js",
 		"ping.js",
 		"player-stats.js",
