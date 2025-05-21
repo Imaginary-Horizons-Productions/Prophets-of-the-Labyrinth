@@ -3,7 +3,7 @@ const { ThreadChannel, Message, EmbedBuilder, bold, italic } = require("discord.
 
 const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
 
-const { SAFE_DELIMITER, RN_TABLE_BASE, ICON_PET, ICON_CRITICAL, ICON_STAGGER } = require("../constants.js");
+const { SAFE_DELIMITER, MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, ICON_PET, ICON_CRITICAL, ICON_STAGGER } = require("../constants.js");
 
 const { getChallenge } = require("../challenges/_challengeDictionary");
 const { getEnemy } = require("../enemies/_enemyDictionary");
@@ -25,7 +25,6 @@ const { rollableHerbs } = require("../shared/herbs");
 const { rollablePotions } = require("../shared/potions");
 const { getPetMove, generatePetRNs } = require("../pets/_petDictionary.js");
 const { getArchetypeActionName } = require("../archetypes/_archetypeDictionary.js");
-const { MessageLimits } = require("@sapphire/discord.js-utilities");
 
 /** @type {Map<string, Adventure>} */
 const adventureDictionary = new Map();
@@ -177,7 +176,7 @@ function nextRoom(roomType, thread) {
 			const candidateTag = `${tagPool[adventure.generateRandomNumber(tagPool.length, "general")]}${SAFE_DELIMITER}${adventure.depth}`;
 			if (!(candidateTag in adventure.roomCandidates)) {
 				adventure.roomCandidates[candidateTag] = { voterIds: [], isHidden: adventure.generateRandomNumber(max, "general") < max * rushingChance };
-				if (Object.keys(adventure.roomCandidates).length === MessageLimits.MaximumActionRows) {
+				if (Object.keys(adventure.roomCandidates).length === MAX_MESSAGE_ACTION_ROWS) {
 					break;
 				}
 			}

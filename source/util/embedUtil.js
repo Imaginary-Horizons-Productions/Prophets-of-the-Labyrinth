@@ -2,7 +2,7 @@ const fs = require("fs");
 const { ActionRowBuilder, ButtonBuilder, ThreadChannel, EmbedBuilder, ButtonStyle, Colors, EmbedAuthorData, EmbedFooterData, MessagePayload, MessageFlags, StringSelectMenuBuilder, User } = require("discord.js");
 
 const { Adventure, ArtifactTemplate, Delver, Player } = require("../classes");
-const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET, ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE, ICON_PET, ICON_ARCHETYPE, ICON_PREMIUM } = require("../constants");
+const { DISCORD_ICON_URL, POTL_ICON_URL, SAFE_DELIMITER, MAX_BUTTONS_PER_ROW, MAX_EMBED_DESCRIPTION_LENGTH, MAX_MESSAGE_ACTION_ROWS, MAX_SELECT_OPTIONS, EMPTY_SELECT_OPTION_SET, MAX_EMBED_FIELD_COUNT, ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE, ICON_PET, ICON_ARCHETYPE, ICON_PREMIUM } = require("../constants");
 
 const { getChallenge, getStartingChallenges } = require("../challenges/_challengeDictionary");
 const { buildGearDescriptionWithHolderStats } = require("../gear/_gearDictionary");
@@ -19,7 +19,6 @@ const { getArtifactCounts } = require("../artifacts/_artifactDictionary");
 const { isSponsor } = require("./fileUtil");
 const { getPetTemplate, getPetMoveDescription, PET_NAMES } = require("../pets/_petDictionary");
 const { getArchetypesCount, getArchetypeActionName } = require("../archetypes/_archetypeDictionary");
-const { EmbedLimits, MessageLimits, InteractionLimits } = require("@sapphire/discord.js-utilities");
 
 const discordTips = [
 	"Message starting with @silent don't send notifications; good for when everyone's asleep.",
@@ -352,7 +351,7 @@ async function generateVersionEmbed() {
 
 	return embedTemplate()
 		.setTitle(data.slice(titleStart + 3, changesStartRegEx.lastIndex))
-		.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesEnd).slice(0, EmbedLimits.MaximumDescriptionLength)).setURL('https://discord.gg/JxqE9EpKt9')
+		.setDescription(data.slice(changesStartRegEx.lastIndex, knownIssuesEnd).slice(0, MAX_EMBED_DESCRIPTION_LENGTH)).setURL('https://discord.gg/JxqE9EpKt9')
 		.setThumbnail('https://cdn.discordapp.com/attachments/545684759276421120/734099622846398565/newspaper.png')
 		.setTimestamp(stats.mtime)
 		.addFields({ name: "Become a Sponsor", value: "Chip in for server costs or get premium features by sponsoring [PotL on GitHub](https://github.com/Imaginary-Horizons-Productions/Prophets-of-the-Labyrinth)" });
@@ -408,7 +407,7 @@ function inspectSelfPayload(delver, adventure) {
 		.setAuthor(randomAuthorTip())
 		.setTitle(`${delver.name} the Level ${delver.level} ${delver.archetype}`)
 		.setDescription(description);
-	for (let index = 0; index < Math.min(Math.max(delver.gear.length, gearCapacity), EmbedLimits.MaximumFields); index++) {
+	for (let index = 0; index < Math.min(Math.max(delver.gear.length, gearCapacity), MAX_EMBED_FIELD_COUNT); index++) {
 		if (delver.gear[index]) {
 			const gearName = delver.gear[index].name;
 			fields.push({ name: gearName, value: buildGearDescriptionWithHolderStats(gearName, delver, index, adventure) });
@@ -421,7 +420,7 @@ function inspectSelfPayload(delver, adventure) {
 	if (Object.keys(delver.modifiers).length) {
 		const actionRow = [];
 		const modifiers = Object.keys(delver.modifiers);
-		let buttonCount = Math.min(modifiers.length, InteractionLimits.MaximumButtonsPerActionRow - 1); // save spot for "and X more..." button
+		let buttonCount = Math.min(modifiers.length, MAX_BUTTONS_PER_ROW - 1); // save spot for "and X more..." button
 		for (let i = 0; i < buttonCount; i++) {
 			const modifierName = modifiers[i];
 			const modifierButton = new ButtonBuilder().setCustomId(`modifier${SAFE_DELIMITER}${modifierName}${SAFE_DELIMITER}${i}`)
@@ -473,12 +472,12 @@ function generatePartyStatsPayload(adventure) {
 	const infoSelects = [];
 	const allArtifacts = Object.keys(adventure.artifacts);
 	const artifactPages = [];
-	for (let i = 0; i < allArtifacts.length; i += InteractionLimits.MaximumOptionsInSelectMenus) {
-		artifactPages.push(allArtifacts.slice(i, i + InteractionLimits.MaximumOptionsInSelectMenus));
+	for (let i = 0; i < allArtifacts.length; i += MAX_SELECT_OPTIONS) {
+		artifactPages.push(allArtifacts.slice(i, i + MAX_SELECT_OPTIONS));
 	}
 	if (artifactPages.length > 0) {
 		embed.addFields({ name: "Artifacts", value: listifyEN(Object.entries(adventure.artifacts).map(entry => `${entry[0]} x ${entry[1].count}`)) })
-		infoSelects.push(...artifactPages.slice(0, MessageLimits.MaximumActionRows).map((page, index) =>
+		infoSelects.push(...artifactPages.slice(0, MAX_MESSAGE_ACTION_ROWS).map((page, index) =>
 			new ActionRowBuilder().addComponents(
 				new StringSelectMenuBuilder().setCustomId(`artifact${SAFE_DELIMITER}${index}`)
 					.setPlaceholder(`Get details about an artifact...${artifactPages.length > 1 ? ` (Page ${index + 1})` : ""}`)

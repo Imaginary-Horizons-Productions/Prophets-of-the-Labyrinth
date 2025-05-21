@@ -1,13 +1,12 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
-const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING, POTL_ICON_URL } = require('../constants');
+const { SAFE_DELIMITER, MAX_SELECT_OPTIONS, SKIP_INTERACTION_HANDLING, POTL_ICON_URL } = require('../constants');
 const { getAdventure, setAdventure, checkNextRound, endRound } = require('../orcustrators/adventureOrcustrator');
 const { getColor } = require('../util/essenceUtil');
 const { getItem } = require('../items/_itemDictionary');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { injectApplicationEmojiName } = require('../util/graphicsUtil');
-const { InteractionLimits } = require('@sapphire/discord.js-utilities');
 
 const mainId = "readyitem";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -28,7 +27,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}`)
 						.setPlaceholder("Pick an item...")
-						.addOptions(Object.keys(adventure.items).slice(0, InteractionLimits.MaximumOptionsInSelectMenus).reduce((options, item) => options.concat({
+						.addOptions(Object.keys(adventure.items).slice(0, MAX_SELECT_OPTIONS).reduce((options, item) => options.concat({
 							label: `${item} (Held: ${adventure.items[item]})`,
 							description: trimForSelectOptionDescription(injectApplicationEmojiName(getItem(item).description)),
 							value: item

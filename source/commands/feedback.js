@@ -1,7 +1,6 @@
 const { ActionRowBuilder, TextInputBuilder, ModalBuilder, TextInputStyle, PermissionFlagsBits, EmbedBuilder, InteractionContextType, MessageFlags } = require('discord.js');
 const { CommandWrapper } = require('../classes');
-const { testGuildId, feedbackChannelId, SKIP_INTERACTION_HANDLING } = require('../constants');
-const { EmbedLimits } = require('@sapphire/discord.js-utilities');
+const { MAX_EMBED_TITLE_LENGTH, testGuildId, feedbackChannelId, SKIP_INTERACTION_HANDLING } = require('../constants');
 
 const mainId = "feedback";
 module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an invite to the test server", PermissionFlagsBits.SendMessages, false, [InteractionContextType.BotDM, InteractionContextType.Guild, InteractionContextType.PrivateChannel], 3000,
@@ -22,7 +21,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						new ActionRowBuilder().addComponents(
 							new TextInputBuilder().setCustomId("title")
 								.setLabel("Title")
-								.setMaxLength(EmbedLimits.MaximumTitleLength - titlePrefix.length)
+								.setMaxLength(MAX_EMBED_TITLE_LENGTH - titlePrefix.length)
 								.setStyle(TextInputStyle.Short)
 						),
 						new ActionRowBuilder().addComponents(
@@ -91,7 +90,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						new ActionRowBuilder().addComponents(
 							new TextInputBuilder().setCustomId("title")
 								.setLabel("Title")
-								.setMaxLength(EmbedLimits.MaximumTitleLength - titlePrefix.length)
+								.setMaxLength(MAX_EMBED_TITLE_LENGTH - titlePrefix.length)
 								.setStyle(TextInputStyle.Short)
 						),
 						new ActionRowBuilder().addComponents(
