@@ -2,11 +2,12 @@ const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underli
 const { ButtonWrapper } = require('../classes');
 const { getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
-const { SKIP_INTERACTION_HANDLING, MAX_EMBED_FIELD_VALUE_LENGTH } = require('../constants');
+const { SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getNumberEmoji } = require('../util/textUtil');
 const { transformGear } = require('../util/delverUtil');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getEmoji } = require('../util/essenceUtil');
+const { EmbedLimits } = require('@sapphire/discord.js-utilities');
 
 const mainId = "upgrade";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -38,7 +39,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				let andMoreText = "...and more!";
 				for (let i = 0; i < upgradeTexts.length; i++) {
 					const nextText = upgradeTexts[i];
-					if (validatedText.length + nextText.length > MAX_EMBED_FIELD_VALUE_LENGTH - andMoreText.length) {
+					if (validatedText.length + nextText.length > EmbedLimits.MaximumFieldValueLength - andMoreText.length) {
 						validatedText += andMoreText;
 						break;
 					} else {

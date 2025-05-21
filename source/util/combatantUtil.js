@@ -5,7 +5,8 @@ const { getEmoji, getCounteredEssences, essenceList } = require("./essenceUtil.j
 const { getApplicationEmojiMarkdown } = require("./graphicsUtil.js");
 const { listifyEN } = require("./textUtil.js");
 const { areSetContentsCongruent } = require("./mathUtil.js");
-const { ZERO_WIDTH_WHITESPACE, MAX_EMBED_FIELD_VALUE_LENGTH } = require("../constants");
+const { ZERO_WIDTH_WHITESPACE } = require("../constants");
+const { EmbedLimits } = require("@sapphire/discord.js-utilities");
 
 /**
  * @param {Combatant} target
@@ -401,7 +402,7 @@ function modifiersToString(combatant, adventure, padding) {
 	const poppedList = [];
 	for (let i = modifierLines.length - 1; i >= 0; i--) {
 		const andMoreText = poppedList.length === 0 ? "" : `...and ${listifyEN(poppedList.map((modifier) => `${modifier.count} x ${getApplicationEmojiMarkdown(modifier.name)}`), false)}\n`;
-		if (padding + modifierLines.reduce((totalLength, current) => totalLength + current.description.length, 0) + andMoreText.length <= MAX_EMBED_FIELD_VALUE_LENGTH) {
+		if (padding + modifierLines.reduce((totalLength, current) => totalLength + current.description.length, 0) + andMoreText.length <= EmbedLimits.MaximumFieldValueLength) {
 			modifierLines.push({ description: andMoreText });
 			break;
 		}
