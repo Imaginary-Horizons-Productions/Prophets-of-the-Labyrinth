@@ -13,7 +13,6 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 	(interaction) => {
 		const player = getPlayer(interaction.user.id, interaction.guild.id);
 		const useFreeRoll = player.nextFreeRoll <= Date.now();
-		//TODONOW make migration initializing guildInfluence and bonusDrafts
 		if (!useFreeRoll && player.bonusDrafts < 1) {
 			interaction.reply({ content: `You don't have any bonus drafts available at the moment. Your next free draft is in <t:${player.nextFreeRoll}:R>.`, flags: MessageFlags.Ephemeral });
 			return;
