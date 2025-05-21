@@ -3,7 +3,8 @@ const { CommandWrapper } = require('../classes');
 const { ICON_CONFIRM, ICON_CANCEL, SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { getPlayer, setPlayer } = require('../orcustrators/playerOrcustrator');
 const { timeConversion } = require('../util/mathUtil');
-const { getAllArchetypeNames } = require('../archetypes/_archetypeDictionary');
+const { rollArchetypes } = require('../archetypes/_archetypeDictionary');
+const { rollPets } = require('../pets/_petDictionary');
 
 const customIdPrefix = `${SKIP_INTERACTION_HANDLING}${SAFE_DELIMITER}`;
 
@@ -18,16 +19,8 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 			return;
 		}
 
-		const availableArchetypes = getAllArchetypeNames();
-		//TODONOW more secure RNG
-		const [firstArchetype] = availableArchetypes.splice(Math.floor(Math.random() * availableArchetypes.length), 1);
-		//TODONOW filter for eligible archetypes?
-		const [secondArchetype] = availableArchetypes.splice(Math.floor(Math.random() * availableArchetypes.length), 1);
-		//TODONOW build petArray
-		const availablePets = ["Friendly Slime", "Red-Tailed Raptor", "Shield Goblin", "Shiny Stone"];
-		const [firstPet] = availablePets.splice(Math.floor(Math.random() * availablePets.length), 1);
-		//TODONOW check if petArray is empty between splices
-		const [secondPet] = availablePets.splice(Math.floor(Math.random() * availablePets.length), 1);
+		const [firstArchetype, secondArchetype] = rollArchetypes(2, false);
+		const [firstPet, secondPet] = rollPets(2, false);
 		let selectedArchetype = null;
 		let selectedPet = null;
 		const influenceLabel = "Random (+10% Guild Influence)";

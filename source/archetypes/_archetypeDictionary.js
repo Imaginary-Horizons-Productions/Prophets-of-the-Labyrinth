@@ -48,6 +48,7 @@ function rollArchetypes(count, allowDupes) {
 	const results = [];
 	const pool = Object.keys(ARCHETYPES);
 	for (let i = 0; i < count; i++) {
+		//TODONOW more secure RNG
 		const randomIndex = Math.floor(pool.length * Math.random());
 		if (allowDupes) {
 			const archetype = pool[randomIndex];

@@ -74,6 +74,7 @@ function rollPets(count, allowDupes) {
 	const results = [];
 	const pool = [...PET_NAMES];
 	for (let i = 0; i < count; i++) {
+		//TODONOW more secure RNG
 		const randomIndex = Math.floor(pool.length * Math.random());
 		if (allowDupes) {
 			const archetype = pool[randomIndex];
