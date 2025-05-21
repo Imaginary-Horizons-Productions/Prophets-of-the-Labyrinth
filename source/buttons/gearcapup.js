@@ -1,8 +1,9 @@
 const { MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
-const { MAX_MESSAGE_ACTION_ROWS, SAFE_DELIMITER } = require('../constants');
+const { SAFE_DELIMITER } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { renderRoom } = require('../util/embedUtil');
+const { MessageLimits } = require('@sapphire/discord.js-utilities');
 
 const mainId = "gearcapup";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -14,7 +15,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return;
 		}
 
-		if (adventure.gearCapacity < MAX_MESSAGE_ACTION_ROWS) {
+		if (adventure.gearCapacity < MessageLimits.MaximumActionRows) {
 			const [_, cost] = interaction.customId.split(SAFE_DELIMITER);
 			const parsedCost = parseInt(cost);
 			if (adventure.gold >= parsedCost) {
