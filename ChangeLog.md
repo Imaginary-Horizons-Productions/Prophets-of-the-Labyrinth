@@ -2,6 +2,7 @@
 ## Prophets of the Labyrinth v0.19.0:
 - Renamed "Poise" to "Stagger Capacity"
 - Overstaggering combatants is now possible (Stagger above their max is no longer ignored, but it's still all removed on Stun)
+- Added `/guild-draft`, which allows players to draft Archetypes and Pets to add to their Guild
 ## Prophets of the Labyrinth v0.18.0:
 This update adds delver roles to the game. Roles allows parties to ask questions like "do we need more Defense?" or "who do we fit this Support effect on?" instead of only "is this new thing good?". The four roles are: Offense, Defense, Support, and Adventuring. We decided on them by categorizing every effect in the game, then fleshing out the roles that were lower on count (most effects were Offense). Four is a pretty convenient number of roles to have for a few mathematical reasons, but which effects actually make up each of the roles is still subject to some tuning.
 ### Essence Overhaul
