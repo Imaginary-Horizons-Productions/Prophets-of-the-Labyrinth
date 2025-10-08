@@ -54,7 +54,6 @@ function getPetMove({ type: petName, level }, moveIndex) {
 				`${owner.name}'s ${petName} loafs around.`,
 				`${owner.name}'s ${petName} is doing a rock impression.`,
 				`${owner.name}'s ${petName} does a little hop.`,
-				`${owner.name}'s ${petName} loafs around.`,
 				`${owner.name}'s ${petName} decided to take a nap.`,
 				`${owner.name}'s ${petName} demands additional lumber.`,
 				`${owner.name}'s ${petName} is (now) on cooldown.`
