@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, InteractionContextType, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle, ContainerBuilder, Colors, TextDisplayBuilder, ComponentType } = require('discord.js');
+const { PermissionFlagsBits, InteractionContextType, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, TextDisplayBuilder, ComponentType } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { ICON_CONFIRM, ICON_CANCEL, SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { getPlayer, setPlayer } = require('../orcustrators/playerOrcustrator');
@@ -109,10 +109,29 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 
 				const influencePercent = [selectedArchetype, selectedPet].filter(selection => selection === "influence").length * 10;
 				//TODONOW more secure RNG
-				const influenceRoll = 100 * Math.random();
+				//TODONOW tune influence boundaries
+				const influenceRoll = 10 + (90 * Math.random());
 				const totalInfluence = Math.ceil(influenceRoll + (influenceRoll * influencePercent / 100));
-				//TODONOW record selections onto player object
 				player.guildInfluence += totalInfluence;
+				if (selectedArchetype === "influence") {
+					//TODONOW more secure RNG
+					selectedArchetype = [firstArchetype, secondArchetype][Math.floor(Math.random() * 2)];
+				}
+				if (selectedArchetype in player.archetypes) {
+					player.archetypes[selectedArchetype].specializationsUnlocked = Math.min(player.archetypes[selectedArchetype].specializationsUnlocked + 1, 4);
+				} else {
+					player.archetypes[selectedArchetype] = { specializationsUnlocked: 1, highScore: 0 };
+				}
+
+				if (selectedPet === "influence") {
+					//TODONOW more secure RNG
+					selectedPet = [firstPet, secondPet][Math.floor(Math.random() * 2)];
+				}
+				if (selectedPet in player.pets) {
+					player.pets[selectedPet] = Math.min(player.pets[selectedPet] + 1, 4);
+				} else {
+					player.pets[selectedPet] = 1;
+				}
 				if (useFreeRoll) {
 					player.nextFreeRoll = Date.now() + timeConversion(1, "w", "ms");
 				}
