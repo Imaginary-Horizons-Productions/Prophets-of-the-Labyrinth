@@ -14,8 +14,8 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 	(interaction) => {
 		const player = getPlayer(interaction.user.id, interaction.guild.id);
 		const useFreeRoll = player.nextFreeRoll <= Date.now();
-		if (!useFreeRoll && player.bonusDrafts < 1) {
-			interaction.reply({ content: `You don't have any bonus drafts available at the moment. Your next free draft is in <t:${player.nextFreeRoll}:R>.`, flags: MessageFlags.Ephemeral });
+		if (!useFreeRoll && !(player.bonusDrafts > 0)) {
+			interaction.reply({ content: `You don't have any bonus drafts available at the moment. Your next free draft is in <t:${Math.floor(player.nextFreeRoll / 1000)}:R>.`, flags: MessageFlags.Ephemeral });
 			return;
 		}
 
@@ -132,7 +132,9 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 				} else {
 					player.pets[selectedPet] = 1;
 				}
-				if (useFreeRoll) {
+				if (!useFreeRoll) {
+					player.bonusDrafts--;
+				} else {
 					player.nextFreeRoll = Date.now() + timeConversion(1, "w", "ms");
 				}
 				setPlayer(player);
