@@ -72,7 +72,13 @@ module.exports = new CommandWrapper(mainId, "Draft licenses from the Adventuring
 		}).then(response => response.resource.message).then(reply => {
 			const archetypeCollector = reply.createMessageComponentCollector({ filter: (interaction) => interaction.customId.startsWith(`${customIdPrefix}0`), max: 1 });
 			archetypeCollector.on("collect", collectedInteraction => {
-				//TODONOW race condition check
+				const player = getPlayer(interaction.user.id, interaction.guild.id);
+				const useFreeRoll = player.nextFreeRoll <= Date.now();
+				if (!useFreeRoll && !(player.bonusDrafts > 0)) {
+					collectedInteraction.update({ content: `You don't have any bonus drafts available at the moment. Your next free draft is in <t:${Math.floor(player.nextFreeRoll / 1000)}:R>.` });
+					return;
+				}
+
 				selectedArchetype = collectedInteraction.customId.split(SAFE_DELIMITER)[2];
 				const disabledArchetypeRow = new ActionRowBuilder();
 				for (const option of archetypeOptions.concat("influence")) {
@@ -117,7 +123,13 @@ module.exports = new CommandWrapper(mainId, "Draft licenses from the Adventuring
 
 			const petCollector = reply.createMessageComponentCollector({ filter: (interaction) => interaction.customId.startsWith(`${customIdPrefix}1`), max: 1 });
 			petCollector.on("collect", collectedInteraction => {
-				//TODONOW race condition check
+				const player = getPlayer(interaction.user.id, interaction.guild.id);
+				const useFreeRoll = player.nextFreeRoll <= Date.now();
+				if (!useFreeRoll && !(player.bonusDrafts > 0)) {
+					collectedInteraction.update({ content: `You don't have any bonus drafts available at the moment. Your next free draft is in <t:${Math.floor(player.nextFreeRoll / 1000)}:R>.` });
+					return;
+				}
+
 				selectedPet = collectedInteraction.customId.split(SAFE_DELIMITER)[2];
 				const disabledPetRow = new ActionRowBuilder();
 				for (const option of petOptions.concat("influence")) {
