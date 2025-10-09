@@ -9,7 +9,7 @@ module.exports = new PetTemplate(petName, Colors.LightGrey,
 		"Shiny Stone Tip 1",
 		"Shiny Stone Tip 2",
 		"Shiny Stone Tip 3"
-	]
+	],
 	[
 		[
 			new PetMoveTemplate("Eye-Catcher", "Inflict a random foe with @{mod0Stacks} @{mod0}",
