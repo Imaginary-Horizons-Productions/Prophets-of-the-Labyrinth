@@ -1,4 +1,5 @@
 const { Adventure } = require("./Adventure");
+const { BuildError } = require("./BuildError");
 const { Combatant, Delver } = require("./Combatant");
 const { CombatantReference } = require("./Move");
 
@@ -10,6 +11,11 @@ class PetTemplate {
 	 * @param {PetMoveTemplate[][]} moveFamilies
 	 */
 	constructor(nameInput, colorEnum, tipArray, moveFamilies) {
+		if (!nameInput) throw new BuildError("Falsy nameInput");
+		if (!colorEnum) throw new BuildError("Falsy colorEnum");
+		if (!tipArray) throw new BuildError("Falsy tipArray");
+		if (!moveFamilies) throw new BuildError("Falsy moveFamilies");
+
 		this.name = nameInput;
 		this.color = colorEnum;
 		this.tips = tipArray;
