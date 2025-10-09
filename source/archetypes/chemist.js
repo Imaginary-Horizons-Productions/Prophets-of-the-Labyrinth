@@ -7,6 +7,11 @@ module.exports = new ArchetypeTemplate("Chemist",
 	"A Chemist can assess combatant modifiers and which essence to use to counter them.",
 	"They'll also be able to make items with their Cauldron Stir.",
 	"Light",
+	[
+		"Chemist tip 1",
+		"Chemist tip 2",
+		"Chemist tip 3"
+	],
 	(embed, adventure) => {
 		const eligibleCombatants = adventure.room.enemies.concat(adventure.delvers).filter(combatant => combatant.hp > 0);
 		eligibleCombatants.forEach(combatant => {

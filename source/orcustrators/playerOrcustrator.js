@@ -1,4 +1,5 @@
 const fs = require("fs");
+const crypto = require("crypto");
 const { Player } = require("../classes");
 
 const { getCompany, setCompany } = require("./companyOrcustrator");

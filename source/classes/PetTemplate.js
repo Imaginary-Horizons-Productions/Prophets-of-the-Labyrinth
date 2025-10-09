@@ -6,11 +6,13 @@ class PetTemplate {
 	/**
 	 * @param {string} nameInput
 	 * @param {number} colorEnum
+	 * @param {string[]} tipArray
 	 * @param {PetMoveTemplate[][]} moveFamilies
 	 */
-	constructor(nameInput, colorEnum, moveFamilies) {
+	constructor(nameInput, colorEnum, tipArray, moveFamilies) {
 		this.name = nameInput;
 		this.color = colorEnum;
+		this.tips = tipArray;
 		this.moves = moveFamilies;
 	}
 };

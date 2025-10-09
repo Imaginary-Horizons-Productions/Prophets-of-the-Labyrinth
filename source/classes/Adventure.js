@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { MAX_MESSAGE_ACTION_ROWS, RN_TABLE_BASE, GAME_VERSION } = require("../constants.js");
+const { MAX_MESSAGE_ACTION_ROWS, GAME_VERSION } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
 const { essenceList, getOpposite } = require("../util/essenceUtil.js");

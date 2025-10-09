@@ -1,10 +1,11 @@
+const crypto = require("crypto");
 const { PermissionFlagsBits, InteractionContextType, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, TextDisplayBuilder, ComponentType } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { ICON_CONFIRM, ICON_CANCEL, SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { getPlayer, setPlayer } = require('../orcustrators/playerOrcustrator');
 const { timeConversion, extractFromRNTable } = require('../util/mathUtil');
-const { getAllArchetypeNames } = require('../archetypes/_archetypeDictionary');
-const { PET_NAMES } = require('../pets/_petDictionary');
+const { getAllArchetypeNames, getArchetype } = require('../archetypes/_archetypeDictionary');
+const { PET_NAMES, getPetTemplate } = require('../pets/_petDictionary');
 
 const customIdPrefix = `${SKIP_INTERACTION_HANDLING}${SAFE_DELIMITER}`;
 
@@ -41,6 +42,7 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 
 		let selectedArchetype = null;
 		let selectedPet = null;
+		let influenceBonus = 0;
 		const influenceLabel = "Random (+10% Guild Influence)";
 		/** @type {import('discord.js').APIContainerComponent} */
 		const containerPayload = { type: ComponentType.Container, accent_color: Colors.Aqua };
@@ -70,21 +72,26 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 		}).then(response => response.resource.message).then(reply => {
 			const archetypeCollector = reply.createMessageComponentCollector({ filter: (interaction) => interaction.customId.startsWith(`${customIdPrefix}0`), max: 1 });
 			archetypeCollector.on("collect", collectedInteraction => {
-				const [_, rowIndex, selection] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				selectedArchetype = selection;
+				selectedArchetype = collectedInteraction.customId.split(SAFE_DELIMITER)[2];
 				const disabledArchetypeRow = new ActionRowBuilder();
 				for (const option of archetypeOptions.concat("influence")) {
 					disabledArchetypeRow.addComponents(
 						new ButtonBuilder().setCustomId(`${customIdPrefix}0${SAFE_DELIMITER}${option}`)
 							.setStyle(option === "influence" ? ButtonStyle.Secondary : ButtonStyle.Primary)
-							.setEmoji(selection === option ? ICON_CONFIRM : ICON_CANCEL)
+							.setEmoji(selectedArchetype === option ? ICON_CONFIRM : ICON_CANCEL)
 							.setLabel(option === "influence" ? influenceLabel : option)
 							.setDisabled(true)
 					)
 				}
-				//TODONOW create archetypeTips
-				const archetypeTip = "placeholder arcehtype tip"
-				containerComponents.push(disabledArchetypeRow, new TextDisplayBuilder().setContent(`-# ${archetypeTip}\n## Available Pets`));
+				if (selectedArchetype === "influence") {
+					selectedArchetype = archetypeOptions[extractFromRNTable(rnTable, 2, rnIndex)];
+					rnIndex = (rnIndex + 1) % rnTable.length;
+					influenceBonus++;
+				}
+
+				const archetypeTemplate = getArchetype(selectedArchetype);
+				containerComponents.push(disabledArchetypeRow, new TextDisplayBuilder().setContent(`-# ${archetypeTemplate.tips[extractFromRNTable(rnTable, archetypeTemplate.tips.length, rnIndex)]}\n## Available Pets`));
+				rnIndex = (rnIndex + 1) % rnTable.length;
 				collectedInteraction.update({
 					components: [
 						{
@@ -109,42 +116,38 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 
 			const petCollector = reply.createMessageComponentCollector({ filter: (interaction) => interaction.customId.startsWith(`${customIdPrefix}1`), max: 1 });
 			petCollector.on("collect", collectedInteraction => {
-				const [_, rowIndex, selection] = collectedInteraction.customId.split(SAFE_DELIMITER);
-				selectedPet = selection;
+				selectedPet = collectedInteraction.customId.split(SAFE_DELIMITER)[2];
 				const disabledPetRow = new ActionRowBuilder();
 				for (const option of petOptions.concat("influence")) {
 					disabledPetRow.addComponents(
 						new ButtonBuilder().setCustomId(`${customIdPrefix}1${SAFE_DELIMITER}${option}`)
 							.setStyle(option === "influence" ? ButtonStyle.Secondary : ButtonStyle.Primary)
-							.setEmoji(selection === option ? ICON_CONFIRM : ICON_CANCEL)
+							.setEmoji(selectedPet === option ? ICON_CONFIRM : ICON_CANCEL)
 							.setLabel(option === "influence" ? influenceLabel : option)
 							.setDisabled(true)
 					)
 				}
-				//TODONOW create petTips
-				const petTip = "placeholder pet tip"
-				containerComponents.push(disabledPetRow, new TextDisplayBuilder().setContent(`-# ${petTip}`));
+				if (selectedPet === "influence") {
+					selectedPet = petOptions[extractFromRNTable(rnTable, 2, rnIndex)];
+					rnIndex = (rnIndex + 1) % rnTable.length;
+					influenceBonus++;
+				}
+				const petTemplate = getPetTemplate(selectedPet);
+				containerComponents.push(disabledPetRow, new TextDisplayBuilder().setContent(`-# ${petTemplate.tips[extractFromRNTable(rnTable, petTemplate.tips.length, rnIndex)]}`));
+				rnIndex = (rnIndex + 1) % rnTable.length;
 
-				const influencePercent = [selectedArchetype, selectedPet].filter(selection => selection === "influence").length * 25;
 				// Uniform: 20, 30, 40, or 50 Guild Influence
 				const influenceRoll = 20 + (10 * extractFromRNTable(rnTable, 4, rnIndex));
 				rnIndex = (rnIndex + 1) % rnTable.length;
-				const totalInfluence = Math.ceil(influenceRoll + (influenceRoll * influencePercent / 100));
+				// Skipped Choices yield 25% bonus Guild Influence
+				const totalInfluence = Math.ceil(influenceRoll + (influenceRoll * influenceBonus / 4));
 				player.guildInfluence += totalInfluence;
-				if (selectedArchetype === "influence") {
-					selectedArchetype = archetypeOptions[extractFromRNTable(rnTable, 2, rnIndex)];
-					rnIndex = (rnIndex + 1) % rnTable.length;
-				}
 				if (selectedArchetype in player.archetypes) {
 					player.archetypes[selectedArchetype].specializationsUnlocked = Math.min(player.archetypes[selectedArchetype].specializationsUnlocked + 1, 4);
 				} else {
 					player.archetypes[selectedArchetype] = { specializationsUnlocked: 1, highScore: 0 };
 				}
 
-				if (selectedPet === "influence") {
-					selectedPet = petOptions[extractFromRNTable(rnTable, 2, rnIndex)];
-					rnIndex = (rnIndex + 1) % rnTable.length;
-				}
 				if (selectedPet in player.pets) {
 					player.pets[selectedPet] = Math.min(player.pets[selectedPet] + 1, 4);
 				} else {

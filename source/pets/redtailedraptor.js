@@ -6,6 +6,11 @@ const { getEmoji } = require("../util/essenceUtil");
 const petName = "Red-Tailed Raptor";
 module.exports = new PetTemplate(petName, Colors.Red,
 	[
+		"Red-Tailed Raptor Tip 1",
+		"Red-Tailed Raptor Tip 2",
+		"Red-Tailed Raptor Tip 3"
+	],
+	[
 		[
 			new PetMoveTemplate("Rake", `Deal 15 ${getEmoji("Wind")} to a random foe and grant its owner @{mod0Stacks} @{mod0}`,
 				(owner, petRNs) => petRNs.targetReferences,

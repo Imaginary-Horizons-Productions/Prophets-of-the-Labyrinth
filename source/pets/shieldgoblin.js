@@ -6,6 +6,11 @@ const { dealDamage, changeStagger } = require("../util/combatantUtil");
 const petName = "Shield Goblin";
 module.exports = new PetTemplate(petName, Colors.Green,
 	[
+		"Shield Goblin Tip 1",
+		"Shield Goblin Tip 2",
+		"Shield Goblin Tip 3"
+	],
+	[
 		[
 			new PetMoveTemplate("Prospect", "Find a random amount between 0-5g for the party", (owner, petRNs) => [],
 				(targets, owner, adventure, { petRNs }) => {

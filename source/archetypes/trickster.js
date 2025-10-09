@@ -7,6 +7,11 @@ module.exports = new ArchetypeTemplate("Trickster",
 	"A Trickster can assess combatant modifiers and random outcomes of moves.",
 	"Their Deck of Cards will inflict a random amount of @e{Misfortune} on their target.",
 	"Wind",
+	[
+		"Trickster tip 1",
+		"Trickster tip 2",
+		"Trickster tip 3"
+	],
 	(embed, adventure) => {
 		/** @param {Combatant} combatant */
 		function createModifierField(combatant) {

@@ -6,6 +6,11 @@ const { addModifier, generateModifierResultLines, combineModifierReceipts } = re
 const petName = "Friendly Slime";
 module.exports = new PetTemplate(petName, Colors.Aqua,
 	[
+		"Friendly Slime Tip 1",
+		"Friendly Slime Tip 2",
+		"Friendly Slime Tip 3"
+	],
+	[
 		[
 			new PetMoveTemplate("Toxin Spray", "Inflict @{mod0Stacks} @{mod0} on a random foe",
 				(owner, petRNs) => petRNs.targetReferences,

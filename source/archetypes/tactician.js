@@ -19,6 +19,11 @@ module.exports = new ArchetypeTemplate("Tactician",
 	"A Tactician can predict which combatants will score Criticals and what modifiers they have as well as the party's morale.",
 	"Their Battle Standard increases party morale on a Critical.",
 	"Light",
+	[
+		"Tactician tip 1",
+		"Tactician tip 2",
+		"Tactician tip 3"
+	],
 	(embed, adventure) => {
 		embed.addFields(generateCritAndModifierField(adventure.room.enemies.filter(combatant => combatant.hp > 0), adventure));
 		embed.addFields({ name: "Morale", value: `The party currently has ${adventure.room.morale} morale` });

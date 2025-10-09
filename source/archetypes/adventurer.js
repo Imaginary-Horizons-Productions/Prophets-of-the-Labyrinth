@@ -5,6 +5,11 @@ module.exports = new ArchetypeTemplate("Adventurer",
 	"An Adventurer doesn't predict anything, but has double normal stat growths.",
 	"Their Shortsword grants them @e{Finesse}.",
 	"Fire",
+	[
+		"Adventurer tip 1",
+		"Adventurer tip 2",
+		"Adventurer tip 3",
+	],
 	(embed, adventure) => {
 		const descriptions = [
 			`I'm an adventurer.`,
