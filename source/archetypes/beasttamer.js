@@ -8,6 +8,11 @@ module.exports = new ArchetypeTemplate("Beast Tamer",
 	"A Beast Tamer can predict what moves pets are using, what level the enemies are and how much HP they have.",
 	"Their Stick inflicts @e{Impotence} on their target.",
 	"Earth",
+	[
+		"Beast Tamer tip 1",
+		"Beast Tamer tip 2",
+		"Beast Tamer tip 3"
+	],
 	(embed, adventure) => {
 		const nextPetOwner = adventure.delvers[adventure.petRNs.delverIndex];
 		if (nextPetOwner.pet.type) {

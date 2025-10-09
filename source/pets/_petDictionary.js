@@ -54,7 +54,6 @@ function getPetMove({ type: petName, level }, moveIndex) {
 				`${owner.name}'s ${petName} loafs around.`,
 				`${owner.name}'s ${petName} is doing a rock impression.`,
 				`${owner.name}'s ${petName} does a little hop.`,
-				`${owner.name}'s ${petName} loafs around.`,
 				`${owner.name}'s ${petName} decided to take a nap.`,
 				`${owner.name}'s ${petName} demands additional lumber.`,
 				`${owner.name}'s ${petName} is (now) on cooldown.`
@@ -63,28 +62,6 @@ function getPetMove({ type: petName, level }, moveIndex) {
 		})
 	}
 	return PETS[petName.toLowerCase()].moves[moveIndex][Math.ceil((level - moveIndex) / 2) - 1];
-}
-
-/**
- * @param {number} count
- * @param {boolean} allowDupes
- */
-function rollPets(count, allowDupes) {
-	/** @type {string[]} */
-	const results = [];
-	const pool = [...PET_NAMES];
-	for (let i = 0; i < count; i++) {
-		const randomIndex = Math.floor(pool.length * Math.random());
-		if (allowDupes) {
-			const archetype = pool[randomIndex];
-			if (!results.includes(archetype)) {
-				results.push(archetype);
-			}
-		} else {
-			results.push(...pool.splice(randomIndex, 1));
-		}
-	}
-	return results;
 }
 
 /** @param {Adventure} adventure */
@@ -120,6 +97,5 @@ module.exports = {
 	getPetTemplate,
 	getPetMoveDescription,
 	getPetMove,
-	rollPets,
 	generatePetRNs
 }

@@ -7,6 +7,11 @@ module.exports = new ArchetypeTemplate("Ritualist",
 	"A Ritualist can predict the order combatants will act in and assess HP levels.",
 	"Their Life Drain will allow them to regain HP.",
 	"Darkness",
+	[
+		"Ritualist tip 1",
+		"Ritualist tip 2",
+		"Ritualist tip 3"
+	],
 	(embed, adventure) => {
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
 			.concat(adventure.delvers)

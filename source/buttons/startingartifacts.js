@@ -3,8 +3,9 @@ const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getArtifact, artifactNames } = require('../artifacts/_artifactDictionary');
-const { RN_TABLE_BASE, SKIP_INTERACTION_HANDLING, SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require('../constants');
+const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER, EMPTY_SELECT_OPTION_SET } = require('../constants');
 const { trimForSelectOptionDescription } = require('../util/textUtil');
+const { extractFromRNTable } = require('../util/mathUtil');
 
 const mainId = "startingartifacts";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -26,16 +27,8 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		let artifactBulletList = "";
 		const playerArtifactCollection = Object.values(playerProfile.artifacts);
 		for (let i = 0; i < 5; i++) {
-			const digits = Math.ceil(Math.log2(artifactNames.length) / Math.log2(RN_TABLE_BASE));
-			const end = (start + digits) % adventure.rnTable.length;
-			const max = RN_TABLE_BASE ** digits;
-			const sectionLength = max / artifactNames.length;
-			let tableSegment = adventure.rnTable.slice(start, end);
-			if (start > end) {
-				tableSegment = `${adventure.rnTable.slice(start)}${adventure.rnTable.slice(0, end)}`;
-			}
-			const roll = parseInt(tableSegment, RN_TABLE_BASE);
-			const rolledArtifact = artifactNames[Math.floor(roll / sectionLength)];
+			const randomIndex = extractFromRNTable(adventure.rnTable, artifactNames.length, start);
+			const rolledArtifact = artifactNames[randomIndex];
 			if (!artifactsRolledSoFar.has(rolledArtifact)) {
 				artifactBulletList += `\n- ${rolledArtifact}`;
 				artifactsRolledSoFar.add(rolledArtifact);

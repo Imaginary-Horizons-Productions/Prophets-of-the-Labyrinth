@@ -1,3 +1,5 @@
+const { RN_TABLE_BASE } = require("../constants");
+
 const operationMap = {
 	'+': (first, second) => first + second,
 	'~': (first, second) => first - second,
@@ -44,8 +46,121 @@ function areSetContentsCongruent(firstSet, secondSet) {
 	return true;
 }
 
+/** Convert an amount of time from a starting unit to a different one
+ * @param {number} value
+ * @param {"w" | "d" | "h" | "m" | "s" | "ms"} startingUnit
+ * @param {"w" | "d" | "h" | "m" | "s" | "ms"} resultUnit
+ */
+function timeConversion(value, startingUnit, resultUnit) {
+	const unknownUnits = [];
+	let msPerStartUnit = 1;
+	switch (startingUnit.toLowerCase()) {
+		case "w":
+			msPerStartUnit *= 7;
+		case "d":
+			msPerStartUnit *= 24;
+		case "h":
+			msPerStartUnit *= 60;
+		case "m":
+			msPerStartUnit *= 60;
+		case "s":
+			msPerStartUnit *= 1000;
+		case "ms":
+			msPerStartUnit *= 1;
+			break;
+		default:
+			unknownUnits.push(startingUnit);
+	}
+
+	let msPerResultUnit = 1;
+	switch (resultUnit.toLowerCase()) {
+		case "w":
+			msPerResultUnit *= 7;
+		case "d":
+			msPerResultUnit *= 24;
+		case "h":
+			msPerResultUnit *= 60;
+		case "m":
+			msPerResultUnit *= 60;
+		case "s":
+			msPerResultUnit *= 1000;
+		case "ms":
+			msPerResultUnit *= 1;
+			break;
+		default:
+			unknownUnits.push(resultUnit);
+	}
+	if (!unknownUnits.length) {
+		return value * msPerStartUnit / msPerResultUnit;
+	} else {
+		throw new Error(`Unknown unit used: ${unknownUnits.join(", ")} (allowed units: ms, s, m, h, d, w)`)
+	}
+}
+
+/**
+ * A utility wrapper for @function timeConversion that goes back in time from the current timestamp
+ * @param {{w?: number,
+ * 			d?: number,
+ * 			h?: number,
+ * 			m?: number,
+ * 			s?: number,
+ * 			ms?: number}} timeMap The amount of time to go back in the past
+ */
+function dateInPast(timeMap) {
+	let nowTimestamp = new Date();
+	for (key in timeMap) {
+		nowTimestamp -= timeConversion(timeMap[key], key, 'ms');
+	}
+	return new Date(nowTimestamp);
+}
+
+/**
+ * A utility wrapper for @function timeConversion that goes into the future from the current timestamp
+ * @param {{w?: number,
+* 			d?: number,
+* 			h?: number,
+* 			m?: number,
+* 			s?: number,
+* 			ms?: number}} timeMap The amount of time to go into the future
+*/
+function dateInFuture(timeMap) {
+	let nowTimestamp = new Date();
+	for (key in timeMap) {
+		nowTimestamp += timeConversion(timeMap[key], key, 'ms');
+	}
+	return new Date(nowTimestamp);
+}
+
+/** Decodes the next value from `startIndex` on the given random number `table` for a range between [0, `exclusiveMax`)
+ * @param {string} table represents a base 16 sequence of randomized values
+ * @param {number} exclusiveMax
+ * @param {number} startIndex
+ */
+function extractFromRNTable(table, exclusiveMax, startIndex) {
+	if (exclusiveMax === 1) {
+		return 0;
+	} else {
+		const digits = Math.ceil(Math.log2(exclusiveMax) / Math.log2(RN_TABLE_BASE));
+		const endIndex = (startIndex + digits) % table.length;
+		const max = RN_TABLE_BASE ** digits;
+		const sectionLength = max / exclusiveMax;
+		let tableSegment;
+		if (endIndex > startIndex) {
+			tableSegment = table.slice(startIndex, endIndex);
+		} else {
+			tableSegment = `${table.slice(startIndex)}${table.slice(0, endIndex)}`;
+		}
+		const roll = parseInt(tableSegment, RN_TABLE_BASE);
+		return Math.floor(roll / sectionLength);
+	}
+}
+
 module.exports = {
 	parseExpression,
 	anyDieSucceeds,
-	areSetContentsCongruent
+	areSetContentsCongruent,
+	timeConversion,
+	dateInPast,
+	dateInFuture,
+	extractFromRNTable
 };

@@ -8,6 +8,11 @@ module.exports = new ArchetypeTemplate("Rogue",
 	"A Rogue can predict which combatants will critically hit and which essence to use to counter each combatant.",
 	"Their Daggers gives them @e{Excellence}.",
 	"Fire",
+	[
+		"Rogue tip 1",
+		"Rogue tip 2",
+		"Rogue tip 3"
+	],
 	(embed, adventure) => {
 		/** @param {Combatant} combatant */
 		function createEssenceAndCritField(combatant) {

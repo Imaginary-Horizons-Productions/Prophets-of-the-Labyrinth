@@ -6,6 +6,9 @@ class Player {
 		this.id = idInput;
 		this.nextFreeRoll = Date.now();
 	}
+	bonusDrafts = 0;
+	guildInfluence = 0;
+	draftCount = 0;
 	/** @type {{[guildId: string]: {total: number, high: number}}} */
 	scores = {};
 	/** @type {{[adventureId: string]: string}} adventureId for the adventure unlocked, pointing to artifact name */

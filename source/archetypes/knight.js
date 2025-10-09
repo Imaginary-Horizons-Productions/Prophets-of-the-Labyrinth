@@ -7,6 +7,11 @@ module.exports = new ArchetypeTemplate("Knight",
 	"A Knight can predict who enemies are targeting with which moves and the order combatants will act in.",
 	"Their Lance will grant them protection.",
 	"Water",
+	[
+		"Knight tip 1",
+		"Knight tip 2",
+		"Knight tip 3"
+	],
 	(embed, adventure) => {
 		const activeCombatants = adventure.room.enemies.filter(enemy => enemy.hp > 0)
 			.concat(adventure.delvers)

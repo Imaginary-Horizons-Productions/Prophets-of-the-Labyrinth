@@ -7,6 +7,11 @@ module.exports = new ArchetypeTemplate("Martial Artist",
 	"A Martial Artist assess combatant how much Stagger to Stun each combatant and what moves enemies will be using this and next round.",
 	"Their Flourish inflicts @e{Distraction} on their target.",
 	"Darkness",
+	[
+		"Martial Artist tip 1",
+		"Martial Artist tip 2",
+		"Martial Artist tip 3"
+	],
 	(embed, adventure) => {
 		embed.addFields({
 			name: "Enemies",

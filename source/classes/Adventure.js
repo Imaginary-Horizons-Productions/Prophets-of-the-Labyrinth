@@ -1,9 +1,9 @@
 const crypto = require("crypto");
-const { RN_TABLE_BASE, GAME_VERSION } = require("../constants.js");
+const { GAME_VERSION } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
 const { essenceList, getOpposite } = require("../util/essenceUtil.js");
-const { parseExpression } = require("../util/mathUtil.js");
+const { parseExpression, extractFromRNTable } = require("../util/mathUtil.js");
 const { MessageLimits } = require("@sapphire/discord.js-utilities");
 
 /** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} Essence */
@@ -95,22 +95,11 @@ class Adventure {
 			throw new Error(`generateRandomNumber recieved invalid exclusiveMax: ${exclusiveMax}`);
 		}
 
-		if (exclusiveMax === 1) {
-			return 0;
-		} else {
-			const digits = Math.ceil(Math.log2(exclusiveMax) / Math.log2(RN_TABLE_BASE));
-			const start = this.rnIndices[branch];
-			const end = start + digits;
-			this.rnIndices[branch] = end % this.rnTable.length;
-			const max = RN_TABLE_BASE ** digits;
-			const sectionLength = max / exclusiveMax;
-			let tableSegment = this.rnTable.slice(start, end);
-			if (start > end) {
-				tableSegment = `${this.rnTable.slice(start)}${this.rnTable.slice(0, end)}`;
-			}
-			const roll = parseInt(tableSegment, RN_TABLE_BASE);
-			return Math.floor(roll / sectionLength);
+		const result = extractFromRNTable(this.rnTable, exclusiveMax, this.rnIndices[branch]);
+		if (exclusiveMax > 1) {
+			this.rnIndices[branch] = (this.rnIndices[branch] + 1) % this.rnTable.length;
 		}
+		return result;
 	}
 
 	getCombatState() {
