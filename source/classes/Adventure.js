@@ -1,9 +1,8 @@
-const crypto = require("crypto");
 const { GAME_VERSION } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
 const { essenceList, getOpposite } = require("../util/essenceUtil.js");
-const { parseExpression, extractFromRNTable } = require("../util/mathUtil.js");
+const { parseExpression, extractFromRNTable, createRNTable } = require("../util/mathUtil.js");
 const { MessageLimits } = require("@sapphire/discord.js-utilities");
 
 /** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} Essence */
@@ -20,7 +19,7 @@ class Adventure {
 	constructor(seedInput, guildIdInput, labyrinthInput, leaderIdInput) {
 		this.version = GAME_VERSION;
 		this.initialSeed = seedInput || Date.now().toString();
-		this.rnTable = crypto.createHash("sha256").update(this.initialSeed).digest("hex");
+		this.rnTable = createRNTable(this.initialSeed);
 		this.guildId = guildIdInput;
 		this.labyrinth = labyrinthInput;
 		this.leaderId = leaderIdInput;

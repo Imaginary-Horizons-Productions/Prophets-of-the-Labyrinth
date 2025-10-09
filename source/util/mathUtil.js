@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const { RN_TABLE_BASE } = require("../constants");
 
 const operationMap = {
@@ -131,6 +132,14 @@ function dateInFuture(timeMap) {
 	return new Date(nowTimestamp);
 }
 
+/** Creates 64 random values in base 16 concatenated together as a string
+ * @param {crypto.BinaryLike} seed
+ */
+function createRNTable(seed) {
+	const { pepper } = require("../../config/auth.json");
+	return crypto.createHash("sha256").update(`${pepper}${seed}`).digest("hex");
+}
+
 /** Decodes the next value from `startIndex` on the given random number `table` for a range between [0, `exclusiveMax`)
  * @param {string} table represents a base 16 sequence of randomized values
  * @param {number} exclusiveMax
@@ -162,5 +171,6 @@ module.exports = {
 	timeConversion,
 	dateInPast,
 	dateInFuture,
+	createRNTable,
 	extractFromRNTable
 };

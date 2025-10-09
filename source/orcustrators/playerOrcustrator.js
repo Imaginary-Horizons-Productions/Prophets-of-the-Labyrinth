@@ -1,5 +1,4 @@
 const fs = require("fs");
-const crypto = require("crypto");
 const { Player } = require("../classes");
 
 const { getCompany, setCompany } = require("./companyOrcustrator");
@@ -7,7 +6,7 @@ const { getCompany, setCompany } = require("./companyOrcustrator");
 const { ensuredPathSave } = require("../util/fileUtil.js");
 const { getAllArchetypeNames } = require("../archetypes/_archetypeDictionary.js");
 const { PET_NAMES } = require("../pets/_petDictionary.js");
-const { extractFromRNTable } = require("../util/mathUtil.js");
+const { extractFromRNTable, createRNTable } = require("../util/mathUtil.js");
 
 const dirPath = "./saves"
 const fileName = "players.json";
@@ -36,7 +35,7 @@ async function loadPlayers() {
  */
 function getPlayer(playerId, guildId) {
 	if (!playerDictionary.has(playerId)) {
-		const rnTable = crypto.createHash("sha256").update(Date.now()).digest("hex");
+		const rnTable = createRNTable(Date.now());
 		let rnIndex = 0;
 		const player = new Player(playerId);
 

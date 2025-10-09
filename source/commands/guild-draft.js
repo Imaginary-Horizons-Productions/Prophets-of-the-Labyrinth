@@ -1,9 +1,8 @@
-const crypto = require("crypto");
 const { PermissionFlagsBits, InteractionContextType, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, TextDisplayBuilder, ComponentType } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { ICON_CONFIRM, ICON_CANCEL, SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { getPlayer, setPlayer } = require('../orcustrators/playerOrcustrator');
-const { timeConversion, extractFromRNTable } = require('../util/mathUtil');
+const { timeConversion, extractFromRNTable, createRNTable } = require('../util/mathUtil');
 const { getAllArchetypeNames, getArchetype } = require('../archetypes/_archetypeDictionary');
 const { PET_NAMES, getPetTemplate } = require('../pets/_petDictionary');
 
@@ -20,7 +19,7 @@ module.exports = new CommandWrapper(mainId, "Draft licenses from the Adventuring
 		}
 
 		// Random Numbers generated from player id and draft count to avoid players seeing results then rerolling before committing draft
-		const rnTable = crypto.createHash("sha256").update(`${interaction.user.id}${player.draftCount}`).digest("hex");
+		const rnTable = createRNTable(`${interaction.user.id}${player.draftCount}`);
 		let rnIndex = 0;
 
 		const archetypePool = getAllArchetypeNames();
