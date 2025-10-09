@@ -124,16 +124,8 @@ function generateAdventureConfigMessage() {
 				new ButtonBuilder().setCustomId("ready")
 					.setLabel("Ready!")
 					.setStyle(ButtonStyle.Primary),
-				new ButtonBuilder().setCustomId("deploy")
-					.setEmoji(ICON_ARCHETYPE)
-					.setLabel("Pick Archetype")
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder().setCustomId("deploypet")
-					.setEmoji(ICON_PET)
-					.setLabel("Bring a Pet")
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder().setCustomId("startingartifacts")
-					.setLabel("Pick Starting Artifact")
+				new ButtonBuilder().setCustomId("customizeloadout")
+					.setLabel("Customize Loadout")
 					.setStyle(ButtonStyle.Success)
 			),
 			new ActionRowBuilder().addComponents(
