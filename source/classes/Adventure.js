@@ -1,9 +1,10 @@
 const crypto = require("crypto");
-const { MAX_MESSAGE_ACTION_ROWS, GAME_VERSION } = require("../constants.js");
+const { GAME_VERSION } = require("../constants.js");
 const { CombatantReference, Move } = require("./Move.js");
 const { Combatant, Delver } = require("./Combatant.js");
 const { essenceList, getOpposite } = require("../util/essenceUtil.js");
 const { parseExpression, extractFromRNTable } = require("../util/mathUtil.js");
+const { MessageLimits } = require("@sapphire/discord.js-utilities");
 
 /** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} Essence */
 const ESSENCES = essenceList();
@@ -157,7 +158,7 @@ class Adventure {
 
 	getGearCapacity() {
 		let count = this.gearCapacity + this.getArtifactCount("Hammerspace Holster") - this.getChallengeIntensity("Can't Hold All this Value");
-		count = Math.min(MAX_MESSAGE_ACTION_ROWS - 1, count); // Need to leave space for Archetype Action
+		count = Math.min(MessageLimits.MaximumActionRows - 1, count); // Need to leave space for Archetype Action
 		count = Math.max(1, count);
 		return count;
 	}
