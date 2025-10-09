@@ -107,10 +107,10 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 				const petTip = "placeholder pet tip"
 				containerComponents.push(disabledPetRow, new TextDisplayBuilder().setContent(`-# ${petTip}`));
 
-				const influencePercent = [selectedArchetype, selectedPet].filter(selection => selection === "influence").length * 10;
+				const influencePercent = [selectedArchetype, selectedPet].filter(selection => selection === "influence").length * 25;
 				//TODONOW more secure RNG
-				//TODONOW tune influence boundaries
-				const influenceRoll = 10 + (90 * Math.random());
+				// Uniform: 20, 30, 40, or 50 Guild Influence
+				const influenceRoll = 20 + (10 * Math.floor(4 * Math.random()));
 				const totalInfluence = Math.ceil(influenceRoll + (influenceRoll * influencePercent / 100));
 				player.guildInfluence += totalInfluence;
 				if (selectedArchetype === "influence") {
