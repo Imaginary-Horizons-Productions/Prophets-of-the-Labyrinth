@@ -4,8 +4,9 @@ const { Player } = require("../classes");
 const { getCompany, setCompany } = require("./companyOrcustrator");
 
 const { ensuredPathSave } = require("../util/fileUtil.js");
-const { rollArchetypes } = require("../archetypes/_archetypeDictionary.js");
-const { rollPets } = require("../pets/_petDictionary.js");
+const { getAllArchetypeNames } = require("../archetypes/_archetypeDictionary.js");
+const { PET_NAMES } = require("../pets/_petDictionary.js");
+const { extractFromRNTable } = require("../util/mathUtil.js");
 
 const dirPath = "./saves"
 const fileName = "players.json";
@@ -34,13 +35,22 @@ async function loadPlayers() {
  */
 function getPlayer(playerId, guildId) {
 	if (!playerDictionary.has(playerId)) {
+		const rnTable = crypto.createHash("sha256").update(Date.now()).digest("hex");
+		let rnIndex = 0;
 		const player = new Player(playerId);
-		rollArchetypes(3, false).forEach(archetype => {
+
+		const archetypePool = getAllArchetypeNames();
+		for (let i = 0; i < 3; i++) {
+			const randomIndex = extractFromRNTable(rnTable, archetypePool.length, rnIndex);
+			rnIndex = (rnIndex + 1) % rnTable.length;
+			const [archetype] = archetypePool.splice(randomIndex, 1);
 			player.archetypes[archetype] = { specializationsUnlocked: 1, highScore: 0 };
-		})
-		rollPets(1, false).forEach(pet => {
-			player.pets[pet] = 1;
-		})
+		}
+
+		const petPool = [...PET_NAMES];
+		const randomIndex = extractFromRNTable(rnTable, petPool.length, rnIndex);
+		player.pets[petPool[randomIndex]] = 1;
+
 		setPlayer(player);
 		const company = getCompany(guildId);
 		company.userIds.push(playerId);

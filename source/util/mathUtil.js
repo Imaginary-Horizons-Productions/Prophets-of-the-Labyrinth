@@ -1,3 +1,5 @@
+const { RN_TABLE_BASE } = require("../constants");
+
 const operationMap = {
 	'+': (first, second) => first + second,
 	'~': (first, second) => first - second,
@@ -129,11 +131,36 @@ function dateInFuture(timeMap) {
 	return new Date(nowTimestamp);
 }
 
+/** Decodes the next value from `startIndex` on the given random number `table` for a range between [0, `exclusiveMax`)
+ * @param {string} table represents a base 16 sequence of randomized values
+ * @param {number} exclusiveMax
+ * @param {number} startIndex
+ */
+function extractFromRNTable(table, exclusiveMax, startIndex) {
+	if (exclusiveMax === 1) {
+		return 0;
+	} else {
+		const digits = Math.ceil(Math.log2(exclusiveMax) / Math.log2(RN_TABLE_BASE));
+		const endIndex = (startIndex + digits) % table.length;
+		const max = RN_TABLE_BASE ** digits;
+		const sectionLength = max / exclusiveMax;
+		let tableSegment;
+		if (endIndex > startIndex) {
+			tableSegment = table.slice(startIndex, endIndex);
+		} else {
+			tableSegment = `${table.slice(startIndex)}${table.slice(0, endIndex)}`;
+		}
+		const roll = parseInt(tableSegment, RN_TABLE_BASE);
+		return Math.floor(roll / sectionLength);
+	}
+}
+
 module.exports = {
 	parseExpression,
 	anyDieSucceeds,
 	areSetContentsCongruent,
 	timeConversion,
 	dateInPast,
-	dateInFuture
+	dateInFuture,
+	extractFromRNTable
 };

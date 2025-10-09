@@ -8,5 +8,8 @@ players.forEach(player => {
 	if (!("guildInfluence" in player)) {
 		player.guildInfluence = 0;
 	}
+	if (!("draftCount" in player)) {
+		player.draftCount = 0;
+	}
 })
 ensuredPathSave("./Saves", "players.json", JSON.stringify(players));

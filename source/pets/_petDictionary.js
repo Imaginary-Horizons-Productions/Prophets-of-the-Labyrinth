@@ -64,29 +64,6 @@ function getPetMove({ type: petName, level }, moveIndex) {
 	return PETS[petName.toLowerCase()].moves[moveIndex][Math.ceil((level - moveIndex) / 2) - 1];
 }
 
-/**
- * @param {number} count
- * @param {boolean} allowDupes
- */
-function rollPets(count, allowDupes) {
-	/** @type {string[]} */
-	const results = [];
-	const pool = [...PET_NAMES];
-	for (let i = 0; i < count; i++) {
-		//TODONOW more secure RNG
-		const randomIndex = Math.floor(pool.length * Math.random());
-		if (allowDupes) {
-			const archetype = pool[randomIndex];
-			if (!results.includes(archetype)) {
-				results.push(archetype);
-			}
-		} else {
-			results.push(...pool.splice(randomIndex, 1));
-		}
-	}
-	return results;
-}
-
 /** @param {Adventure} adventure */
 function generatePetRNs(adventure) {
 	const owner = adventure.delvers[adventure.petRNs.delverIndex];
@@ -120,6 +97,5 @@ module.exports = {
 	getPetTemplate,
 	getPetMoveDescription,
 	getPetMove,
-	rollPets,
 	generatePetRNs
 }
