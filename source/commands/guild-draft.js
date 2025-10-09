@@ -72,6 +72,7 @@ module.exports = new CommandWrapper(mainId, "Draft licenses from the Adventuring
 		}).then(response => response.resource.message).then(reply => {
 			const archetypeCollector = reply.createMessageComponentCollector({ filter: (interaction) => interaction.customId.startsWith(`${customIdPrefix}0`), max: 1 });
 			archetypeCollector.on("collect", collectedInteraction => {
+				// Validate not using stale buttons
 				const player = getPlayer(interaction.user.id, interaction.guild.id);
 				const useFreeRoll = player.nextFreeRoll <= Date.now();
 				if (!useFreeRoll && !(player.bonusDrafts > 0)) {
@@ -123,6 +124,7 @@ module.exports = new CommandWrapper(mainId, "Draft licenses from the Adventuring
 
 			const petCollector = reply.createMessageComponentCollector({ filter: (interaction) => interaction.customId.startsWith(`${customIdPrefix}1`), max: 1 });
 			petCollector.on("collect", collectedInteraction => {
+				// Validate not using stale buttons
 				const player = getPlayer(interaction.user.id, interaction.guild.id);
 				const useFreeRoll = player.nextFreeRoll <= Date.now();
 				if (!useFreeRoll && !(player.bonusDrafts > 0)) {
