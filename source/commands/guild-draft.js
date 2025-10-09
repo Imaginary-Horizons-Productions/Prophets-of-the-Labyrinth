@@ -10,8 +10,7 @@ const { PET_NAMES, getPetTemplate } = require('../pets/_petDictionary');
 const customIdPrefix = `${SKIP_INTERACTION_HANDLING}${SAFE_DELIMITER}`;
 
 const mainId = "guild-draft";
-//TODONOW write description
-module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.ViewChannel, false, [InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel], 3000,
+module.exports = new CommandWrapper(mainId, "Draft licenses from the Adventuring Guild to delve as different archetypes or bring different pets", PermissionFlagsBits.ViewChannel, false, [InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel], 3000,
 	(interaction) => {
 		const player = getPlayer(interaction.user.id, interaction.guild.id);
 		const useFreeRoll = player.nextFreeRoll <= Date.now();
@@ -46,8 +45,9 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 		const influenceLabel = "Random (+10% Guild Influence)";
 		/** @type {import('discord.js').APIContainerComponent} */
 		const containerPayload = { type: ComponentType.Container, accent_color: Colors.Aqua };
-		//TODONOW send message with instructions ("this will use one of your bonus drafts" if applicable, "randoms stack additively", "Pets max out at level 4", "Archetypes max out at level 4")
-		const containerComponents = [new TextDisplayBuilder().setContent("# The Guild Draft\nplaceholder\n## Available Archetypes")];
+		const SPECIALIZATIONS_PER_ARCHETYPE = 4;
+		const MAX_PET_LEVEL = 4;
+		const containerComponents = [new TextDisplayBuilder().setContent(`# The Guild Draft\nDrafting licenses from the Adventuring Guild allows you to delve into labyrinths as different archetypes and bring different pets. Drafting also earns some Guild Influence, which is used for unlocking archetype specializations and leveling-up pets.\n\n${useFreeRoll ? "This draft will use your weekly free draft." : `This draft will use 1 of your ${player.bonusDrafts} bonus drafts.`} The draft will be recorded when you make the final selection (pet).\n### Duplicates\nUnlocking new Archetype Specializations require drafting a duplicate of that Archetype and spending some Guild Influence. Archetypes currently have ${SPECIALIZATIONS_PER_ARCHETYPE} Specializations to unlock.\n\nLeveling-up a pet requires drafting a duplicate of that pet and spending some Guild Influence. Pet levels currently max out at Level ${MAX_PET_LEVEL}.\n## Available Archetypes`)];
 		interaction.reply({
 			components: [
 				{
@@ -72,6 +72,7 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 		}).then(response => response.resource.message).then(reply => {
 			const archetypeCollector = reply.createMessageComponentCollector({ filter: (interaction) => interaction.customId.startsWith(`${customIdPrefix}0`), max: 1 });
 			archetypeCollector.on("collect", collectedInteraction => {
+				//TODONOW race condition check
 				selectedArchetype = collectedInteraction.customId.split(SAFE_DELIMITER)[2];
 				const disabledArchetypeRow = new ActionRowBuilder();
 				for (const option of archetypeOptions.concat("influence")) {
@@ -116,6 +117,7 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 
 			const petCollector = reply.createMessageComponentCollector({ filter: (interaction) => interaction.customId.startsWith(`${customIdPrefix}1`), max: 1 });
 			petCollector.on("collect", collectedInteraction => {
+				//TODONOW race condition check
 				selectedPet = collectedInteraction.customId.split(SAFE_DELIMITER)[2];
 				const disabledPetRow = new ActionRowBuilder();
 				for (const option of petOptions.concat("influence")) {
@@ -143,13 +145,13 @@ module.exports = new CommandWrapper(mainId, "description", PermissionFlagsBits.V
 				const totalInfluence = Math.ceil(influenceRoll + (influenceRoll * influenceBonus / 4));
 				player.guildInfluence += totalInfluence;
 				if (selectedArchetype in player.archetypes) {
-					player.archetypes[selectedArchetype].specializationsUnlocked = Math.min(player.archetypes[selectedArchetype].specializationsUnlocked + 1, 4);
+					player.archetypes[selectedArchetype].specializationsUnlocked = Math.min(player.archetypes[selectedArchetype].specializationsUnlocked + 1, SPECIALIZATIONS_PER_ARCHETYPE);
 				} else {
 					player.archetypes[selectedArchetype] = { specializationsUnlocked: 1, highScore: 0 };
 				}
 
 				if (selectedPet in player.pets) {
-					player.pets[selectedPet] = Math.min(player.pets[selectedPet] + 1, 4);
+					player.pets[selectedPet] = Math.min(player.pets[selectedPet] + 1, MAX_PET_LEVEL);
 				} else {
 					player.pets[selectedPet] = 1;
 				}
