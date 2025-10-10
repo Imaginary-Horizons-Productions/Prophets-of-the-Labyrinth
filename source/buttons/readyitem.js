@@ -28,11 +28,11 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				new ActionRowBuilder().addComponents(
 					new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${SAFE_DELIMITER}${adventure.depth}${SAFE_DELIMITER}${adventure.room.round}`)
 						.setPlaceholder("Pick an item...")
-						.addOptions(Object.keys(adventure.items).slice(0, SelectMenuLimits.MaximumOptionsLength).reduce((options, item) => options.concat({
+						.addOptions(Object.keys(adventure.items).slice(0, SelectMenuLimits.MaximumOptionsLength).map(item => ({
 							label: `${item} (Held: ${adventure.items[item]})`,
 							description: trimForSelectOptionDescription(injectApplicationEmojiName(getItem(item).description)),
 							value: item
-						}), [])))
+						}))))
 			],
 			flags: [MessageFlags.Ephemeral],
 			withResponse: true

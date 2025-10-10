@@ -4,7 +4,7 @@ const { ArtifactTemplate, Adventure } = require("../classes");
 const ARTIFACTS = {};
 const ARTIFACT_NAMES = [];
 
-/** @type {{"Earth": ArtifactTemplate[], "Wind": ArtifactTemplate[], "Water": ArtifactTemplate[], "Fire": ArtifactTemplate[], "Unaligned": ArtifactTemplate[]}} */
+/** @type {{"Earth": string[], "Wind": string[], "Water": string[], "Fire": string[], "Unaligned": string[]}} */
 const ROLL_TABLE = {
 	Darkness: [],
 	Earth: [],
@@ -56,7 +56,7 @@ function getArtifactCounts() {
 /** @param {Adventure} adventure */
 function rollArtifact(adventure) {
 	/** @type {string[]} */
-	const artifactPool = adventure.getPartyEssences().reduce((artifacts, essence) => artifacts.concat(ROLL_TABLE[essence]), []);
+	const artifactPool = adventure.getPartyEssences().flatMap(essence => ROLL_TABLE[essence]);
 	return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 }
 
@@ -66,7 +66,7 @@ function rollArtifact(adventure) {
  */
 function rollArtifactWithExclusions(adventure, exclusions = []) {
 	/** @type {string[]} */
-	const artifactPool = adventure.getPartyEssences().reduce((artifacts, essence) => artifacts.concat(ROLL_TABLE[essence]), []).filter(artifact => !exclusions.includes(artifact));
+	const artifactPool = adventure.getPartyEssences().flatMap(essence => ROLL_TABLE[essence]).filter(artifact => !exclusions.includes(artifact));
 	if (artifactPool.length > 0) {
 		return artifactPool[adventure.generateRandomNumber(artifactPool.length, "general")];
 	} else {
