@@ -2,7 +2,7 @@
 A multiplayer rougelike dungeon crawl in Discord to play with other server members.
 
 ## Join Link
-[Click here](https://discord.com/api/oauth2/authorize?client_id=950469509628702740&permissions=397284665360&scope=bot%20applications.commands) to add Prophets of the Labyrinth to your server! The bot will be managable by anyone who has a role above the bot's roles, so make sure to check role order when the bot joins!
+[Click here](https://discord.com/oauth2/authorize?client_id=950469509628702740&permissions=2252162738612224&integration_type=0&scope=bot) to add Prophets of the Labyrinth to your server! The bot will be managable by anyone who has a role above the bot's roles, so make sure to check role order when the bot joins!
 
 ## Features and Gameplay
 Check out some of the unique features and gameplay for *Prophets of the Labyrinth*:
