@@ -1,8 +1,18 @@
 # Prophets of the Labyrinth
 A multiplayer rougelike dungeon crawl in Discord to play with other server members.
 
-## Join Link
-[Click here](https://discord.com/oauth2/authorize?client_id=950469509628702740&permissions=2252162738612224&integration_type=0&scope=bot) to add Prophets of the Labyrinth to your server! The bot will be managable by anyone who has a role above the bot's roles, so make sure to check role order when the bot joins!
+## Adding PotL to your Server
+[Click here](https://discord.com/oauth2/authorize?client_id=950469509628702740&permissions=2252143411128320&integration_type=0&scope=bot) to add Prophets of the Labyrinth to your server! The bot will be managable by anyone who has a role above the bot's roles, so make sure to check role order when the bot joins!
+
+### Permissions
+Here are the permissions *Prophets of the Labyrinth* asks for and a summary of what they'll be used for:
+- Send Messages: PotL responds to commands and game state changes in text channels
+- Create Private Threads: Dungeon delves are done in private threads to avoid spamming non-players
+- Send Messages in Threads: PotL sends game updates in dungeon delve threads
+- Manage Messages: Game state changes sometimes necessitate message editing and clean-up
+- Pin Messages: UI and controls information are pinned in delve threads
+- Embed Links: PotL refers users to its github for documentation and feedback
+- Attach Files: Overflowing messages (such as the full patch notes) are attached as text files
 
 ## Features and Gameplay
 Check out some of the unique features and gameplay for *Prophets of the Labyrinth*:

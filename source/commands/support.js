@@ -13,7 +13,7 @@ module.exports = new CommandWrapper(mainId, "List ways to support PotL", null, f
 						.setThumbnail(`https://cdn.discordapp.com/attachments/545684759276421120/734202424960745545/love-mystery.png`)
 						.setDescription("Thanks for playing! Here are a few ways to support development:")
 						.addFields(
-							{ name: "Tell a Friend", value: "Use or send [this link](https://discord.com/oauth2/authorize?client_id=950469509628702740&permissions=2252162738612224&integration_type=0&scope=bot) to a friend to add PotL to a new Discord server!" },
+							{ name: "Tell a Friend", value: "Use or send [this link](https://discord.com/oauth2/authorize?client_id=950469509628702740&permissions=2252143411128320&integration_type=0&scope=bot) to a friend to add PotL to a new Discord server!" },
 							{ name: "Provide Feedback", value: "Use the `/feedback` command to submit bug reports, feature requests, or balance suggestions and get an invite to the Imaginary Horizons Productions test server." },
 							{ name: "Check out the GitHub", value: "Check out our [GitHub](https://github.com/Imaginary-Horizons-Productions) and tackle some issues or sponsor the project!" },
 						)
