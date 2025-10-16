@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { gainHealth, dealDamage, changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { gainHealth, dealDamage, changeStagger, generateModifierResultLines, addModifier, downedCheck } = require('../util/combatantUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 //#region Base
