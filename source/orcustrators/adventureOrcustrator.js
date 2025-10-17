@@ -1075,7 +1075,7 @@ function resolveMove(move, adventure) {
 		}
 	}
 
-	return `${headline}${resultLines.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
+	return `${headline}${resultLines.reduce((contextLines, currentLine) => `${contextLines}\n-# ${currentLine}`, "")}\n`;
 }
 
 const RETAINING_MODIFIER_PAIRS = [["Exposure", "Distraction"], ["Evasion", "Vigilance"]];
