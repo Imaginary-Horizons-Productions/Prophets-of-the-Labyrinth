@@ -23,7 +23,7 @@ class Receipt {
 		this.healingMap = healingsArray ? new Map(healingsArray) : new Map();
 		this.addedModifiers = addedModifierEmojiArray ? new Set(addedModifierEmojiArray) : new Set();
 		this.removedModifiers = removedModifierEmojiArray ? new Set(removedModifierEmojiArray) : new Set();
-		this.stagger = bonusStagger;
+		this.stagger = bonusStagger || null;
 	}
 
 	/** @param {Receipt} incomingReceipt */
