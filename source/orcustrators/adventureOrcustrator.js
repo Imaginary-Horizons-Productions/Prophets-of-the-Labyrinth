@@ -824,7 +824,11 @@ function processResults(results) {
 			if (result.healingMap.size > 0) {
 				const healings = [];
 				for (const [source, magnitude] of result.healingMap) {
-					healings.push(`${magnitude} (${source})`)
+					if (source) {
+						healings.push(`${magnitude} (${source})`)
+					} else {
+						healings.push(magnitude);
+					}
 				}
 
 				if (result.combatantNames.size > 1) {
