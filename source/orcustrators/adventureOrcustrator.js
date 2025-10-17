@@ -896,7 +896,7 @@ function resolveMove(move, adventure) {
 	}
 
 	let headline = `${bold(user.name)} `;
-	const results = [];
+	const resultLines = [];
 	const [moveName, index] = move.name.split(SAFE_DELIMITER);
 	if (!user.isStunned || moveName.startsWith("Unstoppable") || move.type === "pet") {
 		if (user.crit && move.type !== "pet") {
@@ -983,10 +983,10 @@ function resolveMove(move, adventure) {
 			})
 			if (livingTargets.length > 0) {
 				if (deadTargets.length > 0) {
-					results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
+					resultLines.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 				}
 
-				results.push(...processResults(effect(livingTargets, user, adventure, { petRNs: adventure.petRNs })));
+				resultLines.push(...processResults(effect(livingTargets, user, adventure, { petRNs: adventure.petRNs })));
 			} else {
 				shouldDoGearUpkeep = false;
 				if (move.targets.length === 1) {
@@ -996,7 +996,7 @@ function resolveMove(move, adventure) {
 				}
 			}
 		} else {
-			results.push(...processResults(effect([], user, adventure, { petRNs: adventure.petRNs })));
+			resultLines.push(...processResults(effect([], user, adventure, { petRNs: adventure.petRNs })));
 		}
 
 		if (shouldDoGearUpkeep) {
@@ -1036,7 +1036,7 @@ function resolveMove(move, adventure) {
 			if (getGearProperty(moveName, "maxCharges") > 0) {
 				gear.charges--;
 				if (gear.charges < 1) {
-					results.push(`${user.name}'s ${moveName} is exhausted!`);
+					resultLines.push(`${user.name}'s ${moveName} is exhausted!`);
 				}
 			}
 		}
@@ -1044,18 +1044,18 @@ function resolveMove(move, adventure) {
 		const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
 		if (insigniaCount > 0 && user.team === "delver" && user.crit && move.type !== "pet") {
 			const insigniaHealing = insigniaCount * 15;
-			results.push(receiptToResultLine(gainHealth(user, insigniaHealing, adventure, "Celestial Knight Insigina")));
+			resultLines.push(processResults(gainHealth(user, insigniaHealing, adventure, "Celestial Knight Insigina")));
 			adventure.updateArtifactStat("Health Restored", insigniaHealing);
 		}
 	} else {
 		headline = `${ICON_STAGGER} ${headline} is Stunned!`;
 		if ("Progress" in user.modifiers) {
-			results.push(`${user.name} loses some ${getApplicationEmojiMarkdown("Progress")}!`)
+			resultLines.push(`${user.name} loses some ${getApplicationEmojiMarkdown("Progress")}!`)
 			user.modifiers.Progress = Math.ceil(user.getModifierStacks("Progress") * 0.8);
 		}
 
 		if ("Frailty" in user.modifiers) {
-			results.push(...receiptToResultLine(dealModifierDamage(user, "Frailty", adventure)));
+			resultLines.push(...processResults(dealModifierDamage(user, "Frailty", adventure)))
 			removeModifier([user], { name: "Frailty", stacks: "all" });
 		}
 	}
@@ -1063,11 +1063,11 @@ function resolveMove(move, adventure) {
 	if (move.type !== "pet") {
 		// Poison/Regeneneration effect
 		if ("Poison" in user.modifiers) {
-			results.push(...receiptToResultLine(dealModifierDamage(user, "Poison", adventure)));
+			resultLines.push(...processResults(dealModifierDamage(user, "Poison", adventure)))
 		} else {
 			const regenStacks = user.getModifierStacks("Regeneration");
 			if (regenStacks) {
-				results.push(receiptToResultLine(gainHealth(user, regenStacks * 10, adventure, getApplicationEmojiMarkdown("Regeneration"))));
+				resultLines.push(processResults(gainHealth(user, regenStacks * 10, adventure, getApplicationEmojiMarkdown("Regeneration"))));
 			}
 		}
 
@@ -1080,7 +1080,7 @@ function resolveMove(move, adventure) {
 		}
 	}
 
-	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
+	return `${headline}${resultLines.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
 }
 
 const RETAINING_MODIFIER_PAIRS = [["Exposure", "Distraction"], ["Evasion", "Vigilance"]];
@@ -1193,7 +1193,7 @@ function endRound(adventure, thread) {
 			otherHappenings.push(`${combatant.name}'s Fortune becomes protection.`);
 		}
 		if ("Misfortune" in combatant.modifiers && combatant.modifiers.Misfortune % 7 === 0) {
-			otherHappenings.push(receiptToResultLine(dealModifierDamage(combatant, "Misfortune", adventure)));
+			otherHappenings.push(...processResults(dealModifierDamage(combatant, "Misfortune", adventure)));
 			removeModifier([combatant], { name: "Misfortune", stacks: "all" });
 		}
 		if (otherHappenings.length > 0) {
