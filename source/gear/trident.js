@@ -106,7 +106,7 @@ function staggeringTridentEffect(targets, user, adventure) {
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
-		results.push(changeStagger(survivors, user, pendingStagger));
+		results.push(...changeStagger(survivors, user, pendingStagger));
 	}
 	return results;
 }

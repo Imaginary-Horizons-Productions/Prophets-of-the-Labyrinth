@@ -37,8 +37,7 @@ module.exports = new PetTemplate(petName, Colors.LightGrey,
 					const [vigilance] = module.exports.moves[1][1].modifiers;
 					const results = addModifier([owner], vigilance);
 					if (owner.stagger > 0) {
-						changeStagger([owner], null, -1);
-						results.push(`${owner.name} is relieved of Stagger.`);
+						results.push(...changeStagger([owner], null, -1));
 					}
 					return results;
 				}).setModifiers({ name: "Vigilance", stacks: 2 })

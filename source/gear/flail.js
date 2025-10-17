@@ -34,7 +34,7 @@ function flailEffect(targets, user, adventure) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 	}
 	if (survivors.length > 0) {
-		results.push(changeStagger(survivors, user, pendingStagger));
+		results.push(...changeStagger(survivors, user, pendingStagger));
 	}
 	return results;
 }
@@ -73,7 +73,7 @@ function bouncingFlailEffect(targets, user, adventure) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 	}
 	if (survivors.length > 0) {
-		results.push(changeStagger(survivors, user, pendingStagger));
+		results.push(...changeStagger(survivors, user, pendingStagger));
 	}
 	return results;
 }
@@ -110,7 +110,7 @@ function incompatibleFlailEffect(targets, user, adventure) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 	}
 	if (survivors.length > 0) {
-		results.push(changeStagger(survivors, user, pendingStagger));
+		results.push(...changeStagger(survivors, user, pendingStagger));
 	}
 	return results.concat(addModifier(survivors, torpidity));
 }

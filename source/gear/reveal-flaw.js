@@ -32,7 +32,7 @@ function revealFlawEffect(targets, user, adventure) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (user.crit) {
-		results.push(changeStagger(targets, user, critBonus));
+		results.push(...changeStagger(targets, user, critBonus));
 	}
 	return results;
 }
@@ -68,7 +68,7 @@ function distractingRevealFlawEffect(targets, user, adventure) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (user.crit) {
-		results.push(changeStagger(targets, user, critBonus));
+		results.push(...changeStagger(targets, user, critBonus));
 	}
 	return results;
 }
@@ -104,7 +104,7 @@ function numbingRevealFlawEffect(targets, user, adventure) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (user.crit) {
-		results.push(changeStagger(targets, user, critBonus));
+		results.push(...changeStagger(targets, user, critBonus));
 	}
 	return results;
 }
