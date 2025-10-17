@@ -211,7 +211,7 @@ function gainHealth(combatant, healing, adventure, source) {
 	}
 
 	/** @type {(string | Receipt)[]} */
-	const results = [new Receipt([combatant.name], combatant.hp === maxHP ? "!" : ".", { healingsArray: [source || null, healing] })];
+	const results = [new Receipt([combatant.name], combatant.hp === maxHP ? "!" : ".", { healingsArray: [[source || null, healing]] })];
 	if (loopholeGold > 0) {
 		results.push(`Health Insurance Loophole${loopholeCount === 1 ? "" : "s"} granted ${loopholeGold} gold.`);
 	}
