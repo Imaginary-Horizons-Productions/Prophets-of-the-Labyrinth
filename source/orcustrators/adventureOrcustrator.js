@@ -826,19 +826,7 @@ function receiptToResultLine(receipt) {
 	}
 
 	if (fragments.length > 0) {
-		let finalizedLine = `${listifyEN([...receipt.combatantNames])} ${listifyEN(fragments)}`;
-		switch (receipt.excitement) {
-			case 0:
-				finalizedLine += ".";
-				break;
-			case 1:
-				finalizedLine += "!";
-				break;
-			case 2:
-				finalizedLine += "!!!";
-				break;
-		}
-		return finalizedLine;
+		return `${listifyEN([...receipt.combatantNames])} ${listifyEN(fragments)}${receipt.excitement}`;
 	} else {
 		return "";
 	}
