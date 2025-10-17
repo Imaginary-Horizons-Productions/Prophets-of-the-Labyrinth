@@ -33,7 +33,6 @@ module.exports = new EnemyTemplate("Mechabee Drone",
 	effect: (targets, user, adventure) => {
 		const receipts = addModifier([user], { name: "Evasion", stacks: 2 });
 		if (user.crit) {
-			pendingStagger -= 2;
 			receipts.push(...changeStagger([user], user, -2));
 		}
 		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
