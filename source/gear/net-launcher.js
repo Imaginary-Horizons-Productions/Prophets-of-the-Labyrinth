@@ -1,7 +1,7 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
-const { changeStagger, dealDamage, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { changeStagger, dealDamage, addModifier } = require('../util/combatantUtil');
 const { scalingTorpidity } = require('./shared/modifiers');
 const { damageScalingGenerator } = require('./shared/scalings');
 
@@ -26,7 +26,7 @@ function netLauncherEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
@@ -38,7 +38,7 @@ function netLauncherEffect(targets, user, adventure) {
 			torpidityTargets = adventure.delvers;
 		}
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) }))));
+	return results.concat(addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) }));
 }
 //#endregion Base
 
@@ -63,7 +63,7 @@ function thiefsNetLauncherEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
@@ -78,9 +78,9 @@ function thiefsNetLauncherEffect(targets, user, adventure) {
 	if (survivors.length < targets.length) {
 		const totalBounty = (targets.length - survivors.length) * bounty;
 		adventure.room.addResource("Gold", "Currency", "loot", totalBounty);
-		resultLines.push(`${user.name} pillages ${totalBounty}g.`);
+		results.push(`${user.name} pillages ${totalBounty}g.`);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) }))));
+	return results.concat(addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) }));
 }
 //#endregion Thief's
 
@@ -105,7 +105,7 @@ function tormentingNetLauncherEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
@@ -117,15 +117,15 @@ function tormentingNetLauncherEffect(targets, user, adventure) {
 			torpidityTargets = adventure.delvers;
 		}
 	}
-	const receipts = addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) });
+	results.push(addModifier(torpidityTargets, { name: torpidity.name, stacks: torpidity.stacks.calculate(user) }));
 	for (const target of survivors) {
 		for (const modifier in target.modifiers) {
 			if (getModifierCategory(modifier) === "Debuff") {
-				receipts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+				results.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
 			}
 		}
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return results;
 }
 //#endregion Tormenting
 

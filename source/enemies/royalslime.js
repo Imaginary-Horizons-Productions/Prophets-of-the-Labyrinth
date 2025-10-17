@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require("../constants");
 const { selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
 const { essenceList } = require("../util/essenceUtil");
 
 module.exports = new EnemyTemplate("Royal Slime",
@@ -21,16 +21,17 @@ module.exports = new EnemyTemplate("Royal Slime",
 		const essencePool = essenceList(["Unaligned", user.essence]);
 		user.essence = essencePool[user.roundRns[`Essence Shift${SAFE_DELIMITER}essenceShift`][0] % essencePool.length];
 		let addedAbsorption = false;
+		const results = [];
 		if (user.crit) {
-			addedAbsorption = addModifier([user], { name: `${user.essence} Absorption`, stacks: 5 }).some(receipt => receipt.succeeded.size > 0);
-			changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
+			addedAbsorption = addModifier([user], { name: `${user.essence} Absorption`, stacks: 5 }).some(receipt => receipt.addedModifiers.size > 0);
+			results.push(...changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY));
 		} else {
-			addedAbsorption = addModifier([user], { name: `${user.essence} Absorption`, stacks: 3 }).some(receipt => receipt.succeeded.size > 0);
+			addedAbsorption = addModifier([user], { name: `${user.essence} Absorption`, stacks: 3 }).some(receipt => receipt.addedModifiers.size > 0);
 		}
 		if (addedAbsorption) {
-			return [`${user.name}'s essence has changed.`];
+			return [`${user.name}'s essence has changed.`, ...results];
 		} else {
-			return [];
+			return results;
 		}
 	},
 	selector: selectSelf,
@@ -47,7 +48,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results;
 	},
 	selector: selectAllFoes,
 	next: "random"
@@ -62,7 +63,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results;
 	},
 	selector: selectAllFoes,
 	next: "random"
@@ -75,7 +76,7 @@ module.exports = new EnemyTemplate("Royal Slime",
 		if (user.crit) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Torpidity", stacks: user.crit ? 3 : 2 })));
+		return addModifier(targets, { name: "Torpidity", stacks: user.crit ? 3 : 2 });
 	},
 	selector: selectAllFoes,
 	next: "random"

@@ -8,6 +8,6 @@ module.exports = new ItemTemplate("Explosion Potion",
 	30,
 	selectAllFoes,
 	(targets, user, adventure) => {
-		return dealDamage(targets, user, 75, false, "Unaligned", adventure).resultLines;
+		return dealDamage(targets, user, 75, false, "Unaligned", adventure).results;
 	}
 ).setFlavorText({ name: "*Additional Notes*", value: "*Not to be confused with __Fiery Potion__. DO NOT apply to self.*" });

@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
+const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Quick Pepper",
 	"Grants the user 3 @e{Swiftness}",
@@ -8,6 +8,6 @@ module.exports = new ItemTemplate("Quick Pepper",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {
-		return generateModifierResultLines(addModifier([user], { name: "Swiftness", stacks: 3 }));
+		return addModifier([user], { name: "Swiftness", stacks: 3 });
 	}
 );

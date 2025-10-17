@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, dealDamage, addModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -33,11 +33,11 @@ function vacuumImplosionEffect([target], user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -72,11 +72,11 @@ function shatteringVacuumImplosionEffect([target], user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier([target], frailty)));
+	return results.concat(addModifier([target], frailty));
 }
 //#endregion Shattering
 

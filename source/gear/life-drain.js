@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { gainHealth, dealDamage, changeStagger, generateModifierResultLines, addModifier, downedCheck } = require('../util/combatantUtil');
+const { gainHealth, dealDamage, changeStagger, addModifier, downedCheck } = require('../util/combatantUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 //#region Base
@@ -25,11 +25,11 @@ function lifeDrainEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingHealing *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(gainHealth(user, pendingHealing, adventure));
+	return results.concat(gainHealth(user, pendingHealing, adventure));
 }
 //#endregion Base
 
@@ -56,11 +56,11 @@ function fatiguingLifeDrainEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingHealing *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, impotence)), gainHealth(user, pendingHealing, adventure));
+	return results.concat(addModifier(survivors, impotence), gainHealth(user, pendingHealing, adventure));
 }
 //#endregion Fatiguing
 
@@ -92,11 +92,11 @@ function furiousLifeDrainEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingHealing *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(gainHealth(user, pendingHealing, adventure));
+	return results.concat(gainHealth(user, pendingHealing, adventure));
 }
 //#endregion Furious
 
@@ -122,16 +122,16 @@ function reapersLifeDrainEffect([target], user, adventure) {
 	if (user.crit) {
 		pendingHealing *= critBonus;
 	}
-	const { resultLines } = dealDamage([target], user, damage.calculate(user), false, essence, adventure);
+	const { results } = dealDamage([target], user, damage.calculate(user), false, essence, adventure);
 	if (target.hp > (user.getDamageCap() / 2)) {
 		target.hp = 0;
-		const { extraLines } = downedCheck(target, adventure);
-		return [`${target.name} meets the reaper!`].concat(extraLines, gainHealth(user, pendingHealing, adventure));
+		const downedLinesSansGeneric = downedCheck(target, adventure).slice(1);
+		return [`${target.name} meets the reaper!`, ...downedLinesSansGeneric, gainHealth(user, pendingHealing, adventure)];
 	} else {
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return resultLines.concat(gainHealth(user, pendingHealing, adventure));
+		return results.concat(gainHealth(user, pendingHealing, adventure));
 	}
 }
 //#endregion Reaper's
@@ -159,14 +159,14 @@ function thirstingLifeDrainEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingHealing *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (survivors.length < targets.length) {
 		pendingHealing += thirstingHealing.calculate(user);
 	}
-	return resultLines.concat(gainHealth(user, pendingHealing, adventure));
+	return results.concat(gainHealth(user, pendingHealing, adventure));
 }
 //#endregion Thirsting
 

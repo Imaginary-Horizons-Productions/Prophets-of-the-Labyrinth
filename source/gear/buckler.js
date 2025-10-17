@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, generateModifierResultLines, addModifier, addProtection } = require('../util/combatantUtil');
+const { changeStagger, addModifier, addProtection } = require('../util/combatantUtil');
 const { protectionScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -31,7 +31,7 @@ function bucklerEffect(targets, user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection(targets, pendingProtection);
-	return [`${targets[0].name} gains protection.`].concat(generateModifierResultLines(addModifier([user], swiftness)));
+	return [`${targets[0].name} gains protection.`].concat(addModifier([user], swiftness));
 }
 //#endregion Base
 
@@ -63,7 +63,7 @@ function guardingBucklerEffect(targets, user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection(targets, pendingProtection);
-	return [`${targets[0].name} gains protection.`].concat(generateModifierResultLines(addModifier([user], swiftness)));
+	return [`${targets[0].name} gains protection.`].concat(addModifier([user], swiftness));
 }
 //#endregion Guarding
 
@@ -86,24 +86,22 @@ const supportiveBuckler = new GearTemplate("Supportive Buckler",
 	.setModifiers({ name: "Swiftness", stacks: 3 });
 
 /** @type {typeof supportiveBuckler.effect} */
-function supportiveBucklerEffect(targets, user, adventure) {
+function supportiveBucklerEffect([target], user, adventure) {
 	const { essence, stagger, scalings: { protection, critBonus }, modifiers: [swiftness] } = supportiveBuckler;
-	let hadStagger = targets[0].stagger > 0;
 	let pendingStagger = stagger;
 	if (user.essence === essence) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_ALLY;
 	}
-	changeStagger(targets, user, pendingStagger);
 	let pendingProtection = protection + Math.floor(user.getBonusHP() / 5);
 	if (user.crit) {
 		pendingProtection *= critBonus;
 	}
-	addProtection(targets, pendingProtection);
-	if (hadStagger) {
-		return [`${targets[0].name} gains protection and shrugs off some Stagger.`].concat(generateModifierResultLines(addModifier([user], swiftness)));
-	} else {
-		return [`${targets[0].name} gains protection.`].concat(generateModifierResultLines(addModifier([user], swiftness)));
+	addProtection([target], pendingProtection);
+	const results = [`${target.name} gains protection.`].concat(addModifier([user], swiftness));
+	if (target.stagger > 0) {
+		results.push(...changeStagger([target], user, pendingStagger));
 	}
+	return results;
 }
 //#endregion Supportive
 

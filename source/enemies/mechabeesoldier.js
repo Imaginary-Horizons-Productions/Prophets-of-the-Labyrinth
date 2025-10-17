@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, addModifier, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
+const { dealDamage, addModifier, changeStagger } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectSelf, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/essenceUtil.js");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants.js");
@@ -20,7 +20,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 })));
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results.concat(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 }));
 	},
 	selector: selectRandomFoe,
 	next: "Neurotoxin Strike"
@@ -31,14 +31,11 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		const receipts = addModifier([user], { name: "Evasion", stacks: 2 });
-		const resultLines = [];
-		let pendingStagger = ESSENCE_MATCH_STAGGER_ALLY;
 		if (user.crit) {
-			pendingStagger += 2;
-			resultLines.push(`${user.name} shrugs off some Stagger.`);
+			receipts.push(...changeStagger([user], user, -2));
 		}
-		changeStagger([user], user, pendingStagger);
-		return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
+		return receipts;
 	},
 	selector: selectSelf,
 	next: "Sting"
@@ -53,8 +50,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		if (user.crit) {
 			pendingStagger += 2;
 		}
-		changeStagger(targets, user, pendingStagger);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines.concat(`${targets[0].name} was Staggered.`);
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results.concat(changeStagger(targets, user, pendingStagger));
 	},
 	selector: selectRandomFoe,
 	next: "Self-Destruct"
@@ -70,8 +66,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 		}
 		user.hp = 0;
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results;
 	},
 	selector: selectAllFoes,
 	next: "Barrel Roll"

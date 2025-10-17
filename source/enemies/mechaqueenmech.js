@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, addProtection, combineModifierReceipts, generateModifierResultLines } = require("../util/combatantUtil.js");
+const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil.js");
 const { getEmoji } = require("../util/essenceUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 
@@ -43,7 +43,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
 		addProtection([user], user.crit ? 60 : 30);
 		const receipts = addModifier(filteredTargets, { name: "Swiftness", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Empowerment", stacks: 3 }));
-		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+		return [`${user.name} gains protection.`].concat(receipts);
 	},
 	selector: selectAllAllies,
 	next: "Laser Array",
@@ -107,7 +107,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Mech Mode",
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
-		return dealDamage(targets, user, pendingDamage, false, "Darkness", adventure).resultLines;
+		return dealDamage(targets, user, pendingDamage, false, "Darkness", adventure).results;
 	},
 	selector: selectRandomFoe,
 	next: "Deploy Drone"

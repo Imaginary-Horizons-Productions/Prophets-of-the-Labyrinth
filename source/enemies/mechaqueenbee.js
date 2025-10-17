@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes/index.js");
 const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe, selectNone, selectAllFoes, selectRandomOtherAlly, selectAllAllies } = require("../shared/actionComponents.js");
-const { addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil.js");
+const { addModifier, changeStagger, addProtection } = require("../util/combatantUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
 
 const drone = require("./mechabeedrone.js")
@@ -62,7 +62,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 		const filteredTargets = targets.filter(target => target.hp > 0 && target.name !== user.name);
 		addProtection([user], user.crit ? 60 : 30);
 		const receipts = addModifier(filteredTargets, { name: "Swiftness", stacks: 3 }).concat(addModifier(filteredTargets, { name: "Empowerment", stacks: 3 }));
-		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+		return [`${user.name} gains protection.`].concat(receipts);
 	},
 	selector: selectAllAllies,
 	next: "V.E.N.O.Missile",
@@ -102,7 +102,7 @@ module.exports = new EnemyTemplate("Mecha Queen: Bee Mode",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 5 : 3 }));
+		return addModifier(targets, { name: "Poison", stacks: user.crit ? 5 : 3 });
 	},
 	selector: selectRandomFoe,
 	next: "Deploy Drone"

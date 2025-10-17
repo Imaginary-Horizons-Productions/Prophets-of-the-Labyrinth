@@ -1,7 +1,7 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
-const { dealDamage, generateModifierResultLines, addModifier, combineModifierReceipts, changeStagger, removeModifier } = require('../util/combatantUtil');
+const { dealDamage, addModifier, changeStagger, removeModifier } = require('../util/combatantUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 //#region Base
@@ -18,11 +18,11 @@ const stick = new GearTemplate("Stick",
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(survivors, impotence))));
+	return results.concat(addModifier(survivors, impotence));
 }, { type: "single", team: "foe" })
 	.setScalings({
 		damage: archetypeActionDamageScaling,
@@ -57,14 +57,14 @@ function convalescenceStickEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	const receipts = addModifier(survivors, impotence);
+	results.push(...addModifier(survivors, impotence));
 	const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	receipts.push(...removeModifier([user], { name: userDebuffs[user.roundRns[`${convalescenceStick.name}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" }));
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	results.push(...removeModifier([user], { name: userDebuffs[user.roundRns[`${convalescenceStick.name}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" }));
+	return results;
 }
 //#endregion Convalescence
 
@@ -90,11 +90,11 @@ function flankingStickEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(survivors, impotence), addModifier(survivors, exposure))));
+	return results.concat(addModifier(survivors, impotence), addModifier(survivors, exposure));
 }
 //#endregion Flanking
 
@@ -120,16 +120,14 @@ function huntersStickEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	const receipts = [];
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (survivors.length < targets.length) {
-		receipts.push(...addModifier([user], empowerment));
+		results.push(...addModifier([user], empowerment));
 	}
-	receipts.push(...addModifier(survivors, impotence));
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return results.concat(addModifier(survivors, impotence));
 }
 //#endregion Hunter's
 
@@ -156,15 +154,15 @@ function thiefsStickEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (survivors.length < targets.length) {
 		adventure.room.addResource("Gold", "Currency", "loot", bounty);
-		resultLines.push(`${user.name} pillages ${bounty}g.`);
+		results.push(`${user.name} pillages ${bounty}g.`);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(survivors, impotence))));
+	return results.concat(addModifier(survivors, impotence));
 }
 //#endregion Thief's
 

@@ -1,7 +1,7 @@
 const { EnemyTemplate, Adventure } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants");
 const { selectAllFoes, selectRandomFoe } = require("../shared/actionComponents");
-const { changeStagger, generateModifierResultLines, addModifier, dealDamage } = require("../util/combatantUtil");
+const { changeStagger, addModifier, dealDamage } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 
 const nonOpenerMoves = ["Tonitrus Spark", "Big Bang"];
@@ -32,7 +32,7 @@ module.exports = new EnemyTemplate("Elegant Stella",
 			pendingMisfortune.stacks += 7;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return generateModifierResultLines(addModifier(targets, pendingMisfortune));
+		return addModifier(targets, pendingMisfortune);
 	},
 	selector: selectAllFoes,
 	next: randomNonOpener
@@ -47,7 +47,7 @@ module.exports = new EnemyTemplate("Elegant Stella",
 			pendingMisfortune.stacks += 6;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return generateModifierResultLines(addModifier(targets, pendingMisfortune));
+		return addModifier(targets, pendingMisfortune);
 	},
 	selector: selectRandomFoe,
 	next: randomNonOpener
@@ -61,9 +61,9 @@ module.exports = new EnemyTemplate("Elegant Stella",
 		if (user.crit) {
 			pendingMisfortune.stacks += 7;
 		}
-		const { resultLines, survivors } = dealDamage(targets, user, user.getPower() + 25, false, "Light", adventure);
+		const { results, survivors } = dealDamage(targets, user, user.getPower() + 25, false, "Light", adventure);
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines.concat(generateModifierResultLines(addModifier(survivors, pendingMisfortune)));
+		return results.concat(addModifier(survivors, pendingMisfortune));
 	},
 	selector: selectAllFoes,
 	next: randomNonOpener

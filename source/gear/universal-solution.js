@@ -1,7 +1,7 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier, removeModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier, removeModifier } = require('../util/combatantUtil');
 
 const debuffsTransferred = 2;
 const poisonStacks = 3;
@@ -30,21 +30,20 @@ function universalSolutionEffect(targets, user, adventure) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	const receipts = [];
+	const results = [];
 	if (user.crit) {
 		for (const debuff of userDebuffs) {
-			receipts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
-			receipts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
+			results.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
+			results.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 		}
 	} else {
 		for (let i = 0; i < debuffsTransferred; i++) {
 			const [debuff] = userDebuffs.splice(user.roundRns[`${universalSolution.name}${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length, 1);
-			receipts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
-			receipts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
+			results.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
+			results.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 		}
 	}
-	receipts.push(...addModifier([user], poison))
-	return generateModifierResultLines(combineModifierReceipts(receipts));
+	return results.concat(addModifier([user], poison));
 }
 //#endregion Base
 
@@ -73,22 +72,20 @@ function centeringUniversalSolutionEffect(targets, user, adventure) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	const receipts = [];
+	const results = [];
 	if (user.crit) {
 		for (const debuff of userDebuffs) {
-			receipts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
-			receipts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
+			results.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
+			results.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 		}
 	} else {
 		for (let i = 0; i < debuffsTransferred; i++) {
 			const [debuff] = userDebuffs.splice(user.roundRns[`${centeringUniversalSolution.name}${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length, 1);
-			receipts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
-			receipts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
+			results.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
+			results.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 		}
 	}
-	changeStagger([user], user, staggerRelief);
-	receipts.push(...addModifier([user], poison));
-	return generateModifierResultLines(combineModifierReceipts(receipts)).concat(`${user.name} shrugs off some Stagger.`);
+	return results.concat(addModifier([user], poison), changeStagger([user], user, staggerRelief));
 }
 //#endregion Centering
 
@@ -117,28 +114,27 @@ function tormentingUniversalSolutionEffect(targets, user, adventure) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	const receipts = [];
+	const results = [];
 	if (user.crit) {
 		for (const debuff of userDebuffs) {
-			receipts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
-			receipts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
+			results.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
+			results.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 		}
 	} else {
 		for (let i = 0; i < debuffsTransferred; i++) {
 			const [debuff] = userDebuffs.splice(user.roundRns[`${tormentingUniversalSolution.name}${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length, 1);
-			receipts.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
-			receipts.push(...removeModifier([user], { name: debuff, stacks: "all" }));
+			results.push(...addModifier(targets, { name: debuff, stacks: user.modifiers[debuff] }));
+			results.push(...removeModifier([user], { name: debuff, stacks: "all" }));
 		}
 	}
 	for (const target of targets) {
 		for (const modifier in target.modifiers) {
 			if (getModifierCategory(modifier) === "Debuff") {
-				receipts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+				results.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
 			}
 		}
 	}
-	receipts.push(...addModifier([user], poison))
-	return generateModifierResultLines(combineModifierReceipts(receipts));
+	return results.concat(addModifier([user], poison));
 }
 //#endregion Tormenting
 

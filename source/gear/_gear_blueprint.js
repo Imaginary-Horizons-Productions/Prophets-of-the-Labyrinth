@@ -21,7 +21,7 @@ function execute(targets, user, adventure) {
 	if (user.crit) {
 
 	}
-	return []; // see style guide for conventions on result texts
+	return []; // see style guide for conventions on results
 }
 //#endregion Base
 

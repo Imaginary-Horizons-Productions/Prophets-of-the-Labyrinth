@@ -1,7 +1,7 @@
 const { Colors } = require("discord.js");
 const { PetTemplate, PetMoveTemplate } = require("../classes");
 const { rollablePotions } = require("../shared/potions");
-const { addModifier, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
+const { addModifier } = require("../util/combatantUtil");
 
 const petName = "Friendly Slime";
 module.exports = new PetTemplate(petName, Colors.Aqua,
@@ -16,16 +16,15 @@ module.exports = new PetTemplate(petName, Colors.Aqua,
 				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, { petRNs }) => {
 					const thisMove = module.exports.moves[0][0];
-					return generateModifierResultLines(addModifier(targets, thisMove.modifiers[0]));
+					return addModifier(targets, thisMove.modifiers[0]);
 				}).setRnConfig(["enemyIndex"])
 				.setModifiers({ name: "Poison", stacks: 2 }),
 			new PetMoveTemplate("Sticky Toxin Spray", "Inflict @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} on a random foe",
 				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, { petRNs }) => {
 					const thisMove = module.exports.moves[0][1];
-					const receipts = addModifier(targets, thisMove.modifiers[0]);
-					receipts.push(...addModifier(targets, thisMove.modifiers[1]))
-					return generateModifierResultLines(combineModifierReceipts(receipts));
+					const results = addModifier(targets, thisMove.modifiers[0]);
+					return results.concat(addModifier(targets, thisMove.modifiers[1]))
 				}).setRnConfig(["enemyIndex"])
 				.setModifiers({ name: "Poison", stacks: 2 }, { name: "Torpidity", stacks: 2 })
 		],

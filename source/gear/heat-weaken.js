@@ -1,7 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 
 const bounces = 3;
 
@@ -30,7 +29,7 @@ function heatWeakenEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingFrailty.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingFrailty)));
+	return addModifier(targets, pendingFrailty);
 }
 //#endregion Base
 
@@ -59,7 +58,7 @@ function numbingHeatWeakenEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingFrailty.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingFrailty).concat(addModifier(targets, clumsiness))));
+	return addModifier(targets, pendingFrailty).concat(addModifier(targets, clumsiness));
 }
 //#endregion Numbing
 
@@ -86,12 +85,11 @@ function staggeringHeatWeakenEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 	}
-	changeStagger(targets, user, pendingStagger);
 	const pendingFrailty = { ...frailty };
 	if (user.crit) {
 		pendingFrailty.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingFrailty))).concat(joinAsStatement(false, targets.map(target => target.name), "is", "are", "Staggered."));
+	return addModifier(targets, pendingFrailty).concat(changeStagger(targets, user, pendingStagger));
 }
 //#endregion Staggering
 

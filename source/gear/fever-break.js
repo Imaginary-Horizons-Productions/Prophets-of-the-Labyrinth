@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { dealDamage, removeModifier, changeStagger, addModifier } = require('../util/combatantUtil');
 const { unstoppablePassive } = require('./shared/passiveDescriptions');
 
 //#region Base
@@ -39,7 +39,7 @@ function feverBreakEffect(targets, user, adventure) {
 		const poisonStacks = target.getModifierStacks("Poison");
 		const frailtyStacks = target.getModifierStacks("Frailty");
 		const pendingDamage = poisonDamage * (poisonStacks ** 2 + poisonStacks) / 2 + frailDamage * frailtyStacks;
-		resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure).resultLines);
+		resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure).results);
 		if (target.hp > 0) {
 			survivors.push(target);
 			if (!user.crit) {
@@ -50,7 +50,7 @@ function feverBreakEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return resultLines.concat(receipts);
 }
 //#endregion Base
 
@@ -89,7 +89,7 @@ function fatiguingFeverBreakEffect(targets, user, adventure) {
 		const poisonStacks = target.getModifierStacks("Poison");
 		const frailtyStacks = target.getModifierStacks("Frailty");
 		const pendingDamage = poisonDamage * (poisonStacks ** 2 + poisonStacks) / 2 + frailDamage * frailtyStacks;
-		resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure).resultLines);
+		resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure).results);
 		if (target.hp > 0) {
 			survivors.push(target);
 			if (!user.crit) {
@@ -101,7 +101,7 @@ function fatiguingFeverBreakEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return resultLines.concat(receipts);
 }
 //#endregion Fatiguing
 
@@ -141,7 +141,7 @@ function unstoppableFeverBreakEffect(targets, user, adventure) {
 		const poisonStacks = target.getModifierStacks("Poison");
 		const frailtyStacks = target.getModifierStacks("Frailty");
 		const pendingDamage = poisonDamage * (poisonStacks ** 2 + poisonStacks) / 2 + frailDamage * frailtyStacks;
-		resultLines.push(...dealDamage([target], user, pendingDamage, true, essence, adventure).resultLines);
+		resultLines.push(...dealDamage([target], user, pendingDamage, true, essence, adventure).results);
 		if (target.hp > 0) {
 			survivors.push(target);
 			if (!user.crit) {
@@ -152,7 +152,7 @@ function unstoppableFeverBreakEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return resultLines.concat(receipts);
 }
 //#endregion Unstoppable
 

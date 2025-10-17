@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { scalingEvasion } = require('./shared/modifiers');
 const { accuratePassive, powerfulPassive } = require('./shared/passiveDescriptions');
 
@@ -28,7 +28,7 @@ function cloakEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingEvasion.stacks *= critBonus;
 	}
-	return generateModifierResultLines(addModifier([user], pendingEvasion));
+	return addModifier([user], pendingEvasion);
 }
 //#endregion Base
 

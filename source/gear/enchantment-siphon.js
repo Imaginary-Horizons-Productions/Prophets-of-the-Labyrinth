@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, addProtection, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
+const { changeStagger, addProtection, addModifier } = require('../util/combatantUtil');
 const { protectionScalingGenerator } = require('./shared/scalings');
 const { scalingExposure } = require('./shared/modifiers');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
@@ -72,11 +72,11 @@ function flankingEnchantmentSiphonEffect([target], user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection([user], pendingProtection);
-	const resultLines = generateModifierResultLines(addModifier([target], { name: exposure.name, stacks: exposure.stacks.calculate(user) }));
+	const results = addModifier([target], { name: exposure.name, stacks: exposure.stacks.calculate(user) });
 	if (stolenProtection > 0) {
-		return [`${user.name} steals ${target.name}'s protection.`].concat(resultLines);
+		return [`${user.name} steals ${target.name}'s protection.`].concat(results);
 	} else {
-		return [`${user.name} gains protection.`].concat(resultLines);
+		return [`${user.name} gains protection.`].concat(results);
 	}
 }
 //#endregion Flanking
@@ -118,9 +118,9 @@ function tormentingEnchantmentSiphonEffect([target], user, adventure) {
 		}
 	}
 	if (stolenProtection > 0) {
-		return [`${user.name} steals ${target.name}'s protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+		return [`${user.name} steals ${target.name}'s protection.`, ...receipts];
 	} else {
-		return [`${user.name} gains protection.`].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+		return [`${user.name} gains protection.`, ...receipts];
 	}
 }
 //#endregion Tormenting

@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { selectRandomAlly, selectNone } = require("../shared/actionComponents");
-const { changeStagger, generateModifierResultLines, addModifier } = require("../util/combatantUtil");
+const { changeStagger, addModifier } = require("../util/combatantUtil");
 const { spawnEnemy } = require("../util/roomUtil");
 
 module.exports = new EnemyTemplate("Unkind Corvus",
@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Unkind Corvus",
 			pendingEvasion.stacks *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
-		return generateModifierResultLines(addModifier(targets, pendingEvasion));
+		return addModifier(targets, pendingEvasion);
 	},
 	selector: selectRandomAlly,
 	next: "random"
@@ -38,7 +38,7 @@ module.exports = new EnemyTemplate("Unkind Corvus",
 			pendingVigilance.stacks *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
-		return generateModifierResultLines(addModifier(targets, pendingVigilance));
+		return addModifier(targets, pendingVigilance);
 	},
 	selector: selectRandomAlly,
 	next: "Never-touched"

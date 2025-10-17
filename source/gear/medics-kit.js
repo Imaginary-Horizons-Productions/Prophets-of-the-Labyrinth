@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes/index.js');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary.js');
-const { removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines, addModifier } = require('../util/combatantUtil.js');
+const { removeModifier, changeStagger, addModifier } = require('../util/combatantUtil.js');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants.js');
 
 //#region Base
@@ -27,21 +27,20 @@ function medicsKitEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
-	const receipts = [];
+	const results = [];
 	for (const target of targets) {
 		const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const debuffsToRemove = Math.min(targetDebuffs.length, debuffsCured);
 		for (let i = 0; i < debuffsToRemove; i++) {
 			const [rolledDebuff] = targetDebuffs.splice(user.roundRns[`${medicsKit.name}${SAFE_DELIMITER}debuffs`][i] % targetDebuffs.length, 1);
-			receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
+			results.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 		}
 	}
-	const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
 	if (user.crit) {
 		adventure.room.morale += morale;
-		resultLines.push("The party's morale is increased!");
+		results.push("The party's morale is increased!");
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -68,21 +67,20 @@ function cleansingMedicsKitEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
-	const receipts = [];
+	const results = [];
 	for (const target of targets) {
 		const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const debuffsToRemove = Math.min(targetDebuffs.length, debuffsCured);
 		for (let i = 0; i < debuffsToRemove; i++) {
 			const [rolledDebuff] = targetDebuffs.splice(user.roundRns[`${cleansingMedicsKit.name}${SAFE_DELIMITER}debuffs`][i] % targetDebuffs.length, 1);
-			receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
+			results.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 		}
 	}
-	const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
 	if (user.crit) {
 		adventure.room.morale += morale;
-		resultLines.push("The party's morale is increased!");
+		results.push("The party's morale is increased!");
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Cleansing
 
@@ -110,21 +108,20 @@ function warningMedicsKitEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
-	const receipts = addModifier(targets, evasion);
+	const results = addModifier(targets, evasion);
 	for (const target of targets) {
 		const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const debuffsToRemove = Math.min(targetDebuffs.length, debuffsCured);
 		for (let i = 0; i < debuffsToRemove; i++) {
 			const [rolledDebuff] = targetDebuffs.splice(user.roundRns[`${warningMedicsKit.name}${SAFE_DELIMITER}debuffs`][i] % targetDebuffs.length, 1);
-			receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
+			results.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 		}
 	}
-	const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
 	if (user.crit) {
 		adventure.room.morale += morale;
-		resultLines.push("The party's morale is increased!");
+		results.push("The party's morale is increased!");
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Warning
 

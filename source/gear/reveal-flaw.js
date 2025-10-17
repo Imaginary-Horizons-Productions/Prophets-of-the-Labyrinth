@@ -1,8 +1,7 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { essenceList } = require('../util/essenceUtil');
-const { joinAsStatement } = require('../util/textUtil');
 
 //#region Base
 const revealFlaw = new GearTemplate("Reveal Flaw",
@@ -28,19 +27,14 @@ function revealFlawEffect(targets, user, adventure) {
 
 	const essencePool = essenceList(["Unaligned"]);
 	const selectedEsesnce = essencePool[user.roundRns[`${revealFlaw.name}${SAFE_DELIMITER}vulnerabilities`][0] % 6];
-	const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: `${selectedEsesnce} Vulnerability`, stacks: vulnerability.stacks })));
-	let pendingStagger = 0;
+	const results = addModifier(targets, { name: `${selectedEsesnce} Vulnerability`, stacks: vulnerability.stacks });
 	if (user.essence === essence) {
-		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (user.crit) {
-		pendingStagger += critBonus;
-		resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
+		results.push(...changeStagger(targets, user, critBonus));
 	}
-	if (pendingStagger > 0) {
-		changeStagger(targets, user, pendingStagger);
-	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -68,21 +62,15 @@ function distractingRevealFlawEffect(targets, user, adventure) {
 
 	const essencePool = essenceList(["Unaligned"]);
 	const selectedEsesnce = essencePool[user.roundRns[`${distractingRevealFlaw.name}${SAFE_DELIMITER}vulnerabilities`][0] % 6];
-	const receipts = addModifier(targets, { name: `${selectedEsesnce} Vulnerability`, stacks: vulnerability.stacks });
-	receipts.push(...addModifier(targets, distraction));
-	const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
-	let pendingStagger = 0;
+	const results = addModifier(targets, { name: `${selectedEsesnce} Vulnerability`, stacks: vulnerability.stacks });
+	results.push(...addModifier(targets, distraction));
 	if (user.essence === essence) {
-		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (user.crit) {
-		pendingStagger += critBonus;
-		resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
+		results.push(...changeStagger(targets, user, critBonus));
 	}
-	if (pendingStagger > 0) {
-		changeStagger(targets, user, pendingStagger);
-	}
-	return resultLines;
+	return results;
 }
 //#endregion Distracting
 
@@ -110,21 +98,15 @@ function numbingRevealFlawEffect(targets, user, adventure) {
 
 	const essencePool = essenceList(["Unaligned"]);
 	const selectedEsesnce = essencePool[user.roundRns[`${numbingRevealFlaw.name}${SAFE_DELIMITER}vulnerabilities`][0] % 6];
-	const receipts = addModifier(targets, { name: `${selectedEsesnce} Vulnerability`, stacks: vulnerability.stacks });
-	receipts.push(...addModifier(targets, clumsiness));
-	const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
-	let pendingStagger = 0;
+	const results = addModifier(targets, { name: `${selectedEsesnce} Vulnerability`, stacks: vulnerability.stacks });
+	results.push(...addModifier(targets, clumsiness));
 	if (user.essence === essence) {
-		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
+		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (user.crit) {
-		pendingStagger += critBonus;
-		resultLines.push(joinAsStatement(false, targets.map(target => target.name), "was", "were", "Staggered."));
+		results.push(...changeStagger(targets, user, critBonus));
 	}
-	if (pendingStagger > 0) {
-		changeStagger(targets, user, pendingStagger);
-	}
-	return resultLines;
+	return results;
 }
 //#endregion Numbing
 

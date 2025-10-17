@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
 
 module.exports = new EnemyTemplate("Ooze",
 	"@{adventureOpposite}",
@@ -20,7 +20,7 @@ module.exports = new EnemyTemplate("Ooze",
 		if (user.crit) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Torpidity", stacks: 3 })));
+		return addModifier(targets, { name: "Torpidity", stacks: 3 });
 	},
 	selector: selectRandomFoe,
 	next: "random"
@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Ooze",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results;
 	},
 	selector: selectRandomFoe,
 	next: "random"

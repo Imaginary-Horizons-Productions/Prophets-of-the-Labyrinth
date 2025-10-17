@@ -28,11 +28,11 @@ function spikedShieldEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -61,11 +61,11 @@ function furiousSpikedShieldEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Furious
 
@@ -93,11 +93,11 @@ function reinforcedSpikedShieldEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Reinforced
 

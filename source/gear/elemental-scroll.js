@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 
 //#region Base
 const elementalScroll = new GearTemplate("Elemental Scroll",
@@ -26,14 +26,14 @@ function elementalScrollEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingAttunement.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingAttunement)));
+	return addModifier(targets, pendingAttunement);
 }
 //#endregion Base
 
 //#region Balanced
 const balancedElementalScroll = new GearTemplate("Balanced Elemental Scroll",
 	[
-		["use", "Grant @{mod0Stacks} @{mod0} and @{mod2Stacks} @{mod2} to an ally and allies with @{mod1}"],
+		["use", "Grant @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to an ally and allies with @{mod2}"],
 		["critical", "@{mod0} x @{critBonus}"]
 	],
 	"Support",
@@ -41,12 +41,12 @@ const balancedElementalScroll = new GearTemplate("Balanced Elemental Scroll",
 ).setCost(350)
 	.setEffect(balancedElementalScrollEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCooldown(1)
-	.setModifiers({ name: "Attunement", stacks: 3 }, { name: "Vigilance", stacks: 0 }, { name: "Finesse", stacks: 1 })
+	.setModifiers({ name: "Attunement", stacks: 3 }, { name: "Finesse", stacks: 1 }, { name: "Vigilance", stacks: 0 })
 	.setScalings({ critBonus: 2 });
 
 /** @type {typeof balancedElementalScroll.effect} */
 function balancedElementalScrollEffect(targets, user, adventure) {
-	const { essence, modifiers: [attunement, targetModifier, finesse], scalings: { critBonus } } = balancedElementalScroll;
+	const { essence, modifiers: [attunement, finesse], scalings: { critBonus } } = balancedElementalScroll;
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
@@ -54,14 +54,14 @@ function balancedElementalScrollEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingAttunement.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingAttunement).concat(addModifier(targets, finesse))));
+	return addModifier(targets, pendingAttunement).concat(addModifier(targets, finesse));
 }
 //#endregion Balanced
 
 //#region Surpassing
 const surpassingElementalScroll = new GearTemplate("Surpassing Elemental Scroll",
 	[
-		["use", "Grant @{mod0Stacks} @{mod0} and @{mod2Stacks} @{mod2} to an ally and allies with @{mod1}"],
+		["use", "Grant @{mod0Stacks} @{mod0} and @{mod1Stacks} @{mod1} to an ally and allies with @{mod2}"],
 		["critical", "@{mod0} x @{critBonus}"]
 	],
 	"Support",
@@ -69,12 +69,12 @@ const surpassingElementalScroll = new GearTemplate("Surpassing Elemental Scroll"
 ).setCost(350)
 	.setEffect(surpassingElementalScrollEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCooldown(1)
-	.setModifiers({ name: "Attunement", stacks: 3 }, { name: "Vigilance", stacks: 0 }, { name: "Excellence", stacks: 2 })
+	.setModifiers({ name: "Attunement", stacks: 3 }, { name: "Excellence", stacks: 2 }, { name: "Vigilance", stacks: 0 })
 	.setScalings({ critBonus: 2 });
 
 /** @type {typeof surpassingElementalScroll.effect} */
 function surpassingElementalScrollEffect(targets, user, adventure) {
-	const { essence, modifiers: [attunement, targetModifier, excellence], scalings: { critBonus } } = surpassingElementalScroll;
+	const { essence, modifiers: [attunement, excellence], scalings: { critBonus } } = surpassingElementalScroll;
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
@@ -82,7 +82,7 @@ function surpassingElementalScrollEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingAttunement.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingAttunement).concat(addModifier(targets, excellence))));
+	return addModifier(targets, pendingAttunement).concat(addModifier(targets, excellence));
 }
 //#endregion Surpassing
 

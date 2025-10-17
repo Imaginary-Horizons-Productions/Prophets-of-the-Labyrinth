@@ -1,7 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
-const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { changeStagger, dealDamage, addModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -29,16 +28,15 @@ function flailEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	let pendingStagger = stagger;
 	if (user.essence === essence) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 	}
 	if (survivors.length > 0) {
-		changeStagger(survivors, user, pendingStagger);
-		resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		results.push(...changeStagger(survivors, user, pendingStagger));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -69,16 +67,15 @@ function bouncingFlailEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	let pendingStagger = stagger;
 	if (user.essence === essence) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 	}
 	if (survivors.length > 0) {
-		changeStagger(survivors, user, pendingStagger);
-		resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		results.push(...changeStagger(survivors, user, pendingStagger));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Bouncing
 
@@ -107,16 +104,15 @@ function incompatibleFlailEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	let pendingStagger = stagger;
 	if (user.essence === essence) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 	}
 	if (survivors.length > 0) {
-		changeStagger(survivors, user, pendingStagger);
-		resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+		results.push(...changeStagger(survivors, user, pendingStagger));
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, torpidity)));
+	return results.concat(addModifier(survivors, torpidity));
 }
 //#endregion Incompatible
 

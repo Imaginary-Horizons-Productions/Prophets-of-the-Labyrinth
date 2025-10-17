@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { selectRandomFoe, selectMultipleRandomFoes, selectAllAllies } = require("../shared/actionComponents");
-const { generateModifierResultLines, addModifier, changeStagger, addProtection, dealDamage, combineModifierReceipts } = require("../util/combatantUtil");
+const { addModifier, changeStagger, addProtection, dealDamage } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new EnemyTemplate("Spacedust Cadet",
@@ -18,15 +18,15 @@ module.exports = new EnemyTemplate("Spacedust Cadet",
 	description: `Deal ${getEmoji("Wind")} damage to a foe, gain protection on Critical`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		const resultLines = [];
+		const results = [];
 		if (user.crit) {
 			addProtection([user], 25);
-			resultLines.push(`${user.name} gains protection.`);
+			results.push(`${user.name} gains protection.`);
 		}
 		const pendingDamage = 50 + user.getPower();
-		const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, "Wind", adventure);
+		const { results: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, "Wind", adventure);
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-		return damageResults.concat(resultLines);
+		return damageResults.concat(results);
 	},
 	selector: selectRandomFoe,
 	next: "random"
@@ -36,13 +36,13 @@ module.exports = new EnemyTemplate("Spacedust Cadet",
 	description: "Inflict @e{Exposure} on multiple random foes, gain protection on Critical",
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		const resultLines = [];
+		const results = [];
 		if (user.crit) {
 			addProtection([user], 25);
-			resultLines.push(`${user.name} gains protection.`);
+			results.push(`${user.name} gains protection.`);
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Exposure", stacks: 2 }))).concat(resultLines);
+		return addModifier(targets, { name: "Exposure", stacks: 2 }).concat(results);
 	},
 	selector: selectMultipleRandomFoes(3),
 	next: "random"
@@ -58,7 +58,7 @@ module.exports = new EnemyTemplate("Spacedust Cadet",
 			resultLines.push(`${user.name} gains protection.`);
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
-		return generateModifierResultLines(addModifier(targets, { name: "Swiftness", stacks: 5 })).concat(resultLines);
+		return addModifier(targets, { name: "Swiftness", stacks: 5 }).concat(resultLines);
 	},
 	selector: selectAllAllies,
 	next: "random"

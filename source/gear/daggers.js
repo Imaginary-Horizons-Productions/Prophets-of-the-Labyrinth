@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { dealDamage, changeStagger, generateModifierResultLines, addModifier, combineModifierReceipts } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 //#region Base
@@ -25,11 +25,11 @@ function daggersEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier([user], excellence)));
+	return results.concat(addModifier([user], excellence));
 }
 //#endregion Base
 
@@ -55,11 +55,11 @@ function attunedDaggersEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamge *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamge, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamge, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user], excellence).concat(addModifier([user], attunement)))));
+	return results.concat(addModifier([user], excellence), addModifier([user], attunement));
 }
 //#endregion Attuned
 
@@ -85,11 +85,11 @@ function balancedDaggersEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user], excellence).concat(addModifier([user], finesse)))));
+	return results.concat(addModifier([user], excellence), addModifier([user], finesse));
 }
 //#endregion Balanced
 
@@ -116,12 +116,12 @@ function centeringDaggersEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	changeStagger([user], user, selfStagger);
-	return resultLines.concat(generateModifierResultLines(addModifier([user], excellence)), `${user.name} shrugs off some Stagger.`);
+	results.push(...changeStagger([user], user, selfStagger));
+	return results.concat(addModifier([user], excellence));
 }
 //#endregion Centering
 
@@ -147,11 +147,11 @@ function distractingDaggersEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier([user], excellence).concat(addModifier(targets, distraction)))));
+	return results.concat(addModifier([user], excellence), addModifier(targets, distraction));
 }
 //#endregion Distracting
 

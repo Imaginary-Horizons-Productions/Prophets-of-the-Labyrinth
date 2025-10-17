@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, addProtection, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addProtection, addModifier } = require('../util/combatantUtil');
 const { protectionScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -31,7 +31,7 @@ function parryingDaggerEffect(targets, user, adventure) {
 		pendingFinesse.stacks *= critBonus;
 	}
 	addProtection([user], protection.calculate(user));
-	return [`${user.name} gains protection.`].concat(generateModifierResultLines(addModifier([user], pendingFinesse)));
+	return [`${user.name} gains protection.`].concat(addModifier([user], pendingFinesse));
 }
 //#endregion Base
 
@@ -63,7 +63,7 @@ function devotedParryingDaggerEffect(targets, user, adventure) {
 		pendingFinesse.stacks *= critBonus;
 	}
 	addProtection(targets, protection.calculate(user));
-	return [`${targets[0].name} gains protection.`].concat(generateModifierResultLines(addModifier(targets, pendingFinesse)));
+	return [`${targets[0].name} gains protection.`].concat(addModifier(targets, pendingFinesse));
 }
 //#endregion Devoted
 
@@ -104,9 +104,9 @@ function hasteningParryingDaggerEffect(targets, user, adventure) {
 	}
 	addProtection([user], protection.calculate(user));
 	if (didCooldown) {
-		return [`${user.name} gains protection and hastens their cooldowns.`].concat(generateModifierResultLines(addModifier([user], pendingFinesse)));
+		return [`${user.name} gains protection and hastens their cooldowns.`].concat(addModifier([user], pendingFinesse));
 	} else {
-		return [`${user.name} gains protection.`].concat(generateModifierResultLines(addModifier([user], pendingFinesse)));
+		return [`${user.name} gains protection.`].concat(addModifier([user], pendingFinesse));
 	}
 }
 //#endregion Hastening

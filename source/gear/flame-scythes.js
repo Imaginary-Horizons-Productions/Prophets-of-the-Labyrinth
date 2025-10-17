@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, dealDamage, downedCheck, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, dealDamage, downedCheck, addModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -26,16 +26,16 @@ function flameScythesEffect([target], user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+	const { results } = dealDamage([target], user, pendingDamage, false, essence, adventure);
 	if (target.hp < (user.getDamageCap() / 2)) {
 		target.hp = 0;
-		const { extraLines } = downedCheck(target, adventure);
-		return [`${target.name} meets the reaper!`].concat(extraLines);
+		const downedLinesSansGeneric = downedCheck(target, adventure).slice(1);
+		return [`${target.name} meets the reaper!`, ...downedLinesSansGeneric];
 	} else {
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return resultLines;
+		return results;
 	}
 }
 //#endregion Base
@@ -64,18 +64,17 @@ function thiefsFlameScythesEffect([target], user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+	const { results } = dealDamage([target], user, pendingDamage, false, essence, adventure);
 	if (target.hp < (user.getDamageCap() / 2)) {
 		target.hp = 0;
-		const { extraLines } = downedCheck(target, adventure);
 		adventure.room.addResource("Gold", "Currency", "loot", bounty);
-		extraLines.push(`${user.name} pillages ${bounty}g.`);
-		return [`${target.name} meets the reaper!`].concat(extraLines);
+		const downedLinesSansGeneric = downedCheck(target, adventure).slice(1);
+		return [`${target.name} meets the reaper!`, ...downedLinesSansGeneric, `${user.name} pillages ${bounty}g.`];
 	} else {
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return resultLines;
+		return results;
 	}
 }
 //#endregion Thief's
@@ -104,16 +103,16 @@ function toxicFlameScythesEffect([target], user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+	const { results } = dealDamage([target], user, pendingDamage, false, essence, adventure);
 	if (target.hp < (user.getDamageCap() / 2)) {
 		target.hp = 0;
-		const { extraLines } = downedCheck(target, adventure);
-		return [`${target.name} meets the reaper!`].concat(extraLines);
+		const downedLinesSansGeneric = downedCheck(target, adventure).slice(1);
+		return [`${target.name} meets the reaper!`, ...downedLinesSansGeneric];
 	} else {
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return resultLines.concat(generateModifierResultLines(addModifier([target], poison)));
+		return results.concat(addModifier([target], poison));
 	}
 }
 //#endregion Toxic

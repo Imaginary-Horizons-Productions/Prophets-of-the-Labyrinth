@@ -1,7 +1,7 @@
 const { GearTemplate, CombatantReference, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, addModifier, addProtection, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
+const { changeStagger, addModifier, addProtection } = require('../util/combatantUtil');
 const { scalingRegeneration } = require('./shared/modifiers');
 const { protectionScalingGenerator } = require('./shared/scalings');
 
@@ -29,7 +29,7 @@ function carrotEffect([target], user, adventure) {
 	if (user.crit) {
 		pendingRegeneration.stacks += critBonus;
 	}
-	const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration));
+	const results = addModifier([target], pendingRegeneration);
 	const ownerIndex = adventure.getCombatantIndex(target);
 	const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 	if (owner.pet?.type) {
@@ -50,9 +50,9 @@ function carrotEffect([target], user, adventure) {
 					petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 			}
 		})
-		resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
+		results.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion
 
@@ -80,7 +80,7 @@ function balancedCarrotEffect([target], user, adventure) {
 	if (user.crit) {
 		pendingRegeneration.stacks += critBonus;
 	}
-	const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier([target], pendingRegeneration).concat(addModifier([target], finesse))));
+	const results = addModifier([target], pendingRegeneration).concat(addModifier([target], finesse));
 	const ownerIndex = adventure.getCombatantIndex(target);
 	const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 	if (owner.pet?.type) {
@@ -101,9 +101,9 @@ function balancedCarrotEffect([target], user, adventure) {
 					petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 			}
 		})
-		resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
+		results.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Balanced
 
@@ -135,7 +135,7 @@ function guardingCarrotEffect([target], user, adventure) {
 		pendingRegeneration.stacks += critBonus;
 	}
 	addProtection([target], protection.calculate(user));
-	const resultLines = generateModifierResultLines(addModifier([target], pendingRegeneration)).concat(`${target.name} gains protection.`);
+	const results = addModifier([target], pendingRegeneration).concat(`${target.name} gains protection.`);
 	const ownerIndex = adventure.getCombatantIndex(target);
 	const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
 	if (owner.pet?.type) {
@@ -156,9 +156,9 @@ function guardingCarrotEffect([target], user, adventure) {
 					petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 			}
 		})
-		resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
+		results.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Guarding
 

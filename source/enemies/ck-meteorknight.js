@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, changeStagger, addProtection, generateModifierResultLines, addModifier } = require("../util/combatantUtil.js");
+const { dealDamage, changeStagger, addProtection, addModifier } = require("../util/combatantUtil.js");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/essenceUtil.js");
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require("../constants.js");
@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Meteor Knight",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results;
 	},
 	selector: selectRandomFoe,
 	next: "random"
@@ -35,13 +35,13 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	effect: (targets, user, adventure) => {
 		const baseDamage = user.getPower() + 75;
 		const bonusDamage = 25
-		const resultLines = [];
+		const results = [];
 		for (const target of targets) {
 			const pendingDamage = (user.crit ? 2 : 1) * ((target.protection > 0 ? 0 : bonusDamage) + baseDamage);
-			resultLines.push(...dealDamage([target], user, pendingDamage, false, user.essence, adventure).resultLines);
+			results.push(...dealDamage([target], user, pendingDamage, false, user.essence, adventure).results);
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines;
+		return results;
 	},
 	selector: selectRandomFoe,
 	next: "random"
@@ -52,13 +52,13 @@ module.exports = new EnemyTemplate("Meteor Knight",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let pendingMisfortune = user.roundRns[`Meteor Mayhem${SAFE_DELIMITER}Meteor Mayhem`][0];
-		const { resultLines, survivors } = dealDamage(targets, user, user.getPower() + 5, false, "Fire", adventure);
+		const { results, survivors } = dealDamage(targets, user, user.getPower() + 5, false, "Fire", adventure);
 		if (user.crit) {
 			addProtection([user], 25);
-			resultLines.push(`${user.name} gains protection.`);
+			results.push(`${user.name} gains protection.`);
 		}
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: "Misfortune", stacks: pendingMisfortune })));
+		return results.concat(...addModifier(survivors, { name: "Misfortune", stacks: pendingMisfortune }));
 	},
 	selector: selectAllFoes,
 	next: "random",

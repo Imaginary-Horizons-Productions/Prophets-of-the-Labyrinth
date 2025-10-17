@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { discountedPassive } = require('./shared/passiveDescriptions');
 
 //#region Base
@@ -27,7 +27,7 @@ function midasStaffEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingCurse.stacks += critBonus;
 	}
-	return generateModifierResultLines(addModifier(targets, pendingCurse));
+	return addModifier(targets, pendingCurse);
 }
 //#endregion Base
 
@@ -55,7 +55,7 @@ function acceleratingMidasStaffEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingCurse.stacks += critBonus;
 	}
-	return generateModifierResultLines(addModifier(targets, pendingCurse).concat(addModifier(targets, swiftness)));
+	return addModifier(targets, pendingCurse).concat(addModifier(targets, swiftness));
 }
 //#endregion Accelerating
 

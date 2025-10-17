@@ -1,6 +1,6 @@
 const { GearTemplate, Move, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, dealDamage, addModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -33,11 +33,11 @@ function vengefulVoidEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -72,14 +72,14 @@ function hexingVengefulVoidEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		resultLines.push(...generateModifierResultLines(addModifier(survivors, misfortune)));
+		results.push(...addModifier(survivors, misfortune));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Hexing
 
@@ -114,14 +114,14 @@ function numbingVengefulVoidEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		resultLines.push(...generateModifierResultLines(addModifier(survivors, clumsiness)));
+		results.push(...addModifier(survivors, clumsiness));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Numbing
 

@@ -1,5 +1,5 @@
 const { EnemyTemplate } = require("../classes");
-const { addModifier, dealDamage, changeStagger, addProtection, generateModifierResultLines } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger, addProtection } = require("../util/combatantUtil");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/essenceUtil.js");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants.js");
@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results;
 	},
 	selector: selectRandomFoe,
 	next: "random"
@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Geode Tortoise",
 		if (user.crit) {
 			pendingEmpowerment.stacks *= 2;
 		}
-		return [`${user.name} gains protection.`].concat(generateModifierResultLines(addModifier([user], pendingEmpowerment)));
+		return [`${user.name} gains protection.`].concat(addModifier([user], pendingEmpowerment));
 	},
 	selector: selectSelf,
 	next: "random"

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { ThreadChannel, Message, EmbedBuilder, bold, italic } = require("discord.js");
 
-const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
+const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant, Receipt } = require("../classes");
 
 const { SAFE_DELIMITER, RN_TABLE_BASE, ICON_PET, ICON_CRITICAL, ICON_STAGGER } = require("../constants.js");
 
@@ -15,7 +15,7 @@ const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtec
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { essenceList, getCounteredEssences, getEmoji } = require("../util/essenceUtil.js");
 const { ensuredPathSave } = require("../util/fileUtil");
-const { anyDieSucceeds, parseExpression } = require("../util/mathUtil.js");
+const { anyDieSucceeds, parseExpression, areSetContentsCongruent } = require("../util/mathUtil.js");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy, rollGearTier } = require("../util/roomUtil");
 const { listifyEN } = require("../util/textUtil");
@@ -742,6 +742,148 @@ function newRound(adventure, thread, lastRoundText) {
 	});
 }
 
+/** Consolidates receipts, then localizes receipts
+ *
+ * Consolidation convention set by game design as "name then change set" to minimize the number of lines required to describe all changes to a specific combatant
+ * @param {(Receipt | string)[]} results
+ */
+function processResults(results) {
+	const resultLines = [];
+	// Consolidate by name
+	// eg "Combatant gains X" + "Combatant gains Y" = "Combatant gains XY"
+	for (let i = 0; i < results.length; i++) {
+		const heldResult = results[i];
+		if (heldResult instanceof Receipt) {
+			for (let j = i + 1; j < results.length; j++) {
+				const checkingResult = results[j];
+				if (checkingResult instanceof Receipt) {
+					if (areSetContentsCongruent(heldResult.combatantNames, checkingResult.combatantNames)) {
+						heldResult.combineChanges(checkingResult);
+						results.splice(j, 1);
+						j--;
+					}
+				}
+			}
+		}
+	}
+
+	// Consolidate by change sets
+	// eg "X gains ChangeSet" + "Y gains ChangeSet" = "X and Y gain ChangeSet"
+	for (let i = 0; i < results.length; i++) {
+		const heldResult = results[i];
+		if (heldResult instanceof Receipt) {
+			for (let j = i + 1; j < results.length; j++) {
+				const checkingResult = results[j];
+				if (checkingResult instanceof Receipt) {
+					if (Receipt.congruenceCheck(heldResult, checkingResult)) {
+						heldResult.combineCombatantNames(checkingResult);
+						results.splice(j, 1);
+						j--;
+					}
+				}
+			}
+		}
+	}
+
+	for (const result of results) {
+		if (typeof result === "string") {
+			resultLines.push(result);
+		} else {
+			const fragments = [];
+			// Damage
+			if (result.damageMap.size > 0) {
+				let damageFragment = "";
+				if (result.combatantNames.size > 1) {
+					damageFragment += "take ";
+				} else {
+					damageFragment += "takes ";
+				}
+				const damages = [];
+				for (const [type, magnitude] of result.damageMap) {
+					if (type === null) {
+						damages.unshift(magnitude);
+					} else {
+						damages.push(`${magnitude} ${type}`)
+					}
+				}
+				damageFragment += `${damages.join(" + ")} damage`;
+				const mitigationFragments = [];
+				if (result.blockedDamage > 0) {
+					mitigationFragments.push(`${result.blockedDamage} blocked`);
+				}
+				if (result.damageCapApplied !== null) {
+					mitigationFragments.push(`capped to ${result.damageCapApplied}`)
+				}
+				if (mitigationFragments.length > 0) {
+					damageFragment += ` (${mitigationFragments.join(", ")})`;
+				}
+				fragments.push(damageFragment);
+			}
+
+			// Healing
+			if (result.healingMap.size > 0) {
+				const healings = [];
+				for (const [source, magnitude] of result.healingMap) {
+					if (source) {
+						healings.push(`${magnitude} (${source})`)
+					} else {
+						healings.push(magnitude);
+					}
+				}
+
+				if (result.combatantNames.size > 1) {
+					fragments.push(`gain ${healings.join(" + ")} HP`);
+				} else {
+					fragments.push(`gains ${healings.join(" + ")} HP`);
+				}
+			}
+
+			// Added Modifiers
+			if (result.addedModifiers.size > 0) {
+				if (result.combatantNames.size > 1) {
+					fragments.push(`gain ${[...result.addedModifiers].join("")}`);
+				} else {
+					fragments.push(`gains ${[...result.addedModifiers].join("")}`);
+				}
+			}
+
+			// Removed Modifiers
+			if (result.removedModifiers.size > 0) {
+				if (result.combatantNames.size > 1) {
+					fragments.push(`lose ${[...result.removedModifiers].join("")}`);
+				} else {
+					fragments.push(`loses ${[...result.removedModifiers].join("")}`);
+				}
+			}
+
+			// Stagger
+			switch (result.stagger) {
+				case "add":
+					if (result.combatantNames.size > 1) {
+						fragments.push("are staggered");
+					} else {
+						fragments.push("is staggered");
+					}
+					break;
+				case "remove":
+					if (result.combatantNames.size > 1) {
+						fragments.push("are relieved of stagger");
+					} else {
+						fragments.push("is relieved of stagger");
+					}
+					break;
+			}
+
+			if (fragments.length > 0) {
+				resultLines.push(`${listifyEN([...result.combatantNames])} ${listifyEN(fragments)}${result.excitement}`);
+			} else {
+				resultLines.push("");
+			}
+		}
+	}
+	return resultLines;
+}
+
 /** Updates game state with the move's effect AND returns the game's description of what happened
  * @param {Move} move
  * @param {Adventure} adventure
@@ -753,7 +895,7 @@ function resolveMove(move, adventure) {
 	}
 
 	let headline = `${bold(user.name)} `;
-	const results = [];
+	const resultLines = [];
 	const [moveName, index] = move.name.split(SAFE_DELIMITER);
 	if (!user.isStunned || moveName.startsWith("Unstoppable") || move.type === "pet") {
 		if (user.crit && move.type !== "pet") {
@@ -840,10 +982,10 @@ function resolveMove(move, adventure) {
 			})
 			if (livingTargets.length > 0) {
 				if (deadTargets.length > 0) {
-					results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
+					resultLines.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 				}
 
-				results.push(...effect(livingTargets, user, adventure, { petRNs: adventure.petRNs }));
+				resultLines.push(...processResults(effect(livingTargets, user, adventure, { petRNs: adventure.petRNs })));
 			} else {
 				shouldDoGearUpkeep = false;
 				if (move.targets.length === 1) {
@@ -853,7 +995,7 @@ function resolveMove(move, adventure) {
 				}
 			}
 		} else {
-			results.push(...effect([], user, adventure, { petRNs: adventure.petRNs }));
+			resultLines.push(...processResults(effect([], user, adventure, { petRNs: adventure.petRNs })));
 		}
 
 		if (shouldDoGearUpkeep) {
@@ -893,7 +1035,7 @@ function resolveMove(move, adventure) {
 			if (getGearProperty(moveName, "maxCharges") > 0) {
 				gear.charges--;
 				if (gear.charges < 1) {
-					results.push(`${user.name}'s ${moveName} is exhausted!`);
+					resultLines.push(`${user.name}'s ${moveName} is exhausted!`);
 				}
 			}
 		}
@@ -901,18 +1043,18 @@ function resolveMove(move, adventure) {
 		const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
 		if (insigniaCount > 0 && user.team === "delver" && user.crit && move.type !== "pet") {
 			const insigniaHealing = insigniaCount * 15;
-			results.push(gainHealth(user, insigniaHealing, adventure, "their Celestial Knight Insigina"));
+			resultLines.push(processResults(gainHealth(user, insigniaHealing, adventure, "Celestial Knight Insigina")));
 			adventure.updateArtifactStat("Health Restored", insigniaHealing);
 		}
 	} else {
 		headline = `${ICON_STAGGER} ${headline} is Stunned!`;
 		if ("Progress" in user.modifiers) {
-			results.push(`${user.name} loses some ${getApplicationEmojiMarkdown("Progress")}!`)
+			resultLines.push(`${user.name} loses some ${getApplicationEmojiMarkdown("Progress")}!`)
 			user.modifiers.Progress = Math.ceil(user.getModifierStacks("Progress") * 0.8);
 		}
 
 		if ("Frailty" in user.modifiers) {
-			results.push(...dealModifierDamage(user, "Frailty", adventure));
+			resultLines.push(...processResults(dealModifierDamage(user, "Frailty", adventure)))
 			removeModifier([user], { name: "Frailty", stacks: "all" });
 		}
 	}
@@ -920,11 +1062,11 @@ function resolveMove(move, adventure) {
 	if (move.type !== "pet") {
 		// Poison/Regeneneration effect
 		if ("Poison" in user.modifiers) {
-			results.push(...dealModifierDamage(user, "Poison", adventure));
+			resultLines.push(...processResults(dealModifierDamage(user, "Poison", adventure)))
 		} else {
 			const regenStacks = user.getModifierStacks("Regeneration");
 			if (regenStacks) {
-				results.push(gainHealth(user, regenStacks * 10, adventure, getApplicationEmojiMarkdown("Regeneration")));
+				resultLines.push(processResults(gainHealth(user, regenStacks * 10, adventure, getApplicationEmojiMarkdown("Regeneration"))));
 			}
 		}
 
@@ -937,7 +1079,7 @@ function resolveMove(move, adventure) {
 		}
 	}
 
-	return `${headline}${results.reduce((contextLines, currentLine) => `${contextLines}\n-# ${bold(currentLine)}`, "")}\n`;
+	return `${headline}${resultLines.reduce((contextLines, currentLine) => `${contextLines}\n-# ${currentLine}`, "")}\n`;
 }
 
 const RETAINING_MODIFIER_PAIRS = [["Exposure", "Distraction"], ["Evasion", "Vigilance"]];
@@ -1050,7 +1192,7 @@ function endRound(adventure, thread) {
 			otherHappenings.push(`${combatant.name}'s Fortune becomes protection.`);
 		}
 		if ("Misfortune" in combatant.modifiers && combatant.modifiers.Misfortune % 7 === 0) {
-			otherHappenings.push(dealModifierDamage(combatant, "Misfortune", adventure));
+			otherHappenings.push(...processResults(dealModifierDamage(combatant, "Misfortune", adventure)));
 			removeModifier([combatant], { name: "Misfortune", stacks: "all" });
 		}
 		if (otherHappenings.length > 0) {
@@ -1189,6 +1331,7 @@ module.exports = {
 	nextRoom,
 	endRoom,
 	newRound,
+	processResults,
 	endRound,
 	checkNextRound,
 	fetchRecruitMessage,

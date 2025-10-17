@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
+const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Inky Potion",
 	"Grants the user 3 @e{Darkness Absorption}",
@@ -8,6 +8,6 @@ module.exports = new ItemTemplate("Inky Potion",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {
-		return generateModifierResultLines(addModifier([user], { name: "Darkness Absorption", stacks: 3 }));
+		return addModifier([user], { name: "Darkness Absorption", stacks: 3 });
 	}
 );

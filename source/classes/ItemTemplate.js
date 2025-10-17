@@ -1,6 +1,7 @@
 const { Adventure } = require("./Adventure");
 const { Combatant } = require("./Combatant");
 const { CombatantReference } = require("./Move");
+const { Receipt } = require("./Receipt");
 
 class ItemTemplate {
 	/**
@@ -9,7 +10,7 @@ class ItemTemplate {
 	 * @param {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} essenceEnum
 	 * @param {number} costInput
 	 * @param {(self, adventure: Adventure) => CombatantReference[]} selectTargetsFunction
-	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} effectFunction
+	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => (string | Receipt)[]} effectFunction
 	 */
 	constructor(nameInput, descriptionInput, essenceEnum, costInput, selectTargetsFunction, effectFunction) {
 		this.name = nameInput;

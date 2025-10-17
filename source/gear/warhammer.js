@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, dealDamage, addModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -30,11 +30,11 @@ function warhammerEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -66,14 +66,14 @@ function fatiguingWarhammerEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		resultLines.push(...generateModifierResultLines(addModifier(survivors, impotence)));
+		results.push(...addModifier(survivors, impotence));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Fatiguing
 
@@ -105,14 +105,14 @@ function toxicWarhammerEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		resultLines.push(...generateModifierResultLines(addModifier(survivors, poison)));
+		results.push(...addModifier(survivors, poison));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Toxic
 
