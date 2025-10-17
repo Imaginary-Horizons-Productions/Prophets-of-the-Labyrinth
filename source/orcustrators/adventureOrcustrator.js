@@ -11,7 +11,7 @@ const { getGearProperty, gearExists } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
-const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, evaluateAbsoluteTeam, receiptToResultLine } = require("../util/combatantUtil");
+const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, evaluateAbsoluteTeam } = require("../util/combatantUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { essenceList, getCounteredEssences, getEmoji } = require("../util/essenceUtil.js");
 const { ensuredPathSave } = require("../util/fileUtil");
@@ -742,6 +742,108 @@ function newRound(adventure, thread, lastRoundText) {
 	});
 }
 
+/** @param {Receipt} receipt */
+function receiptToResultLine(receipt) {
+	const fragments = [];
+	// Damage
+	if (receipt.damageMap.size > 0) {
+		let damageFragment = "";
+		if (receipt.combatantNames.size > 1) {
+			damageFragment += "take ";
+		} else {
+			damageFragment += "takes ";
+		}
+		const damages = [];
+		for (const [type, magnitude] of receipt.damageMap) {
+			if (type === null) {
+				damages.unshift(magnitude);
+			} else {
+				damages.push(`${magnitude} ${type}`)
+			}
+		}
+		damageFragment += `${damages.join(" + ")} damage`;
+		const mitigationFragments = [];
+		if (receipt.blockedDamage > 0) {
+			mitigationFragments.push(`${receipt.blockedDamage} blocked`);
+		}
+		if (receipt.damageCapApplied !== null) {
+			mitigationFragments.push(`capped to ${receipt.damageCapApplied}`)
+		}
+		if (mitigationFragments.length > 0) {
+			damageFragment += ` (${mitigationFragments.join(", ")})`;
+		}
+		fragments.push(damageFragment);
+	}
+
+	// Healing
+	if (receipt.healingMap.size > 0) {
+		const healings = [];
+		for (const [source, magnitude] of receipt.healingMap) {
+			healings.push(`${magnitude} (${source})`)
+		}
+
+		if (receipt.combatantNames.size > 1) {
+			fragments.push(`gain ${healings.join(" + ")} HP`);
+		} else {
+			fragments.push(`gains ${healings.join(" + ")} HP`);
+		}
+	}
+
+	// Added Modifiers
+	if (receipt.addedModifiers.size > 0) {
+		if (receipt.combatantNames.size > 1) {
+			fragments.push(`gain ${[...receipt.addedModifiers].join("")}`);
+		} else {
+			fragments.push(`gains ${[...receipt.addedModifiers].join("")}`);
+		}
+	}
+
+	// Removed Modifiers
+	if (receipt.removedModifiers.size > 0) {
+		if (receipt.combatantNames.size > 1) {
+			fragments.push(`lose ${[...receipt.removedModifiers].join("")}`);
+		} else {
+			fragments.push(`loses ${[...receipt.removedModifiers].join("")}`);
+		}
+	}
+
+	// Stagger
+	switch (receipt.stagger) {
+		case "add":
+			if (receipt.combatantNames.size > 1) {
+				fragments.push("are staggered");
+			} else {
+				fragments.push("is staggered");
+			}
+			break;
+		case "remove":
+			if (receipt.combatantNames.size > 1) {
+				fragments.push("are relieved of stagger");
+			} else {
+				fragments.push("is relieved of stagger");
+			}
+			break;
+	}
+
+	if (fragments.length > 0) {
+		let finalizedLine = `${listifyEN([...receipt.combatantNames])} ${listifyEN(fragments)}`;
+		switch (receipt.excitement) {
+			case 0:
+				finalizedLine += ".";
+				break;
+			case 1:
+				finalizedLine += "!";
+				break;
+			case 2:
+				finalizedLine += "!!!";
+				break;
+		}
+		return finalizedLine;
+	} else {
+		return "";
+	}
+}
+
 /** Consolidates receipts, then localizes receipts
  *
  * Consolidation convention set by game design as "name then change set" to minimize the number of lines required to describe all changes to a specific combatant
@@ -1242,6 +1344,7 @@ module.exports = {
 	nextRoom,
 	endRoom,
 	newRound,
+	receiptToResultLine,
 	endRound,
 	checkNextRound,
 	fetchRecruitMessage,

@@ -1,7 +1,7 @@
 const { MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
-const { setAdventure, getAdventure } = require('../orcustrators/adventureOrcustrator');
-const { gainHealth, receiptToResultLine } = require('../util/combatantUtil');
+const { setAdventure, getAdventure, receiptToResultLine } = require('../orcustrators/adventureOrcustrator');
+const { gainHealth } = require('../util/combatantUtil');
 const { renderRoom } = require('../util/embedUtil');
 const { RN_TABLE_BASE, ZERO_WIDTH_WHITESPACE } = require('../constants');
 

@@ -1,7 +1,7 @@
 const { MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
-const { getAdventure } = require('../orcustrators/adventureOrcustrator');
-const { gainHealth, receiptToResultLine } = require('../util/combatantUtil');
+const { getAdventure, receiptToResultLine } = require('../orcustrators/adventureOrcustrator');
+const { gainHealth } = require('../util/combatantUtil');
 const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "applepiewishingwell";
