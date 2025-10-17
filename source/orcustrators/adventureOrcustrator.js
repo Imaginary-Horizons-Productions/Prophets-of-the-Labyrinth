@@ -742,96 +742,6 @@ function newRound(adventure, thread, lastRoundText) {
 	});
 }
 
-/** @param {Receipt} receipt */
-function receiptToResultLine(receipt) {
-	const fragments = [];
-	// Damage
-	if (receipt.damageMap.size > 0) {
-		let damageFragment = "";
-		if (receipt.combatantNames.size > 1) {
-			damageFragment += "take ";
-		} else {
-			damageFragment += "takes ";
-		}
-		const damages = [];
-		for (const [type, magnitude] of receipt.damageMap) {
-			if (type === null) {
-				damages.unshift(magnitude);
-			} else {
-				damages.push(`${magnitude} ${type}`)
-			}
-		}
-		damageFragment += `${damages.join(" + ")} damage`;
-		const mitigationFragments = [];
-		if (receipt.blockedDamage > 0) {
-			mitigationFragments.push(`${receipt.blockedDamage} blocked`);
-		}
-		if (receipt.damageCapApplied !== null) {
-			mitigationFragments.push(`capped to ${receipt.damageCapApplied}`)
-		}
-		if (mitigationFragments.length > 0) {
-			damageFragment += ` (${mitigationFragments.join(", ")})`;
-		}
-		fragments.push(damageFragment);
-	}
-
-	// Healing
-	if (receipt.healingMap.size > 0) {
-		const healings = [];
-		for (const [source, magnitude] of receipt.healingMap) {
-			healings.push(`${magnitude} (${source})`)
-		}
-
-		if (receipt.combatantNames.size > 1) {
-			fragments.push(`gain ${healings.join(" + ")} HP`);
-		} else {
-			fragments.push(`gains ${healings.join(" + ")} HP`);
-		}
-	}
-
-	// Added Modifiers
-	if (receipt.addedModifiers.size > 0) {
-		if (receipt.combatantNames.size > 1) {
-			fragments.push(`gain ${[...receipt.addedModifiers].join("")}`);
-		} else {
-			fragments.push(`gains ${[...receipt.addedModifiers].join("")}`);
-		}
-	}
-
-	// Removed Modifiers
-	if (receipt.removedModifiers.size > 0) {
-		if (receipt.combatantNames.size > 1) {
-			fragments.push(`lose ${[...receipt.removedModifiers].join("")}`);
-		} else {
-			fragments.push(`loses ${[...receipt.removedModifiers].join("")}`);
-		}
-	}
-
-	// Stagger
-	switch (receipt.stagger) {
-		case "add":
-			if (receipt.combatantNames.size > 1) {
-				fragments.push("are staggered");
-			} else {
-				fragments.push("is staggered");
-			}
-			break;
-		case "remove":
-			if (receipt.combatantNames.size > 1) {
-				fragments.push("are relieved of stagger");
-			} else {
-				fragments.push("is relieved of stagger");
-			}
-			break;
-	}
-
-	if (fragments.length > 0) {
-		return `${listifyEN([...receipt.combatantNames])} ${listifyEN(fragments)}${receipt.excitement}`;
-	} else {
-		return "";
-	}
-}
-
 /** Consolidates receipts, then localizes receipts
  *
  * Consolidation convention set by game design as "name then change set" to minimize the number of lines required to describe all changes to a specific combatant
@@ -879,7 +789,92 @@ function processResults(results) {
 		if (typeof result === "string") {
 			resultLines.push(result);
 		} else {
-			resultLines.push(receiptToResultLine(result));
+			const fragments = [];
+			// Damage
+			if (result.damageMap.size > 0) {
+				let damageFragment = "";
+				if (result.combatantNames.size > 1) {
+					damageFragment += "take ";
+				} else {
+					damageFragment += "takes ";
+				}
+				const damages = [];
+				for (const [type, magnitude] of result.damageMap) {
+					if (type === null) {
+						damages.unshift(magnitude);
+					} else {
+						damages.push(`${magnitude} ${type}`)
+					}
+				}
+				damageFragment += `${damages.join(" + ")} damage`;
+				const mitigationFragments = [];
+				if (result.blockedDamage > 0) {
+					mitigationFragments.push(`${result.blockedDamage} blocked`);
+				}
+				if (result.damageCapApplied !== null) {
+					mitigationFragments.push(`capped to ${result.damageCapApplied}`)
+				}
+				if (mitigationFragments.length > 0) {
+					damageFragment += ` (${mitigationFragments.join(", ")})`;
+				}
+				fragments.push(damageFragment);
+			}
+
+			// Healing
+			if (result.healingMap.size > 0) {
+				const healings = [];
+				for (const [source, magnitude] of result.healingMap) {
+					healings.push(`${magnitude} (${source})`)
+				}
+
+				if (result.combatantNames.size > 1) {
+					fragments.push(`gain ${healings.join(" + ")} HP`);
+				} else {
+					fragments.push(`gains ${healings.join(" + ")} HP`);
+				}
+			}
+
+			// Added Modifiers
+			if (result.addedModifiers.size > 0) {
+				if (result.combatantNames.size > 1) {
+					fragments.push(`gain ${[...result.addedModifiers].join("")}`);
+				} else {
+					fragments.push(`gains ${[...result.addedModifiers].join("")}`);
+				}
+			}
+
+			// Removed Modifiers
+			if (result.removedModifiers.size > 0) {
+				if (result.combatantNames.size > 1) {
+					fragments.push(`lose ${[...result.removedModifiers].join("")}`);
+				} else {
+					fragments.push(`loses ${[...result.removedModifiers].join("")}`);
+				}
+			}
+
+			// Stagger
+			switch (result.stagger) {
+				case "add":
+					if (result.combatantNames.size > 1) {
+						fragments.push("are staggered");
+					} else {
+						fragments.push("is staggered");
+					}
+					break;
+				case "remove":
+					if (result.combatantNames.size > 1) {
+						fragments.push("are relieved of stagger");
+					} else {
+						fragments.push("is relieved of stagger");
+					}
+					break;
+			}
+
+			if (fragments.length > 0) {
+				resultLines.push(`${listifyEN([...result.combatantNames])} ${listifyEN(fragments)}${result.excitement}`);
+			} else {
+				resultLines.push("");
+			}
 		}
 	}
 	return resultLines;
@@ -1332,7 +1327,7 @@ module.exports = {
 	nextRoom,
 	endRoom,
 	newRound,
-	receiptToResultLine,
+	processResults,
 	endRound,
 	checkNextRound,
 	fetchRecruitMessage,

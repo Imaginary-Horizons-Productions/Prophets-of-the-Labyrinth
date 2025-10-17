@@ -1,6 +1,6 @@
 const { MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
-const { setAdventure, getAdventure, receiptToResultLine } = require('../orcustrators/adventureOrcustrator');
+const { setAdventure, getAdventure, processResults } = require('../orcustrators/adventureOrcustrator');
 const { gainHealth } = require('../util/combatantUtil');
 const { renderRoom } = require('../util/embedUtil');
 const { RN_TABLE_BASE, ZERO_WIDTH_WHITESPACE } = require('../constants');
@@ -22,7 +22,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 
 		adventure.room.history["Floofed fur"].push(delver.name);
 		interaction.update(renderRoom(adventure, interaction.channel)).then(() => {
-			let msg = `How therapeutic, ${receiptToResultLine(gainHealth(delver, 120, adventure))}`;
+			let msg = `How therapeutic, ${processResults(gainHealth(delver, 120, adventure)).join(" ")}`;
 			// base 40% chance fight
 			if (adventure.generateRandomNumber(RN_TABLE_BASE, "general") < (RN_TABLE_BASE * (parseInt(wakePercent) / 100))) {
 				adventure.room.history["Awoke Comet"].push(interaction.member.displayName);
