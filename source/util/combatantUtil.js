@@ -76,12 +76,12 @@ function dealDamage(targets, assailant, damage, isUnblockable, essence, adventur
 						pendingDamage *= 1.5;
 						removeModifier([target], { name: "Exposure", stacks: 1 });
 					}
-					const changes = { damageArray: [[null, pendingDamage]] };
+					const changes = { damagesArray: [[null, pendingDamage]] };
 					const isCounter = getCombatantCounters(target).includes(essence);
 					if (isCounter) {
 						const counterDamage = assailant.getEssenceCounterDamage();
 						pendingDamage += counterDamage;
-						changes.damageArray.push([getEmoji(essence), counterDamage]);
+						changes.damagesArray.push([getEmoji(essence), counterDamage]);
 					}
 					pendingDamage = Math.ceil(pendingDamage);
 					if (!isUnblockable) {
@@ -152,7 +152,7 @@ function dealModifierDamage(target, modifier, adventure) {
 		pendingDamage += funnelDamage;
 		adventure.updateArtifactStat("Spiral Funnel", `Extra ${modifier} Damage`, funnelDamage);
 	}
-	const changes = { damageArray: [[getApplicationEmojiMarkdown(modifier), pendingDamage]] };
+	const changes = { damagesArray: [[getApplicationEmojiMarkdown(modifier), pendingDamage]] };
 	if (pendingDamage >= target.protection) {
 		pendingDamage -= target.protection;
 		target.protection = 0;
