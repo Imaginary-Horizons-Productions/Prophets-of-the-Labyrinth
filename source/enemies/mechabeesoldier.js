@@ -20,7 +20,7 @@ module.exports = new EnemyTemplate("Mechabee Soldier",
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 10;
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines.concat(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 }));
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results.concat(addModifier(targets, { name: "Poison", stacks: user.crit ? 4 : 2 }));
 	},
 	selector: selectRandomFoe,
 	next: "Neurotoxin Strike"

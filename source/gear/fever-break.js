@@ -39,7 +39,7 @@ function feverBreakEffect(targets, user, adventure) {
 		const poisonStacks = target.getModifierStacks("Poison");
 		const frailtyStacks = target.getModifierStacks("Frailty");
 		const pendingDamage = poisonDamage * (poisonStacks ** 2 + poisonStacks) / 2 + frailDamage * frailtyStacks;
-		resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure).resultLines);
+		resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure).results);
 		if (target.hp > 0) {
 			survivors.push(target);
 			if (!user.crit) {
@@ -89,7 +89,7 @@ function fatiguingFeverBreakEffect(targets, user, adventure) {
 		const poisonStacks = target.getModifierStacks("Poison");
 		const frailtyStacks = target.getModifierStacks("Frailty");
 		const pendingDamage = poisonDamage * (poisonStacks ** 2 + poisonStacks) / 2 + frailDamage * frailtyStacks;
-		resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure).resultLines);
+		resultLines.push(...dealDamage([target], user, pendingDamage, false, essence, adventure).results);
 		if (target.hp > 0) {
 			survivors.push(target);
 			if (!user.crit) {
@@ -141,7 +141,7 @@ function unstoppableFeverBreakEffect(targets, user, adventure) {
 		const poisonStacks = target.getModifierStacks("Poison");
 		const frailtyStacks = target.getModifierStacks("Frailty");
 		const pendingDamage = poisonDamage * (poisonStacks ** 2 + poisonStacks) / 2 + frailDamage * frailtyStacks;
-		resultLines.push(...dealDamage([target], user, pendingDamage, true, essence, adventure).resultLines);
+		resultLines.push(...dealDamage([target], user, pendingDamage, true, essence, adventure).results);
 		if (target.hp > 0) {
 			survivors.push(target);
 			if (!user.crit) {
