@@ -285,14 +285,18 @@ function changeStagger(combatants, applier, value) {
 			if (applier && pendingStagger > 0) {
 				if (applier.getModifierStacks("Impact") > 0) {
 					pendingStagger++;
-					receipts.push(new Receipt([combatant.name], ".", { bonusStagger: "add" }));
 				}
 				if (applier.getModifierStacks("Impotence") > 0) {
 					pendingStagger--;
-					receipts.push(new Receipt([combatant.name], ".", { bonusStagger: "remove" }));
 				}
 			}
-			combatant.stagger = Math.max(combatant.stagger + pendingStagger, 0);
+			if (pendingStagger > 0) {
+				receipts.push(new Receipt([combatant.name], ".", { bonusStagger: "add" }));
+				combatant.stagger = combatant.stagger + pendingStagger;
+			} else if (pendingStagger < 0) {
+				receipts.push(new Receipt([combatant.name], ".", { bonusStagger: "remove" }));
+				combatant.stagger = Math.max(combatant.stagger + pendingStagger, 0);
+			}
 		}
 	}
 	return receipts;
