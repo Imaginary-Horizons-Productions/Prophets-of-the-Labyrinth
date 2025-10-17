@@ -1,6 +1,6 @@
 const { GearTemplate, Move, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { scalingEvasion } = require('./shared/modifiers');
 
 //#region Base
@@ -22,17 +22,17 @@ function shadowOfConfusionEffect([target], user, adventure) {
 	if (user.essence === essence) {
 		changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	const resultLines = [];
+	const results = [];
 	const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 	const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 	if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 		targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
-		resultLines.push(`${target.name} is redirected into targeting themself.`);
+		results.push(`${target.name} is redirected into targeting themself.`);
 	}
 	if (user.crit) {
-		resultLines.push(...generateModifierResultLines(addModifier([user], { name: evade.name, stacks: evade.stacks.calculate(user) })));
+		results.push(...addModifier([user], { name: evade.name, stacks: evade.stacks.calculate(user) }));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -55,17 +55,17 @@ function incompatibleShadowOfConfusionEffect([target], user, adventure) {
 	if (user.essence === essence) {
 		changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	const resultLines = [];
+	const results = [];
 	const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 	const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 	if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 		targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
-		resultLines.push(`${target.name} is redirected into targeting themself.`);
+		results.push(`${target.name} is redirected into targeting themself.`);
 	}
 	if (user.crit) {
-		resultLines.push(...generateModifierResultLines(addModifier([user], { name: evade.name, stacks: evade.stacks.calculate(user) })));
+		results.push(...addModifier([user], { name: evade.name, stacks: evade.stacks.calculate(user) }));
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier([target], incompatible)));
+	return results.concat(addModifier([target], incompatible));
 }
 //#endregion Incompatible
 
@@ -88,17 +88,17 @@ function shatteringShadowOfConfusionEffect([target], user, adventure) {
 	if (user.essence === essence) {
 		changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	const resultLines = [];
+	const results = [];
 	const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 	const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 	if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 		targetMove.targets = [{ team: target.team, index: adventure.getCombatantIndex(target) }];
-		resultLines.push(`${target.name} is redirected into targeting themself.`);
+		results.push(`${target.name} is redirected into targeting themself.`);
 	}
 	if (user.crit) {
-		resultLines.push(...generateModifierResultLines(addModifier([user], { name: evade.name, stacks: evade.stacks.calculate(user) })));
+		results.push(...addModifier([user], { name: evade.name, stacks: evade.stacks.calculate(user) }));
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier([target], frailty)));
+	return results.concat(addModifier([target], frailty));
 }
 //#endregion Shattering
 

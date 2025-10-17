@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { accuratePassive, heartyPassive } = require('./shared/passiveDescriptions');
 
 //#region Base
@@ -23,9 +23,9 @@ function naturesCapriceEffect(targets, user, adventure) {
 		changeStagger(targets, user, user.team === targets[0].team ? ESSENCE_MATCH_STAGGER_ALLY : ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (user.crit) {
-		return generateModifierResultLines(addModifier(targets, misfortune));
+		return addModifier(targets, misfortune);
 	} else {
-		return generateModifierResultLines(addModifier(targets, fortune));
+		return addModifier(targets, fortune);
 	}
 }
 //#region Base

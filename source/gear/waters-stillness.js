@@ -1,7 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { scalingSwiftness } = require('./shared/modifiers');
 
 //#region Base
@@ -29,15 +28,14 @@ function watersStillnessEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStaggerRelief *= critBonus;
 	}
-	changeStagger(targets, user, pendingStaggerRelief);
-	return [joinAsStatement(false, targets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")];
+	return changeStagger(targets, user, pendingStaggerRelief);
 }
 //#endregion Base
 
 //#region Accelerating
 const acceleratingWatersStillness = new GearTemplate("Accelerating Water's Stillness",
 	[
-		["use", "Relieve Stagger and grant <@{mod1Stacks}> @{mod1} to an ally and all allies with @{mod0}"],
+		["use", "Relieve Stagger and grant <@{mod0Stacks}> @{mod0} to an ally and all allies with @{mod1}"],
 		["critical", "Stagger relieved x @{critBonus}"]
 	],
 	"Spell",
@@ -46,12 +44,12 @@ const acceleratingWatersStillness = new GearTemplate("Accelerating Water's Still
 	.setEffect(acceleratingWatersStillnessEffect, { type: `single${SAFE_DELIMITER}Vigilance`, team: "ally" })
 	.setCharges(15)
 	.setStagger(-2)
-	.setModifiers({ name: "Vigilance", stacks: 0 }, scalingSwiftness(2))
+	.setModifiers(scalingSwiftness(2), { name: "Vigilance", stacks: 0 })
 	.setScalings({ critBonus: 2 });
 
 /** @type {typeof acceleratingWatersStillness.effect} */
 function acceleratingWatersStillnessEffect(targets, user, adventure) {
-	const { essence, modifiers: [targetModifier, swiftness], stagger, scalings: { critBonus } } = acceleratingWatersStillness;
+	const { essence, modifiers: [swiftness], stagger, scalings: { critBonus } } = acceleratingWatersStillness;
 	let pendingStaggerRelief = stagger;
 	if (user.essence === essence) {
 		pendingStaggerRelief += ESSENCE_MATCH_STAGGER_ALLY;
@@ -59,8 +57,7 @@ function acceleratingWatersStillnessEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStaggerRelief *= critBonus;
 	}
-	changeStagger(targets, user, pendingStaggerRelief);
-	return [joinAsStatement(false, targets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: swiftness.name, stacks: swiftness.stacks.calculate(user) }))));
+	return changeStagger(targets, user, pendingStaggerRelief).concat(addModifier(targets, { name: swiftness.name, stacks: swiftness.stacks.calculate(user) }));
 }
 //#endregion Accelerating
 
@@ -94,17 +91,16 @@ function cleansingWatersStillnessEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStaggerRelief *= critBonus;
 	}
-	changeStagger(targets, user, pendingStaggerRelief);
-	const receipts = [];
+	const results = changeStagger(targets, user, pendingStaggerRelief);
 	for (const target of targets) {
 		const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const debuffsToRemove = Math.min(targetDebuffs.length, debuffsCured);
 		for (let i = 0; i < debuffsToRemove; i++) {
 			const [rolledDebuff] = targetDebuffs.splice(user.roundRns[`${variantName}${SAFE_DELIMITER}debuffs`][i] % targetDebuffs.length, 1);
-			receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
+			results.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 		}
 	}
-	return [joinAsStatement(false, targets.map(target => target.name), "shrugs off", "shrug off", "some Stagger.")].concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return results;
 }
 //#endregion Cleansing
 

@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, dealDamage, generateModifierResultLines, addModifier, gainHealth } = require('../util/combatantUtil');
+const { changeStagger, dealDamage, addModifier, gainHealth } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -28,11 +28,11 @@ function bountyFistEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(`${user.name}'s ${bountyFist.name} consumed ${goldUsed}g.`);
+	return results.concat(`${user.name}'s ${bountyFist.name} consumed ${goldUsed}g.`);
 }
 //#endregion Base
 
@@ -62,11 +62,11 @@ function midassBountyFistEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(targets, curseOfMidas)), `${user.name}'s ${midassBountyFist.name} consumed ${goldUsed}g.`);
+	return results.concat(addModifier(targets, curseOfMidas), `${user.name}'s ${midassBountyFist.name} consumed ${goldUsed}g.`);
 }
 //#endregion Midas's
 
@@ -96,16 +96,15 @@ function thirstingBountyFistEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (survivors.length < targets.length) {
 		const pendingHealing = healing.calculate(user);
-		gainHealth(user, pendingHealing, adventure);
-		resultLines.push(`${user.name} regains ${pendingHealing} HP.`);
+		results.push(gainHealth(user, pendingHealing, adventure));
 	}
-	return resultLines.concat(`${user.name}'s ${thirstingBountyFist.name} consumed ${goldUsed}g.`);
+	return results.concat(`${user.name}'s ${thirstingBountyFist.name} consumed ${goldUsed}g.`);
 }
 //#endregion Thirsting
 

@@ -1,7 +1,7 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
-const { changeStagger, dealDamage, generateModifierResultLines, removeModifier } = require('../util/combatantUtil');
+const { changeStagger, dealDamage, removeModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator, kineticDamageScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -29,12 +29,12 @@ function tridentEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	return resultLines.concat(generateModifierResultLines(removeModifier([user], { name: userDebuffs[user.roundRns[`${trident.name}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" })));
+	return results.concat(removeModifier([user], { name: userDebuffs[user.roundRns[`${trident.name}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" }));
 }
 //#endregion Base
 
@@ -63,12 +63,12 @@ function kineticTridentEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	return resultLines.concat(generateModifierResultLines(removeModifier([user], { name: userDebuffs[user.roundRns[`${kineticTrident.name}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" })));
+	return results.concat(removeModifier([user], { name: userDebuffs[user.roundRns[`${kineticTrident.name}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" }));
 }
 //#endregion Kinetic
 
@@ -98,16 +98,17 @@ function staggeringTridentEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
+	results.push(...removeModifier([user], { name: userDebuffs[user.roundRns[`${staggeringTrident.name}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" }));
 	if (survivors.length > 0) {
 		let pendingStagger = stagger;
 		if (user.essence === essence) {
 			pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 		}
-		changeStagger(survivors, user, pendingStagger);
+		results.push(changeStagger(survivors, user, pendingStagger));
 	}
-	const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	return resultLines.concat(generateModifierResultLines(removeModifier([user], { name: userDebuffs[user.roundRns[`${staggeringTrident.name}${SAFE_DELIMITER}debuffs`][0] % userDebuffs.length], stacks: "all" })));
+	return results;
 }
 //#endregion Staggering
 

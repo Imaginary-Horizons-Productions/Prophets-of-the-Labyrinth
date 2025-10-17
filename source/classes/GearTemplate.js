@@ -1,6 +1,7 @@
 const { Adventure } = require("./Adventure");
 const { BuildError } = require("./BuildError");
 const { Combatant } = require("./Combatant");
+const { Receipt } = require("./Receipt");
 const { Scaling } = require("./Scaling");
 
 class GearFamily {
@@ -34,7 +35,7 @@ class GearTemplate {
 		this.essence = essenceEnum;
 	}
 	// Internal Configuration
-	/** @type {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: Partial<MoveEffectOverrides>) => string[]} */
+	/** @type {(targets: Combatant[], user: Combatant, adventure: Adventure, overrides: Partial<MoveEffectOverrides>) => (string | Receipt)[]} */
 	effect;
 	/** @type {{type: "single" | "all" | "random→x" | "self" | "none" | "blast→x" | "single→x", team: "ally" | "foe" | "any" | "none"}} */
 	targetingTags;

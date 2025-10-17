@@ -28,7 +28,7 @@ function overburnExplosionEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
@@ -36,9 +36,9 @@ function overburnExplosionEffect(targets, user, adventure) {
 		for (const gear of user.gear) {
 			gear.cooldown += pactCost[0];
 		}
-		resultLines.push(`${user.name} is burnt out.`);
+		results.push(`${user.name} is burnt out.`);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -87,7 +87,7 @@ function unstoppableOverburnExplosionEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, true, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, true, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
@@ -95,9 +95,9 @@ function unstoppableOverburnExplosionEffect(targets, user, adventure) {
 		for (const gear of user.gear) {
 			gear.cooldown += pactCost[0];
 		}
-		resultLines.push(`${user.name} is burnt out.`);
+		results.push(`${user.name} is burnt out.`);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Unstoppable
 

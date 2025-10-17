@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { SAFE_DELIMITER } = require("../constants");
 const { selectRandomFoe } = require("../shared/actionComponents");
-const { generateModifierResultLines, addModifier, changeStagger, dealDamage, removeModifier } = require("../util/combatantUtil");
+const { addModifier, changeStagger, dealDamage, removeModifier } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new EnemyTemplate("Brute",
@@ -21,17 +21,16 @@ module.exports = new EnemyTemplate("Brute",
 		const markedTarget = adventure.delvers.find(delver => "The Target" in delver.modifiers);
 		if (!markedTarget) {
 			// Mark or Mug rolls on [0, 3] then adds 2 for the number of 'The Target' stacks it applies
-			return generateModifierResultLines(addModifier([target], { name: "The Target", stacks: user.roundRns[`Mug or Mark${SAFE_DELIMITER}Mug or Mark`][0] + 2 }));
+			return addModifier([target], { name: "The Target", stacks: user.roundRns[`Mug or Mark${SAFE_DELIMITER}Mug or Mark`][0] + 2 });
 		} else {
-			const resultLines = dealDamage([markedTarget], user, 70, false, "Unaligned", adventure).resultLines;
-			changeStagger([markedTarget], user, 3);
-			resultLines.push(`${markedTarget.name} is Staggered.`);
-			resultLines.push(...generateModifierResultLines(removeModifier([markedTarget], { name: "The Target", stacks: 1, force: true })));
+			const results = dealDamage([markedTarget], user, 70, false, "Unaligned", adventure).results;
+			results.push(...changeStagger([markedTarget], user, 3),
+				...removeModifier([markedTarget], { name: "The Target", stacks: 1, force: true }));
 			if (user.crit) {
 				adventure.gold -= 5;
-				resultLines.push(`5g suddenly goes missing from the party's coffers.`);
+				results.push(`5g suddenly goes missing from the party's coffers.`);
 			}
-			return resultLines;
+			return results;
 		}
 	},
 	selector: selectRandomFoe,

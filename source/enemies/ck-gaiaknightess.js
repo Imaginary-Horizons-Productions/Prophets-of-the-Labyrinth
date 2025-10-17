@@ -1,10 +1,9 @@
 const { EnemyTemplate } = require("../classes/index.js");
-const { dealDamage, removeModifier, changeStagger, generateModifierResultLines, addProtection } = require("../util/combatantUtil.js");
+const { dealDamage, removeModifier, changeStagger, addProtection } = require("../util/combatantUtil.js");
 const { getModifierCategory } = require("../modifiers/_modifierDictionary.js");
 const { selectRandomFoe, selectNone, selectAllFoes } = require("../shared/actionComponents.js");
 const { getEmoji } = require("../util/essenceUtil.js");
 const { spawnEnemy } = require("../util/roomUtil.js");
-const { joinAsStatement } = require("../util/textUtil.js");
 
 const asteroid = require("./asteroid.js");
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
@@ -29,13 +28,13 @@ module.exports = new EnemyTemplate("Gaia Knightess",
 			resultLines.push(`${user.name} gains protection.`);
 		}
 		const damage = user.getPower() + 75;
-		const { resultLines: damageResults, survivors } = dealDamage(targets, user, damage, false, user.essence, adventure);
+		const { results: damageResults, survivors } = dealDamage(targets, user, damage, false, user.essence, adventure);
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		for (const target of survivors) {
 			const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 			if (targetBuffs.length > 0) {
 				const rolledBuff = targetBuffs[user.roundRns[`Damping Wallop${SAFE_DELIMITER}buffs`][0] % targetBuffs.length];
-				resultLines.push(...generateModifierResultLines(removeModifier([target], { name: rolledBuff, stacks: "all" })));
+				resultLines.push(...removeModifier([target], { name: rolledBuff, stacks: "all" }));
 			}
 		}
 		return damageResults.concat(resultLines);
@@ -55,10 +54,9 @@ module.exports = new EnemyTemplate("Gaia Knightess",
 			resultLines.push(`${user.name} gains protection.`);
 		}
 		const damage = user.getPower() + 25;
-		const { resultLines: damageResults, survivors } = dealDamage(targets, user, damage, false, user.essence, adventure);
+		const { results: damageResults, survivors } = dealDamage(targets, user, damage, false, user.essence, adventure);
 		if (survivors.length > 0) {
-			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE + 1);
-			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+			resultLines.push(...changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE + 1));
 		}
 		return damageResults.concat(resultLines);
 	},

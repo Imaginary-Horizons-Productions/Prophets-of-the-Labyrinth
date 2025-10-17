@@ -1,6 +1,6 @@
 const { GearTemplate, Move, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { payHP, changeStagger, addProtection, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { payHP, changeStagger, addProtection, addModifier } = require('../util/combatantUtil');
 const { protectionScalingGenerator } = require('./shared/scalings');
 
 //#region Base
@@ -34,14 +34,14 @@ function bloodAegisEffect([target], user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection([user], pendingProtection);
-	const resultLines = [`Gaining protection, ${paymentSentence}`];
+	const results = [`Gaining protection, ${paymentSentence}`];
 	const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 	const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 	if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 		targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-		resultLines.push(`${target.name} falls for the provocation.`);
+		results.push(`${target.name} falls for the provocation.`);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -84,7 +84,7 @@ function toxicBloodAegisEffect([target], user, adventure) {
 		targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
 		resultLines.push(`${target.name} falls for the provocation.`);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier([target], poison)));
+	return resultLines.concat(addModifier([target], poison));
 }
 //#endregion Toxic
 

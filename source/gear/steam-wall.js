@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addProtection, addModifier } = require('../util/combatantUtil');
 const { joinAsStatement } = require('../util/textUtil');
 const { protectionScalingGenerator } = require('./shared/scalings');
 
@@ -71,9 +71,7 @@ function supportiveSteamWallEffect(targets, user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection(targets, pendingProtection);
-	changeStagger(targets, user, staggerRelief);
-	const targetNames = targets.map(target => target.name);
-	return [joinAsStatement(false, targetNames, "gains", "gain", "protection."), joinAsStatement(false, targetNames, "is", "are", "relieved of Stagger.")];
+	return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."), ...changeStagger(targets, user, staggerRelief)];
 }
 //#endregion Supportive
 
@@ -109,7 +107,7 @@ function vigilantSteamWallEffect(targets, user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection(targets, pendingProtection);
-	return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection.")].concat(generateModifierResultLines(combineModifierReceipts(addModifier(targets, vigilance))));
+	return [joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."), ...addModifier(targets, vigilance)];
 }
 //#endregion Vigilant
 

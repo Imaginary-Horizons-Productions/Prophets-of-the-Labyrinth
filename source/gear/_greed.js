@@ -1,5 +1,5 @@
 const { GearTemplate, GearFamily } = require('../classes/index.js');
-const { addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil.js');
+const { addModifier } = require('../util/combatantUtil.js');
 
 //#region Base
 const base = new GearTemplate("Greed",
@@ -13,7 +13,7 @@ const base = new GearTemplate("Greed",
 function execute(targets, user, adventure) {
 	const [midas, empowerment] = base.modifiers;
 	const affectedTargets = targets.filter(target => target.archetype === "Treasure Elemental");
-	return generateModifierResultLines(combineModifierReceipts(addModifier(affectedTargets, empowerment).concat(addModifier(affectedTargets, midas))));
+	return addModifier(affectedTargets, empowerment).concat(addModifier(affectedTargets, midas));
 }
 //#endregion Base
 

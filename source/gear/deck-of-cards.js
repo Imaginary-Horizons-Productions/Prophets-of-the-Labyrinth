@@ -1,7 +1,7 @@
 const { GearTemplate, GearFamily, Scaling } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
-const { dealDamage, generateModifierResultLines, addModifier, getCombatantCounters, changeStagger } = require('../util/combatantUtil');
+const { dealDamage, addModifier, getCombatantCounters, changeStagger } = require('../util/combatantUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 /** @type {(variantName: string) => ({ name: "Misfortune", stacks: Scaling })} */
@@ -44,11 +44,11 @@ function deckOfCardsEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) })));
+	return results.concat(addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }));
 }
 //#endregion Base
 
@@ -76,11 +76,11 @@ function evasiveDeckOfCardsEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }).concat(addModifier([user], evasion))));
+	return results.concat(addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }), addModifier([user], evasion));
 }
 //#endregion Evasive
 
@@ -108,11 +108,11 @@ function numbingDeckOfCardsEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }).concat(addModifier(survivors, clumsiness))));
+	return results.concat(addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }), addModifier(survivors, clumsiness));
 }
 //#endregion Numbing
 
@@ -140,7 +140,7 @@ function omenousDeckOfCardsEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -149,9 +149,9 @@ function omenousDeckOfCardsEffect(targets, user, adventure) {
 		if (getCombatantCounters(survivors[0]).includes(essence)) {
 			misfortuneStacks *= 2;
 		}
-		resultLines.push(...generateModifierResultLines(addModifier(survivors, { name: misfortune.name, stacks: misfortuneStacks })))
+		results.push(...addModifier(survivors, { name: misfortune.name, stacks: misfortuneStacks }))
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Omenous
 
@@ -180,8 +180,7 @@ function tormentingDeckOfCardsEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	const receipts = [];
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
@@ -189,13 +188,13 @@ function tormentingDeckOfCardsEffect(targets, user, adventure) {
 		for (const target of survivors) {
 			for (const modifier in target.modifiers) {
 				if (getModifierCategory(modifier) === "Debuff") {
-					receipts.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
+					results.push(...addModifier([target], { name: modifier, stacks: debuffIncrement }));
 				}
 			}
 		}
 	}
-	receipts.push(...addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }));
-	return resultLines.concat(generateModifierResultLines(receipts));
+	results.push(...addModifier(survivors, { name: misfortune.name, stacks: misfortune.stacks.calculate(user) }));
+	return results;
 }
 //#endregion Tormenting
 

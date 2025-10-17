@@ -1,7 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, dealDamage, addModifier, combineModifierReceipts, generateModifierResultLines } = require('../util/combatantUtil');
-const { joinAsStatement } = require('../util/textUtil');
+const { changeStagger, dealDamage, addModifier } = require('../util/combatantUtil');
 const { scalingSwiftness } = require('./shared/modifiers');
 const { damageScalingGenerator } = require('./shared/scalings');
 
@@ -29,7 +28,7 @@ function tornadoFormationEffect(targets, user, adventure) {
 		return ["...but the party didn't have enough morale to pull it off."];
 	}
 
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
@@ -38,8 +37,7 @@ function tornadoFormationEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingSwiftness.stacks *= critBonus;
 	}
-	resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(userTeam, pendingSwiftness))));
-	return resultLines;
+	return results.concat(addModifier(userTeam, pendingSwiftness));
 }
 //#endregion Base
 
@@ -67,18 +65,16 @@ function chargingTornadoFormationEffect(targets, user, adventure) {
 		return ["...but the party didn't have enough morale to pull it off."];
 	}
 
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	const receipts = [];
 	const pendingSwiftness = { name: swiftness.name, stacks: swiftness.stacks.calculate(user) };
 	const userTeam = user.team === "delver" ? adventure.delvers : adventure.room.enemies.filter(enemy => enemy.hp > 0);
 	if (user.crit) {
 		pendingSwiftness.stacks *= critBonus;
 	}
-	receipts.push(...addModifier(userTeam, pendingSwiftness).concat(addModifier(userTeam, empowerment)));
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return results.concat(addModifier(userTeam, pendingSwiftness), addModifier(userTeam, empowerment));
 }
 //#endregion Charging
 
@@ -107,7 +103,7 @@ function supportiveTornadoFormationEffect(targets, user, adventure) {
 		return ["...but the party didn't have enough morale to pull it off."];
 	}
 
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
@@ -116,9 +112,7 @@ function supportiveTornadoFormationEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingStagger.stacks *= critBonus;
 	}
-	resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(userTeam, pendingStagger))));
-	changeStagger(userTeam, user, staggerRelief);
-	return resultLines.concat(joinAsStatement(false, userTeam.map(combatant => combatant.name), "is", "are", "relieved of Stagger."));
+	return results.concat(addModifier(userTeam, pendingStagger), changeStagger(userTeam, user, staggerRelief));
 }
 //#endregion Supportive
 

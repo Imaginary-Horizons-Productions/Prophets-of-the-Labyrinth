@@ -23,7 +23,7 @@ module.exports = new EnemyTemplate("Bloodtail Hawk",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
+		return dealDamage(targets, user, damage, false, user.essence, adventure).results;
 	},
 	selector: selectRandomFoe,
 	next: "Rake"

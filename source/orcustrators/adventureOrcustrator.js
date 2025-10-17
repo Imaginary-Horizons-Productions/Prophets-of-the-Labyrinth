@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { ThreadChannel, Message, EmbedBuilder, bold, italic } = require("discord.js");
 
-const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant } = require("../classes");
+const { Adventure, CombatantReference, Move, Enemy, Delver, Room, Combatant, Receipt } = require("../classes");
 
 const { SAFE_DELIMITER, RN_TABLE_BASE, ICON_PET, ICON_CRITICAL, ICON_STAGGER } = require("../constants.js");
 
@@ -11,11 +11,11 @@ const { getGearProperty, gearExists } = require("../gear/_gearDictionary");
 const { getItem } = require("../items/_itemDictionary");
 const { rollGear, rollItem, getLabyrinthProperty, prerollBoss, rollRoom } = require("../labyrinths/_labyrinthDictionary");
 const { getModifierCategory, getRoundDecrement, getMoveDecrement } = require("../modifiers/_modifierDictionary");
-const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, evaluateAbsoluteTeam } = require("../util/combatantUtil");
+const { removeModifier, dealModifierDamage, gainHealth, changeStagger, addProtection, evaluateAbsoluteTeam, receiptToResultLine } = require("../util/combatantUtil");
 const { renderRoom, generateRecruitEmbed, roomHeaderString } = require("../util/embedUtil");
 const { essenceList, getCounteredEssences, getEmoji } = require("../util/essenceUtil.js");
 const { ensuredPathSave } = require("../util/fileUtil");
-const { anyDieSucceeds, parseExpression } = require("../util/mathUtil.js");
+const { anyDieSucceeds, parseExpression, areSetContentsCongruent } = require("../util/mathUtil.js");
 const { clearComponents } = require("../util/messageComponentUtil");
 const { spawnEnemy, rollGearTier } = require("../util/roomUtil");
 const { listifyEN } = require("../util/textUtil");
@@ -742,6 +742,59 @@ function newRound(adventure, thread, lastRoundText) {
 	});
 }
 
+/** Consolidates receipts, then localizes receipts
+ *
+ * Consolidation convention set by game design as "name then change set" to minimize the number of lines required to describe all changes to a specific combatant
+ * @param {(Receipt | string)[]} results
+ */
+function processResults(results) {
+	const resultLines = [];
+	// Consolidate by name
+	// eg "Combatant gains X" + "Combatant gains Y" = "Combatant gains XY"
+	for (let i = 0; i < results.length; i++) {
+		const heldResult = results[i];
+		if (heldResult instanceof Receipt) {
+			for (let j = i + 1; j < results.length; j++) {
+				const checkingResult = results[j];
+				if (checkingResult instanceof Receipt) {
+					if (areSetContentsCongruent(heldResult.combatantNames, checkingResult.combatantNames)) {
+						heldResult.combineChanges(checkingResult);
+						results.splice(j, 1);
+						j--;
+					}
+				}
+			}
+		}
+	}
+
+	// Consolidate by change sets
+	// eg "X gains ChangeSet" + "Y gains ChangeSet" = "X and Y gain ChangeSet"
+	for (let i = 0; i < results.length; i++) {
+		const heldResult = results[i];
+		if (heldResult instanceof Receipt) {
+			for (let j = i + 1; j < results.length; j++) {
+				const checkingResult = results[j];
+				if (checkingResult instanceof Receipt) {
+					if (Receipt.congruenceCheck(heldResult, checkingResult)) {
+						heldResult.combineCombatantNames(checkingResult);
+						results.splice(j, 1);
+						j--;
+					}
+				}
+			}
+		}
+	}
+
+	for (const result of results) {
+		if (typeof result === "string") {
+			resultLines.push(result);
+		} else {
+			resultLines.push(receiptToResultLine(result));
+		}
+	}
+	return resultLines;
+}
+
 /** Updates game state with the move's effect AND returns the game's description of what happened
  * @param {Move} move
  * @param {Adventure} adventure
@@ -843,7 +896,7 @@ function resolveMove(move, adventure) {
 					results.push(`${listifyEN(deadTargets.map(target => target.name), false)} ${deadTargets.length === 1 ? "was" : "were"} already dead!`);
 				}
 
-				results.push(...effect(livingTargets, user, adventure, { petRNs: adventure.petRNs }));
+				results.push(...processResults(effect(livingTargets, user, adventure, { petRNs: adventure.petRNs })));
 			} else {
 				shouldDoGearUpkeep = false;
 				if (move.targets.length === 1) {
@@ -853,7 +906,7 @@ function resolveMove(move, adventure) {
 				}
 			}
 		} else {
-			results.push(...effect([], user, adventure, { petRNs: adventure.petRNs }));
+			results.push(...processResults(effect([], user, adventure, { petRNs: adventure.petRNs })));
 		}
 
 		if (shouldDoGearUpkeep) {
@@ -901,7 +954,7 @@ function resolveMove(move, adventure) {
 		const insigniaCount = adventure.getArtifactCount("Celestial Knight Insignia");
 		if (insigniaCount > 0 && user.team === "delver" && user.crit && move.type !== "pet") {
 			const insigniaHealing = insigniaCount * 15;
-			results.push(gainHealth(user, insigniaHealing, adventure, "their Celestial Knight Insigina"));
+			results.push(receiptToResultLine(gainHealth(user, insigniaHealing, adventure, "Celestial Knight Insigina")));
 			adventure.updateArtifactStat("Health Restored", insigniaHealing);
 		}
 	} else {
@@ -912,7 +965,7 @@ function resolveMove(move, adventure) {
 		}
 
 		if ("Frailty" in user.modifiers) {
-			results.push(...dealModifierDamage(user, "Frailty", adventure));
+			results.push(...receiptToResultLine(dealModifierDamage(user, "Frailty", adventure)));
 			removeModifier([user], { name: "Frailty", stacks: "all" });
 		}
 	}
@@ -920,11 +973,11 @@ function resolveMove(move, adventure) {
 	if (move.type !== "pet") {
 		// Poison/Regeneneration effect
 		if ("Poison" in user.modifiers) {
-			results.push(...dealModifierDamage(user, "Poison", adventure));
+			results.push(...receiptToResultLine(dealModifierDamage(user, "Poison", adventure)));
 		} else {
 			const regenStacks = user.getModifierStacks("Regeneration");
 			if (regenStacks) {
-				results.push(gainHealth(user, regenStacks * 10, adventure, getApplicationEmojiMarkdown("Regeneration")));
+				results.push(receiptToResultLine(gainHealth(user, regenStacks * 10, adventure, getApplicationEmojiMarkdown("Regeneration"))));
 			}
 		}
 
@@ -1050,7 +1103,7 @@ function endRound(adventure, thread) {
 			otherHappenings.push(`${combatant.name}'s Fortune becomes protection.`);
 		}
 		if ("Misfortune" in combatant.modifiers && combatant.modifiers.Misfortune % 7 === 0) {
-			otherHappenings.push(dealModifierDamage(combatant, "Misfortune", adventure));
+			otherHappenings.push(receiptToResultLine(dealModifierDamage(combatant, "Misfortune", adventure)));
 			removeModifier([combatant], { name: "Misfortune", stacks: "all" });
 		}
 		if (otherHappenings.length > 0) {

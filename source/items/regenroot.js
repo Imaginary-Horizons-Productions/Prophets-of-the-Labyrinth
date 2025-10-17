@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
+const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Regen Root",
 	`Grants the user 5 @e{Regeneration}`,
@@ -8,6 +8,6 @@ module.exports = new ItemTemplate("Regen Root",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {
-		return generateModifierResultLines(addModifier([user], { name: "Regeneration", stacks: 5 }));
+		return addModifier([user], { name: "Regeneration", stacks: 5 });
 	}
 );

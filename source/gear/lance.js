@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily, Move } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, dealDamage, addProtection, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
+const { changeStagger, dealDamage, addProtection, addModifier } = require('../util/combatantUtil');
 const { protectionScalingGenerator, archetypeActionDamageScaling } = require('./shared/scalings');
 
 //#region Base
@@ -26,11 +26,11 @@ function lanceEffect(targets, user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection([user], pendingProtection);
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(`${user.name} gains protection.`);
+	return results.concat(`${user.name} gains protection.`);
 }
 //#endregion Base
 
@@ -58,11 +58,11 @@ function acceleratingLanceEffect(targets, user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection([user], pendingProtection);
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(`${user.name} gains protection.`, generateModifierResultLines(addModifier([user], swiftness)));
+	return results.concat(`${user.name} gains protection.`, addModifier([user], swiftness));
 }
 //#endregion Accelerating
 
@@ -89,11 +89,11 @@ function bashingLanceEffect(targets, user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection([user], pendingProtection);
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(`${user.name} gains protection.`);
+	return results.concat(`${user.name} gains protection.`);
 }
 //#endregion Bashing
 
@@ -121,11 +121,11 @@ function juggernautsLanceEffect(targets, user, adventure) {
 	}
 	addProtection([user], pendingProtection);
 	addProtection([user], pendingProtection);
-	const { resultLines, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, damage.calculate(user), false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(`${user.name} gains protection.`);
+	return results.concat(`${user.name} gains protection.`);
 }
 //#endregion Juggernaut's
 
@@ -152,8 +152,8 @@ function tauntingLanceEffect([target], user, adventure) {
 		pendingProtection *= critBonus;
 	}
 	addProtection([user], pendingProtection);
-	const { resultLines, survivors } = dealDamage([target], user, damage.calculate(user), false, essence, adventure);
-	resultLines.push(`${user.name} gains protection.`);
+	const { results, survivors } = dealDamage([target], user, damage.calculate(user), false, essence, adventure);
+	results.push(`${user.name} gains protection.`);
 	if (survivors.length > 0) {
 		if (user.essence === essence) {
 			changeStagger([target], user, ESSENCE_MATCH_STAGGER_FOE);
@@ -162,10 +162,10 @@ function tauntingLanceEffect([target], user, adventure) {
 		const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 		if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 			targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-			resultLines.push(`${target.name} falls for the provocation.`);
+			results.push(`${target.name} falls for the provocation.`);
 		}
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Taunting
 

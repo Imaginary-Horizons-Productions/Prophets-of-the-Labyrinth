@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, addModifier, generateModifierResultLines, combineModifierReceipts } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 
 //#region Base
@@ -40,15 +40,15 @@ function sandstormFormationEffect(targets, user, adventure) {
 			hadCooldowns.push(target.name);
 		}
 	}
-	const resultLines = [];
+	const results = [];
 	if (hadCooldowns.length > 0) {
-		resultLines.push(`${listifyEN(hadCooldowns)} had their cooldowns hastened.`);
+		results.push(`${listifyEN(hadCooldowns)} had their cooldowns hastened.`);
 	}
 	if (user.crit) {
-		resultLines.push(...generateModifierResultLines(combineModifierReceipts(addModifier(targets, impact))));
+		results.push(...addModifier(targets, impact));
 	}
-	if (resultLines.length > 0) {
-		return resultLines;
+	if (results.length > 0) {
+		return results;
 	} else {
 		return ["...but nothing happened."];
 	}
@@ -92,16 +92,15 @@ function balancedSandstormFormationEffect(targets, user, adventure) {
 			hadCooldowns.push(target.name);
 		}
 	}
-	const resultLines = [];
+	const results = [];
 	if (hadCooldowns.length > 0) {
-		resultLines.push(`${listifyEN(hadCooldowns)} had their cooldowns hastened.`);
+		results.push(`${listifyEN(hadCooldowns)} had their cooldowns hastened.`);
 	}
-	const receipts = [];
 	if (user.crit) {
-		receipts.push(...addModifier(targets, impact));
+		results.push(...addModifier(targets, impact));
 	}
-	receipts.push(...addModifier(targets, finesse));
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	results.push(...addModifier(targets, finesse));
+	return results;
 }
 //#endregion Balanced
 
@@ -142,16 +141,15 @@ function soothingSandstormFormationEffect(targets, user, adventure) {
 			hadCooldowns.push(target.name);
 		}
 	}
-	const resultLines = [];
+	const results = [];
 	if (hadCooldowns.length > 0) {
-		resultLines.push(`${listifyEN(hadCooldowns)} had their cooldowns hastened.`);
+		results.push(`${listifyEN(hadCooldowns)} had their cooldowns hastened.`);
 	}
-	const receipts = [];
 	if (user.crit) {
-		receipts.push(...addModifier(targets, impact));
+		results.push(...addModifier(targets, impact));
 	}
-	receipts.push(...addModifier(targets, regeneration));
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	results.push(...addModifier(targets, regeneration));
+	return results;
 }
 //#endregion Soothing
 

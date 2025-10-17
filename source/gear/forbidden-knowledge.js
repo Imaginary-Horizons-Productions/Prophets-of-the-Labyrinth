@@ -1,7 +1,7 @@
 const { GearTemplate, GearFamily, CombatantReference } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
 const { getPetMove } = require('../pets/_petDictionary');
-const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { scalingRegeneration } = require('./shared/modifiers');
 
 //#region Base
@@ -30,7 +30,7 @@ function forbiddenKnowledgeEffect([target], user, adventure) {
 		adventure.room.morale -= pactCost[0];
 		adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(target)}`, "levelsGained", "loot", levelUps);
 	}
-	const resultLines = [`${target.name} gains a level's worth of cursed knowledge. The party's morale falls.`];
+	const results = [`${target.name} gains a level's worth of cursed knowledge. The party's morale falls.`];
 	if (user.essence === essence) {
 		changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
@@ -43,10 +43,10 @@ function forbiddenKnowledgeEffect([target], user, adventure) {
 			}
 		})
 		if (didCooldown) {
-			resultLines.push(`${target.name}'s cooldowns were hastened.`);
+			results.push(`${target.name}'s cooldowns were hastened.`);
 		}
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -76,7 +76,7 @@ function enticingForbiddenKnowledgeEffect([target], user, adventure) {
 		adventure.room.morale -= pactCost[0];
 		adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(target)}`, "levelsGained", "loot", levelUps);
 	}
-	const resultLines = [`${target.name} gains a level's worth of cursed knowledge. The party's morale falls.`];
+	const results = [`${target.name} gains a level's worth of cursed knowledge. The party's morale falls.`];
 	if (user.essence === essence) {
 		changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
@@ -89,7 +89,7 @@ function enticingForbiddenKnowledgeEffect([target], user, adventure) {
 			}
 		})
 		if (didCooldown) {
-			resultLines.push(`${target.name}'s cooldowns were hastened.`);
+			results.push(`${target.name}'s cooldowns were hastened.`);
 		}
 	}
 	const ownerIndex = adventure.getCombatantIndex(target);
@@ -112,9 +112,9 @@ function enticingForbiddenKnowledgeEffect([target], user, adventure) {
 					petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 			}
 		})
-		resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
+		results.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Enticing
 
@@ -145,11 +145,11 @@ function soothingForbiddenKnowledgeEffect([target], user, adventure) {
 		adventure.room.morale -= pactCost[0];
 		adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(target)}`, "levelsGained", "loot", levelUps);
 	}
-	const resultLines = [`${target.name} gains a level's worth of cursed knowledge. The party's morale falls.`];
+	const results = [`${target.name} gains a level's worth of cursed knowledge. The party's morale falls.`];
 	if (user.essence === essence) {
 		changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
-	resultLines.push(...generateModifierResultLines(addModifier([target], { name: regeneration.name, stacks: regeneration.stacks.calculate(user) })));
+	results.push(...addModifier([target], { name: regeneration.name, stacks: regeneration.stacks.calculate(user) }));
 	if (user.crit) {
 		let didCooldown = false;
 		target.gear?.forEach(gear => {
@@ -159,10 +159,10 @@ function soothingForbiddenKnowledgeEffect([target], user, adventure) {
 			}
 		})
 		if (didCooldown) {
-			resultLines.push(`${target.name}'s cooldowns were hastened.`);
+			results.push(`${target.name}'s cooldowns were hastened.`);
 		}
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Soothing
 

@@ -1,7 +1,7 @@
 const { MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
-const { gainHealth } = require('../util/combatantUtil');
+const { gainHealth, receiptToResultLine } = require('../util/combatantUtil');
 const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "applepiewishingwell";
@@ -19,6 +19,6 @@ module.exports = new SelectWrapper(mainId, 3000,
 		adventure.decrementItem(tossedItem, 1);
 		adventure.room.history["Items tossed"].push(tossedItem);
 		interaction.update(renderRoom(adventure, interaction.channel));
-		interaction.channel.send(gainHealth(delver, delver.maxHP, adventure, `the delicious apple pie that was previously a ${tossedItem}`));
+		interaction.channel.send(receiptToResultLine(gainHealth(delver, delver.maxHP, adventure, `the delicious apple pie that was previously a ${tossedItem}`)));
 	}
 );

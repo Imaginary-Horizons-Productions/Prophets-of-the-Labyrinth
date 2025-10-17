@@ -1,8 +1,7 @@
-const { EnemyTemplate, ModifierReceipt, Enemy } = require("../classes");
+const { EnemyTemplate, Enemy, Receipt } = require("../classes");
 const { getModifierCategory } = require("../modifiers/_modifierDictionary.js");
-const { dealDamage, addModifier, removeModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
+const { dealDamage, addModifier, removeModifier, changeStagger, addProtection } = require("../util/combatantUtil");
 const { selectSelf, selectRandomFoe, selectAllFoes } = require("../shared/actionComponents.js");
-const { listifyEN } = require("../util/textUtil.js");
 const { getEmoji } = require("../util/essenceUtil.js");
 const { getApplicationEmojiMarkdown } = require("../util/graphicsUtil.js");
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require("../constants");
@@ -28,7 +27,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		const targetDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		if (targetDebuffs.length > 0) {
 			const rolledDebuff = targetDebuffs[user.roundRns[`Toil${SAFE_DELIMITER}debuffs`][0] % targetDebuffs.length];
-			resultLines.push(...generateModifierResultLines(removeModifier([user], { name: rolledDebuff, stacks: "all" })));
+			resultLines.push(...removeModifier([user], { name: rolledDebuff, stacks: "all" }));
 		}
 		addProtection([user], 100);
 		return resultLines;
@@ -48,10 +47,10 @@ module.exports = new EnemyTemplate("Elkemist",
 			damage *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		const resultLines = dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
+		const results = dealDamage(targets, user, damage, false, user.essence, adventure).results;
 		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: user.roundRns[`Trouble${SAFE_DELIMITER}progress`][0] });
-		progressCheck(user, wrappedProgressReceipt, resultLines);
-		return resultLines;
+		progressCheck(user, wrappedProgressReceipt, results);
+		return results;
 	},
 	selector: selectRandomFoe,
 	next: "random",
@@ -67,7 +66,7 @@ module.exports = new EnemyTemplate("Elkemist",
 		if (user.crit) {
 			damage *= 2;
 		}
-		return dealDamage(targets, user, damage, false, "Fire", adventure).resultLines;
+		return dealDamage(targets, user, damage, false, "Fire", adventure).results;
 	},
 	selector: selectAllFoes,
 	next: "random",
@@ -77,33 +76,24 @@ module.exports = new EnemyTemplate("Elkemist",
 	description: `Convert all foe buffs to @e{Fire Vulnerability} and gain @e{Progress} per buff removed`,
 	priority: 0,
 	effect: (targets, user, adventure) => {
-		const resultLines = [];
+		const results = [];
 		let progressGained = user.roundRns[`Bubble${SAFE_DELIMITER}progress`][0];
-		const removalReceipts = [];
 		for (const target of targets) {
 			for (let modifier in target.modifiers) {
 				if (getModifierCategory(modifier) === "Buff") {
 					const buffStackCount = target.modifiers[modifier];
 					const receipt = removeModifier([target], { name: modifier, stacks: "all" })[0];
-					removalReceipts.push(receipt);
-					if (receipt.succeeded.size > 0) {
+					results.push(receipt);
+					if (receipt.removedModifiers.size > 0) {
 						progressGained += 5;
-						addModifier([target], { name: "Fire Vulnerability", stacks: buffStackCount });
+						results.push(...addModifier([target], { name: "Fire Vulnerability", stacks: buffStackCount }));
 					}
 				}
 			}
 		}
 		const wrappedProgressReceipt = addModifier([user], { name: "Progress", stacks: progressGained });
-		progressCheck(user, wrappedProgressReceipt, resultLines);
-		combineModifierReceipts(removalReceipts).forEach(receipt => {
-			if (receipt.succeeded.size > 0) {
-				resultLines.push(`Buffs on ${listifyEN([...receipt.combatantNames])} are transmuted into ${getApplicationEmojiMarkdown("Fire Vulnerability")}.`);
-			}
-			if (receipt.failed.size > 0) {
-				resultLines.push(`Buffs on ${listifyEN([...receipt.combatantNames])} were retained.`);
-			}
-		})
-		return resultLines;
+		progressCheck(user, wrappedProgressReceipt, results);
+		return results;
 	},
 	selector: selectAllFoes,
 	next: "random",
@@ -112,7 +102,7 @@ module.exports = new EnemyTemplate("Elkemist",
 
 /**
  * @param {Enemy} elkemist
- * @param {ModifierReceipt[]} wrappedProgressReceipt
+ * @param {Receipt[]} wrappedProgressReceipt
  * @param {string[]} resultLines
  */
 function progressCheck(elkemist, wrappedProgressReceipt, resultLines) {
@@ -120,8 +110,8 @@ function progressCheck(elkemist, wrappedProgressReceipt, resultLines) {
 		elkemist.modifiers.Progress = 0;
 		addModifier([elkemist], { name: "Empowerment", stacks: 100 });
 		addModifier([elkemist], { name: "Excellence", stacks: 5 });
-		resultLines.push(`Eureka! ${elkemist.name}'s ${getApplicationEmojiMarkdown("Progress")} yields ${getApplicationEmojiMarkdown("Empowerment")}!`);
+		resultLines.push(`Eureka! ${elkemist.name}'s ${getApplicationEmojiMarkdown("Progress")} yields ${getApplicationEmojiMarkdown("Empowerment")}${getApplicationEmojiMarkdown("Excellence")}!`);
 	} else {
-		resultLines.push(...generateModifierResultLines(wrappedProgressReceipt));
+		resultLines.push(...wrappedProgressReceipt);
 	}
 }

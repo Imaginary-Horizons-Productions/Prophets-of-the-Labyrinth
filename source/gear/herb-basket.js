@@ -66,13 +66,13 @@ function enticingHerbBasketEffect([target], user, adventure) {
 		changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
 	const randomHerb = rollableHerbs[user.roundRns[`${enticingHerbBasket.name}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
-	const resultLines = [];
+	const results = [];
 	if (user.crit) {
 		adventure.room.addResource(randomHerb, "Item", "loot", herbCount * critBonus);
-		resultLines.push(`${user.name} gathers a double-batch of ${randomHerb}.`);
+		results.push(`${user.name} gathers a double-batch of ${randomHerb}.`);
 	} else {
 		adventure.room.addResource(randomHerb, "Item", "loot", herbCount);
-		resultLines.push(`${user.name} gathers a batch of ${randomHerb}.`);
+		results.push(`${user.name} gathers a batch of ${randomHerb}.`);
 	}
 	const ownerIndex = adventure.getCombatantIndex(target);
 	const owner = target.team === "delver" ? target : adventure.getCombatant({ team: "delver", index: ownerIndex });
@@ -94,9 +94,9 @@ function enticingHerbBasketEffect([target], user, adventure) {
 					petRNs.extras.push(adventure.generateRandomNumber(rnType, "battle"));
 			}
 		})
-		resultLines.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
+		results.push(`${target.name}'s ${owner.pet.type} uses ${petMoveTemplate.name}`, ...petMoveTemplate.effect(petMoveTemplate.selector(owner, petRNs).map(reference => adventure.getCombatant(reference)), owner, adventure, { petRNs }));
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Enticing
 
@@ -126,17 +126,17 @@ function guardingHerbBasketEffect(targets, user, adventure) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
 	const randomHerb = rollableHerbs[user.roundRns[`${guardingHerbBasket.name}${SAFE_DELIMITER}herbs`][0] % rollableHerbs.length];
-	const resultLines = [];
+	const results = [];
 	if (user.crit) {
 		adventure.room.addResource(randomHerb, "Item", "loot", herbCount * critBonus);
-		resultLines.push(`${user.name} gathers a double-batch of ${randomHerb}.`);
+		results.push(`${user.name} gathers a double-batch of ${randomHerb}.`);
 	} else {
 		adventure.room.addResource(randomHerb, "Item", "loot", herbCount);
-		resultLines.push(`${user.name} gathers a batch of ${randomHerb}.`);
+		results.push(`${user.name} gathers a batch of ${randomHerb}.`);
 	}
-	resultLines.push(joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."));
+	results.push(joinAsStatement(false, targets.map(target => target.name), "gains", "gain", "protection."));
 	addProtection(targets, protection.calculate(user));
-	return resultLines;
+	return results;
 }
 //#endregion Guarding
 

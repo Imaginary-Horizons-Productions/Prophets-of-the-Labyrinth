@@ -9,6 +9,6 @@ module.exports = new ItemTemplate("Flexigrass",
 	selectSelf,
 	(targets, user, adventure) => {
 		changeStagger([user], null, 4);
-		return `${user.name} is relieved of some Stagger.`;
+		return [`${user.name} is relieved of some Stagger.`];
 	}
 );

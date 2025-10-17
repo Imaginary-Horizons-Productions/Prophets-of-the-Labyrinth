@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { selectSelf } = require("../shared/actionComponents");
-const { addModifier, generateModifierResultLines } = require("../util/combatantUtil");
+const { addModifier } = require("../util/combatantUtil");
 
 module.exports = new ItemTemplate("Finesse Fiber",
 	"Grants the user 2 @e{Finesse}",
@@ -8,6 +8,6 @@ module.exports = new ItemTemplate("Finesse Fiber",
 	30,
 	selectSelf,
 	(targets, user, adventure) => {
-		return generateModifierResultLines(addModifier([user], { name: "Finesse", stacks: 2 }));
+		return addModifier([user], { name: "Finesse", stacks: 2 });
 	}
 );

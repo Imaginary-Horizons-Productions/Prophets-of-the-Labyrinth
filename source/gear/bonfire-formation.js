@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { listifyEN } = require('../util/textUtil');
 
 //#region Base
@@ -35,7 +35,7 @@ function bonfireFormationEffect(targets, user, adventure) {
 		excellence.stacks += critBonus;
 		attunement.stacks += critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts([...addModifier(targets, pendingExcellence), ...addModifier(targets, pendingAttunement)]));
+	return addModifier(targets, pendingExcellence).concat(addModifier(targets, pendingAttunement));
 }
 //#endregion Base
 
@@ -71,7 +71,7 @@ function chargingBonfireFormationEffect(targets, user, adventure) {
 		excellence.stacks += critBonus;
 		attunement.stacks += critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts([...addModifier(targets, pendingExcellence), ...addModifier(targets, pendingAttunement), ...addModifier(targets, empowerment)]));
+	return addModifier(targets, pendingExcellence).concat(addModifier(targets, pendingAttunement), addModifier(targets, empowerment));
 }
 //#endregion Charging
 
@@ -123,7 +123,7 @@ function hasteningBonfireFormationEffect(targets, user, adventure) {
 		}
 		resultLines.push(`${listifyEN(hadCooldowns)} had their cooldowns hastened.`);
 	}
-	return generateModifierResultLines(combineModifierReceipts([...addModifier(targets, pendingExcellence), ...addModifier(targets, pendingAttunement)])).concat(resultLines);
+	return addModifier(targets, pendingExcellence).concat(addModifier(targets, pendingAttunement), resultLines);
 }
 //#endregion Hastening
 

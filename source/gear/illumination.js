@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 
 //#region Base
 const illumination = new GearTemplate("Illumination",
@@ -24,7 +24,7 @@ function illuminationEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
-	const resultLines = [];
+	const results = [];
 	for (const target of targets) {
 		let didCooldown = false;
 		target.gear?.forEach(gear => {
@@ -34,14 +34,14 @@ function illuminationEffect(targets, user, adventure) {
 			}
 		})
 		if (didCooldown) {
-			resultLines.push(`${target.name} had their cooldowns hastened.`);
+			results.push(`${target.name} had their cooldowns hastened.`);
 		}
 	}
 	if (user.crit) {
 		adventure.room.morale += morale;
-		resultLines.push("The party's morale is increased!");
+		results.push("The party's morale is increased!");
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -68,7 +68,7 @@ function balancedIlluminationEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
-	const resultLines = [];
+	const results = [];
 	for (const target of targets) {
 		let didCooldown = false;
 		target.gear?.forEach(gear => {
@@ -78,14 +78,14 @@ function balancedIlluminationEffect(targets, user, adventure) {
 			}
 		})
 		if (didCooldown) {
-			resultLines.push(`${target.name} had their cooldowns hastened.`);
+			results.push(`${target.name} had their cooldowns hastened.`);
 		}
 	}
 	if (user.crit) {
 		adventure.room.morale += morale;
-		resultLines.push("The party's morale is increased!");
+		results.push("The party's morale is increased!");
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(targets, finesse)));
+	return results.concat(addModifier(targets, finesse));
 }
 //#endregion Balanced
 
@@ -112,7 +112,7 @@ function inspiringIlluminationEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
-	const resultLines = [];
+	const results = [];
 	for (const target of targets) {
 		let didCooldown = false;
 		target.gear?.forEach(gear => {
@@ -122,15 +122,15 @@ function inspiringIlluminationEffect(targets, user, adventure) {
 			}
 		})
 		if (didCooldown) {
-			resultLines.push(`${target.name} had their cooldowns hastened.`);
+			results.push(`${target.name} had their cooldowns hastened.`);
 		}
 	}
 	if (user.crit) {
 		adventure.room.morale += critMorale;
 	}
 	adventure.room.morale += baseMorale;
-	resultLines.push("The party's morale is increased!");
-	return resultLines;
+	results.push("The party's morale is increased!");
+	return results;
 }
 //#endregion Inspiring
 

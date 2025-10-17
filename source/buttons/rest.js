@@ -1,7 +1,7 @@
 const { MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { setAdventure, getAdventure } = require('../orcustrators/adventureOrcustrator');
-const { gainHealth } = require('../util/combatantUtil');
+const { gainHealth, receiptToResultLine } = require('../util/combatantUtil');
 const { renderRoom } = require('../util/embedUtil');
 
 const mainId = "rest";
@@ -24,7 +24,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 		adventure.room.actions -= actionCost;
 		adventure.room.history.Rested.push(delver.name);
 		interaction.update(renderRoom(adventure, interaction.channel)).then(() => {
-			interaction.followUp(gainHealth(delver, Math.ceil(delver.getMaxHP() * (parseInt(healPercent) / 100.0)), adventure));
+			interaction.followUp(receiptToResultLine(gainHealth(delver, Math.ceil(delver.getMaxHP() * (parseInt(healPercent) / 100.0)), adventure)));
 			setAdventure(adventure);
 		});
 	}

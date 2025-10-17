@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { selectRandomFoe, selectSelfAndRandomOtherAlly } = require("../shared/actionComponents");
-const { generateModifierResultLines, addModifier, changeStagger, dealDamage, addProtection } = require("../util/combatantUtil");
+const { addModifier, changeStagger, dealDamage, addProtection } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 const { joinAsStatement } = require("../util/textUtil");
 
@@ -41,7 +41,7 @@ module.exports = new EnemyTemplate("Luna Militissa",
 			resultLines.push(`${user.name} gains protection.`);
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return generateModifierResultLines(addModifier(targets, { name: "Frailty", stacks: 5 })).concat(resultLines);
+		return addModifier(targets, { name: "Frailty", stacks: 5 }).concat(resultLines);
 	},
 	selector: selectRandomFoe,
 	next: "Knighty Night Bash"
@@ -57,10 +57,9 @@ module.exports = new EnemyTemplate("Luna Militissa",
 			resultLines.push(`${user.name} gains protection.`);
 		}
 		const pendingDamage = 50 + user.getPower() + user.protection;
-		const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);
+		const { results: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);
 		if (survivors.length > 0) {
-			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE + 2);
-			resultLines.push(joinAsStatement(false, survivors.map(target => target.name), "is", "are", "Staggered."));
+			resultLines.push(...changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE + 2));
 		}
 		return damageResults.concat(resultLines);
 	},

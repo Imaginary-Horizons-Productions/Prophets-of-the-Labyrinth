@@ -2,6 +2,7 @@ const { Adventure } = require("./Adventure");
 const { BuildError } = require("./BuildError");
 const { Combatant } = require("./Combatant");
 const { CombatantReference } = require("./Move");
+const { Receipt } = require("./Receipt");
 
 /** @typedef {"Darkness" | "Earth" | "Fire" | "Light" | "Water" | "Wind" | "Unaligned"} Essence */
 
@@ -74,7 +75,7 @@ class EnemyTemplate {
 	 * @param {Essence | "@{adventure}" | "@{adventureOpposite}"} actionsInput.essence
 	 * @param {string} actionsInput.description
 	 * @param {number} actionsInput.priority
-	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => string[]} actionsInput.effect
+	 * @param {(targets: Combatant[], user: Combatant, adventure: Adventure) => (string | Receipt)[]} actionsInput.effect
 	 * @param {(self: Combatant, adventure: Adventure) => CombatantReference[]} actionsInput.selector
 	 * @param {string | (currentAction: string, adventure: Adventure) => string} actionsInput.next
 	 * @param {?string} actionsInput.combatFlavor

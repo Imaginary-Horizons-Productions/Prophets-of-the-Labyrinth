@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily, Move } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { scalingEvasion } = require('./shared/modifiers');
 
 //#region Base
@@ -27,7 +27,7 @@ function conjuredIcePillarEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingEvasion.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier([user], pendingEvasion).concat(addModifier([user], vigilance))));
+	return addModifier([user], pendingEvasion).concat(addModifier([user], vigilance));
 }
 //#endregion Base
 
@@ -55,7 +55,7 @@ function devotedConjuredIcePillarEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingEvasion.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingEvasion).concat(addModifier(targets, vigilance))));
+	return addModifier(targets, pendingEvasion).concat(addModifier(targets, vigilance));
 }
 //#endregion Devoted
 
@@ -83,14 +83,14 @@ function tauntingConjuredIcePillarEffect([target], user, adventure) {
 	if (user.crit) {
 		pendingEvasion.stacks *= critBonus;
 	}
-	const resultLines = generateModifierResultLines(combineModifierReceipts(addModifier([user], pendingEvasion).concat(addModifier([user], vigilance))));
+	const results = addModifier([user], pendingEvasion).concat(addModifier([user], vigilance));
 	const targetMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(target), team: target.team });
 	const userMove = adventure.room.findCombatantMove({ index: adventure.getCombatantIndex(user), team: user.team });
 	if (targetMove.targets.length === 1 && Move.compareMoveSpeed(userMove, targetMove) < 0) {
 		targetMove.targets = [{ team: user.team, index: adventure.getCombatantIndex(user) }];
-		resultLines.push(`${target.name} falls for the provocation.`);
+		results.push(`${target.name} falls for the provocation.`);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Taunting
 

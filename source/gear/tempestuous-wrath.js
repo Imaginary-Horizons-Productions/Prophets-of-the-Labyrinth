@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily, Scaling } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
-const { dealDamage, payHP, changeStagger, addModifier, generateModifierResultLines } = require('../util/combatantUtil');
+const { dealDamage, payHP, changeStagger, addModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 /** @type {(variantName: string) => ({ name: "Empowerment", stacks: Scaling })} */
@@ -37,16 +37,16 @@ const tempestuousWrath = new GearTemplate("Tempestuous Wrath",
 /** @type {typeof tempestuousWrath.effect} */
 function tempestuousWrathEffect(targets, user, adventure) {
 	const { essence, modifiers: [empowerment], scalings: { damage, critBonus } } = tempestuousWrath;
-	const resultLines = generateModifierResultLines(addModifier([user], { name: empowerment.name, stacks: empowerment.stacks.calculate(user) }));
+	const results = addModifier([user], { name: empowerment.name, stacks: empowerment.stacks.calculate(user) });
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(damageResults, payHP(user, user.modifiers.Empowerment, adventure));
+	return results.concat(damageResults, payHP(user, user.modifiers.Empowerment, adventure));
 }
 //#endregion Base
 
@@ -70,16 +70,16 @@ const flankingTempestuousWrath = new GearTemplate("Flanking Tempestuous Wrath",
 /** @type {typeof flankingTempestuousWrath.effect} */
 function flankingTempestuousWrathEffect(targets, user, adventure) {
 	const { essence, modifiers: [empowerment, exposure], scalings: { damage, critBonus } } = flankingTempestuousWrath;
-	const resultLines = generateModifierResultLines(addModifier([user], { name: empowerment.name, stacks: empowerment.stacks.calculate(user) }));
+	const results = addModifier([user], { name: empowerment.name, stacks: empowerment.stacks.calculate(user) });
 	let pendingDamage = damage.calculate(user);
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results: damageResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(damageResults, generateModifierResultLines(addModifier(survivors, exposure)), payHP(user, user.modifiers.Empowerment, adventure));
+	return results.concat(damageResults, addModifier(survivors, exposure), payHP(user, user.modifiers.Empowerment, adventure));
 }
 //#endregion Flanking
 

@@ -28,15 +28,15 @@ function longswordEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (survivors.length < targets.length) {
 		adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(user)}`, "levelsGained", "loot", levelUps);
-		resultLines.push(`${user.name} gains a level.`);
+		results.push(`${user.name} gains a level.`);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -64,17 +64,17 @@ function doubleLongswordEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines: firstresultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
-	const { resultLines: secondresultLines, survivors: finalSurvivors } = dealDamage(survivors, user, pendingDamage, false, essence, adventure);
-	const allresultLines = firstresultLines.concat(secondresultLines);
+	const { results: firstResults, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results: secondResults, survivors: finalSurvivors } = dealDamage(survivors, user, pendingDamage, false, essence, adventure);
+	const allResults = firstResults.concat(secondResults);
 	if (user.essence === essence) {
 		changeStagger(finalSurvivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (finalSurvivors.length < targets.length) {
 		adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(user)}`, "levelsGained", "loot", levelUps);
-		allresultLines.push(`${user.name} gains a level.`);
+		allResults.push(`${user.name} gains a level.`);
 	}
-	return allresultLines;
+	return allResults;
 }
 //#endregion Double
 
@@ -102,15 +102,15 @@ function lethalLongswordEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
 	if (survivors.length < targets.length) {
 		adventure.room.addResource(`levelsGained${SAFE_DELIMITER}${adventure.getCombatantIndex(user)}`, "levelsGained", "loot", levelUps);
-		resultLines.push(`${user.name} gains a level.`);
+		results.push(`${user.name} gains a level.`);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Lethal
 

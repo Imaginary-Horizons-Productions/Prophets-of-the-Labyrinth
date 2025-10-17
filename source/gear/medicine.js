@@ -1,7 +1,7 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, removeModifier } = require('../util/combatantUtil');
+const { changeStagger, removeModifier } = require('../util/combatantUtil');
 
 //#region Base
 const medicine = new GearTemplate("Medicine",
@@ -31,12 +31,12 @@ function medicineEffect([target], user, adventure) {
 		pendingCures *= critBonus;
 	}
 	const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	const receipts = [];
+	const results = [];
 	for (let i = 0; i < pendingCures; i++) {
 		const [rolledDebuff] = targetDebuffs.splice(user.roundRns[`${medicine.name}${SAFE_DELIMITER}Medicine`][i] % targetDebuffs.length, 1);
-		receipts.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
+		results.push(...removeModifier([target], { name: rolledDebuff, stacks: "all" }));
 	}
-	return generateModifierResultLines(combineModifierReceipts(receipts));
+	return results;
 }
 //#endregion Base
 
@@ -65,7 +65,7 @@ function hasteningMedicineEffect([target], user, adventure) {
 		changeStagger([target], user, ESSENCE_MATCH_STAGGER_ALLY);
 	}
 	let pendingCures = debuffsCured;
-	const resultLines = [];
+	const results = [];
 	if (user.crit) {
 		pendingCures *= critBonus;
 		let didCooldown = false;
@@ -76,16 +76,15 @@ function hasteningMedicineEffect([target], user, adventure) {
 			}
 		})
 		if (didCooldown) {
-			resultLines.push(`${target.name}'s cooldowns were hastened.`);
+			results.push(`${target.name}'s cooldowns were hastened.`);
 		}
 	}
 	const targetDebuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
-	const receipts = [];
 	for (let i = 0; i < pendingCures; i++) {
 		const [selectedDebuff] = targetDebuffs.splice(user.roundRns[`${hasteningMedicine.name}${SAFE_DELIMITER}Medicine`][i] % targetDebuffs.length, 1);
-		receipts.push(...removeModifier([target], { name: selectedDebuff, stacks: "all" }));
+		results.push(...removeModifier([target], { name: selectedDebuff, stacks: "all" }));
 	}
-	return generateModifierResultLines(combineModifierReceipts(receipts)).concat(resultLines);
+	return results;
 }
 //#endregion Hastening
 

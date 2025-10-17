@@ -1,6 +1,6 @@
 const { ItemTemplate } = require("../classes");
 const { getModifierCategory } = require("../modifiers/_modifierDictionary");
-const { removeModifier, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
+const { removeModifier } = require("../util/combatantUtil");
 const { SAFE_DELIMITER } = require('../constants.js');
 
 const itemName = "Panacea";
@@ -14,17 +14,16 @@ module.exports = new ItemTemplate(itemName,
 	(targets, user, adventure) => {
 		const userDebuffs = Object.keys(user.modifiers).filter(modifier => getModifierCategory(modifier) === "Debuff");
 		const debuffsToRemove = Math.min(userDebuffs.length, 2);
-		const receipts = [];
+		const results = [];
 		for (let i = 0; i < debuffsToRemove; i++) {
 			const debuffIndex = user.roundRns[`${itemName}${SAFE_DELIMITER}debuffs`][i] % userDebuffs.length;
 			const rolledDebuff = userDebuffs[debuffIndex];
 			const [removalReceipt] = removeModifier([user], { name: rolledDebuff, stacks: "all" });
-			receipts.push(removalReceipt);
+			results.push(removalReceipt);
 			if (removalReceipt.succeeded.size > 0) {
 				userDebuffs.splice(debuffIndex, 1);
 			}
 		}
-
-		return generateModifierResultLines(combineModifierReceipts(receipts));
+		return results;
 	}
 );

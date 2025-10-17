@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_ALLY } = require('../constants');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { scalingEvasion } = require('./shared/modifiers');
 
 const bounces = 3;
@@ -30,7 +30,7 @@ function smokescreenEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingEvasion.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingEvasion)));
+	return addModifier(targets, pendingEvasion);
 }
 //#endregion Base
 
@@ -76,7 +76,7 @@ function doubleSmokescreenEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingEvasion.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingEvasion)));
+	return addModifier(targets, pendingEvasion);
 }
 //#endregion Double
 

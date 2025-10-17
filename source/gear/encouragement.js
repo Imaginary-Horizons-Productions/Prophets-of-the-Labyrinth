@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_ALLY, SAFE_DELIMITER } = require('../constants');
-const { changeStagger, generateModifierResultLines, combineModifierReceipts, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { scalingExcellence, scalingEmpowerment } = require('./shared/modifiers');
 
 //#region Base
@@ -29,7 +29,7 @@ function encouragementEffect(targets, user, adventure) {
 		pendingExcellence.stacks *= critBonus;
 		pendingEmpowerment.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingExcellence).concat(addModifier(targets, pendingEmpowerment))));
+	return addModifier(targets, pendingExcellence).concat(addModifier(targets, pendingEmpowerment));
 }
 //#endregion Base
 
@@ -74,7 +74,7 @@ function vigorousEncouragementEffect(targets, user, adventure) {
 		pendingExcellence.stacks *= critBonus;
 		pendingEmpowerment.stacks *= critBonus;
 	}
-	return generateModifierResultLines(combineModifierReceipts(addModifier(targets, pendingExcellence).concat(addModifier(targets, pendingEmpowerment), addModifier(targets, impact))));
+	return addModifier(targets, pendingExcellence).concat(addModifier(targets, pendingEmpowerment), addModifier(targets, impact));
 }
 //#endregion Vigorous
 

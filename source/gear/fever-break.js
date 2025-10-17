@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { dealDamage, removeModifier, changeStagger, combineModifierReceipts, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { dealDamage, removeModifier, changeStagger, addModifier } = require('../util/combatantUtil');
 const { unstoppablePassive } = require('./shared/passiveDescriptions');
 
 //#region Base
@@ -50,7 +50,7 @@ function feverBreakEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return resultLines.concat(receipts);
 }
 //#endregion Base
 
@@ -101,7 +101,7 @@ function fatiguingFeverBreakEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return resultLines.concat(receipts);
 }
 //#endregion Fatiguing
 
@@ -152,7 +152,7 @@ function unstoppableFeverBreakEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return resultLines.concat(receipts);
 }
 //#endregion Unstoppable
 

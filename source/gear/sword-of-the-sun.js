@@ -1,7 +1,7 @@
-const { GearTemplate, GearFamily, ModifierReceipt } = require('../classes');
+const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
-const { dealDamage, changeStagger, combineModifierReceipts, removeModifier, generateModifierResultLines } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, removeModifier } = require('../util/combatantUtil');
 const { damageScalingGenerator } = require('./shared/scalings');
 
 const targetingTags = { type: "single", team: "foe" };
@@ -25,29 +25,25 @@ const swordOfTheSun = new GearTemplate("Sword of the Sun",
 /** @type {typeof swordOfTheSun.effect} */
 function swordOfTheSunEffect(targets, user, adventure) {
 	const { essence, scalings: { damage, critBonus } } = swordOfTheSun;
-	const totalResultLines = [];
+	const results = [];
 	for (const target of targets) {
 		const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-		/** @type {ModifierReceipt[]} */
-		const removedBuffReceipts = [];
 		targetBuffs.forEach(buffName => {
-			removedBuffReceipts.push(...removeModifier([target], { name: buffName, stacks: "all" }))
+			results.push(...removeModifier([target], { name: buffName, stacks: "all" }))
 		})
-		const combinedReceipts = combineModifierReceipts(removedBuffReceipts)
-		totalResultLines.push(...generateModifierResultLines(combinedReceipts));
 
 		let pendingDamage = damage.calculate(user) + 30 * combinedReceipts.reduce((total, receipt) => total + receipt.succeeded.size, 0);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		const { resultLines, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
-		totalResultLines.push(...resultLines)
+		const { results: damageResults, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+		results.push(...damageResults)
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 	}
 
-	return totalResultLines;
+	return results;
 }
 //#endregion Base
 
@@ -70,29 +66,25 @@ const lethalSwordOfTheSun = new GearTemplate("Lethal Sword of the Sun",
 /** @type {typeof lethalSwordOfTheSun.effect} */
 function lethalSwordOfTheSunEffect(targets, user, adventure) {
 	const { essence, scalings: { damage, critBonus } } = lethalSwordOfTheSun;
-	const totalResultLines = [];
+	const results = [];
 	for (const target of targets) {
 		const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-		/** @type {ModifierReceipt[]} */
-		const removedBuffReceipts = [];
 		targetBuffs.forEach(buffName => {
-			removedBuffReceipts.push(...removeModifier([target], { name: buffName, stacks: "all" }))
+			results.push(...removeModifier([target], { name: buffName, stacks: "all" }))
 		})
-		const combinedReceipts = combineModifierReceipts(removedBuffReceipts)
-		totalResultLines.push(...generateModifierResultLines(combinedReceipts));
 
 		let pendingDamage = damage.calculate(user) + 30 * combinedReceipts.reduce((total, receipt) => total + receipt.succeeded.size, 0);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		const { resultLines, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
-		totalResultLines.push(...resultLines)
+		const { results: damageResults, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+		results.push(...damageResults)
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
 	}
 
-	return totalResultLines;
+	return results;
 }
 //#endregion Lethal
 
@@ -116,24 +108,20 @@ const thiefsSwordOfTheSun = new GearTemplate("Thief's Sword of the Sun",
 
 /** @type {typeof thiefsSwordOfTheSun.effect} */
 function thiefsSwordOfTheSunEffect(targets, user, adventure) {
-	const totalResultLines = [];
+	const results = [];
 	for (const target of targets) {
 		const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
-		/** @type {ModifierReceipt[]} */
-		const removedBuffReceipts = [];
 		targetBuffs.forEach(buffName => {
-			removedBuffReceipts.push(...removeModifier([target], { name: buffName, stacks: "all" }))
+			results.push(...removeModifier([target], { name: buffName, stacks: "all" }))
 		})
-		const combinedReceipts = combineModifierReceipts(removedBuffReceipts)
-		totalResultLines.push(...generateModifierResultLines(combinedReceipts));
 
 		const { essence, scalinge: { damage, critBonus } } = thiefsSwordOfTheSun;
 		let pendingDamage = damage.calculate(user) + 30 * combinedReceipts.reduce((total, receipt) => total + receipt.succeeded.size, 0);
 		if (user.crit) {
 			pendingDamage *= critBonus;
 		}
-		const { resultLines, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
-		totalResultLines.push(...resultLines)
+		const { results: damageResults, survivors } = dealDamage([target], user, pendingDamage, false, essence, adventure);
+		results.push(...damageResults)
 		if (user.essence === essence) {
 			changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
@@ -142,9 +130,9 @@ function thiefsSwordOfTheSunEffect(targets, user, adventure) {
 	const { bounty } = thiefsSwordOfTheSun.scalings
 	if (targets.find(t => t.hp <= 0) !== undefined) {
 		adventure.room.addResource("Gold", "Currency", "loot", bounty);
-		totalResultLines.push(`${user.name} pillages ${bounty}g.`);
+		results.push(`${user.name} pillages ${bounty}g.`);
 	}
-	return totalResultLines
+	return results
 }
 //#endregion Thief's
 

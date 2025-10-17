@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
-const { dealDamage, changeStagger, generateModifierResultLines, addModifier, combineModifierReceipts } = require('../util/combatantUtil');
+const { dealDamage, changeStagger, addModifier } = require('../util/combatantUtil');
 const { archetypeActionDamageScaling } = require('./shared/scalings');
 
 //#region Base
@@ -25,11 +25,11 @@ function flourishEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, distraction)));
+	return results.concat(addModifier(survivors, distraction));
 }
 //#endregion Base
 
@@ -58,11 +58,11 @@ function bouncingFlourishEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, distraction)));
+	return results.concat(addModifier(survivors, distraction));
 }
 //#endregion Bouncing
 
@@ -88,11 +88,11 @@ function shatteringFlourishEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(addModifier(survivors, distraction).concat(addModifier(survivors, frailty)))));
+	return results.concat(addModifier(survivors, distraction).concat(addModifier(survivors, frailty)));
 }
 //#endregion Shattering
 
@@ -119,13 +119,12 @@ function staggeringFlourishEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	let pendingStagger = stagger;
 	if (user.essence === essence) {
 		pendingStagger += ESSENCE_MATCH_STAGGER_FOE;
 	}
-	changeStagger(survivors, user, pendingStagger);
-	return resultLines.concat(generateModifierResultLines(addModifier(survivors, distraction)));
+	return results.concat(addModifier(survivors, distraction), changeStagger(survivors, user, pendingStagger));
 }
 //#endregion Staggering
 

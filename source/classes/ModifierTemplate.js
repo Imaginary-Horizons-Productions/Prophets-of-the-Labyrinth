@@ -30,34 +30,6 @@ class ModifierTemplate {
 	}
 };
 
-class ModifierReceipt {
-	/**
-	 * @param {string} combatantNameInput
-	 * @param {"add" | "remove"} receiptType
-	 * @param {string[]} succeededEmojiArray
-	 */
-	constructor(combatantNameInput, receiptType, succeededEmojiArray) {
-		this.combatantNames = new Set([combatantNameInput]);
-		this.type = receiptType;
-		this.succeeded = new Set(succeededEmojiArray);
-	}
-
-	/** @param {ModifierReceipt} incomingReceipt */
-	combineCombatantNames(incomingReceipt) {
-		for (const name of incomingReceipt.combatantNames) {
-			this.combatantNames.add(name);
-		}
-	}
-
-	/** @param {ModifierReceipt} incomingReceipt */
-	combineModifierSets(incomingReceipt) {
-		for (const success of incomingReceipt.succeeded) {
-			this.succeeded.add(success);
-		}
-	}
-}
-
 module.exports = {
-	ModifierTemplate,
-	ModifierReceipt
+	ModifierTemplate
 };

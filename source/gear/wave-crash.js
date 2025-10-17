@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE, SAFE_DELIMITER } = require('../constants');
-const { addModifier, generateModifierResultLines, dealDamage, changeStagger, removeModifier, combineModifierReceipts } = require('../util/combatantUtil');
+const { addModifier, dealDamage, changeStagger, removeModifier } = require('../util/combatantUtil');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
 const { damageScalingGenerator } = require('./shared/scalings');
 
@@ -24,11 +24,11 @@ function waveCrashEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	const resultLines = generateModifierResultLines(addModifier(targets, incompatibility));
+	const results = addModifier(targets, incompatibility);
 	if (user.crit) {
-		resultLines.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure).resultLines);
+		results.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure).results);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -56,19 +56,18 @@ function disenchantingWaveCrashEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	const receipts = addModifier(targets, incompatibility);
+	const results = addModifier(targets, incompatibility);
 	const targetBuffs = Object.keys(targets[0].modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 	if (targetBuffs.length > 0) {
 		for (let i = 0; i < pendingBuffRemovals; i++) {
 			const [selectedBuff] = targetBuffs.splice(user.roundRns(`${disenchantingWaveCrash.name}${SAFE_DELIMITER}buffs`), 1);
-			receipts.push(...removeModifier(targets, { name: selectedBuff, stacks: "all" }));
+			results.push(...removeModifier(targets, { name: selectedBuff, stacks: "all" }));
 		}
 	}
-	const resultLines = generateModifierResultLines(combineModifierReceipts(receipts));
 	if (user.crit) {
-		resultLines.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure).resultLines);
+		results.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure).results);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Disenchanting
 
@@ -92,11 +91,11 @@ function fatiguingWaveCrashEffect(targets, user, adventure) {
 	if (user.essence === essence) {
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	const resultLines = generateModifierResultLines(addModifier(targets, incompatibility).concat(addModifier(targets, impotence)));
+	const results = addModifier(targets, incompatibility).concat(addModifier(targets, impotence));
 	if (user.crit) {
-		resultLines.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure).resultLines);
+		results.push(...dealDamage(targets, user, damage.calculate(user), false, essence, adventure).results);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Fatiguing
 

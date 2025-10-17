@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { selectRandomFoe, selectRandomAlly } = require("../shared/actionComponents");
-const { changeStagger, dealDamage, generateModifierResultLines, addModifier } = require("../util/combatantUtil");
+const { changeStagger, dealDamage, addModifier } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 
 module.exports = new EnemyTemplate("Pulsar Zebra",
@@ -22,9 +22,9 @@ module.exports = new EnemyTemplate("Pulsar Zebra",
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
-		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);
+		const { results, survivors } = dealDamage(targets, user, pendingDamage, false, "Darkness", adventure);
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines.concat(generateModifierResultLines(addModifier(survivors, { name: "Weakness", stacks: 5 })));
+		return results.concat(addModifier(survivors, { name: "Weakness", stacks: 5 }));
 	},
 	selector: selectRandomFoe,
 	next: "Pulse Fade"
@@ -39,7 +39,7 @@ module.exports = new EnemyTemplate("Pulsar Zebra",
 			pendingEvasion.stacks *= 2;
 		}
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_ALLY);
-		return generateModifierResultLines(addModifier(targets, pendingEvasion));
+		return addModifier(targets, pendingEvasion);
 	},
 	selector: selectRandomAlly,
 	next: "Pulse Flash"

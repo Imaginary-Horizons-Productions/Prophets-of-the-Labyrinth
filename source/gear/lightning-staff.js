@@ -1,7 +1,7 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { SAFE_DELIMITER, ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
 const { getModifierCategory } = require('../modifiers/_modifierDictionary');
-const { changeStagger, dealDamage, generateModifierResultLines, combineModifierReceipts, removeModifier, addModifier } = require('../util/combatantUtil');
+const { changeStagger, dealDamage, removeModifier, addModifier } = require('../util/combatantUtil');
 
 const bounces = 3;
 
@@ -30,11 +30,11 @@ function lightningStaffEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines;
+	return results;
 }
 //#endregion Base
 
@@ -64,21 +64,20 @@ function disenchantingLightningStaffEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	const receipts = [];
 	for (const target of survivors) {
 		const targetBuffs = Object.keys(target.modifiers).filter(modifier => getModifierCategory(modifier) === "Buff");
 		if (targetBuffs.length > 0) {
 			for (let i = 0; i < buffRemovals; i++) {
 				const [selectedBuff] = targetBuffs.splice(user.roundRns(`${disenchantingLightningStaff.name}${SAFE_DELIMITER}buffs`), 1);
-				receipts.push(...removeModifier([target], { name: selectedBuff, stacks: "all" }));
+				results.push(...removeModifier([target], { name: selectedBuff, stacks: "all" }));
 			}
 		}
 	}
-	return resultLines.concat(generateModifierResultLines(combineModifierReceipts(receipts)));
+	return results;
 }
 //#endregion Disenchanting
 
@@ -108,11 +107,11 @@ function hexingLightningStaffEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDamage *= critBonus;
 	}
-	const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
+	const { results, survivors } = dealDamage(targets, user, pendingDamage, false, essence, adventure);
 	if (user.essence === essence) {
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
 	}
-	return resultLines.concat(addModifier(survivors, misfortune));
+	return results.concat(addModifier(survivors, misfortune));
 }
 //#endregion Hexing
 

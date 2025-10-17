@@ -27,13 +27,13 @@ module.exports = new PetTemplate(petName, Colors.Green,
 			new PetMoveTemplate("Shield Tackle", `Deal owner's protection in ${getEmoji("Earth")} damage to a random foe`,
 				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, { petRNs }) => {
-					return dealDamage(targets, owner, owner.protection, false, "Earth", adventure).resultLines;
+					return dealDamage(targets, owner, owner.protection, false, "Earth", adventure).results;
 				}).setRnConfig(["enemyIndex"]),
 			new PetMoveTemplate("Shield Avalanche", `Deal owner's protection in ${getEmoji("Earth")} damage and 1 Stagger to a random foe`,
 				(owner, petRNs) => petRNs.targetReferences,
 				(targets, owner, adventure, { petRNs }) => {
 					changeStagger(targets, null, 1);
-					return dealDamage(targets, owner, owner.protection, false, "Earth", adventure).resultLines;
+					return dealDamage(targets, owner, owner.protection, false, "Earth", adventure).results;
 				}).setRnConfig(["enemyIndex"])
 		]
 	]

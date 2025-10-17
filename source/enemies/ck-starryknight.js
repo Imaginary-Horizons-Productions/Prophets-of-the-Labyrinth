@@ -2,7 +2,7 @@ const { bold } = require("discord.js");
 const { EnemyTemplate, Combatant, Adventure } = require("../classes");
 const { getModifierCategory } = require("../modifiers/_modifierDictionary");
 const { selectRandomFoe, selectAllFoes } = require("../shared/actionComponents");
-const { dealDamage, addModifier, changeStagger, addProtection, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
+const { dealDamage, addModifier, changeStagger, addProtection } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 const { ESSENCE_MATCH_STAGGER_FOE } = require("../constants");
 
@@ -42,9 +42,9 @@ module.exports = new EnemyTemplate("Starry Knight",
 			pendingDamage *= 2;
 		}
 		if (unfinishedChallenges.length > 0) {
-			return [`"Ha! You didn't finish ${bold(unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")])}."`, ...dealDamage([target], user, pendingDamage, false, "Light", adventure).resultLines];
+			return [`"Ha! You didn't finish ${bold(unfinishedChallenges[adventure.generateRandomNumber(unfinishedChallenges.length, "battle")])}."`, ...dealDamage([target], user, pendingDamage, false, "Light", adventure).results];
 		} else {
-			return dealDamage([target], user, pendingDamage, false, "Light", adventure).resultLines;
+			return dealDamage([target], user, pendingDamage, false, "Light", adventure).results;
 		}
 	},
 	selector: selectRandomFoe,
@@ -57,8 +57,8 @@ module.exports = new EnemyTemplate("Starry Knight",
 	effect: (targets, user, adventure) => {
 		let pendingDamage = user.getPower() + 50 * targets.length;
 		changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
-		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).resultLines
-			.concat(generateModifierResultLines(combineModifierReceipts(addNewRandomInsults(targets, user.crit ? 2 : 1, adventure))));
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).results
+			.concat(addNewRandomInsults(targets, user.crit ? 2 : 1, adventure));
 	},
 	selector: selectAllFoes,
 	next: "random",
@@ -73,8 +73,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		if (user.crit) {
 			addProtection([user], 100);
 		}
-		const receipts = addModifier(targets, { name: "Exposure", stacks: 1 }).concat(addNewRandomInsults(targets, 1, adventure));
-		return generateModifierResultLines(combineModifierReceipts(receipts));
+		return addModifier(targets, { name: "Exposure", stacks: 1 }).concat(addNewRandomInsults(targets, 1, adventure));
 	},
 	selector: selectAllFoes,
 	next: "random"
@@ -89,7 +88,7 @@ module.exports = new EnemyTemplate("Starry Knight",
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
-		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Distraction", stacks: 4 })));
+		return dealDamage(targets, user, pendingDamage, false, "Light", adventure).results.concat(addModifier(targets, { name: "Distraction", stacks: 4 }));
 	},
 	selector: selectRandomFoe,
 	next: "random"
@@ -113,7 +112,7 @@ function addNewRandomInsults(combatants, count, adventure) {
 			const rolledInsult = availableInsults[insultIndex];
 			const [receipt] = addModifier([combatant], { name: rolledInsult, stacks: 1 });
 			receipts.push(receipt);
-			if (receipt.succeeded.size > 0) {
+			if (receipt.addedModifiers.size > 0) {
 				availableInsults.splice(insultIndex, 1);
 			}
 		}

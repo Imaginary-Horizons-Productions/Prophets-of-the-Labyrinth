@@ -1,7 +1,7 @@
 const { EnemyTemplate, Adventure } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_FOE, ESSENCE_MATCH_STAGGER_ALLY } = require("../constants");
 const { selectMultipleRandomFoes, selectNone, selectRandomFoe } = require("../shared/actionComponents");
-const { generateModifierResultLines, addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil");
 
 /**
@@ -31,7 +31,7 @@ module.exports = new EnemyTemplate("Gust Wolf",
 			pendingEmpowerment.stacks *= 2;
 		}
 		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
-		return generateModifierResultLines(addModifier([user], pendingEmpowerment));
+		return addModifier([user], pendingEmpowerment);
 	},
 	selector: selectNone,
 	next: "Bounding Frenzy"
@@ -45,9 +45,9 @@ module.exports = new EnemyTemplate("Gust Wolf",
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
-		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, "Wind", adventure);
+		const { results, survivors } = dealDamage(targets, user, pendingDamage, false, "Wind", adventure);
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines;
+		return results;
 	},
 	selector: selectMultipleRandomFoes(3),
 	next: randomWithoutBoundingFrenzy
@@ -61,9 +61,9 @@ module.exports = new EnemyTemplate("Gust Wolf",
 		if (user.crit) {
 			pendingDamage *= 2;
 		}
-		const { resultLines, survivors } = dealDamage(targets, user, pendingDamage, false, "Wind", adventure);
+		const { results, survivors } = dealDamage(targets, user, pendingDamage, false, "Wind", adventure);
 		changeStagger(survivors, user, ESSENCE_MATCH_STAGGER_FOE);
-		return resultLines;
+		return results;
 	},
 	selector: selectRandomFoe,
 	next: randomWithoutBoundingFrenzy

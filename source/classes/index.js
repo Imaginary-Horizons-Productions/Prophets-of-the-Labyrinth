@@ -10,10 +10,11 @@ const { GearTemplate, GearFamily } = require("./GearTemplate");
 const { ButtonWrapper, CommandWrapper, SelectWrapper, ContextMenuWrapper, MessageContextMenuWrapper, UserContextMenuWrapper, SubcommandWrapper } = require("./InteractionWrapper");
 const { ItemTemplate } = require("./ItemTemplate");
 const { LabyrinthTemplate } = require("./LabyrinthTemplate");
-const { ModifierTemplate, ModifierReceipt } = require("./ModifierTemplate");
+const { ModifierTemplate } = require("./ModifierTemplate");
 const { CombatantReference, Move } = require("./Move");
 const { PetTemplate, PetMoveTemplate } = require("./PetTemplate");
 const { Player } = require("./Player");
+const { Receipt } = require("./Receipt");
 const { RoomTemplate } = require("./RoomTemplate");
 const { Scaling } = require("./Scaling");
 
@@ -41,11 +42,11 @@ module.exports = {
 	LabyrinthTemplate,
 	MessageContextMenuWrapper,
 	ModifierTemplate,
-	ModifierReceipt,
 	Move,
 	PetMoveTemplate,
 	PetTemplate,
 	Player,
+	Receipt,
 	Room,
 	RoomTemplate,
 	Scaling,

@@ -1,7 +1,7 @@
 const { EnemyTemplate } = require("../classes");
 const { ESSENCE_MATCH_STAGGER_ALLY, ESSENCE_MATCH_STAGGER_FOE } = require("../constants.js");
 const { selectRandomFoe, selectSelf } = require("../shared/actionComponents.js");
-const { addModifier, dealDamage, changeStagger, generateModifierResultLines, combineModifierReceipts } = require("../util/combatantUtil");
+const { addModifier, dealDamage, changeStagger } = require("../util/combatantUtil");
 const { getEmoji } = require("../util/essenceUtil.js");
 
 module.exports = new EnemyTemplate("Fire-Arrow Frog",
@@ -19,8 +19,8 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 	priority: 0,
 	effect: (targets, user, adventure) => {
 		let damage = user.getPower() + 20;
-		const resultLines = dealDamage(targets, user, damage, false, user.essence, adventure).resultLines;
-		return resultLines.concat(generateModifierResultLines(addModifier(targets, { name: "Poison", stacks: user.crit ? 6 : 3 })));
+		const results = dealDamage(targets, user, damage, false, user.essence, adventure).results;
+		return results.concat(addModifier(targets, { name: "Poison", stacks: user.crit ? 6 : 3 }));
 	},
 	selector: selectRandomFoe,
 	next: "random"
@@ -35,7 +35,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 			stacks *= 3;
 		}
 		changeStagger([user], user, ESSENCE_MATCH_STAGGER_ALLY);
-		return generateModifierResultLines(addModifier([user], { name: "Evasion", stacks }));
+		return addModifier([user], { name: "Evasion", stacks });
 	},
 	selector: selectSelf,
 	next: "Venom Cannon"
@@ -48,7 +48,7 @@ module.exports = new EnemyTemplate("Fire-Arrow Frog",
 		if (user.crit) {
 			changeStagger(targets, user, ESSENCE_MATCH_STAGGER_FOE);
 		}
-		return generateModifierResultLines(combineModifierReceipts(addModifier(targets, { name: "Torpidity", stacks: user.crit ? 3 : 2 })));
+		return addModifier(targets, { name: "Torpidity", stacks: user.crit ? 3 : 2 });
 	},
 	selector: selectRandomFoe,
 	next: "Venom Cannon"

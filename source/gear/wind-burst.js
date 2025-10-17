@@ -1,6 +1,6 @@
 const { GearTemplate, GearFamily } = require('../classes');
 const { ESSENCE_MATCH_STAGGER_FOE } = require('../constants');
-const { changeStagger, generateModifierResultLines, addModifier } = require('../util/combatantUtil');
+const { changeStagger, addModifier } = require('../util/combatantUtil');
 const { scalingDistraction } = require('./shared/modifiers');
 
 //#region Base
@@ -27,7 +27,7 @@ function windBurstEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDistraction.stacks *= critBonus;
 	}
-	return generateModifierResultLines(addModifier(targets, pendingDistraction));
+	return addModifier(targets, pendingDistraction);
 }
 //#endregion Base
 
@@ -59,7 +59,7 @@ function inspiringWindBurstEffect(targets, user, adventure) {
 		pendingDistraction.stacks *= critBonus;
 	}
 	adventure.room.morale += morale;
-	return generateModifierResultLines(addModifier(targets, pendingDistraction)).concat("The party's morale is increased!");
+	return addModifier(targets, pendingDistraction).concat("The party's morale is increased!");
 }
 //#endregion
 
@@ -87,7 +87,7 @@ function toxicWindBurstEffect(targets, user, adventure) {
 	if (user.crit) {
 		pendingDistraction.stacks *= critBonus;
 	}
-	return generateModifierResultLines(addModifier(targets, pendingDistraction).concat(addModifier(targets, poison)));
+	return addModifier(targets, pendingDistraction).concat(addModifier(targets, poison));
 }
 //#endregion Toxic
 
