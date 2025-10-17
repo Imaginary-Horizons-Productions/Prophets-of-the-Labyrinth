@@ -8,7 +8,7 @@ class Receipt {
 	 * @param {[string | null, number][]} changes.damagesArray
 	 * @param {number} changes.damageCapApplied
 	 * @param {number} changes.blockedDamage
-	 * @param {[number, string | null]} changes.healingsArray
+	 * @param {[string | null, number]} changes.healingsArray
 	 * @param {string[]} changes.addedModifierEmojiArray
 	 * @param {string[]} changes.removedModifierEmojiArray
 	 * @param {"add" | "remove" | null} changes.bonusStagger
