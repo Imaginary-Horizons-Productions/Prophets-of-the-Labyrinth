@@ -1,8 +1,8 @@
-const { ModalBuilder, LabelBuilder, MessageFlags, bold, italic } = require('discord.js');
+const { ModalBuilder, LabelBuilder, MessageFlags, bold, italic, DiscordjsErrorCodes, TextDisplayBuilder } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { StringSelectMenuBuilder } = require('@discordjs/builders');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
-const { ICON_PET, SKIP_INTERACTION_HANDLING, EMPTY_SELECT_OPTION_SET } = require('../constants');
+const { ICON_PET, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 const { getEmoji } = require('../util/essenceUtil');
@@ -62,16 +62,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			start = (start + 1) % adventure.rnTable.length;
 		}
 
-		const artifactSelect = new StringSelectMenuBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}startingartifact`)
-			.setPlaceholder("Select an artifact...");
-		if (startingArtifactOptions.length > 1) {
-			artifactSelect.addOptions(startingArtifactOptions)
-				.setRequired(false);
-		} else {
-			artifactSelect.addOptions(EMPTY_SELECT_OPTION_SET)
-				.setDisabled(true);
-		}
-
 		const modal = new ModalBuilder().setCustomId(SKIP_INTERACTION_HANDLING)
 			.setTitle("Customize Loadout")
 			.addLabelComponents(
@@ -89,14 +79,28 @@ module.exports = new ButtonWrapper(mainId, 3000,
 						.setPlaceholder(`Select a pet...`)
 						.addOptions(petOptions)
 						.setRequired(false)
-					),
-				new LabelBuilder().setLabel("Starting Artifact")
-					.setDescription("Each player has a different set of artifacts to select from.")
-					.setStringSelectMenuComponent(artifactSelect)
+					)
 			)
 
+		const startingArtifactInputComponentId = `${SKIP_INTERACTION_HANDLING}startingartifact`;
+		if (startingArtifactOptions.length > 1) {
+			modal.addLabelComponents(
+				new LabelBuilder().setLabel("Starting Artifact")
+					.setDescription("Each player has a different set of artifacts to select from.")
+					.setStringSelectMenuComponent(
+						new StringSelectMenuBuilder().setCustomId(startingArtifactInputComponentId)
+							.setPlaceholder("Select an artifact...")
+							.addOptions(startingArtifactOptions)
+							.setRequired(false)
+					)
+			)
+		} else {
+			modal.addTextDisplayComponents(
+				new TextDisplayBuilder().setContent("### Starting Artifact\nEach player has a different set of artifacts to select from, but you don't have any artifacts to select from in this adventure.")
+			)
+		}
+
 		await interaction.showModal(modal);
-		//TODONOW crash if thread is deleted followed by submission?
 		interaction.awaitModalSubmit({ time: 120000 }).then(modalSubmission => {
 			const adventure = getAdventure(interaction.channelId);
 			if (adventure?.state !== "config") {
@@ -124,15 +128,17 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 			}
 
-			const [startingArtifactSelection] = modalSubmission.fields.getStringSelectValues(`${SKIP_INTERACTION_HANDLING}startingartifact`);
 			let changedStartingArtifact = false;
-			if (startingArtifactSelection) {
-				if (startingArtifactSelection !== "noartifact") {
-					changedStartingArtifact = delver.startingArtifact !== startingArtifactSelection;
-					delver.startingArtifact = startingArtifactSelection;
-				} else {
-					changedStartingArtifact = delver.startingArtifact !== "";
-					delver.startingArtifact = "";
+			if (modalSubmission.fields.fields.has(startingArtifactInputComponentId)) {
+				const [startingArtifactSelection] = modalSubmission.fields.getStringSelectValues(startingArtifactInputComponentId);
+				if (startingArtifactSelection) {
+					if (startingArtifactSelection !== "noartifact") {
+						changedStartingArtifact = delver.startingArtifact !== startingArtifactSelection;
+						delver.startingArtifact = startingArtifactSelection;
+					} else {
+						changedStartingArtifact = delver.startingArtifact !== "";
+						delver.startingArtifact = "";
+					}
 				}
 			}
 
@@ -146,6 +152,10 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				modalSubmission.reply({ content });
 			} else {
 				modalSubmission.reply({ content: "The provided loadout did not differ from your previous loadout.", flags: MessageFlags.Ephemeral });
+			}
+		}).catch(error => {
+			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
+				console.error(error);
 			}
 		})
 	}
