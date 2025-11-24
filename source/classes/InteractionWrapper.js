@@ -1,5 +1,5 @@
 const { MAX_SET_TIMEOUT } = require("../constants");
-const { Interaction, ButtonInteraction, PermissionFlagsBits, CommandInteraction, SlashCommandBuilder, AnySelectMenuInteraction, InteractionContextType, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction, ContextMenuCommandInteraction, ContextMenuCommandBuilder, ApplicationCommandType } = require("discord.js");
+const { Interaction, ButtonInteraction, PermissionFlagsBits, SlashCommandBuilder, AnySelectMenuInteraction, InteractionContextType, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction, ContextMenuCommandInteraction, ContextMenuCommandBuilder, ApplicationCommandType, ChatInputCommandInteraction } = require("discord.js");
 const { BuildError } = require("./BuildError.js");
 
 class InteractionWrapper {
@@ -64,7 +64,7 @@ class CommandWrapper extends InteractionWrapper {
 	 * @param {boolean} isPremiumCommand
 	 * @param {InteractionContextType[]} contextEnums
 	 * @param {number} cooldownInMS
-	 * @param {(interaction: CommandInteraction) => void} executeFunction
+	 * @param {(interaction: ChatInputCommandInteraction) => void} executeFunction
 	 */
 	constructor(mainIdInput, descriptionInput, defaultMemberPermission, isPremiumCommand, contextEnums, cooldownInMS, executeFunction) {
 		super(mainIdInput, cooldownInMS, executeFunction);
@@ -133,7 +133,7 @@ class SubcommandWrapper {
 	 *
 	 * @param {string} nameInput
 	 * @param {string} descriptionInput
-	 * @param {(interaction: CommandInteraction, ...args: unknown[]) => Promise<void>} executeFunction
+	 * @param {(interaction: ChatInputCommandInteraction, ...args: unknown[]) => Promise<void>} executeFunction
 	 */
 	constructor(nameInput, descriptionInput, executeFunction) {
 		this.data = {
