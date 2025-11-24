@@ -1,4 +1,4 @@
-const { ActionRowBuilder, TextInputBuilder, ModalBuilder, TextInputStyle, PermissionFlagsBits, EmbedBuilder, InteractionContextType, MessageFlags } = require('discord.js');
+const { TextInputBuilder, ModalBuilder, TextInputStyle, PermissionFlagsBits, EmbedBuilder, InteractionContextType, MessageFlags, LabelBuilder } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { testGuildId, feedbackChannelId, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { EmbedLimits } = require('@sapphire/discord.js-utilities');
@@ -18,34 +18,34 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 				titlePrefix = "Bug Report: ";
 				interaction.showModal(new ModalBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
 					.setTitle("Bug Report")
-					.addComponents(
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("title")
-								.setLabel("Title")
-								.setMaxLength(EmbedLimits.MaximumTitleLength - titlePrefix.length)
-								.setStyle(TextInputStyle.Short)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("steps")
-								.setLabel("Steps to reproduce")
-								.setStyle(TextInputStyle.Paragraph)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("actual")
-								.setLabel("What happened")
-								.setStyle(TextInputStyle.Short)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("expected")
-								.setLabel("What I was expecting to happen")
-								.setStyle(TextInputStyle.Short)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("image")
-								.setLabel("Screenshot/diagram URL")
-								.setRequired(false)
-								.setStyle(TextInputStyle.Short)
-						)
+					.addLabelComponents(
+						new LabelBuilder().setLabel("Title")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("title")
+									.setMaxLength(EmbedLimits.MaximumTitleLength - titlePrefix.length)
+									.setStyle(TextInputStyle.Short)
+							),
+						new LabelBuilder().setLabel("Steps to reproduce")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("steps")
+									.setStyle(TextInputStyle.Paragraph)
+							),
+						new LabelBuilder().setLabel("What happened")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("actual")
+									.setStyle(TextInputStyle.Short)
+							),
+						new LabelBuilder().setLabel("What I was expecting to happen")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("expected")
+									.setStyle(TextInputStyle.Short)
+							),
+						new LabelBuilder().setLabel("Screenshot/diagram URL")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("image")
+									.setRequired(false)
+									.setStyle(TextInputStyle.Short)
+							)
 					)
 				);
 				interaction.awaitModalSubmit({ filter: (incoming) => incoming.customId === `${SKIP_INTERACTION_HANDLING}${interaction.id}`, time: 300000 }).then(modalSubmission => {
@@ -87,37 +87,37 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 				titlePrefix = "Feature Request: ";
 				interaction.showModal(new ModalBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
 					.setTitle("Feature Request")
-					.addComponents(
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("title")
-								.setLabel("Title")
-								.setMaxLength(EmbedLimits.MaximumTitleLength - titlePrefix.length)
-								.setStyle(TextInputStyle.Short)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("user")
-								.setLabel("For who?")
-								.setPlaceholder("As a ___")
-								.setStyle(TextInputStyle.Short)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("functionality")
-								.setLabel("What kind of feature?")
-								.setPlaceholder("I'd like to ___")
-								.setStyle(TextInputStyle.Paragraph)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("benefit")
-								.setLabel("Why?")
-								.setPlaceholder("So that I can ___")
-								.setStyle(TextInputStyle.Short)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("image")
-								.setLabel("Diagram URL")
-								.setRequired(false)
-								.setStyle(TextInputStyle.Short)
-						)
+					.addLabelComponents(
+						new LabelBuilder().setLabel("Title")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("title")
+									.setMaxLength(EmbedLimits.MaximumTitleLength - titlePrefix.length)
+									.setStyle(TextInputStyle.Short)
+							),
+						new LabelBuilder().setLabel("For who?")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("user")
+									.setPlaceholder("As a ___")
+									.setStyle(TextInputStyle.Short)
+							),
+						new LabelBuilder().setLabel("What kind of feature?")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("functionality")
+									.setPlaceholder("I'd like to ___")
+									.setStyle(TextInputStyle.Paragraph)
+							),
+						new LabelBuilder().setLabel("Why?")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("benefit")
+									.setPlaceholder("So that I can ___")
+									.setStyle(TextInputStyle.Short)
+							),
+						new LabelBuilder().setLabel("Diagram URL")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("image")
+									.setRequired(false)
+									.setStyle(TextInputStyle.Short)
+							)
 					)
 				);
 				interaction.awaitModalSubmit({ filter: (incoming) => incoming.customId === `${SKIP_INTERACTION_HANDLING}${interaction.id}`, time: 300000 }).then(modalSubmission => {
@@ -159,25 +159,25 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 				titlePrefix = "Balance Suggestion";
 				interaction.showModal(new ModalBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
 					.setTitle("Balance Suggestion")
-					.addComponents(
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("entity")
-								.setLabel("What aspect of the game?")
-								.setPlaceholder("Eg gear/monster/item/etc.")
-								.setStyle(TextInputStyle.Short)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("direction")
-								.setLabel("Is it overpowered or underpowered?")
-								.setPlaceholder("Compared to what?")
-								.setStyle(TextInputStyle.Short)
-						),
-						new ActionRowBuilder().addComponents(
-							new TextInputBuilder().setCustomId("change")
-								.setLabel("What is your suggested change?")
-								.setPlaceholder("What problem is this attempting to solve?")
-								.setStyle(TextInputStyle.Paragraph)
-						)
+					.setLabelComponents(
+						new LabelBuilder().setLabel("What aspect of the game?")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("entity")
+									.setPlaceholder("Eg gear/monster/item/etc.")
+									.setStyle(TextInputStyle.Short)
+							),
+						new LabelBuilder().setLabel("Is it overpowered or underpowered?")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("direction")
+									.setPlaceholder("Compared to what?")
+									.setStyle(TextInputStyle.Short)
+							),
+						new LabelBuilder().setLabel("What is your suggested change?")
+							.setTextInputComponent(
+								new TextInputBuilder().setCustomId("change")
+									.setPlaceholder("What problem is this attempting to solve?")
+									.setStyle(TextInputStyle.Paragraph)
+							)
 					)
 				);
 				interaction.awaitModalSubmit({ filter: (incoming) => incoming.customId === `${SKIP_INTERACTION_HANDLING}${interaction.id}`, time: 300000 }).then(modalSubmission => {
