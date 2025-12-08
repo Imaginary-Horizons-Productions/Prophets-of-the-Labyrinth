@@ -1,10 +1,11 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, DiscordjsErrorCodes, ComponentType } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, ComponentType } = require('discord.js');
 const { ButtonWrapper, Challenge } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getChallenge } = require('../challenges/_challengeDictionary');
 const { trimForSelectOptionDescription, listifyEN } = require('../util/textUtil');
 const { SKIP_INTERACTION_HANDLING } = require('../constants');
 const { renderRoom } = require('../util/embedUtil');
+const { butIgnoreInteractionCollectorErrors } = require('../util/dAPIREsponses');
 
 const mainId = "challenges";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -66,11 +67,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return collectedInteraction;
 		}).then(interactionToAcknowledge => {
 			return interactionToAcknowledge.update({ components: [] });
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error);
-			}
-		}).finally(() => {
+		}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 				interaction.deleteReply();
 			}

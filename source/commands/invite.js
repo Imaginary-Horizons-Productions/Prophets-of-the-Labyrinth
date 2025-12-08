@@ -2,6 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, Inter
 const { CommandWrapper } = require('../classes');
 const { SAFE_DELIMITER } = require('../constants');
 const { getAdventure } = require('../orcustrators/adventureOrcustrator');
+const { isCantDirectMessageThisUserError } = require('../util/dAPIREsponses');
 
 const mainId = "invite";
 module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", PermissionFlagsBits.SendMessagesInThreads, false, [InteractionContextType.Guild], 3000,
@@ -26,8 +27,16 @@ module.exports = new CommandWrapper(mainId, "Invite a friend to an adventure", P
 					.setLabel("Join")
 					.setStyle(ButtonStyle.Success)
 			)]
+		}).then(() => {
+			interaction.reply({ content: "Invite sent!", flags: [MessageFlags.Ephemeral] });
+		}).catch(error => {
+			if (isCantDirectMessageThisUserError(error)) {
+				interaction.reply({ content: "Could not direct message your selected server member. Do they have PotL blocked?", flags: [MessageFlags.Ephemeral] });
+			} else {
+				interaction.reply({ content: "Could not send your invite due to an uncommon error.", flags: [MessageFlags.Ephemeral] });
+				console.error(error);
+			}
 		});
-		interaction.reply({ content: "Invite sent!", flags: [MessageFlags.Ephemeral] });
 	}
 ).setOptions(
 	{ type: "User", name: "invitee", description: "The user's mention", required: true }

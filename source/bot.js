@@ -29,6 +29,7 @@ const { setApplicationEmojiDictionary } = require("./util/graphicsUtil.js");
 const { loadAdventures } = require("./orcustrators/adventureOrcustrator.js");
 const { loadCompanies, setCompany } = require("./orcustrators/companyOrcustrator.js");
 const { loadPlayers } = require("./orcustrators/playerOrcustrator.js");
+const { butIgnoreMissingPermissionErrors } = require("./util/dAPIREsponses.js");
 //#endregion
 
 //#region Executing Code
@@ -121,7 +122,7 @@ client.on(Events.ClientReady, () => {
 						});
 					})
 				})
-			}).catch(console.error);
+			}).catch(butIgnoreMissingPermissionErrors);
 		});
 	} else {
 		client.application.commands.fetch({ guildId: testGuildId }).then(commands => {

@@ -1,9 +1,10 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, bold, MessageFlags, ComponentType, DiscordjsErrorCodes } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, bold, MessageFlags, ComponentType } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
 const { SKIP_INTERACTION_HANDLING, SAFE_DELIMITER } = require('../constants');
 const { setAdventure, getAdventure } = require('../orcustrators/adventureOrcustrator');
 const { renderRoom } = require('../util/embedUtil');
+const { butIgnoreInteractionCollectorErrors } = require('../util/dAPIREsponses');
 
 const mainId = "switchpet";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -62,11 +63,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			interaction.message.edit(renderRoom(adventure, interaction.channel));
 			setAdventure(adventure);
 			return collectedInteraction.update({ components: [] });
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error);
-			}
-		}).finally(() => {
+		}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 				interaction.deleteReply();
 			}

@@ -1,10 +1,11 @@
 const { ButtonWrapper } = require('../classes');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getColor, getEmoji } = require('../util/essenceUtil');
+const { butIgnoreInteractionCollectorErrors } = require('../util/dAPIREsponses');
 
 const mainId = "takeswordfromcomet";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -83,11 +84,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			}
 		}).then(interactionToAcknowledge => {
 			return interactionToAcknowledge.update({ components: [] });
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error);
-			}
-		}).finally(() => {
+		}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 				interaction.deleteReply();
 			}

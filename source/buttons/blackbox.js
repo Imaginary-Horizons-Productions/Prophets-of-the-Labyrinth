@@ -1,9 +1,10 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, bold, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, bold, MessageFlags } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { SKIP_INTERACTION_HANDLING } = require('../constants');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getNumberEmoji } = require('../util/textUtil');
+const { butIgnoreInteractionCollectorErrors } = require('../util/dAPIREsponses');
 
 const mainId = "blackbox";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -65,11 +66,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return collectedInteraction;
 		}).then(interactionToAcknowledge => {
 			return interactionToAcknowledge.update({ components: [] });
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error);
-			}
-		}).finally(() => {
+		}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 				interaction.deleteReply();
 			}

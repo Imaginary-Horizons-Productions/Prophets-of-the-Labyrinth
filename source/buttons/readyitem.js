@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
 const { ButtonWrapper, CombatantReference, Move } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING, POTL_ICON_URL } = require('../constants');
 const { getAdventure, setAdventure, checkNextRound, endRound } = require('../orcustrators/adventureOrcustrator');
@@ -8,6 +8,7 @@ const { trimForSelectOptionDescription } = require('../util/textUtil');
 const { getArchetype } = require('../archetypes/_archetypeDictionary');
 const { injectApplicationEmojiName } = require('../util/graphicsUtil');
 const { SelectMenuLimits } = require('@sapphire/discord.js-utilities');
+const { butIgnoreInteractionCollectorErrors } = require('../util/dAPIREsponses');
 
 const mainId = "readyitem";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -80,11 +81,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 				}
 			})
 			return collectedInteraction.update({ components: [] });
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error)
-			}
-		}).finally(() => {
+		}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 				interaction.deleteReply();
 			}

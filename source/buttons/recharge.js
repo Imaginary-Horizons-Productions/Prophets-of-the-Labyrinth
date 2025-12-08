@@ -1,9 +1,10 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline, bold, MessageFlags, DiscordjsErrorCodes, ComponentType } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, Colors, underline, bold, MessageFlags, ComponentType } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { getGearProperty } = require('../gear/_gearDictionary');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
+const { butIgnoreInteractionCollectorErrors } = require('../util/dAPIREsponses');
 
 const mainId = "recharge";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -69,11 +70,7 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			return collectedInteraction;
 		}).then(interactionToAcknowledge => {
 			return interactionToAcknowledge.update({ components: [] });
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error);
-			}
-		}).finally(() => {
+		}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 				interaction.deleteReply();
 			}

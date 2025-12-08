@@ -1,4 +1,4 @@
-const { ModalBuilder, LabelBuilder, MessageFlags, bold, italic, DiscordjsErrorCodes, TextDisplayBuilder } = require('discord.js');
+const { ModalBuilder, LabelBuilder, MessageFlags, bold, italic, TextDisplayBuilder } = require('discord.js');
 const { ButtonWrapper } = require('../classes');
 const { StringSelectMenuBuilder } = require('@discordjs/builders');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
@@ -10,6 +10,7 @@ const { artifactNames, getArtifact } = require('../artifacts/_artifactDictionary
 const { extractFromRNTable } = require('../util/mathUtil');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { injectApplicationEmojiMarkdown } = require('../util/graphicsUtil');
+const { butIgnoreInteractionCollectorErrors } = require('../util/dAPIREsponses');
 
 const mainId = "customizeloadout";
 module.exports = new ButtonWrapper(mainId, 3000,
@@ -153,10 +154,6 @@ module.exports = new ButtonWrapper(mainId, 3000,
 			} else {
 				modalSubmission.reply({ content: "The provided loadout did not differ from your previous loadout.", flags: MessageFlags.Ephemeral });
 			}
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error);
-			}
-		})
+		}).catch(butIgnoreInteractionCollectorErrors)
 	}
 );

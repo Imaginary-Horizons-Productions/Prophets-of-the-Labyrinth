@@ -9,6 +9,7 @@ const { isSponsor } = require('../util/fileUtil');
 const { generateRecruitEmbed, generateAdventureConfigMessage } = require('../util/embedUtil');
 const { injectApplicationEmojiMarkdown } = require('../util/graphicsUtil');
 const { getPlayer } = require('../orcustrators/playerOrcustrator');
+const { isMissingPermissionError } = require('../util/dAPIREsponses');
 
 const mainId = "delve";
 module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionFlagsBits.SendMessages, false, [InteractionContextType.Guild], 3000,
@@ -72,7 +73,7 @@ module.exports = new CommandWrapper(mainId, "Start a new adventure", PermissionF
 			thread.send({ content: `## ${adventure.name}\n${italic(injectApplicationEmojiMarkdown(getLabyrinthProperty(adventure.labyrinth, "description")))}\nParty Leader: ${userMention(adventure.leaderId)}`, flags: MessageFlags.SuppressNotifications });
 			thread.send(generateAdventureConfigMessage());
 		}).catch(error => {
-			if (error.code === 50001) {
+			if (isMissingPermissionError(error)) {
 				interaction.reply({ content: "The Prophets of the Labyrinth bot doesn't have permission to make threads in this channel.", flags: [MessageFlags.Ephemeral] });
 			} else {
 				console.error(error);

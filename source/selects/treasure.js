@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, bold, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, bold, MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { buildGearRecord, getGearProperty, buildGearDescription } = require('../gear/_gearDictionary');
@@ -6,6 +6,7 @@ const { SAFE_DELIMITER, SKIP_INTERACTION_HANDLING, ZERO_WIDTH_WHITESPACE } = req
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getColor, getEmoji } = require('../util/essenceUtil');
 const { getNumberEmoji } = require('../util/textUtil');
+const { butIgnoreInteractionCollectorErrors } = require('../util/dAPIREsponses');
 
 const mainId = "treasure";
 module.exports = new SelectWrapper(mainId, 2000,
@@ -124,11 +125,7 @@ module.exports = new SelectWrapper(mainId, 2000,
 					}
 				}).then(interactionToAcknowledge => {
 					return interactionToAcknowledge.update({ components: [] });
-				}).catch(error => {
-					if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-						console.error(error);
-					}
-				}).finally(() => {
+				}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 					if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 						interaction.deleteReply();
 					}

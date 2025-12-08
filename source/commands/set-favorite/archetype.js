@@ -1,7 +1,8 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, DiscordjsErrorCodes } = require("discord.js");
+const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require("discord.js");
 const { SubcommandWrapper } = require("../../classes");
 const { getPlayer, setPlayer } = require("../../orcustrators/playerOrcustrator");
 const { SKIP_INTERACTION_HANDLING } = require("../../constants");
+const { butIgnoreInteractionCollectorErrors } = require("../../util/dAPIREsponses");
 
 module.exports = new SubcommandWrapper("archetype", "Start new adventures as the selected archetype",
 	async function executeSubcommand(interaction, ...[player]) {
@@ -27,11 +28,7 @@ module.exports = new SubcommandWrapper("archetype", "Start new adventures as the
 			recentPlayer.favoriteArchetype = selectedArchetype;
 			setPlayer(recentPlayer);
 			return collectedInteraction.reply({ content: `Your favorite archetype has been set to ${selectedArchetype}.`, flags: [MessageFlags.Ephemeral] });
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error);
-			}
-		}).finally(() => {
+		}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 				interaction.deleteReply();
 			}

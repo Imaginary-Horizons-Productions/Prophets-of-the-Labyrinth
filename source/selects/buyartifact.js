@@ -1,10 +1,11 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags, DiscordjsErrorCodes } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
 const { SelectWrapper } = require('../classes');
 const { SKIP_INTERACTION_HANDLING } = require('../constants');
 const { getAdventure, setAdventure } = require('../orcustrators/adventureOrcustrator');
 const { renderRoom, randomAuthorTip } = require('../util/embedUtil');
 const { getColor } = require('../util/essenceUtil');
 const { getArtifact } = require('../artifacts/_artifactDictionary');
+const { butIgnoreInteractionCollectorErrors } = require('../util/dAPIREsponses');
 
 const mainId = "buyartifact";
 module.exports = new SelectWrapper(mainId, 3000,
@@ -54,11 +55,7 @@ module.exports = new SelectWrapper(mainId, 3000,
 				setAdventure(adventure);
 				return collectedInteraction.update({ components: [] });
 			}
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error);
-			}
-		}).finally(() => {
+		}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 				interaction.deleteReply();
 			}

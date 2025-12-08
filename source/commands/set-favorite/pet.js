@@ -1,7 +1,8 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, DiscordjsErrorCodes, ComponentType } = require("discord.js");
+const { ActionRowBuilder, StringSelectMenuBuilder, MessageFlags, ComponentType } = require("discord.js");
 const { SKIP_INTERACTION_HANDLING } = require("../../constants");
 const { setPlayer, getPlayer } = require("../../orcustrators/playerOrcustrator");
 const { SubcommandWrapper } = require("../../classes");
+const { butIgnoreInteractionCollectorErrors } = require("../../util/dAPIREsponses");
 
 module.exports = new SubcommandWrapper("pet", "Bring the selected pet on adventures by default",
 	async function executeSubcommand(interaction, ...[player]) {
@@ -33,11 +34,7 @@ module.exports = new SubcommandWrapper("pet", "Bring the selected pet on adventu
 			recentPlayer.favoritePet = newBestFriend;
 			setPlayer(recentPlayer);
 			return collectedInteraction.reply({ content: `Your favorite pet has been set to ${newBestFriend}.`, flags: [MessageFlags.Ephemeral] });
-		}).catch(error => {
-			if (error.code !== DiscordjsErrorCodes.InteractionCollectorError) {
-				console.error(error);
-			}
-		}).finally(() => {
+		}).catch(butIgnoreInteractionCollectorErrors).finally(() => {
 			if (interaction.channel) { // prevent crash if channel is deleted before cleanup
 				interaction.deleteReply();
 			}
