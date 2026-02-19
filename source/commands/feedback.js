@@ -1,4 +1,4 @@
-const { TextInputBuilder, ModalBuilder, TextInputStyle, PermissionFlagsBits, EmbedBuilder, InteractionContextType, MessageFlags, LabelBuilder } = require('discord.js');
+const { TextInputBuilder, ModalBuilder, TextInputStyle, PermissionFlagsBits, EmbedBuilder, InteractionContextType, MessageFlags, LabelBuilder, userMention, FileUploadBuilder } = require('discord.js');
 const { CommandWrapper } = require('../classes');
 const { testGuildId, feedbackChannelId, SKIP_INTERACTION_HANDLING } = require('../constants');
 const { EmbedLimits } = require('@sapphire/discord.js-utilities');
@@ -41,10 +41,10 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 									.setStyle(TextInputStyle.Short)
 							),
 						new LabelBuilder().setLabel("Screenshot/diagram URL")
-							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("image")
+							.setFileUploadComponent(
+								new FileUploadBuilder().setCustomId("image")
+									.setMaxValues(1)
 									.setRequired(false)
-									.setStyle(TextInputStyle.Short)
 							)
 					)
 				);
@@ -53,7 +53,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
 						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue("title")}`)
 						.addFields(
-							{ name: "Reporter", value: `<@${modalSubmission.user.id}>` },
+							{ name: "Reporter", value: userMention(modalSubmission.user.id) },
 							{ name: "Steps to Reproduce", value: modalSubmission.fields.getTextInputValue("steps") },
 							{ name: "Actual Behavior", value: modalSubmission.fields.getTextInputValue("actual") },
 							{ name: "Expected Behavior", value: modalSubmission.fields.getTextInputValue("expected") }
@@ -63,14 +63,12 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						embed.setColor(modalSubmission.user.hexAccentColor);
 					}
 
-					const unvalidatedImageURL = modalSubmission.fields.getTextInputValue("image");
-					try {
-						if (unvalidatedImageURL) {
-							new URL(unvalidatedImageURL);
-							embed.setImage(unvalidatedImageURL);
+					const imageFileCollection = modalSubmission.fields.getUploadedFiles("image");
+					if (imageFileCollection) {
+						const firstAttachment = imageFileCollection.first();
+						if (firstAttachment) {
+							embed.setImage(firstAttachment.url);
 						}
-					} catch (error) {
-						errors.push(error.message);
 					}
 
 					modalSubmission.client.guilds.fetch(testGuildId).then(testGuild => {
@@ -113,10 +111,10 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 									.setStyle(TextInputStyle.Short)
 							),
 						new LabelBuilder().setLabel("Diagram URL")
-							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("image")
+							.setFileUploadComponent(
+								new FileUploadBuilder().setCustomId("image")
+									.setMaxValues(1)
 									.setRequired(false)
-									.setStyle(TextInputStyle.Short)
 							)
 					)
 				);
@@ -125,7 +123,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
 						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue("title")}`)
 						.addFields(
-							{ name: "Reporter", value: `<@${modalSubmission.user.id}>` },
+							{ name: "Reporter", value: userMention(modalSubmission.user.id) },
 							{ name: "User Demographic", value: modalSubmission.fields.getTextInputValue("user") },
 							{ name: "Functionality", value: modalSubmission.fields.getTextInputValue("functionality") },
 							{ name: "Benefit", value: modalSubmission.fields.getTextInputValue("benefit") }
@@ -135,14 +133,12 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						embed.setColor(modalSubmission.user.hexAccentColor);
 					}
 
-					const unvalidatedImageURL = modalSubmission.fields.getTextInputValue("image");
-					try {
-						if (unvalidatedImageURL) {
-							new URL(unvalidatedImageURL);
-							embed.setImage(unvalidatedImageURL);
+					const imageFileCollection = modalSubmission.fields.getUploadedFiles("image");
+					if (imageFileCollection) {
+						const firstAttachment = imageFileCollection.first();
+						if (firstAttachment) {
+							embed.setImage(firstAttachment.url);
 						}
-					} catch (error) {
-						errors.push(error.message);
 					}
 
 					modalSubmission.client.guilds.fetch(testGuildId).then(testGuild => {
@@ -188,7 +184,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 							{ name: "Game Entity", value: modalSubmission.fields.getTextInputValue("entity") },
 							{ name: "Direction", value: modalSubmission.fields.getTextInputValue("direction") },
 							{ name: "Suggested Change", value: modalSubmission.fields.getTextInputValue("change") },
-							{ name: "Reporter", value: `<@${modalSubmission.user.id}>` }
+							{ name: "Reporter", value: userMention(modalSubmission.user.id) }
 						);
 
 					if (modalSubmission.user.hexAccentColor) {
