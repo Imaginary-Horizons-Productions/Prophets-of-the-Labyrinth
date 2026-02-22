@@ -14,35 +14,40 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 
 		let titlePrefix;
 		switch (interaction.options.getString("feedback-type")) {
-			case "bug":
+			case "bug": {
 				titlePrefix = "Bug Report: ";
+				const inputIdTitle = "title";
+				const inputIdSteps = "steps";
+				const inputIdActual = "actual";
+				const inputIdExpected = "expected";
+				const inputIdImage = "image";
 				interaction.showModal(new ModalBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
 					.setTitle("Bug Report")
 					.addLabelComponents(
 						new LabelBuilder().setLabel("Title")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("title")
+								new TextInputBuilder().setCustomId(inputIdTitle)
 									.setMaxLength(EmbedLimits.MaximumTitleLength - titlePrefix.length)
 									.setStyle(TextInputStyle.Short)
 							),
 						new LabelBuilder().setLabel("Steps to reproduce")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("steps")
+								new TextInputBuilder().setCustomId(inputIdSteps)
 									.setStyle(TextInputStyle.Paragraph)
 							),
 						new LabelBuilder().setLabel("What happened")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("actual")
+								new TextInputBuilder().setCustomId(inputIdActual)
 									.setStyle(TextInputStyle.Short)
 							),
 						new LabelBuilder().setLabel("What I was expecting to happen")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("expected")
+								new TextInputBuilder().setCustomId(inputIdExpected)
 									.setStyle(TextInputStyle.Short)
 							),
-						new LabelBuilder().setLabel("Screenshot/diagram URL")
+						new LabelBuilder().setLabel("Screenshot/Diagram")
 							.setFileUploadComponent(
-								new FileUploadBuilder().setCustomId("image")
+								new FileUploadBuilder().setCustomId(inputIdImage)
 									.setMaxValues(1)
 									.setRequired(false)
 							)
@@ -51,19 +56,19 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 				interaction.awaitModalSubmit({ filter: (incoming) => incoming.customId === `${SKIP_INTERACTION_HANDLING}${interaction.id}`, time: 300000 }).then(modalSubmission => {
 					const errors = [];
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
-						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue("title")}`)
+						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue(inputIdTitle)}`)
 						.addFields(
 							{ name: "Reporter", value: userMention(modalSubmission.user.id) },
-							{ name: "Steps to Reproduce", value: modalSubmission.fields.getTextInputValue("steps") },
-							{ name: "Actual Behavior", value: modalSubmission.fields.getTextInputValue("actual") },
-							{ name: "Expected Behavior", value: modalSubmission.fields.getTextInputValue("expected") }
+							{ name: "Steps to Reproduce", value: modalSubmission.fields.getTextInputValue(inputIdSteps) },
+							{ name: "Actual Behavior", value: modalSubmission.fields.getTextInputValue(inputIdActual) },
+							{ name: "Expected Behavior", value: modalSubmission.fields.getTextInputValue(inputIdExpected) }
 						);
 
 					if (modalSubmission.user.hexAccentColor) {
 						embed.setColor(modalSubmission.user.hexAccentColor);
 					}
 
-					const imageFileCollection = modalSubmission.fields.getUploadedFiles("image");
+					const imageFileCollection = modalSubmission.fields.getUploadedFiles(inputIdImage);
 					if (imageFileCollection) {
 						const firstAttachment = imageFileCollection.first();
 						if (firstAttachment) {
@@ -80,39 +85,44 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						})
 					})
 				}).catch(console.error);
-				break;
-			case "feature":
+			} break;
+			case "feature": {
 				titlePrefix = "Feature Request: ";
+				const inputIdTitle = "title";
+				const inputIdUser = "user";
+				const inputIdFunctionality = "functionality";
+				const inputIdBenefit = "benefit";
+				const inputIdImage = "image";
 				interaction.showModal(new ModalBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
 					.setTitle("Feature Request")
 					.addLabelComponents(
 						new LabelBuilder().setLabel("Title")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("title")
+								new TextInputBuilder().setCustomId(inputIdTitle)
 									.setMaxLength(EmbedLimits.MaximumTitleLength - titlePrefix.length)
 									.setStyle(TextInputStyle.Short)
 							),
 						new LabelBuilder().setLabel("For who?")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("user")
+								new TextInputBuilder().setCustomId(inputIdUser)
 									.setPlaceholder("As a ___")
 									.setStyle(TextInputStyle.Short)
 							),
 						new LabelBuilder().setLabel("What kind of feature?")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("functionality")
+								new TextInputBuilder().setCustomId(inputIdFunctionality)
 									.setPlaceholder("I'd like to ___")
 									.setStyle(TextInputStyle.Paragraph)
 							),
 						new LabelBuilder().setLabel("Why?")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("benefit")
+								new TextInputBuilder().setCustomId(inputIdBenefit)
 									.setPlaceholder("So that I can ___")
 									.setStyle(TextInputStyle.Short)
 							),
-						new LabelBuilder().setLabel("Diagram URL")
+						new LabelBuilder().setLabel("Diagram")
 							.setFileUploadComponent(
-								new FileUploadBuilder().setCustomId("image")
+								new FileUploadBuilder().setCustomId(inputIdImage)
 									.setMaxValues(1)
 									.setRequired(false)
 							)
@@ -121,19 +131,19 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 				interaction.awaitModalSubmit({ filter: (incoming) => incoming.customId === `${SKIP_INTERACTION_HANDLING}${interaction.id}`, time: 300000 }).then(modalSubmission => {
 					const errors = [];
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
-						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue("title")}`)
+						.setTitle(`${titlePrefix}${modalSubmission.fields.getTextInputValue(inputIdTitle)}`)
 						.addFields(
 							{ name: "Reporter", value: userMention(modalSubmission.user.id) },
-							{ name: "User Demographic", value: modalSubmission.fields.getTextInputValue("user") },
-							{ name: "Functionality", value: modalSubmission.fields.getTextInputValue("functionality") },
-							{ name: "Benefit", value: modalSubmission.fields.getTextInputValue("benefit") }
+							{ name: "User Demographic", value: modalSubmission.fields.getTextInputValue(inputIdUser) },
+							{ name: "Functionality", value: modalSubmission.fields.getTextInputValue(inputIdFunctionality) },
+							{ name: "Benefit", value: modalSubmission.fields.getTextInputValue(inputIdBenefit) }
 						);
 
 					if (modalSubmission.user.hexAccentColor) {
 						embed.setColor(modalSubmission.user.hexAccentColor);
 					}
 
-					const imageFileCollection = modalSubmission.fields.getUploadedFiles("image");
+					const imageFileCollection = modalSubmission.fields.getUploadedFiles(inputIdImage);
 					if (imageFileCollection) {
 						const firstAttachment = imageFileCollection.first();
 						if (firstAttachment) {
@@ -150,27 +160,30 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						})
 					})
 				}).catch(console.error);
-				break;
-			case "balance":
+			} break;
+			case "balance": {
 				titlePrefix = "Balance Suggestion";
+				const inputIdEntity = "entity";
+				const inputIdDirection = "direction";
+				const inputIdChange = "change";
 				interaction.showModal(new ModalBuilder().setCustomId(`${SKIP_INTERACTION_HANDLING}${interaction.id}`)
 					.setTitle("Balance Suggestion")
 					.setLabelComponents(
 						new LabelBuilder().setLabel("What aspect of the game?")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("entity")
+								new TextInputBuilder().setCustomId(inputIdEntity)
 									.setPlaceholder("Eg gear/monster/item/etc.")
 									.setStyle(TextInputStyle.Short)
 							),
 						new LabelBuilder().setLabel("Is it overpowered or underpowered?")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("direction")
+								new TextInputBuilder().setCustomId(inputIdDirection)
 									.setPlaceholder("Compared to what?")
 									.setStyle(TextInputStyle.Short)
 							),
 						new LabelBuilder().setLabel("What is your suggested change?")
 							.setTextInputComponent(
-								new TextInputBuilder().setCustomId("change")
+								new TextInputBuilder().setCustomId(inputIdChange)
 									.setPlaceholder("What problem is this attempting to solve?")
 									.setStyle(TextInputStyle.Paragraph)
 							)
@@ -181,9 +194,9 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 					const embed = new EmbedBuilder().setAuthor({ name: modalSubmission.user.username, iconURL: modalSubmission.user.avatarURL() })
 						.setTitle(titlePrefix)
 						.addFields(
-							{ name: "Game Entity", value: modalSubmission.fields.getTextInputValue("entity") },
-							{ name: "Direction", value: modalSubmission.fields.getTextInputValue("direction") },
-							{ name: "Suggested Change", value: modalSubmission.fields.getTextInputValue("change") },
+							{ name: "Game Entity", value: modalSubmission.fields.getTextInputValue(inputIdEntity) },
+							{ name: "Direction", value: modalSubmission.fields.getTextInputValue(inputIdDirection) },
+							{ name: "Suggested Change", value: modalSubmission.fields.getTextInputValue(inputIdChange) },
 							{ name: "Reporter", value: userMention(modalSubmission.user.id) }
 						);
 
@@ -200,7 +213,7 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						})
 					})
 				}).catch(console.error);
-				break;
+			} break;
 		}
 	}
 ).setOptions(
