@@ -48,7 +48,6 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						new LabelBuilder().setLabel("Screenshot/Diagram")
 							.setFileUploadComponent(
 								new FileUploadBuilder().setCustomId(inputIdImage)
-									.setMaxValues(1)
 									.setRequired(false)
 							)
 					)
@@ -123,7 +122,6 @@ module.exports = new CommandWrapper(mainId, "Provide PotL feedback and get an in
 						new LabelBuilder().setLabel("Diagram")
 							.setFileUploadComponent(
 								new FileUploadBuilder().setCustomId(inputIdImage)
-									.setMaxValues(1)
 									.setRequired(false)
 							)
 					)
