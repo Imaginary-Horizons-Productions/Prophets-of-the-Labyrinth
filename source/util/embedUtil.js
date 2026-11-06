@@ -60,9 +60,9 @@ function randomFooterTip() {
 function embedTemplate() {
 	return new EmbedBuilder().setColor(Colors.Blurple)
 		.setAuthor({
-			name: "Imaginary Horizons Productions",
+			name: "Click here to sponsor Imaginary Horizons Productions",
 			iconURL: "https://cdn.discordapp.com/icons/353575133157392385/c78041f52e8d6af98fb16b8eb55b849a.png",
-			url: "https://github.com/Imaginary-Horizons-Productions"
+			url: "https://github.com/sponsors/Imaginary-Horizons-Productions"
 		})
 		.setFooter(randomFooterTip())
 }
@@ -338,9 +338,9 @@ async function generateVersionEmbed() {
 	const stats = await fs.promises.stat(changelogPath);
 	const dividerRegEx = /## .+ v\d+.\d+.\d+/g;
 	const changesStartRegEx = /\.\d+:/g;
-	let titleStart = dividerRegEx.exec(data).index;
+	let titleStart = dividerRegEx.exec(data)?.index ?? 0;
 	changesStartRegEx.exec(data);
-	let knownIssuesEnd = dividerRegEx.exec(data).index;
+	let knownIssuesEnd = dividerRegEx.exec(data)?.index;
 
 	return embedTemplate()
 		.setTitle(data.slice(titleStart + 3, changesStartRegEx.lastIndex))
